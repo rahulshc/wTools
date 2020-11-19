@@ -197,6 +197,16 @@ on.defaults =
   first : 0,
 }
 
+    //  qqq for Dmytro : implement
+    // let descriptor = _.procedure.on( 'terminationBegin', _handleProcedureTerminationBegin );
+    // descriptoro.off();
+    // descriptoro.enabled = false;
+    // _.procedure.evenHas( descriptoro ); /* true */
+    // _.procedure.evenHas( descriptoro.callback ); /* true */
+    // descriptoro.enabled = true;
+    // _.procedure.evenHas( descriptoro ); /* true */
+    // _.procedure.evenHas( descriptoro.callback ); /* true */
+
 //
 
 function off_head( routine, args )

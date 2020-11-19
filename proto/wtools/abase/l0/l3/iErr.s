@@ -116,7 +116,6 @@ function errReason( err, reason )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
   }
 
@@ -198,7 +197,6 @@ function _errMake( o )
   {
     if( _errMake.defaults[ e ] === undefined )
     {
-      debugger;
       throw Error( `Unknown option::${e}` );
     }
   }
@@ -214,9 +212,6 @@ function _errMake( o )
 
   if( !_.strIs( o.originalMessage ) )
   throw Error( 'Expects option.originalMessage:String' );
-
-  // if( !_.strIs( o.beautifiedStack ) )
-  // throw Error( 'Expects option.beautifiedStack:String' );
 
   if( !_.strIs( o.combinedStack ) )
   throw Error( 'Expects option.combinedStack:String' );
@@ -277,11 +272,6 @@ function _errMake( o )
       o.id = _.error._errorCounter;
     }
 
-    // if( !o.callsStack )
-    // o.callsStack = o.beautifiedStack;
-    // if( !o.beautifiedStack )
-    // o.beautifiedStack = o.callsStack;
-
   }
 
   /* */
@@ -292,15 +282,17 @@ function _errMake( o )
 
     sectionWrite( 'message', `Message of error#${o.id}`, o.originalMessage );
     sectionWrite( 'combinedStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.combinedStack );
-    // sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.beautifiedStack );
     sectionWrite( 'throwsStack', `Throws stack`, o.throwsStack );
 
+    /* xxx : remove isProcess */
     if( o.isProcess && _.process && _.process.entryPointInfo )
     sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
 
     if( o.sourceCode )
     if( _.strIs( o.sourceCode ) )
-    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode );
+    sectionWrite( 'sourceCode', `Source code`, o.sourceCode );
+    else if( _.routineIs( o.sourceCode.read ) )
+    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.read );
     else if( _.strIs( o.sourceCode.code ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
     else
@@ -311,13 +303,11 @@ function _errMake( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        debugger;
         logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        debugger;
         logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
         delete o.sections[ s ];
       }
@@ -385,7 +375,6 @@ function _errMake( o )
     nonenumerable( 'reason', o.reason );
 
     nonenumerable( 'combinedStack', o.combinedStack );
-    // nonenumerable( 'callsStack', o.beautifiedStack ); /* yyy */
     nonenumerable( 'throwCallsStack', o.throwCallsStack );
     nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
     nonenumerable( 'throwsStack', o.throwsStack );
@@ -408,6 +397,10 @@ function _errMake( o )
     nonenumerable( 'sections', o.sections );
 
     o.dstError[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.dstError.toString;
+
+    if( o.fields )
+    for( let k in o.fields )
+    nonenumerable( k, o.fields[ k ] );
 
     if( o.debugging )
     debugger;
@@ -432,7 +425,6 @@ function _errMake( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
   }
 
@@ -456,22 +448,15 @@ function _errMake( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
     function get()
     {
-      // if( this.id === 1 )
-      // {
-      //   console.log( `logging error#${this.id}` );
-      //   console.log( _.introspector.stack() );
-      // }
       _.errLogged( this );
       _.errAttend( this );
       return this[ symbol ];
     }
     function set( src )
     {
-      debugger;
       this[ symbol ] = src;
       return src;
     }
@@ -485,7 +470,8 @@ _errMake.defaults =
   dstError : null,
   id : null,
   throwLocation : null,
-  sections : null,
+  sections : null, /* qqq : cover please */
+  fields : null, /* qqq : cover please */
 
   attended : null,
   logged : null,
@@ -496,7 +482,6 @@ _errMake.defaults =
 
   originalMessage : null,
   combinedStack : '',
-  // beautifiedStack : '',
   throwCallsStack : '',
   throwsStack : '',
   asyncCallsStack : '',
@@ -542,7 +527,6 @@ function _err( o )
   {
     if( _err.defaults[ e ] === undefined )
     {
-      debugger;
       throw Error( `Unknown option::${e}` );
     }
   }
@@ -555,7 +539,6 @@ function _err( o )
 
   if( _.error._errorMaking )
   {
-    debugger;
     throw Error( 'Recursive dead lock because of error inside of routine _err()!' );
   }
   _.error._errorMaking = true;
@@ -572,8 +555,6 @@ function _err( o )
   let errors = [];
   let combinedStack = '';
   // let message = null;
-
-  /* debugger */
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.error.breakpointEnabled )
@@ -609,7 +590,7 @@ function _err( o )
       stackCondensing : o.stackCondensing,
 
       originalMessage : o.message,
-      combinedStack : combinedStack,
+      combinedStack,
       throwCallsStack : o.throwCallsStack,
       throwsStack : o.throwsStack,
       asyncCallsStack : o.asyncCallsStack,
@@ -620,7 +601,6 @@ function _err( o )
   }
   catch( err2 )
   {
-    debugger;
     _.error._errorMaking = false;
     console.log( err2.message );
     console.log( err2.stack );
@@ -648,9 +628,19 @@ function _err( o )
           }
           catch( err )
           {
-            debugger;
-            arg = o.args[ a ] = '!ERROR IN ERROR FORMATTER!'
-            console.log( String( err ) );
+            let original = arg;
+            arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
+            console.error( String( err ) );
+            if( _.strLinesSelect ) /* qqq xxx : make sure it works and cover */
+            console.error( _.strLinesSelect
+            ({
+              src : original.toString(),
+              line : 0,
+              nearestLines : 5,
+              numbering : 1,
+            }));
+            else
+            console.error( original.toString() );
           }
         }
         if( _.unrollIs( arg ) )
@@ -751,7 +741,6 @@ function _err( o )
       catch( err2 )
       {
         console.error( err2 );
-        debugger;
       }
     }
 
@@ -879,7 +868,6 @@ function _err( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
 
     try
@@ -894,7 +882,6 @@ function _err( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
 
   }
@@ -917,8 +904,8 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.catchLocation.internal ) );
-    if( !o.catchLocation.internal || o.catchLocation.internal === 1 )
+    _.assert( _.numberIs( o.catchLocation.abstraction ) );
+    if( !o.catchLocation.abstraction || o.catchLocation.abstraction === 1 )
     {
       if( o.throwsStack )
       o.throwsStack += `\nthrown at ${o.catchLocation.routineFilePathLineCol}`;
@@ -973,11 +960,12 @@ function _err( o )
       if( arg && !_.primitiveIs( arg ) )
       {
 
-        if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
-        {
-          str = String( arg );
-        }
-        else if( _.routineIs( arg.toStr ) )
+        // if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
+        // {
+        //   str = String( arg );
+        // }
+        // else if( _.routineIs( arg.toStr ) )
+        if( _.routineIs( arg.toStr ) )
         {
           str = arg.toStr();
         }
@@ -987,9 +975,10 @@ function _err( o )
         }
         else if( _.errIs( arg ) )
         {
-          if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
-          str = arg.originalMessage;
-          else if( _.strIs( arg.message ) )
+          // if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
+          // str = arg.originalMessage;
+          // else if( _.strIs( arg.message ) )
+          if( _.strIs( arg.message ) )
           str = arg.message;
           else
           str = _.toStr( arg );
@@ -1016,28 +1005,33 @@ function _err( o )
 
     }
 
-    for( let a = 0 ; a < result.length ; a++ )
+    // for( let a = 0 ; a < result.length ; a++ )
+    // {
+    //   let str = result[ a ];
+    //
+    //   if( !o.message.replace( /\s*/m, '' ) )
+    //   {
+    //     o.message = str;
+    //   }
+    //   else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
+    //   {
+    //     // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
+    //     o.message += str;
+    //   }
+    //   else
+    //   {
+    //     o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
+    //     // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+    //   }
+    //
+    // }
+
+    let o2 =
     {
-      let str = result[ a ];
-
-      debugger;
-
-      if( !o.message.replace( /\s*/m, '' ) )
-      {
-        o.message = str;
-      }
-      else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
-      {
-        // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
-        o.message += str;
-      }
-      else
-      {
-        o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
-        // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
-      }
-
-    }
+      onToStr : eachMessageFormat,
+      onPairWithDelimeter : strConcatenateCounting
+    };
+    o.message = _.strConcat( result, o2 );
 
     /*
       remove redundant spaces at the begin and the end of lines
@@ -1046,11 +1040,74 @@ function _err( o )
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
-    o.message = o.message.replace( /^\x20*/gm, '' );
+
+    // o.message = o.message.replace( /^\x20*/gm, '' );
+    o.message = o.message.replace( /^\s*/, '' );
     o.message = o.message.replace( /\x20*$/gm, '' );
+    o.message = o.message.replace( /\s*$/, '' );
 
   }
 
+  /* */
+
+  function eachMessageFormat( str )
+  {
+    if( _.strBegins( str, /\x20/ ) )
+    str = _.strRemoveBegin( str, /\x20+/ );
+    if( _.strEnds( str, /\x20$/ ) )
+    str = _.strRemoveEnd( str, /\x20+$/ );
+
+    if( _.strBegins( str, /\n/ ) )
+    {
+      let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ );
+      if( splitsAfter[ 1 ] )
+      {
+        let splitsBefore = _.strIsolateRightOrAll( splitsAfter[ 0 ], /\n+/ );
+        str = splitsBefore[ 1 ] + splitsBefore[ 2 ] + splitsAfter[ 1 ] + splitsAfter[ 2 ];
+      }
+      else
+      {
+        str = '';
+      }
+    }
+
+    if( _.strEnds( str, /\n/ ) )
+    {
+      let splitsBefore = _.strIsolate( str, /\s*$/ );
+      if( splitsBefore[ 0 ] )
+      {
+        let splitsAfter = _.strIsolateLeftOrAll( splitsBefore[ 1 ], /\n+/ );
+        str = splitsBefore[ 0 ] + splitsAfter[ 1 ];
+      }
+      else
+      {
+        str = '';
+      }
+    }
+
+    return str;
+  }
+
+  /* */
+
+  function strConcatenateCounting( src1, src2 )
+  {
+    let result;
+    if( _.strEnds( src1, '\n' ) && _.strBegins( src2, '\n' ) )
+    {
+      let right = _.strIsolateRightOrAll( src1, /\n+$/ );
+      let left = _.strIsolateLeftOrAll( src2, /\n+/ );
+
+      result = right[ 0 ];
+      result += right[ 1 ].length > left[ 1 ].length ? right[ 1 ] : left[ 1 ];
+      result += left[ 2 ];
+    }
+    else
+    {
+      result = src1 + src2;
+    }
+    return result;
+  }
 }
 
 _err.defaults =
@@ -1060,15 +1117,16 @@ _err.defaults =
 
   args : null,
   sections : null,
+  fields : null,
   level : 1, /* to make catch stack work properly level should be 1 by default */
 
-  /* string */
+  /* String */
 
   message : null, /* qqq : cover the option */
   reason : null,
   sourceCode : null,
 
-  /* Bolean */
+  /* Boolean */
 
   stackRemovingBeginIncluding : 0,
   stackRemovingBeginExcluding : 0,
@@ -1405,7 +1463,6 @@ function errInStr( errStr )
 function errFromStr( errStr )
 {
 
-  // debugger;
   try
   {
 
@@ -1466,7 +1523,6 @@ function errFromStr( errStr )
   catch( err2 )
   {
     console.error( err2 );
-    debugger;
     return Error( errStr );
   }
 }
@@ -1491,7 +1547,6 @@ function _errLog( err, logger )
   }
   else
   {
-    debugger;
     logger.error( 'Error does not have toString' );
     logger.error( err );
   }
@@ -1578,14 +1633,12 @@ function tryCatch( routine )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( routine ) )
-  debugger;
   try
   {
     return routine();
   }
   catch( err )
   {
-    debugger;
     throw _._err({ args : [ err ] });
   }
 }
@@ -1596,14 +1649,13 @@ function tryCatchBrief( routine )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( routine ) )
-  debugger;
+
   try
   {
     return routine();
   }
   catch( err )
   {
-    debugger;
     throw _._err({ args : [ err ], brief : 1 });
   }
 }
@@ -1780,13 +1832,13 @@ function breakpoint( condition )
 
   if( !condition )
   {
-    let err = _err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
-    logger.log( err );
-    debugger;
+    // let err = _err
+    // ({
+    //   args : Array.prototype.slice.call( arguments, 1 ),
+    //   level : 2,
+    // });
+    logger.log( _.introspector.stack() );
+
     return false;
   }
 
@@ -1900,11 +1952,6 @@ function assert( condition )
   {
     if( !_.error.breakpointEnabled )
     return;
-    let err = _._err
-    ({
-      args : Array.prototype.slice.call( args, 1 ),
-      level : 3,
-    });
     debugger;
   }
 
@@ -2030,6 +2077,7 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
+  breakpoint,
   breakpointEnabled : !!Config.debug,
   _errorCounter : 0,
   _errorMaking : false,
@@ -2090,7 +2138,6 @@ let ToolsExtension =
 
   // assert
 
-  breakpoint,
   assert,
   assertWithoutBreakpoint,
   assertNotTested,

@@ -737,66 +737,241 @@ function strRight( src, ins, range )
 //
 
 /**
- * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
- * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+ * Routine strInsideOf() returns part of a source string {-src-} between first occurrence of {-begin-} and last occurrence of {-end-}.
+ * Returns result if {-begin-} and {-end-} exists in the {-src-} and index of {-end-} is bigger the index of {-begin-}.
  * Otherwise returns undefined.
  *
- * @param { String } src - The source string.
- * @param { String } begin - String to find from begin of source.
- * @param { String } end - String to find from end source.
+ * @example
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 0 });
+ * // returns : 'bc'
  *
  * @example
- * _.strInsideOf( 'abcd', 'a', 'd' );
- * // returns 'bc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'c' );
- * // returns 'aabcc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'a' );
- * // returns 'a'
- *
- * @example
- * _.strInsideOf( 'abc', 'a', 'a' );
- * // returns undefined
- *
- * @example
- * _.strInsideOf( 'abcd', 'x', 'y' )
- * // returns undefined
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
+ * // returns : undefined
  *
  * @example
  * // index of begin is bigger then index of end
  * _.strInsideOf( 'abcd', 'c', 'a' )
- * // returns undefined
+ * // returns : undefined
  *
- * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
- * @throws { Exception } If all arguments are not strings;
- * @throws { Exception } If ( arguments.length ) is not equal 3.
+ * @example
+ * _.strInsideOf( 'abc', 'a', 'a' );
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'abcd', 'x', 'y' )
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'a', 'a', 'a' );
+ * // returns : 'a'
+ *
+ * Basic parameter set :
+ * @param { String } src - The source string.
+ * @param { String|Array } begin - String or array of strings to find from begin of source.
+ * @param { String|Array } end - String or array of strings to find from end source.
+ * Alternative parameter set :
+ * @param { String } o - Options map.
+ * @param { String } o.src - The source string.
+ * @param { String|Array } o.begin - String or array of strings to find from begin of source.
+ * @param { String|Array } o.end - String or array of strings to find from end source.
+ * @param { BoolLike } o.pairing - If option is enabled and {-begin-} ( or {-end-} ) is an Array of strings, then
+ * both containerized {-begin-} and {-end-} should have equivalent lengths.
+ * @returns { String|Undefined } - Returns part of source string between {-begin-} and {-end-} or undefined.
+ * @throws { Exception } If arguments.length is 1 and argument is not an options map {-o-}.
+ * @throws { Exception } If arguments.length is 3 and any of arguments is not a String.
+ * @throws { Exception } If arguments.length neither is 1 nor 3.
+ * @throws { Exception } If {-o.pairing-} is true like and containerized version of {-o.begin-} and {-o.end-}
+ * have different length.
+ * @throws { Exception } If options map {-o-} has unknown properties.
  * @function strInsideOf
  * @namespace Tools
  */
 
-function strInsideOf( src, begin, end )
+function strInsideOf_head( routine, args )
 {
 
-  _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+  let o = args[ 0 ]
+  if( _.mapIs( o ) )
+  {
+    _.assert( args.length === 1, 'Expects exactly one argument' );
+  }
+  else
+  {
+    o = Object.create( null );
+    o.src = args[ 0 ];
+    o.begin = args[ 1 ];
+    o.end = args[ 2 ];
+    _.assert( args.length === 3, 'Expects exactly three arguments' );
+  }
 
+  _.routineOptions( routine, o );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
+
+  if( _.longIs( o.begin ) && o.begin.length === 1 )
+  o.begin = o.begin[ 0 ];
+  if( _.longIs( o.end ) && o.end.length === 1 )
+  o.end = o.end[ 0 ];
+  if( _.longIs( o.begin || _.longIs( o.end )) )
+  {
+    o.begin = _.arrayAs( o.begin );
+    o.end = _.arrayAs( o.end );
+  }
+
+  _.assert
+  (
+    !o.pairing || !_.longIs( o.begin ) || o.begin.length === o.end.length,
+    `If option::o.paring is true then length of o.begin should be equal to length of o.end`
+  );
+
+  return o;
+}
+
+function strInsideOf_body( o )
+{
   let beginOf, endOf;
 
-  beginOf = _.strBeginOf( src, begin );
-  if( beginOf === false )
-  return false;
+  beginOf = _.strBeginOf( o.src, o.begin );
+  if( beginOf === undefined )
+  return undefined;
 
-  endOf = _.strEndOf( src, end );
-  if( endOf === false )
-  return false;
+  endOf = _.strEndOf( o.src, o.end );
+  if( endOf === undefined )
+  return undefined;
 
-  let result = src.substring( beginOf.length, src.length - endOf.length );
+  if( o.pairing )
+  if( beginOf !== endOf )
+  return undefined;
+
+  let result = o.src.substring( beginOf.length, o.src.length - endOf.length );
 
   return result;
 }
+
+strInsideOf_body.defaults =
+{
+  src : null,
+  begin : null,
+  end : null,
+  pairing : 0, /* xxx : set to 1 */
+}
+
+//
+
+let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+
+//
+
+/**
+ * Routine strInsideOf_() founds parts of a source string {-src-} between first occurrence of {-begin-} at the begin of {-src-}
+ * and first occurrence of {-end-} at the end of {-src-}.
+ * Returns result if {-begin-} and {-end-} exists in the {-src-} and index of {-end-} is bigger the index of {-begin-}.
+ * The format of returned value : [ begin, mid, end ].
+ * If {-src-} has not {-begin-} or {-end-} routine returns : [ undefined, undefined, undefined ].
+ * If option {-o.pairing-} is true and founded {-begin-} is not equivalent to founded {-end-},
+ * then routine returns : [ undefined, undefined, undefined ].
+ *
+ * @example
+ * _.strInsideOf_( 'abc', 'a', 'a' );
+ * // returns :[ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.strInsideOf_( 'abcd', 'x', 'y' )
+ * // returns : [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.strInsideOf_( 'abc', 'abc', 'abc' );
+ * // returns : 'abc'
+ *
+ * @example
+ * _.strInsideOf_({ src : 'abcd', begin : 'a', end : 'd', pairing : 0 });
+ * // returns : [ 'a', 'bc', 'd' ]
+ *
+ * @example
+ * _.strInsideOf_({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
+ * // returns : [ undefined, undefined, undefined ]
+ *
+ * Basic parameter set :
+ * @param { String } src - The source string.
+ * @param { String|Array } begin - String or array of strings to find from begin of source.
+ * @param { String|Array } end - String or array of strings to find from end source.
+ * Alternative parameter set :
+ * @param { String } o - Options map.
+ * @param { String } o.src - The source string.
+ * @param { String|Array } o.begin - String or array of strings to find from begin of source.
+ * @param { String|Array } o.end - String or array of strings to find from end source.
+ * @param { BoolLike } o.pairing - If option is enabled, then founded begin of {-src-} and
+ * founded end of {-src-} should be identical.
+ * @returns { Array } - Returns array with parts of source string {-src-} in format : [ begin, mid, end ].
+ * If any of part has no entry, routine returns array : [ undefined, undefined, undefined ].
+ * If pairing is enabled, and founded begin and end is not equivalent, then routine returns : [ undefined, undefined, undefined ].
+ * @throws { Exception } If arguments.length is 1 and argument is not an options map {-o-}.
+ * @throws { Exception } If arguments.length is 3 and any of arguments is not a String.
+ * @throws { Exception } If arguments.length neither is 1 nor 3.
+ * @throws { Exception } If {-src-} ( {-o.src-} ) is not a String.
+ * @throws { Exception } If any of {-begin-} ( {-o.begin-} ) or {-end-} ( {-o.end-} ) is not a String or array of Strings.
+ * @throws { Exception } If options map {-o-} has unknown properties.
+ * @function strInsideOf_
+ * @namespace Tools
+ */
+
+function strInsideOf__head( routine, args )
+{
+
+  let o = args[ 0 ];
+  if( _.mapIs( o ) )
+  {
+    _.assert( args.length === 1, 'Expects exactly one argument' );
+  }
+  else
+  {
+    o = Object.create( null );
+    o.src = args[ 0 ];
+    o.begin = args[ 1 ];
+    o.end = args[ 2 ];
+    _.assert( args.length === 3, 'Expects exactly three arguments' );
+  }
+
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
+  _.routineOptions( routine, o );
+
+  if( _.longIs( o.begin ) && o.begin.length === 1 )
+  o.begin = o.begin[ 0 ];
+  if( _.longIs( o.end ) && o.end.length === 1 )
+  o.end = o.end[ 0 ];
+
+  return o;
+}
+
+function strInsideOf__body( o )
+{
+
+  let begin = _.strBeginOf( o.src, o.begin );
+  if( begin === undefined )
+  return [ undefined, undefined, undefined ];
+
+  let end = _.strEndOf( o.src, o.end );
+  if( end === undefined )
+  return [ undefined, undefined, undefined ];
+
+  if( o.pairing )
+  if( begin !== end )
+  return [ undefined, undefined, undefined ];
+
+  let mid = o.src.substring( begin.length, o.src.length - end.length );
+
+  return [ begin, mid, end ];
+}
+
+strInsideOf__body.defaults =
+{
+  src : null,
+  begin : null,
+  end : null,
+  pairing : 0, /* xxx : set to 1 */
+}
+
+let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
 
 //
 
@@ -809,12 +984,12 @@ function strOutsideOf( src, begin, end )
   let beginOf, endOf;
 
   beginOf = _.strBeginOf( src, begin );
-  if( beginOf === false )
-  return false;
+  if( beginOf === undefined )
+  return undefined;
 
   endOf = _.strEndOf( src, end );
-  if( endOf === false )
-  return false;
+  if( endOf === undefined )
+  return undefined;
 
   let result = beginOf + endOf;
 
@@ -832,7 +1007,7 @@ function _strRemovedBegin( src, begin )
 
   let result = src;
   let beginOf = _._strBeginOf( result, begin );
-  if( beginOf !== false )
+  if( beginOf !== undefined )
   result = result.substr( beginOf.length, result.length );
 
   return result;
@@ -880,15 +1055,15 @@ function strRemoveBegin( src, begin )
   begin = _.arrayAs( begin );
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    let beginOf = false;
+    let beginOf = undefined;
     let src1 = src[ s ]
     for( let b = 0, blen = begin.length ; b < blen ; b++ )
     {
       beginOf = _._strBeginOf( src1, begin[ b ] );
-      if( beginOf !== false )
+      if( beginOf !== undefined )
       break;
     }
-    if( beginOf !== false )
+    if( beginOf !== undefined )
     src1 = src1.substr( beginOf.length, src1.length );
     result[ s ] = src1;
   }
@@ -908,7 +1083,7 @@ function _strRemovedEnd( src, end )
 
   let result = src;
   let endOf = _._strEndOf( result, end );
-  if( endOf !== false )
+  if( endOf !== undefined )
   result = result.substr( 0, result.length - endOf.length );
 
   return result;
@@ -956,15 +1131,15 @@ function strRemoveEnd( src, end )
 
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    let endOf = false;
+    let endOf = undefined;
     let src1 = src[ s ]
     for( let b = 0, blen = end.length ; b < blen ; b++ )
     {
       endOf = _._strEndOf( src1, end[ b ] );
-      if( endOf !== false )
+      if( endOf !== undefined )
       break;
     }
-    if( endOf !== false )
+    if( endOf !== undefined )
     src1 = src1.substr( 0, src1.length - endOf.length );
     result[ s ] = src1;
   }
@@ -1234,6 +1409,269 @@ function strReplace( src, ins, sub )
 }
 
 // --
+// stripper
+// --
+
+/**
+ * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
+ * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
+ *
+ * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ]- Source string to strip.
+ * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
+ * @returns {string} Returns result of removement in a string.
+ *
+ * @example
+ * _.strStrip( { src : 'aabaa', stripper : 'a' } );
+ * // returns 'b'
+ *
+ * @example
+ * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
+ * // returns 'b'
+ *
+ * @example
+ * _.strStrip( { src : '   b  \n' } )
+ * // returns 'b'
+ *
+ * @method strStrip
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o ) is not Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @namespace Tools
+ *
+ */
+
+function strStrip( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.arrayIs( o.src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
+    {
+      let optionsForStrip = _.mapExtend( null, o );
+      optionsForStrip.src = optionsForStrip.src[ s ];
+      result[ s ] = strStrip( optionsForStrip );
+    }
+    return result;
+  }
+
+  if( _.boolLikeTrue( o.stripper ) )
+  {
+    o.stripper = strStrip.defaults.stripper;
+  }
+
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+
+  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+  {
+    let exp = o.stripper;
+    if( _.strIs( exp ) )
+    {
+      exp = _.regexpEscape( exp );
+      exp = new RegExp( exp, 'g' );
+    }
+    return o.src.replace( exp, '' );
+  }
+  else
+  {
+
+    _.assert( _.arrayIs( o.stripper ) );
+
+    if( Config.debug )
+    for( let s of o.stripper )
+    {
+      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+    }
+
+    let b = 0;
+    for( ; b < o.src.length ; b++ )
+    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+    break;
+
+    let e = o.src.length-1;
+    for( ; e >= 0 ; e-- )
+    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+    break;
+
+    if( b >= e )
+    return '';
+
+    return o.src.substring( b, e+1 );
+  }
+
+}
+
+strStrip.defaults =
+{
+  src : null,
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+}
+
+//
+
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only leading whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * _.strStripLeft( ' a ' )
+ * // returns 'a '
+ *
+ * @method strStripLeft
+ * @namespace Tools
+ *
+ */
+
+function strStripLeft( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStripLeft, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripLeft.defaults =
+{
+  ... strStrip.defaults,
+  stripper : /^(\s|\n|\0)+/gm,
+}
+
+//
+
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only trailing whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * _.strStripRight( ' a ' )
+ * // returns ' a'
+ *
+ * @method strStripRight
+ * @namespace Tools
+ *
+ */
+
+function strStripRight( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStripRight, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripRight.defaults =
+{
+  ... strStrip.defaults,
+  stripper : /(\s|\n|\0)+$/gm,
+}
+
+//
+
+/**
+ * Removes whitespaces from source( src ).
+ * If argument( sub ) is defined, function replaces whitespaces with it.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} sub - Substring that replaces whitespaces.
+ * @returns {string} Returns a string with removed whitespaces.
+ *
+ * @example
+ * _.strRemoveAllSpaces( 'a b c d e' );
+ * // returns abcde
+ *
+ * @example
+ * _.strRemoveAllSpaces( 'a b c d e', '*' );
+ * // returns a*b*c*d*e
+ *
+ * @method strRemoveAllSpaces
+ * @namespace Tools
+ *
+*/
+
+function _strRemoveAllSpaces( src, sub )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  if( sub === undefined )
+  sub = '';
+
+  return src.replace( /\s/g, sub );
+}
+
+//
+
+/**
+ * Removes empty lines from the string passed by argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns a string with empty lines removed.
+ *
+ * @example
+ * _.strStripEmptyLines( 'first\n\nsecond' );
+ * // returns
+ * // first
+ * // second
+ *
+ * @example
+ * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
+ * // returns
+ * // zero
+ * // first
+ * // second
+ *
+ * @method strStripEmptyLines
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @namespace Tools
+ *
+ */
+
+function _strStripEmptyLines( srcStr )
+{
+  let result = '';
+  let lines = srcStr.split( '\n' );
+
+  _.assert( _.strIs( srcStr ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  for( let l = 0; l < lines.length; l += 1 )
+  {
+    let line = lines[ l ];
+
+    if( !_.strStrip( line ) )
+    continue;
+
+    result += line + '\n';
+  }
+
+  result = result.substring( 0, result.length - 1 );
+  return result;
+}
+
+// --
 // split
 // --
 
@@ -1409,7 +1847,8 @@ function strSplitsQuotedRejoin_body( o )
 
   /* quoting */
 
-  let s = 1;
+  // let s = 1; // why was it 1??
+  let s = 0;
   if( o.quoting )
   {
     for( s ; s < o.splits.length ; s += 1 )
@@ -1447,6 +1886,9 @@ function strSplitsQuotedRejoin_body( o )
             splitNew.splice( splitNew.length-1-eextra, 1 );
           }
           splitNew = splitNew.join( '' );
+          if( o.onQuoting )
+          o.splits[ s ] = o.onQuoting( splitNew, o );
+          else
           o.splits[ s ] = splitNew;
           s2 = s;
           break;
@@ -1479,6 +1921,7 @@ strSplitsQuotedRejoin_body.defaults =
   inliningQuoting : 1,
   splits : null,
   delimeter : null,
+  onQuoting : null, /* qqq : cover */
 }
 
 //
@@ -1522,7 +1965,7 @@ function strSplitsDropDelimeters_body( o )
   {
     let split = o.splits[ s ];
 
-    if( _.regexpsTestAny( o.delimeter, split ) )
+    if( _.regexpsTestAny( o.delimeter, split ) ) /* xxx qqq : ? */
     o.splits.splice( s, 1 );
 
     // if( _.longHas( o.delimeter, split ) )
@@ -1575,17 +2018,19 @@ function strSplitsStrip_body( o )
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.splits ) );
 
+  if( !o.stripping )
+  return o.splits;
+
   /* stripping */
 
   for( let s = 0 ; s < o.splits.length ; s++ )
   {
     let split = o.splits[ s ];
 
-    if( o.stripping )
+    if( _.strIs( split ) )
     split = _.strStrip({ src : split, stripper : o.stripping });
 
     o.splits[ s ] = split;
-
   }
 
   return o.splits;
@@ -2317,10 +2762,6 @@ function strSplitInlinedStereo( o )
     else
     {
       if( result.length )
-      debugger;
-      else
-      debugger;
-      if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
       result.push( o.prefix + splitted[ i ] );
@@ -2661,6 +3102,9 @@ strSplitInlinedStereo_.defaults =
   preservingDelimeters : 0,
   preservingOrdinary : 1,
   preservingInlined : 1,
+
+  /* qqq for Yevhen : ? */
+
 }
 
 // function strSplitWithDefaultDelimeter( o )
@@ -2772,15 +3216,16 @@ let Extension =
   // splitter
 
   _strLeftSingle,
-  strLeft,
+  strLeft, /* qqq for Dmytro : implement and cover strLeft_ with proper ranges */
   _strRightSingle,
-  strRight,
+  strRight, /* qqq for Dmytro : implement and cover strRight_ with proper ranges */
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf,
+  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */
+  strInsideOf_, /* !!! use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
   strOutsideOf,
 
   // replacers
@@ -2793,6 +3238,16 @@ let Extension =
   strReplaceBegin,
   strReplaceEnd,
   strReplace,
+
+  // stripper
+
+  strStrip, /* qqq for Dmytro : does not look working. fix, please */
+  strStripLeft,
+  strStripRight,
+  _strRemoveAllSpaces,
+  strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
+  _strStripEmptyLines,
+  strStripEmptyLines : _.vectorize( _strStripEmptyLines ),
 
   // split
 

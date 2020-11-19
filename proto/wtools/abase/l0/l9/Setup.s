@@ -15,7 +15,7 @@ _global.wTools.error = _global.wTools.error || Object.create( null );
 function _setupConfig()
 {
 
-  if( _global.__GLOBAL_WHICH__ !== 'real' )
+  if( _global.__GLOBAL_NAME__ !== 'real' )
   return;
 
   if( !_global.Config )
@@ -135,7 +135,7 @@ function _setupProcedure()
   {
     let call = stack[ s ];
     let location = _.introspector.locationFromStackFrame( call );
-    if( !location.internal )
+    if( !location.internal && !location.abstraction )
     {
       stack.splice( s+1, stack.length );
       stack.splice( 0, s );

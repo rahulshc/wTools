@@ -389,7 +389,6 @@ function entityEach( src, onEach )
     }
 
   }
-  // else if( _.objectLike( src ) )
   else if( _.mapLike( src ) )
   {
 
@@ -416,7 +415,6 @@ function entityEachOwn( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  // _.assert( onEach.length <= 2 );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -430,7 +428,6 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  // else if( _.objectLike( src ) )
   else if( _.mapLike( src ) )
   {
 
@@ -4662,7 +4659,6 @@ let Extension =
   first : entityFirst,
   entityLast,
   last : entityLast,
-
 
   //
 

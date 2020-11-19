@@ -1,4 +1,5 @@
-( function _fMap_s_() {
+( function _fMap_s_()
+{
 
 'use strict';
 
@@ -97,10 +98,10 @@ function mapContain( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-/*
-  if( Object.keys( src ).length < Object.keys( ins ).length )
-  return false;
-*/
+  /*
+    if( Object.keys( src ).length < Object.keys( ins ).length )
+    return false;
+  */
 
   for( let s in ins )
   {
@@ -161,8 +162,13 @@ function objectSatisfy( o )
 
   /**/
 
-  function _objectSatisfy( template, src, root, levels, strict )
+  function _objectSatisfy( /* template, src, root, levels, strict */ )
   {
+    let template = arguments[ 0 ];
+    let src = arguments[ 1 ];
+    let root = arguments[ 2 ];
+    let levels = arguments[ 3 ];
+    let strict = arguments[ 4 ];
 
     if( !strict && src === undefined )
     return true;
@@ -172,7 +178,13 @@ function objectSatisfy( o )
 
     if( levels === 0 )
     {
-      if( _.objectIs( template ) && _.objectIs( src ) && _.routineIs( template.identicalWith ) && src.identicalWith === template.identicalWith )
+      if
+      (
+        _.objectIs( template )
+        && _.objectIs( src )
+        && _.routineIs( template.identicalWith )
+        && src.identicalWith === template.identicalWith
+      )
       return template.identicalWith( src );
       else
       return template === src;
@@ -2123,8 +2135,13 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   return result;
 }
 
-function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
+function mapButConditional_( /* fieldFilter, dstMap, srcMap, butMap */ )
 {
+  let fieldFilter = arguments[ 0 ];
+  let dstMap = arguments[ 1 ];
+  let srcMap = arguments[ 2 ];
+  let butMap = arguments[ 3 ];
+
   if( dstMap === null )
   {
     dstMap = Object.create( null );
@@ -3009,91 +3026,97 @@ function _mapOnly_( o )
 
   if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
   {
-
     if( _.longIs( screenMap ) )
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        {
-          let m;
-          for( m = 0 ; m < screenMap.length ; m++ )
-          {
-            if( k === String( m ) )
-            break;
-            if( k === screenMap[ m ] )
-            break;
-            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
-            break;
-          }
-
-          if( m === screenMap.length )
-          delete srcMap[ k ];
-          else
-          o.filter.call( this, dstMap, srcMap, k );
-        }
-      }
-    }
+    _mapsFilterWithLongScreenMap.call( this, mapsIdenticalFilterWithLong );
     else
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        if( !( k in screenMap ) )
-        delete srcMap[ k ];
-        else
-        o.filter.call( this, dstMap, srcMaps[ s ], k );
-      }
-    }
-
+    _mapsIdenticalFilter.call( this );
   }
   else
   {
-
     if( _.longIs( screenMap ) )
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        {
-          let m;
-          for( m = 0 ; m < screenMap.length ; m++ )
-          {
-            if( k === String( m ) )
-            break;
-            if( k === screenMap[ m ] )
-            break;
-            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
-            break;
-          }
-
-          if( m !== screenMap.length )
-          o.filter.call( this, dstMap, srcMaps[ s ], k );
-        }
-      }
-    }
+    _mapsFilterWithLongScreenMap.call( this, mapsNotIdenticalFilterWithLong );
     else
-    {
-      for( let k in screenMap )
-      {
-        if( screenMap[ k ] === undefined )
-        continue;
-
-        for( let s in srcMaps )
-        if( k in srcMaps[ s ] )
-        o.filter.call( this, dstMap, srcMaps[ s ], k );
-      }
-    }
-
+    _mapsNotIdenticalFilter.call( this )
   }
 
   return dstMap;
+
+  /* */
+
+  function _mapsFilterWithLongScreenMap( filterCallback )
+  {
+    for( let s in srcMaps )
+    {
+      let srcMap = srcMaps[ s ];
+
+      for( let k in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < screenMap.length ; m++ )
+        {
+          if( k === String( m ) )
+          break;
+          if( k === screenMap[ m ] )
+          break;
+          if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
+          break;
+        }
+
+        filterCallback.call( this, srcMap, m, k );
+      }
+    }
+  }
+
+  /* */
+
+  function mapsIdenticalFilterWithLong( src, index, key )
+  {
+    if( index === screenMap.length )
+    delete src[ key ];
+    else
+    o.filter.call( this, dstMap, src, key );
+  }
+
+  /* */
+
+  function mapsNotIdenticalFilterWithLong( src, index, key )
+  {
+    if( index !== screenMap.length )
+    o.filter.call( this, dstMap, src, key );
+  }
+
+  /* */
+
+  function _mapsIdenticalFilter()
+  {
+    for( let s in srcMaps )
+    {
+      let srcMap = srcMaps[ s ];
+
+      for( let k in srcMap )
+      {
+        if( !( k in screenMap ) )
+        delete srcMap[ k ];
+        else
+        o.filter.call( this, dstMap, srcMap, k );
+      }
+    }
+  }
+
+  /* */
+
+  function _mapsNotIdenticalFilter()
+  {
+    for( let k in screenMap )
+    {
+      if( screenMap[ k ] === undefined )
+      continue;
+
+      for( let s in srcMaps )
+      if( k in srcMaps[ s ] )
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+    }
+  }
 }
 
 _mapOnly_.defaults =
@@ -3216,7 +3239,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3322,7 +3345,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3426,7 +3449,7 @@ function sureMapHasAll( srcMap, all, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3529,7 +3552,7 @@ function sureMapOwnAll( srcMap, all, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3617,7 +3640,7 @@ function sureMapOwnAll( srcMap, all, msg )
 function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
- _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
   let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
 
@@ -3633,7 +3656,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3673,7 +3696,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3774,7 +3797,7 @@ function sureMapHasNoUndefine( srcMap, msg )
     else
     {
       let arr = [];
-      for ( let i = 1; i < arguments.length; i++ )
+      for( let i = 1; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -4378,7 +4401,7 @@ let Extension =
 
   // map transformer
 
-  mapInvert,
+  mapInvert, /* qqq : write _mapInvert accepting o-map */
   mapInvertDroppingDuplicates,
   mapsFlatten,
 

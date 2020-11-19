@@ -570,7 +570,7 @@ function _resolve( moduleName )
       let r = _.module._resolveFirst
       ({
         moduleNames : [ moduleName ],
-        basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ),
+        basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ), /* xxx : optimize for relase build */
         throwing : 0,
       });
       if( r !== undefined )
@@ -850,7 +850,7 @@ function _Setup()
     let parent = arguments[ 1 ];
     let isMain = arguments[ 2 ];
     let options = arguments[ 3 ];
-
+    // console.log( `_resolveFilename : ${request}` );
     let result = NjsResolveFilename.apply( this, arguments );
     resolvedPath = result;
     return result;

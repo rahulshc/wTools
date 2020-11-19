@@ -3813,142 +3813,142 @@ function strSplitCamel( test )
 // extractor
 //--
 
-function strOnlySingle( test )
+function _strOnly( test )
 {
   test.case = 'range - number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, 0 );
+  var got = _._strOnly( src, 0 );
   var expected = 'a';
   test.identical( got, expected );
 
   test.case = 'range - number';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, 1 );
+  var got = _._strOnly( src, 1 );
   var expected = '\n';
   test.identical( got, expected );
 
   test.case = 'range - number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, 4 );
+  var got = _._strOnly( src, 4 );
   var expected = 'c';
   test.identical( got, expected );
 
   test.case = 'range - number bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, 6 );
+  var got = _._strOnly( src, 6 );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'range - negative number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, -1 );
+  var got = _._strOnly( src, -1 );
   var expected = 'c';
   test.identical( got, expected );
 
   test.case = 'range - negative number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, -5 );
+  var got = _._strOnly( src, -5 );
   var expected = 'a';
   test.identical( got, expected );
 
   test.case = 'range - negative number, absolute value bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strOnlySingle( src, -7 );
+  var got = _._strOnly( src, -7 );
   var expected = '';
   test.identical( got, expected );
 
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strOnlySingle( '', [ 2, 3 ] );
+  var got = _._strOnly( '', [ 2, 2 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strOnlySingle( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _._strOnly( 'Hello', [ 1, 0 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strOnlySingle( 'Hello', [ 0, 5 ] );
+  var got = _._strOnly( 'Hello', [ 0, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strOnlySingle( 'Hello', [ 0, 8 ] );
+  var got = _._strOnly( 'Hello', [ 0, 7 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strOnlySingle( 'Hello', [ 2, 3 ] );
+  var got = _._strOnly( 'Hello', [ 2, 2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strOnlySingle( 'Hello', [ 3, 5 ] );
+  var got = _._strOnly( 'Hello', [ 3, 4 ] );
   var expected = 'lo';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
-  var got = _.strOnlySingle( 'Hello', [ 4, 0 ] );
-  var expected = 'Hell';
+  var got = _._strOnly( 'Hello', [ 4, 0 ] );
+  var expected = '';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _._strOnly( 'Hello', [ -2, -3 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -5, 5 ] );
+  var got = _._strOnly( 'Hello', [ -5, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -7, 5 ] );
+  var got = _._strOnly( 'Hello', [ -7, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -3, -2 ] );
+  var got = _._strOnly( 'Hello', [ -3, -3 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -5, -4 ] );
+  var got = _._strOnly( 'Hello', [ -5, -5 ] );
   var expected = 'H';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnlySingle( 'Hello', [ -2, -3 ] );
+  var got = _._strOnly( 'Hello', [ -2, -2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   /* - */
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strOnlySingle() );
+  test.shouldThrowErrorSync( () => _._strOnly() );
 
   test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc' ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc' ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1, 2 ], 'extra' ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc', [ 1, 2 ], 'extra' ) );
 
   test.case = 'wrong type of srcStr';
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 123, [ 0, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strOnlySingle( null, [ 0, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strOnlySingle( /a?$/, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 123, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strOnly( null, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strOnly( /a?$/, [ 0, 1 ] ) );
 
   test.case = 'wrong type of range';
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', null ) );
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', 'wrong' ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc', null ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc', 'wrong' ) );
 
   test.case = 'wrong range';
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strOnly( 'abc', [ 1, 2, 3 ] ) );
 }
 
 //
@@ -4002,17 +4002,17 @@ function strOnly( test )
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strOnly( '', [ 2, 3 ] );
+  var got = _.strOnly( '', [ 2, 2 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strOnly( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strOnly( 'Hello', [ 1, 0 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strOnly( 'Hello', [ 0, 5 ] );
+  var got = _.strOnly( 'Hello', [ 0, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
@@ -4022,49 +4022,49 @@ function strOnly( test )
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strOnly( 'Hello', [ 2, 3 ] );
+  var got = _.strOnly( 'Hello', [ 2, 2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strOnly( 'Hello', [ 3, 5 ] );
+  var got = _.strOnly( 'Hello', [ 3, 4 ] );
   var expected = 'lo';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
   var got = _.strOnly( 'Hello', [ 4, 0 ] );
-  var expected = 'Hell';
+  var expected = '';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( 'Hello', [ -2, -3 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -5, 5 ] );
+  var got = _.strOnly( 'Hello', [ -5, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -7, 5 ] );
+  var got = _.strOnly( 'Hello', [ -7, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -3, -2 ] );
+  var got = _.strOnly( 'Hello', [ -3, -3 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -5, -4 ] );
+  var got = _.strOnly( 'Hello', [ -5, -5 ] );
   var expected = 'H';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -2, -3 ] );
+  var got = _.strOnly( 'Hello', [ -2, -2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
@@ -4123,40 +4123,40 @@ function strOnly( test )
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 1, 0 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 4 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 7 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 2, 2 ] );
   var expected = [ 'l', 'r', 'c', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 3, 4 ] );
   var expected = [ 'lo', 'ld', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
   var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 4, 0 ] );
-  var expected = [ 'Hell', 'worl', 'abc', '' ];
+  var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
@@ -4165,30 +4165,32 @@ function strOnly( test )
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  // debugger;
-  // var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ] );
-  // var expected = [ 'Hello', 'world', 'abc', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ] );
-  var expected = [ 'l', 'r', 'c', '' ];
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ] );
+  var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  // var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ] );
-  // var expected = [ 'H', 'w', '', '' ];
-  // test.identical( got, expected );
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ] );
+  var expected = [ 'l', 'r', 'a', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( [ 'hello', 'world', 'abc', '' ], [ -5, -5 ] );
+  var expected = [ 'h', 'w', '', '' ];
+  test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
-  var expected = [ 'l', 'r', 'c', '' ];
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ] );
+  var expected = [ 'l', 'r', 'a', '' ];
   test.identical( got, expected );
 
   test.close( 'vectorized' );
 
   /* - */
+
+  if( !Config.debug )
+  return;
 
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.strOnly() );
@@ -4215,151 +4217,151 @@ function strOnly( test )
 
 //
 
-function strButSingle( test )
+function _strBut( test )
 {
   test.open( 'without ins' );
 
   test.case = 'range - number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 0 );
+  var got = _._strBut( src, 0 );
   var expected = '\nb\nc';
   test.identical( got, expected );
 
   test.case = 'range - number';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 1 );
+  var got = _._strBut( src, 1 );
   var expected = 'ab\nc';
   test.identical( got, expected );
 
   test.case = 'range - number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 4 );
+  var got = _._strBut( src, 4 );
   var expected = 'a\nb\n';
   test.identical( got, expected );
 
   test.case = 'range - number bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 6 );
+  var got = _._strBut( src, 6 );
   var expected = 'a\nb\nc';
   test.identical( got, expected );
 
   test.case = 'range - negative number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -1 );
+  var got = _._strBut( src, -1 );
   var expected = 'a\nb\n';
   test.identical( got, expected );
 
   test.case = 'range - negative number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -5 );
+  var got = _._strBut( src, -5 );
   var expected = '\nb\nc';
   test.identical( got, expected );
 
   test.case = 'range - negative number, absolute value bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -7 );
+  var got = _._strBut( src, -7 );
   var expected = 'a\nb\nc';
   test.identical( got, expected );
 
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strButSingle( '', [ 2, 3 ] );
+  var got = _._strBut( '', [ 2, 3 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strButSingle( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _._strBut( 'Hello', [ 1, 0 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strButSingle( 'Hello', [ 0, 5 ] );
+  var got = _._strBut( 'Hello', [ 0, 5 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strButSingle( 'Hello', [ 0, 8 ] );
+  var got = _._strBut( 'Hello', [ 0, 8 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, get subString';
-  var got = _.strButSingle( 'Hello', [ 2, 3 ] );
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
+  var got = _._strBut( 'Hello', [ 2, 2 ] );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strButSingle( 'Hello', [ 3, 5 ] );
+  var got = _._strBut( 'Hello', [ 3, 4 ] );
   var expected = 'Hel';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
-  var got = _.strButSingle( 'Hello', [ 4, 0 ] );
+  var got = _._strBut( 'Hello', [ 4, 0 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _._strBut( 'Hello', [ -2, -3 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ] );
+  var got = _._strBut( 'Hello', [ -5, 5 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ] );
+  var got = _._strBut( 'Hello', [ -7, 5 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ] );
+  var got = _._strBut( 'Hello', [ -3, -3 ] );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ] );
+  var got = _._strBut( 'Hello', [ -5, -5 ] );
   var expected = 'ello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ] );
+  var got = _._strBut( 'Hello', [ -2, -5 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ], undefined );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _._strBut( 'Hello', [ -2, -3 ], undefined );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ], undefined );
+  var got = _._strBut( 'Hello', [ -5, 4 ], undefined );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ], undefined );
+  var got = _._strBut( 'Hello', [ -7, 4 ], undefined );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ], undefined );
+  var got = _._strBut( 'Hello', [ -3, -3 ], undefined );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ], undefined );
+  var got = _._strBut( 'Hello', [ -5, -5 ], undefined );
   var expected = 'ello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ], undefined );
-  var expected = 'Hello';
+  var got = _._strBut( 'Hello', [ -3, -2 ], undefined );
+  var expected = 'Heo';
   test.identical( got, expected );
 
   test.close( 'without ins' );
@@ -4370,144 +4372,144 @@ function strButSingle( test )
 
   test.case = 'range - number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 0, 'append\nn' );
+  var got = _._strBut( src, 0, 'append\nn' );
   var expected = 'append\nn\nb\nc';
   test.identical( got, expected );
 
   test.case = 'range - number';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 1, 'append\nn' );
+  var got = _._strBut( src, 1, 'append\nn' );
   var expected = 'aappend\nnb\nc';
   test.identical( got, expected );
 
   test.case = 'range - number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 4, 'append\nn' );
+  var got = _._strBut( src, 4, 'append\nn' );
   var expected = 'a\nb\nappend\nn';
   test.identical( got, expected );
 
   test.case = 'range - number bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 6, 'append\nn' );
+  var got = _._strBut( src, 6, 'append\nn' );
   var expected = 'a\nb\ncappend\nn';
   test.identical( got, expected );
 
   test.case = 'range - negative number, last symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -1, 'append\nn' );
+  var got = _._strBut( src, -1, 'append\nn' );
   var expected = 'a\nb\nappend\nn';
   test.identical( got, expected );
 
   test.case = 'range - negative number, first symbol';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -5, 'append\nn' );
+  var got = _._strBut( src, -5, 'append\nn' );
   var expected = 'append\nn\nb\nc';
   test.identical( got, expected );
 
   test.case = 'range - negative number, absolute value bigger then srcStr.length';
   var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -7, 'append\nn' );
+  var got = _._strBut( src, -7, 'append\nn' );
   var expected = 'append\nna\nb\nc';
   test.identical( got, expected );
 
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strButSingle( '', [ 2, 3 ], 'append\nn' );
+  var got = _._strBut( '', [ 2, 3 ], 'append\nn' );
   var expected = 'append\nn';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strButSingle( 'Hello', [ 1, 1 ], 'append\nn' );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _._strBut( 'Hello', [ 1, 0 ], 'append\nn' );
   var expected = 'Happend\nnello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strButSingle( 'Hello', [ 0, 5 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ 0, 5 ], 'append\nn' );
   var expected = 'append\nn';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strButSingle( 'Hello', [ 0, 8 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ 0, 8 ], 'append\nn' );
   var expected = 'append\nn';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strButSingle( 'Hello', [ 2, 3 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ 2, 2 ], 'append\nn' );
   var expected = 'Heappend\nnlo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strButSingle( 'Hello', [ 3, 5 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ 3, 4 ], 'append\nn' );
   var expected = 'Helappend\nn';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
-  var got = _.strButSingle( 'Hello', [ 4, 0 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ 4, 0 ], 'append\nn' );
   var expected = 'Hellappend\nno';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ], 'append\nn' );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _._strBut( 'Hello', [ -2, -3 ], 'append\nn' );
   var expected = 'Helappend\nnlo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ -5, 4 ], 'append\nn' );
   var expected = 'append\nn';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ -7, 4 ], 'append\nn' );
   var expected = 'append\nn';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ -3, -3 ], 'append\nn' );
   var expected = 'Heappend\nnlo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ -5, -5 ], 'append\nn' );
   var expected = 'append\nnello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ], 'append\nn' );
+  var got = _._strBut( 'Hello', [ -2, -4 ], 'append\nn' );
   var expected = 'Helappend\nnlo';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ], '' );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0, ins - empty string';
+  var got = _._strBut( 'Hello', [ -2, -3 ], '' );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ], '' );
+  var got = _._strBut( 'Hello', [ -5, 4 ], '' );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ], '' );
+  var got = _._strBut( 'Hello', [ -7, 4 ], '' );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ], '' );
+  var got = _._strBut( 'Hello', [ -3, -3 ], '' );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ], '' );
+  var got = _._strBut( 'Hello', [ -5, -5 ], '' );
   var expected = 'ello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ], '' );
+  var got = _._strBut( 'Hello', [ -2, -4 ], '' );
   var expected = 'Hello';
   test.identical( got, expected );
 
@@ -4515,179 +4517,315 @@ function strButSingle( test )
 
   /* - */
 
-  test.open( 'ins - long' );
-
-  test.case = 'range - number, first symbol';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 0, [ 'append', 'n' ] );
-  var expected = 'append n\nb\nc';
-  test.identical( got, expected );
-
-  test.case = 'range - number';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 1, [ 'append', 'n' ] );
-  var expected = 'aappend nb\nc';
-  test.identical( got, expected );
-
-  test.case = 'range - number, last symbol';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 4, [ 'append', 'n' ] );
-  var expected = 'a\nb\nappend n';
-  test.identical( got, expected );
-
-  test.case = 'range - number bigger then srcStr.length';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, 6, [ 'append', 'n' ] );
-  var expected = 'a\nb\ncappend n';
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, last symbol';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -1, [ 'append', 'n' ] );
-  var expected = 'a\nb\nappend n';
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, first symbol';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -5, [ 'append', 'n' ] );
-  var expected = 'append n\nb\nc';
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, absolute value bigger then srcStr.length';
-  var src = 'a\nb\nc';
-  var got = _.strButSingle( src, -7, [ 'append', 'n' ] );
-  var expected = 'append na\nb\nc';
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr - empty string';
-  var got = _.strButSingle( '', [ 2, 3 ], [ 'append', 'n' ] );
-  var expected = 'append n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strButSingle( 'Hello', [ 1, 1 ], [ 'append', 'n' ] );
-  var expected = 'Happend nello';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all';
-  var got = _.strButSingle( 'Hello', [ 0, 5 ], [ 'append', 'n' ] );
-  var expected = 'append n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range bigger than length';
-  var got = _.strButSingle( 'Hello', [ 0, 8 ], [ 'append', 'n' ] );
-  var expected = 'append n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get subString';
-  var got = _.strButSingle( 'Hello', [ 2, 3 ], [ 'append', 'n' ] );
-  var expected = 'Heappend nlo';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get end of string';
-  var got = _.strButSingle( 'Hello', [ 3, 5 ], [ 'append', 'n' ] );
-  var expected = 'Helappend n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed';
-  var got = _.strButSingle( 'Hello', [ 4, 0 ], [ 'append', 'n' ] );
-  var expected = 'Hellappend no';
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ], [ 'append', 'n' ] );
-  var expected = 'Helappend nlo';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ], [ 'append', 'n' ] );
-  var expected = 'append n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ], [ 'append', 'n' ] );
-  var expected = 'append n';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ], [ 'append', 'n' ] );
-  var expected = 'Heappend nlo';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ], [ 'append', 'n' ] );
-  var expected = 'append nello';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ], [ 'append', 'n' ] );
-  var expected = 'Helappend nlo';
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0, ins - array with empty string';
-  var got = _.strButSingle( 'Hello', [ -2, -2 ], [ '' ] );
-  var expected = 'Hello';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all, range[ 0 ] < 0, ins - empty string';
-  var got = _.strButSingle( 'Hello', [ -5, 5 ], [ '' ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0, ins - array with empty string';
-  var got = _.strButSingle( 'Hello', [ -7, 5 ], [ '' ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0, ins - array with empty string';
-  var got = _.strButSingle( 'Hello', [ -3, -2 ], [ '' ] );
-  var expected = 'Helo';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0, ins - array with empty string';
-  var got = _.strButSingle( 'Hello', [ -5, -4 ], [ '' ] );
-  var expected = 'ello';
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0, ins - array with empty string';
-  var got = _.strButSingle( 'Hello', [ -2, -3 ], [ '' ] );
-  var expected = 'Hello';
-  test.identical( got, expected );
-
-  test.close( 'ins - long' );
-
-  /* - */
+  if( !Config.debug )
+  return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strButSingle() );
+  test.shouldThrowErrorSync( () => _._strBut() );
 
   test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc' ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc' ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1, 2 ], ' some ', 'extra' ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', [ 1, 2 ], ' some ', 'extra' ) );
 
   test.case = 'wrong type of srcStr';
-  test.shouldThrowErrorSync( () => _.strButSingle( 123, [ 0, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strButSingle( null, [ 0, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strButSingle( /a?$/, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strBut( 123, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strBut( null, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strBut( /a?$/, [ 0, 1 ] ) );
 
   test.case = 'wrong type of range';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', null ) );
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', 'wrong' ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', null ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', 'wrong' ) );
 
   test.case = 'wrong range';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', [ 1, 2, 3 ] ) );
 
   test.case = 'wrong ins';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1, 2 ], { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _._strBut( 'abc', [ 1, 2 ], { a : 1 } ) );
+}
+
+//
+
+function _strButInsIsLong( test )
+{
+  test.case = 'srcStr - empty string, range - inside string';
+  var got = _._strBut( '', [ 0, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty string, range - outside string';
+  var got = _._strBut( '', [ 0, 2 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty string, range - outside string';
+  var got = _._strBut( '', [ -2, 2 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range - |negative number| > src.length';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, -7, [ 'append', 'n' ] );
+  var expected = [ 'appenda\nb\nc', 'na\nb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - |negative number| < src.length';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, -2, [ 'append', 'n' ] );
+  var expected = [ 'a\nbappendc', 'a\nbnc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number - -1, last symbol';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, -1, [ 'append', 'n' ] );
+  var expected = [ 'a\nb\nappend', 'a\nb\nn' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number - 0, first symbol';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, 0, [ 'append', 'n' ] );
+  var expected = [ 'append\nb\nc', 'n\nb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number < src.length';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, 1, [ 'append', 'n' ] );
+  var expected = [ 'aappendb\nc', 'anb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number > src.length';
+  var src = 'a\nb\nc';
+  var got = _._strBut( src, 6, [ 'append', 'n' ] );
+  var expected = [ 'a\nb\ncappend', 'a\nb\ncn' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ 0, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -2 < src.length';
+  var got = _._strBut( 'Hello', [ 0, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'appendo', 'no' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ 0, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 0, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'appendello', 'nello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 0, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendllo', 'nllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 0, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ -1, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -2 < src.length';
+  var got = _._strBut( 'Hello', [ -1, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 0 ] === range[ 1 ]';
+  var got = _._strBut( 'Hello', [ -1, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -1, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -1, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -1, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappend', 'Helln' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ -2, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -2, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendo', 'Helno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ -2, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -2, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -2, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -2, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappend', 'Heln' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ] < src.length';
+  var got = _._strBut( 'Hello', [ -6, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -6, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'appendo', 'no' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ -6, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -6, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'appendello', 'nello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -6, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendllo', 'nllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ -6, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ 1, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -2 < src.length';
+  var got = _._strBut( 'Hello', [ 1, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendo', 'Hno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ 1, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 1, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length > range[ 1 ] === range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 1, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendllo', 'Hnllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 1, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Happend', 'Hn' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ 2, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -2 < src.length';
+  var got = _._strBut( 'Hello', [ 2, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendo', 'Heno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ 2, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 2, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 2, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length < range[ 1 ] < range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 2, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappend', 'Hen' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -6 > src.length';
+  var got = _._strBut( 'Hello', [ 6, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -2 < src.length';
+  var got = _._strBut( 'Hello', [ 6, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -1';
+  var got = _._strBut( 'Hello', [ 6, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 6, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 6, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length < range[ 1 ] < range[ 0 ]';
+  var got = _._strBut( 'Hello', [ 6, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
 }
 
 //
@@ -4741,32 +4879,32 @@ function strBut( test )
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strBut( '', [ 2, 3 ] );
+  var got = _.strBut( '', [ 2, 2 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strBut( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strBut( 'Hello', [ 1, 0 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strBut( 'Hello', [ 0, 5 ] );
+  var got = _.strBut( 'Hello', [ 0, 4 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strBut( 'Hello', [ 0, 8 ] );
+  var got = _.strBut( 'Hello', [ 0, 7 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strBut( 'Hello', [ 2, 3 ] );
+  var got = _.strBut( 'Hello', [ 2, 2 ] );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strBut( 'Hello', [ 3, 5 ] );
+  var got = _.strBut( 'Hello', [ 3, 4 ] );
   var expected = 'Hel';
   test.identical( got, expected );
 
@@ -4777,33 +4915,33 @@ function strBut( test )
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strBut( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strBut( 'Hello', [ -2, -3 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strBut( 'Hello', [ -5, 5 ] );
+  var got = _.strBut( 'Hello', [ -5, 4 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strBut( 'Hello', [ -7, 5 ] );
+  var got = _.strBut( 'Hello', [ -7, 4 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( 'Hello', [ -3, -2 ] );
+  var got = _.strBut( 'Hello', [ -3, -3 ] );
   var expected = 'Helo';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( 'Hello', [ -5, -4 ] );
+  var got = _.strBut( 'Hello', [ -5, -5 ] );
   var expected = 'ello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( 'Hello', [ -2, -3 ] );
+  var got = _.strBut( 'Hello', [ -2, -4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
@@ -4858,32 +4996,32 @@ function strBut( test )
   /* */
 
   test.case = 'srcStr - empty strings';
-  var got = _.strBut( [ '', '', '' ], [ 2, 3 ] );
+  var got = _.strBut( [ '', '', '' ], [ 2, 2 ] );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 1, 0 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ] );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 4 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ] );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 7 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ] );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 2, 2 ] );
   var expected = [ 'Helo', 'wold', 'ab', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ] );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 3, 4 ] );
   var expected = [ 'Hel', 'wor', 'abc', '' ];
   test.identical( got, expected );
 
@@ -4894,31 +5032,30 @@ function strBut( test )
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ] );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 4 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ] );
-  // var expected = [ '', '', '', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ] );
-  var expected = [ 'Helo', 'wold', 'ab', '' ];
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ] );
+  var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ] );
-  // var expected = [ 'ello', 'orld', 'abc', '' ];
-  // test.identical( got, expected );
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ] );
+  var expected = [ 'Helo', 'wold', 'bc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -5 ] );
+  var expected = [ 'ello', 'orld', 'abc', '' ];
+  test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
   var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
@@ -4927,34 +5064,33 @@ function strBut( test )
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ], undefined );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], undefined );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ], undefined );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 4 ], undefined );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], undefined );
-  // var expected = [ '', '', '', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ], undefined );
-  var expected = [ 'Helo', 'wold', 'ab', '' ];
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], undefined );
+  var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ], undefined );
-  // var expected = [ 'ello', 'orld', 'abc', '' ];
-  // test.identical( got, expected );
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ], undefined );
+  var expected = [ 'Helo', 'wold', 'bc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -5 ], undefined );
+  var expected = [ 'ello', 'orld', 'abc', '' ];
+  test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], undefined );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -4 ], undefined );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
@@ -5009,32 +5145,32 @@ function strBut( test )
   /* */
 
   test.case = 'srcStr - empty strings';
-  var got = _.strBut( [ '', '', '' ], [ 2, 3 ], 'append\nn' );
+  var got = _.strBut( [ '', '', '' ], [ 2, 4 ], 'append\nn' );
   var expected = [ 'append\nn', 'append\nn', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 1, 0 ], 'append\nn' );
   var expected = [ 'Happend\nnello', 'wappend\nnorld', 'aappend\nnbc', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 4 ], 'append\nn' );
   var expected = [ 'append\nn', 'append\nn', 'append\nn', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 7 ], 'append\nn' );
   var expected = [ 'append\nn', 'append\nn', 'append\nn', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 2, 2 ], 'append\nn' );
   var expected = [ 'Heappend\nnlo', 'woappend\nnld', 'abappend\nn', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 3, 4 ], 'append\nn' );
   var expected = [ 'Helappend\nn', 'worappend\nn', 'abcappend\nn', 'append\nn' ];
   test.identical( got, expected );
 
@@ -5045,67 +5181,65 @@ function strBut( test )
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ], 'append\nn' );
-  var expected = [ 'Helappend\nnlo', 'worappend\nnld', 'abcappend\nn', 'append\nn' ];
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], 'append\nn' );
+  var expected = [ 'Helappend\nnlo', 'worappend\nnld', 'aappend\nnbc', 'append\nn' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ], 'append\nn' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 4 ], 'append\nn' );
   var expected = [ 'append\nn', 'append\nn', 'append\nn', 'append\nn' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], 'append\nn' );
-  // var expected = [ 'append\nn', 'append\nn', 'append\nn', 'append\nn' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ], 'append\nn' );
-  var expected = [ 'Heappend\nnlo', 'woappend\nnld', 'abappend\nn', 'append\nn' ];
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], 'append\nn' );
+  var expected = [ 'append\nn', 'append\nn', 'append\nn', 'append\nn' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ], 'append\nn' );
-  // var expected = [ 'append\nnello', 'append\nnorld', 'append\nnabc', 'append\nn' ];
-  // test.identical( got, expected );
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ], 'append\nn' );
+  var expected = [ 'Heappend\nnlo', 'woappend\nnld', 'append\nnbc', 'append\nn' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -5 ], 'append\nn' );
+  var expected = [ 'append\nnello', 'append\nnorld', 'append\nnabc', 'append\nn' ];
+  test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], 'append\nn' );
-  var expected = [ 'Helappend\nnlo', 'worappend\nnld', 'abcappend\nn', 'append\nn' ];
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -4 ], 'append\nn' );
+  var expected = [ 'Helappend\nnlo', 'worappend\nnld', 'aappend\nnbc', 'append\nn' ];
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ], '' );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0, ins - empty string';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], '' );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ], '' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 4 ], '' );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0, ins - empty string';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], '' );
-  // var expected = [ '', '', '', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ], '' );
-  var expected = [ 'Helo', 'wold', 'ab', '' ];
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0, ins - empty string';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], '' );
+  var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ], '' );
-  // var expected = [ 'ello', 'orld', 'abc', '' ];
-  // test.identical( got, expected );
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ], '' );
+  var expected = [ 'Helo', 'wold', 'bc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -5 ], '' );
+  var expected = [ 'ello', 'orld', 'abc', '' ];
+  test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], '' );
+  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -4 ], '' );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
@@ -5113,156 +5247,8 @@ function strBut( test )
 
   /* - */
 
-  test.open( 'vectorized, ins - long' );
-
-  test.case = 'range - number, first symbol';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, 0, [ 'append', 'n' ] );
-  var expected = [ 'append n\nb\nc', 'append n', 'append nbc' ];
-  test.identical( got, expected );
-
-  test.case = 'range - number';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, 1, [ 'append', 'n' ] );
-  var expected = [ 'aappend nb\nc', 'append n', 'aappend nc' ];
-  test.identical( got, expected );
-
-  test.case = 'range - number, last symbol of longest string';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, 4, [ 'append', 'n' ] );
-  var expected = [ 'a\nb\nappend n', 'append n', 'abcappend n' ];
-  test.identical( got, expected );
-
-  test.case = 'range - number bigger then longest srcStr.length';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, 6, [ 'append', 'n' ] );
-  var expected = [ 'a\nb\ncappend n', 'append n', 'abcappend n' ];
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, last symbol';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, -1, [ 'append', 'n' ] );
-  var expected = [ 'a\nb\nappend n', 'append n', 'abappend n' ];
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, first symbol of longest string';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, -5, [ 'append', 'n' ] );
-  var expected = [ 'append n\nb\nc', 'append n', 'append nabc' ];
-  test.identical( got, expected );
-
-  test.case = 'range - negative number, absolute value bigger then longest srcStr.length';
-  var src = [ 'a\nb\nc', '', 'abc' ];
-  var got = _.strBut( src, -7, [ 'append', 'n' ] );
-  var expected = [ 'append na\nb\nc', 'append n', 'append nabc' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr - empty strings';
-  var got = _.strBut( [ '', '', '' ], [ 2, 3 ], [ 'append', 'n' ] );
-  var expected = [ 'append n', 'append n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ], [ 'append', 'n' ] );
-  var expected = [ 'Happend nello', 'wappend norld', 'aappend nbc', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ], [ 'append', 'n' ] );
-  var expected = [ 'append n', 'append n', 'append n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range bigger than length';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ], [ 'append', 'n' ] );
-  var expected = [ 'append n', 'append n', 'append n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get subString';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ], [ 'append', 'n' ] );
-  var expected = [ 'Heappend nlo', 'woappend nld', 'abappend n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get end of string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ], [ 'append', 'n' ] );
-  var expected = [ 'Helappend n', 'worappend n', 'abcappend n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ 4, 0 ], [ 'append', 'n' ] );
-  var expected = [ 'Hellappend no', 'worlappend nd', 'abcappend n', 'append n' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ], [ 'append', 'n' ] );
-  var expected = [ 'Helappend nlo', 'worappend nld', 'abcappend n', 'append n' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ], [ 'append', 'n' ] );
-  var expected = [ 'append n', 'append n', 'append n', 'append n' ];
-  test.identical( got, expected );
-
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], [ 'append', 'n' ] );
-  // var expected = [ 'append n', 'append n', 'append n', 'append n' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ], [ 'append', 'n' ] );
-  var expected = [ 'Heappend nlo', 'woappend nld', 'abappend n', 'append n' ];
-  test.identical( got, expected );
-
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ], [ 'append', 'n' ] );
-  // var expected = [ 'append nello', 'append norld', 'append nabc', 'append n' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], [ 'append', 'n' ] );
-  var expected = [ 'Helappend nlo', 'worappend nld', 'abcappend n', 'append n' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ], '' );
-  var expected = [ 'Hello', 'world', 'abc', '' ];
-  test.identical( got, expected );
-
-  test.case = 'srcStr, get all, range[ 0 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ], '' );
-  var expected = [ '', '', '', '' ];
-  test.identical( got, expected );
-
-  // test.case = 'srcStr, range bigger than length, range[ 0 ] < 0, ins - empty string';
-  // debugger;
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ], '' );
-  // var expected = [ '', '', '', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ], '' );
-  var expected = [ 'Helo', 'wold', 'ab', '' ];
-  test.identical( got, expected );
-
-  // test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  // var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ], '' );
-  // var expected = [ 'ello', 'orld', 'abc', '' ];
-  // test.identical( got, expected );
-
-  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0, ins - empty string';
-  var got = _.strBut( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ], '' );
-  var expected = [ 'Hello', 'world', 'abc', '' ];
-  test.identical( got, expected );
-
-  test.close( 'vectorized, ins - long' );
-
-  /* - */
+  if( !Config.debug )
+  return;
 
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.strBut() );
@@ -5288,6 +5274,620 @@ function strBut( test )
 
   test.case = 'wrong ins';
   test.shouldThrowErrorSync( () => _.strBut( 'abc', [ 1, 2 ], { a : 1 } ) );
+}
+
+
+//
+
+function strButInsIsLong( test )
+{
+  test.open( 'src - single string' );
+
+  test.case = 'srcStr - empty string, range - inside string';
+  var got = _.strBut( '', [ 0, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty string, range - outside string';
+  var got = _.strBut( '', [ 0, 2 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty string, range - outside string';
+  var got = _.strBut( '', [ -2, 2 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range - |negative number| > src.length';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, -7, [ 'append', 'n' ] );
+  var expected = [ 'appenda\nb\nc', 'na\nb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - |negative number| < src.length';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, -2, [ 'append', 'n' ] );
+  var expected = [ 'a\nbappendc', 'a\nbnc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number - -1, last symbol';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, -1, [ 'append', 'n' ] );
+  var expected = [ 'a\nb\nappend', 'a\nb\nn' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number - 0, first symbol';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, 0, [ 'append', 'n' ] );
+  var expected = [ 'append\nb\nc', 'n\nb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number < src.length';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, 1, [ 'append', 'n' ] );
+  var expected = [ 'aappendb\nc', 'anb\nc' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number > src.length';
+  var src = 'a\nb\nc';
+  var got = _.strBut( src, 6, [ 'append', 'n' ] );
+  var expected = [ 'a\nb\ncappend', 'a\nb\ncn' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ 0, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -2 < src.length';
+  var got = _.strBut( 'Hello', [ 0, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'appendo', 'no' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ 0, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 0, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'appendello', 'nello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 0, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendllo', 'nllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 0, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ -1, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -2 < src.length';
+  var got = _.strBut( 'Hello', [ -1, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 0 ] === range[ 1 ]';
+  var got = _.strBut( 'Hello', [ -1, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -1, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -1, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappendo', 'Hellno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -1, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Hellappend', 'Helln' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ -2, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -2, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendo', 'Helno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ -2, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -2, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -2, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappendlo', 'Helnlo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -2, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helappend', 'Heln' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ] < src.length';
+  var got = _.strBut( 'Hello', [ -6, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -6, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'appendo', 'no' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ -6, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendHello', 'nHello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -6, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'appendello', 'nello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -6, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'appendllo', 'nllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ -6, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'append', 'n' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ 1, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -2 < src.length';
+  var got = _.strBut( 'Hello', [ 1, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendo', 'Hno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ 1, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 1, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendello', 'Hnello' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length > range[ 1 ] === range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 1, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Happendllo', 'Hnllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length < range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 1, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Happend', 'Hn' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ 2, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -2 < src.length';
+  var got = _.strBut( 'Hello', [ 2, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendo', 'Heno' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ 2, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 2, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 2, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappendllo', 'Henllo' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length < range[ 1 ] < range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 2, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Heappend', 'Hen' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -6 > src.length';
+  var got = _.strBut( 'Hello', [ 6, -6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -2 < src.length';
+  var got = _.strBut( 'Hello', [ 6, -2 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -1';
+  var got = _.strBut( 'Hello', [ 6, -1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 6, 0 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length > range[ 1 ] > range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 6, 1 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length < range[ 1 ] < range[ 0 ]';
+  var got = _.strBut( 'Hello', [ 6, 6 ], [ 'append', 'n' ] );
+  var expected = [ 'Helloappend', 'Hellon' ];
+  test.identical( got, expected );
+
+  test.close( 'src - single string' );
+
+  /* - */
+
+  test.open( 'src - vector of strings' );
+
+  test.open( 'range - number' );
+
+  test.case = '|negative number| >= src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, -5, [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = '|-1| < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, -1, [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabb', 'aaadd' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range === 0';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, 0, [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range === 1 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, 1, [ 'bb', 'dd' ] );
+  var expected = [ [ 'abbaa', 'addaa' ], [ 'bb', 'dd' ], [ 'cbb\ncc', 'cdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range >= src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, 5, [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.close( 'range - number' );
+
+  /* */
+
+  test.open( 'range is crange' );
+
+  test.case = 'srcStr - empty strings, range - inside string';
+  var got = _.strBut( [ '', '' ], [ 0, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty strings, range - outside string';
+  var got = _.strBut( [ '', '' ], [ 0, 2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr - empty strings, range - outside string';
+  var got = _.strBut( [ '', '' ], [ -2, 2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -2 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bba', 'dda' ], [ 'bb', 'dd' ], [ 'bbc', 'ddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaa', 'ddaa' ], [ 'bb', 'dd' ], [ 'bb\ncc', 'dd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 0, src.length < range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 0, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] === -2 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 0 ] === range[ 1 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -1, src.length < range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -1, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaabb', 'aaadd' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabba', 'aadda' ], [ 'bb', 'dd' ], [ 'cc\nbbc', 'cc\nddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -2, src.length < range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -2, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabb', 'aadd' ], [ 'bb', 'dd' ], [ 'cc\nbb', 'cc\ndd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ] < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bba', 'dda' ], [ 'bb', 'dd' ], [ 'bbc', 'ddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bbaa', 'ddaa' ], [ 'bb', 'dd' ], [ 'bb\ncc', 'dd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === -6, src.length < range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ -6, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -2 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abba', 'adda' ], [ 'bb', 'dd' ], [ 'cbbc', 'cddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length > range[ 1 ] === range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abbaa', 'addaa' ], [ 'bb', 'dd' ], [ 'cbb\ncc', 'cdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 1, src.length < range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 1, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'abb', 'add' ], [ 'bb', 'dd' ], [ 'cbb', 'cdd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -2 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabba', 'aadda' ], [ 'bb', 'dd' ], [ 'ccbbc', 'ccddc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 2, src.length < range[ 1 ] < range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 2, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aabb', 'aadd' ], [ 'bb', 'dd' ], [ 'ccbb', 'ccdd' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -6 > src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, -6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -2 < src.length';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, -2 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] === -1';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, -1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, 0 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length > range[ 1 ] > range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, 1 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.case = 'range[ 0 ] === 6, src.length < range[ 1 ] < range[ 0 ]';
+  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var got = _.strBut( src, [ 6, 6 ], [ 'bb', 'dd' ] );
+  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  test.identical( got, expected );
+
+  test.close( 'range is crange' );
+
+  test.close( 'src - vector of strings' );
 }
 
 //
@@ -6128,7 +6728,6 @@ function strJoinPath( test )
 
 function strConcat( test )
 {
-
   test.case = 'srcs - empty array';
   var srcs = [];
   var got = _.strConcat( srcs );
@@ -6144,6 +6743,10 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str' );
 
+  /* - */
+
+  test.open( 'type of src is not the String' );
+
   test.case = 'srcs - number';
   var srcs = 1;
   var got = _.strConcat( srcs );
@@ -6154,7 +6757,7 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str' );
 
-  test.case = 'srcs - object';
+  test.case = 'srcs - map';
   var srcs = { a : 2 };
   var got = _.strConcat( srcs );
   if( _.toStrFine )
@@ -6178,17 +6781,6 @@ function strConcat( test )
   else
   test.identical( got, '1,2,3' );
 
-  test.case = 'srcs - array of strings, new line symbol in the string';
-  var srcs =
-  [
-    'b',
-    `variant:: : #83
-    path::local
-    module::module-a`
-  ];
-  var got = _.strConcat( srcs );
-  test.identical( got, 'b variant:: : #83\n    path::local\n    module::module-a' );
-
   test.case = 'srcs - array';
   var srcs = [ 1, 2, 'str', 3, [ 2 ] ];
   var got = _.strConcat( srcs );
@@ -6205,75 +6797,117 @@ function strConcat( test )
   else
   test.identical( got, '1 2 str 3 2' );
 
-  test.case = 'srcs - array of strings, strings begin with spaces';
+  test.close( 'type of src is not the String' );
+
+  /* - */
+
+  test.open( 'srcs - array of strings, common cases' );
+
+  test.case = 'new line symbol in the string';
+  var srcs =
+  [
+    'b',
+    'variant:: : #83\n  path::local'
+  ];
+  var got = _.strConcat( srcs );
+  test.identical( got, 'b variant:: : #83\n  path::local' );
+
+  test.case = 'strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];
   var got = _.strConcat( srcs );
   test.identical( got, '  b a:: : c d::e' );
 
-  test.case = 'srcs - array of strings, strings end with spaces';
+  test.case = 'strings end with spaces';
   var srcs = [ 'b    ', 'variant:: : #83    ', 'path::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, 'b variant:: : #83 path::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin and end with spaces';
+  test.case = 'strings begin and end with spaces';
   var srcs = [ '    b    ', '    variant:: : #83    ', '    path::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    b variant:: : #83 path::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin with spaces, end with new line symbol';
+  test.case = 'strings begin with spaces, end with new line symbol';
   var srcs = [ '  b\n', '  variant:: : #83\n', '  path::local' ];
   var got = _.strConcat( srcs );
   test.identical( got, '  b\n  variant:: : #83\n  path::local' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol, end with spaces';
+  test.case = 'strings begin with new line symbol, end with spaces';
   var srcs = [ '\nb    ', '\nvariant:: : #83    ', '\npath::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\nvariant:: : #83\npath::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  test.case = 'strings begin and end with new line symbol';
   var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  test.case = 'strings begin and end with new line symbol';
   var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol, end with new line symbol and spaces';
+  test.case = 'strings begin with new line symbol, end with new line symbol and spaces';
   var srcs = [ '\nb\n    ', '\nvariant:: : #83\n    ', '\npath::local\n    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n    ' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
   var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
   var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol and spaces';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol and spaces';
   var srcs = [ '    \nb\n    ', '    \nvariant:: : #83\n    ', '    \npath::local\n    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n    ' );
 
-  /* */
+  test.close( 'srcs - array of strings, common cases' );
 
-  test.case = 'users lineDelimter';
-  var srcs = [ 'a ||', 'b ||', 'c ||', 'd' ];
+  /* - */
+
+  test.case = 'lineDelimter - not default, lineDelimter at the end of lines, the spaces after lineDelimter';
+  var srcs = [ 'a || ', 'b || ', 'c || ', 'd' ];
   var o = { lineDelimter : '||' };
   var got = _.strConcat( srcs, o );
   test.identical( got, 'a ||b ||c ||d' );
 
-  test.case = 'onToStr';
-  let onToStr = ( src ) => String( src ) + 1;
+  test.case = 'lineDelimter - not default, the spaces after lineDelimter';
+  var srcs = [ ' || a', '    || b', '  || c', '|d' ];
+  var o = { lineDelimter : '||' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, ' || a || b || c |d' );
+
+  /* */
+
+  test.case = 'onToStr - not default, not uses options';
+  var onToStr = ( src ) => String( src ) + 1;
   var srcs = [ 1, 2, 3, 4 ];
   var o = { onToStr };
   var got = _.strConcat( srcs, o );
   test.identical( got, '11 21 31 41' );
+
+  test.case = 'onToStr - not default, uses options';
+  var onToStr = ( src, o ) => String( src ) + o.lineDelimter;
+  var srcs = [ 1, 2, 3, 4 ];
+  var o = { onToStr };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '1\n2\n3\n4\n' );
+
+  test.case = 'onToStr - not default, uses options from o.optionsForToStr';
+  var onToStr = ( src, o ) => String( src ) + o.optionsForToStr.postfix;
+  var srcs = [ 1, 2, 3, 4 ];
+  var optionsForToStr = { postfix : '...' }
+  var o = { onToStr, optionsForToStr };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '1... 2... 3... 4...' );
+
+  /* */
 
   test.case = 'linePrefix, not uses lineDelimter';
   var srcs = [ 'a', 'b', 'c', 'd' ];
@@ -6310,6 +6944,84 @@ function strConcat( test )
   var o = { linePostfix : ' ||', linePrefix : '|| ' };
   var got = _.strConcat( srcs, o );
   test.identical( got, '|| a ||\n|| b ||\n|| c ||\n|| d ||\n||  ||' );
+
+  /* */
+
+  test.case = 'onPairWithDelimeter - not default, lines without lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a b c d' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the end of line';
+  var srcs = [ 'a\n', 'b\n', 'c' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a\n ... b\n ... c' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin of line';
+  var srcs = [ '\na', '\nb', '\nc' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na ... \nb ... \nc' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin and the end of line';
+  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na\n ... \nb\n ... \nc\n' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines without lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a b c d' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the end of line';
+  var srcs = [ 'a\n', 'b\n', 'c' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a\n .. b\n .. c' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin of line';
+  var srcs = [ '\na', '\nb', '\nc' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na .. \nb .. \nc' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin and the end of line';
+  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na\n .. \nb\n .. \nc\n' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strConcat() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { lineDelimter : '\n' }, 'extra' ) );
+
+  test.case = 'wrong type of options map o';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], 'wrong' ) );
+
+  test.case = 'unknown property in options map o';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { unknown : 1 } ) );
+
+  test.case = 'property optionsForToStr in not a MapLike';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { optionsForToStr : 1 } ) );
 }
 
 //--
@@ -8652,57 +9364,63 @@ function strLinesNumberOnLine( test )
 
 function strLinesSelect( test )
 {
-  test.case = 'src - empty line, range - negative number';
+  test.open( 'range - number' );
+
+  test.case = 'src - empty line, range < 0';
   var got = _.strLinesSelect( '', -1 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - empty line, range - 0';
+  test.case = 'src - empty line, range === 0';
   var got = _.strLinesSelect( '', 0 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - empty line, range - positive number';
+  test.case = 'src - empty line, range > 0';
   var got = _.strLinesSelect( '', 1 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - single line, range - negative number';
+  /* */
+
+  test.case = 'src - single line, range < 0';
   var got = _.strLinesSelect( 'abc', -1 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src -single line, range - 0';
+  test.case = 'src - single line, range === 0';
   var got = _.strLinesSelect( 'abc', 0 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - single line, range - 1';
+  test.case = 'src - single line, range > 0';
   var got = _.strLinesSelect( 'abc', 1 );
   var expected = 'abc';
   test.identical( got, expected );
 
-  test.case = 'src - single line, range - positive number, range > src.length';
-  var got = _.strLinesSelect( 'abc', 3 );
+  test.case = 'src - single line, range > src lines';
+  var got = _.strLinesSelect( 'abc', 2 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - multiline, range - negative number';
+  /* */
+
+  test.case = 'src - multiline, range < 0';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect( src, -1 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - multiline, range - 0';
+  test.case = 'src - multiline, range === 0';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect( src, 0 );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - multiline, range - 1';
+  test.case = 'src - multiline, range > 0';
   var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, 1 );
-  var expected = 'a';
+  var got = _.strLinesSelect( src, 2 );
+  var expected = 'b';
   test.identical( got, expected );
 
   test.case = 'src - multiline, range - number > lines number';
@@ -8711,345 +9429,157 @@ function strLinesSelect( test )
   var expected = '';
   test.identical( got, expected );
 
+  test.close( 'range - number' );
+
+  /* - */
+
+  test.open( 'range - two numbers' );
+
+  test.case = 'src - multiline, number1 < 0, number2 < 0, number1 < number2';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, -2, -1 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 < 0, number2 < 0, number1 === number2';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, -2, -2 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 < 0, number2 === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, -2, 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 < 0, number2 > 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, -2, 3 );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
   /* */
 
-  test.case = 'src - multiline, range - number1 < number2';
+  test.case = 'src - multiline, number1 === 0, number2 < 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, 0, -1 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 === 0, number2 === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, 0, 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 === 0, number2 > 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, 0, 3 );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - multiline, number1 > 0, number2 < 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, 2, -1 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 > 0, number2 === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, 2, 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, number1 > 0, number2 > 0, number1 < number2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect( src, 1, 2 );
   var expected = 'a';
-  test.identical( got, expected );
 
-  test.case = 'src - multiline, range - number1 === number2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, 1, 1 );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range - number1 > number2';
+  test.case = 'src - multiline, number1 > 0, number2 > 0, number1 > number2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect( src, 2, 1 );
   var expected = '';
-  test.identical( got, expected );
 
-  test.case = 'src - multiline, range - number1 is negative, number2 is positive';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, -1, 2 );
-  var expected = 'a';
-  test.identical( got, expected );
+  test.close( 'range - two numbers' );
 
   /* - */
 
-  test.case = 'src - multiline, range[ 0 ] < range[ 1 ]';
+  test.open( 'range - orange' );
+
+  test.case = 'src - multiline, range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] < range[ 1 ]';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ -2, -1 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] === range[ 1 ]';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ -2, -2 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] < 0, range[ 1 ] === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ -2, 0 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] < 0, range[ 1 ] > 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ -2, 3 ] );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - multiline, range[ 0 ] === 0, range[ 1 ] < 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 0, -1 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] === 0, range[ 1 ] === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 0, 0 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] === 0, range[ 1 ] > 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 0, 3 ] );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - multiline, range[ 0 ] > 0, range[ 1 ] < 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 2, -1 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] > 0, range[ 1 ] === 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 2, 0 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - multiline, range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] < range[ 1 ]';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect( src, [ 1, 2 ] );
   var expected = 'a';
-  test.identical( got, expected );
 
-  test.case = 'src - empty line, range[ 0 ] < range[ 1 ]';
-  var got = _.strLinesSelect( '', [ 1, 3 ] );
+  test.case = 'src - multiline, range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] > range[ 1 ]';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect( src, [ 2, 1 ] );
   var expected = '';
-  test.identical( got, expected );
 
-  test.case = 'src - multiline, range[ 0 ] is negative, range[ 1 ] is negative';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ -1, -1 ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] is negative, range[ 1 ] is positive';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ -1, 2 ] );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] < range[ 1 ]';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ 1, 3 ] );
-  var expected = 'a\nb';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] < range[ 1 ], range[ 1 ] > lines number';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ 1, 4 ] );
-  var expected = 'a\nb\nc';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] > range[ 1 ]';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ 99, 4 ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] is less then 1, range[ 1 ] > lines length';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect( src, [ 0, 99 ] );
-  var expected = 'a\nb\nc\nd';
-  test.identical( got, expected );
-
-  test.case = 'src - multiline, range[ 0 ] is less then 1, range[ 1 ] > lines length, zeroLine - 4';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect({ src, range : [ 2, 5 ], zeroLine : 4 });
-  var expected = 'a';
-  test.identical( got, expected );
+  test.close( 'range - orange' );
 
   /* - */
-
-  test.open('selectMode : center' );
-
-  test.case = 'line - 2, nearestLines - 3, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 2,
-    nearestLines : 3,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = 'a\nb\nc';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 3, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 3,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = 'a\nb';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 1, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 1,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 99, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 99,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = src;
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - -1, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : -1,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - 0, nearestLines - 1, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 0,
-    nearestLines : 1,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - 0, nearestLines - 1, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src : '',
-    line : 1,
-    nearestLines : 1,
-    selectMode : 'center',
-    zeroLine : 1
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.close( 'selectMode : center' );
-
-  /* - */
-
-  test.open( 'selectMode : begin' );
-
-  test.case = 'line - 1, nearestLines - 2, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 2,
-    selectMode : 'begin',
-    zeroLine : 1
-  });
-  var expected = 'a\nb';
-  test.identical( got, expected );
-
-  test.case = 'line - -1, nearestLines - 2, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : -1,
-    nearestLines : 2,
-    selectMode : 'begin',
-    zeroLine : 1
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 0, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 0,
-    selectMode : 'begin',
-    zeroLine : 1
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 99, zeroLine - 1';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 99,
-    selectMode : 'begin',
-    zeroLine : 1
-  });
-  var expected = src;
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 5, zeroLine - 2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 5,
-    selectMode : 'begin',
-    zeroLine : 2
-  });
-  var expected = src;
-  test.identical( got, expected );
-
-  test.close( 'selectMode : begin' );
-
-  /* - */
-
-  test.open( 'selectMode : end' );
-
-  test.case = 'line - 4, nearestLines - 2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 4,
-    nearestLines : 2,
-    selectMode : 'end'
-  });
-  var expected = 'c\nd';
-  test.identical( got, expected );
-
-  test.case = 'line - -1, nearestLines - 2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : -1,
-    nearestLines : 2,
-    selectMode : 'end'
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - -1, nearestLines - 2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 0,
-    selectMode : 'end'
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'line - -1, nearestLines - 99';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 99,
-    selectMode : 'end'
-  });
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'line - 1, nearestLines - 5, zeroLine - 2';
-  var src = 'a\nb\nc\nd';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 1,
-    nearestLines : 5,
-    selectMode : 'end',
-    zeroLine : 2
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.close( 'selectMode : end' );
-
-  /* - */
-
-  test.case = 'new line, delimteter exists';
-  var src = 'a b c d';
-  var got = _.strLinesSelect
-  ({
-    src,
-    range : [ 1, 3 ],
-    delimteter : ' '
-  });
-  var expected = 'a b';
-  test.identical( got, expected );
-
-  test.case = 'new line, delimteter not exists';
-  var src = 'a b c d';
-  var got = _.strLinesSelect
-  ({
-    src,
-    range : [ 1, 3 ],
-    delimteter : 'x'
-  });
-  var expected = 'a b c d';
-  test.identical( got, expected );
 
   test.case = 'numbering';
   var src = 'a\nb\nc\nd';
@@ -9060,56 +9590,6 @@ function strLinesSelect( test )
     numbering : 1
   });
   var expected = '  1 : a\n* 2 : b';
-  test.identical( got, expected );
-
-  /* */
-
-  var src =
-  `Lorem
-  ipsum dolor
-  sit amet,
-  consectetur
-  adipisicing
-  elit`;
-
-  test.case = 'first line';
-  var got = _.strLinesSelect( src, 1 );
-  var expected = 'Lorem';
-  test.identical( got, expected );
-
-  test.case = 'first two lines';
-  var got = _.strLinesSelect( src, 1, 3 );
-  var expected =
-  `Lorem
-  ipsum dolor`;
-  test.identical( got, expected );
-
-  test.case = 'range as array';
-  var got = _.strLinesSelect( src, [ 1, 3 ] );
-  var expected =
-  `Lorem
-  ipsum dolor`;
-  test.identical( got, expected );
-
-  test.case = 'custom new line';
-  var src2 ='Lorem||ipsum dolor||sit amet||consectetur'
-  var got = _.strLinesSelect( { src : src2, range : [ 3, 5 ], zeroLine : 1, delimteter : '||' } );
-  var expected = `sit amet||consectetur`;
-  test.identical( got, expected );
-
-  test.case = 'empty line, out of range';
-  var got = _.strLinesSelect( { src : '', range : [ 1, 1 ] } );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'empty line';
-  var got = _.strLinesSelect( { src : '', range : [ 0, 1 ] } );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'incorrect range';
-  var got = _.strLinesSelect( { src, range : [ 2, 1 ] } );
-  var expected = '';
   test.identical( got, expected );
 
   /* - */
@@ -9131,13 +9611,303 @@ function strLinesSelect( test )
 
   test.case = 'unknown property provided';
   test.shouldThrowErrorSync( () => _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } ) );
+
+  test.case = 'line has negative value';
+  test.shouldThrowErrorSync( () => _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], line : -1 } ) );
 }
 
 //
 
-function strLinesSelectHighlighting( test )
+function strLinesSelectOptionSelectMode( test )
 {
-  test.case = 'numbering - 0, highlighting - undefined';
+  test.open('selectMode : center' );
+
+  test.case = 'line - 2, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 3,
+    selectMode : 'center',
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 1,
+    selectMode : 'center',
+  });
+  var expected = 'b';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 99';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 99,
+    selectMode : 'center',
+  });
+  var expected = 'a\nb\nc\nd';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 0,
+    selectMode : 'center',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 1,
+    selectMode : 'center',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 3,
+    selectMode : 'center',
+  });
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 1,
+    selectMode : 'center',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 3,
+    selectMode : 'center',
+  });
+  var expected = 'd';
+  test.identical( got, expected );
+
+  test.close( 'selectMode : center' );
+
+  /* - */
+
+  test.open( 'selectMode : begin' );
+
+  test.case = 'line - 2, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 3,
+    selectMode : 'begin',
+  });
+  var expected = 'b\nc\nd';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 0,
+    selectMode : 'begin',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 99';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 99,
+    selectMode : 'begin',
+  });
+  var expected = 'b\nc\nd';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 1,
+    selectMode : 'begin',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 3,
+    selectMode : 'begin',
+  });
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 1,
+    selectMode : 'begin',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 3,
+    selectMode : 'begin',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.close( 'selectMode : begin' );
+
+  /* - */
+
+  test.open( 'selectMode : end' );
+
+  test.case = 'line - 3, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 3,
+    selectMode : 'end'
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  test.case = 'line - 3, nearestLines - 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 0,
+    selectMode : 'end'
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 3, nearestLines - 99';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 99,
+    selectMode : 'end'
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 1,
+    selectMode : 'end',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 3,
+    selectMode : 'end',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 1,
+    selectMode : 'end',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    nearestLines : 3,
+    selectMode : 'end',
+  });
+  var expected = 'c\nd';
+  test.identical( got, expected );
+
+  test.close( 'selectMode : end' );
+}
+
+//
+
+function strLinesSelectOptionHighlighting( test )
+{
+  test.open( 'highlighting - default' );
+
+  test.case = 'numbering - 0';
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
@@ -9147,17 +9917,21 @@ function strLinesSelectHighlighting( test )
   var expected = 'a\nb\nc\nd';
   test.identical( got, expected );
 
-  test.case = 'numbering - 1, highlighting - undefined';
+  test.case = 'numbering - 1';
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
     src,
     numbering : 1,
   });
-  var expected = '  0 : a\n  1 : b\n* 2 : c\n  3 : d';
+  var expected = '  1 : a\n* 2 : b\n  3 : c\n  4 : d';
   test.identical( got, expected );
 
-  /* */
+  test.close( 'highlighting - default' );
+
+  /* - */
+
+  test.open( 'no highlighting' );
 
   test.case = 'numbering - 0, highlighting - 0';
   var src = 'a\nb\nc\nd\ne';
@@ -9170,19 +9944,6 @@ function strLinesSelectHighlighting( test )
   var expected = 'a\nb\nc\nd';
   test.identical( got, expected );
 
-  test.case = 'numbering - 1, highlighting - 0';
-  var src = 'a\nb\nc\nd\ne';
-  var got = _.strLinesSelect
-  ({
-    src,
-    numbering : 1,
-    highlighting : 0
-  });
-  var expected = '0 : a\n1 : b\n2 : c\n3 : d';
-  test.identical( got, expected );
-
-  /* */
-
   test.case = 'numbering - 0, highlighting - 1';
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
@@ -9194,82 +9955,188 @@ function strLinesSelectHighlighting( test )
   var expected = 'a\nb\nc\nd';
   test.identical( got, expected );
 
-  test.case = 'numbering - 1, highlighting - 1';
+  test.case = 'numbering - 1, highlighting - 0';
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
     src,
     numbering : 1,
-    highlighting : 1
+    highlighting : 0
   });
-  var expected = '  0 : a\n  1 : b\n* 2 : c\n  3 : d';
+  var expected = '1 : a\n2 : b\n3 : c\n4 : d';
   test.identical( got, expected );
 
-  test.case = 'line - 9, numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.close( 'no highlighting' );
+
+  /* - */
+
+  test.open( 'numbering - 1, highlighting - 1, line - variable' );
+
+  test.case = 'defaults';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 9,
-    numbering : 1,
-    highlighting : 1
-  });
-  var expected = '   8 : h\n*  9 : i\n  10 : j';
-  test.identical( got, expected );
-
-  test.case = 'line - 10, numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
-  var got = _.strLinesSelect
-  ({
-    src,
-    line : 10,
-    numbering : 1,
-    highlighting : 1
-  });
-  var expected = '   9 : i\n* 10 : j';
-  test.identical( got, expected );
-
-  test.case = 'line - 9, nearestLines - 2, numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
-  var got = _.strLinesSelect
-  ({
-    src,
-    nearestLines : 2,
-    line : 9,
-    numbering : 1,
-    highlighting : 1
-  });
-  var expected = '  8 : h\n* 9 : i';
-  test.identical( got, expected );
-
-  test.case = 'line - 9, range - [ 1, 4 ], numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
-  var got = _.strLinesSelect
-  ({
-    src,
-    range : [ 1, 4 ],
-    line : 2,
     numbering : 1,
     highlighting : 1
   });
   var expected = '  1 : a\n* 2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.case = 'line - 10, nearestLines - 3, numbering - 1, highlighting - 1, selectMode - end';
+  test.case = 'line - 0';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  1 : a';
+  test.identical( got, expected );
+
+  test.case = 'line - 3';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  2 : b\n* 3 : c\n  4 : d';
+  test.identical( got, expected );
+
+  test.case = 'line - 4, numbering - 1, highlighting - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 4,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  3 : c\n* 4 : d';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, numbering - 1, highlighting - 1';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 5,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  4 : d';
+  test.identical( got, expected );
+
+  test.close( 'numbering - 1, highlighting - 1, line - variable' );
+
+  /* - */
+
+  test.open( 'numbering - 1, highlighting - 1, not default options' );
+
+  test.case = 'line - 0, nearestLines - 2';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 2,
+    line : 0,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 3, nearestLines - 2';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 2,
+    line : 3,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  2 : b\n* 3 : c';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, nearestLines - 2';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 2,
+    line : 5,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  4 : d';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'line - 0, nearestLines - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 3,
+    line : 0,
+    numbering : 1,
+    highlighting : 1,
+    selectMode : 'end'
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 4, nearestLines - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 3,
+    line : 4,
+    numbering : 1,
+    highlighting : 1,
+    selectMode : 'end'
+  });
+  var expected = '  2 : b\n  3 : c\n* 4 : d';
+  test.identical( got, expected );
+
+  test.case = 'line - 11, nearestLines - 3, selectMode - end';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
     src,
     nearestLines : 3,
-    line : 10,
+    line : 11,
     numbering : 1,
     highlighting : 1,
     selectMode : 'end'
   });
-  var expected = '   8 : h\n   9 : i\n* 10 : j';
+  var expected = '   9 : i\n  10 : j';
   test.identical( got, expected );
 
-  test.case = 'line - 7, nearestLines - 2, numbering - 1, highlighting - 1, selectMode - begin';
+  /* */
+
+  test.case = 'line - 0, nearestLines - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 2,
+    line : 0,
+    numbering : 1,
+    highlighting : 1,
+    selectMode : 'begin'
+  });
+  var expected = '  1 : a';
+  test.identical( got, expected );
+
+  test.case = 'line - 7, nearestLines - 2, selectMode - begin';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
@@ -9282,13 +10149,200 @@ function strLinesSelectHighlighting( test )
   });
   var expected = '* 7 : g\n  8 : h';
   test.identical( got, expected );
+
+  test.case = 'line - 11, nearestLines - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src,
+    nearestLines : 2,
+    line : 11,
+    numbering : 1,
+    highlighting : 1,
+    selectMode : 'begin'
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.close( 'numbering - 1, highlighting - 1, not default options' );
+
+  /* - */
+
+  test.open( 'numbering - 1, highlighting - 1, range - const, line - variable' );
+
+  test.case = 'line - 2, inside of range';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    range : [ 1, 4 ],
+    line : 2,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  1 : a\n* 2 : b\n  3 : c';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, line < range[ 0 ]';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    range : [ 1, 4 ],
+    line : 0,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  1 : a\n  2 : b\n  3 : c';
+  test.identical( got, expected );
+
+  test.case = 'line - 5, line > range[ 1 ]';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    range : [ 1, 4 ],
+    line : 5,
+    numbering : 1,
+    highlighting : 1
+  });
+  var expected = '  1 : a\n  2 : b\n  3 : c';
+  test.identical( got, expected );
+
+  test.close( 'numbering - 1, highlighting - 1, range - const, line - variable' );
 }
 
 //
 
-function strLinesSelectZeroLine( test )
+function strLinesSelectOptionNumbering( test )
 {
-  test.case = 'zeroLine - undefined, line - 2';
+  test.case = 'line - 0, nearestLines - 5, src - 2 lines, selectMode - center';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'center',
+  });
+  var expected = '  1 : a\n  2 : b';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 5, src - 2 lines, selectMode - begin';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'begin',
+  });
+  var expected = '  1 : a\n  2 : b';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 5, src - 2 lines, selectMode - end';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 0,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'end',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'line - 2, nearestLines - 5, src - 2 lines, selectMode - center';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'center',
+  });
+  var expected = '  1 : a\n* 2 : b';
+  test.identical( got, expected );
+
+  test.case = 'line - 2, nearestLines - 5, src - 2 lines, selectMode - begin';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'begin',
+  });
+  var expected = '* 2 : b';
+  test.identical( got, expected );
+
+  test.case = 'line - 0, nearestLines - 5, src - 2 lines, selectMode - end';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'end',
+  });
+  var expected = '  1 : a\n* 2 : b';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'line - 3, nearestLines - 5, src - 2 lines, selectMode - center';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'center',
+  });
+  var expected = '  1 : a\n  2 : b';
+  test.identical( got, expected );
+
+  test.case = 'line - 3, nearestLines - 5, src - 2 lines, selectMode - begin';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'begin',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'line - 3, nearestLines - 5, src - 2 lines, selectMode - end';
+  var src = 'a\nb';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    nearestLines : 5,
+    numbering : 1,
+    selectMode : 'end',
+  });
+  var expected = '  1 : a\n  2 : b';
+  test.identical( got, expected );
+}
+
+//
+
+function strLinesSelectOptionZeroLine( test )
+{
+  test.case = 'zeroLine - default, line - 2';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
@@ -9303,60 +10357,112 @@ function strLinesSelectZeroLine( test )
   test.open( 'without numbering' );
 
   test.case = 'zeroLine - 1, line - 2';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 2,
-    zeroLine : 1
+    zeroLine : 1,
   });
   var expected = 'a\nb\nc';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 5';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'zeroLine - 4, line - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 5,
-    zeroLine : 4
+    line : 2,
+    zeroLine : 4,
   });
-  var expected = 'a\nb\nc';
+  var expected = '';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 3';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'zeroLine - 0, line - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 3,
-    zeroLine : 4
+    line : 2,
+    zeroLine : 0,
+  });
+  var expected = 'b\nc\nd';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'zeroLine - 1, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    zeroLine : 1,
+    selectMode : 'begin',
+  });
+  var expected = 'b\nc\nd';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    zeroLine : 4,
+    selectMode : 'begin',
   });
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 3, selectMode - begin';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'zeroLine - 0, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    zeroLine : 0,
+    selectMode : 'begin',
+  });
+  var expected = 'c\nd';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'zeroLine - 1, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 3,
-    zeroLine : 4,
-    selectMode : 'begin'
+    zeroLine : 1,
+    selectMode : 'end',
   });
-  var expected = 'a\nb';
+  var expected = 'a\nb\nc';
   test.identical( got, expected );
 
   test.case = 'zeroLine - 4, line - 3, selectMode - end';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 3,
     zeroLine : 4,
-    selectMode : 'end'
+    selectMode : 'end',
   });
   var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 0, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    zeroLine : 0,
+    selectMode : 'end',
+  });
+  var expected = 'b\nc\nd';
   test.identical( got, expected );
 
   test.close( 'without numbering' );
@@ -9366,7 +10472,7 @@ function strLinesSelectZeroLine( test )
   test.open( 'with numbering' );
 
   test.case = 'zeroLine - 1, line - 2';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9377,58 +10483,151 @@ function strLinesSelectZeroLine( test )
   var expected = '  1 : a\n* 2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 5';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'zeroLine - 4, line - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 5,
+    line : 2,
     zeroLine : 4,
     numbering : 1
   });
-  var expected = '  4 : a\n* 5 : b\n  6 : c';
+  var expected = '';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 3';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'zeroLine - 0, line - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 3,
-    zeroLine : 4,
+    line : 2,
+    zeroLine : 0,
     numbering : 1
   });
-  var expected = '  2 : a';
+  var expected = '  1 : b\n* 2 : c\n  3 : d';
   test.identical( got, expected );
 
-  test.case = 'zeroLine - 4, line - 3, selectMode - begin';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  /* */
+
+  test.case = 'zeroLine - 1, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 3,
+    line : 2,
+    zeroLine : 1,
+    numbering : 1,
+    selectMode : 'begin',
+  });
+  var expected = '* 2 : b\n  3 : c\n  4 : d';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
     zeroLine : 4,
     numbering : 1,
-    selectMode : 'begin'
+    selectMode : 'begin',
   });
-  var expected = '* 3 : a\n  4 : b';
+  var expected = '* 2 : a';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 0, line - 2, selectMode - begin';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    zeroLine : 0,
+    numbering : 1,
+    selectMode : 'begin',
+  });
+  var expected = '* 2 : c\n  3 : d';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'zeroLine - 1, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    zeroLine : 1,
+    numbering : 1,
+    selectMode : 'end',
+  });
+  var expected = '  1 : a\n  2 : b\n* 3 : c';
   test.identical( got, expected );
 
   test.case = 'zeroLine - 4, line - 3, selectMode - end';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 3,
     zeroLine : 4,
     numbering : 1,
-    selectMode : 'end'
+    selectMode : 'end',
   });
-  var expected = '  1 : ';
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 0, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 3,
+    zeroLine : 0,
+    numbering : 1,
+    selectMode : 'end',
+  });
+  var expected = '  1 : b\n  2 : c\n* 3 : d';
   test.identical( got, expected );
 
   test.close( 'with numbering' );
+}
 
+//
+
+function strLinesSelectOptionDelimeter( test )
+{
+  test.case = 'src - empty line, delimteter - x';
+  var src = '';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src, delimteter - x, not exists';
+  var src = 'a b c d';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x'
+  });
+  var expected = 'a b c d';
+  test.identical( got, expected );
+
+  test.case = 'src, delimteter - x, exists';
+  var src = 'axbxcxd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x'
+  });
+  var expected = 'axbxc';
+  test.identical( got, expected );
 }
 
 //
@@ -10314,8 +11513,7 @@ ghij
   /* */
 
   test.case = 'single line in the middle';
-
-  var crange = [ 3, 5 ];
+  var crange = [ 3, 4 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 2, 3 ] );
@@ -10324,8 +11522,7 @@ ghij
   /* */
 
   test.case = 'line in the middle with NL';
-
-  var crange = [ 3, 6 ];
+  var crange = [ 3, 5 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 2, 4 ] );
@@ -10334,8 +11531,7 @@ ghij
   /* */
 
   test.case = 'single line in the beginning';
-
-  var crange = [ 1, 2 ];
+  var crange = [ 1, 1 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 1, 2 ] );
@@ -10344,8 +11540,7 @@ ghij
   /* */
 
   test.case = 'line in the beginning with NL';
-
-  var crange = [ 1, 3 ];
+  var crange = [ 1, 2 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 1, 3 ] );
@@ -10354,8 +11549,7 @@ ghij
   /* */
 
   test.case = 'single line in the end';
-
-  var crange = [ 10, 14 ];
+  var crange = [ 10, 13 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 4, 5 ] );
@@ -10364,8 +11558,7 @@ ghij
   /* */
 
   test.case = 'line in the end with NL';
-
-  var crange = [ 10, 15 ];
+  var crange = [ 10, 14 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 4, 6 ] );
@@ -10374,8 +11567,7 @@ ghij
   /* */
 
   test.case = 'not aligned range with multiple lines';
-
-  var crange = [ 4, 11 ];
+  var crange = [ 4, 10 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 2, 5 ] );
@@ -10384,8 +11576,7 @@ ghij
   /* */
 
   test.case = 'empty line in the beginning';
-
-  var crange = [ 0, 0 ];
+  var crange = [ 0, -1 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 0, 1 ] );
@@ -10394,8 +11585,7 @@ ghij
   /* */
 
   test.case = 'empty line in the end';
-
-  var crange = [ 15, 15 ];
+  var crange = [ 15, 14 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 5, 6 ] );
@@ -10416,8 +11606,7 @@ ghij`;
   /* */
 
   test.case = 'single line in the middle';
-
-  var crange = [ 2, 4 ];
+  var crange = [ 2, 3 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 1, 2 ] );
@@ -10426,8 +11615,7 @@ ghij`;
   /* */
 
   test.case = 'line in the middle with NL';
-
-  var crange = [ 2, 5 ];
+  var crange = [ 2, 4 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 1, 3 ] );
@@ -10436,8 +11624,7 @@ ghij`;
   /* */
 
   test.case = 'single line in the beginning';
-
-  var crange = [ 0, 1 ];
+  var crange = [ 0, 0 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 0, 1 ] );
@@ -10446,8 +11633,7 @@ ghij`;
   /* */
 
   test.case = 'line in the beginning with NL';
-
-  var crange = [ 0, 2 ];
+  var crange = [ 0, 1 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 0, 2 ] );
@@ -10456,8 +11642,7 @@ ghij`;
   /* */
 
   test.case = 'single line in the end';
-
-  var crange = [ 9, 13 ];
+  var crange = [ 9, 12 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 3, 4 ] );
@@ -10466,8 +11651,7 @@ ghij`;
   /* */
 
   test.case = 'line in the end with NL';
-
-  var crange = [ 9, 14 ];
+  var crange = [ 9, 13 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 3, 4 ] );
@@ -10476,8 +11660,7 @@ ghij`;
   /* */
 
   test.case = 'not aligned range with multiple lines';
-
-  var crange = [ 3, 10 ];
+  var crange = [ 3, 9 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 1, 4 ] );
@@ -10681,10 +11864,12 @@ let Self =
 
     // extractor
 
-    strOnlySingle,
+    _strOnly,
     strOnly,
-    strButSingle,
+    _strBut,
+    _strButInsIsLong,
     strBut,
+    strButInsIsLong,
 
     strUnjoin,
 
@@ -10706,9 +11891,14 @@ let Self =
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
     strLinesNumberOnLine,
+
     strLinesSelect,
-    strLinesSelectHighlighting,
-    strLinesSelectZeroLine,
+    strLinesSelectOptionSelectMode,
+    strLinesSelectOptionHighlighting,
+    strLinesSelectOptionNumbering,
+    strLinesSelectOptionZeroLine,
+    strLinesSelectOptionDelimeter,
+
     strLinesNearest,
     strLinesNearestLog,
     strLinesCount,

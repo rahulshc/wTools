@@ -207,19 +207,16 @@ function strsEquivalent( src1, src2 )
 // converter
 // --
 
-function toStr( src, opts )
+function toStrShort( src, opts )
 {
   let result = '';
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
-
   result = _.toStrSimple( src );
-
   return result;
 }
 
-toStr.fields = toStr;
-toStr.routines = toStr;
+toStrShort.fields = toStrShort;
+toStrShort.routines = toStrShort;
 
 //
 
@@ -248,7 +245,9 @@ function toStrSimple()
     let src = arguments[ a ];
 
     if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
-    line = src.toStr();
+    {
+      line = src.toStr();
+    }
     else try
     {
       line = String( src );
@@ -269,7 +268,8 @@ function toStrSimple()
 
 //
 
-function strShort( src )
+/* qqq : implement test routine in module MathVector and MathMatrix */
+function strEntityShort( src )
 {
   let result = '';
 
@@ -277,7 +277,6 @@ function strShort( src )
 
   try
   {
-
     if( _.symbolIs( src ) )
     {
       let text = src.toString().slice( 7, -1 );
@@ -294,9 +293,7 @@ function strShort( src )
     }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-
       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements -}';
-
     }
     else if( _.longLike( src ) )
     {
@@ -304,12 +301,14 @@ function strShort( src )
     }
     else if( _.objectLike( src ) )
     {
-
-      // if( _.routineIs( src.exportString ) )
-      // result += src.exportString({ verbosity : 1 });
-      // else
+      /* xxx : call exportString() if exists */
       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
-
+      if( _.routineIs( src.exportString ) )
+      {
+        _.assert( 0, 'not tesed' ); /* qqq : test please */
+        result = src.exportString({ verbosity : 1 });
+        result = _.strStrShort( result );
+      }
     }
     else if( _.dateIs( src ) )
     {
@@ -318,6 +317,7 @@ function strShort( src )
     else
     {
       result += String( src );
+      result = _.strStrShort( result );
     }
 
   }
@@ -330,83 +330,167 @@ function strShort( src )
   return result;
 }
 
-// function _toStrShort( src,o )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.objectIs( o ),'Expects map {-o-}' );
 //
-//   var result = '';
-//
-//   try
-//   {
-//
-//     if( _.vectorAdapterIs( src ) )
-//     {
-//       result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
-//     }
-//     else if( _.errIs( src ) )
-//     {
-//       result += _ObjectToString.call( src );
-//     }
-//     else if( _.routineIs( src ) )
-//     {
-//       result += _toStrFromRoutine( src,o );
-//     }
-//     else if( _.numberIs( src ) )
-//     {
-//       result += _toStrFromNumber( src,o );
-//     }
-//     else if( _.strIs( src ) )
-//     {
-//
-//       var optionsStr =
-//       {
-//         limitStringLength : o.limitStringLength ? Math.min( o.limitStringLength, 40 ) : 40,
-//         stringWrapper : o.stringWrapper,
-//         escaping : 1,
-//       }
-//
-//       result = _toStrFromStr( src,optionsStr );
-//
-//     }
-//     else if( _.setLike( src ) || _.hashMapLike( src ) )
-//     {
-//
-//       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements -}';
-//
-//     }
-//     else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
-//     {
-//
-//       result += '{- ' + strType( src ) + ' with ' + src.length + ' elements -}';
-//
-//     }
-//     else if( src instanceof Date )
-//     {
-//       result += src.toISOString();
-//     }
-//     else if( _.objectLike( src ) )
-//     {
-//
-//       if( _.routineIs( src.exportString ) )
-//       result += src.exportString({ verbosity : 1 });
-//       else
-//       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
-//
-//     }
-//     else
-//     {
-//       result += String( src );
-//     }
-//
-//   }
-//   catch( err )
-//   {
-//     result = String( err );
-//   }
-//
-//   return result;
-// }
+
+/**
+ * Returns source string( src ) with limited number( limit ) of characters.
+ * For example: src : 'string', limit : 4, result -> 'stng'.
+ * Function can be called in two ways:
+ * - First to pass only source string and limit;
+ * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '.', postfix : '>' }).
+ *
+ * @param {string|object} o - String to parse or object with options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {number} [ o.limit=40 ] - Limit of characters in output.
+ * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
+ * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
+ * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
+ * @param {function} [ o.onLength=null ] - callback function that calculates a length based on .
+ * @returns {string} Returns simplified source string.
+ *
+ * @example
+ * _.strStrShort( 'string', 4 );
+ * // returns 'stng'
+ *
+ * @example
+ * _.strStrShort( 'a\nb', 3 );
+ * // returns 'a\nb'
+ *
+ * @example
+ * _.strStrShort( 'string', 0 );
+ * // returns ''
+ *
+ * @example
+ * _.strStrShort({ src : 'string', limit : 4 });g
+ * // returns 'stng'
+ *
+ * @example
+ *  _.strStrShort({ src : 'simple', limit : 4, prefix : '<' });
+ * // returns '<ile'
+ *
+ * @example
+ *  _.strStrShort({ src : 'string', limit : 5, infix : '.' });
+ * // returns 'st.ng'
+ *
+ * @example
+ *  _.strStrShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
+ * // returns '<s.g>'
+ *
+ * @example
+ *  _.strStrShort({ src : 'string', limit : 3, cutting : 'right' });
+ * // returns 'str'
+ *
+ * @method strStrShort
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } If( o ) is extended with unknown property.
+ * @throws { Exception } If( o.src ) is not a String.
+ * @throws { Exception } If( o.limit ) is not a Number.
+ * @throws { Exception } If( o.prefix ) is not a String or null.
+ * @throws { Exception } If( o.infix ) is not a String or null or boolLikeTrue.
+ * @throws { Exception } If( o.postfix ) is not a String or null.
+ *
+ * @namespace Tools
+ *
+ */
+
+function strStrShort( o )
+{
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
+
+  _.routineOptions( strStrShort, o );
+
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.numberIs( o.limit ) );
+  _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( !o.infix )
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
+  if( o.src.length < 1 )
+  {
+    if( o.prefix.length + o.postfix.length <= o.limit )
+    return o.prefix + o.postfix
+    o.src = o.prefix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+  }
+  if( _.boolLikeTrue( o.infix ) )
+  o.infix = '...';
+
+  if( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
+  return o.prefix + o.infix + o.postfix;
+
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
+  {
+    o.src = o.prefix + o.infix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+    o.infix = '';
+  }
+
+  let src = o.src;
+  let fixLength = 0;
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+
+  if( o.cutting === 'left' )
+  {
+    while( o.onLength( src ) + fixLength > o.limit )
+    {
+      src = src.slice( 1 );
+    }
+    return o.prefix + o.infix + src + o.postfix;
+  }
+  else if( o.cutting === 'right' )
+  {
+    while( o.onLength( src ) + fixLength > o.limit )
+    {
+      src = src.slice( 0, src.length - 1 );
+    }
+    return o.prefix + src + o.infix + o.postfix;
+  }
+  else
+  {
+    if( o.onLength( src ) + fixLength <= o.limit )
+    return o.prefix + src + o.postfix;
+    let begin = '';
+    let end = '';
+    while( o.onLength( src ) + fixLength > o.limit )
+    {
+      begin = src.slice( 0, Math.floor( src.length / 2 ) );
+      end = src.slice( Math.floor( src.length / 2 ) + 1 );
+      src = begin + end;
+    }
+    return o.prefix + begin + o.infix + end + o.postfix;
+  }
+
+}
+
+strStrShort.defaults =
+{
+  src : null,
+  limit : 40,
+  prefix : null,
+  postfix : null,
+  infix : null,
+  onLength : null, /* xxx : investigate */
+  cutting : 'center',
+}
 
 //
 
@@ -423,6 +507,31 @@ function strPrimitive( src )
   return String( src );
 
   return;
+}
+
+//
+
+/**
+ * Return primitive type of src.
+ *
+ * @example
+ * let str = _.strPrimitiveType( 'testing' );
+ *
+ * @param {*} src
+ *
+ * @return {string}
+ * string name of type src
+ * @function strPrimitiveType
+ * @namespace Tools
+ */
+
+function strPrimitiveType( src )
+{
+
+  let name = Object.prototype.toString.call( src );
+  let result = /\[(\w+) (\w+)\]/.exec( name );
+  _.assert( !!result, 'unknown type', name );
+  return result[ 2 ];
 }
 
 //
@@ -474,38 +583,11 @@ function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 
 //
 
-/**
- * Return primitive type of src.
- *
- * @example
- * let str = _.strPrimitiveType( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strPrimitiveType
- * @namespace Tools
- */
-
-function strPrimitiveType( src )
-{
-
-  let name = Object.prototype.toString.call( src );
-  let result = /\[(\w+) (\w+)\]/.exec( name );
-
-  if( !result )
-  throw _.err( 'strType :', 'unknown type', name );
-  return result[ 2 ];
-}
-
-//
-
 function _strBeginOf( src, begin )
 {
 
-  _.assert( _.strIs( src ), 'Expects string' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.strIs( src ), 'Expects string' );
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( begin ) )
   {
@@ -520,7 +602,7 @@ function _strBeginOf( src, begin )
   }
   else _.assert( 0, 'Expects string-like ( string or regexp )' );
 
-  return false;
+  return undefined; /* qqq : should return undefined */
 }
 
 //
@@ -528,8 +610,8 @@ function _strBeginOf( src, begin )
 function _strEndOf( src, end )
 {
 
-  _.assert( _.strIs( src ), 'Expects string' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.strIs( src ), 'Expects string' );
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( end ) )
   {
@@ -541,14 +623,14 @@ function _strEndOf( src, end )
     // let matched = end.exec( src );
     let newEnd = RegExp( end.toString().slice(1, -1) + '$' );
     let matched = newEnd.exec( src );
-    debugger;
+
     //if( matched && matched.index === 0 )
     if( matched && matched.index + matched[ 0 ].length === src.length )
     return matched[ 0 ];
   }
   else _.assert( 0, 'Expects string-like ( string or regexp )' );
 
-  return false;
+  return undefined; /* qqq : should return undefined */
 }
 
 //
@@ -584,13 +666,14 @@ function strBegins( src, begin )
   if( !_.longIs( begin ) )
   {
     let result = _._strBeginOf( src, begin );
-    return result === false ? result : true;
+    return !( result === undefined );
+    // return result === undefined ? false : true;
   }
 
   for( let b = 0, blen = begin.length ; b < blen; b++ )
   {
     let result = _._strBeginOf( src, begin[ b ] );
-    if( result !== false )
+    if( result !== undefined )
     return true;
   }
 
@@ -630,13 +713,14 @@ function strEnds( src, end )
   if( !_.longIs( end ) )
   {
     let result = _._strEndOf( src, end );
-    return result === false ? result : true;
+    return !( result === undefined );
+    // return result === undefined ? false : true;
   }
 
   for( let b = 0, blen = end.length ; b < blen; b++ )
   {
     let result = _._strEndOf( src, end[ b ] );
-    if( result !== false )
+    if( result !== undefined )
     return true;
   }
 
@@ -680,14 +764,14 @@ function strBeginOf( src, begin )
     return result;
   }
 
-  for( let b = 0, blen = begin.length ; b < blen; b++ )
+  for( let b = 0, blen = begin.length ; b < blen ; b++ )
   {
     let result = _._strBeginOf( src, begin[ b ] );
-    if( result !== false )
+    if( result !== undefined )
     return result;
   }
 
-  return false;
+  return undefined;
 }
 
 //
@@ -731,11 +815,11 @@ function strEndOf( src, end )
   for( let b = 0, blen = end.length ; b < blen; b++ )
   {
     let result = _._strEndOf( src, end[ b ] );
-    if( result !== false )
+    if( result !== undefined )
     return result;
   }
 
-  return false;
+  return undefined;
 }
 
 //
@@ -772,7 +856,7 @@ function strRemoveBegin( src, begin )
 
   let result = src;
   let beginOf = _._strBeginOf( result, begin );
-  if( beginOf !== false )
+  if( beginOf !== undefined )
   result = result.substr( beginOf.length, result.length );
   return result;
 }
@@ -810,7 +894,7 @@ function strRemoveEnd( src, end )
 
   let result = src;
   let endOf = _._strEndOf( result, end );
-  if( endOf !== false )
+  if( endOf !== undefined )
   result = result.substr( 0, result.length - endOf.length );
 
   return result;
@@ -904,15 +988,14 @@ let Extension =
 
   // converter
 
-  toStr,
-  toStrShort : toStr,
-  // strFrom : toStr,
-
+  toStrShort,
+  toStr : toStrShort,
   toStrSimple,
-  strShort,
+  strEntityShort,
+  strStrShort,
   strPrimitive,
-  strType,
   strPrimitiveType,
+  strType,
 
   //
 

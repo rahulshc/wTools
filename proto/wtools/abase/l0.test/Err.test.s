@@ -11,7 +11,7 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = _global_.wTools;
-let fileProvider = _testerGlobal_.wTools.fileProvider;
+let fileProvider = _globals_.testing.wTools.fileProvider;
 let path = fileProvider.path;
 
 // --
@@ -114,7 +114,7 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
       line : 2918,
       col : 23,
     },
-  }
+  };
   var err = _._err( o );
   test.is( _.errIs( err ) );
   var got = String( err );
@@ -1045,7 +1045,7 @@ function _errOriginalMessageForm( test )
   test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  // test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
+  test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
 
   test.case = 'args - different, routine returns map with toStr';
   var a = () =>
@@ -1092,10 +1092,10 @@ function _errOriginalMessageForm( test )
     args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 8 );
+  test.identical( _.strLinesCount( err.originalMessage ), 5 );
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
   test.identical( _.strCount( err.originalMessage, 'Sample\n\nstr' ), 1 );
-  test.identical( _.strCount( err.originalMessage, 'str\n\nundefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
 
   test.case = 'Error without description, without fallBackMessage';
   var err = _._err
@@ -1348,12 +1348,12 @@ function errWithMultilineMessage( test )
     `Error :`,
     `\n    Exec :`,
     `\n\n`,
-    `end of message`
+    `program`,
+    `\nend of message`
   );
   var exp =
 `Error :
-Exec :
-
+    Exec : program
 end of message`;
   test.identical( got.originalMessage, exp );
 
@@ -1384,8 +1384,7 @@ end of message`;
   );
   var exp =
 `Error :
-Exec :
-
+    Exec :
 end of message`;
   test.identical( got.originalMessage, exp );
 
@@ -1393,69 +1392,136 @@ end of message`;
 
 //
 
-function errMessageWithSpaces( test )
+function errMessageWithSpacesAndNewLines( test )
 {
-  test.case = 'spaces at the begin of message';
-  var got = _.err
-  (
-    `   Error :`,
-    `\n    Exec :`,
-    `\n\n`,
-    `end of message    `
-  );
-  var exp =
-`Error :
-Exec :
-
-end of message`;
-  test.identical( got.originalMessage, exp );
-
-  /* */
-
-  test.case = 'spaces at the end of message';
+  test.case = 'strings without spaces and new line symbols';
   var got = _.err
   (
     `Error :`,
-    `\n    Exec :`,
-    `\n\n`,
-    `end of message    `
+    `Exec :`,
+    `end of message`
   );
-  var exp =
-`Error :
-Exec :
-
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
-  /* */
+  /* - */
 
-  test.case = 'spaces at the begin of each line';
+  test.open( 'only spaces' );
+
+  test.case = 'strings with spaces at the begin of lines';
   var got = _.err
   (
     `  Error :`,
-    `\n      Exec :`,
-    `\n  \n`,
+    `  Exec :`,
     `  end of message`
   );
-  var exp =
-`Error :
-Exec :
-
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
   /* */
 
-  test.case = 'spaces at the end of each line';
+  test.case = 'strings with spaces at the end of lines';
   var got = _.err
   (
     `Error :  `,
-    `\n    Exec :  `,
-    `\n  \n`,
-    `end of message    `
+    `Exec :  `,
+    `end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'strings with spaces at the begin and at the end of lines';
+  var got = _.err
+  (
+    `  Error :  `,
+    `  Exec :  `,
+    `  end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only spaces' );
+
+  /* - */
+
+  test.open( 'only new line symbols' );
+
+  test.case = 'single end line symbol at the begin';
+  var got = _.err
+  (
+    `\nError :`,
+    `\nExec :`,
+    `\nend of message`
   );
   var exp =
 `Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the end';
+  var got = _.err
+  (
+    `Error :\n`,
+    `Exec :\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the begin and at the end';
+  var got = _.err
+  (
+    `\nError :\n`,
+    `\nExec :\n`,
+    `\nend of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the begin';
+  var got = _.err
+  (
+    `\nError :`,
+    `\n\nExec :`,
+    `\n\n\nend of message`
+  );
+  var exp =
+`Error :
+
+Exec :
+
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the end';
+  var got = _.err
+  (
+    `Error :\n\n\n`,
+    `Exec :\n\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+
+
 Exec :
 
 end of message`;
@@ -1463,24 +1529,980 @@ end of message`;
 
   /* */
 
-  test.case = 'spaces between new line symbols';
+  test.case = 'multiple end line symbols at the begin and at the end';
   var got = _.err
   (
-    `Error\n `,
-    `\n   \n    Exec :  `,
-    `\n   \n`,
-    `\n   \n`,
-    `end of message    `
+    `\nError :\n\n\n`,
+    `\n\nExec :\n\n`,
+    `\n\n\nend of message\n`
   );
   var exp =
-`Error
+`Error :
 
 
 Exec :
 
 
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only new line symbols' );
+
+  /* - */
+
+  test.open( 'message has lines with only spaces and new line symbols' );
+
+  test.case = 'line with single new line symbol';
+  var got = _.err
+  (
+    `Error :`,
+    `\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple new line symbols';
+  var got = _.err
+  (
+    `Error :`,
+    `\n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with single space';
+  var got = _.err
+  (
+    `Error :`,
+    ` `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces';
+  var got = _.err
+  (
+    `Error :`,
+    `      `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols';
+  var got = _.err
+  (
+    `Error :`,
+    ` \n  \n  `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line before has new line symbols';
+  var got = _.err
+  (
+    `Error :\n`,
+    ` \n\n\n  \n`,
+    `Exec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var got = _.err
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var got = _.err
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var got = _.err
+  (
+    `Error :\n`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var got = _.err
+  (
+    `Error :\n\n`,
+    ` \n \n\n\n`,
+    `\n\n\nExec :`,
+  );
+  var exp =
+`Error :
+
+
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has lines with only spaces and new line symbols' );
+
+  /* - */
+
+  test.open( 'message has spaces which should be saved' );
+
+  test.case = 'a few spaces after new line symbol';
+  var got = _.err
+  (
+    `Error :`,
+    `\n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'a few spaces after and inside new line symbols, should be saved the last';
+  var got = _.err
+  (
+    `Error :`,
+    `\n  \n \n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has spaces which should be saved' );
+
+  /* - */
+
+  test.case = 'complex message';
+  var got = _.err
+  (
+    `\n\nError :\n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+Exec : program`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline message has spaces at the end of inner lines';
+  var got = _.err
+  (
+    `\n\nError :   \n new \n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+ new
+Exec : program`;
+  test.identical( got.originalMessage, exp );
+}
+
+//
+
+function errBriefFromStrings( test )
+{
+  test.case = 'strings without spaces and new line symbols';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `Exec :`,
+    `end of message`
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* - */
+
+  test.open( 'only spaces' );
+
+  test.case = 'strings with spaces at the begin of lines';
+  var got = _.errBrief
+  (
+    `  Error :`,
+    `  Exec :`,
+    `  end of message`
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'strings with spaces at the end of lines';
+  var got = _.errBrief
+  (
+    `Error :  `,
+    `Exec :  `,
+    `end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'strings with spaces at the begin and at the end of lines';
+  var got = _.errBrief
+  (
+    `  Error :  `,
+    `  Exec :  `,
+    `  end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only spaces' );
+
+  /* - */
+
+  test.open( 'only new line symbols' );
+
+  test.case = 'single end line symbol at the begin';
+  var got = _.errBrief
+  (
+    `\nError :`,
+    `\nExec :`,
+    `\nend of message`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the end';
+  var got = _.errBrief
+  (
+    `Error :\n`,
+    `Exec :\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the begin and at the end';
+  var got = _.errBrief
+  (
+    `\nError :\n`,
+    `\nExec :\n`,
+    `\nend of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the begin';
+  var got = _.errBrief
+  (
+    `\nError :`,
+    `\n\nExec :`,
+    `\n\n\nend of message`
+  );
+  var exp =
+`Error :
+
+Exec :
+
 
 end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the end';
+  var got = _.errBrief
+  (
+    `Error :\n\n\n`,
+    `Exec :\n\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+
+
+Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the begin and at the end';
+  var got = _.errBrief
+  (
+    `\nError :\n\n\n`,
+    `\n\nExec :\n\n`,
+    `\n\n\nend of message\n`
+  );
+  var exp =
+`Error :
+
+
+Exec :
+
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only new line symbols' );
+
+  /* - */
+
+  test.open( 'message has lines with only spaces and new line symbols' );
+
+  test.case = 'line with single new line symbol';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple new line symbols';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `\n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with single space';
+  var got = _.errBrief
+  (
+    `Error :`,
+    ` `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `      `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols';
+  var got = _.errBrief
+  (
+    `Error :`,
+    ` \n  \n  `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line before has new line symbols';
+  var got = _.errBrief
+  (
+    `Error :\n`,
+    ` \n\n\n  \n`,
+    `Exec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var got = _.errBrief
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var got = _.errBrief
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var got = _.errBrief
+  (
+    `Error :\n`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var got = _.errBrief
+  (
+    `Error :\n\n`,
+    ` \n \n\n\n`,
+    `\n\n\nExec :`,
+  );
+  var exp =
+`Error :
+
+
+Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has lines with only spaces and new line symbols' );
+
+  /* - */
+
+  test.open( 'message has spaces which should be saved' );
+
+  test.case = 'a few spaces after new line symbol';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `\n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'a few spaces after and inside new line symbols, should be saved the last';
+  var got = _.errBrief
+  (
+    `Error :`,
+    `\n  \n \n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has spaces which should be saved' );
+
+  /* - */
+
+  test.case = 'complex message';
+  var got = _.errBrief
+  (
+    `\n\nError :\n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+Exec : program`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline message has spaces at the end of inner lines';
+  var got = _.errBrief
+  (
+    `\n\nError :   \n new \n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+ new
+Exec : program`;
+  test.identical( got.originalMessage, exp );
+}
+
+//
+
+function errBriefFromErr( test )
+{
+  test.case = 'strings without spaces and new line symbols';
+  var err = _.err
+  (
+    `Error :`,
+    `Exec :`,
+    `end of message`
+  );
+  var exp = `Error : Exec : end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* - */
+
+  test.open( 'only spaces' );
+
+  test.case = 'strings with spaces at the begin of lines';
+  var err = _.err
+  (
+    `  Error :`,
+    `  Exec :`,
+    `  end of message`
+  );
+  var exp = `Error : Exec : end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'strings with spaces at the end of lines';
+  var err = _.err
+  (
+    `Error :  `,
+    `Exec :  `,
+    `end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'strings with spaces at the begin and at the end of lines';
+  var err = _.err
+  (
+    `  Error :  `,
+    `  Exec :  `,
+    `  end of message  `
+  );
+  var exp = `Error : Exec : end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only spaces' );
+
+  /* - */
+
+  test.open( 'only new line symbols' );
+
+  test.case = 'single end line symbol at the begin';
+  var err = _.err
+  (
+    `\nError :`,
+    `\nExec :`,
+    `\nend of message`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the end';
+  var err = _.err
+  (
+    `Error :\n`,
+    `Exec :\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'single end line symbol at the begin and at the end';
+  var err = _.err
+  (
+    `\nError :\n`,
+    `\nExec :\n`,
+    `\nend of message\n`
+  );
+  var exp =
+`Error :
+Exec :
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the begin';
+  var err = _.err
+  (
+    `\nError :`,
+    `\n\nExec :`,
+    `\n\n\nend of message`
+  );
+  var exp =
+`Error :
+
+Exec :
+
+
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the end';
+  var err = _.err
+  (
+    `Error :\n\n\n`,
+    `Exec :\n\n`,
+    `end of message\n`
+  );
+  var exp =
+`Error :
+
+
+Exec :
+
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiple end line symbols at the begin and at the end';
+  var err = _.err
+  (
+    `\nError :\n\n\n`,
+    `\n\nExec :\n\n`,
+    `\n\n\nend of message\n`
+  );
+  var exp =
+`Error :
+
+
+Exec :
+
+
+end of message`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'only new line symbols' );
+
+  /* - */
+
+  test.open( 'message has lines with only spaces and new line symbols' );
+
+  test.case = 'line with single new line symbol';
+  var err = _.err
+  (
+    `Error :`,
+    `\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple new line symbols';
+  var err = _.err
+  (
+    `Error :`,
+    `\n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with single space';
+  var err = _.err
+  (
+    `Error :`,
+    ` `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces';
+  var err = _.err
+  (
+    `Error :`,
+    `      `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols';
+  var err = _.err
+  (
+    `Error :`,
+    ` \n  \n  `,
+    `Exec :`,
+  );
+  var exp = `Error : Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line before has new line symbols';
+  var err = _.err
+  (
+    `Error :\n`,
+    ` \n\n\n  \n`,
+    `Exec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var err = _.err
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, line after has new line symbols';
+  var err = _.err
+  (
+    `Error :`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var err = _.err
+  (
+    `Error :\n`,
+    ` \n \n\n\n`,
+    `\nExec :`,
+  );
+  var exp =
+`Error :
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'line with multiple spaces and new line symbols, lines before and after has new line symbols';
+  var err = _.err
+  (
+    `Error :\n\n`,
+    ` \n \n\n\n`,
+    `\n\n\nExec :`,
+  );
+  var exp =
+`Error :
+
+
+Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has lines with only spaces and new line symbols' );
+
+  /* - */
+
+  test.open( 'message has spaces which should be saved' );
+
+  test.case = 'a few spaces after new line symbol';
+  var err = _.err
+  (
+    `Error :`,
+    `\n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'a few spaces after and inside new line symbols, should be saved the last';
+  var err = _.err
+  (
+    `Error :`,
+    `\n  \n \n  Exec :`,
+  );
+  var exp =
+`Error :
+  Exec :`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  test.close( 'message has spaces which should be saved' );
+
+  /* - */
+
+  test.case = 'complex message';
+  var err = _.err
+  (
+    `\n\nError :\n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+Exec : program`;
+  var got = _.errBrief( err );
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline message has spaces at the end of inner lines';
+  var err = _.err
+  (
+    `\n\nError :   \n new \n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+ new
+Exec : program`;
+  var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
 }
 
@@ -1652,7 +2674,7 @@ function eventUncaughtErrorBasic( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _testerGlobal_.wTools.take( null );
+  let ready = _globals_.testing.wTools.take( null );
 
   ready.then( () => run( 'sync' ) );
   ready.then( () => run( 'timer' ) );
@@ -1665,7 +2687,7 @@ function eventUncaughtErrorBasic( test )
 
   function run( throwing )
   {
-    let ready = _testerGlobal_.wTools.take( null );
+    let ready = _globals_.testing.wTools.take( null );
 
     ready.then( () =>
     {
@@ -1868,9 +2890,9 @@ function eventUncaughtErrorOnce( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _testerGlobal_.wTools.take( null );
+  let ready = _globals_.testing.wTools.take( null );
 
-  // ready.then( () => run( 'once' ) );
+  // ready.then( () => run( 'once' ) ); /* xxx qqq : switch on later */
   ready.then( () => run( 'off' ) );
 
   return ready;
@@ -1879,7 +2901,7 @@ function eventUncaughtErrorOnce( test )
 
   function run( how )
   {
-    let ready = _testerGlobal_.wTools.take( null );
+    let ready = _globals_.testing.wTools.take( null );
 
     ready.then( () =>
     {
@@ -1944,6 +2966,57 @@ function eventUncaughtErrorOnce( test )
 
 }
 
+//
+
+function entryProcedureStack( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+  let ready = _globals_.testing.wTools.take( null );
+  ready.then( () => run() );
+  return ready;
+
+  /* */
+
+  function run( how )
+  {
+    let ready = _globals_.testing.wTools.take( null );
+
+    ready.then( () =>
+    {
+
+      test.case = `basic`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `how:${how}` ] })
+      .then( ( op ) =>
+      {
+        test.identical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ncaught' ), 0 );
+        test.identical( _.strCount( op.output, 'rror' ), 0 );
+        test.identical( _.strCount( op.output, 'program.js' ), 1 );
+        test.identical( _.strCount( op.output, 'program.js:9' ), 1 );
+        test.identical( _.strCount( op.output, 'at ' ), 1 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    return ready;
+  }
+
+  /* */
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    console.log( _.setup._entryProcedureStack );
+  }
+
+}
+
 // --
 // declare
 // --
@@ -1959,7 +3032,7 @@ let Self =
 
   context :
   {
-    nameOfFile : _.introspector.location().fileName,
+    nameOfFile : _.introspector.location().fileName, /* xxx : introduce option in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
@@ -1994,7 +3067,10 @@ let Self =
 
     errInStr,
     errWithMultilineMessage,
-    errMessageWithSpaces,
+    errMessageWithSpacesAndNewLines,
+
+    errBriefFromStrings,
+    errBriefFromErr,
 
     errorFunctor,
 
@@ -2004,6 +3080,7 @@ let Self =
 
     eventUncaughtErrorBasic,
     eventUncaughtErrorOnce,
+    entryProcedureStack,
 
   }
 
