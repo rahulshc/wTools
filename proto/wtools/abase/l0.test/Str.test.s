@@ -9651,8 +9651,59 @@ function strSplitsQuotedRejoin( test )
 
   test.case = 'empty splits';
 
-  var delimeter = [ '<', '>' ];
   var splits = [];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'default quotingPrefixes, quotingPostfixes; no delimeter';
+
+  var splits = [ `"`, `r1`, `"`, `"`, `r2`, `"` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `"r1"`, `"r2"` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'quoting : 0';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 0,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'only prefixes and postfixes in splits';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `>`, `<`, `>` ];
   _.strSplitsQuotedRejoin
   ({
     splits,
@@ -9663,7 +9714,7 @@ function strSplitsQuotedRejoin( test )
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  var expected = [];
+  var expected = [ `<><>` ];
   test.identical( splits, expected );
 
   /* */
@@ -9961,6 +10012,8 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
   });
   var expected = [];
   test.identical( splits, expected );
+
+  /* */
 
   test.case = 'basic, add strings';
 
