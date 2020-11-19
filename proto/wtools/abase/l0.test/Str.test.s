@@ -9857,6 +9857,46 @@ function strSplitsQuotedRejoin( test )
   var expected = [ `<` ];
   test.identical( splits, expected );
 
+  /* */
+
+  test.case = '3 elems in splits';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>`, `<`, `r3`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1>`, `<r2>`, `<r3>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = '3 elems in splits, wrong enclosing';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `<`, `r2`, `>`, `<`, `r3` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1<r2>`, `<`, `r3` ];
+  test.identical( splits, expected );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
