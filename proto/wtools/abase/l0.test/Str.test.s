@@ -9758,6 +9758,41 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
+  test.case = 'basic, o.pairing : 1, prefix and postfix are the same';
+
+  var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '<' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1<`, `<r2<` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'basic, o.pairing : 1, prefix and postfix are NOT the same';
+
+  var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  var result = _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  test.identical( result, undefined );
+
+  /* */
+
   test.case = 'basic, prefix and postfix have different lengths';
 
   var splits = [ `<<`, `r1`, `>>>`, `<<`, `r2`, `>>>` ];
@@ -10020,6 +10055,20 @@ function strSplitsQuotedRejoin( test )
   test.shouldThrowErrorSync( function()
   {
     _.strSplitsQuotedRejoin( 13 );
+  });
+
+  test.case = 'o.pairing : 1, o.quotingPrefixes.length !== o.quotingPostfixes.length';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSplitsQuotedRejoin
+    ({
+      splits : [ '<<', 'a', '>' ],
+      quoting : 1,
+      quotingPrefixes : [ '<', '<<' ],
+      quotingPostfixes : [ '>' ],
+      preservingQuoting : 1,
+      inliningQuoting : 0,
+    });
   });
 
 }

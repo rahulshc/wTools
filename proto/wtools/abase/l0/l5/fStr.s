@@ -1824,6 +1824,14 @@ function strSplitsQuotedRejoin_head( routine, args )
     }
     else _.assert( 0, 'unexpected type of {-o.quoting-}' );
 
+    _.assert( _.boolLike( o.pairing ), 'option::o.pairing must be BoolLike' );
+
+    _.assert
+    (
+      !o.pairing || o.quotingPrefixes.length === o.quotingPostfixes.length,
+      `If option::o.paring is true then the length of o.quotingPrefixes should be equal to the length of o.quotingPostfixes`
+    );
+
     if( Config.debug )
     {
       _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
@@ -1844,6 +1852,10 @@ function strSplitsQuotedRejoin_body( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.splits ) );
+
+  if( o.pairing )
+  if( !_.longIdentical( o.quotingPrefixes, o.quotingPostfixes ) )
+  return undefined;
 
   /* quoting */
 
@@ -1922,6 +1934,7 @@ strSplitsQuotedRejoin_body.defaults =
   splits : null,
   delimeter : null,
   onQuoting : null, /* qqq : cover */
+  pairing : 0
 }
 
 //
