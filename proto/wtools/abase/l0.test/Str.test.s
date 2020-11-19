@@ -9666,6 +9666,63 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
+  test.case = 'splits : prefix and postfix';
+
+  var splits = [ '<', '>' ];
+  var delimeter = [ '<', '>' ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ '<', '>' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'splits : prefix and prefix';
+
+  var splits = [ '<', '<' ];
+  var delimeter = [ '<', '>' ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ '<', '<' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'splits : postfix and postfix';
+
+  var splits = [ '>', '>' ];
+  var delimeter = [ '<', '>' ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ '>', '>' ];
+  test.identical( splits, expected );
+
+  /* */
+
   test.case = 'default quotingPrefixes, quotingPostfixes';
 
   var splits = [ `"`, `r1`, `"`, `"`, `r2`, `"` ];
