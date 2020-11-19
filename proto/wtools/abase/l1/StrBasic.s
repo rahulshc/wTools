@@ -1495,6 +1495,8 @@ function _strOnly( srcStr, crange )
   }
   else
   {
+    crange = _.longMake( crange ); /* Dmytro : vectorized routine should not change original range */
+
     if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
@@ -1506,7 +1508,6 @@ function _strOnly( srcStr, crange )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
-  // _.assert( _.rangeDefined( crange ) );
   _.assert( _.crange.defined( crange ) );
 
   return srcStr.substring( crange[ 0 ], crange[ 1 ] + 1 );
@@ -1576,49 +1577,41 @@ let strOnly = _.vectorize( _strOnly );
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
 /**
- * Routine _strBut() gets substring out of source string {-srcStr-} according to a given range {-range-}
- * and replaces it to new string {-ins-}.
- * The end value of the range is not included in the substring.
+ * Routine _strBut() replaces substring from source string {-srcStr-} to new value {-ins-}
+ * The ranges of substring defines according to a given range {-crange-}.
+ * The end value of the range is included in the substring.
  *
  * @example
  * _._strBut( '', [ 0, 2 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
  * _._strBut( 'first', [ 0, 7 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
  * _._strBut( 'first', [ 0, 1 ] );
- * // returns 'rst'
+ * // returns : 'rst'
  *
  * @example
  * _._strBut( 'first', [ -2, 4 ] );
- * // returns 'fir'
+ * // returns : 'firt'
  *
  * @example
  * _._strBut( 'first', [ 2, 1 ] );
- * // returns 'first'
- *
- * @example
- * _._strBut( '', [ 0, 2 ], 'abc' );
- * // returns 'abc'
- *
- * @example
- * _._strBut( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
- * // returns 'a b c'
+ * // returns : 'first'
  *
  * @example
  * _._strBut( 'first', [ 0, 1 ], 'abc' );
- * // returns 'abcrst'
+ * // returns : 'abcrst'
  *
  * @example
- * _._strBut( 'first', [ -2, 4 ], [ 'a', 'b', 'c' ] );
- * // returns 'fira b c'
+ * _._strBut( 'first', [ 0, 1 ], [ 'a', 'b', 'c' ] );
+ * // returns : [ 'arst', 'brst', 'crst' ]
  *
  * @example
  * _._strBut( 'first', [ 2, 1 ], 'abc' );
- * // returns 'fiabcrst'
+ * // returns : [ 'fiarst', 'fibrst', 'ficrst' ]
  *
  * @param { String } srcStr - Source string.
  * @param { Crange } crange - Closed range to get substring.
@@ -1638,6 +1631,7 @@ let strOnly = _.vectorize( _strOnly );
 function _strBut( srcStr, crange, ins )
 {
 
+
   /*
   aaa : reference point of negative is length. implement and cover please
   Dmytro : implemented a time ago
@@ -1647,11 +1641,12 @@ function _strBut( srcStr, crange, ins )
   {
     if( crange < 0 )
     crange = srcStr.length + crange;
-    crange = [ crange, crange ]; /* Dmytro : should delete only 1 symbol */
-    // crange = [ crange, crange+1 ];
+    crange = [ crange, crange ];
   }
   else
   {
+    crange = _.longMake( crange ); /* Dmytro : vectorized routine should not change original range */
+
     if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
@@ -1660,14 +1655,11 @@ function _strBut( srcStr, crange, ins )
 
   if( crange[ 0 ] > crange[ 1 ] )
   crange[ 1 ] = crange[ 0 ] - 1;
-  // crange[ 1 ] = crange[ 0 ]; /* Dmytro : for crange corrects right range */
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
-  // _.assert( _.crange.rangeDefined( crange ) ); /* Dmytro : new namespace for crange */
   _.assert( _.crange.defined( crange ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
 
   /*
      aaa : implement for case ins is long
@@ -1675,18 +1667,26 @@ function _strBut( srcStr, crange, ins )
      qqq for Dmytro : no really
   */
 
-  // if( _.longIs( ins ) )
-  // return srcStr.substring( 0, crange[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
-  if( ins )
-  return srcStr.substring( 0, crange[ 0 ] ) + ins + srcStr.substring( crange[ 1 ]+1, srcStr.length );
+  let result;
+  if( _.longIs( ins ) )
+  {
+    result = _.arrayMake( ins.length );
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ i ] = _strConcat( srcStr, crange, ins[ i ] );
+  }
   else
-  return srcStr.substring( 0, crange[ 0 ] ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
-  // if( _.longIs( ins ) ) /* Dmytro : all types of ranges includes left range and has different usage of right range */
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ], srcStr.length );
-  // else if( ins )
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins + srcStr.substring( crange[ 1 ], srcStr.length );
-  // else
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + srcStr.substring( crange[ 1 ], srcStr.length );
+  {
+    result = _strConcat( srcStr, crange, ins ? ins : '' );
+  }
+
+  return result;
+
+  /* */
+
+  function _strConcat( src, range, insertion )
+  {
+    return src.substring( 0, range[ 0 ] ) + insertion + src.substring( range[ 1 ] + 1, src.length );
+  }
 }
 
 //
