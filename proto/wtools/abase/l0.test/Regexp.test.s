@@ -535,7 +535,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -556,7 +556,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -578,7 +578,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -634,7 +634,7 @@ function regexpsJoin( test )
   var expected = /abc/i;
   var got = _.regexpsJoin([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   /* */
 
@@ -765,7 +765,7 @@ function regexpsAtLeastFirst( test )
   var expected = /.+/i;
   var got = _.regexpsAtLeastFirst([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 
@@ -834,7 +834,7 @@ function regexpsNone( test )
   var expected = /^(?:(?!(?:.+)).)+$/i;
   var got = _.regexpsNone([ r1 ]);
   test.identical( got, expected );
-  test.is( got !== r1 );
+  test.true( got !== r1 );
 
   test.case = 'strings';
 
@@ -903,7 +903,7 @@ function regexpsAny( test )
   var expected = /.+/i;
   var got = _.regexpsAny([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 
@@ -972,7 +972,7 @@ function regexpsAll( test )
   var expected = /.+/i;
   var got = _.regexpsAll([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 

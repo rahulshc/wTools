@@ -393,7 +393,7 @@ function _strLeftSingle( src, ins, range )
   if( range[ 1 ] < 0 )
   range[ 1 ] = src.length + range[ 1 ];
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
 
@@ -603,7 +603,7 @@ function _strRightSingle( src, ins, range )
   if( range[ 1 ] < 0 )
   range[ 1 ] = src.length + range[ 1 ];
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
 
@@ -3216,9 +3216,9 @@ let Extension =
   // splitter
 
   _strLeftSingle,
-  strLeft, /* qqq for Dmytro : implement and cover strLeft_ with proper ranges */
+  strLeft, /* qqq2 for Dmytro : implement and cover strLeft_ with proper ranges */
   _strRightSingle,
-  strRight, /* qqq for Dmytro : implement and cover strRight_ with proper ranges */
+  strRight, /* qqq2 for Dmytro : implement and cover strRight_ with proper ranges */
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),

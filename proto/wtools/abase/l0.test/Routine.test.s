@@ -698,71 +698,71 @@ function constructorJoin( test )
 
   test.case = 'without args';
   var got = _.constructorJoin( srcRoutine );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, [] );
   test.identical( result.context, srcRoutine );
-  test.isNot( result.context instanceof srcRoutine );
+  test.false( result.context instanceof srcRoutine );
 
   test.case = 'args - undefined';
   var got = _.constructorJoin( srcRoutine, undefined );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, [] );
   test.identical( result.context, srcRoutine );
-  test.isNot( result.context instanceof srcRoutine );
+  test.false( result.context instanceof srcRoutine );
 
   test.case = 'args - null';
   var got = _.constructorJoin( srcRoutine, null );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, [] );
   test.identical( result.context, srcRoutine );
-  test.isNot( result.context instanceof srcRoutine );
+  test.false( result.context instanceof srcRoutine );
 
   test.case = 'args - empty array';
   var args = [];
   var got = _.constructorJoin( srcRoutine, args );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = new got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, args );
   test.notIdentical( result.context, srcRoutine );
-  test.is( result.context instanceof srcRoutine );
+  test.true( result.context instanceof srcRoutine );
 
   test.case = 'args - array with map, returned routine exexute without arguments';
   var args = [ { a : 1 } ];
   var got = _.constructorJoin( srcRoutine, args );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, args );
   test.identical( result.context, srcRoutine );
-  test.isNot( result.context instanceof srcRoutine );
+  test.false( result.context instanceof srcRoutine );
 
   test.case = 'args - array with map, returned routine exexute with arguments';
   var args = [ { a : 1 } ];
   var got = _.constructorJoin( srcRoutine, args );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = got({ b : 1 });
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
   test.identical( result.args, [ { a : 1 }, { b : 1 } ] );
   test.identical( result.context, srcRoutine );
-  test.isNot( result.context instanceof srcRoutine );
+  test.false( result.context instanceof srcRoutine );
 
   test.case = 'Array contructor, args = U8x buffer, execute without arguments';
   var args = new U8x( [ 1, 2, 3, 4 ] );
   var got = _.constructorJoin( Array, args );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = new got();
   test.identical( _.mapKeys( got ), [] );
   test.identical( result, [ 1, 2, 3, 4 ] );
@@ -770,7 +770,7 @@ function constructorJoin( test )
   test.case = 'Array contructor, args = U8x buffer, exexute with number';
   var args = new U8x( [ 1, 2, 3, 4 ] );
   var got = _.constructorJoin( Array, args );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   var result = new got( 1 );
   test.identical( _.mapKeys( got ), [] );
   test.identical( result, [ 1, 2, 3, 4, 1 ] );
@@ -1551,8 +1551,8 @@ function routineExtend_old( test )
 
   test.case = 'second arg has not head and body properties';
   var got = _.routineExtend_old( null, _.unrollIs );
-  test.is( _.routineIs( got ) );
-  test.is( got( _.unrollFrom( [] ) ) );
+  test.true( _.routineIs( got ) );
+  test.true( got( _.unrollFrom( [] ) ) );
 
   test.case = 'dst is null, src is map with head and body properties';
   var src =
@@ -1651,7 +1651,7 @@ function routineExtend_old( test )
   test.identical( got.a, 0 );
   test.identical( got.b, { a : 2 } );
   var got = Object.getOwnPropertyDescriptor( got, 'b' );
-  test.isNot( got.enumerable );
+  test.false( got.enumerable );
 
   test.close( 'single dst');
 
@@ -1768,7 +1768,7 @@ function routineExtend_old( test )
   test.identical( got.head, _.routineUnite.head );
   test.identical( got.body, _.routineUnite.body );
   test.identical( got.b, Object.create( { b : 3 } ) );
-  test.is( got.a === 'str' );
+  test.true( got.a === 'str' );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, dst extends other map';
@@ -1976,8 +1976,8 @@ function routineExtend( test )
 
   test.case = 'second arg has not head and body properties';
   var got = _.routineExtend( null, _.unrollIs );
-  test.is( _.routineIs( got ) );
-  test.is( got( _.unrollFrom( [] ) ) );
+  test.true( _.routineIs( got ) );
+  test.true( got( _.unrollFrom( [] ) ) );
 
   test.case = 'dst is null, src is map with head and body properties';
   var src =
@@ -2076,7 +2076,7 @@ function routineExtend( test )
   test.identical( got.a, 0 );
   test.identical( got.b, { a : 2 } );
   var got = Object.getOwnPropertyDescriptor( got, 'b' );
-  test.isNot( got.enumerable );
+  test.false( got.enumerable );
 
   test.close( 'single dst');
 
@@ -2193,7 +2193,7 @@ function routineExtend( test )
   test.identical( got.head, _.routineUnite.head );
   test.identical( got.body, _.routineUnite.body );
   test.identical( got.b, { b : 3 } );
-  test.is( got.a === 'str' );
+  test.true( got.a === 'str' );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, dst extends other map';
@@ -2394,12 +2394,12 @@ function routineDefaults( test )
 
   test.description = 'generate';
   let add2 = _.routineDefaults( null, add1, { b : 5 } );
-  test.is( add1 !== add2 );
-  test.is( add1.defaults !== add2.defaults );
-  test.is( _.mapLike( add1.defaults ) );
-  test.is( _.mapLike( add2.defaults ) );
-  test.is( add1.defaults.b === 3 );
-  test.is( add2.defaults.b === 5 );
+  test.true( add1 !== add2 );
+  test.true( add1.defaults !== add2.defaults );
+  test.true( _.mapLike( add1.defaults ) );
+  test.true( _.mapLike( add2.defaults ) );
+  test.true( add1.defaults.b === 3 );
+  test.true( add2.defaults.b === 5 );
 
   test.description = 'trivial call';
   var got = add2();
@@ -2431,12 +2431,12 @@ function routineDefaults( test )
 
   test.description = 'generate';
   let add4 = _.routineDefaults( add3, { b : 5 } );
-  test.is( add3 === add4 );
-  test.is( add3.defaults === add4.defaults );
-  test.is( _.mapLike( add3.defaults ) );
-  test.is( _.mapLike( add4.defaults ) );
-  test.is( add3.defaults.b === 5 );
-  test.is( add4.defaults.b === 5 );
+  test.true( add3 === add4 );
+  test.true( add3.defaults === add4.defaults );
+  test.true( _.mapLike( add3.defaults ) );
+  test.true( _.mapLike( add4.defaults ) );
+  test.true( add3.defaults.b === 5 );
+  test.true( add4.defaults.b === 5 );
 
   test.description = 'trivial call';
   var got = add4();
@@ -2487,58 +2487,58 @@ function routineUnite( test )
 
   test.case = 'head - undefined, body expects map';
   var routine = _.routineUnite( undefined, bodyObject );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - undefined, body expects unroll';
   var routine = _.routineUnite( undefined, bodyUnroll );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - null, body expects map';
   var routine = _.routineUnite( null, bodyObject );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - null, body expects unroll';
   var routine = _.routineUnite( null, bodyUnroll );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   /* */
 
   test.case = 'head - null';
   var routine = _.routineUnite({ head : null, body : bodyUnroll });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - undefined';
   var routine = _.routineUnite({ head : undefined, body : bodyUnroll });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
   test.close( 'only body' );
@@ -2549,7 +2549,7 @@ function routineUnite( test )
 
   test.case = 'make from arguments, routine expects map';
   var routine = _.routineUnite( headObject, bodyObject );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2557,7 +2557,7 @@ function routineUnite( test )
 
   test.case = 'make from arguments, routine expects unroll';
   var routine = _.routineUnite( headUnroll, bodyUnroll );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2567,7 +2567,7 @@ function routineUnite( test )
 
   test.case = 'make from map, routine expects map';
   var routine = _.routineUnite({ head : headObject, body : bodyObject });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2575,7 +2575,7 @@ function routineUnite( test )
 
   test.case = 'make from map, routine expects unroll';
   var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2589,58 +2589,58 @@ function routineUnite( test )
 
   test.case = 'head - undefined, body expects map';
   var routine = _.routineUnite( undefined, bodyObject, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - undefined, body expects unroll';
   var routine = _.routineUnite( undefined, bodyUnroll, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - null, body expects map';
   var routine = _.routineUnite( null, bodyObject, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - null, body expects unroll';
   var routine = _.routineUnite( null, bodyUnroll, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   /* */
 
   test.case = 'head - null';
   var routine = _.routineUnite({ head : null, body : bodyUnroll, tail });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - undefined';
   var routine = _.routineUnite({ head : undefined, body : bodyUnroll, tail });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
   /* */
@@ -2654,22 +2654,22 @@ function routineUnite( test )
 
   test.case = 'head - null, tail use options map';
   var routine = _.routineUnite( null, bodyObject, tailUseOptions );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var o = { args : _.argumentsArrayMake([ 1, 2 ]) };
   var got = routine( o );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, o ] );
 
   test.case = 'head - null, tail use options map';
   var routine = _.routineUnite({ head : null, body : bodyUnroll, tail : tailUseOptions });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var o = _.unrollMake([ 1, 2 ]);
   var got = routine( o );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, o ] );
 
   test.close( 'body and tail' );
@@ -2680,7 +2680,7 @@ function routineUnite( test )
 
   test.case = 'head, body and tail, with map';
   var routine = _.routineUnite( headObject, bodyObject, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2688,7 +2688,7 @@ function routineUnite( test )
 
   test.case = 'head, body and tail, with unroll';
   var routine = _.routineUnite( headUnroll, bodyUnroll, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2698,7 +2698,7 @@ function routineUnite( test )
 
   test.case = 'head, body and tail, with map';
   var routine = _.routineUnite({ head : headObject, body : bodyObject, tail });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2706,7 +2706,7 @@ function routineUnite( test )
 
   test.case = 'head, body and tail, with unroll';
   var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2723,20 +2723,20 @@ function routineUnite( test )
 
   test.case = 'head - null, tail use options map';
   var routine = _.routineUnite( headObject, bodyObject, tailUseOptions );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, { args : _.argumentsArrayMake([ 1, 2 ]) } ] );
 
   test.case = 'head - null, tail use options map';
   var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail : tailUseOptions });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
-  test.is( _.arrayIs( got ) );
+  test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, _.unrollMake([ 1, 2 ]) ] );
 
   test.close( 'head, body and tail' );
@@ -2747,7 +2747,7 @@ function routineUnite( test )
 
   test.case = 'name defined by field, head and body';
   var routine = _.routineUnite({ head : headObject, body : bodyObject, name : 'someName' });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'someName' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2755,7 +2755,7 @@ function routineUnite( test )
 
   test.case = 'name defined by field, head, body and tail, with map';
   var routine = _.routineUnite({ head : headObject, body : bodyObject, tail, name : 'someName' });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'someName' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2771,7 +2771,7 @@ function routineUnite( test )
   someRoutine_body.defaults = { args : null };
 
   var routine = _.routineUnite( headObject, someRoutine_body );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'someRoutine' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2792,7 +2792,7 @@ function routineUnite( test )
 
   test.case = 'compose head and body, with map';
   var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2800,7 +2800,7 @@ function routineUnite( test )
 
   test.case = 'compose head, body and tail, with map';
   var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject, tail );
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2810,7 +2810,7 @@ function routineUnite( test )
 
   test.case = 'compose head and body, with map';
   var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2818,7 +2818,7 @@ function routineUnite( test )
 
   test.case = 'compose head, body and tail, with map';
   var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
-  test.is( _.routineIs( routine ) );
+  test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -2888,13 +2888,13 @@ function vectorizeVectorizeArray( test )
   var src = 1;
   var got = routine( src );
   test.identical( got, [ 1 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiply arguments';
   var src = 1;
   var got = routine( src, 0 );
   test.identical( got, [ 1, 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* - */
 
@@ -2905,29 +2905,29 @@ function vectorizeVectorizeArray( test )
   var src = [ 1 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = [ 1, 2, 3 ];
   var got = routine( src, 2 );
   test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 2;
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got, [ 2, [ 1, 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 3, 4 ] )
   test.identical( got, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'array' );
 
@@ -2940,29 +2940,29 @@ function vectorizeVectorizeArray( test )
   var src = new Set( [ 1 ] );
   var got = routine( src );
   test.identical( [ ... got ], [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = new Set( [ 1, 2, 3 ] );
   var got = routine( src );
   test.identical( [ ... got ], [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = new Set( [ 1, 2, 3 ] );
   var got = routine( src, 2 );
   test.identical( [ ... got ], [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = new Set( [ 2 ] );
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( [ ... got ], [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = new Set( [ 1, 2 ] );
   var got = routine( new Set( [ 1, 2 ] ), [ 3, 4 ] )
   test.identical( [ ... got ], [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'Set' );
 
@@ -2972,13 +2972,13 @@ function vectorizeVectorizeArray( test )
   var got = routine( src, [ 3, 4 ] )
   test.identical( [ ... got[ 0 ].original ], [ 1, 2 ] );
   test.identical( [ got[ 1 ] ], [ [ 3, 4 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( src, 2 );
   test.identical( [ ... got[ 0 ].original ], [ 1, 2, 3 ] );
   test.identical( [ got[ 1 ] ], [ 2 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* - */
 
@@ -2998,58 +2998,58 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var got = routine( src );
   test.identical( got.original, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = routine( src );
   test.identical( got.original, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = routine( src, 2 );
   test.identical( got.original, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 2 ] );
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got.original, [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 1, 2 ] );
   var got = routine( src, [ 3, 4 ] )
   test.identical( got.original, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var got = routine( src );
   test.identical( [ ... got.original ], [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( src );
   test.identical( [ ... got.original ], [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( src, 2 );
   test.identical( [ ... got.original ], [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 2 ] );
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( [ ... got.original ], [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var got = routine( src, [ 3, 4 ] )
   test.identical( [ ... got.original ], [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'containerAdapter, no unwraping' );
 
@@ -3073,58 +3073,58 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = routine( _.containerAdapter.make( [ 1, 2, 3 ] ) );
   test.identical( got, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = routine( _.containerAdapter.make( [ 1, 2, 3 ] ), 2 );
   test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 2 ] );
   var got = routine( _.containerAdapter.make( [ 2 ] ), [ 1, 2, 3 ] );
   test.identical( got, [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( [ 1, 2 ] );
   var got = routine( _.containerAdapter.make( [ 1, 2 ] ), [ 3, 4 ] )
   test.identical( got, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var got = routine( src );
   test.identical( [ ... got ], [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) ) );
   test.identical( [ ... got ], [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) ), 2 );
   test.identical( [ ... got ], [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 2 ] ) );
   var got = routine( _.containerAdapter.make( new Set( [ 2 ] ) ), [ 1, 2, 3 ] );
   test.identical( [ ... got ], [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2 ] ) ), [ 3, 4 ] )
   test.identical( [ ... got ], [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'containerAdapter, no unwraping' );
 
@@ -3212,69 +3212,69 @@ function vectorizeVectorizeMapOrArray( test )
   var src = 1;
   var got = routine( src );
   test.identical( got, [ 1 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src );
   test.identical( got, [ [ 1, 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { 1 : 1, 2 : 2, 3 : 3 };
   var got = routine( src );
   test.identical( got, { 1 : [ 1 ], 2 : [ 2 ], 3 : [ 3 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = 1;
   var got = routine( src, 0 );
   test.identical( got, [ 1, 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src, 2 );
   test.identical( got, [ [ 1, 2, 3 ], 2 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 2;
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got, [ 2, [ 1, 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
   test.identical( got, [ [ 1, 2 ], [ 1, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 0 );
   test.identical( got, { a : [ 1, 0 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 0;
   var got = routine( src, { a : 1 } );
   test.identical( routine( 0, { a : 1 } ), [ 0, { a : 1 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { b : 2 } );
   test.identical( got, { a : [ 1, { b : 2 } ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 2, 3 );
   test.identical( got, { a : [ 1, 2, 3 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { b : 2 }, { c : 3 } );
   test.identical( got, { a : [ 1, { b : 2 }, { c : 3 } ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3283,7 +3283,7 @@ function vectorizeVectorizeMapOrArray( test )
   var got = routine( src );
   test.identical( got[ 0 ].original, [ 1 ] );
   test.identical( got.length, 1 );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'vectorizingArray : 0, vectorizingMapVals : 1, select : 1' );
 
@@ -3305,47 +3305,47 @@ function vectorizeVectorizeMapOrArray( test )
   var src = 1;
   var got = routine( src, 0 );
   test.identical( got, [ 1, 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src, 2 );
   test.identical( got, [ [ 1, 2, 3 ], 2 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 2;
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got, [ 2, [ 1, 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
   test.identical( got, [ [ 1, 2 ], [ 1, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 0 );
   test.identical( got, { a : [ 1, 0 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 0;
   var got = routine( src, { a : 1 } );
   test.identical( routine( 0, { a : 1 } ), { a : [ 0, 1 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { a : 2 } );
   test.identical( got, { a : [ 1, 2 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 2 );
   test.identical( got, { a : [ 1, 2 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { a : [ 2 ] } );
   test.identical( got, { a : [ 1, [ 2 ] ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3354,7 +3354,7 @@ function vectorizeVectorizeMapOrArray( test )
   var got = routine( src, 1 );
   test.identical( got[ 0 ].original, [ 1 ] );
   test.identical( got.length, 2 );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3395,89 +3395,89 @@ function vectorizeVectorizeMapOrArray( test )
   var src = 1;
   var got = routine( src );
   test.identical( got, [ 1 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { 1 : 1, 2 : 2, 3 : 3 };
   var got = routine( src );
   test.identical( got, { 1 : [ 1 ], 2 : [ 2 ], 3 : [ 3 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = 1;
   var got = routine( src, 0 );
   test.identical( got, [ 1, 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3 ];
   var got = routine( src, 2 );
   test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 2;
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got, [ 2, [ 1, 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
   test.identical( got, [ [ 1, [ 1, 2 ] ], [ 2, [ 1, 2 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 0 );
   test.identical( got, { a : [ 1, 0 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 0;
   var got = routine( src, { a : 1 } );
   test.identical( got, [ 0, { a : 1 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { b : 2 } );
   test.identical( got, { a : [ 1, { b : 2 } ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 2, 3 );
   test.identical( got, { a : [ 1, 2, 3 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { b : 2 }, { c : 3 } );
   test.identical( got, { a : [ 1, { b : 2 }, { c : 3 } ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1 ];
   var got = routine( src, { a : 2 } );
   test.identical( got, [ [ 1, { a : 2 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, [ 2 ] );
   test.identical( got, { a : [ 1, [ 2 ] ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1 ];
   var got = routine( src, { a : 2 }, 3 );
   test.identical( got, [ [ 1, { a : 2 }, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, [ 2 ], 3 );
   test.identical( got, { a : [ 1, [ 2 ], 3 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 1' );
 
@@ -3497,42 +3497,42 @@ function vectorizeVectorizeMapOrArray( test )
   var src = [ 1, 2 ];
   var got = routine( src, 3 );
   test.identical( got, [ [ 1, 3 ], [ 2, 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 1;
   var got = routine( src, [ 1, 2 ] );
   test.identical( got, [ [ 1, 1 ], [ 1, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
   test.identical( got, [ [ 1, 1 ], [ 2, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 1;
   var got = routine( src, 2 );
   test.identical( got, [ 1, 2 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, 1 );
   test.identical( got, { a : [ 1, 1 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = 1;
   var got = routine( src, { a : 1 } );
   test.identical( got, { a : [ 1, 1 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1 };
   var got = routine( src, { a : 2 } );
   test.identical( got, { a : [ 1, 2 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 1, b : 1 };
   var got = routine( src, { b : 2, a : 2 } );
   test.identical( got, { a : [ 1, 2 ], b : [ 1, 2 ] } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 2' );
 
@@ -3582,34 +3582,34 @@ function vectorizeVectorizeForOptionsMap( test )
   var src = '1';
   var got = routine( src );
   test.identical( got, [ '1' ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'single argument';
 
   var src = [ 1 ];
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 0 };
   var got = routine( src );
   test.identical( got, [ { a : 0 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 0, b : 1 };
   var got = routine( src );
   test.identical( got, [ { a : 0, b : 1 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 0, b : [ 1 ] };
   var got = routine( src );
   test.identical( got, [ [ { a : 0, b : 1 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { a : 0, b : [ 1, 2 ] };
   var got = routine( src );
   test.identical( got, [ [ { a : 0, b : 1 } ], [ { a : 0, b : 2 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3634,27 +3634,27 @@ function vectorizeVectorizeForOptionsMap( test )
   var got = routine( src );
   test.identical( [ ... got[ 0 ] ], [ 1 ] );
   test.identical( got.length, 1 );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { b : new Set( [ 0 ] ) };
   var got = routine( src );
   test.identical( [ ... got ], [ [ { b : 0 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { b : new Set( [ 0 ] ), a : 1 };
   var got = routine( src );
   test.identical( [ ... got ], [ [ { b : 0, a : 1 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { b : new Set( [ [ 0 ] ] ), a : 1 };
   var got = routine( src );
   test.identical( [ ... got ], [ [ { b : [ 0 ], a : 1 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = { b : new Set( [ 1, 2 ] ),  a : 0 };
   var got = routine( src );
   test.identical( [ ... got ], [ [ { a : 0, b : 1 } ], [ { a : 0, b : 2 } ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'Set' );
 
@@ -4594,7 +4594,7 @@ function vectorizeAll( test )
   test.equivalent( got.str, isOdd.str );
   test.equivalent( got.number, isOdd.number );
   test.equivalent( got.routine, isOdd.routine );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 0 );
   test.identical( got([ 0, 2 ]), 0 );
   test.identical( got([ 1, 3 ]), true );
@@ -4624,7 +4624,7 @@ function vectorizeAny( test )
   test.equivalent( got.str, isOdd.str );
   test.equivalent( got.number, isOdd.number );
   test.equivalent( got.routine, isOdd.routine );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 1 );
   test.identical( got([ 0, 2 ]), false );
   test.identical( got([ 1, 3 ]), 1 );
@@ -4654,7 +4654,7 @@ function vectorizeNone( test )
   test.equivalent( got.str, isOdd.str );
   test.equivalent( got.number, isOdd.number );
   test.equivalent( got.routine, isOdd.routine );
-  test.is( _.routineIs( got ) );
+  test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), false );
   test.identical( got([ 0, 2 ]), true );
   test.identical( got([ 1, 3 ]), false );
@@ -4686,7 +4686,7 @@ function vectorizeAccessBasic( test )
   var src = _.vectorizeAccess( vector );
   var got = src.a( vector[ 0 ] );
   test.identical( got.$, [ { a : routine, b : 2 }, { a : routine, b : 2 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'execute method on element of vector, execute new vector';
   var routine = ( e ) => e;
@@ -4702,7 +4702,7 @@ function vectorizeAccessBasic( test )
   var got = src.a( vector[ 0 ] );
   test.identical( got.$, [ { a : routine, b : 2 } ] );
   debugger;
-  test.is( got === src );
+  test.true( got === src );
   debugger;
 
   /* - */
@@ -4712,7 +4712,7 @@ function vectorizeAccessBasic( test )
   var src = _.vectorizeAccess( vector );
   var got = src.$;
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === vector );
+  test.true( got === vector );
 
   test.case = 'get first element of vectors, not a routine';
   var vector = [ [ 1, 2 ], [ 1, 2 ] ];
@@ -4733,7 +4733,7 @@ function vectorizeAccessBasic( test )
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
   test.identical( got.$, [ [ routine, 2 ], [ routine, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'execute routine in vectors on element of original vector, execute resulted vector on number';
   var routine = ( e ) => e;
@@ -4748,7 +4748,7 @@ function vectorizeAccessBasic( test )
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
   test.identical( got.$, [ [ routine, 2 ] ] );
-  test.is( got === src );
+  test.true( got === src );
 
   /* - */
 
@@ -4771,7 +4771,7 @@ function vectorizeAccessBasic( test )
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
   test.identical( got.$, [ { 0 : routine, 1 : 2 }, { 0 : routine, 1 : 2 } ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'execute routine on element of original vector, execute resulted vector on number';
   var routine = ( e ) => e;
@@ -4876,7 +4876,7 @@ function vectorizeAccessSpecial( test )
 
   test.description = 'get';
   test.identical( vectorized.$, elements );
-  test.is( _.routineIs( vectorized.routine ) );
+  test.true( _.routineIs( vectorized.routine ) );
 
   test.description = 'does not exist';
   test.identical( vectorized.haveNo, undefined );
@@ -4891,7 +4891,7 @@ function vectorizeAccessSpecial( test )
   vectorized.name = 'new value';
   console.log( vectorized.$ );
   test.identical( vectorized.$, elements );
-  test.is( _.routineIs( vectorized.routine ) );
+  test.true( _.routineIs( vectorized.routine ) );
   var exp = [ 'new value', 'new value', 'new value' ];
   test.identical( vectorized.name.$, exp );
 

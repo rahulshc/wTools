@@ -960,7 +960,7 @@ function longFill( src, value, range )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.longIs( src ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( value === undefined )
   value = 0;
@@ -1436,7 +1436,7 @@ should return undefined if cant create representation
 let representation = _.bufferRepresent_( src );
 representation[ 4 ] = x; // src changed too
 */
-/* qqq2 : implement longRepresent_( src, crange ~ [ first, last ] ) */
+/* qqq2 : implement longRepresent_( src, cinterval ~ [ first, last ] ) */
 
 function longRepresent( src, begin, end )
 {
@@ -1669,7 +1669,7 @@ function longBut( array, range, val )
 
   _.assert( _.longLike( array ) );
   _.assert( val === undefined || _.longLike( val ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   // _.assert( _.longLike( range ), 'not tested' );
   // _.assert( !_.longLike( range ), 'not tested' );
 
@@ -1799,7 +1799,7 @@ function longButInplace( array, range, val )
   range = [ range, range + 1 ];
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   _.rangeClamp( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -1866,9 +1866,9 @@ function longButInplace( array, range, val )
 //   }
 //   else
 //   {
-//     /* aaa2 : wrong. src could pass check rangeIs if length is 2 */
+//     /* aaa2 : wrong. src could pass check intervalIs if length is 2 */
 //     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
-//     // if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+//     // if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
 //     // {
 //     //   _.assert( _.longLike( dst ) );
 //     // }
@@ -1895,11 +1895,11 @@ function longButInplace( array, range, val )
 
 /* aaa2 : rename arguments. ask */ /* Dmytro : renamed and standardized for each routine */
 
-function longBut_( /* dst, src, crange, ins */ )
+function longBut_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -1908,27 +1908,27 @@ function longBut_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
-  if( crange === undefined )
+  if( cinterval === undefined )
   {
-    crange = [ 0, -1 ];
+    cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( crange ) )
+  else if( _.numberIs( cinterval ) )
   {
-    crange = [ crange, crange ];
+    cinterval = [ cinterval, cinterval ];
   }
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
   _.assert( _.longLike( ins ) || ins === undefined || ins === null, 'Expects long {-ins-} for insertion' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : src.length - 1;
 
   if( first < 0 )
   first = 0;
@@ -2080,7 +2080,7 @@ function longShrink( array, range, val )
   // l = l !== undefined ? l : array.length;
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
 
   // if( f < 0 )
   // {
@@ -2215,7 +2215,7 @@ function longShrinkInplace( array, range, val )
   range = [ range, array.length ];
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   _.rangeClamp( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -2240,7 +2240,7 @@ function longShrinkInplace( array, range, val )
   // // l = l !== undefined ? l : array.length;
   //
   // _.assert( _.longLike( array ) );
-  // _.assert( _.rangeIs( range ) )
+  // _.assert( _.intervalIs( range ) )
   // // _.assert( _.numberIs( f ) );
   // // _.assert( _.numberIs( l ) );
   // _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -2297,7 +2297,7 @@ function longShrinkInplace( array, range, val )
 
 //
 
-function longShrink_( dst, src, crange )
+function longShrink_( dst, src, cinterval )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} element' );
 
@@ -2305,20 +2305,20 @@ function longShrink_( dst, src, crange )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
   }
 
-  if( crange === undefined )
-  crange = [ 0, src.length - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : src.length - 1;
 
   if( first < 0 )
   first = 0;
@@ -2459,7 +2459,7 @@ function longGrow( array, range, val )
   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
 
   if( l < f )
   l = f;
@@ -2590,7 +2590,7 @@ function longGrowInplace( array, range, val )
   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
 
   if( l < f )
   l = f;
@@ -2612,11 +2612,11 @@ function longGrowInplace( array, range, val )
 
 //
 
-function longGrow_( /* dst, src, crange, ins */ )
+function longGrow_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -2625,21 +2625,21 @@ function longGrow_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
-  if( crange === undefined )
-  crange = [ 0, src.length - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : src.length - 1;
 
   if( first > 0 )
   first = 0;
@@ -2655,7 +2655,7 @@ function longGrow_( /* dst, src, crange, ins */ )
   if( last + 1 < first )
   last = first - 1;
 
-  let first2 = Math.max( -crange[ 0 ], 0 );
+  let first2 = Math.max( -cinterval[ 0 ], 0 );
   let last2 = Math.min( src.length - 1 + first2, last + first2 );
 
   let resultLength = last - first + 1;
@@ -2788,7 +2788,7 @@ function longRelength( array, range, val )
   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
 
   if( l < f )
   l = f;
@@ -2910,7 +2910,7 @@ function longRelengthInplace( array, range, val )
   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
   _.assert( _.longLike( array ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
 
   if( l < f )
   l = f;
@@ -2928,11 +2928,11 @@ function longRelengthInplace( array, range, val )
 
 //
 
-function longRelength_( /* dst, src, crange, ins */ )
+function longRelength_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -2941,27 +2941,27 @@ function longRelength_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
-  if( crange === undefined )
-  crange = [ 0, src.length - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : src.length - 1;
 
   if( last < first )
   last = first - 1;
 
-  if( crange[ 1 ] < 0 && crange[ 0 ] < 0 )
-  crange[ 0 ] -= crange[ 1 ] + 1;
+  if( cinterval[ 1 ] < 0 && cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] -= cinterval[ 1 ] + 1;
 
   if( first < 0 )
   {
@@ -2969,7 +2969,7 @@ function longRelength_( /* dst, src, crange, ins */ )
     first -= first;
   }
 
-  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let first2 = Math.max( Math.abs( cinterval[ 0 ] ), 0 );
   let last2 = Math.min( src.length - 1, last );
 
   let resultLength = last - first + 1;
@@ -2981,14 +2981,14 @@ function longRelength_( /* dst, src, crange, ins */ )
   }
   else if( dst === src )
   {
-    if( dst.length === resultLength && crange[ 0 ] === 0 )
+    if( dst.length === resultLength && cinterval[ 0 ] === 0 )
     {
       return dst;
     }
     if( _.arrayLikeResizable( dst ) )
     {
       _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
-      if( crange[ 0 ] < 0 )
+      if( cinterval[ 0 ] < 0 )
       {
         dst.splice( first, 0, ... _.dup( ins, first2 ) );
         dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
@@ -3016,7 +3016,7 @@ function longRelength_( /* dst, src, crange, ins */ )
   {
     return result;
   }
-  if( crange[ 0 ] < 0 )
+  if( cinterval[ 0 ] < 0 )
   {
     for( let r = first2 ; r < ( last2 + 1 + first2 ) && r < resultLength ; r++ )
     result[ r ] = src[ r - first2 ];

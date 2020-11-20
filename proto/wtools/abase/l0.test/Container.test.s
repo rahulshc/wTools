@@ -105,8 +105,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled array';
   var dst = null;
@@ -114,8 +114,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 0, 1 ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty array';
   var dst = undefined;
@@ -123,8 +123,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled array';
   var dst = undefined;
@@ -132,8 +132,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 0, 1 ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -143,8 +143,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = null;
@@ -152,8 +152,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty simple map';
   var dst = undefined;
@@ -161,8 +161,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -170,8 +170,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -181,8 +181,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled pure map';
   var dst = null;
@@ -192,8 +192,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty pure map';
   var dst = undefined;
@@ -201,8 +201,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -212,8 +212,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -223,8 +223,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled Set';
   var dst = null;
@@ -232,8 +232,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 0, 1 ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty Set';
   var dst = undefined;
@@ -241,8 +241,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled Set';
   var dst = undefined;
@@ -250,8 +250,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 0, 1 ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -261,8 +261,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled HashMap';
   var dst = null;
@@ -270,8 +270,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty HashMap';
   var dst = undefined;
@@ -279,8 +279,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -288,8 +288,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -299,8 +299,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = 'str';
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got === src );
+  test.true( got !== dst );
+  test.true( got === src );
 
   test.case = 'src - BufferRaw';
   var dst = undefined;
@@ -308,8 +308,8 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new BufferRaw( 10 );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got === src );
+  test.true( got !== dst );
+  test.true( got === src );
 
   /* - */
 
@@ -353,7 +353,7 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new BufferRaw();
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - map, src - function';
   var dst = { a : 2 };
@@ -361,7 +361,7 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = src;
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - HashMap, src - BufferView';
   var dst = new Map( [ [ undefined, undefined ] ] );
@@ -369,7 +369,7 @@ function extendReplacingDstNull( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new BufferView( new BufferRaw() );
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - Set, src - object';
   var dst = new Set( [ 1, 2 ] );
@@ -381,7 +381,7 @@ function extendReplacingDstNull( test )
   var src = new Constr();
   var got = _.container.extendReplacing( dst, src );
   test.identical( got.x, 1 );
-  test.is( got === src );
+  test.true( got === src );
 
   test.close( 'src - not container' );
 
@@ -415,7 +415,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -423,7 +423,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 3, b : 5, c : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, different content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -431,7 +431,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 1, b : 2, c : 3, d : 3, e : 5, f : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -439,7 +439,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 1, b : 2, c : 3 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -449,7 +449,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -457,7 +457,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, different content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -465,7 +465,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ], [ 'd', 3 ], [ 'e', 5 ], [ 'f', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -473,7 +473,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -483,8 +483,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -492,8 +492,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 3, 'b' : 5, 'c' : 6 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - long, src - empty';
   var dst = [ 9, -16 ];
@@ -501,8 +501,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - long';
   var dst = [ 9, -16 ];
@@ -510,8 +510,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 3, 'b' : 5, 'c' : 6 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -521,8 +521,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -530,8 +530,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 3, 'b' : 5, 'c' : 6 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -539,8 +539,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -548,8 +548,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { 'a' : 3, 'b' : 5, 'c' : 6 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'src - mapLike' );
 
@@ -563,7 +563,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -571,7 +571,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 3, b : 5, c : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, different content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -579,7 +579,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 1, b : 2, c : 3, d : 3, e : 5, f : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -587,7 +587,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = { a : 1, b : 2, c : 3 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -597,7 +597,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -605,7 +605,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, different content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -613,7 +613,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ], [ 'd', 3 ], [ 'e', 5 ], [ 'f', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -621,7 +621,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -631,8 +631,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -640,8 +640,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - long, src - empty';
   var dst = [ 9, -16 ];
@@ -649,8 +649,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - long';
   var dst = [ 9, -16 ];
@@ -658,8 +658,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -669,8 +669,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -678,8 +678,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -687,8 +687,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -696,8 +696,8 @@ function extendReplacingDstMapAndHashMapLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'src - hashMapLike' );
 }
@@ -714,8 +714,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -723,8 +723,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map, src - empty';
   var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
@@ -732,8 +732,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map';
   var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
@@ -741,8 +741,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -752,8 +752,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -761,8 +761,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, src - empty';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -770,8 +770,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -779,8 +779,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -790,7 +790,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -798,7 +798,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, different content';
   var dst = [ 1, 2, 3 ];
@@ -806,7 +806,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = [ 9, -16, 'str', null ];
@@ -814,7 +814,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -824,7 +824,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 4, 5, 6, 7 ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long not extensible, src - long';
   var dst = [ 1, 2, 3 ];
@@ -833,7 +833,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 4, 5, 6 ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long not extensible, src - long';
   var dst = [ 1, 2, 3 ];
@@ -851,8 +851,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -860,8 +860,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -869,8 +869,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -878,8 +878,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'src - longLike' );
 
@@ -893,8 +893,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -902,8 +902,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map, src -empty';
   var dst = { a : 1, b : 2, c : 3 };
@@ -911,8 +911,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map';
   var dst = { a : 1, b : 2, c : 3 };
@@ -920,8 +920,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -931,8 +931,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -940,8 +940,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, src - empty';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -949,8 +949,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -958,8 +958,8 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -969,7 +969,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -977,7 +977,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, different content';
   var dst = [ 1, 2 ];
@@ -985,7 +985,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 1, 2, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, almost identical content';
   var dst = [ 9, -16, 'str', null ];
@@ -993,7 +993,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1003,7 +1003,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -1011,7 +1011,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - Set, different content';
   var dst = new Set( [ 1, 2 ] );
@@ -1019,7 +1019,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 1, 2, 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - Set, almost identical content';
   var dst = new Set( [ 9, -16, 'str', null ] );
@@ -1027,7 +1027,7 @@ function extendReplacingDstLongAndSetLike( test )
   var got = _.container.extendReplacing( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'src - setLike' );
 }
@@ -1044,8 +1044,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled array';
   var dst = null;
@@ -1053,8 +1053,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 0, 1 ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty array';
   var dst = undefined;
@@ -1062,8 +1062,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled array';
   var dst = undefined;
@@ -1071,8 +1071,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 0, 1 ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1082,8 +1082,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = null;
@@ -1091,8 +1091,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty simple map';
   var dst = undefined;
@@ -1100,8 +1100,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -1109,8 +1109,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1120,8 +1120,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled pure map';
   var dst = null;
@@ -1131,8 +1131,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty pure map';
   var dst = undefined;
@@ -1140,8 +1140,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -1151,8 +1151,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { 'a' : 1, 'b' : 2 };
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1162,8 +1162,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled Set';
   var dst = null;
@@ -1171,8 +1171,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 0, 1 ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty Set';
   var dst = undefined;
@@ -1180,8 +1180,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled Set';
   var dst = undefined;
@@ -1189,8 +1189,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 0, 1 ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1200,8 +1200,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled HashMap';
   var dst = null;
@@ -1209,8 +1209,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - empty HashMap';
   var dst = undefined;
@@ -1218,8 +1218,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'src - filled simple map';
   var dst = undefined;
@@ -1227,8 +1227,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1238,8 +1238,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = 'str';
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got === src );
+  test.true( got !== dst );
+  test.true( got === src );
 
   test.case = 'src - BufferRaw';
   var dst = undefined;
@@ -1247,8 +1247,8 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new BufferRaw( 10 );
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got === src );
+  test.true( got !== dst );
+  test.true( got === src );
 
   /* - */
 
@@ -1285,7 +1285,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, new BufferRaw() );
   var exp = [ 1, 2, new BufferRaw() ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, src - function';
   var dst = { a : 2 };
@@ -1330,7 +1330,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 1, 2 ];
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - primitive, src - map';
   var dst = 'str';
@@ -1338,7 +1338,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 2 };
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - primitive, src - HashMap';
   var dst = true;
@@ -1346,7 +1346,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ undefined, undefined ] ] );
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - primitive, src - set';
   var dst = false;
@@ -1354,7 +1354,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 1, 2 ] );
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   /* */
 
@@ -1364,7 +1364,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 1, 2 ];
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - function, src - map';
   var dst = function(){};
@@ -1372,7 +1372,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 2 };
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - BufferView, src - HashMap';
   var dst = new BufferView( new BufferRaw() );
@@ -1380,7 +1380,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ undefined, undefined ] ] );
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'dst - object, src - Set';
   var Constr = function()
@@ -1393,7 +1393,7 @@ function extendAppendingDstNull( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 1, 2 ] );
   test.identical( got, exp );
-  test.is( got === src );
+  test.true( got === src );
 
   test.close( 'dst - not container' );
 
@@ -1427,7 +1427,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -1435,7 +1435,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 3, b : 5, c : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, different content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1443,7 +1443,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 1, b : 2, c : 3, d : 3, e : 5, f : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1451,7 +1451,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 1, b : 2, c : 3 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1461,7 +1461,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -1469,7 +1469,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, different content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1477,7 +1477,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ], [ 'd', 3 ], [ 'e', 5 ], [ 'f', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1485,7 +1485,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1495,8 +1495,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ {} ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -1504,8 +1504,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ { 'a' : 3, 'b' : 5, 'c' : 6 } ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - long, src - empty';
   var dst = [ 9, -16 ];
@@ -1513,8 +1513,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, {} ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - long';
   var dst = [ 9, -16 ];
@@ -1522,8 +1522,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, { 'a' : 3, 'b' : 5, 'c' : 6 } ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1533,8 +1533,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set(), {} ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -1542,8 +1542,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set(), { 'a' : 3, 'b' : 5, 'c' : 6 } ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -1551,8 +1551,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set( [ 9, -16 ] ), {} ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -1560,8 +1560,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set( [ 9, -16 ] ), { 'a' : 3, 'b' : 5, 'c' : 6 } ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'src - mapLike' );
 
@@ -1575,7 +1575,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -1583,7 +1583,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 3, b : 5, c : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, different content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1591,7 +1591,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 1, b : 2, c : 3, d : 3, e : 5, f : 6 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1599,7 +1599,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 1, b : 2, c : 3 };
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1609,7 +1609,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -1617,7 +1617,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, different content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1625,7 +1625,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ], [ 'd', 3 ], [ 'e', 5 ], [ 'f', 6 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1633,7 +1633,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1643,8 +1643,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map() ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -1652,8 +1652,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] ) ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - long, src - empty';
   var dst = [ 9, -16 ];
@@ -1661,8 +1661,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, new Map() ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - long';
   var dst = [ 9, -16 ];
@@ -1670,8 +1670,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] ) ];
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1681,8 +1681,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set(), new Map() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -1690,8 +1690,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set(), new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -1699,8 +1699,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set( [ 9, -16 ] ), new Map() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -1708,8 +1708,8 @@ function extendAppendingDstMapAndHashMapLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set( [ 9, -16 ] ), new Map( [ [ 'a', 3 ], [ 'b', 5 ], [ 'c', 6 ] ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'src - hashMapLike' );
 }
@@ -1726,8 +1726,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ {} ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -1735,8 +1735,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ {}, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map, src - empty';
   var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
@@ -1744,8 +1744,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ { 'a' : 1, 'b' : 2, 'c' : 3 }, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map';
   var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
@@ -1753,8 +1753,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ { 'a' : 1, 'b' : 2, 'c' : 3 }, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1764,8 +1764,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -1773,8 +1773,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map(), 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, src - empty';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1782,8 +1782,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1791,8 +1791,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1802,7 +1802,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -1810,7 +1810,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, different content';
   var dst = [ 1, 2, 3 ];
@@ -1818,7 +1818,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 1, 2, 3, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - map, almost identical content';
   var dst = [ 9, -16, 'str', null ];
@@ -1826,7 +1826,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, 'str', null, 9, -16, 'str', null ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1836,8 +1836,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -1845,8 +1845,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set, src - empty';
   var dst = new Set( [ 9, -16 ] );
@@ -1854,8 +1854,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 9, -16 ] );
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.case = 'dst - Set';
   var dst = new Set( [ 9, -16 ] );
@@ -1863,8 +1863,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
 
   test.close( 'src - longLike' );
 
@@ -1878,8 +1878,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ {}, new Set() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty map';
   var dst = {};
@@ -1887,8 +1887,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ {}, new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map, src -empty';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1896,8 +1896,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ { a : 1, b : 2, c : 3 }, new Set() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - map';
   var dst = { a : 1, b : 2, c : 3 };
@@ -1905,8 +1905,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ { a : 1, b : 2, c : 3 }, new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1916,8 +1916,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map(), new Set() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - empty HashMap';
   var dst = new Map();
@@ -1925,8 +1925,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map(), new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, src - empty';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1934,8 +1934,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), new Set() ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'dst - HashMap, almost identical content';
   var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
@@ -1943,8 +1943,8 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   /* */
 
@@ -1954,7 +1954,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set() ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty long';
   var dst = [];
@@ -1962,7 +1962,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, different content';
   var dst = [ 1, 2 ];
@@ -1970,7 +1970,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 1, 2, new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - long, almost identical content';
   var dst = [ 9, -16, 'str', null ];
@@ -1978,7 +1978,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = [ 9, -16, 'str', null, new Set( [ 9, -16, 'str', null ] ) ];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -1988,7 +1988,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty Set';
   var dst = new Set();
@@ -1996,7 +1996,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - Set, different content';
   var dst = new Set( [ 1, 2 ] );
@@ -2004,7 +2004,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 1, 2, 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - Set, almost identical content';
   var dst = new Set( [ 9, -16, 'str', null ] );
@@ -2012,7 +2012,7 @@ function extendAppendingDstLongAndSetLike( test )
   var got = _.container.extendAppending( dst, src );
   var exp = new Set( [ 9, -16, 'str', null ] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'src - setLike' );
 }
@@ -2026,28 +2026,28 @@ function empty( test )
   var got = _.container.empty( dst );
   var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled array';
   var dst = [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ];
   var got = _.container.empty( dst );
   var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'empty unroll';
   var dst = _.unrollMake( [] );
   var got = _.container.empty( dst );
   var exp = _.unrollMake( [] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled unroll';
   var dst = _.unrollMake( [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ] );
   var got = _.container.empty( dst );
   var exp = _.unrollMake( [] );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -2056,14 +2056,14 @@ function empty( test )
   var got = _.container.empty( dst );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled Set';
   var dst = new Set( [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ] );
   var got = _.container.empty( dst );
   var exp = new Set();
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -2072,14 +2072,14 @@ function empty( test )
   var got = _.container.empty( dst );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled Map';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', ''], [ false, false ], [ {}, {} ], [ [], [] ] ] );
   var got = _.container.empty( dst );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -2088,21 +2088,21 @@ function empty( test )
   var got = _.container.empty( dst );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled simple map';
   var dst = { 1 : 1, null : null, undefined : undefined, 'str' : 'str', '' : '', false : false };
   var got = _.container.empty( dst );
   var exp = {};
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'empty pure map';
   var dst = Object.create( null );
   var got = _.container.empty( dst );
   var exp = Object.create( null );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'filled simple map';
   var dst = Object.create( null );
@@ -2112,7 +2112,7 @@ function empty( test )
   var got = _.container.empty( dst );
   var exp = Object.create( null );
   test.identical( got, exp );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* - */
 

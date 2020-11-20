@@ -21,17 +21,17 @@ function bufferRawIs( test )
   var src = new BufferRaw( [ 1, 2 ] );
   var got = _.bufferRawIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferTypedIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   test.case = 'shared array buffer';
   var src = new SharedArrayBuffer( [ 1, 2 ] );
   var got = _.bufferRawIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferTypedIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   test.case = 'typed array';
   var src = new F32x( [ 1, 2 ] );
@@ -85,16 +85,16 @@ function bufferTypedIs( test )
   var src = new F32x( [ 1, 2 ] );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   var src = new U8ClampedX( 10*10*4 );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   test.case = 'array buffer';
   var src = new BufferRaw( [ 1, 2 ] );
@@ -149,17 +149,17 @@ function bufferViewIs( test )
   var src = new BufferView( new BufferRaw( [ 10 ] ) );
   var got = _.bufferViewIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
 
   test.case = 'view buffer, SharedArrayBuffer';
   var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
   var got = _.bufferViewIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferNodeIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
 
   test.case = 'typed array';
   var src = new F32x( [ 1, 2 ] );
@@ -216,16 +216,16 @@ function bufferNodeIs( test )
   var src = BufferNode.alloc( 10 );
   var got = _.bufferNodeIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   var src = BufferNode.from( [ 2, 4 ] );
   var got = _.bufferNodeIs( src );
   test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
-  test.isNot( _.bufferViewIs( src ) );
+  test.false( _.bufferRawIs( src ) );
+  test.false( _.bufferTypedIs( src ) );
+  test.false( _.bufferViewIs( src ) );
 
   test.case = 'typed array';
   var src = new F32x( [ 1, 2 ] );
@@ -852,63 +852,63 @@ function bufferMakeWithArrayAndUnroll( test )
     var got = _.bufferMake( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, null );
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, undefined );
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src, 2 );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src, 4 );
     var expected = makeBuffer( [ 1, 2, 3, undefined ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -916,8 +916,8 @@ function bufferMakeWithArrayAndUnroll( test )
     var got = _.bufferMake( src, ins );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
   }
 
   test.case = 'src - null';
@@ -980,7 +980,7 @@ function bufferMakeWithArrayAndUnroll( test )
   var got = _.bufferMake( Array, ins );
   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 
   /* - */
 
@@ -1011,63 +1011,63 @@ function bufferMakeWithArgumentsArray( test )
   var got = _.bufferMake( src );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - null';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMake( src, null );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - undefined';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMake( src, undefined );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - number';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMake( src, 2 );
   var expected = _.longDescriptor.make( 2 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - empty array';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMake( src, [] );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - array';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMake( src, [ 1, 2, 3 ] );
   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, not ins';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMake( src );
   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins < src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMake( src, 2 );
   var expected = _.longDescriptor.make( [ 1, 2 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins > src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMake( src, 4 );
   var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - array, ins.length > src.length';
   var src = _.argumentsArrayMake( [ 0, 1 ] );
@@ -1075,8 +1075,8 @@ function bufferMakeWithArgumentsArray( test )
   var got = _.bufferMake( src, ins );
   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got !== ins );
-  test.is( got !== src );
+  test.true( got !== ins );
+  test.true( got !== src );
 
   /* */
 
@@ -1140,7 +1140,7 @@ function bufferMakeWithArgumentsArray( test )
   var got = _.bufferMake( Array, ins );
   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 }
 
 //
@@ -1191,72 +1191,72 @@ function bufferMakeWithBuffers( test )
     var got = _.bufferMake( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor );
+    test.true( got !== src );
+    test.true( got instanceof src.constructor );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - empty buffer, ins - number';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - empty buffer, ins - empty array';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - empty buffer, ins - array';
     var src = makeBuffer( [] );
     var got = _.bufferMake( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - filled buffer, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src, 2 );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - filled buffer, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMake( src, 4 );
     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
 
     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -1264,9 +1264,9 @@ function bufferMakeWithBuffers( test )
     var got = _.bufferMake( src, ins );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
-    test.is( got instanceof src.constructor )
+    test.true( got !== ins );
+    test.true( got !== src );
+    test.true( got instanceof src.constructor )
   }
 
   test.case = 'src - null';
@@ -1329,7 +1329,7 @@ function bufferMakeWithBuffers( test )
   var got = _.bufferMake( Array, ins );
   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 }
 
 //
@@ -1374,63 +1374,63 @@ function bufferMakeWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMake( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 4 );
     var expected = makeBuffer( [ 1, 2, 3, undefined ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -1438,8 +1438,8 @@ function bufferMakeWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMake( src, ins );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -1503,7 +1503,7 @@ function bufferMakeWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMake( Array, ins );
     var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
 
     /* - */
 
@@ -1556,63 +1556,63 @@ function bufferMakeWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMake( src );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMake( src, null );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMake( src, undefined );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = descriptor.longDescriptor.make( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMake( src, [] );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMake( src, [ 1, 2, 3 ] );
     var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src );
     var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = descriptor.longDescriptor.make( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 4 );
     var expected = descriptor.longDescriptor.make( [ 1, 2, 3, undefined ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = _.argumentsArrayMake( [ 0, 1 ] );
@@ -1620,8 +1620,8 @@ function bufferMakeWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMake( src, ins );
     var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -1685,7 +1685,7 @@ function bufferMakeWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMake( Array, ins );
     var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
   }
 }
 
@@ -1749,63 +1749,63 @@ function bufferMakeWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMake( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - number';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - empty array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMake( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 2 );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMake( src, 4 );
     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -1813,8 +1813,8 @@ function bufferMakeWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMake( src, ins );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -1878,7 +1878,7 @@ function bufferMakeWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMake( Array, ins );
     var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
   }
 }
 
@@ -1915,63 +1915,63 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
     var got = _.bufferMakeUndefined( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src, 4 );
     var expected = makeBuffer( 4 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -1979,8 +1979,8 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
     var got = _.bufferMakeUndefined( src, ins );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
   }
 
   test.case = 'src - null';
@@ -2043,7 +2043,7 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
   var got = _.bufferMakeUndefined( Array, ins );
   var expected = new Array( 5 );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 
   /* - */
 
@@ -2074,63 +2074,63 @@ function bufferMakeUndefinedWithArgumentsArray( test )
   var got = _.bufferMakeUndefined( src );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - null';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMakeUndefined( src, null );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - undefined';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMakeUndefined( src, undefined );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - number';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMakeUndefined( src, 2 );
   var expected = _.longDescriptor.make( 2 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - empty array';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMakeUndefined( src, [] );
   var expected = _.longDescriptor.make( [] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - empty long, ins - array';
   var src = _.argumentsArrayMake( [] );
   var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
   var expected = _.longDescriptor.make( 3 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, not ins';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src );
   var expected = _.longDescriptor.make( 3 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins < src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src, 2 );
   var expected = _.longDescriptor.make( 2 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins > src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src, 4 );
   var expected = _.longDescriptor.make( 4 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'src - filled long, ins - array, ins.length > src.length';
   var src = _.argumentsArrayMake( [ 0, 1 ] );
@@ -2138,8 +2138,8 @@ function bufferMakeUndefinedWithArgumentsArray( test )
   var got = _.bufferMakeUndefined( src, ins );
   var expected = _.longDescriptor.make( 3 );
   test.identical( got, expected );
-  test.is( got !== ins );
-  test.is( got !== src );
+  test.true( got !== ins );
+  test.true( got !== src );
 
   /* */
 
@@ -2203,7 +2203,7 @@ function bufferMakeUndefinedWithArgumentsArray( test )
   var got = _.bufferMakeUndefined( Array, ins );
   var expected = new Array( 5 );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 }
 
 //
@@ -2253,63 +2253,63 @@ function bufferMakeUndefinedWithBuffers( test )
     var got = _.bufferMakeUndefined( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - number';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - empty array';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - array';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src, 4 );
     var expected = makeBuffer( 4 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -2317,8 +2317,8 @@ function bufferMakeUndefinedWithBuffers( test )
     var got = _.bufferMakeUndefined( src, ins );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
   }
 
   test.case = 'src - null';
@@ -2381,7 +2381,7 @@ function bufferMakeUndefinedWithBuffers( test )
   var got = _.bufferMakeUndefined( Array, ins );
   var expected = new Array( 5 );
   test.identical( got, expected );
-  test.is( got !== ins );
+  test.true( got !== ins );
 }
 
 //
@@ -2426,63 +2426,63 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 4 );
     var expected = makeBuffer( 4 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -2490,8 +2490,8 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src, ins );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -2555,7 +2555,7 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( Array, ins );
     var expected = new Array( 5 );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
 
     /* - */
 
@@ -2608,63 +2608,63 @@ function bufferMakeUndefinedWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMakeUndefined( src, null );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMakeUndefined( src, undefined );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - number';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = descriptor.longDescriptor.make( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - empty array';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMakeUndefined( src, [] );
     var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty long, ins - array';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.bufferMakeUndefined( src, [ 1, 2, 3 ] );
     var expected = descriptor.longDescriptor.make( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, not ins';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src );
     var expected = descriptor.longDescriptor.make( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins < src.length';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = descriptor.longDescriptor.make( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - number, ins > src.length';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 4 );
     var expected = descriptor.longDescriptor.make( 4 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled long, ins - array, ins.length > src.length';
     var src = _.argumentsArrayMake( [ 0, 1 ] );
@@ -2672,8 +2672,8 @@ function bufferMakeUndefinedWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src, ins );
     var expected = descriptor.longDescriptor.make( 3 );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -2737,7 +2737,7 @@ function bufferMakeUndefinedWithArgumentsArrayLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( Array, ins );
     var expected = new Array( 5 );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
   }
 }
 
@@ -2801,63 +2801,63 @@ function bufferMakeUndefinedWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, null );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, undefined );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - number';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - empty array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, [] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - empty buffer, ins - array';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, [ 1, 2, 3 ] );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 2 );
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src, 4 );
     var expected = makeBuffer( 4 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -2865,8 +2865,8 @@ function bufferMakeUndefinedWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( src, ins );
     var expected = makeBuffer( 3 );
     test.identical( got, expected );
-    test.is( got !== ins );
-    test.is( got !== src );
+    test.true( got !== ins );
+    test.true( got !== src );
 
     /* */
 
@@ -2930,7 +2930,7 @@ function bufferMakeUndefinedWithBuffersLongDescriptor( test )
     var got = descriptor.bufferMakeUndefined( Array, ins );
     var expected = new Array( 5 );
     test.identical( got, expected );
-    test.is( got !== ins );
+    test.true( got !== ins );
   }
 }
 
@@ -3033,7 +3033,7 @@ function bufferFrom( test )
   var src = new U8x([ 1, 2, 3 ]).buffer;
   var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
   test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'bufferConstructor - BufferView';
   var src = new U8x([ 1, 2, 3 ]).buffer;
@@ -3073,7 +3073,7 @@ function bufferFrom( test )
   var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
   var got = _.bufferFrom({ src, bufferConstructor : BufferView });
   test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'bufferConstructor - bufferTyped, U8x';
   var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
@@ -3147,7 +3147,7 @@ function bufferFrom( test )
   var src = new U8x([ 1, 2, 3 ]);
   var got = _.bufferFrom({ src, bufferConstructor : U8x });
   test.identical( got, new U8x([ 1, 2, 3 ]) );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'bufferConstructor - bufferTyped, Fx';
   var src = new U16x([ 1, 2, 3 ]);
@@ -3228,7 +3228,7 @@ function bufferFrom( test )
     var src8 = BufferNode.from([ 1, 2, 3 ]);
     var got8 = _.bufferFrom({ src : src8, bufferConstructor : BufferNode });
     test.identical( got8, BufferNode.from([ 1, 2, 3 ]) );
-    test.is( got8 === src8 );
+    test.true( got8 === src8 );
 
     test.close( 'src - BufferNode' );
   }
@@ -3309,13 +3309,13 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new U8x( src ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3, 4, '5' ];
   var got = _.bufferRawFrom( src );
   var expected = new U8x( src ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3324,14 +3324,14 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new BufferRaw( 3 );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'from BufferTyped.buffer';
   var src = new F32x( 3 ).buffer;
   var got = _.bufferRawFrom( src );
   var expected = new BufferRaw( 12 );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   /* */
 
@@ -3342,14 +3342,14 @@ function bufferRawFrom( test )
     var got1 = _.bufferRawFrom( src1 );
     var expected1 = new BufferRaw( 10 );
     test.identical( got1, expected1 );
-    test.is( got1 !== src1 );
+    test.true( got1 !== src1 );
 
     test.case = 'BufferNode from string';
     var src1 = BufferNode.from( 'str' );
     var got1 = _.bufferRawFrom( src1 );
     var expected1 = new U8x( [ 115, 116, 114 ] ).buffer;
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, buffer.length < result.length';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3357,7 +3357,7 @@ function bufferRawFrom( test )
     var got1 = _.bufferRawFrom( src1 );
     var expected1 = new U8x( [ 1, 2, 3 ] ).buffer;
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, offset from src1';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3365,7 +3365,7 @@ function bufferRawFrom( test )
     var got1 = _.bufferRawFrom( src1 );
     var expected1 = new U8x( [ 4, 5 ] ).buffer;
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, offset from src1, buffer.length < result.length';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3373,7 +3373,7 @@ function bufferRawFrom( test )
     var got1 = _.bufferRawFrom( src1 );
     var expected1 = new U8x( [ 3, 4 ] ).buffer;
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
   }
 
   /* */
@@ -3383,7 +3383,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new BufferRaw( 3 );
   test.identical( got, expected );
-  test.is( got === src.buffer );
+  test.true( got === src.buffer );
 
   test.case = 'from BufferTyped, offset';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3391,7 +3391,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new F32x( [ 3, 4, 5 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src.buffer );
+  test.true( got !== src.buffer );
 
   test.case = 'from BufferTyped, not offset, buffer.length < result.length';
   var buffer = new U16x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3399,7 +3399,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new U8x( [ 1, 0, 2, 0, 3, 0, 4, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src.buffer );
+  test.true( got !== src.buffer );
 
   test.case = 'from BufferTyped, offset, buffer.length < result.length';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3407,7 +3407,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new U8x( [ 2, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src.buffer );
+  test.true( got !== src.buffer );
 
   /* */
 
@@ -3416,7 +3416,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new BufferRaw( 10 );
   test.identical( got, expected );
-  test.is( got === src.buffer );
+  test.true( got === src.buffer );
 
   test.case = 'from BufferView, not offset, buffer.length < result.length';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3424,7 +3424,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new F32x( [ 1 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src.buffer );
+  test.true( got !== src.buffer );
 
   test.case = 'from BufferView, offset';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3432,7 +3432,7 @@ function bufferRawFrom( test )
   var got = _.bufferRawFrom( src );
   var expected = new U8x( [ 2, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src.buffer );
+  test.true( got !== src.buffer );
 
   /* */
 
@@ -3471,13 +3471,13 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( src );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3, 4, '5' ];
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( src );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3486,14 +3486,14 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( 3 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped.buffer';
   var src = new F32x( 3 ).buffer;
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( 12 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3504,14 +3504,14 @@ function bufferBytesFrom( test )
     var got1 = _.bufferBytesFrom( src1 );
     var expected1 = new U8x( 10 );
     test.identical( got1, expected1 );
-    test.is( got1 !== src1 );
+    test.true( got1 !== src1 );
 
     test.case = 'BufferNode from string';
     var src1 = BufferNode.from( 'str' );
     var got1 = _.bufferBytesFrom( src1 );
     var expected1 = new U8x( [ 115, 116, 114 ] );
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, buffer.length < result.length';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3519,7 +3519,7 @@ function bufferBytesFrom( test )
     var got1 = _.bufferBytesFrom( src1 );
     var expected1 = new U8x( [ 1, 2, 3 ] );
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, offset from src1';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3527,7 +3527,7 @@ function bufferBytesFrom( test )
     var got1 = _.bufferBytesFrom( src1 );
     var expected1 = new U8x( [ 4, 5 ] );
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
 
     test.case = 'BufferNode, offset from src1, buffer.length < result.length';
     var buffer1 = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3535,7 +3535,7 @@ function bufferBytesFrom( test )
     var got1 = _.bufferBytesFrom( src1 );
     var expected1 = new U8x( [ 3, 4 ] );
     test.identical( got1, expected1 );
-    test.is( got1 !== expected1 );
+    test.true( got1 !== expected1 );
   }
 
   /* */
@@ -3545,14 +3545,14 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( 3 );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'from BufferBytes, not offset';
   var src = new U8x( [ 1, 2, 3, 4, 5 ] );
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'from BufferTyped, offset';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3560,7 +3560,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 0, 0, 64, 64, 0, 0, 128, 64, 0, 0, 160, 64 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped, not offset, buffer.length < result.length';
   var buffer = new U16x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3568,7 +3568,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 1, 0, 2, 0, 3, 0, 4, 0 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped, offset, buffer.length < result.length';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3576,7 +3576,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 2, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   /* */
 
@@ -3585,7 +3585,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( 10 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferView, not offset, buffer.length < result.length';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3593,7 +3593,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 0, 0, 128, 63 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferView, offset';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3601,7 +3601,7 @@ function bufferBytesFrom( test )
   var got = _.bufferBytesFrom( src );
   var expected = new U8x( [ 2, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3643,13 +3643,13 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( src );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = [ 1, 2, 3, 4, '5' ];
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( src );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3658,21 +3658,21 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 0 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferRaw';
   var src = new BufferRaw( 3 );
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 3 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped.buffer';
   var src = new F32x( 3 ).buffer;
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 12 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3681,14 +3681,14 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 10 );
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'BufferNode from string';
   var src = BufferNode.from( 'str' );
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 115, 116, 114 ] );
   test.identical( got, expected );
-  test.is( got !== expected );
+  test.true( got !== expected );
 
   test.case = 'BufferNode, buffer.length < result.length';
   var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3696,7 +3696,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got !== expected );
+  test.true( got !== expected );
 
   test.case = 'BufferNode, offset from src';
   var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3704,7 +3704,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 4, 5 ] );
   test.identical( got, expected );
-  test.is( got !== expected );
+  test.true( got !== expected );
 
   test.case = 'BufferNode, offset from src, buffer.length < result.length';
   var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3712,7 +3712,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 3, 4 ] );
   test.identical( got, expected );
-  test.is( got !== expected );
+  test.true( got !== expected );
 
   /* */
 
@@ -3721,21 +3721,21 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 0 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferBytes';
   var src = new U8x( 3 );
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 3 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferBytes, not offset';
   var src = new U8x( [ 1, 2, 3, 4, 5 ] );
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped, offset';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3743,7 +3743,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 0, 0, 64, 64, 0, 0, 128, 64, 0, 0, 160, 64 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped, not offset, buffer.length < result.length';
   var buffer = new U16x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3751,7 +3751,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 1, 0, 2, 0, 3, 0, 4, 0 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferTyped, offset, buffer.length < result.length';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3759,7 +3759,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 2, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3768,7 +3768,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( 10 );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferView, not offset, buffer.length < result.length';
   var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3776,7 +3776,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 0, 0, 128, 63 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from BufferView, offset';
   var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
@@ -3784,7 +3784,7 @@ function bufferNodeFrom( test )
   var got = _.bufferNodeFrom( src );
   var expected = new BufferNode( [ 2, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -3821,19 +3821,19 @@ function bufferBut( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut( dst, -5, [ 0 ] );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = array, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -3841,19 +3841,19 @@ function bufferBut( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut( dst, -5, [ 2 ] );
   test.identical( got, [ 2, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -3861,19 +3861,19 @@ function bufferBut( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut( dst, -5, [ 2 ] );
   test.identical( got, [ 2, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -3926,28 +3926,28 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ] );
     var expected = buf( [ 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 1, 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ -1, -5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3955,7 +3955,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3963,7 +3963,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3971,7 +3971,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -3981,7 +3981,7 @@ function bufferBut( test )
       var got1 = _.bufferBut( dst1, [ 1, 2 ], src1 );
       var expected1 = buf( [ 0, 1, 2, 3, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -3990,69 +3990,69 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 0, 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, 2, [ 5 ] );
     var expected = buf( [ 0, 1, 5, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, -2, [ 5 ] );
     var expected = buf( [ 5, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [ 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 1, 8 ], [ 1 ] );
     var expected = buf( [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     var dst = buf( [] );
     var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* BufferRaw and BufferView */
@@ -4089,28 +4089,28 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferBut( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ 1, 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ -1, -5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -4118,7 +4118,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -4126,7 +4126,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -4134,7 +4134,7 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -4144,7 +4144,7 @@ function bufferBut( test )
       var got1 = _.bufferBut( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, [ 0, 1, 2, 3, 0, 0 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -4153,63 +4153,63 @@ function bufferBut( test )
     var got = _.bufferBut( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, 2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 5, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, [ 5, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 5, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferBut( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferBut( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -4251,19 +4251,19 @@ function bufferButInplace( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferButInplace( dst, -5, [ 0 ] );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferButInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -4271,19 +4271,19 @@ function bufferButInplace( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferButInplace( dst, -5, [ 2 ] );
   test.identical( got, [ 2, 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferButInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -4291,19 +4291,19 @@ function bufferButInplace( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferButInplace( dst, -5, [ 2 ] );
   test.identical( got, [ 2, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferButInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -4356,28 +4356,28 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ] );
     var expected = buf( [ 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ 1, 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ -1, -5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -4385,7 +4385,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -4393,7 +4393,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -4401,7 +4401,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -4411,7 +4411,7 @@ function bufferButInplace( test )
       var got1 = _.bufferButInplace( dst1, [ 1, 2 ], src1 );
       var expected1 = buf( [ 0, 1, 2, 3, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -4420,69 +4420,69 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 0, 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, 2, [ 5 ] );
     var expected = buf( [ 0, 1, 5, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, -2, [ 5 ] );
     var expected = buf( [ 5, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [ 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferButInplace( dst, [ 1, 8 ], [ 1 ] );
     var expected = buf( [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     var dst = buf( [] );
     var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* BufferRaw and BufferView */
@@ -4519,28 +4519,28 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ 1, 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ -1, -5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -4548,7 +4548,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -4556,7 +4556,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -4564,7 +4564,7 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 1, 2, 3, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -4574,7 +4574,7 @@ function bufferButInplace( test )
       var got1 = _.bufferButInplace( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, [ 0, 1, 2, 3, 0, 0 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -4583,63 +4583,63 @@ function bufferButInplace( test )
     var got = _.bufferButInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, 2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 5, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, [ 5, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 5, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferButInplace( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferButInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -4679,19 +4679,19 @@ function bufferBut_DstIsArrayUnroll( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut_( dst, -5 );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, range - number === 0, ins';
   var dst = [];
   var got = _.bufferBut_( dst, dst, 0, [ 1, 2 ] );
   test.identical( got, [ 1, 2 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, range - number > 0, without ins';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut_( dst, dst, 1 );
   test.identical( got, [ 1, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -4699,19 +4699,19 @@ function bufferBut_DstIsArrayUnroll( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( null, dst, 5, [ 0, 2 ] );
   test.identical( got, [ 1, 2, 3, 4, 0, 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ], without ins';
   var dst = _.unrollFrom( [] );
   var got = _.bufferBut_( null, dst, [ 1, 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ], ins';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( null, dst, [ 1, 0 ], [ 0, 0 ] );
   test.identical( got, [ 1, 0, 0, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -4719,19 +4719,19 @@ function bufferBut_DstIsArrayUnroll( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, [ 0, 0 ] );
   test.identical( got, [ 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ], ins';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferBut_( dst, [ 0, -1 ], [ 1, 2 ] );
   test.identical( got, [ 1, 2 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, range - undefined, ins';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, undefined, [ 1, 2 ] );
   test.identical( got, _.argumentsArrayMake([ 1, 2, 3, 4 ]) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* - */
 
@@ -4810,35 +4810,35 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] > range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 0 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] === range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ] );
     var expected = bufferMake( [ 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ -1, -5 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ], [ 1, 2, 3 ] );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = unroll';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
@@ -4846,7 +4846,7 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = argumentsArray';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
@@ -4854,7 +4854,7 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -4864,7 +4864,7 @@ function bufferBut_DstIsBufferTyped( test )
       var got1 = _.bufferBut_( dst1, [ 1, 1 ], val1 );
       var expected1 = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'val = bufferTyped';
@@ -4873,63 +4873,63 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 0, 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, 1, [ 5 ] );
     var expected = bufferMake( [ 0, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = negative number';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, -2, [ 5 ] );
     var expected = bufferMake( [ 5, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ], [ 5 ] );
     var expected = bufferMake( [ 0, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 0, 3 ], [ 1 ] );
     var expected = bufferMake( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferMake( [ 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferMake( [ 0, 1, 2, 3, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferMake( [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, val';
     var dst = bufferMake( [] );
     var got = _.bufferBut_( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferMake( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -4939,8 +4939,8 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst0, dst, [ 4, 1 ], [ 1 ] );
     var expected = [ 0, 1, 2, 3, 1 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst0 = [ { a : 2 }, { b : 3 } ];
@@ -4948,8 +4948,8 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst0, dst, [ 1, 8 ], [ 1 ] );
     var expected = [ 0, 1 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, dst = empty BufferTyped, val';
     var dst0 = new F32x( [ 5 ] );
@@ -4957,16 +4957,16 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst0, dst, [ 0, 0 ], [ 2 ] );
     var expected = new F32x( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     var dst0 = new BufferRaw( 1 );
     var dst = bufferMake( [] );
     var got = _.bufferBut_( dst0, dst, [ 0, 0 ], [ 2 ] );
     var expected = new U8x( [ 2 ] ).buffer;
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.close( 'not inplace' );
 
@@ -4979,21 +4979,21 @@ function bufferBut_DstIsBufferTyped( test )
     var got = _.bufferBut_( dst, dst );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] > range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, dst, [ 1, 0 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, dst, [ -1, -5 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
@@ -5037,35 +5037,35 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] > range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 0 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] === range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ] );
     var expected = bufferMake( [ 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ -1, -5 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ], [ 1, 2, 3 ] );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = unroll';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
@@ -5073,7 +5073,7 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = argumentsArray';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
@@ -5081,7 +5081,7 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -5091,7 +5091,7 @@ function bufferBut_DstIsBufferRaw( test )
       var got1 = _.bufferBut_( dst1, [ 1, 1 ], val1 );
       var expected1 = bufferMake( [ 0, 1, 2, 3, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'val = bufferTyped';
@@ -5100,63 +5100,63 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst, [ 1, 1 ], val );
     var expected = bufferMake( [ 0, 0, 0, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, 1, [ 5 ] );
     var expected = bufferMake( [ 0, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = negative number';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, -2, [ 5 ] );
     var expected = bufferMake( [ 5, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ], [ 5 ] );
     var expected = bufferMake( [ 0, 5, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 0, 3 ], [ 1 ] );
     var expected = bufferMake( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferMake( [ 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferMake( [ 0, 1, 2, 3, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferMake( [ 0, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, val';
     var dst = bufferMake( [] );
     var got = _.bufferBut_( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferMake( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -5166,8 +5166,8 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst0, dst, [ 4, 1 ], [ 1 ] );
     var expected = [ 0, 1, 2, 3, 1 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst0 = [ { a : 2 }, { b : 3 } ];
@@ -5175,8 +5175,8 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst0, dst, [ 1, 8 ], [ 1 ] );
     var expected = [ 0, 1 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, dst = empty BufferTyped, val';
     var dst0 = new F32x( [ 5 ] );
@@ -5184,16 +5184,16 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst0, dst, [ 0, 0 ], [ 2 ] );
     var expected = new F32x( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     var dst0 = new BufferRaw( 1 );
     var dst = bufferMake( [] );
     var got = _.bufferBut_( dst0, dst, [ 0, 0 ], [ 2 ] );
     var expected = new U8x( [ 2 ] ).buffer;
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.close( 'not inplace' );
 
@@ -5206,21 +5206,21 @@ function bufferBut_DstIsBufferRaw( test )
     var got = _.bufferBut_( dst, dst );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] > range[ 1 ]';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, dst, [ 1, 0 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, dst, [ -1, -5 ] );
     var expected = bufferMake( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
@@ -5236,19 +5236,19 @@ function bufferSelect( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = array, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -5256,19 +5256,19 @@ function bufferSelect( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -5276,19 +5276,19 @@ function bufferSelect( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* - */
 
@@ -5343,35 +5343,35 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 2 ] );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5379,7 +5379,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 2 ], src );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5387,7 +5387,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 3 ], src );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5395,7 +5395,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 3 ], src );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -5405,7 +5405,7 @@ function bufferSelect( test )
       var got1 = _.bufferSelect( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 1, 2 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -5414,69 +5414,69 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 2 ], src );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, 2, [ 5 ] );
     var expected = buf( [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect( dst, [ 1, 8 ], [ 1 ] );
     var expected = buf( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     var dst = buf( [] );
     var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* BufferRaw and BufferView */
@@ -5513,35 +5513,35 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -5549,7 +5549,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -5557,7 +5557,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -5565,7 +5565,7 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -5575,7 +5575,7 @@ function bufferSelect( test )
       var got1 = _.bufferSelect( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, [ 0 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -5584,63 +5584,63 @@ function bufferSelect( test )
     var got = _.bufferSelect( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, 2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferSelect( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferSelect( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -5682,19 +5682,19 @@ function bufferSelectInplace( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelectInplace( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelectInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -5702,19 +5702,19 @@ function bufferSelectInplace( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelectInplace( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelectInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -5722,19 +5722,19 @@ function bufferSelectInplace( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelectInplace( dst, -5, [ 2 ] );
   test.identical( got, _.argumentsArrayFrom( [ 1, 2, 3, 4 ] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, _.argumentsArrayFrom( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelectInplace( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* - */
 
@@ -5789,35 +5789,35 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 2 ] );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5825,7 +5825,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5833,7 +5833,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 3 ], src );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -5841,7 +5841,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 3 ], src );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -5851,7 +5851,7 @@ function bufferSelectInplace( test )
       var got1 = _.bufferSelectInplace( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 1, 2 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -5860,69 +5860,69 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, 2, [ 5 ] );
     var expected = buf( [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelectInplace( dst, [ 1, 8 ], [ 1 ] );
     var expected = buf( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     var dst = buf( [] );
     var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* BufferRaw and BufferView */
@@ -5959,35 +5959,35 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -5995,7 +5995,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -6003,7 +6003,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -6011,7 +6011,7 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -6021,7 +6021,7 @@ function bufferSelectInplace( test )
       var got1 = _.bufferSelectInplace( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, [ 0 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -6030,63 +6030,63 @@ function bufferSelectInplace( test )
     var got = _.bufferSelectInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, 2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferSelectInplace( dst, [ 1, 8 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* - */
@@ -6126,19 +6126,19 @@ function bufferSelect_DstIsArrayUnroll( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect_( dst, -5 );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, range - number === 0';
   var dst = [];
   var got = _.bufferSelect_( dst, dst, 0 );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, range - number > 0';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect_( dst, dst, 1 );
   test.identical( got, [ 1, 2 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -6146,19 +6146,19 @@ function bufferSelect_DstIsArrayUnroll( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( null, dst, 5 );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferSelect_( null, dst, [ 1, 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( null, dst, [ 1, 0 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -6166,19 +6166,19 @@ function bufferSelect_DstIsArrayUnroll( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( dst, [ 0, 0 ] );
   test.identical( got, [ 1 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferSelect_( dst, [ 0, -1 ] );
   test.identical( got, _.argumentsArrayMake( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( dst );
   test.identical( got, _.argumentsArrayMake([ 1, 2, 3, 4 ]) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* - */
 
@@ -6258,35 +6258,35 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( null, dst );
     var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, -1 );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 0 );
     var expected = makeBuffer( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 2 );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 2 );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6295,35 +6295,35 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( null, dst, [ -1, -3 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, -1 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 0 ] );
     var expected = makeBuffer( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 2 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 5 ] );
     var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6332,28 +6332,28 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( null, dst, [ 1, 0 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 1 ] );
     var expected = makeBuffer( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 2 ] );
     var expected = makeBuffer( [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 5 ] );
     var expected = makeBuffer( [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6362,21 +6362,21 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( null, dst, [ 5, 4 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 5, 5 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 5, 7 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.close( 'not inplace' );
 
@@ -6389,35 +6389,35 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( dst );
     var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, -1 );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 0 );
     var expected = makeBuffer( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 2 );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 2 );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6426,35 +6426,35 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( dst, [ -1, -3 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, -1 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 0 ] );
     var expected = makeBuffer( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 2 ] );
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 5 ] );
     var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     /* */
 
@@ -6463,28 +6463,28 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( dst, [ 1, 0 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 1 ] );
     var expected = makeBuffer( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 2 ] );
     var expected = makeBuffer( [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 5 ] );
     var expected = makeBuffer( [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6493,21 +6493,21 @@ function bufferSelect_DstIsBufferTyped( test )
     var got = _.bufferSelect_( dst, [ 5, 4 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 5, 5 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 5, 7 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.close( 'inplace' );
   }
@@ -6551,35 +6551,35 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( null, dst );
     var expected = bufferExpected( dst, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, -1 );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 0 );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 2 );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, 2 );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6588,35 +6588,35 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( null, dst, [ -1, -3 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, -1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 0 ] );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 2 ] );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ -1, 5 ] );
     var expected = bufferExpected( dst, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6625,28 +6625,28 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( null, dst, [ 1, 0 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 1 ] );
     var expected = bufferExpected( dst, [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 1, 5 ] );
     var expected = bufferExpected( dst, [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6655,21 +6655,21 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( null, dst, [ 5, 4 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 5, 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( null, dst, [ 5, 7 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.close( 'not inplace' );
 
@@ -6682,35 +6682,35 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( dst );
     var expected = bufferExpected( dst, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, -1 );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 0 );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 2 );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, 2 );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6719,35 +6719,35 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( dst, [ -1, -3 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, -1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 0 ] );
     var expected = bufferExpected( dst, [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 2 ] );
     var expected = bufferExpected( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ -1, 5 ] );
     var expected = bufferExpected( dst, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     /* */
 
@@ -6756,28 +6756,28 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( dst, [ 1, 0 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 1 ] );
     var expected = bufferExpected( dst, [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, [ 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 1, 5 ] );
     var expected = bufferExpected( dst, [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -6786,21 +6786,21 @@ function bufferSelect_DstIsBufferRaw( test )
     var got = _.bufferSelect_( dst, [ 5, 4 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 5, 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferSelect_( dst, [ 5, 7 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.close( 'inplace' );
   }
@@ -6816,19 +6816,19 @@ function bufferGrow( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrow( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrow( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -6836,19 +6836,19 @@ function bufferGrow( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -6856,19 +6856,19 @@ function bufferGrow( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -6921,35 +6921,35 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 2 ] );
     var expected = buf( [ 0, 1, 2, 3 ] )
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -6957,7 +6957,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -6965,7 +6965,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -6973,7 +6973,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 6 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -6983,7 +6983,7 @@ function bufferGrow( test )
       var got1 = _.bufferGrow( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 0, 1, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -6992,69 +6992,69 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, 6, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3, 5, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow( dst, [ 1, 8 ], 1 );
     var expected = buf( [ 0, 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     var dst = buf( [] );
     var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* BufferRaw and BufferView */
@@ -7091,35 +7091,35 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -7127,7 +7127,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -7135,7 +7135,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 5 ], src );
     var expected = bufferExpected( dst, 5 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -7143,7 +7143,7 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 6 ], src );
     var expected = bufferExpected( dst, 6 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -7153,7 +7153,7 @@ function bufferGrow( test )
       var got1 = _.bufferGrow( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, 4 );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -7162,63 +7162,63 @@ function bufferGrow( test )
     var got = _.bufferGrow( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number, src = number';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, 6, 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferGrow( dst, [ 1, 8 ], 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferGrow( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -7256,19 +7256,19 @@ function bufferGrowInplace( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrowInplace( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrowInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -7276,19 +7276,19 @@ function bufferGrowInplace( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrowInplace( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrowInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -7296,19 +7296,19 @@ function bufferGrowInplace( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrowInplace( dst, -5, [ 2 ] );
   test.identical( got, _.argumentsArrayFrom( [ 1, 2, 3, 4 ] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, _.argumentsArrayFrom( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrowInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -7361,35 +7361,35 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 2 ] );
     var expected = buf( [ 0, 1, 2, 3 ] )
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7397,7 +7397,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 2 ], src );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7405,7 +7405,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7413,7 +7413,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 6 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -7423,7 +7423,7 @@ function bufferGrowInplace( test )
       var got1 = _.bufferGrowInplace( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 0, 1, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 === dst1 );
+      test.true( got1 === dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -7432,69 +7432,69 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, 6, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3, 5, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrowInplace( dst, [ 1, 8 ], 1 );
     var expected = buf( [ 0, 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     var dst = buf( [] );
     var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* BufferRaw and BufferView */
@@ -7531,35 +7531,35 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -7567,7 +7567,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 2 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -7575,7 +7575,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 5 ], src );
     var expected = bufferExpected( dst, 5 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -7583,7 +7583,7 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 6 ], src );
     var expected = bufferExpected( dst, 6 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -7593,7 +7593,7 @@ function bufferGrowInplace( test )
       var got1 = _.bufferGrowInplace( dst1, [ 1, 2 ], src1 );
       var expected1 = bufferExpected( dst1, 4 );
       test.identical( got1, expected1 );
-      test.is( got1 === dst1 );
+      test.true( got1 === dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -7602,63 +7602,63 @@ function bufferGrowInplace( test )
     var got = _.bufferGrowInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = number, src = number';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, 6, 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferGrowInplace( dst, [ 1, 8 ], 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* - */
@@ -7696,19 +7696,19 @@ function bufferGrow_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrow_( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, val = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferGrow_( dst, [ 0, -1 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, val = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrow_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -7716,19 +7716,19 @@ function bufferGrow_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferGrow_( dst, [ 0, -1 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, val = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -7736,19 +7736,19 @@ function bufferGrow_( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, -5, [ 2 ] );
   test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4 ] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty argumentsArray, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferGrow_( dst, [ 0, -1 ], [ 2 ] );
   test.identical( got, _.argumentsArrayMake( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray, val = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -7803,28 +7803,28 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 2 ] );
     var expected = buf( [ 0, 1, 2, 3 ] )
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7832,14 +7832,14 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 2 ], val );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ 1, 4 ], 1 );
     var expected = buf( [ 0, 1, 2, 3, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7847,7 +7847,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 5 ], 1 );
     var expected = buf( [ 0, 1, 2, 3, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -7857,7 +7857,7 @@ function bufferGrow_( test )
       var got1 = _.bufferGrow_( dst1, [ 1, 3 ], val1 );
       var expected1 = buf( [ 0, 1, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 === dst1 );
+      test.true( got1 === dst1 );
     }
 
     test.case = 'val = bufferTyped';
@@ -7866,56 +7866,56 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 4 ], val );
     var expected = buf( [ 0, 1, 2, 3, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, 5, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3, 5, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ 0, 3 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ -2, -2 ], [ 1 ] );
     var expected = buf( [ 1, 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, [ 1, 7 ], 1 );
     var expected = buf( [ 0, 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     /* */
 
@@ -7925,8 +7925,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 0, 3 ], [ 1 ] );
     var expected = new U8x( [ 0, 1, 2, 3 ] ).buffer;
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst0 = new BufferRaw( 3 );
@@ -7934,8 +7934,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
     var expected = new U8x( [ 1, 1, 0, 1, 2, 3 ] ).buffer;
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
     var dst0 = [ 1, 2, 3 ];
@@ -7943,8 +7943,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
     var expected = [ 0, 1, 2, 3 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
     var dst0 = [ 1, 2, 3 ];
@@ -7952,8 +7952,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
     var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.close( 'not inplace' );
 
@@ -7966,28 +7966,28 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, [ 1, 2 ] );
     var expected = buf( [ 0, 1, 2, 3 ] )
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7995,7 +7995,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, [ 1, 2 ], val );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8005,7 +8005,7 @@ function bufferGrow_( test )
       var got2 = _.bufferGrow_( dst2, dst2, [ 1, 3 ], val2 );
       var expected2 = buf( [ 0, 1, 2, 3 ] );
       test.identical( got2, expected2 );
-      test.is( got2 === dst2 );
+      test.true( got2 === dst2 );
     }
 
     test.case = 'range = negative number';
@@ -8013,35 +8013,35 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, [ 0, 3 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, [ -2, -2 ], [ 1 ] );
     var expected = buf( [ 1, 1, 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
@@ -8082,28 +8082,28 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = buf( 4 );
@@ -8111,7 +8111,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 2 ], val );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = unroll';
     var dst = buf( 4 );
@@ -8119,7 +8119,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 4 ], val );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'val = argumentsArray';
     var dst = buf( 4 );
@@ -8127,7 +8127,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 5 ], val );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8137,7 +8137,7 @@ function bufferGrow_( test )
       var got1 = _.bufferGrow_( dst1, [ 1, 2 ], val1 );
       var expected1 = bufferExpected( dst1, 4 );
       test.identical( got1, expected1 );
-      test.is( got1 === dst1 );
+      test.true( got1 === dst1 );
     }
 
     test.case = 'val = bufferTyped';
@@ -8146,63 +8146,63 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, [ 1, 2 ], val );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = number, val = number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, 5, 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, [ 0, 3 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, [ -2, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1, 1, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, [ 1, 7 ], 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, val';
     var dst = buf( [] );
     var got = _.bufferGrow_( dst, [ 0, -1 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     /* */
 
@@ -8212,8 +8212,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
     var expected = [ [ 1 ], [ 1 ], 0, 0, 0, 0 ];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
     var dst0 = new BufferView( new U8x( [ 1, 2, 3, 4 ] ).buffer );
@@ -8221,8 +8221,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
     var expected = new BufferView( new BufferRaw( 4 ) );
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got === dst0 );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst0 = new BufferView( new BufferRaw( 2 ) );
@@ -8230,8 +8230,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
     var expected = new BufferView( new U8x( [ 0, 0, 0, 0, 1, 1, 1, 1 ] ).buffer );
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.case = 'dst0, dst = empty BufferTyped, val';
     var dst0 = [ 1, 2, 3 ];
@@ -8239,8 +8239,8 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst0, dst, [ 0, -1 ], [ 2 ] );
     var expected = [];
     test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( got !== dst0 );
+    test.true( got !== dst );
+    test.true( got !== dst0 );
 
     test.close( 'not inplace' );
 
@@ -8253,28 +8253,28 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, [ 1, 2 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'val = array';
     var dst = buf( 4 );
@@ -8282,7 +8282,7 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, [ 1, 2 ], val );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8292,7 +8292,7 @@ function bufferGrow_( test )
       var got2 = _.bufferGrow_( dst2, dst2, [ 1, 2 ], val2 );
       var expected2 = bufferExpected( dst2, 4 );
       test.identical( got2, expected2 );
-      test.is( got2 === dst2 );
+      test.true( got2 === dst2 );
     }
 
     test.case = 'val = bufferTyped';
@@ -8301,49 +8301,49 @@ function bufferGrow_( test )
     var got = _.bufferGrow_( dst, dst, [ 1, 3 ], val );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, [ 0, 3 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, [ -2, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 1, 1, 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], val';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'dst = empty BufferTyped, val';
     var dst = buf( [] );
     var got = _.bufferGrow_( dst, dst, [ 0, -1 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
@@ -8383,19 +8383,19 @@ function bufferRelength( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelength( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelength( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -8403,19 +8403,19 @@ function bufferRelength( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* */
 
@@ -8423,19 +8423,19 @@ function bufferRelength( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -8488,35 +8488,35 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 3 ] );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8524,7 +8524,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 5 ], src );
     var expected = buf( [ 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8532,7 +8532,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ -1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8540,7 +8540,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 6 ], src );
     var expected = buf( [ 1, 2, 3, NaN, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8550,7 +8550,7 @@ function bufferRelength( test )
       var got1 = _.bufferRelength( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 1, 2 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -8559,69 +8559,69 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 5 ], src );
     var expected = buf( [ 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number, number > dst.length';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, 6, [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength( dst, [ 1, 8 ], 1 );
     var expected = buf( [ 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     var dst = buf( [] );
     var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -8660,35 +8660,35 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 3 ] );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -8696,7 +8696,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -8704,7 +8704,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 5 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -8712,7 +8712,7 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 6 ], src );
     var expected = bufferExpected( dst, 5 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8722,7 +8722,7 @@ function bufferRelength( test )
       var got1 = _.bufferRelength( dst1, [ 1, 6 ], src1 );
       var expected1 = bufferExpected( dst1, 5 );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -8731,63 +8731,63 @@ function bufferRelength( test )
     var got = _.bufferRelength( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number, src = number';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, 6, 1 );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferRelength( dst, [ 1, 8 ], 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferRelength( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
   }
 
   /* - */
@@ -8825,19 +8825,19 @@ function bufferRelengthInplace( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelengthInplace( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, src = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelengthInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -8845,19 +8845,19 @@ function bufferRelengthInplace( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelengthInplace( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelengthInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -8865,19 +8865,19 @@ function bufferRelengthInplace( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelengthInplace( dst, -5, [ 2 ] );
   test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4 ] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, _.argumentsArrayMake( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelengthInplace( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
 
@@ -8930,35 +8930,35 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 3 ] );
     var expected = buf( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8966,7 +8966,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 5 ], src );
     var expected = buf( [ 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8974,7 +8974,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ -1, 5 ], src );
     var expected = buf( [ 0, 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -8982,7 +8982,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 6 ], src );
     var expected = buf( [ 1, 2, 3, NaN, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -8992,7 +8992,7 @@ function bufferRelengthInplace( test )
       var got1 = _.bufferRelengthInplace( dst1, [ 1, 3 ], src1 );
       var expected1 = buf( [ 1, 2 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -9001,69 +9001,69 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 5 ], src );
     var expected = buf( [ 1, 2, 3, NaN ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number, number > dst.length';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, 6, [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelengthInplace( dst, [ 1, 8 ], 1 );
     var expected = buf( [ 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     var dst = buf( [] );
     var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* - */
@@ -9102,35 +9102,35 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 3 ] );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = undefined';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -9138,7 +9138,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = unroll';
     var dst = buf( 4 );
@@ -9146,7 +9146,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 5 ], src );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'src = argumentsArray';
     var dst = buf( 4 );
@@ -9154,7 +9154,7 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 6 ], src );
     var expected = bufferExpected( dst, 5 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     if( Config.interpreter === 'njs' )
     {
@@ -9164,7 +9164,7 @@ function bufferRelengthInplace( test )
       var got1 = _.bufferRelengthInplace( dst1, [ 1, 6 ], src1 );
       var expected1 = bufferExpected( dst1, 5 );
       test.identical( got1, expected1 );
-      test.is( got1 !== dst1 );
+      test.true( got1 !== dst1 );
     }
 
     test.case = 'src = bufferTyped';
@@ -9173,63 +9173,63 @@ function bufferRelengthInplace( test )
     var got = _.bufferRelengthInplace( dst, [ 1, 3 ], src );
     var expected = bufferExpected( dst, 2 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = number, src = number';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, 6, 1 );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range = negative number';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, [ -5, -2 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > dst.length, src';
     var dst = buf( 4 );
     var got = _.bufferRelengthInplace( dst, [ 1, 8 ], 1 );
     var expected = bufferExpected( dst, [ 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.true( got !== dst );
 
     test.case = 'dst = empty BufferTyped, src';
     var dst = buf( [] );
     var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.true( got === dst );
   }
 
   /* - */
@@ -9265,19 +9265,19 @@ function bufferRelength_DstIsArrayUnroll( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelength_( dst, 2, [ 0 ] );
   test.identical( got, [ 1, 2, 3 ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - empty array, src - array, range[ 0 ] > range[ 1 ]';
   var dst = [];
   var got = _.bufferRelength_( dst, [ 0, -1 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst - array, range[ 1 ] > dst.length, src - array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelength_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -9285,19 +9285,19 @@ function bufferRelength_DstIsArrayUnroll( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, -5, [ 2 ] );
   test.identical( got, [] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got === dst );
+  test.true( got === dst );
 
   /* */
 
@@ -9305,19 +9305,19 @@ function bufferRelength_DstIsArrayUnroll( test )
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, -5, [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferRelength_( dst, [ 0, -1 ], [ 2 ] );
   test.identical( got, _.argumentsArrayMake( [] ) );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, [ 1, 4 ], [ 2 ] );
   test.identical( got, [ 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   /* - */
 
@@ -9398,49 +9398,49 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( src );
     var expected = makeBuffer( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'dst = undefined';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 1, 2 ] );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'dst = undefined, range = 0';
     var src = makeBuffer( [ 1, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, 0 );
     var expected = makeBuffer( [ 1 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'dst = undefined, range = negative number';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, -5 );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > src.length';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 1, 4 ], 0 );
     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] > src.length';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ -1, 4 ], 0 );
     var expected = makeBuffer( [ 0, 0, 1, 2, 3, 0 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] < src.length';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 1, 2 ], 0 );
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     if( Config.interpreter === 'njs' )
     {
@@ -9449,7 +9449,7 @@ function bufferRelength_DstIsBufferTyped( test )
       var got1 = _.bufferRelength_( src1, [ 1, 3 ], 0 );
       var expected1 = makeBuffer( [ 1, 2, 3 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== src1 );
+      test.true( got1 !== src1 );
     }
 
     test.case = 'range = number, number > src.length';
@@ -9457,56 +9457,56 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( src, 4, [ 5 ] );
     var expected = makeBuffer( [ 0, 1, 2, 3, 5 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range = negative number';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, -2, [ 5 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 2, 2 ], [ 5 ] );
     var expected = makeBuffer( [ 2 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 0, 3 ], [ 1 ] );
     var expected = makeBuffer( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ -5, -2 ], [ 1 ] );
     var expected = makeBuffer( [ 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 4, 1 ], [ 1 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > src.length, src = number';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, [ 1, 7 ], 1 );
     var expected = makeBuffer( [ 1, 2, 3, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = empty BufferTyped, src';
     var src = makeBuffer( [] );
     var got = _.bufferRelength_( src, [ 0, -1 ], [ 2 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     /* */
 
@@ -9516,8 +9516,8 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
     var expected = [ 1, 1, 1, 1 ];
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > range[ 1 ], src';
     var dst = new BufferRaw( 10 );
@@ -9525,8 +9525,8 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( dst, src, [ 4, 1 ], [ 1 ] );
     var expected = new BufferRaw( 0 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length, src = number';
     var dst = new BufferView( new U8x( [ 1, 1, 1, 1, 1, 1, 1 ] ).buffer );
@@ -9534,8 +9534,8 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( dst, src, [ 1, 7 ], 1 );
     var expected = new BufferView( new U8x( [ 1, 2, 3, 1, 1, 1, 1 ] ).buffer );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got === dst );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.case = 'dst, src = empty BufferTyped, src';
     var dst = [ 1, 2, 3 ];
@@ -9543,8 +9543,8 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
     var expected = [];
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.close( 'not inplace' );
 
@@ -9557,42 +9557,42 @@ function bufferRelength_DstIsBufferTyped( test )
     var got = _.bufferRelength_( src, src );
     var expected = makeBuffer( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'src = undefined, range = 0';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, src, 0 );
     var expected = makeBuffer( [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = undefined, rang = negative number';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, src, -5 );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range = negative number';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, src, -2, [ 5 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( src, src, [ 0, 3 ], [ 1 ] );
     var expected = makeBuffer( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'src = empty BufferTyped, src';
     var src = makeBuffer( [] );
     var got = _.bufferRelength_( src, src, [ 0, -1 ], [ 2 ] );
     var expected = makeBuffer( [] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.close( 'inplace' );
   }
@@ -9636,42 +9636,42 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( src, [ 1, 2 ] );
     var expected = bufferExpected( src, 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = undefined, range = undefined';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src );
     var expected = bufferExpected( src, 4 );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'src = undefined, range = 0';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, 0 );
     var expected = bufferExpected( src, 1 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = undefined, rang = negative number';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, -5 );
     var expected = bufferExpected( src, 0 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range = undefined, src = undefined';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src );
     var expected = bufferExpected( src, 4 );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'src = array';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ 1, 2 ], 1 );
     var expected = bufferExpected( src, 2 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     if( Config.interpreter === 'njs' )
     {
@@ -9680,7 +9680,7 @@ function bufferRelength_DstIsBufferRaw( test )
       var got1 = _.bufferRelength_( src1, [ 1, 6 ], 1 );
       var expected1 = bufferExpected( src1, [ 0, 0, 0, 1, 1, 1 ] );
       test.identical( got1, expected1 );
-      test.is( got1 !== src1 );
+      test.true( got1 !== src1 );
     }
 
     test.case = 'range = number, src = number';
@@ -9688,56 +9688,56 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( src, 5, 1 );
     var expected = bufferExpected( src, [ 0, 0, 0, 0, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range = negative number';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, -2, [ 5 ] );
     var expected = bufferExpected( src, 0 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ 2, 2 ], [ 5 ] );
     var expected = bufferExpected( src, [ 0 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ 0, 3 ], [ 1 ] );
     var expected = bufferExpected( src, 4 );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ -5, -2 ], 1 );
     var expected = bufferExpected( src, [ 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ 4, 1 ], [ 1 ] );
     var expected = bufferExpected( src, [] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'range[ 0 ] > 0, range[ 1 ] > src.length, src';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, [ 1, 7 ], 1 );
     var expected = bufferExpected( src, [ 0, 0, 0, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = empty BufferTyped, src';
     var src = makeBuffer( [] );
     var got = _.bufferRelength_( src, [ 0, -1 ], [ 2 ] );
     var expected = bufferExpected( src, [] );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     /* - */
 
@@ -9747,8 +9747,8 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
     var expected = [ 1, 1, 1, 1 ];
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > range[ 1 ], src';
     var dst = new U8x();
@@ -9756,8 +9756,8 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( dst, src, [ 4, 1 ], [ 1 ] );
     var expected = new U8x();
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got === dst );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length, src';
     var dst = new BufferView( new U8x( [ 2, 2, 2, 2, 2, 2, 2 ] ).buffer );
@@ -9765,8 +9765,8 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( dst, src, [ 1, 7 ], 1 );
     var expected =new BufferView( new U8x( [ 0, 0, 0, 1, 1, 1, 1 ] ).buffer );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got === dst );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.case = 'dst, src = empty BufferTyped, src';
     var dst = [ 1, 2, 3 ];
@@ -9774,22 +9774,22 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
     var expected = [];
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, src, 0 );
     var expected = bufferExpected( src, 1 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'src = undefined, range = negative number';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, src, -5 );
     var expected = bufferExpected( src, 0 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.close( 'not inplace' );
 
@@ -9802,14 +9802,14 @@ function bufferRelength_DstIsBufferRaw( test )
     var got = _.bufferRelength_( src, src );
     var expected = bufferExpected( src, 4 );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
     var src = makeBuffer( 4 );
     var got = _.bufferRelength_( src, src, [ 0, 3 ], 1 );
     var expected = bufferExpected( src, 4 );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.close( 'inplace' );
   }
@@ -9867,24 +9867,24 @@ function bufferResize( test )
   var got = _.bufferResize( src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize( src, 5 );
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = number, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize( src, 15 );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   /* */
 
@@ -9893,32 +9893,32 @@ function bufferResize( test )
   var got = _.bufferResize( src, [ 0, src.byteLength ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset = 0, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize( src, [ 0, 8 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize( src, [ -3, 11 ] );
   var expected = new U8x( [ 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset > buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize( src, [ 5, 12 ] );
   var expected = new U8x( [ 6, 7, 8, 9, 10, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   /* buffer constructors */
 
@@ -9978,24 +9978,24 @@ function bufferResize( test )
     var got = _.bufferResize( src, src.byteLength );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
     var got = _.bufferResize( src, 16 );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = number, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize( src, 32 );
     var expected = expect( src, 16, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     /* */
 
@@ -10004,24 +10004,24 @@ function bufferResize( test )
     var got = _.bufferResize( src, [ 0, src.byteLength ] );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset = 0, new size < buffer size';
     var src = buf( filledBuf, 8, 2 );
     var got = _.bufferResize( src, [ -8, 8 ] );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset < buffer offset, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize( src, [ -8, 24 ] );
     var expected = expect( src, 8, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
@@ -10029,8 +10029,8 @@ function bufferResize( test )
     var expectedBuf = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
     var expected = buf( expectedBuf );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
   }
 
   /* - */
@@ -10064,24 +10064,24 @@ function bufferResizeInplace( test )
   var got = _.bufferResizeInplace( src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got === src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got === src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResizeInplace( src, 5 );
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = number, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResizeInplace( src, 15 );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   /* */
 
@@ -10090,32 +10090,32 @@ function bufferResizeInplace( test )
   var got = _.bufferResizeInplace( src, [ 0, src.byteLength ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got === src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got === src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset = 0, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResizeInplace( src, [ 0, 8 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResizeInplace( src, [ -3, 11 ] );
   var expected = new U8x( [ 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   test.case = 'size = range, new offset > buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResizeInplace( src, [ 5, 12 ] );
   var expected = new U8x( [ 6, 7, 8, 9, 10, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( _.bufferRawIs( got ) );
+  test.true( got !== src );
+  test.true( _.bufferRawIs( got ) );
 
   /* buffer constructors */
 
@@ -10175,24 +10175,24 @@ function bufferResizeInplace( test )
     var got = _.bufferResizeInplace( src, src.byteLength );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got === src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got === src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
     var got = _.bufferResizeInplace( src, 16 );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = number, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResizeInplace( src, 32 );
     var expected = expect( src, 16, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     /* */
 
@@ -10201,24 +10201,24 @@ function bufferResizeInplace( test )
     var got = _.bufferResizeInplace( src, [ 0, src.byteLength ] );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got === src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got === src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset = 0, new size < buffer size';
     var src = buf( filledBuf, 8, 2 );
     var got = _.bufferResizeInplace( src, [ -8, 8 ] );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset < buffer offset, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResizeInplace( src, [ -8, 24 ] );
     var expected = expect( src, 8, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
@@ -10226,8 +10226,8 @@ function bufferResizeInplace( test )
     var expectedBuf = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
     var expected = buf( expectedBuf );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name );
+    test.true( got !== src );
+    test.true( src.constructor.name === got.constructor.name );
   }
 
   /* - */
@@ -10262,21 +10262,21 @@ function bufferResize_( test )
   var got = _.bufferResize_( src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, 5 );
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = number, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, 15 );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -10285,28 +10285,28 @@ function bufferResize_( test )
   var got = _.bufferResize_( src, [ 0, src.byteLength ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   test.case = 'size = range, new offset = 0, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, [ 0, 8 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, [ -3, 11 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = range, new offset > buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, [ 5, 12 ] );
   var expected = new U8x( [ 6, 7, 8, 9, 10, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* raw buffer, dst - null */
 
@@ -10315,21 +10315,21 @@ function bufferResize_( test )
   var got = _.bufferResize_( null, src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( null, src, 5 );
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = number, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( null, src, 15 );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -10338,28 +10338,28 @@ function bufferResize_( test )
   var got = _.bufferResize_( null, src, [ 0, src.byteLength ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = range, new offset = 0, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( null, src, [ 0, 8 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( null, src, [ -3, 11 ] );
   var expected = new U8x( [ 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'size = range, new offset > buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( null, src, [ 5, 12 ] );
   var expected = new U8x( [ 6, 7, 8, 9, 10, 0, 0 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* raw buffer, dst - buffer */
 
@@ -10369,8 +10369,8 @@ function bufferResize_( test )
   var got = _.bufferResize_( dst, src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
 
   test.case = 'dst, size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
@@ -10378,8 +10378,8 @@ function bufferResize_( test )
   var got = _.bufferResize_( dst, src, 5 );
   var expected = new BufferView( new U8x( [ 1, 2, 3, 4, 5, 0, 0, 0, 0 ] ).buffer );
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
 
   test.case = 'dst, size = number, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
@@ -10387,8 +10387,8 @@ function bufferResize_( test )
   var got = _.bufferResize_( dst, src, 15 );
   var expected = new F32x( new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0, 0 ] ).buffer );
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
 
   /* */
 
@@ -10400,8 +10400,8 @@ function bufferResize_( test )
     var got1 = _.bufferResize_( dst1, src1, [ 0, src1.byteLength ] );
     var expected1 = BufferNode.from( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] );
     test.identical( got1, expected1 );
-    test.is( got1 !== src1 );
-    test.is( got1 === dst1 );
+    test.true( got1 !== src1 );
+    test.true( got1 === dst1 );
   }
 
   test.case = 'dst, size = range, new offset = 0, new size < buffer size';
@@ -10410,8 +10410,8 @@ function bufferResize_( test )
   var got = _.bufferResize_( dst, src, [ 0, 8 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8 ] );
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
 
   test.case = 'dst, size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
@@ -10419,8 +10419,8 @@ function bufferResize_( test )
   var got = _.bufferResize_( dst, src, [ -3, 11 ] );
   var expected = new I16x( new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0 ] ).buffer );
   test.identical( got, expected );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
 
   /* */
 
@@ -10429,7 +10429,7 @@ function bufferResize_( test )
   var got = _.bufferResize_( src, src, [ 0, 10 ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got === src );
+  test.true( got === src );
 
   /* buffer constructors */
 
@@ -10489,21 +10489,21 @@ function bufferResize_( test )
     var got = _.bufferResize_( src, src.byteLength );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
     var got = _.bufferResize_( src, 16 );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'size = number, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize_( src, 32 );
     var expected = expect( src, 16, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     /* */
 
@@ -10512,21 +10512,21 @@ function bufferResize_( test )
     var got = _.bufferResize_( src, [ 0, src.byteLength ] );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got === src );
+    test.true( got === src );
 
     test.case = 'size = range, new offset = 0, new size < buffer size';
     var src = buf( filledBuf, 8, 2 );
     var got = _.bufferResize_( src, [ -8, 8 ] );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'size = range, new offset < buffer offset, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize_( src, [ -8, 24 ] );
     var expected = expect( src, 8, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     test.case = 'size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
@@ -10534,7 +10534,7 @@ function bufferResize_( test )
     var expectedBuf = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0 ] ).buffer;
     var expected = buf( expectedBuf );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.true( got !== src );
 
     /* dst - null */
 
@@ -10543,24 +10543,24 @@ function bufferResize_( test )
     var got = _.bufferResize_( null, src, src.byteLength );
     var expected = buf( filledBuf, 8, 2 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'dst, size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
     var got = _.bufferResize_( null, src, 16 );
     var expected = expect( src, 0, 16 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     test.case = 'dst, size = number, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize_( null, src, 32 );
     var expected = expect( src, 16, 32 );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     /* */
 
@@ -10569,16 +10569,16 @@ function bufferResize_( test )
     var dst = new U8x( 16 );
     var got = _.bufferResize_( dst, src, [ 0, src.byteLength ] );
     test.identical( got[ 0 ], 9 );
-    test.is( got !== src );
-    test.is( got === dst );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.case = 'dst, size = range, new offset = 0, new size < buffer size';
     var src = buf( filledBuf, 8, 2 );
     var dst = new I8x( 16 );
     var got = _.bufferResize_( dst, src, [ -8, 8 ] );
     test.identical( got[ 0 ], 1 );
-    test.is( got !== src );
-    test.is( got === dst );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.case = 'dst, size = range, new offset < buffer offset, new size > buffer size';
     var src1 = buf( filledBuf, 16, 1 );
@@ -10586,8 +10586,8 @@ function bufferResize_( test )
     var got1 = _.bufferResize_( dst1, src1, [ -8, 24 ] );
     var expected1 = new U8x([ 9, 10, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]);
     test.identical( got1, expected1.buffer );
-    test.is( got1 !== src1 );
-    test.is( got1 !== dst1 );
+    test.true( got1 !== src1 );
+    test.true( got1 !== dst1 );
 
     test.case = 'dst, size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
@@ -10596,8 +10596,8 @@ function bufferResize_( test )
     var expectedBuf = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0 ] ).buffer;
     var expected = new BufferView( expectedBuf );
     test.identical( got, expected );
-    test.is( got !== src );
-    test.is( got !== dst );
+    test.true( got !== src );
+    test.true( got !== dst );
 
     /* */
 
@@ -10605,7 +10605,7 @@ function bufferResize_( test )
     var src = buf( filledBuf, 16, 1 );
     var got = _.bufferResize_( src, src, [ 0, src.byteLength ] );
     test.identical( got, src );
-    test.is( got === src );
+    test.true( got === src );
   }
 
   /* - */
@@ -10689,7 +10689,7 @@ function bufferBytesGet( test )
   var got = _.bufferBytesGet( src );
   var expected = new U8x([ 1, 2, 10 ]);
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'from I16x';
   var src = new I16x([ 1, 2, 10 ]);
@@ -10715,7 +10715,7 @@ function bufferBytesGet( test )
   var got = _.bufferBytesGet( src );
   var expected = new U8x( 3, 4 );
   test.identical( got, src );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -10808,7 +10808,7 @@ function bufferRetype( test )
   var got = _.bufferRetype( src, I8x );
   var expected = new I8x([ 1, 2, 3, 4, 5 ]);
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'to U8x';
   var raw = new U8x([ 1, 2, 3, 4, 5 ]).buffer;
@@ -10850,7 +10850,7 @@ function bufferRetype( test )
   var got = _.bufferRetype( src, U16x );
   var expected = new U16x([ 0, 0, 0, 0 ]);
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'to U8x';
   var raw = new U8x( 4 ).buffer;
@@ -10933,7 +10933,7 @@ function bufferRetype( test )
   var got = _.bufferRetype( src, I64x );
   var expected = new I64x([ 0n ]);
   test.identical( got, expected );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'to U8x';
   var raw = new U8x( 8 ).buffer;
@@ -11238,19 +11238,19 @@ function bufferJoin( test )
   test.case = 'one arguments, BufferRaw';
   var src = new BufferRaw( 5 );
   var got = _.bufferJoin( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, src );
 
   test.case = 'one arguments, BufferTyped';
   var src = new U8x( [ 1, 2 ] );
   var got = _.bufferJoin( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, src );
 
   test.case = 'one arguments, BufferView';
   var src = new BufferView( new U8x( [ 1, 2 ] ).buffer );
   var got = _.bufferJoin( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, src );
 
   if( Config.interpreter === 'njs' )
@@ -11258,7 +11258,7 @@ function bufferJoin( test )
     test.case = 'one arguments, BufferTyped';
     var src1 = BufferNode.from( [ 1, 2 ] );
     var got1 = _.bufferJoin( src1 );
-    test.is( got1 === src1 );
+    test.true( got1 === src1 );
     test.identical( got1, src1 );
   }
 
@@ -11285,7 +11285,7 @@ function bufferMove( test )
   var src = [ ];
   var got = _.bufferMove( dst, src );
   test.identical( got, src );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - array';
   var dst = [ 1, 2, 3 ];
@@ -11293,13 +11293,13 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = [ 4, 5, 6 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll';
   var dst = [ 1, 2, 3 ];
   var src = _.unrollMake( [ 4, 5, 6 ] );
   var got = _.bufferMove( dst, src );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray';
   var dst = [ 1 ];
@@ -11307,7 +11307,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = [ 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x';
   var dst = [ 0, 2, 3 ];
@@ -11315,7 +11315,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x';
   var dst = [ 0, 2, 3 ];
@@ -11323,7 +11323,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x';
   var dst = [ 0, 2, 3 ];
@@ -11331,7 +11331,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = [ 1n, 2n, 3n ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - array' );
 
@@ -11345,7 +11345,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty unroll';
   var dst = _.unrollMake( [ ] );
@@ -11353,7 +11353,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11361,7 +11361,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11369,7 +11369,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11377,7 +11377,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x';
   var dst = _.unrollMake( [ 4, 5, 6 ] );
@@ -11385,7 +11385,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.unrollMake( [ 1n, 2n, 3n ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - unroll' );
 
@@ -11399,7 +11399,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'to dst argumentsArray from src - unroll';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11407,7 +11407,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty argumentsArray';
   var dst = _.argumentsArrayMake( [ ] );
@@ -11415,7 +11415,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty U8x';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11423,7 +11423,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11431,7 +11431,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11439,7 +11439,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11447,7 +11447,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = _.argumentsArrayMake( [ 1n, 2n, 3n ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - argumentsArray' );
 
@@ -11461,7 +11461,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new U8x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11469,7 +11469,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new U8x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11477,7 +11477,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new U8x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty U8x';
   var dst = new U8x( [ ] );
@@ -11485,7 +11485,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new U8x( [ ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11493,7 +11493,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new U8x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11514,7 +11514,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11522,7 +11522,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11530,7 +11530,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11538,7 +11538,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty F32x';
   var dst = new F32x( [ ] );
@@ -11546,7 +11546,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11554,7 +11554,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - F32x' );
 
@@ -11568,7 +11568,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11576,7 +11576,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray';
   var dst = new I64x( _.bigIntsFrom([ 1, 2, 3 ]) );
@@ -11584,7 +11584,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom([ 4, 5, 6 ]) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11592,7 +11592,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11600,7 +11600,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - empty I64x';
   var dst = new I64x( _.bigIntsFrom( [ ] ) );
@@ -11608,7 +11608,7 @@ function bufferMove( test )
   var got = _.bufferMove( dst, src );
   var expected = new I64x( _.bigIntsFrom( [ ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - I64x' );
   /**/
@@ -11644,7 +11644,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = [ 1, 2, 3, 4, 5, 6 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll, offset - 3';
   var dst = [ 1, 2, 3 ];
@@ -11652,7 +11652,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = [ 1, 2, 3, 4, 5, 6 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray, offset - 1';
   var dst = [ 1 ];
@@ -11660,7 +11660,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = [ 1, 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x, offset - 3';
   var dst = [ 0, 2, 3 ];
@@ -11668,7 +11668,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = [ 0, 2, 3, 1, 2, 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x, offset - 3';
   var dst = [ 0, 2, 3 ];
@@ -11676,7 +11676,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = [ 0, 2, 3, 1, 2, 3 ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x, offset - 1';
   var dst = [ 0, 2, 3 ];
@@ -11684,7 +11684,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = [ 0, 1n, 2n ];
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - array' );
 
@@ -11698,7 +11698,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = _.unrollMake( [ 1, 2, 3, 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray, offset - 3';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11706,7 +11706,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = _.unrollMake( [ 1, 2, 3, 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x, offset - 3';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11714,7 +11714,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = _.unrollMake( [ 1, 2, 3, 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x, offset - 3';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11722,7 +11722,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = _.unrollMake( [ 1, 2, 3, 4, 5, 6 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x, offset - 1';
   var dst = _.unrollMake( [ 1, 2, 3 ] );
@@ -11730,7 +11730,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.unrollMake( [ 1, 1n, 2n ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - unroll' );
 
@@ -11744,7 +11744,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.argumentsArrayMake( [ 4, 1, 2 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll, offset - 1';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11752,7 +11752,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.argumentsArrayMake( [ 4, 1, 2 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x, offset - 1';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11760,7 +11760,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.argumentsArrayMake( [ 4, 1, 2 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x, offset - 1';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11768,7 +11768,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.argumentsArrayMake( [ 4, 1, 2 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x, offset - 1';
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
@@ -11776,7 +11776,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = _.argumentsArrayMake( [ 4, 1n, 2n ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - argumentsArray' );
 
@@ -11790,7 +11790,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new U8x( [ 1, 4, 5 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll, offset - 1';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11798,7 +11798,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new U8x( [ 1, 4, 5 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray, offset - 1';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11806,7 +11806,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new U8x( [ 1, 4, 5 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x, offset - 1';
   var dst = new U8x( [ 1, 2, 3 ] );
@@ -11814,14 +11814,14 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new U8x( [ 1, 4, 5 ] );;
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x, offset - 1';
   var dst = new U8x( [ 1, 2, 3 ] );
   var src = new I64x( _.bigIntsFrom( [ 4, 5 ] ) );
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   test.identical( got, dst );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - U8x' );
 
@@ -11835,7 +11835,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new F32x( [ 1, 2, 4 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll, offset - 2';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11843,7 +11843,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new F32x( [ 1, 2, 4 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray, offset - 2';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11851,7 +11851,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new F32x( [ 1, 2, 4 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x, offset - 2';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11859,7 +11859,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new F32x( [ 1, 2, 4 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - I64x, offset - 2';
   var dst = new F32x( [ 1, 2, 3 ] );
@@ -11867,7 +11867,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new F32x( [ 1, 2, 4 ] );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - F32x' );
 
@@ -11881,7 +11881,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new I64x( _.bigIntsFrom( [ 1, 4, 5 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - unroll, offset - 1';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11889,7 +11889,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new I64x( _.bigIntsFrom( [ 1, 4, 5 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - argumentsArray, offset - 1';
   var dst = new I64x( _.bigIntsFrom([ 1, 2, 3 ]) );
@@ -11897,7 +11897,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new I64x( _.bigIntsFrom( [ 1, 4, 5 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - U8x, offset - 1';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11905,7 +11905,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new I64x( _.bigIntsFrom( [ 1, 4, 5 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.case = 'from src - F32x, offset - 1';
   var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
@@ -11913,7 +11913,7 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 1 } );
   var expected = new I64x( _.bigIntsFrom( [ 1, 4, 5 ] ) );
   test.identical( got, expected );
-  test.is( got === dst );
+  test.true( got === dst );
 
   test.close( 'to dst - I64x' );
 
@@ -11927,9 +11927,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new U8x( [ 0, 0, 1, 2, 3, 4 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'from src - unroll, offset - 2';
   var dst = new BufferRaw( 6 );
@@ -11937,9 +11937,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new U8x( [ 0, 0, 1, 2, 3, 4 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'from src - argumentsArray, offset - 3';
   var dst = new BufferRaw( 6 );
@@ -11947,9 +11947,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = new U8x( [ 0, 0, 0, 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'from src - U8x, offset - 2';
   var dst = new BufferRaw( 6 );
@@ -11957,9 +11957,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 3 } );
   var expected = new U8x( [ 0, 0, 0, 1, 2, 3 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'from src - F32x, offset - 2';
   var dst = new BufferRaw( 16 );
@@ -11967,9 +11967,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new U8x( [ 0, 0, 0, 0, 128, 63, 0, 0, 0, 64, 0, 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.case = 'from src - I64x, offset - 2';
   var dst = new BufferRaw( 16 );
@@ -11977,9 +11977,9 @@ function bufferMoveWithSingleArgument( test )
   var got = _.bufferMove( { dst, src, dstOffset : 2 } );
   var expected = new U8x( [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
-  test.is( got.buffer === dst );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got.buffer === dst );
+  test.true( got !== dst );
+  test.true( got !== src );
 
   test.close( 'to dst - BufferRaw' )
 }

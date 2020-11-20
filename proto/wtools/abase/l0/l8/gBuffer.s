@@ -1182,7 +1182,7 @@ function bufferBut( dstArray, range, srcArray )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
@@ -1257,7 +1257,7 @@ function bufferBut( dstArray, range, srcArray )
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 //   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.rangeIs( range ) );
+//   _.assert( _.intervalIs( range ) );
 //   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 //   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 //
@@ -1356,7 +1356,7 @@ function bufferButInplace( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   first = 0;
@@ -1380,7 +1380,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -1393,7 +1393,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
   _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ), '{-dst-} should be Long or buffer' );
   else
   {
-    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+    if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
     _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ) );
     else
     {
@@ -1449,7 +1449,7 @@ function _returnDst( dst, src )
 
 /**
  * Routine bufferBut_() copies elements from source buffer {-src-} to destination buffer {-dst-}.
- * Routine copies all elements excluding elements in range {-crange-}, its elements replaces by elements
+ * Routine copies all elements excluding elements in range {-cinterval-}, its elements replaces by elements
  * from insertion buffer {-ins-}.
  *
  * If first and second provided arguments is containers, then fisrs argument is destination
@@ -1463,9 +1463,9 @@ function _returnDst( dst, src )
  *
  * @param { BufferAny|Long|Null } dst - The destination container.
  * @param { BufferAny|Long } src - The container from which makes a shallow copy.
- * @param { Range|Number } crange - The two-element array that defines the start index and the end index for removing elements.
- * If {-crange-} is a Number, then it defines the index of removed element.
- * If {-crange-} is undefined and {-dst-} is null, then routine returns copy of {-src-}, otherwise, routine returns original {-src-}.
+ * @param { Range|Number } cinterval - The two-element array that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If {-cinterval-} is undefined and {-dst-} is null, then routine returns copy of {-src-}, otherwise, routine returns original {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to ( src.length - 1 ).
  * If range[ 1 ] < range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
@@ -1545,15 +1545,15 @@ function _returnDst( dst, src )
  * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-dst-} is not a buffer, not a Long, not null.
  * @throws { Error } If {-src-} is not an any buffer, not a Long.
- * @throws { Error } If {-crange-} is not a Range or not a Number.
+ * @throws { Error } If {-cinterval-} is not a Range or not a Number.
  * @namespace Tools
  */
 
-function bufferBut_( /* dst, src, crange, ins */ )
+function bufferBut_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -1562,7 +1562,7 @@ function bufferBut_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
@@ -1571,23 +1571,23 @@ function bufferBut_( /* dst, src, crange, ins */ )
   dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
   let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  if( crange === undefined )
+  if( cinterval === undefined )
   {
-    crange = [ 0, -1 ];
+    cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( crange ) )
+  else if( _.numberIs( cinterval ) )
   {
-    crange = [ crange, crange ];
+    cinterval = [ cinterval, cinterval ];
   }
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
   _.assert( _.longIs( ins ) || _.bufferNodeIs( ins ) || ins === undefined || ins === null, 'Expects iterable buffer {-ins-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
 
   if( first < 0 )
   first = 0;
@@ -1680,7 +1680,7 @@ function bufferSelect( dstArray, range, srcArray )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 
   if( first < 0 )
@@ -1740,7 +1740,7 @@ function bufferSelectInplace( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   first = 0;
@@ -1857,7 +1857,7 @@ function bufferSelectInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferSelect_( dst, src, crange )
+function bufferSelect_( dst, src, cinterval )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} argument' );
 
@@ -1865,7 +1865,7 @@ function bufferSelect_( dst, src, crange )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
   }
 
   let dstLength = 0;
@@ -1873,17 +1873,17 @@ function bufferSelect_( dst, src, crange )
   dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
   let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  if( crange === undefined )
-  crange = [ 0, srcLength - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, srcLength - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
 
   if( first < 0 )
   first = 0;
@@ -1968,7 +1968,7 @@ function bufferGrow( dstArray, range, srcArray )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   {
@@ -2038,7 +2038,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   {
@@ -2061,7 +2061,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
 
 /**
  * Routine bufferGrow_() grows provided container {-dst-} by copying elements of source buffer to it.
- * Routine uses crange {-crange-} positions of the source container and value {-ins-} to fill destination buffer.
+ * Routine uses cinterval {-cinterval-} positions of the source container and value {-ins-} to fill destination buffer.
  * Routine can only grows size of source container.
  *
  * If first and second provided arguments is containers, then fisrs argument is destination
@@ -2075,7 +2075,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
  *
  * @param { BufferAny|Long|Null } dst - The destination container.
  * @param { BufferAny|Long } src - The container from which makes a shallow copy.
- * @param { Range|Number } crange - The two-element array that defines the start index and the end index for copying elements from {-src-} and adding {-ins-}.
+ * @param { Range|Number } cinterval - The two-element array that defines the start index and the end index for copying elements from {-src-} and adding {-ins-}.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
  * If range[ 0 ] > 0, then start index sets to 0.
@@ -2159,11 +2159,11 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferGrow_( /* dst, src, crange, ins */ )
+function bufferGrow_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -2172,7 +2172,7 @@ function bufferGrow_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
@@ -2181,17 +2181,17 @@ function bufferGrow_( /* dst, src, crange, ins */ )
   dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
   let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  if( crange === undefined )
-  crange = [ 0, srcLength - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, srcLength - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
 
   if( first > 0 )
   first = 0;
@@ -2207,7 +2207,7 @@ function bufferGrow_( /* dst, src, crange, ins */ )
   if( last + 1 < first )
   last = first - 1;
 
-  let first2 = Math.max( -crange[ 0 ], 0 );
+  let first2 = Math.max( -cinterval[ 0 ], 0 );
   let last2 = Math.min( srcLength - 1 + first2, last + first2 );
 
   let resultLength = last - first + 1;
@@ -2285,7 +2285,7 @@ function bufferGrow_( /* dst, src, crange, ins */ )
 //   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
 //   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 //
-//   _.assert( _.rangeIs( range ) );
+//   _.assert( _.intervalIs( range ) );
 //
 //   if( first < 0 )
 //   {
@@ -2367,7 +2367,7 @@ function bufferRelength( dstArray, range, srcArray )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   first = 0;
@@ -2431,7 +2431,7 @@ function bufferRelengthInplace( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   if( first < 0 )
   first = 0;
@@ -2548,11 +2548,11 @@ function bufferRelengthInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferRelength_( /* dst, src, crange, ins */ )
+function bufferRelength_( /* dst, src, cinterval, ins */ )
 {
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
-  let crange = arguments[ 2 ];
+  let cinterval = arguments[ 2 ];
   let ins = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -2561,7 +2561,7 @@ function bufferRelength_( /* dst, src, crange, ins */ )
   {
     dst = arguments[ 0 ];
     src = arguments[ 0 ];
-    crange = arguments[ 1 ];
+    cinterval = arguments[ 1 ];
     ins = arguments[ 2 ];
   }
 
@@ -2570,23 +2570,23 @@ function bufferRelength_( /* dst, src, crange, ins */ )
   dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
   let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  if( crange === undefined )
-  crange = [ 0, srcLength - 1 ];
-  if( _.numberIs( crange ) )
-  crange = [ 0, crange ];
+  if( cinterval === undefined )
+  cinterval = [ 0, srcLength - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
-  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
+  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
 
   if( last < first )
   last = first - 1;
 
-  if( crange[ 1 ] < 0 && crange[ 0 ] < 0 )
-  crange[ 0 ] -= crange[ 1 ] + 1;
+  if( cinterval[ 1 ] < 0 && cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] -= cinterval[ 1 ] + 1;
 
   if( first < 0 )
   {
@@ -2594,7 +2594,7 @@ function bufferRelength_( /* dst, src, crange, ins */ )
     first -= first;
   }
 
-  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let first2 = Math.max( Math.abs( cinterval[ 0 ] ), 0 );
   let last2 = Math.min( srcLength - 1, last );
 
   let resultLength = last - first + 1;
@@ -2606,14 +2606,14 @@ function bufferRelength_( /* dst, src, crange, ins */ )
   }
   else if( dst === src )
   {
-    if( dstLength === resultLength && crange[ 0 ] === 0 )
+    if( dstLength === resultLength && cinterval[ 0 ] === 0 )
     {
       return dst;
     }
     if( _.arrayLikeResizable( dst ) )
     {
       _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
-      if( crange[ 0 ] < 0 )
+      if( cinterval[ 0 ] < 0 )
       {
         dst.splice( first, 0, ... _.dup( ins, first2 ) );
         dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
@@ -2650,7 +2650,7 @@ function bufferRelength_( /* dst, src, crange, ins */ )
   {
     return result;
   }
-  if( crange[ 0 ] < 0 )
+  if( cinterval[ 0 ] < 0 )
   {
     for( let r = first2 ; r < ( last2 + 1 + first2 ) && r < resultLength ; r++ )
     resultTyped[ r ] = srcTyped[ r - first2 ];
@@ -2740,7 +2740,7 @@ function bufferResize( srcBuffer, size )
 {
   let result = srcBuffer;
 
-  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  let range = _.intervalIs( size ) ? size : [ 0, size ];
   size = range[ 1 ] - range[ 0 ];
 
   if( range[ 1 ] < range[ 0 ] )
@@ -2748,7 +2748,7 @@ function bufferResize( srcBuffer, size )
 
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   var newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
@@ -2815,10 +2815,10 @@ function bufferResizeInplace( srcBuffer, size )
 {
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( _.numberIs( size ) || _.rangeIs( size ) );
+  _.assert( _.numberIs( size ) || _.intervalIs( size ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  let range = _.intervalIs( size ) ? size : [ 0, size ];
   if( range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
   return srcBuffer;
   else
@@ -2838,14 +2838,14 @@ function bufferResize_( dst, srcBuffer, size )
     srcBuffer = dst;
   }
 
-  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  let range = _.intervalIs( size ) ? size : [ 0, size ];
   size = range[ 1 ] - range[ 0 ];
 
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
   _.assert( _.bufferAnyIs( srcBuffer ) && srcBuffer.byteLength >= 0 );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( dst === srcBuffer && range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
