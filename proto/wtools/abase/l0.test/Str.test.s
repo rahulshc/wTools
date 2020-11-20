@@ -9935,7 +9935,7 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are the same, first el withot quoting';
+  test.case = 'basic, o.pairing : 1, prefix and postfix are the same, first el withot quoting';
   var splits = [ `r1`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
   ({
@@ -9948,6 +9948,23 @@ function strSplitsQuotedRejoin( test )
     inliningQuoting : 0,
   });
   var expected = [ 'r1', '"r2"' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'basic, o.pairing : 1, prefix and postfix are the same, last el withot quoting';
+  var splits = [ `"`, `r1`, `"`, `r2` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '"' ],
+    quotingPostfixes : [ '"' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ '"r1"', 'r2' ];
   test.identical( splits, expected );
 
   /* */
