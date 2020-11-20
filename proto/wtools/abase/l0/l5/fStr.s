@@ -1851,10 +1851,6 @@ function strSplitsQuotedRejoin_body( o )
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.splits ) );
 
-  // if( o.pairing )
-  // if( !_.longIdentical( o.quotingPrefixes, o.quotingPostfixes ) )
-  // return undefined;
-
   /* quoting */
 
   // let s = 1; // why was it 1??
