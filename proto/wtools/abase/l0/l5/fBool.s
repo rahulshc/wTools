@@ -1,4 +1,5 @@
-( function _fBool_s_() {
+( function _fBool_s_()
+{
 
 'use strict';
 
