@@ -1851,9 +1851,9 @@ function strSplitsQuotedRejoin_body( o )
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.splits ) );
 
-  if( o.pairing )
-  if( !_.longIdentical( o.quotingPrefixes, o.quotingPostfixes ) )
-  return undefined;
+  // if( o.pairing )
+  // if( !_.longIdentical( o.quotingPrefixes, o.quotingPostfixes ) )
+  // return undefined;
 
   /* quoting */
 
@@ -1880,6 +1880,9 @@ function strSplitsQuotedRejoin_body( o )
         let split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
+          if( o.pairing )
+          if( o.splits[ s ] !== o.splits[ s2 ] )
+          break;
           let bextra = 0;
           let eextra = 0;
           if( o.inliningQuoting )
