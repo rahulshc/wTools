@@ -1038,10 +1038,6 @@ function _err( o )
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
-    // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
-    // o.message = o.message.replace( /\x20*\n$/m, '' );
-
-    // o.message = o.message.replace( /^\x20*/gm, '' );
     o.message = o.message.replace( /^\s*/, '' );
     o.message = o.message.replace( /\x20*$/gm, '' );
     o.message = o.message.replace( /\s*$/, '' );
@@ -1052,84 +1048,86 @@ function _err( o )
 
   function eachMessageFormat( str )
   {
-    if( _.strBegins( str, /\x20/ ) )
-    str = _.strRemoveBegin( str, /\x20+/ );
-    if( _.strEnds( str, /\x20$/ ) )
-    str = _.strRemoveEnd( str, /\x20+$/ );
+    let strBeginsWithRegular = _.strBegins( str, /\S/ );
+    let strEndsWithRegular = _.strEnds( str, /\S/ );
 
-    if( _.strBegins( str, /\n/ ) )
+    if( !strBeginsWithRegular )
     {
-      let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ ); /* qqq2 for Dmytro : cant use _.strIsolate* on this level */
+      let notSpaceLikeSymbol = /\S/.exec( str );
 
-/*
-
-_.strIsolateLeftOrAll is not a function
-TypeError: _.strIsolateLeftOrAll is not a function
-    at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/iErr.s:1062:27)
-    at Object.strConcat (/wtools/abase/l0/l3/iStr.s:723:13)
-    at originalMessageForm (/wtools/abase/l0/l3/iErr.s:1034:19)
-    at Object._err (/wtools/abase/l0/l3/iErr.s:577:5)
-    at Object.err (/wtools/abase/l0/l3/iErr.s:1192:12)
-    at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
-    at Module.require (internal/modules/cjs/loader.js:830:19)
-    at require (internal/modules/cjs/helpers.js:68:18)
-    at _wToolsLayer0_s_ (/wtools/abase/Layer0.s:90:3)
-    at Object.<anonymous> (/wtools/abase/Layer0.s:112:3)
-    at Module._compile (internal/modules/cjs/loader.js:936:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-    at Module.load (internal/modules/cjs/loader.js:790:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-    at Module.require (internal/modules/cjs/loader.js:830:19)
-    at require (internal/modules/cjs/helpers.js:68:18)
-    at _wToolsLayer1_s_ (/wtools/abase/Layer1.s:9:3)
-    at Object.<anonymous> (/wtools/abase/Layer1.s:28:3)
-    at Module._compile (internal/modules/cjs/loader.js:936:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-    at Module.load (internal/modules/cjs/loader.js:790:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-    at Module.require (internal/modules/cjs/loader.js:830:19)
-    at require (internal/modules/cjs/helpers.js:68:18)
-    at Object.<anonymous> (/wtools/Tools.s:19:5)
-    at Module._compile (internal/modules/cjs/loader.js:936:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-    at Module.load (internal/modules/cjs/loader.js:790:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-    at Module.require (internal/modules/cjs/loader.js:830:19)
-    at require (internal/modules/cjs/helpers.js:68:18)
-    at _StringTools_test_s_ (/wtools/abase/l5.test/Dissector.test.s:8:11)
-    at Object.<anonymous> (/wtools/abase/l5.test/Dissector.test.s:2061:3)
-    at Module._compile (internal/modules/cjs/loader.js:936:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-    at Module.load (internal/modules/cjs/loader.js:790:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:999:10)
-    at internal/main/run_main_module.js:17:11
-
-*/
-
-      if( splitsAfter[ 1 ] )
+      if( notSpaceLikeSymbol === null )
       {
-        let splitsBefore = _.strIsolateRightOrAll( splitsAfter[ 0 ], /\n+/ );
-        str = splitsBefore[ 1 ] + splitsBefore[ 2 ] + splitsAfter[ 1 ] + splitsAfter[ 2 ];
+        str = '';
       }
       else
       {
-        str = '';
+        let before = str.substring( 0, notSpaceLikeSymbol.index );
+        let spaces = /(?<=\n)\x20+$/.exec( before );
+        before = before.replace( /\x20+/g, '' );
+        before += spaces ? spaces[ 0 ] : '';
+
+        str = before + str.substring( notSpaceLikeSymbol.index );
       }
     }
 
-    if( _.strEnds( str, /\n/ ) )
+    // let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ ); /* aaa2 for Dmytro : cant use _.strIsolate* on this level */ /* Dmytro : strIsolateLeft not used, rewrote subroutines, simplified subroutines */
+
+    /*
+
+    _.strIsolateLeftOrAll is not a function
+    TypeError: _.strIsolateLeftOrAll is not a function
+        at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/iErr.s:1062:27)
+        at Object.strConcat (/wtools/abase/l0/l3/iStr.s:723:13)
+        at originalMessageForm (/wtools/abase/l0/l3/iErr.s:1034:19)
+        at Object._err (/wtools/abase/l0/l3/iErr.s:577:5)
+        at Object.err (/wtools/abase/l0/l3/iErr.s:1192:12)
+        at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
+        at Module.require (internal/modules/cjs/loader.js:830:19)
+        at require (internal/modules/cjs/helpers.js:68:18)
+        at _wToolsLayer0_s_ (/wtools/abase/Layer0.s:90:3)
+        at Object.<anonymous> (/wtools/abase/Layer0.s:112:3)
+        at Module._compile (internal/modules/cjs/loader.js:936:30)
+        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+        at Module.load (internal/modules/cjs/loader.js:790:32)
+        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+        at Module.require (internal/modules/cjs/loader.js:830:19)
+        at require (internal/modules/cjs/helpers.js:68:18)
+        at _wToolsLayer1_s_ (/wtools/abase/Layer1.s:9:3)
+        at Object.<anonymous> (/wtools/abase/Layer1.s:28:3)
+        at Module._compile (internal/modules/cjs/loader.js:936:30)
+        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+        at Module.load (internal/modules/cjs/loader.js:790:32)
+        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+        at Module.require (internal/modules/cjs/loader.js:830:19)
+        at require (internal/modules/cjs/helpers.js:68:18)
+        at Object.<anonymous> (/wtools/Tools.s:19:5)
+        at Module._compile (internal/modules/cjs/loader.js:936:30)
+        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+        at Module.load (internal/modules/cjs/loader.js:790:32)
+        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+        at Module.require (internal/modules/cjs/loader.js:830:19)
+        at require (internal/modules/cjs/helpers.js:68:18)
+        at _StringTools_test_s_ (/wtools/abase/l5.test/Dissector.test.s:8:11)
+        at Object.<anonymous> (/wtools/abase/l5.test/Dissector.test.s:2061:3)
+        at Module._compile (internal/modules/cjs/loader.js:936:30)
+        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+        at Module.load (internal/modules/cjs/loader.js:790:32)
+        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+        at Function.Module.runMain (internal/modules/cjs/loader.js:999:10)
+        at internal/main/run_main_module.js:17:11
+
+    */
+
+    if( str && !strEndsWithRegular )
     {
-      let splitsBefore = _.strIsolate( str, /\s*$/ );
-      if( splitsBefore[ 0 ] )
-      {
-        let splitsAfter = _.strIsolateLeftOrAll( splitsBefore[ 1 ], /\n+/ );
-        str = splitsBefore[ 0 ] + splitsAfter[ 1 ];
-      }
-      else
-      {
-        str = '';
-      }
+      let notSpaceLikeSymbol = /\S\s*$/.exec( str );
+
+      let after = str.substring( notSpaceLikeSymbol.index + 1 );
+      let spaces = /^\x20+(?=\n)/.exec( after );
+      after = after.replace( /\x20+/g, '' );
+      after += spaces ? spaces[ 0 ] : '';
+
+      str = str.substring( 0, notSpaceLikeSymbol.index + 1 ) + after;
     }
 
     return str;
@@ -1142,12 +1140,12 @@ TypeError: _.strIsolateLeftOrAll is not a function
     let result;
     if( _.strEnds( src1, '\n' ) && _.strBegins( src2, '\n' ) )
     {
-      let right = _.strIsolateRightOrAll( src1, /\n+$/ );
-      let left = _.strIsolateLeftOrAll( src2, /\n+/ );
+      let right = /\n+$/.exec( src1 );
+      let left = /^\n+/.exec( src2 );
 
-      result = right[ 0 ];
-      result += right[ 1 ].length > left[ 1 ].length ? right[ 1 ] : left[ 1 ];
-      result += left[ 2 ];
+      result = src1.substring( 0, right.index );
+      result += right[ 0 ].length > left[ 0 ].length ? right[ 0 ] : left[ 0 ];
+      result += src2.substring( left[ 0 ].length );
     }
     else
     {

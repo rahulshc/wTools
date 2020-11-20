@@ -1,4 +1,5 @@
-( function _fBuffer_s_() {
+( function _fBuffer_s_()
+{
 
 'use strict';
 
