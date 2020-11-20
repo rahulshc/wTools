@@ -305,7 +305,8 @@ let Extension =
 _.mapSupplement( Self, Extension );
 _.assert( _._interval === undefined );
 _._interval = Self;
-/* qqq for Dmytro : make possible to remove the namespace */
+/* aaa for Dmytro : make possible to remove the namespace */ /* routines copied to namespace cinterval and its are used from this namespace */
+/* Dmytro : another way is to create abstract class ( or namespace ) in l3 and inherit it */
 
 // --
 // export

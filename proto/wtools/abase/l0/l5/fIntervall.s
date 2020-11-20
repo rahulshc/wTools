@@ -326,16 +326,16 @@ let Extension =
 
   // maker
 
-  fromLeft : _._interval.fromLeft,
-  fromRight : _._interval.fromRight,
+  fromLeft : _.cinterval.fromLeft,
+  fromRight : _.cinterval.fromRight,
   fromSingle,
 
   clamp,
   countElements,
-  firstGet : _._interval.firstGet,
+  firstGet : _.cinterval.firstGet,
   lastGet,
 
-  toStr : _._interval.toStr,
+  toStr : _.cinterval.toStr,
 
 }
 

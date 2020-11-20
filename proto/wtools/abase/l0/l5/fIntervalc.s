@@ -163,6 +163,66 @@ function assertInInterval( src, cinterval )
 // maker
 // --
 
+function fromLeft( cinterval )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.numberIs( cinterval ) )
+  return [ cinterval, Infinity ];
+
+  _.assert( _.longIs( cinterval ) );
+
+  if( cinterval.length === 1 )
+  cinterval = [ cinterval[ 0 ], Infinity ];
+  else
+  _.assert( cinterval.length === 2 );
+
+  if( !_.numberIs( cinterval[ 0 ] ) )
+  {
+    _.assert( cinterval[ 0 ] === undefined );
+    cinterval[ 0 ] = 0;
+  }
+  if( !_.numberIs( cinterval[ 1 ] ) )
+  {
+    _.assert( cinterval[ 1 ] === undefined );
+    cinterval[ 1 ] = Infinity;
+  }
+
+  return cinterval;
+}
+
+//
+
+function fromRight( cinterval )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.numberIs( cinterval ) )
+  return [ 0, cinterval ];
+
+  _.assert( _.longIs( cinterval ) );
+
+  if( cinterval.length === 1 )
+  cinterval = [ cinterval[ 0 ], Infinity ];
+  else
+  _.assert( cinterval.length === 2 );
+
+  if( !_.numberIs( cinterval[ 0 ] ) )
+  {
+    _.assert( cinterval[ 0 ] === undefined );
+    cinterval[ 0 ] = 0;
+  }
+  if( !_.numberIs( cinterval[ 1 ] ) )
+  {
+    _.assert( cinterval[ 1 ] === undefined );
+    cinterval[ 1 ] = Infinity;
+  }
+
+  return cinterval;
+}
+
+//
+
 function fromSingle( cinterval )
 {
   _.assert( arguments.length === 1 );
@@ -258,6 +318,36 @@ function countElements( cinterval, increment )
 
 //
 
+function firstGet( cinterval, options )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
+  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
+  // options.increment = 1;
+
+  if( options )
+  {
+    _.assert( _.mapLike( options ) );
+    if( options.increment === undefined )
+    options.increment = 1;
+  }
+
+  if( _.longIs( cinterval ) )
+  {
+    _.assert( _.intervalIs( cinterval ) );
+    return cinterval[ 0 ];
+  }
+  else if( _.mapIs( cinterval ) )
+  {
+    return cinterval.first;
+  }
+  _.assert( 0, 'unexpected type of cinterval', _.strType( cinterval ) );
+}
+
+//
+
 function lastGet( cinterval, options )
 {
 
@@ -285,6 +375,15 @@ function lastGet( cinterval, options )
   }
   _.assert( 0, 'unexpected type of cinterval', _.strType( cinterval ) );
 
+}
+
+//
+
+function toStr( range )
+{
+  _.assert( _.intervalIs( range ) );
+  _.assert( arguments.length === 1 );
+  return range[ 0 ] + '..' + range[ 1 ];
 }
 
 // --
@@ -337,16 +436,16 @@ let Extension =
 
   // maker
 
-  fromLeft : _._interval.fromLeft,
-  fromRight : _._interval.fromRight,
+  fromLeft,
+  fromRight,
   fromSingle,
 
   clamp,
   countElements,
-  firstGet : _._interval.firstGet,
+  firstGet,
   lastGet,
 
-  toStr : _._interval.toStr,
+  toStr,
 
 }
 
