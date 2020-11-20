@@ -1628,31 +1628,31 @@ function numbersFrom( test )
   var src = [];
   var got = _.numbersFrom( src );
   test.identical( got, [] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'array with numbers';
   var src = [ 1, 2, 3 ];
   var got = _.numbersFrom( src );
   test.identical( got, [ 1, 2, 3 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'array with strings without digits';
   var src = [ '', 'a', 'str' ];
   var got = _.numbersFrom( src );
   test.identical( got, [ NaN, NaN, NaN ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'array with strings with digits';
   var src = [ '1', '1.2', '12.3' ];
   var got = _.numbersFrom( src );
   test.identical( got, [ 1, 1.2, 12.3 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'array with elements, which does not convert to number';
   var src = [ new Set( [ 1, 2 ] ), [ 1, 2 ], { a : 2 } ];
   var got = _.numbersFrom( src );
   test.identical( got, [ NaN, NaN, NaN ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -1699,31 +1699,31 @@ function numbersFrom( test )
   var src = {};
   var got = _.numbersFrom( src );
   test.identical( got, {} );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is numbers';
   var src = { a : 1, b : 2, c : 3 };
   var got = _.numbersFrom( src );
   test.identical( got, { a : 1, b : 2, c : 3 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is not digit literals';
   var src = { a : '', b : 'a', c : 'str' };
   var got = _.numbersFrom( src );
   test.identical( got, { a : NaN, b : NaN, c : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is digit literals';
   var src = { a : '1', b : '1.2', c : '12.3' };
   var got = _.numbersFrom( src );
   test.identical( got, { a : 1, b : 1.2, c : 12.3 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values does not convert to number';
   var src = { a : new Set(), b : [ 1, 2 ], c : { a : 2 } };
   var got = _.numbersFrom( src );
   test.identical( got, { a : NaN, b : NaN, c : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -1731,7 +1731,7 @@ function numbersFrom( test )
   var src = Object.create( null );
   var got = _.numbersFrom( src );
   test.identical( got, {} );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is numbers';
   var src = Object.create( null );
@@ -1740,7 +1740,7 @@ function numbersFrom( test )
   src.c = 3;
   var got = _.numbersFrom( src );
   test.identical( got, { a : 1, b : 2, c : 3 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is not digit literals';
   var src = Object.create( null );
@@ -1749,7 +1749,7 @@ function numbersFrom( test )
   src.c = 'str';
   var got = _.numbersFrom( src );
   test.identical( got, { a : NaN, b : NaN, c : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values is digit literals';
   var src = Object.create( null );
@@ -1758,7 +1758,7 @@ function numbersFrom( test )
   src.c = '12.3';
   var got = _.numbersFrom( src );
   test.identical( got, { a : 1, b : 1.2, c : 12.3 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'map, values does not convert to number';
   var src = Object.create( null );
@@ -1767,7 +1767,7 @@ function numbersFrom( test )
   src.c = { a : 2 };
   var got = _.numbersFrom( src );
   test.identical( got, { a : NaN, b : NaN, c : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* - */
 
@@ -1784,31 +1784,31 @@ function numbersFrom( test )
   var src = new Constr();
   var got = _.numbersFrom( src );
   test.identical( got, { x : NaN, y : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'numbers as properties';
   var src = new Constr( 1, 2 );
   var got = _.numbersFrom( src );
   test.identical( got, { x : 1, y : 2 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'not digit literals as properties';
   var src = new Constr( '', 'a' );
   var got = _.numbersFrom( src );
   test.identical( got, { x : NaN, y : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'digit literals as properties';
   var src = new Constr( '1', '1.2' );
   var got = _.numbersFrom( src );
   test.identical( got, { x : 1, y : 1.2 } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'value of properties is not convertable to number';
   var src = new Constr( [ 1, 2 ], { a : 2 } );
   var got = _.numbersFrom( src );
   test.identical( got, { x : NaN, y : NaN } );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'instance of constructor' );
 
@@ -2320,19 +2320,19 @@ function intRandom( test )
 
   test.case = 'range === 1';
   var got = _.intRandom( 1 );
-  test.is( got === 0 || got === 1 );
+  test.true( got === 0 || got === 1 );
 
   test.case = 'range > 0';
   var got = _.intRandom( 10 );
   test.ge( got, 0 );
   test.le( got, 10 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range < 0';
   var got = _.intRandom( -10 );
   test.ge( got, -10 );
   test.le( got, 0 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   /* */
 
@@ -2352,79 +2352,79 @@ function intRandom( test )
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === 1';
   var got = _.intRandom( [ 0, 1 ] );
-  test.is( got === 0 || got === 1 );
+  test.true( got === 0 || got === 1 );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] >  0';
   var got = _.intRandom( [ 0, 10 ] );
   test.ge( got, 0 );
   test.le( got, 10 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] > 0, range[ 1 ] ===  0';
   var got = _.intRandom( [ 10, 0 ] );
   test.ge( got, 0 );
   test.le( got, 10 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 1 ] - range[ 1 ] === 1';
   var got = _.intRandom( [ 5, 6 ] );
-  test.is( got === 5 || got === 6 );
+  test.true( got === 5 || got === 6 );
 
   test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] < range[ 1 ]';
   var got = _.intRandom( [ 5, 10 ] );
   test.ge( got, 5 );
   test.le( got, 10 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] > range[ 1 ]';
   var got = _.intRandom( [ 10, 5 ] );
   test.ge( got, 5 );
   test.le( got, 10 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
   var got = _.intRandom( [ 0, -1 ] );
-  test.is( got === -1 || got === 0 );
+  test.true( got === -1 || got === 0 );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] <  0';
   var got = _.intRandom( [ 0, -10 ] );
   test.ge( got, -10 );
   test.le( got, 0 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] < 0, range[ 1 ] ===  0';
   var got = _.intRandom( [ -10, 0 ] );
   test.ge( got, -10 );
   test.le( got, 0 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] - range[ 1 ] === 1';
   var got = _.intRandom( [ -6, -5 ] );
-  test.is( got === -6 || got === -5 );
+  test.true( got === -6 || got === -5 );
 
   test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] > range[ 1 ]';
   var got = _.intRandom( [ -5, -10 ] );
   test.ge( got, -10 );
   test.le( got, -5 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] < range[ 1 ]';
   var got = _.intRandom( [ -10, -5 ] );
   test.ge( got, -10 );
   test.le( got, -5 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] > 0, range[ 1 ] < 0';
   var got = _.intRandom( [ 5, -10 ] );
   test.ge( got, -10 );
   test.le( got, 5 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   test.case = 'range[ 0 ] < 0, range[ 1 ] > 0';
   var got = _.intRandom( [ -10, 5 ] );
   test.ge( got, -10 );
   test.le( got, 5 );
-  test.is( Math.floor( got ) === got );
+  test.true( Math.floor( got ) === got );
 
   /* - */
 

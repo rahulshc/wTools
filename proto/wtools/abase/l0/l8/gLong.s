@@ -578,7 +578,7 @@ function longRandom( o )
 
   if( arguments[ 2 ] !== undefined )
   o = { dst : arguments[ 0 ], value : arguments[ 1 ], length : arguments[ 2 ] }
-  else if( _.numberIs( o ) || _.rangeIs( o ) )
+  else if( _.numberIs( o ) || _.intervalIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.routineOptions( longRandom, o );
@@ -592,7 +592,7 @@ function longRandom( o )
   o.value = [ 0, o.value ]
   // o.value = [ o.value, o.value ]
 
-  if( _.rangeIs( o.length ) )
+  if( _.intervalIs( o.length ) )
   o.length = _.intRandom( o.length );
   if( o.length === null && o.dst )
   o.length = o.dst.length;

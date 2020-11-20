@@ -633,7 +633,7 @@ function strRandom( o )
   if( o.alphabet === null )
   o.alphabet = _.strAlphabetFromRange([ 'a', 'z' ]);
 
-  _.assert( _.rangeIs( o.length ) );
+  _.assert( _.intervalIs( o.length ) );
   _.assert( arguments.length === 1 );
 
   let length = o.length[ 0 ];
@@ -1476,7 +1476,7 @@ function strSplitCamel( src )
  * @namespace Tools
  */
 
-function _strOnly( srcStr, range )
+function _strOnly( srcStr, cinterval )
 {
 
   /*
@@ -1487,25 +1487,30 @@ function _strOnly( srcStr, range )
     3-1 = 2
   */
 
-  if( _.numberIs( range ) )
+  if( _.numberIs( cinterval ) )
   {
-    if( range < 0 )
-    range = srcStr.length + range;
-    range = [ range, range + 1 ];
+    if( cinterval < 0 )
+    cinterval = srcStr.length + cinterval;
+    cinterval = [ cinterval, cinterval ];
   }
   else
   {
-    if( range[ 1 ] < 0 )
-    range[ 1 ] = srcStr.length + range[ 1 ];
-    if( range[ 0 ] < 0 )
-    range[ 0 ] = srcStr.length + range[ 0 ];
+    cinterval = _.longMake( cinterval ); /* Dmytro : vectorized routine should not change original range */
+
+    if( cinterval[ 1 ] < -1 )
+    cinterval[ 1 ] = srcStr.length + cinterval[ 1 ];
+    if( cinterval[ 0 ] < 0 )
+    cinterval[ 0 ] = srcStr.length + cinterval[ 0 ];
   }
+
+  if( cinterval[ 0 ] > cinterval[ 1 ] )
+  cinterval[ 1 ] = cinterval[ 0 ] - 1;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeDefined( range ) );
+  _.assert( _.cinterval.defined( cinterval ) );
 
-  return srcStr.substring( range[ 0 ], range[ 1 ] + 1 );
+  return srcStr.substring( cinterval[ 0 ], cinterval[ 1 ] + 1 );
 }
 
 //
@@ -1572,57 +1577,48 @@ let strOnly = _.vectorize( _strOnly );
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
 /**
- * Routine _strBut() gets substring out of source string {-srcStr-} according to a given range {-range-}
- * and replaces it to new string {-ins-}.
- * The end value of the range is not included in the substring.
- *
- * @param { String } srcStr - Source string.
- * @param { Range } range - Range to get substring.
- * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
- * @param { String|Long } ins - Inserted string or array with inserted elements.
- * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
- * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
+ * Routine _strBut() replaces substring from source string {-srcStr-} to new value {-ins-}
+ * The ranges of substring defines according to a given range {-cinterval-}.
+ * The end value of the range is included in the substring.
  *
  * @example
  * _._strBut( '', [ 0, 2 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
  * _._strBut( 'first', [ 0, 7 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
- * _._strBut( 'first', [ 0, 2 ] );
- * // returns 'rst'
+ * _._strBut( 'first', [ 0, 1 ] );
+ * // returns : 'rst'
  *
  * @example
- * _._strBut( 'first', [ -2, 5 ] );
- * // returns 'fir'
+ * _._strBut( 'first', [ -2, 4 ] );
+ * // returns : 'firt'
  *
  * @example
- * _._strBut( 'first', [ 2, 2 ] );
- * // returns 'first'
+ * _._strBut( 'first', [ 2, 1 ] );
+ * // returns : 'first'
  *
  * @example
- * _._strBut( '', [ 0, 2 ], 'abc' );
- * // returns 'abc'
+ * _._strBut( 'first', [ 0, 1 ], 'abc' );
+ * // returns : 'abcrst'
  *
  * @example
- * _._strBut( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
- * // returns 'a b c'
+ * _._strBut( 'first', [ 0, 1 ], [ 'a', 'b', 'c' ] );
+ * // returns : [ 'arst', 'brst', 'crst' ]
  *
  * @example
- * _._strBut( 'first', [ 0, 2 ], 'abc' );
- * // returns 'abcrst'
+ * _._strBut( 'first', [ 2, 1 ], 'abc' );
+ * // returns : [ 'fiarst', 'fibrst', 'ficrst' ]
  *
- * @example
- * _._strBut( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
- * // returns 'fira b c'
- *
- * @example
- * _._strBut( 'first', [ 2, 2 ], 'abc' );
- * // returns 'fiabcrst'
- *
+ * @param { String } srcStr - Source string.
+ * @param { Crange } cinterval - Closed range to get substring.
+ * If cinterval[ 0 ] or cinterval[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
  * @function _strBut
  * @returns { String } - Returns source string, part of which replaced to the new value.
  * @throws { Error } If arguments.length is less then two or more then three.
@@ -1632,36 +1628,38 @@ let strOnly = _.vectorize( _strOnly );
  * @namespace Tools
  */
 
-function _strBut( srcStr, range, ins )
+function _strBut( srcStr, cinterval, ins )
 {
+
 
   /*
   aaa : reference point of negative is length. implement and cover please
   Dmytro : implemented a time ago
   */
 
-  if( _.numberIs( range ) )
+  if( _.numberIs( cinterval ) )
   {
-    if( range < 0 )
-    range = srcStr.length + range;
-    range = [ range, range + 1 ];
+    if( cinterval < 0 )
+    cinterval = srcStr.length + cinterval;
+    cinterval = [ cinterval, cinterval ];
   }
   else
   {
-    if( range[ 1 ] < 0 )
-    range[ 1 ] = srcStr.length + range[ 1 ];
-    if( range[ 0 ] < 0 )
-    range[ 0 ] = srcStr.length + range[ 0 ];
+    cinterval = _.longMake( cinterval ); /* Dmytro : vectorized routine should not change original range */
+
+    if( cinterval[ 1 ] < -1 )
+    cinterval[ 1 ] = srcStr.length + cinterval[ 1 ];
+    if( cinterval[ 0 ] < 0 )
+    cinterval[ 0 ] = srcStr.length + cinterval[ 0 ];
   }
 
-  if( range[ 0 ] > range[ 1 ] )
-  range[ 1 ] = range[ 0 ];
+  if( cinterval[ 0 ] > cinterval[ 1 ] )
+  cinterval[ 1 ] = cinterval[ 0 ] - 1;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeDefined( range ) );
+  _.assert( _.cinterval.defined( cinterval ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
 
   /*
      aaa : implement for case ins is long
@@ -1669,12 +1667,26 @@ function _strBut( srcStr, range, ins )
      qqq for Dmytro : no really
   */
 
+  let result;
   if( _.longIs( ins ) )
-  return srcStr.substring( 0, range[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
-  else if( ins )
-  return srcStr.substring( 0, range[ 0 ]+1 ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
+  {
+    result = _.arrayMake( ins.length );
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ i ] = _strConcat( srcStr, cinterval, ins[ i ] );
+  }
   else
-  return srcStr.substring( 0, range[ 0 ]+1 ) + srcStr.substring( range[ 1 ], srcStr.length );
+  {
+    result = _strConcat( srcStr, cinterval, ins ? ins : '' );
+  }
+
+  return result;
+
+  /* */
+
+  function _strConcat( src, range, insertion )
+  {
+    return src.substring( 0, range[ 0 ] ) + insertion + src.substring( range[ 1 ] + 1, src.length );
+  }
 }
 
 //
@@ -2221,248 +2233,6 @@ function strJoinPath( srcs, joiner )
   }
 }
 
-
-//
-
-/**
- * The routine strConcat() provides the concatenation of array of elements ( or single element )
- * into a String. Returned string can be formatted by using options in options map {-o-}.
- *
- * @example
- * _.strConcat( 'str' );
- * // returns : 'str'
- *
- * @example
- * _.strConcat( 11 );
- * // returns : '11'
- *
- * @example
- * _.strConcat([ 1, 2, 'str', [ 3, 4 ] ]);
- * // returns : '1 2 str 3,4 '
- *
- * @example
- * let options =
- * {
- *   linePrefix : '** ',
- *   linePostfix : ' **'
- * };
- * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ], options );
- * // returns : '** 1 2 str 3,4 **'
- *
- * @example
- * let options =
- * {
- *   linePrefix : '** ',
- *   linePostfix : ' **'
- * };
- * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
- * // returns :
- * // `** a **
- * // ** b **
- * // ** c **
- *
- * @example
- * let onToStr = ( src ) => String( src ) + '*';
- * let options = { onToStr };
- * _.strConcat( [ 'a', 'b', 'c' ], options );
- * // returns : 'a* b* c*'
- *
- * @example
- * let onPairWithDelimeter = ( src1, src2 ) => src1 + ' ..' + src2;
- * let options = { onPairWithDelimeter };
- * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
- * // returns :
- * // `a ..
- * // b ..
- * // c`
- *
- * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
- * If {-srcs-} is not ArrayLike, routine converts to string provided instance.
- * @param { Map } o - Options map.
- * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
- * If an element of array has not delimeter at the end or next element has not delimeter at the begin,
- * then routine inserts one space between this elements.
- * @param { String } o.linePrefix - The prefix, which is added to each line. Default value is empty string.
- * @param { String } o.linePostfix - The postfix, which is added to each line. Default value is empty string.
- * @param { Map } o.optionsForToStr - The options for routine _.toStr that uses as default callback {-o.onToStr-}. Default value is null.
- * @param { Function } o.onToStr - The callback, which uses for conversion of each element of {-srcs-}. Accepts element {-src-} and options map {-o-}.
- * @param { Function } o.onPairWithDelimeter - The callback, which uses for concatenation of two strings.
- * The callback calls if first string {-src1-} end with line delimeter {-o.lineDelimter-} or second string {-src2-}
- * begins with line delimeter. Additionally accepts options map {-o-}.
- * @returns { String } - Returns concatenated string.
- * @function strConcat
- * @throws { Error } If arguments.length is less then one or greater than two.
- * @throws { Error } If options map {-o-} has unknown property.
- * @throws { Error } If property {-o.optionsForToStr-} is not a MapLike.
- * @throws { Error } If routine strConcat does not belong module Tools.
- * @namespace Tools
- */
-
-/*
-aaa : cover routine strConcat and extend it. ask how to
-Dmytro : routine covered and documented, not extended
-*/
-
-/*
-  aaa : does not work properly, remove indentation, but should not
-  srcs :
-[
-  'b',
-  `variant:: : #83
-  path::local
-  module::module-a
-`
-]
-
-
-  Dmytro : fixed, all comments below
-*/
-
-function strConcat( srcs, o )
-{
-
-  o = _.routineOptions( strConcat, o || Object.create( null ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( this.strConcat === strConcat );
-
-  if( o.onToStr === null )
-  o.onToStr = onToStr;
-
-  let defaultOptionsForToStr =
-  {
-    stringWrapper : '',
-  };
-
-  o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
-
-  if( _.routineIs( srcs ) )
-  srcs = srcs();
-
-  if( !_.arrayLike( srcs ) )
-  srcs = [ srcs ];
-
-  let result = '';
-  if( !srcs.length )
-  return result;
-
-  let concatenatePairWithLineDelimeter = o.onPairWithDelimeter ? o.onPairWithDelimeter : concatenateSimple;
-
-  /* */
-
-  let a = 0;
-
-  while( !result && a < srcs.length )
-  {
-    result = o.onToStr( srcs[ a ], o );
-    ++a;
-  }
-
-  for( ; a < srcs.length ; a++ )
-  {
-    let src = srcs[ a ];
-    src = o.onToStr( src, o );
-
-    result = result.replace( /[^\S\n]\s*$/, '' );
-
-    if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-    result = concatenatePairWithLineDelimeter( result, src, o );
-    else
-    result = result + ' ' + src.replace( /^\s+/, '' );
-  }
-
-  // for( let a = 0 ; a < srcs.length ; a++ )
-  // {
-  //   let src = srcs[ a ];
-  //
-  //   src = o.onToStr( src, o );
-  //
-  //   result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
-  //   // result = result.replace( /\s*$/m, '' );
-  //
-  //   if( !result )
-  //   {
-  //     result = src;
-  //   }
-  //   // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-  //   // {
-  //   //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
-  //   // }
-  //   else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-  //   {
-  //     result = result + src;
-  //   }
-  //   else
-  //   {
-  //     result = result + ' ' + src.replace( /^\s+/, '' );
-  //     // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
-  //   }
-  //
-  // }
-
-  // let nl = 1;
-  // for( let a = 0 ; a < srcs.length ; a++ )
-  // {
-  //   let src = srcs[ a ];
-  //   src = _.toStr( src, o.optionsForToStr );
-  //   if( !nl )
-  //   {
-  //     let i = src.trim().lastIndexOf( o.lineDelimter );
-  //     if( i === -1 )
-  //     {
-  //       if( result[ result.length-1 ] !== ' ' && src[ 0 ] !== ' ' )
-  //       result += o.delimeter;
-  //     }
-  //     else
-  //     {
-  //       if( i !== 0 )
-  //       result += o.lineDelimter;
-  //     }
-  //   }
-  //   if( src.length )
-  //   nl = src[ src.length-1 ] === o.lineDelimter;
-  //   // if( _.errIs( src ) )
-  //   // debugger;
-  //   result += src;
-  // }
-
-  /* */
-
-  if( o.linePrefix || o.linePostfix )
-  {
-    result = result.split( o.lineDelimter );
-    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
-  }
-
-  /* */
-
-  return result;
-
-  /* */
-
-  function onToStr( src, op )
-  {
-    return _.toStr( src, op.optionsForToStr );
-  }
-
-  /* */
-
-  function concatenateSimple( src1, src2 )
-  {
-    return src1 + src2;
-  }
-}
-
-strConcat.defaults =
-{
-  linePrefix : '',
-  linePostfix : '',
-  lineDelimter : '\n',
-  // delimeter : ' ',
-  optionsForToStr : null,
-  onToStr : null, /* Dmytro : maybe it should have name onEach */
-  onPairWithDelimeter : null,
-}
-
 // --
 // liner
 // --
@@ -2667,7 +2437,7 @@ function strLinesBut( src, range, ins )
   if( range[ 1 ] < 0 )
   range[ 1 ] = src.length + range[ 1 ];
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   /*
     aaa : should work
@@ -2767,7 +2537,7 @@ function strLinesOnly( src, range )
   if( range[ 1 ] < 0 )
   range[ 1 ] = src.length + range[ 1 ];
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
 
   let result = [];
   for( let i = range[ 0 ]; i < range[ 1 ] && i < src.length; i++ )
@@ -3340,7 +3110,7 @@ function strLinesNearest_head( routine, args )
   if( _.numberIs( o.charsRangeLeft ) )
   o.charsRangeLeft = [ o.charsRangeLeft, o.charsRangeLeft+1 ];
 
-  _.assert( _.rangeIs( o.charsRangeLeft ) );
+  _.assert( _.intervalIs( o.charsRangeLeft ) );
 
   return o;
 }
@@ -3645,7 +3415,7 @@ function strLinesRangeWithCharRange_head( routine, args )
 
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( _.rangeIs( o.charsRangeLeft ) );
+  _.assert( _.intervalIs( o.charsRangeLeft ) );
   _.assert( _.strIs( o.src ) );
   _.routineOptions( routine, o );
 
@@ -3658,7 +3428,7 @@ function strLinesRangeWithCharRange_body( o )
 {
 
   let head = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
-  let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
+  let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] + 1 );
   let result = []
 
   result[ 0 ] = _.strLinesCount( head )-1;
@@ -3760,7 +3530,6 @@ let Proto =
   strDup : _.vectorize( _strDup ),
   strJoin,
   strJoinPath,
-  strConcat,
 
   // liner
 

@@ -1,4 +1,4 @@
-( function _gRange_s_()
+( function _gInterval_s_()
 {
 
 'use strict';

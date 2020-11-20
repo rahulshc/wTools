@@ -1301,7 +1301,7 @@ function locationNormalize( test )
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
-  test.is( got === o );
+  test.true( got === o );
 
   /* - */
 
@@ -1324,7 +1324,7 @@ function locationNormalize( test )
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
-  test.is( got === o );
+  test.true( got === o );
 
   test.case = 'stack frame line with posix path';
   var o = { original : "at node (/home/user/file.txt)" };
@@ -1345,7 +1345,7 @@ function locationNormalize( test )
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
-  test.is( got === o );
+  test.true( got === o );
 
   /* */
 
@@ -2891,28 +2891,28 @@ function stack( test )
   var got = _.introspector.stack( [ 0, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
   var got = _.introspector.stack( [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
   var got = _.introspector.stack( [ 0, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   /* */
@@ -2921,28 +2921,28 @@ function stack( test )
   var got = _.introspector.stack( [ 2, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
   var got = _.introspector.stack( [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
   var got = _.introspector.stack( [ 2, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   /* */
@@ -2951,28 +2951,28 @@ function stack( test )
   var got = _.introspector.stack( [ -2, Infinity ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
   var got = _.introspector.stack( [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
   var got = _.introspector.stack( [ -2, -1 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.close( 'only range' );
@@ -2985,28 +2985,28 @@ function stack( test )
   var got = _.introspector.stack( null, [ 0, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
   var got = _.introspector.stack( null, [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
   var got = _.introspector.stack( null, [ 0, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   /* */
@@ -3015,28 +3015,28 @@ function stack( test )
   var got = _.introspector.stack( null, [ 2, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
   var got = _.introspector.stack( null, [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
   var got = _.introspector.stack( null, [ 2, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   /* */
@@ -3045,28 +3045,28 @@ function stack( test )
   var got = _.introspector.stack( null, [ -2, Infinity ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
   var got = _.introspector.stack( null, [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
   var got = _.introspector.stack( null, [ -2, -1 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.close( 'stack - null, range' );
@@ -3079,28 +3079,28 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   /* */
@@ -3109,28 +3109,28 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, Infinity ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, -1 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   /* */
@@ -3139,28 +3139,28 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, Infinity ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, -1 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.true( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.close( 'stack - error, range' );
@@ -3195,10 +3195,10 @@ function stackRelative( test )
 
   test.case = 'without arguments';
   var got = stackGet();
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   /* */
 
@@ -3206,38 +3206,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( null );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - undefined';
   var got = stackGet( null, undefined );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 0';
   var got = stackGet( null, 0 );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( null, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( null, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - null' );
 
@@ -3247,38 +3247,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( undefined );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - undefined';
   var got = stackGet( undefined, undefined );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 0';
   var got = stackGet( undefined, 0 );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( undefined, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( undefined, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - undefined' );
 
@@ -3288,38 +3288,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( true );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - undefined';
   var got = stackGet( true, undefined );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 0';
   var got = stackGet( true, 0 );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( true, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( true, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - true' );
 
@@ -3355,38 +3355,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( 0 );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 0';
   var got = stackGet( 0, undefined );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 0';
   var got = stackGet( 0, 0 );
-  test.is( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.true( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( 0, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 0, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - 0' );
 
@@ -3396,38 +3396,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( 1, undefined );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( 1, 0 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.is( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.true( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 1';
   var got = stackGet( 1, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 1, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.false( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - 1' );
 
@@ -3437,38 +3437,38 @@ function stackRelative( test )
 
   test.case = 'without delta';
   var got = stackGet( 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 2, undefined );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 2, 0 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.is( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.true( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 2, 1 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet2 '  ) );
-  test.is( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.false( _.strHas( got, 'at stackGet2 '  ) );
+  test.true( _.strHas( got, 'at stackGet '  ) );
 
   test.case = 'delta - 2';
   var got = stackGet( 2, 2 );
-  test.isNot( _.strHas( got, 'at stackGet4 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet3 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet2 '  ) );
-  test.isNot( _.strHas( got, 'at stackGet '  ) );
+  test.false( _.strHas( got, 'at stackGet4 '  ) );
+  test.false( _.strHas( got, 'at stackGet3 '  ) );
+  test.false( _.strHas( got, 'at stackGet2 '  ) );
+  test.false( _.strHas( got, 'at stackGet '  ) );
 
   test.close( 'stack - 2' );
 
@@ -3558,12 +3558,12 @@ function stackFilter( test )
 
   test.case = 'stack is string';
   var got = _.introspector.stackFilter( 'at routine\n stack', ( e ) => e );
-  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.true( got.indexOf( 'at routine' ) !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'stack is array';
   var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e ) => e );
-  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.true( got.indexOf( 'at routine' ) !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'stack is error';
@@ -3594,12 +3594,12 @@ function stackFilter( test )
 
   test.case = 'stack is string';
   var got = _.introspector.stackFilter( 'at routine\n stack', ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.true( got.indexOf( 'at routine' ) !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'stack is array';
   var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.true( got.indexOf( 'at routine' ) !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'stack is error';

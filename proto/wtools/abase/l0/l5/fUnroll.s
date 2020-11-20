@@ -479,7 +479,7 @@ function unrollSelect( src, range, val )
   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
   _.assert( _.longIs( src ) );
-  _.assert( _.rangeIs( range ) )
+  _.assert( _.intervalIs( range ) )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( l < f )

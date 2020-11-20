@@ -112,80 +112,80 @@ function make( test )
   var src = [];
   var exp = [];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, '', {}, [], null, undefined ];
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
   var src = _.unrollMake( [] );
   var exp = [];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty Set';
   var src = new Set();
   var exp = [];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from arrayAdapterContainer';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -214,80 +214,80 @@ function makeByConstructor( test )
   var src = [];
   var exp = [];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, '', {}, [], null, undefined ];
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
   var src = _.unrollMake( [] );
   var exp = [];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty Set';
   var src = new Set();
   var exp = [];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from arrayAdapterContainer';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -316,80 +316,80 @@ function from( test )
   var src = [];
   var exp = [];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, '', {}, [], null, undefined ];
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
   var src = _.unrollFrom( [] );
   var exp = [];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.unrollFrom( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty Set';
   var src = new Set();
   var exp = [];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
-  test.is( got !== src );
-  test.is( _.setIs( got.original ) );
+  test.true( got !== src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
   var src = _.containerAdapter.from( [] );
   var exp = [];
   var got = _.containerAdapter.from( src );
-  test.is( got === src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got === src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from arrayAdapterContainer';
   var src = _.containerAdapter.from( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
-  test.is( got === src );
-  test.is( _.arrayIs( got.original ) );
+  test.true( got === src );
+  test.true( _.arrayIs( got.original ) );
   test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
   var src = _.containerAdapter.from( new Set( [] ) );
   var exp = [];
   var got = _.containerAdapter.from( src );
-  test.is( got === src );
-  test.is( _.setIs( got.original ) );
+  test.true( got === src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
   var src = _.containerAdapter.from( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
-  test.is( got === src );
-  test.is( _.setIs( got.original ) );
+  test.true( got === src );
+  test.true( _.setIs( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -423,98 +423,98 @@ function toOriginal( test )
   var src = null;
   var exp = null;
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from undefined';
   var src = undefined;
   var exp = undefined;
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from number';
   var src = 5;
   var exp = 5;
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from string';
   var src = 'str';
   var exp = 'str';
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from boolean';
   var src = true;
   var exp = true;
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, 'str' ];
   var exp = [ 1, 2, 'str' ];
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from unroll';
   var src = _.unrollMake( [ 1, 2, 'str' ] );
   var exp = _.unrollMake( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from argumentsArray';
   var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
   var exp = _.argumentsArrayMake( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from BufferRaw';
   var src = new BufferRaw( [ 1, 2, 'str' ] );
   var exp = new BufferRaw( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from BufferTyped';
   var src = new I16x( [ 1, 2, 'str' ] );
   var exp = new I16x( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from map';
   var src = { a : 0 };
   var exp = { a : 0 };
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from Map';
   var src = new Map( [ [ 1, 2 ] ] );
   var exp = new Map( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
 
   test.case = 'from Set';
   var src = new Set();
   var exp = new Set();
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got ], [ ... exp ] );
 
   test.case = 'from Symbol';
   var src = Symbol( 'a' );
   var exp = src;
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from instance of constructor';
@@ -525,7 +525,7 @@ function toOriginal( test )
   }
   var src = new Constr();
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.x, 1 );
 
   /* */
@@ -533,13 +533,13 @@ function toOriginal( test )
   test.case = 'from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, src.original );
 
   test.case = 'from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginal( src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, src.original );
 }
 
@@ -558,196 +558,196 @@ function toOriginals( test )
   var src = null;
   var exp = null;
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from null';
   var src = null;
   var exp = null;
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from undefined';
   var src = undefined;
   var exp = undefined;
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from undefined';
   var src = undefined;
   var exp = null;
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from number';
   var src = 5;
   var exp = 5;
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from number';
   var src = 5;
   var exp = [ 5 ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from string';
   var src = 'str';
   var exp = 'str';
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from string';
   var src = 'str';
   var exp = [ 'str' ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from boolean';
   var src = true;
   var exp = true;
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from boolean';
   var src = true;
   var exp = [ true ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, 'str' ];
   var exp = [ 1, 2, 'str' ];
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from array';
   var src = [ 1, 2, 'str' ];
   var exp = [ 1, 2, 'str' ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from empty array';
   var src = [];
   var exp = [];
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from empty array';
   var src = [];
   var exp = [];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from unroll';
   var src = _.unrollMake( [ 1, 2, 'str' ] );
   var exp = _.unrollMake( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from unroll';
   var src = _.unrollMake( [ 1, 2, 'str' ] );
   var exp = _.unrollMake( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from argumentsArray';
   var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
   var exp = _.argumentsArrayMake( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from argumentsArray';
   var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
   var exp = [ 1, 2, 'str' ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from BufferRaw';
   var src = new BufferRaw( [ 1, 2, 'str' ] );
   var exp = new BufferRaw( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from BufferRaw';
   var src = new BufferRaw( [ 1, 2, 'str' ] );
   var exp = [ new BufferRaw( [ 1, 2, 'str' ] ) ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from BufferTyped';
   var src = new I16x( [ 1, 2, 'str' ] );
   var exp = new I16x( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from map';
   var src = { a : 0 };
   var exp = { a : 0 };
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from map';
   var src = { a : 0 };
   var exp = [ { a : 0 } ];
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'from Map';
   var src = new Map( [ [ 1, 2 ] ] );
   var exp = new Map( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
 
   test.case = 'dsts - null, from Map';
   var src = new Map( [ [ 1, 2 ] ] );
   var exp = new Map( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got[ 0 ].entries() ], [ ... exp.entries() ] );
 
   test.case = 'from Set';
   var src = new Set();
   var exp = new Set();
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got ], [ ... exp ] );
 
   test.case = 'dsts - null, from Set';
   var src = new Set();
   var exp = new Set();
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got[ 0 ] ], [ ... exp ] );
 
   test.case = 'from Symbol';
   var src = Symbol( 'a' );
   var exp = src;
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'from instance of constructor';
@@ -758,7 +758,7 @@ function toOriginals( test )
   }
   var src = new Constr();
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.x, 1 );
 
   /* */
@@ -766,25 +766,25 @@ function toOriginals( test )
   test.case = 'from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, src.original );
 
   test.case = 'dsts - null, from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got[ 0 ], src.original );
 
   test.case = 'from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginals( src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got, src.original );
 
   test.case = 'dsts - null, from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginals( null, src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got[ 0 ], src.original );
 
   /* */
@@ -793,7 +793,7 @@ function toOriginals( test )
   var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
-  test.is( got === srcs );
+  test.true( got === srcs );
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src.original );
   test.identical( got[ 2 ], src.original );
@@ -802,7 +802,7 @@ function toOriginals( test )
   var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( null, srcs );
-  test.is( got !== srcs );
+  test.true( got !== srcs );
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src.original );
   test.identical( got[ 2 ], src.original );
@@ -811,7 +811,7 @@ function toOriginals( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
-  test.is( got === srcs );
+  test.true( got === srcs );
   test.identical( got.length, 8 );
   test.identical( [ ... got[ 0 ] ], [ ... src.original ] );
   test.identical( [ ... got[ 2 ] ], [ ... src.original ] );
@@ -821,7 +821,7 @@ function toOriginals( test )
   var src2 = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src1, 1, src2, 'str', src1, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
-  test.is( got === srcs );
+  test.true( got === srcs );
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src1.original );
   test.identical( [ ... got[ 2 ] ], [ ... src2.original ] );
@@ -831,7 +831,7 @@ function toOriginals( test )
   var src2 = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src1, 1, src2, 'str', src1, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( null, srcs );
-  test.is( got !== srcs );
+  test.true( got !== srcs );
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src1.original );
   test.identical( [ ... got[ 2 ] ], [ ... src2.original ] );
@@ -845,8 +845,8 @@ function toOriginals( test )
   var src = 'str';
   var exp = [ 1, 'str' ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - constructor, src - primitive';
@@ -854,8 +854,8 @@ function toOriginals( test )
   var src = true;
   var exp = [ dst, true ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - primitive, src - array';
@@ -863,8 +863,8 @@ function toOriginals( test )
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ 1, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - primitive, src - unroll';
@@ -872,8 +872,8 @@ function toOriginals( test )
   var src = _.unrollMake( [ [ 2, 'str' ], [ 1 ] ] );
   var exp = [ 1, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - primitive, src - argumentsArray';
@@ -881,8 +881,8 @@ function toOriginals( test )
   var src = _.argumentsArrayMake( [ [ 2, 'str' ], [ 1 ] ] );
   var exp = [ 1, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - array, src - array';
@@ -890,8 +890,8 @@ function toOriginals( test )
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ 1, { a : 0 }, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - unroll, src - array';
@@ -899,8 +899,8 @@ function toOriginals( test )
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ 1, { a : 0 }, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got, exp );
 
   test.case = 'dsts - argumentsArray, src - array';
@@ -908,8 +908,8 @@ function toOriginals( test )
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ [ 1, { a : 0 } ], [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.equivalent( got, exp );
 }
 
@@ -1321,8 +1321,8 @@ function from_( test )
   var src = [];
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array';
@@ -1330,8 +1330,8 @@ function from_( test )
   var src = [ 1, 2, '', {}, [], null, undefined ];
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
@@ -1339,8 +1339,8 @@ function from_( test )
   var src = _.unrollFrom( [] );
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
@@ -1348,8 +1348,8 @@ function from_( test )
   var src = _.unrollFrom( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from empty Set';
@@ -1357,8 +1357,8 @@ function from_( test )
   var src = new Set();
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
@@ -1366,8 +1366,8 @@ function from_( test )
   var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
@@ -1375,8 +1375,8 @@ function from_( test )
   var src = _.containerAdapter.from( [] );
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from arrayAdapterContainer';
@@ -1384,8 +1384,8 @@ function from_( test )
   var src = _.containerAdapter.from( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
@@ -1393,8 +1393,8 @@ function from_( test )
   var src = _.containerAdapter.from( new Set( [] ) );
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
@@ -1402,8 +1402,8 @@ function from_( test )
   var src = _.containerAdapter.from( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -1413,8 +1413,8 @@ function from_( test )
   var src = _.containerAdapter.from( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
@@ -1422,8 +1422,8 @@ function from_( test )
   var src = _.containerAdapter.from( new Set( [] ) );
   var exp = [];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
@@ -1431,8 +1431,8 @@ function from_( test )
   var src = _.containerAdapter.from( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
-  test.is( got !== container );
-  test.is( got === src );
+  test.true( got !== container );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -2428,7 +2428,7 @@ function removeContainer( test )
   var src = [];
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - empty Set';
@@ -2436,7 +2436,7 @@ function removeContainer( test )
   var src = new Set();
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - arrayContainerAdapter';
@@ -2444,7 +2444,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - setContainerAdapter';
@@ -2452,7 +2452,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -2462,7 +2462,7 @@ function removeContainer( test )
   var src = [ 1, [ 2 ], { a : 3 } ];
   var got = dst.removeContainer( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - Set, no entries';
@@ -2470,7 +2470,7 @@ function removeContainer( test )
   var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - arrayContainerAdapter, entries';
@@ -2478,7 +2478,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -2486,7 +2486,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainer( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -2496,8 +2496,8 @@ function removeContainer( test )
   var src = dst;
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src identical to dst';
@@ -2505,8 +2505,8 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'arrayContainerAdapter' );
@@ -2520,7 +2520,7 @@ function removeContainer( test )
   var src = [];
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - empty Set';
@@ -2528,7 +2528,7 @@ function removeContainer( test )
   var src = new Set();
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - arrayContainerAdapter';
@@ -2536,7 +2536,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - setContainerAdapter';
@@ -2544,7 +2544,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -2554,7 +2554,7 @@ function removeContainer( test )
   var src = [ 1, [ 2 ], { a : 3 } ];
   var got = dst.removeContainer( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - Set, no entries';
@@ -2562,7 +2562,7 @@ function removeContainer( test )
   var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - arrayContainerAdapter, entries';
@@ -2570,7 +2570,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -2578,7 +2578,7 @@ function removeContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainer( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -2588,8 +2588,8 @@ function removeContainer( test )
   var src = dst;
   var got = dst.removeContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src identical to dst';
@@ -2597,8 +2597,8 @@ function removeContainer( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainer( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'setContainerAdapter' );
@@ -2646,7 +2646,7 @@ function removeContainerOnce( test )
   var src = [];
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - empty Set';
@@ -2654,7 +2654,7 @@ function removeContainerOnce( test )
   var src = new Set();
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - arrayContainerAdapter';
@@ -2662,7 +2662,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, src - setContainerAdapter';
@@ -2670,7 +2670,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -2680,7 +2680,7 @@ function removeContainerOnce( test )
   var src = [ 1, [ 2 ], { a : 3 } ];
   var got = dst.removeContainerOnce( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - Set, no entries';
@@ -2688,7 +2688,7 @@ function removeContainerOnce( test )
   var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - arrayContainerAdapter, entries';
@@ -2696,7 +2696,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ 1, 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -2704,7 +2704,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src );
   var exp = [ 1, 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -2714,8 +2714,8 @@ function removeContainerOnce( test )
   var src = dst;
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src identical to dst';
@@ -2723,8 +2723,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -2734,8 +2734,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -2743,8 +2743,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, fromIndex and evaluator2';
@@ -2752,8 +2752,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src, 3, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -2761,8 +2761,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'arrayContainerAdapter' );
@@ -2776,7 +2776,7 @@ function removeContainerOnce( test )
   var src = [];
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - empty Set';
@@ -2784,7 +2784,7 @@ function removeContainerOnce( test )
   var src = new Set();
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - arrayContainerAdapter';
@@ -2792,7 +2792,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, src - setContainerAdapter';
@@ -2800,7 +2800,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -2810,7 +2810,7 @@ function removeContainerOnce( test )
   var src = [ 1, [ 2 ], { a : 3 } ];
   var got = dst.removeContainerOnce( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - Set, no entries';
@@ -2818,7 +2818,7 @@ function removeContainerOnce( test )
   var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ 'str', null, 0 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - arrayContainerAdapter, entries';
@@ -2826,7 +2826,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -2834,7 +2834,7 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -2844,8 +2844,8 @@ function removeContainerOnce( test )
   var src = dst;
   var got = dst.removeContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src identical to dst';
@@ -2853,8 +2853,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
   var got = dst.removeContainerOnce( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -2864,8 +2864,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -2873,8 +2873,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, fromIndex and evaluator2';
@@ -2882,8 +2882,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src, 3, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -2891,8 +2891,8 @@ function removeContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
   var got = dst.removeContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 3 ], [ 2 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'setContainerAdapter' );
@@ -2940,7 +2940,7 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -2948,7 +2948,7 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -2958,8 +2958,8 @@ function removeContainerOnceStrictly( test )
   var src = dst;
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src identical to dst';
@@ -2967,8 +2967,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1 ] );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -2978,8 +2978,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
   var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -2987,8 +2987,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
   var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, fromIndex and evaluator2';
@@ -2996,8 +2996,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ [ 2 ], [ 3 ] ] );
   var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 2 ], 'str', { a : 3 }  ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -3005,8 +3005,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
   var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'arrayContainerAdapter' );
@@ -3020,7 +3020,7 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, src - setContainerAdapter';
@@ -3028,7 +3028,7 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ 2, 'str', [ 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -3038,8 +3038,8 @@ function removeContainerOnceStrictly( test )
   var src = dst;
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got === src );
+  test.true( got === dst );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src identical to dst';
@@ -3047,8 +3047,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 'str', null, 0, 1 ] );
   var got = dst.removeContainerOnceStrictly( src );
   var exp = [ [ 2 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -3058,8 +3058,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
   var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -3067,8 +3067,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
   var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, fromIndex and evaluator2';
@@ -3076,8 +3076,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 3 ] ] ) );
   var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
   var exp = [ 'str', 0, 1, [ 2 ], { a : 3 }  ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst and src has arrays, two evaluators';
@@ -3085,8 +3085,8 @@ function removeContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
   var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'setContainerAdapter' );
@@ -3578,56 +3578,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least();
   var exp = [ -20 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least();
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least();
   var exp = [ -20.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least();
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least();
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least();
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -3636,56 +3636,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'without dst' );
@@ -3698,56 +3698,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( null );
   var exp = [ -20 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( null );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( null );
   var exp = [ -20.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( null );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( null );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( null );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -3756,56 +3756,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( null, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst - null' );
@@ -3819,8 +3819,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst );
   var exp = [ -20 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
@@ -3828,8 +3828,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( dst );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum, small difference';
@@ -3837,8 +3837,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst );
   var exp = [ -20.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
@@ -3846,8 +3846,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( dst );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
@@ -3855,8 +3855,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( dst );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
@@ -3864,8 +3864,8 @@ function least( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( dst );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
@@ -3873,8 +3873,8 @@ function least( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum and NaN';
@@ -3882,8 +3882,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -3893,8 +3893,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum - -Infinity';
@@ -3902,8 +3902,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum, small difference';
@@ -3911,8 +3911,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
@@ -3920,8 +3920,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
@@ -3929,8 +3929,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
@@ -3938,8 +3938,8 @@ function least( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
@@ -3947,8 +3947,8 @@ function least( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum and NaN';
@@ -3956,8 +3956,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -3967,8 +3967,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum - -Infinity';
@@ -3976,8 +3976,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum, small difference';
@@ -3985,8 +3985,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
@@ -3994,8 +3994,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
@@ -4003,8 +4003,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
@@ -4012,8 +4012,8 @@ function least( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
@@ -4021,8 +4021,8 @@ function least( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum and NaN';
@@ -4030,8 +4030,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - new container' );
@@ -4044,56 +4044,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( src );
   var exp = [ -20 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( src );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( src );
   var exp = [ -20.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( src );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( src );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( src );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   /* */
@@ -4102,56 +4102,56 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.least( src, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst - src' );
@@ -4168,56 +4168,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least();
   var exp = [ -20 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least();
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set(  [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least();
   var exp = [ -20.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least();
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least();
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least();
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -4226,56 +4226,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'without dst' );
@@ -4288,56 +4288,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( null );
   var exp = [ -20 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( null );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( null );
   var exp = [ -20.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( null );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( null );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( null );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -4346,56 +4346,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( null, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( null, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - null' );
@@ -4409,8 +4409,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst );
   var exp = [ -20 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
@@ -4418,8 +4418,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( dst );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum, small difference';
@@ -4427,8 +4427,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst );
   var exp = [ -20.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
@@ -4436,8 +4436,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( dst );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
@@ -4445,8 +4445,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( dst );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
@@ -4454,8 +4454,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( dst );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
@@ -4463,8 +4463,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum and NaN';
@@ -4472,8 +4472,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -4483,8 +4483,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum - -Infinity';
@@ -4492,8 +4492,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum, small difference';
@@ -4501,8 +4501,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
@@ -4510,8 +4510,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
@@ -4519,8 +4519,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
@@ -4528,8 +4528,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
@@ -4537,8 +4537,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum and NaN';
@@ -4546,8 +4546,8 @@ function least( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -4557,8 +4557,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum - -Infinity';
@@ -4566,8 +4566,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum, small difference';
@@ -4575,8 +4575,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
@@ -4584,8 +4584,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
@@ -4593,8 +4593,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
@@ -4602,8 +4602,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
@@ -4611,8 +4611,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has minimum and NaN';
@@ -4620,8 +4620,8 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst - new container' );
@@ -4634,56 +4634,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( src );
   var exp = [ -20 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( src );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( src );
   var exp = [ -20.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( src );
   var exp = [ -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( src );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( src );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -4692,56 +4692,56 @@ function least( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 2 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.least( src, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.least( src, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.least( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -15 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - src' );
@@ -4761,56 +4761,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most();
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
   var got = src.most();
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most();
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most();
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most();
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most();
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -4819,56 +4819,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'without dst' );
@@ -4881,56 +4881,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( null );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
   var got = src.most( null );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( null );
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( null );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( null );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( null );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -4939,56 +4939,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( null, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst - null' );
@@ -5002,8 +5002,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun - Infinity';
@@ -5011,8 +5011,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
   var got = src.most( dst );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun, small difference';
@@ -5020,8 +5020,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
@@ -5029,8 +5029,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( dst );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
@@ -5038,8 +5038,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( dst );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
@@ -5047,8 +5047,8 @@ function most( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( dst );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
@@ -5056,8 +5056,8 @@ function most( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun and NaN';
@@ -5065,8 +5065,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -5076,8 +5076,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun - -Infinity';
@@ -5085,8 +5085,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun, small difference';
@@ -5094,8 +5094,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
@@ -5103,8 +5103,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
@@ -5112,8 +5112,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
@@ -5121,8 +5121,8 @@ function most( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
@@ -5130,8 +5130,8 @@ function most( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun and NaN';
@@ -5139,8 +5139,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -5150,8 +5150,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun - -Infinity';
@@ -5159,8 +5159,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun, small difference';
@@ -5168,8 +5168,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
@@ -5177,8 +5177,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
@@ -5186,8 +5186,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
@@ -5195,8 +5195,8 @@ function most( test )
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
@@ -5204,8 +5204,8 @@ function most( test )
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun and NaN';
@@ -5213,8 +5213,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - new container' );
@@ -5227,56 +5227,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( src );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
   var got = src.most( src );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( src );
   var exp = [ 21.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( src );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( src );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( src );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   /* */
@@ -5285,56 +5285,56 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1, -1, -1, -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity, -Infinity, -Infinity, -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity, Infinity, Infinity, Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.most( src, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN, NaN, NaN, NaN ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst - src' );
@@ -5351,56 +5351,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most();
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most();
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set(  [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most();
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most();
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most();
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most();
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -5409,56 +5409,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'without dst' );
@@ -5471,56 +5471,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( null );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( null );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( null );
   var exp = [ 21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( null );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( null );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( null );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -5529,56 +5529,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ -21.0001 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( null, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( null, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( null, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - null' );
@@ -5592,8 +5592,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun - Infinity';
@@ -5601,8 +5601,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( dst );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun, small difference';
@@ -5610,8 +5610,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
@@ -5619,8 +5619,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( dst );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
@@ -5628,8 +5628,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( dst );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
@@ -5637,8 +5637,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( dst );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
@@ -5646,8 +5646,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun and NaN';
@@ -5655,8 +5655,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( dst );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -5666,8 +5666,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun - -Infinity';
@@ -5675,8 +5675,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun, small difference';
@@ -5684,8 +5684,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
@@ -5693,8 +5693,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
@@ -5702,8 +5702,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
@@ -5711,8 +5711,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
@@ -5720,8 +5720,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun and NaN';
@@ -5729,8 +5729,8 @@ function most( test )
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -5740,8 +5740,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun - -Infinity';
@@ -5749,8 +5749,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun, small difference';
@@ -5758,8 +5758,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all equal';
@@ -5767,8 +5767,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all -Infinity';
@@ -5776,8 +5776,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all Infinity';
@@ -5785,8 +5785,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( dst, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, all NaN';
@@ -5794,8 +5794,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [ NaN ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'onEach, has maximun and NaN';
@@ -5803,8 +5803,8 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( dst, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst - new container' );
@@ -5817,56 +5817,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( src );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun - Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( src );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( src );
   var exp = [ 21.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( src );
   var exp = [ -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( src );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( src );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'without onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -5875,56 +5875,56 @@ function most( test )
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ 21.0001 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -1 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ -Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.most( src, ( e ) => e < 0 ? -e : e );
   var exp = [ Infinity ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.most( src, ( e ) => isNaN( e ) ? 0 : e );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'onEach, has maximun and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.most( src, ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = [ 21 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst - src' );
@@ -5956,7 +5956,7 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -5964,8 +5964,8 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2 );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -5973,8 +5973,8 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -5982,8 +5982,8 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2 );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -5991,15 +5991,15 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2 );
     var exp = [ -10, 5 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -6012,7 +6012,7 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, [] );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6020,8 +6020,8 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set() );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6030,8 +6030,8 @@ function onlyWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.only( dst, src2 );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6039,8 +6039,8 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set() );
     var exp = [ 2 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6048,15 +6048,15 @@ function onlyWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, [] );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, [] );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -6071,8 +6071,8 @@ function onlyWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.only( dst, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6081,8 +6081,8 @@ function onlyWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6091,8 +6091,8 @@ function onlyWithoutCallbacks( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6101,8 +6101,8 @@ function onlyWithoutCallbacks( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.only( dst, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6110,7 +6110,7 @@ function onlyWithoutCallbacks( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.only( src, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -6125,8 +6125,8 @@ function onlyWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.only( dst, src2 );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -6135,8 +6135,8 @@ function onlyWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2 );
     var exp = [ 1, -10, 4, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -6145,8 +6145,8 @@ function onlyWithoutCallbacks( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2 );
     var exp = new Set( [ 1, -10, 4, 1, 15, 21 ] );
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6155,8 +6155,8 @@ function onlyWithoutCallbacks( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( dst, src2 );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6164,7 +6164,7 @@ function onlyWithoutCallbacks( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( src, src2 );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -6195,7 +6195,7 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, ( e ) => e );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6203,8 +6203,8 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6212,8 +6212,8 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6221,8 +6221,8 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6230,15 +6230,15 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -6251,7 +6251,7 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, [], ( e ) => e );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6259,8 +6259,8 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e ) => e );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6269,8 +6269,8 @@ function onlyOneEvaluator( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6278,8 +6278,8 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e ) => e );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6287,15 +6287,15 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, [], ( e ) => e );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, [], ( e ) => e );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -6310,8 +6310,8 @@ function onlyOneEvaluator( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6320,8 +6320,8 @@ function onlyOneEvaluator( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6330,8 +6330,8 @@ function onlyOneEvaluator( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -6340,8 +6340,8 @@ function onlyOneEvaluator( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.only( dst, src2, ( e ) => e[ 0 ] );
     var exp = [ -20, 5, -10, -15, 4, 1, 2, 15, [ 22 ], [ 20 ] ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6349,7 +6349,7 @@ function onlyOneEvaluator( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.only( src, src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -6364,8 +6364,8 @@ function onlyOneEvaluator( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -6374,8 +6374,8 @@ function onlyOneEvaluator( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ 1, -10, 4, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6384,8 +6384,8 @@ function onlyOneEvaluator( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.only( dst, src2, ( e ) => e[ 0 ] );
     var exp = [ -10, 6, -14, 4, 1, 15, 21, -1, [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -6394,8 +6394,8 @@ function onlyOneEvaluator( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e ) => e[ 0 ] );
     var exp = [ [ 22 ], [ 22 ], -10, 6, -14, 4, 1, 15, 21, -1 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6404,8 +6404,8 @@ function onlyOneEvaluator( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( dst, src2, ( e ) => e );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6413,7 +6413,7 @@ function onlyOneEvaluator( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( src, src2, ( e ) => e );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -6444,7 +6444,7 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6452,8 +6452,8 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6461,8 +6461,8 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6470,8 +6470,8 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6479,15 +6479,15 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -6500,7 +6500,7 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, [], ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6508,8 +6508,8 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6518,8 +6518,8 @@ function onlyTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6527,8 +6527,8 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6536,15 +6536,15 @@ function onlyTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, [], ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, [], ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -6559,8 +6559,8 @@ function onlyTwoEvaluators( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6569,8 +6569,8 @@ function onlyTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6579,8 +6579,8 @@ function onlyTwoEvaluators( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -6589,8 +6589,8 @@ function onlyTwoEvaluators( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins[ 0 ] );
     var exp = [ -20, 5, [ 21 ], [ -20 ] ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6598,7 +6598,7 @@ function onlyTwoEvaluators( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.only( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -6613,8 +6613,8 @@ function onlyTwoEvaluators( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -6623,8 +6623,8 @@ function onlyTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 1, -10, 4, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6633,8 +6633,8 @@ function onlyTwoEvaluators( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins[ 0 ] );
     var exp = [ [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -6643,8 +6643,8 @@ function onlyTwoEvaluators( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
     var exp = [ [ 22 ], [ 22 ], -10, 6, -14, 4, 1, 15, 21, -1 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6653,8 +6653,8 @@ function onlyTwoEvaluators( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6662,7 +6662,7 @@ function onlyTwoEvaluators( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -6693,7 +6693,7 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6701,8 +6701,8 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6710,8 +6710,8 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6719,8 +6719,8 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6728,15 +6728,15 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -6749,7 +6749,7 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( null, [], ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6757,8 +6757,8 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6767,8 +6767,8 @@ function onlyEqualizer( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6776,8 +6776,8 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, new Set(), ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6785,15 +6785,15 @@ function onlyEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, [], ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( src, [], ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -6808,8 +6808,8 @@ function onlyEqualizer( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6818,8 +6818,8 @@ function onlyEqualizer( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6828,8 +6828,8 @@ function onlyEqualizer( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -6838,8 +6838,8 @@ function onlyEqualizer( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.only( dst, src2, ( e, ins ) => e === ins[ 0 ] );
     var exp = [ -20, 5, [ 21 ], [ -20 ] ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6847,7 +6847,7 @@ function onlyEqualizer( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.only( src, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -6862,8 +6862,8 @@ function onlyEqualizer( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -6872,8 +6872,8 @@ function onlyEqualizer( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ 1, -10, 4, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6882,8 +6882,8 @@ function onlyEqualizer( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.only( dst, src2, ( e, ins ) => e === ins[ 0 ] );
     var exp = [ [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -6892,8 +6892,8 @@ function onlyEqualizer( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.only( dst, src2, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
     var exp = [ [ 22 ], [ 22 ], -10, 6, -14, 4, 1, 15, 21, -1 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -6902,8 +6902,8 @@ function onlyEqualizer( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -6911,7 +6911,7 @@ function onlyEqualizer( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.only( src, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 4, 1, 15, 21 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -6928,8 +6928,8 @@ function onlyBugWithReturnedContainer( test )
   var src2 = [ 2, 3, 5 ];
   var got = src.only( dst, src2 );
   var exp = [ 2, 3 ];
-  test.is( got !== dst );
-  test.is( got !== src2 );
+  test.true( got !== dst );
+  test.true( got !== src2 );
   test.identical( got.original, exp );
 
   test.case = 'dst is Set';
@@ -6938,8 +6938,8 @@ function onlyBugWithReturnedContainer( test )
   var src2 = [ 2, 3, 5 ];
   var got = src.only( dst, src2 );
   var exp = [ 2, 3 ];
-  test.is( got !== dst );
-  test.is( got !== src2 );
+  test.true( got !== dst );
+  test.true( got !== src2 );
   test.identical( [ ... got.original ], exp );
 }
 onlyBugWithReturnedContainer.description =
@@ -6971,7 +6971,7 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -6979,8 +6979,8 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -6988,8 +6988,8 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -6997,8 +6997,8 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7006,15 +7006,15 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -7027,7 +7027,7 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7035,8 +7035,8 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set() );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7045,8 +7045,8 @@ function butWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2 );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7054,8 +7054,8 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set() );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7063,15 +7063,15 @@ function butWithoutCallbacks( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, [] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -7086,8 +7086,8 @@ function butWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.but( dst, src2 );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7096,8 +7096,8 @@ function butWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2 );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7106,8 +7106,8 @@ function butWithoutCallbacks( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2 );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7116,8 +7116,8 @@ function butWithoutCallbacks( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( dst, src2 );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7125,7 +7125,7 @@ function butWithoutCallbacks( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( src, src2 );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -7140,8 +7140,8 @@ function butWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.but( dst, src2 );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -7150,8 +7150,8 @@ function butWithoutCallbacks( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2 );
     var exp = [ 1, 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7160,8 +7160,8 @@ function butWithoutCallbacks( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2 );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7170,8 +7170,8 @@ function butWithoutCallbacks( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( dst, src2 );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7179,7 +7179,7 @@ function butWithoutCallbacks( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( src, src2 );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -7210,7 +7210,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7218,8 +7218,8 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7227,8 +7227,8 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7236,8 +7236,8 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7245,15 +7245,15 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e ) => e );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -7266,7 +7266,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [], ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7274,8 +7274,8 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7284,8 +7284,8 @@ function butOneEvaluator( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7293,8 +7293,8 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7302,15 +7302,15 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, [], ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -7325,8 +7325,8 @@ function butOneEvaluator( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7335,8 +7335,8 @@ function butOneEvaluator( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7345,8 +7345,8 @@ function butOneEvaluator( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -7355,8 +7355,8 @@ function butOneEvaluator( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
     var exp = [ -20, 5 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7364,7 +7364,7 @@ function butOneEvaluator( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( src, src2, ( e ) => e );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -7379,8 +7379,8 @@ function butOneEvaluator( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -7389,8 +7389,8 @@ function butOneEvaluator( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [ 1, 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7399,8 +7399,8 @@ function butOneEvaluator( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -7409,8 +7409,8 @@ function butOneEvaluator( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
     var exp = [ [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7419,8 +7419,8 @@ function butOneEvaluator( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( dst, src2, ( e ) => e );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7428,7 +7428,7 @@ function butOneEvaluator( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( src, src2, ( e ) => e );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -7459,7 +7459,7 @@ function butTwoEvaluators( test )
     var src = makeSrc( [] );
     var got = src.but( null, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7467,8 +7467,8 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7476,8 +7476,8 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7485,8 +7485,8 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7494,15 +7494,15 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -7515,7 +7515,7 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [], ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7523,8 +7523,8 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7533,8 +7533,8 @@ function butTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7542,8 +7542,8 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7551,15 +7551,15 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, [], ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -7574,8 +7574,8 @@ function butTwoEvaluators( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7584,8 +7584,8 @@ function butTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7594,8 +7594,8 @@ function butTwoEvaluators( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -7604,8 +7604,8 @@ function butTwoEvaluators( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins[ 0 ] );
     var exp = [ -20, 5, -10, -15, 4, 1, 2, 15, 21, [ 22 ], [ 20 ] ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7613,7 +7613,7 @@ function butTwoEvaluators( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -7628,8 +7628,8 @@ function butTwoEvaluators( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -7638,8 +7638,8 @@ function butTwoEvaluators( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 1, 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7648,8 +7648,8 @@ function butTwoEvaluators( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins[ 0 ] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20, 22 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -7658,8 +7658,8 @@ function butTwoEvaluators( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
     var exp = [ [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7668,8 +7668,8 @@ function butTwoEvaluators( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7677,7 +7677,7 @@ function butTwoEvaluators( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -7708,7 +7708,7 @@ function butEqualizer( test )
     var src = makeSrc( [] );
     var got = src.but( null, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7716,8 +7716,8 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7725,8 +7725,8 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7734,8 +7734,8 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7743,15 +7743,15 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src2 );
-    test.is( got !== src );
+    test.true( got !== src2 );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
@@ -7764,7 +7764,7 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [], ( e, ins ) => e === ins );
     var exp =[ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== src );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
@@ -7772,8 +7772,8 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7782,8 +7782,8 @@ function butEqualizer( test )
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7791,8 +7791,8 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, new Set(), ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7800,15 +7800,15 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, [], ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
@@ -7823,8 +7823,8 @@ function butEqualizer( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - empty arrayAdapter';
@@ -7833,8 +7833,8 @@ function butEqualizer( test )
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7843,8 +7843,8 @@ function butEqualizer( test )
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - setAdapter';
@@ -7853,8 +7853,8 @@ function butEqualizer( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.but( dst, src2, ( e, ins ) => e === ins[ 0 ] );
     var exp = [ -20, 5, -10, -15, 4, 1, 2, 15, 21, [ 22 ], [ 20 ] ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7862,7 +7862,7 @@ function butEqualizer( test )
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( src, src2, ( e, ins ) => e === ins );
     var exp = [];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
@@ -7877,8 +7877,8 @@ function butEqualizer( test )
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( got.original, exp );
 
     test.case = 'dst - arrayAdapter';
@@ -7887,8 +7887,8 @@ function butEqualizer( test )
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [ 1, 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
@@ -7897,8 +7897,8 @@ function butEqualizer( test )
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins[ 0 ] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20, 22 ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - Set';
@@ -7907,8 +7907,8 @@ function butEqualizer( test )
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
     var exp = [ [ 22 ] ];
-    test.is( got !== dst );
-    test.is( got !== src );
+    test.true( got !== dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
@@ -7917,8 +7917,8 @@ function butEqualizer( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === dst );
-    test.is( got !== src );
+    test.true( got === dst );
+    test.true( got !== src );
     test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
@@ -7926,7 +7926,7 @@ function butEqualizer( test )
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
-    test.is( got === src );
+    test.true( got === src );
     test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
@@ -7943,8 +7943,8 @@ function butBugWithReturnedContainer( test )
   var src2 = [ 2, 3, 5 ];
   var got = src.but( dst, src2 );
   var exp = [ 4 ];
-  test.is( got !== dst );
-  test.is( got !== src2 );
+  test.true( got !== dst );
+  test.true( got !== src2 );
   test.identical( got.original, exp );
 
   test.case = 'dst is Set';
@@ -7953,8 +7953,8 @@ function butBugWithReturnedContainer( test )
   var src2 = [ 2, 3, 5 ];
   var got = src.but( dst, src2 );
   var exp = [ 4 ];
-  test.is( got !== dst );
-  test.is( got !== src2 );
+  test.true( got !== dst );
+  test.true( got !== src2 );
   test.identical( [ ... got.original ], exp );
 }
 onlyBugWithReturnedContainer.description =
@@ -8028,21 +8028,21 @@ function setAdapterMake_( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.make();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setContainerAdapter';
   var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   if( !Config.debug )
@@ -8064,21 +8064,21 @@ function setAdapterMakeEmpty( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setContainerAdapter';
   var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   if( !Config.debug )
@@ -8099,78 +8099,78 @@ function setAdapterMake( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make();
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'from undefined';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'from null';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'from zero';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( 0 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'from number';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( 100 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'from array';
   var container = [ 1, 2, 3 ];
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from argumentsArray';
   var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from BufferTyped';
   var container = new F32x( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from arrayContainerAdapter';
   var container = _.containerAdapter.make( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from self';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
 
   if( !Config.debug )
@@ -8416,8 +8416,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = [];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
   test.identical( src, [] );
 
@@ -8425,8 +8425,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = [ undefined, null, [ 1 ], 2, 'str' ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8434,8 +8434,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = [];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ true, false ] );
   test.identical( src, [] );
 
@@ -8443,8 +8443,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = [ undefined, null, [ 1 ], 2, 'str' ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8452,8 +8452,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = [ undefined, null ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null ] );
   test.identical( src, [ undefined, null ] );
 
@@ -8461,8 +8461,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = [ undefined, null, [ 1 ] ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ] ] );
 
@@ -8472,8 +8472,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = new Set();
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
   test.identical( [ ... src ], [] );
 
@@ -8481,8 +8481,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8490,8 +8490,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = new Set();
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ true, false ] );
   test.identical( [ ... src ], [] );
 
@@ -8499,8 +8499,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8508,8 +8508,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = new Set( [ [ 1 ], 2 ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ [ 1 ], 2 ] );
   test.identical( [ ... src ], [ [ 1 ], 2 ] );
 
@@ -8517,8 +8517,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = new Set( [ undefined, null, [ 1 ] ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
 
@@ -8528,8 +8528,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = _.containerAdapter.make( [] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
   test.identical( src.original, [] );
 
@@ -8537,8 +8537,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8546,8 +8546,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( [] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical([ ... got.original ], [ true, false ] );
   test.identical( src.original, [] );
 
@@ -8555,8 +8555,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8564,8 +8564,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( [ 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 2, 'str' ] );
   test.identical( src.original, [ 2, 'str' ] );
 
@@ -8573,8 +8573,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ] ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ] ] );
 
@@ -8584,8 +8584,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = _.containerAdapter.make( new Set() );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [] );
   test.identical( [ ... src ], [] );
 
@@ -8593,8 +8593,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set() );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8602,8 +8602,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( new Set() );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ true, false ] );
   test.identical( [ ... src ], [] );
 
@@ -8611,8 +8611,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -8620,8 +8620,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false ] ) );
   var src = _.containerAdapter.make( new Set( [ 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ 2, 'str' ] );
   test.identical( [ ... src ], [ 2, 'str' ] );
 
@@ -8629,8 +8629,8 @@ function setAdapterCopyFrom( test )
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ] ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
 
@@ -8639,20 +8639,20 @@ function setAdapterCopyFrom( test )
   test.case = 'empty container';
   var container = _.containerAdapter.make( new Set() );
   var got = container.copyFrom( container );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [] );
 
   test.case = 'container from src';
   var src = new Set( [ 1, 2 ] );
   var container = _.containerAdapter.make( src );
   var got = container.copyFrom( src );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ 1, 2 ] );
 
   test.case = 'not empty container';
   var container = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
   var got = container.copyFrom( container );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
   test.case = 'not empty containers from src';
@@ -8660,7 +8660,7 @@ function setAdapterCopyFrom( test )
   var src2 = _.containerAdapter.make( src );
   var container = _.containerAdapter.make( src );
   var got = container.copyFrom( src2 );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ 1, 2 ] );
 }
 
@@ -8672,21 +8672,21 @@ function setAdapterAppend( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.append( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.append( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8695,21 +8695,21 @@ function setAdapterAppend( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.append( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.append( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8718,21 +8718,21 @@ function setAdapterAppend( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.append( 1 ).append( 2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
   var got = dst.append( [ 1, 2 ] ).append( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
   var got = dst.append( { a : 0 } ).append( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -8744,21 +8744,21 @@ function setAdapterAppendOnceWithoutCallbacks( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8767,21 +8767,21 @@ function setAdapterAppendOnceWithoutCallbacks( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.appendOnce( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.appendOnce( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8790,21 +8790,21 @@ function setAdapterAppendOnceWithoutCallbacks( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnce( 1 ).appendOnce( 2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ] ).appendOnce( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
   var got = dst.appendOnce( { a : 0 } ).appendOnce( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -8816,21 +8816,21 @@ function setAdapterAppendOnceOneEvaluator( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( 1, ( e ) => e );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8839,21 +8839,21 @@ function setAdapterAppendOnceOneEvaluator( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.appendOnce( 1, ( e ) => e );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8862,35 +8862,35 @@ function setAdapterAppendOnceOneEvaluator( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnce( 4, ( e ) => e === 4 ? 1 : e );
   var exp = [ 1, 2, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 1 ] );
   var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e.a );
   var exp = [ { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ { b : 0 }, { b : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e.b );
   var exp = [ { b : 0 }, { b : 1 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -8904,21 +8904,21 @@ function setAdapterAppendOnceTwoEvaluators( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( 1, ( e ) => e, ( ins ) => ins );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e, ( ins ) => ins );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8927,21 +8927,21 @@ function setAdapterAppendOnceTwoEvaluators( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.appendOnce( 1, ( e ) => e, ( ins ) => ins );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e, ( ins ) => ins );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -8950,35 +8950,35 @@ function setAdapterAppendOnceTwoEvaluators( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnce( 4, ( e ) => e, ( ins ) => 0 );
   var exp = [ 1, 2, 3, 4 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 1 ], ( ins ) => ins[ 1 ] );
   var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e.a, ( ins ) => ins.a );
   var exp = [ { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ { b : 0 }, { b : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e ) => e.b, ( ins ) => ins.a );
   var exp = [ { b : 0 }, { b : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'two evaluators' );
@@ -8991,21 +8991,21 @@ function setAdapterAppendOnceTwoEvaluators( test )
   var dst = _.containerAdapter.make( new Set( [ 1, undefined, 2 ] ) );
   var got = dst.appendOnce( 1, 1, ( e ) => e );
   var exp = [ 1, undefined, 2 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ null ] ] ) );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), 1, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ null ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, 0 ] ) );
   var got = dst.appendOnce( { a : 0 }, 1, ( e ) => e.a );
   var exp = [ { a : 0 }, 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9014,35 +9014,35 @@ function setAdapterAppendOnceTwoEvaluators( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnce( 2, 2, ( e ) => e );
   var exp = [ 1, 2, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 3 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 3 ], 2, ( e ) => e[ 1 ] );
   var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, 1, ( e ) => e.a );
   var exp = [ { a : 0 }, { a : 1 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ { b : 1 }, { a : 0 } ] ) );
   var got = dst.appendOnce( { a : 0 }, 1, ( ins ) => ins.a );
   var exp = [ { b : 1 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'fromIndex' );
@@ -9056,21 +9056,21 @@ function setAdapterAppendOnceEqualizer( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( 1, ( e, ins ) => e === ins );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e, ins ) => e === ins );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnce( { a : 0 }, ( e, ins ) => e === ins );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9079,21 +9079,21 @@ function setAdapterAppendOnceEqualizer( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.appendOnce( 1, ( e, ins ) => e === ins );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e, ins ) => e === ins );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e, ins ) => e === ins );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9102,35 +9102,35 @@ function setAdapterAppendOnceEqualizer( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnce( 4, ( e, ins ) => e === 0 );
   var exp = [ 1, 2, 3, 4 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
   var got = dst.appendOnce( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 1 ] );
   var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e, ins ) => e.a === ins.a );
   var exp = [ { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, append duplicates';
   var dst = _.containerAdapter.make( new Set( [ { b : 0 }, { b : 1 } ] ) );
   var got = dst.appendOnce( { a : 0 }, ( e, ins ) => e.b === ins.a );
   var exp = [ { b : 0 }, { b : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -9144,21 +9144,21 @@ function setAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnceStrictly( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.appendOnceStrictly( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9167,21 +9167,21 @@ function setAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
   var got = dst.appendOnceStrictly( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
   var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
   var got = dst.appendOnceStrictly( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9190,21 +9190,21 @@ function setAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.appendOnceStrictly( 4 ).appendOnceStrictly( 5 );
   var exp = [ 1, 2, 3, 4, 5 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
   var got = dst.appendOnceStrictly( [ 1, 2 ] ).appendOnceStrictly( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
   var got = dst.appendOnceStrictly( { a : 0 } ).appendOnceStrictly( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'without callbacks' );
@@ -9215,56 +9215,56 @@ function setAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set( [ 1, [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, one evaluator';
   var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 3 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ 1, [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e + 1, ( ins ) => ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ 1, [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], 2, ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, equalizer';
   var dst = _.containerAdapter.make( new Set( [ 1, [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], ( e, ins ) => e + 1 === ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container append array, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], [ 2 ], 3 ] ) );
   var got = dst.appendOnceStrictly( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -9375,8 +9375,8 @@ function setAdapterAppendContainer( test )
   var src = [];
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, append empty BufferTyped';
@@ -9384,8 +9384,8 @@ function setAdapterAppendContainer( test )
   var src = new U32x();
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, append empty Set';
@@ -9393,8 +9393,8 @@ function setAdapterAppendContainer( test )
   var src = new Set();
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, append empty arrayContainerAdapter';
@@ -9402,8 +9402,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, append empty setContainerAdapter';
@@ -9411,8 +9411,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9422,8 +9422,8 @@ function setAdapterAppendContainer( test )
   var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append argumentsArray';
@@ -9431,8 +9431,8 @@ function setAdapterAppendContainer( test )
   var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append Set';
@@ -9440,8 +9440,8 @@ function setAdapterAppendContainer( test )
   var src = new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append arrayContainerAdapter';
@@ -9449,8 +9449,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append setContainerAdapter';
@@ -9458,8 +9458,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9469,8 +9469,8 @@ function setAdapterAppendContainer( test )
   var src = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append unroll';
@@ -9478,8 +9478,8 @@ function setAdapterAppendContainer( test )
   var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append Set';
@@ -9487,8 +9487,8 @@ function setAdapterAppendContainer( test )
   var src = new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append arrayContainerAdapter';
@@ -9496,8 +9496,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - container, append setContainerAdapter';
@@ -9505,8 +9505,8 @@ function setAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] ) );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -9550,8 +9550,8 @@ function setAdapterAppendContainerOnce( test )
   var src = [];
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty BufferTyped';
@@ -9559,8 +9559,8 @@ function setAdapterAppendContainerOnce( test )
   var src = new U32x();
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty Set';
@@ -9568,8 +9568,8 @@ function setAdapterAppendContainerOnce( test )
   var src = new Set();
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty arrayContainerAdapter';
@@ -9577,8 +9577,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty setContainerAdapter';
@@ -9586,8 +9586,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9597,8 +9597,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append argumentsArray';
@@ -9606,8 +9606,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append Set';
@@ -9615,8 +9615,8 @@ function setAdapterAppendContainerOnce( test )
   var src = new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -9624,8 +9624,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append setContainerAdapter';
@@ -9633,8 +9633,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9644,8 +9644,8 @@ function setAdapterAppendContainerOnce( test )
   var src = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append unroll';
@@ -9653,8 +9653,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append Set';
@@ -9662,8 +9662,8 @@ function setAdapterAppendContainerOnce( test )
   var src = new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -9671,8 +9671,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append setContainerAdapter';
@@ -9680,8 +9680,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] ) );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9691,8 +9691,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ 1, 2, 3, [ 3 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append array, two evaluators';
@@ -9700,8 +9700,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append array, fromIndex and evaluator2';
@@ -9709,8 +9709,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, 2, ( e ) => e.a );
   var exp = [ 1, 2, 3, { a : 2 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
 
@@ -9719,8 +9719,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9730,8 +9730,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ 1, 2, 3, [ 3 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, two evaluators';
@@ -9739,8 +9739,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, fromIndex and evaluator2';
@@ -9748,8 +9748,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, 3, ( e ) => e.a );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
 
@@ -9758,8 +9758,8 @@ function setAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
   /* - */
 
@@ -9802,8 +9802,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = [];
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty BufferTyped';
@@ -9811,8 +9811,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = new U32x();
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty Set';
@@ -9820,8 +9820,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = new Set();
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty arrayContainerAdapter';
@@ -9829,8 +9829,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty setContainerAdapter';
@@ -9838,8 +9838,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9849,8 +9849,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.unrollMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append argumentsArray';
@@ -9858,8 +9858,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.argumentsArrayMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append Set';
@@ -9867,8 +9867,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = new Set( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -9876,8 +9876,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append setContainerAdapter';
@@ -9885,8 +9885,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9896,8 +9896,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, [ 4 ], [ 5 ], [ null ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, [ 4 ], [ 5 ], [ null ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, two evaluators';
@@ -9905,8 +9905,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ]
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, fromIndex and evaluator2';
@@ -9914,8 +9914,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ { a : 2 }, { a : 3 } ] );
   var got = dst.appendContainerOnceStrictly( src, 2, ( e ) => e.a );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], { a : 2 }, { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, equalizer';
@@ -9923,8 +9923,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -9934,8 +9934,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 4 ], [ 5 ], [ null ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, [ 4 ], [ 5 ], [ null ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, two evaluators';
@@ -9943,8 +9943,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ]
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, fromIndex and evaluator2';
@@ -9952,8 +9952,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ { a : 2 }, { a : 3 } ] ) );
   var got = dst.appendContainerOnceStrictly( src, 2, ( e ) => e.a );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], { a : 2 }, { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, equalizer';
@@ -9961,8 +9961,8 @@ function setAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -10637,21 +10637,21 @@ function setAdapterRemove( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.remove( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.remove( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10660,21 +10660,21 @@ function setAdapterRemove( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.remove( 1 );
   var exp = [ 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.remove( { a : 1 } );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10683,21 +10683,21 @@ function setAdapterRemove( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = dst.remove( 1 ).remove( 2 );
   var exp = [ 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.remove( [ 1, 2 ] ).remove( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
   var got = dst.remove( { a : 0 } ).remove( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10706,28 +10706,28 @@ function setAdapterRemove( test )
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.remove( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.remove( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.remove( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.remove( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -10739,21 +10739,21 @@ function setAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnce( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnce( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10762,21 +10762,21 @@ function setAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnce( 1 );
   var exp = [ 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnce( { a : 1 } );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10785,21 +10785,21 @@ function setAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, 3, 3 ] ) );
   var got = dst.removeOnce( 1 ).removeOnce( 2 );
   var exp = [ 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnce( [ 1, 2 ] ).removeOnce( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
   var got = dst.removeOnce( { a : 0 } ).removeOnce( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10808,28 +10808,28 @@ function setAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnce( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -10841,28 +10841,28 @@ function setAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnceRight( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove empty Long';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnceRight( [] );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( new Set() );
   var got = dst.removeOnceRight( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10871,21 +10871,21 @@ function setAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnceRight( 1 );
   var exp = [ 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
   var got = dst.removeOnceRight( { a : 1 } );
   var exp = [ 1, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10894,21 +10894,21 @@ function setAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, 3, 3 ] ) );
   var got = dst.removeOnceRight( 1 ).removeOnceRight( 2 );
   var exp = [ 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceRight( [ 1, 2 ] ).removeOnceRight( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
   var got = dst.removeOnceRight( { a : 0 } ).removeOnceRight( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10917,28 +10917,28 @@ function setAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ [ 2, 2 ], [ 1, 3 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ], [ 1, 3 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 }
 
@@ -10950,7 +10950,7 @@ function setAdapterRemoveOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 2, '1' ] ) );
   var got = dst.removeOnceStrictly( 1 );
   var exp = [ 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -10959,28 +10959,28 @@ function setAdapterRemoveOnceStrictly( test )
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11018,7 +11018,7 @@ function setAdapterRemoveOnceStrictlyRight( test )
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 2, '1' ] ) );
   var got = dst.removeOnceStrictlyRight( 1 );
   var exp = [ 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -11027,28 +11027,28 @@ function setAdapterRemoveOnceStrictlyRight( test )
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ [ 3, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 3, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11101,7 +11101,7 @@ function setAdapterMap( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.map( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11112,42 +11112,42 @@ function setAdapterMap( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.map( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -11160,42 +11160,42 @@ function setAdapterMap( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ 1 ];
   var got = src.map( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( Array.from( ... got.original ),  exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -11208,42 +11208,42 @@ function setAdapterMap( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.map( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -11257,7 +11257,7 @@ function setAdapterMapRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.mapRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11268,42 +11268,42 @@ function setAdapterMapRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.mapRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.mapRight( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.mapRight( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, 2, '', [ undefined ], false, true, NaN, 1, 0 ];
   var got = src.mapRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -11316,42 +11316,42 @@ function setAdapterMapRight( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ 1 ];
   var got = src.mapRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( Array.from( ... got.original ),  exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.mapRight( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.mapRight( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, 2, '', [ undefined ], false, true, NaN, 1, 0 ];
   var got = src.mapRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -11364,42 +11364,42 @@ function setAdapterMapRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.mapRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.mapRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.mapRight( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.mapRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.mapRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.mapRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -11413,7 +11413,7 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filter( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11424,42 +11424,42 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filter( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filter( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filter( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -11472,42 +11472,42 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ src ];
   var got = src.filter( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filter( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filter( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -11521,8 +11521,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [ 1, 2 ];
   var got = src.filter( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -11530,8 +11530,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -11539,8 +11539,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -11548,8 +11548,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2 ];
   var got = src.filter( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -11557,8 +11557,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -11566,8 +11566,8 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 2 ];
   var got = src.filter( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -11580,42 +11580,42 @@ function setAdapterFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filter( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filter( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filter( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -11629,7 +11629,7 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filterRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11640,42 +11640,42 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filterRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filterRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filterRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -11688,42 +11688,42 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ src ];
   var got = src.filterRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filterRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filterRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -11737,8 +11737,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [ 1, 2 ];
   var got = src.filterRight( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -11746,8 +11746,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -11755,8 +11755,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -11764,8 +11764,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2 ];
   var got = src.filterRight( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -11773,8 +11773,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -11782,8 +11782,8 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 2 ];
   var got = src.filterRight( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -11796,42 +11796,42 @@ function setAdapterFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.filterRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filterRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filterRight( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.filterRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filterRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.filterRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -11845,7 +11845,7 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilter( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -11856,42 +11856,42 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilter( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilter( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, '0', 1, '1', null, 'null', true, 'true', false, 'false', undefined, 'undefined', '', [ 2 ], '2', { a : 0 }, '[object Object]' ];
   var got = src.flatFilter( ( e ) => [ e, String( e ) ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilter( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -11904,42 +11904,42 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ ... src.original ];
   var got = src.flatFilter( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilter( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilter( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -11953,8 +11953,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [ 1, 2 ];
   var got = src.flatFilter( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -11962,8 +11962,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -11971,8 +11971,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -11980,8 +11980,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2 ];
   var got = src.flatFilter( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -11989,8 +11989,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 0, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -11998,8 +11998,8 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 2 ];
   var got = src.flatFilter( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -12012,42 +12012,42 @@ function setAdapterFlatFilter( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilter( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilter( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilter( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -12061,7 +12061,7 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilterRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -12072,42 +12072,42 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilterRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilterRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, '[object Object]', [ 2 ], '2', '', undefined, 'undefined', false, 'false', true, 'true', null, 'null', 1, '1', 0, '0' ];
   var got = src.flatFilterRight( ( e ) => [ e, String( e ) ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilterRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEach' );
@@ -12120,42 +12120,42 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
   var exp = [ ... src.original ];
   var got = src.flatFilterRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilterRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.flatFilterRight( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilterRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -12169,8 +12169,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [ 1, 2 ];
   var got = src.flatFilterRight( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -12178,8 +12178,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -12187,8 +12187,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -12196,8 +12196,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2 ];
   var got = src.flatFilterRight( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -12205,8 +12205,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, { a : 0 }, [ 2 ], '', undefined, false, true, null, 0 ];
   var got = src.flatFilterRight( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -12214,8 +12214,8 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 1, 2, 2 ];
   var got = src.flatFilterRight( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -12228,42 +12228,42 @@ function setAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.flatFilterRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilterRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilterRight( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.flatFilterRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilterRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 2 ];
   var got = src.flatFilterRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -12277,7 +12277,7 @@ function setAdapterOnce( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.once( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -12288,35 +12288,35 @@ function setAdapterOnce( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'two evaluators returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e ) => e, ( ins ) => ins );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0 ];
   var got = src.once( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'evaluator checks element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
   var got = src.once( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEval' );
@@ -12330,7 +12330,7 @@ function setAdapterOnce( test )
   var dst = [];
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - empty arrayAdapter, no onEval';
@@ -12338,8 +12338,8 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - filled array, no onEval';
@@ -12347,7 +12347,7 @@ function setAdapterOnce( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - empty array, no onEval';
@@ -12355,7 +12355,7 @@ function setAdapterOnce( test )
   var dst = [];
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, no onEval';
@@ -12363,7 +12363,7 @@ function setAdapterOnce( test )
   var dst = [ 1, 2, null, undefined, false ];
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, same content, no onEval';
@@ -12371,7 +12371,7 @@ function setAdapterOnce( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, no onEval, evaluator returns element';
@@ -12379,7 +12379,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, equalizer';
@@ -12387,7 +12387,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, onEval returns undefined';
@@ -12395,7 +12395,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, evaluator checks element of array';
@@ -12403,7 +12403,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, duplicates in src, evaluator checks element of array';
@@ -12411,7 +12411,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -12421,7 +12421,7 @@ function setAdapterOnce( test )
   var dst = new Set( [] );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
@@ -12429,8 +12429,8 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - filled Set, no onEval';
@@ -12438,7 +12438,7 @@ function setAdapterOnce( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - empty Set, no onEval';
@@ -12446,7 +12446,7 @@ function setAdapterOnce( test )
   var dst = new Set( [] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, no onEval';
@@ -12454,7 +12454,7 @@ function setAdapterOnce( test )
   var dst = new Set( [ 1, 2, null, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, same content, no onEval';
@@ -12462,7 +12462,7 @@ function setAdapterOnce( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, one evaluator';
@@ -12470,7 +12470,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, equalizer';
@@ -12478,7 +12478,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator returns undefined';
@@ -12486,7 +12486,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator checks element of array';
@@ -12494,7 +12494,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, evaluator checks element of array';
@@ -12502,7 +12502,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, two evaluators checks element of array';
@@ -12510,7 +12510,7 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only dst' );
@@ -12523,70 +12523,70 @@ function setAdapterOnce( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.once( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
   var got = src.once( null );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
   var got = src.once( null );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, two evaluators returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => e, ( ins ) => ins );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator checks element of array, duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, two evaluators checks element of array, duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( null, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -12599,56 +12599,56 @@ function setAdapterOnce( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.once( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
   var got = src.once( src );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
   var got = src.once( src );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( src, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( src, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( src, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, two evaluators checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.once( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -12662,7 +12662,7 @@ function setAdapterOnceRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.onceRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -12673,35 +12673,35 @@ function setAdapterOnceRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'two evaluators returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e ) => e, ( ins ) => ins );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 } ];
   var got = src.onceRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'evaluator checks element of array';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
   var got = src.onceRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only onEval' );
@@ -12715,7 +12715,7 @@ function setAdapterOnceRight( test )
   var dst = [];
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - empty arrayAdapter, no onEval';
@@ -12723,8 +12723,8 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - filled array, no onEval';
@@ -12732,7 +12732,7 @@ function setAdapterOnceRight( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - empty array, no onEval';
@@ -12740,7 +12740,7 @@ function setAdapterOnceRight( test )
   var dst = [];
   var exp = [ false, undefined, null, 2, 1 ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, no onEval';
@@ -12748,7 +12748,7 @@ function setAdapterOnceRight( test )
   var dst = [ 1, 2, null, undefined, false ];
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, same content, no onEval';
@@ -12756,7 +12756,7 @@ function setAdapterOnceRight( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, no onEval, evaluator returns element';
@@ -12764,7 +12764,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, equalizer';
@@ -12772,7 +12772,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, onEval returns undefined';
@@ -12780,7 +12780,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, evaluator checks element of array';
@@ -12788,7 +12788,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, duplicates in src, evaluator checks element of array';
@@ -12796,7 +12796,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -12806,7 +12806,7 @@ function setAdapterOnceRight( test )
   var dst = new Set( [] );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
@@ -12814,8 +12814,8 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - filled Set, no onEval';
@@ -12823,7 +12823,7 @@ function setAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - empty Set, no onEval';
@@ -12831,7 +12831,7 @@ function setAdapterOnceRight( test )
   var dst = new Set( [] );
   var exp = [ false, undefined, null, 2, 1 ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, no onEval';
@@ -12839,7 +12839,7 @@ function setAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, null, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, same content, no onEval';
@@ -12847,7 +12847,7 @@ function setAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, one evaluator';
@@ -12855,7 +12855,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, equalizer';
@@ -12863,7 +12863,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator returns undefined';
@@ -12871,7 +12871,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator checks element of array';
@@ -12879,7 +12879,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, evaluator checks element of array';
@@ -12887,7 +12887,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, two evaluators checks element of array';
@@ -12895,7 +12895,7 @@ function setAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only dst' );
@@ -12908,70 +12908,70 @@ function setAdapterOnceRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.onceRight( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
   var got = src.onceRight( null );
   var exp = [ false, undefined, null, 2, 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
   var got = src.onceRight( null );
   var exp = [ [ 2 ], [ 2 ], [ 2 ], false, undefined, null, 2, 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => e );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, two evaluators returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => e, ( ins ) => ins );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e, e2 ) => e === e2 );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => undefined );
   var exp = [ { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => e[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, evaluator checks element of array, duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => e[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, two evaluators checks element of array, duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( null, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === null' );
@@ -12984,56 +12984,56 @@ function setAdapterOnceRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.onceRight( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
   var got = src.onceRight( src );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
   var got = src.onceRight( src );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator returns element';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( src, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( src, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator returns undefined';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( src, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, complex data, two evaluators checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var got = src.onceRight( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'dst === src' );
@@ -13179,7 +13179,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
   test.identical( exp, [] );
 
@@ -13187,7 +13187,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( 123 ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
   test.identical( exp, [] );
 
@@ -13195,7 +13195,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
   test.identical( exp, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
 
@@ -13203,7 +13203,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e, k ) => exp.push( k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ] );
 
@@ -13211,7 +13211,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e, k, c ) => c.length > 10 ? exp.push( k ) : exp.push( c.length - 1 - k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] );
 
@@ -13219,7 +13219,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( undefined ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 
@@ -13227,7 +13227,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( [ e ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ] );
 
@@ -13235,7 +13235,7 @@ function setAdapterEach( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e[ 0 ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
 }
@@ -13248,7 +13248,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
   test.identical( exp, [] );
 
@@ -13256,7 +13256,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( 123 ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], exp );
   test.identical( exp, [] );
 
@@ -13264,7 +13264,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ] );
 
@@ -13272,7 +13272,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e, k ) => exp.push( k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] );
 
@@ -13280,7 +13280,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e, k, c ) => c.length > 10 ? exp.push( k ) : exp.push( c.length - 1 - k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ] );
 
@@ -13288,7 +13288,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( undefined ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 
@@ -13296,7 +13296,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( [ e ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ] );
 
@@ -13304,7 +13304,7 @@ function setAdapterEachRight( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e[ 0 ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 }
@@ -13344,7 +13344,7 @@ function setAdapterReduce( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
   test.identical( [ ... src.original ], [] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0 ] );
 
   test.case = 'with accumulator, not empty src';
@@ -13352,7 +13352,7 @@ function setAdapterReduce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 0, -2 ] ) );
   var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] < e ? _.arrayAppend( a, e ) : a );
   test.identical( [ ... src.original ], [ 1, 2, 3, 0, -2 ] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0, 1, 2, 3 ] );
 
   test.case = 'with accumulator, not empty src, use key';
@@ -13423,7 +13423,7 @@ function setAdapterReduceRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
   test.identical( [ ... src.original ], [] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0 ] );
 
   test.case = 'with accumulator, not empty src';
@@ -13431,7 +13431,7 @@ function setAdapterReduceRight( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 0, -2 ] ) );
   var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] < e ? _.arrayAppend( a, e ) : a );
   test.identical( [ ... src.original ], [ 1, 2, 3, 0, -2 ] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0, 3 ] );
 
   test.case = 'with accumulator, not empty src, use key';
@@ -14071,83 +14071,83 @@ function setAdapterReverse( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var got = src.reverse();
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty array';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = [];
   var got = src.reverse( [] );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty array';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = [ true, '' ];
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty Set';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = new Set();
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty Set';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = new Set( [ true, '' ] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty arrayContainerAdapter';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = _.containerAdapter.make( [] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty arrayContainerAdapter';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = _.containerAdapter.make( [ true, '' ] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty setContainerAdapter';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = _.containerAdapter.make( new Set() );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty setContainerAdapter';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var dst = _.containerAdapter.make( new Set( [ true, '' ] ) );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst === src, odd number of elements';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
   var got = src.reverse( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst === src, even number of elements';
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false }, true ] ) );
   var got = src.reverse( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
 }
 
@@ -14178,15 +14178,15 @@ function setAdapterToArray( test )
   test.case = 'empty container';
   var src = _.containerAdapter.make( new Set() );
   var got = src.toArray();
-  test.is( got !== src );
-  test.is( got.original !== src.original );
+  test.true( got !== src );
+  test.true( got.original !== src.original );
   test.identical( got.original, [ ... src.original ] );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = src.toArray();
-  test.is( got !== src );
-  test.is( got.original !== src.original );
+  test.true( got !== src );
+  test.true( got.original !== src.original );
   test.identical( got.original, [ ... src.original ] );
 }
 
@@ -14197,15 +14197,15 @@ function setAdapterToSet( test )
   test.case = 'empty container';
   var src = _.containerAdapter.make( new Set() );
   var got = src.toSet();
-  test.is( got === src );
-  test.is( got.original === src.original );
+  test.true( got === src );
+  test.true( got.original === src.original );
   test.identical( [ ... got.original ], [ ... src.original ] );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = src.toSet();
-  test.is( got === src );
-  test.is( got.original === src.original );
+  test.true( got === src );
+  test.true( got.original === src.original );
   test.identical( [ ... got.original ], [ ... src.original ] );
 }
 
@@ -14255,21 +14255,21 @@ function arrayAdapterMake_( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from arrayContainerAdapter';
   var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   if( !Config.debug )
@@ -14291,21 +14291,21 @@ function arrayAdapterMakeEmpty( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from arrayContainerAdapter';
   var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.MakeEmpty();
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   if( !Config.debug )
@@ -14326,78 +14326,78 @@ function arrayAdapterMake( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [] );
   var got = src.Make();
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, [] );
 
   test.case = 'from undefined';
   var src = _.containerAdapter.make( [] );
   var got = src.Make( undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, [] );
 
   test.case = 'from null';
   var src = _.containerAdapter.make( [] );
   var got = src.Make( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, [] );
 
   test.case = 'from zero';
   var src = _.containerAdapter.make( [] );
   var got = src.Make( 0 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, [] );
 
   test.case = 'from number';
   var src = _.containerAdapter.make( [] );
   var got = src.Make( 100 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, new Array( 100 ) );
 
   test.case = 'from array';
   var container = [ 1, 2, 3 ];
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from argumentsArray';
   var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from BufferTyped';
   var container = new F32x( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from arrayContainerAdapter';
   var container = _.containerAdapter.make( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from self';
   var src = _.containerAdapter.make( [] );
   var got = src.Make( src );
-  test.is( got !== container );
-  test.is( got !== src );
+  test.true( got !== container );
+  test.true( got !== src );
   test.identical( got.original, [] );
 
   if( !Config.debug )
@@ -14504,8 +14504,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = [];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [] );
   test.identical( src, [] );
 
@@ -14513,8 +14513,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = [ undefined, null, [ 1 ], 2, 'str' ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14522,8 +14522,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = [];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ true, false ] );
   test.identical( src, [] );
 
@@ -14531,8 +14531,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = [ undefined, null, [ 1 ], 2, 'str' ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14540,8 +14540,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = [ 2, 'str' ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ 2, 'str' ] );
   test.identical( src, [ 2, 'str' ] );
 
@@ -14549,8 +14549,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
   var src = [ undefined, null, [ 1 ] ];
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ] ] );
 
@@ -14560,8 +14560,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = new Set();
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [] );
   test.identical( [ ... src ], [] );
 
@@ -14569,8 +14569,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14578,8 +14578,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = new Set();
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ true, false ] );
   test.identical( [ ... src ], [] );
 
@@ -14587,8 +14587,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14596,8 +14596,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = new Set( [ 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ 2, 'str' ] );
   test.identical( [ ... src ], [ 2, 'str' ] );
 
@@ -14605,8 +14605,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
   var src = new Set( [ undefined, null, [ 1 ] ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
 
@@ -14616,8 +14616,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = _.containerAdapter.make( [] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [] );
   test.identical( src.original, [] );
 
@@ -14625,8 +14625,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14634,8 +14634,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = _.containerAdapter.make( [] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ true, false ] );
   test.identical( src.original, [] );
 
@@ -14643,8 +14643,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14652,8 +14652,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false, null ] );
   var src = _.containerAdapter.make( [ [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ [ 1 ], 2, 'str' ] );
 
@@ -14661,8 +14661,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ] ] );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ] ] );
 
@@ -14672,8 +14672,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = _.containerAdapter.make( new Set() );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [] );
   test.identical( [ ... src ], [] );
 
@@ -14681,8 +14681,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [] );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14690,8 +14690,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = _.containerAdapter.make( new Set() );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ true, false ] );
   test.identical( [ ... src ], [] );
 
@@ -14699,8 +14699,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
@@ -14708,8 +14708,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false ] );
   var src = _.containerAdapter.make( new Set( [ 2, 'str' ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ 2, 'str' ] );
   test.identical( [ ... src ], [ 2, 'str' ] );
 
@@ -14717,8 +14717,8 @@ function arrayAdapterCopyFrom( test )
   var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ] ] ) );
   var got = container.copyFrom( src );
-  test.is( got === container );
-  test.is( got !== src );
+  test.true( got === container );
+  test.true( got !== src );
   test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
 
@@ -14729,20 +14729,20 @@ function arrayAdapterCopyFrom( test )
   test.case = 'empty container';
   var container = _.containerAdapter.make( [] );
   var got = container.copyFrom( container );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( got.original, [] );
 
   test.case = 'container from src';
   var src = [ 1, 2 ];
   var container = _.containerAdapter.make( src );
   var got = container.copyFrom( src );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ 1, 2 ] );
 
   test.case = 'not empty container';
   var container = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
   var got = container.copyFrom( container );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
   test.case = 'not empty containers from src';
@@ -14750,7 +14750,7 @@ function arrayAdapterCopyFrom( test )
   var src2 = _.containerAdapter.make( src );
   var container = _.containerAdapter.make( src );
   var got = container.copyFrom( src2 );
-  test.is( got === container );
+  test.true( got === container );
   test.identical( [ ... got.original ], [ 1, 2 ] );
 }
 
@@ -14880,21 +14880,21 @@ function arrayAdapterAppend( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.append( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.append( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -14903,21 +14903,21 @@ function arrayAdapterAppend( test )
   var dst = _.containerAdapter.make( [ undefined ] );
   var got = dst.append( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
   var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( [ 0 ] );
   var got = dst.append( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -14926,21 +14926,21 @@ function arrayAdapterAppend( test )
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = dst.append( 1 ).append( 2 );
   var exp = [ 1, 2, 3, 1, 2 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ] ] );
   var got = dst.append( [ 1, 2 ] ).append( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 } ] );
   var got = dst.append( { a : 0 } ).append( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 }
 
@@ -14954,21 +14954,21 @@ function arrayAdapterAppendOnce( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnce( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnce( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -14977,21 +14977,21 @@ function arrayAdapterAppendOnce( test )
   var dst = _.containerAdapter.make( [ undefined ] );
   var got = dst.appendOnce( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
   var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( [ 0 ] );
   var got = dst.appendOnce( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -15000,21 +15000,21 @@ function arrayAdapterAppendOnce( test )
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = dst.appendOnce( 1 ).appendOnce( 2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ] ] );
   var got = dst.appendOnce( [ 1, 2 ] ).appendOnce( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 } ] );
   var got = dst.appendOnce( { a : 0 } ).appendOnce( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.close( 'without callbacks' );
@@ -15025,56 +15025,56 @@ function arrayAdapterAppendOnce( test )
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, one evaluator';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, two evaluators';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, two evaluators, appends';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, fromIndex and evaluator2, appends';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], 2, ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], 1, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, equalizer';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, two evaluators, appends';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnce( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 }
 
@@ -15088,21 +15088,21 @@ function arrayAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnceStrictly( 1 );
   var exp = [ 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, append map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.appendOnceStrictly( { a : 0 } );
   var exp = [ { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -15111,21 +15111,21 @@ function arrayAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( [ undefined ] );
   var got = dst.appendOnceStrictly( 1 );
   var exp = [ undefined, 1 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
   var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map';
   var dst = _.containerAdapter.make( [ 0 ] );
   var got = dst.appendOnceStrictly( { a : 0 } );
   var exp = [ 0, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -15134,21 +15134,21 @@ function arrayAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = dst.appendOnceStrictly( 4 ).appendOnceStrictly( 5 );
   var exp = [ 1, 2, 3, 4, 5 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ] ] );
   var got = dst.appendOnceStrictly( [ 1, 2 ] ).appendOnceStrictly( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, append map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 } ] );
   var got = dst.appendOnceStrictly( { a : 0 } ).appendOnceStrictly( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.close( 'without callbacks' );
@@ -15159,56 +15159,56 @@ function arrayAdapterAppendOnceStrictly( test )
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, one evaluator';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 3 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 3 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, two evaluators';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e + 1, ( ins ) => ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], 2, ( e ) => e[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, equalizer';
   var dst = _.containerAdapter.make( [ 1, [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], ( e, ins ) => e + 1 === ins[ 0 ] );
   var exp = [ 1, [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container append array, equalizer';
   var dst = _.containerAdapter.make( [ [ 1 ], [ 1 ], [ 2 ], 3 ] );
   var got = dst.appendOnceStrictly( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 1 ], [ 2 ], 3, [ 1 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* - */
@@ -15319,8 +15319,8 @@ function arrayAdapterAppendContainer( test )
   var src = [];
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty BufferTyped';
@@ -15328,8 +15328,8 @@ function arrayAdapterAppendContainer( test )
   var src = new U32x();
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty Set';
@@ -15337,8 +15337,8 @@ function arrayAdapterAppendContainer( test )
   var src = new Set();
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty arrayContainerAdapter';
@@ -15346,8 +15346,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty setContainerAdapter';
@@ -15355,8 +15355,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainer( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15366,8 +15366,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append argumentsArray';
@@ -15375,8 +15375,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append Set';
@@ -15384,8 +15384,8 @@ function arrayAdapterAppendContainer( test )
   var src = new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -15393,8 +15393,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append setContainerAdapter';
@@ -15402,8 +15402,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15413,8 +15413,8 @@ function arrayAdapterAppendContainer( test )
   var src = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append unroll';
@@ -15422,8 +15422,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append Set';
@@ -15431,8 +15431,8 @@ function arrayAdapterAppendContainer( test )
   var src = new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -15440,8 +15440,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append setContainerAdapter';
@@ -15449,8 +15449,8 @@ function arrayAdapterAppendContainer( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] ) );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -15494,8 +15494,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = [];
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty BufferTyped';
@@ -15503,8 +15503,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = new U32x();
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty Set';
@@ -15512,8 +15512,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = new Set();
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty arrayContainerAdapter';
@@ -15521,8 +15521,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - empty container, append empty setContainerAdapter';
@@ -15530,8 +15530,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainerOnce( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15541,8 +15541,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append argumentsArray';
@@ -15550,8 +15550,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append Set';
@@ -15559,8 +15559,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -15568,8 +15568,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append setContainerAdapter';
@@ -15577,8 +15577,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15588,8 +15588,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append unroll';
@@ -15597,8 +15597,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append Set';
@@ -15606,8 +15606,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -15615,8 +15615,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'append setContainerAdapter';
@@ -15624,8 +15624,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] ) );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15635,8 +15635,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ 1, 2, 3, [ 3 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, append array, two evaluators';
@@ -15644,8 +15644,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, append array, fromIndex and evaluator2';
@@ -15653,8 +15653,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, 3, ( e ) => e.a );
   var exp = [ 1, 2, 3, 1, { a : 2 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
 
@@ -15663,8 +15663,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
   var got = dst.appendContainerOnce( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -15674,8 +15674,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e ) => e[ 0 ] );
   var exp = [ 1, 2, 3, [ 3 ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, append setAdapter, two evaluators';
@@ -15683,8 +15683,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - container, append setAdapter, fromIndex and evaluator2';
@@ -15692,8 +15692,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, 3, ( e ) => e.a );
   var exp = [ 1, 2, 3, 1, { a : 2 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
 
@@ -15702,8 +15702,8 @@ function arrayAdapterAppendContainerOnce( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] ) );
   var got = dst.appendContainerOnce( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ undefined ], [ undefined ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -15747,8 +15747,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = [];
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty BufferTyped';
@@ -15756,8 +15756,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = new U32x();
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty Set';
@@ -15765,8 +15765,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = new Set();
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty arrayContainerAdapter';
@@ -15774,8 +15774,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - empty container, append empty setContainerAdapter';
@@ -15783,8 +15783,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set() );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -15794,8 +15794,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.unrollMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append argumentsArray';
@@ -15803,8 +15803,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.argumentsArrayMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append Set';
@@ -15812,8 +15812,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = new Set( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append arrayContainerAdapter';
@@ -15821,8 +15821,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'append setContainerAdapter';
@@ -15830,8 +15830,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] ) );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -15841,8 +15841,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, [ 4 ], [ 5 ], [ null ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, [ 4 ], [ 5 ], [ null ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, two evaluators';
@@ -15850,8 +15850,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ]
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, fromIndex and evaluator2';
@@ -15859,8 +15859,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ { a : 2 }, { a : 3 } ] );
   var got = dst.appendContainerOnceStrictly( src, 2, ( e ) => e.a );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], { a : 2 }, { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append arrayAdapter, equalizer';
@@ -15868,8 +15868,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] );
   var got = dst.appendContainerOnceStrictly( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* */
@@ -15879,8 +15879,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, [ 4 ], [ 5 ], [ null ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, [ 4 ], [ 5 ], [ null ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, two evaluators';
@@ -15888,8 +15888,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e ) => e, ( ins ) => ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ]
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, fromIndex and evaluator2';
@@ -15897,8 +15897,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ { a : 2 }, { a : 3 } ] ) );
   var got = dst.appendContainerOnceStrictly( src, 2, ( e ) => e.a );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], { a : 2 }, { a : 3 } ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - container, append setAdapter, equalizer';
@@ -15906,8 +15906,8 @@ function arrayAdapterAppendContainerOnceStrictly( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ] ) );
   var got = dst.appendContainerOnceStrictly( src, ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3, { a : 2 }, { a : 2 }, [ 4 ], [ 5 ], [ undefined ] ];
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -16540,21 +16540,21 @@ function arrayAdapterRemove( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.remove( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.remove( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16563,21 +16563,21 @@ function arrayAdapterRemove( test )
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.remove( 1 );
   var exp = [ 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.remove( { a : 1 } );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16586,21 +16586,21 @@ function arrayAdapterRemove( test )
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = dst.remove( 1 ).remove( 2 );
   var exp = [ 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.remove( [ 1, 2 ] ).remove( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] );
   var got = dst.remove( { a : 0 } ).remove( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16609,28 +16609,28 @@ function arrayAdapterRemove( test )
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.remove( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.remove( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.remove( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.remove( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 }
 
@@ -16642,21 +16642,21 @@ function arrayAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnce( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnce( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16665,21 +16665,21 @@ function arrayAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnce( 1 );
   var exp = [ 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnce( { a : 1 } );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16688,21 +16688,21 @@ function arrayAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, 3, 3 ] );
   var got = dst.removeOnce( 1 ).removeOnce( 2 );
   var exp = [ 1, 2, 3, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnce( [ 1, 2 ] ).removeOnce( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] );
   var got = dst.removeOnce( { a : 0 } ).removeOnce( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16711,28 +16711,28 @@ function arrayAdapterRemoveOnce( test )
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnce( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 }
 
@@ -16744,28 +16744,28 @@ function arrayAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnceRight( 1 );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove empty Long';
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnceRight( [] );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'empty container, remove map';
   var dst = _.containerAdapter.make( [] );
   var got = dst.removeOnceRight( { a : 0 } );
   var exp = [];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16774,21 +16774,21 @@ function arrayAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnceRight( 1 );
   var exp = [ 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
   var got = dst.removeOnceRight( { a : 1 } );
   var exp = [ 1, 1, 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16797,21 +16797,21 @@ function arrayAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, 3, 3 ] );
   var got = dst.removeOnceRight( 1 ).removeOnceRight( 2 );
   var exp = [ 1, 2, 3, 3 ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, duplicates';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceRight( [ 1, 2 ] ).removeOnceRight( [ 1, 2 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove map, duplicates';
   var dst = _.containerAdapter.make( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] );
   var got = dst.removeOnceRight( { a : 0 } ).removeOnceRight( { a : 0 } );
   var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16820,28 +16820,28 @@ function arrayAdapterRemoveOnceRight( test )
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceRight( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 }
 
@@ -16853,7 +16853,7 @@ function arrayAdapterRemoveOnceStrictly( test )
   var dst = _.containerAdapter.make( [ 1, 2, 2, '1' ] );
   var got = dst.removeOnceStrictly( 1 );
   var exp = [ 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16862,28 +16862,28 @@ function arrayAdapterRemoveOnceStrictly( test )
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* - */
@@ -16921,7 +16921,7 @@ function arrayAdapterRemoveOnceStrictlyRight( test )
   var dst = _.containerAdapter.make( [ 1, 2, 2, '1' ] );
   var got = dst.removeOnceStrictlyRight( 1 );
   var exp = [ 2, 2, '1' ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* */
@@ -16930,28 +16930,28 @@ function arrayAdapterRemoveOnceStrictlyRight( test )
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, two evaluators';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ [ 2, 2 ], [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( [ [ 2, 2 ], [ 1, 2 ], [ 2, 2 ], [ 1, 2 ] ] );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ], [ 2, 2 ], [ 1, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'container, remove Long, equalizer';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
   var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   var exp = [ [ 2, 2 ] ];
-  test.is( got === dst );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   /* - */
@@ -17004,7 +17004,7 @@ function arrayAdapterMap( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.map( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17015,42 +17015,42 @@ function arrayAdapterMap( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.map( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -17063,42 +17063,42 @@ function arrayAdapterMap( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = [ src ];
   var got = src.map( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -17111,42 +17111,42 @@ function arrayAdapterMap( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.map( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.map( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -17160,7 +17160,7 @@ function arrayAdapterMapRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.mapRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17171,42 +17171,42 @@ function arrayAdapterMapRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.mapRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.mapRight( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.mapRight( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, 2, '', [ undefined ], false, true, NaN, 1, 0 ];
   var got = src.mapRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -17219,42 +17219,42 @@ function arrayAdapterMapRight( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = [ src ];
   var got = src.mapRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.mapRight( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.mapRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.mapRight( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, 2, '', [ undefined ], false, true, NaN, 1, 0 ];
   var got = src.mapRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -17267,42 +17267,42 @@ function arrayAdapterMapRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.mapRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.mapRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.mapRight( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.mapRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.mapRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.mapRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -17316,7 +17316,7 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filter( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17327,42 +17327,42 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filter( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filter( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filter( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -17375,42 +17375,42 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = [ src.original ];
   var got = src.filter( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filter( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filter( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -17424,8 +17424,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [ 1, 2 ];
   var got = src.filter( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -17433,8 +17433,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -17442,8 +17442,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -17451,8 +17451,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2 ];
   var got = src.filter( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -17460,8 +17460,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -17469,8 +17469,8 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 2 ];
   var got = src.filter( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -17483,42 +17483,42 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filter( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filter( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filter( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filter( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filter( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -17532,7 +17532,7 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filterRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17543,42 +17543,42 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filterRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filterRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filterRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -17591,42 +17591,42 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = [ src.original ];
   var got = src.filterRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( null, ( e, k ) => k );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filterRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( null, ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filterRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -17640,8 +17640,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [ 1, 2 ];
   var got = src.filterRight( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -17649,8 +17649,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, { a : 0 }, [ 2 ], '', false, true, null, 1, 0 ];
   var got = src.filterRight( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -17658,8 +17658,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.filterRight( dst, ( e, k ) => k );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -17667,8 +17667,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2 ];
   var got = src.filterRight( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -17676,8 +17676,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ];
   var got = src.filterRight( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -17685,8 +17685,8 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 2 ];
   var got = src.filterRight( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -17699,42 +17699,42 @@ function arrayAdapterFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.filterRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filterRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.filterRight( src, ( e, k ) => k );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.filterRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.filterRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.filterRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -17748,7 +17748,7 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilter( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17759,42 +17759,42 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilter( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( ( e, k ) => [ k ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilter( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilter( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -17807,42 +17807,42 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = src.original;
   var got = src.flatFilter( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( null, ( e, k ) => [ k ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilter( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, '0', 1, '1', null, 'null', true, 'true', false, 'false', undefined, 'undefined', '', '', [ 2 ], '2', { a : 0 }, '[object Object]' ];
   var got = src.flatFilter( null, ( e ) => [ e, String( e ) ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilter( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -17856,8 +17856,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [ 1, 2 ];
   var got = src.flatFilter( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -17865,8 +17865,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -17874,8 +17874,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( dst, ( e, k ) => [ k ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -17883,8 +17883,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2 ];
   var got = src.flatFilter( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -17892,8 +17892,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 0, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -17901,8 +17901,8 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 2 ];
   var got = src.flatFilter( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -17915,42 +17915,42 @@ function arrayAdapterFlatFilter( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilter( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilter( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilter( src, ( e, k ) => [ k ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilter( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilter( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilter( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -17964,7 +17964,7 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilterRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -17975,42 +17975,42 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilterRight( ( e ) => 123 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( ( e, k ) => [ k ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilterRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.flatFilterRight( ( e ) => [ e ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilterRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEach' );
@@ -18023,42 +18023,42 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 1 ] );
   var exp = src.original;
   var got = src.flatFilterRight( null, ( e, k, src ) => src );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( null, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( null, ( e, k ) => [ k ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilterRight( null, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, '[object Object]', [ 2 ], '2', '', '', undefined, 'undefined', false, 'false', true, 'true', null, 'null', 1, '1', 0, '0' ];
   var got = src.flatFilterRight( null, ( e ) => [ e, String( e ) ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilterRight( null, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -18072,8 +18072,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [ 1, 2 ];
   var got = src.flatFilterRight( dst, ( e, k, src ) => src );
-  test.is( got !== dst );
-  test.is( got !== src );
+  test.true( got !== dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns original';
@@ -18081,8 +18081,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, { a : 0 }, 2, '', false, true, null, 1, 0 ];
   var got = src.flatFilterRight( dst, ( e ) => e );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - arrayAdapter, from array, onEach returns key';
@@ -18090,8 +18090,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 8, 7, 6, 5, 4, 3, 2, 1, 0 ];
   var got = src.flatFilterRight( dst, ( e, k ) => [ k ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'dst - Set, from array, onEach returns undefined';
@@ -18099,8 +18099,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2 ];
   var got = src.flatFilterRight( dst, ( e ) => undefined );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - setAdapter, from array, onEach returns array';
@@ -18108,8 +18108,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, { a : 0 }, [ 2 ], '', undefined, false, true, null, 0 ];
   var got = src.flatFilterRight( dst, ( e ) => [ e ] );
-  test.is( got === dst );
-  test.is( got !== src );
+  test.true( got === dst );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'dst - array, from array, onEach returns element of array';
@@ -18117,8 +18117,8 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 1, 2, 2 ];
   var got = src.flatFilterRight( dst, ( e ) => e[ 0 ] );
-  test.is( got.original === dst );
-  test.is( got !== src );
+  test.true( got.original === dst );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst != src' );
@@ -18131,42 +18131,42 @@ function arrayAdapterFlatFilterRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.flatFilterRight( src, ( e, k, src ) => src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', 2, { a : 0 } ];
   var got = src.flatFilterRight( src, ( e ) => e );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns key';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   var got = src.flatFilterRight( src, ( e, k ) => [ k ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.flatFilterRight( src, ( e ) => undefined );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.flatFilterRight( src, ( e ) => [ e ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 2 ];
   var got = src.flatFilterRight( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -18180,7 +18180,7 @@ function arrayAdapterOnce( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.once( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -18191,35 +18191,35 @@ function arrayAdapterOnce( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'two evaluators returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e ) => e, ( ins ) => ins );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'equalizer';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0 ];
   var got = src.once( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'evaluator checks element of array';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
   var got = src.once( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEval' );
@@ -18233,7 +18233,7 @@ function arrayAdapterOnce( test )
   var dst = [];
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - empty arrayAdapter, no onEval';
@@ -18241,8 +18241,8 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - filled array, no onEval';
@@ -18250,7 +18250,7 @@ function arrayAdapterOnce( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - empty array, no onEval';
@@ -18258,7 +18258,7 @@ function arrayAdapterOnce( test )
   var dst = [];
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, no onEval';
@@ -18266,7 +18266,7 @@ function arrayAdapterOnce( test )
   var dst = [ 1, 2, null, undefined, false ];
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, same content, no onEval';
@@ -18274,7 +18274,7 @@ function arrayAdapterOnce( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, no onEval, evaluator returns element';
@@ -18282,7 +18282,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, equalizer';
@@ -18290,7 +18290,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, onEval returns undefined';
@@ -18298,7 +18298,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, evaluator checks element of array';
@@ -18306,7 +18306,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, duplicates in src, evaluator checks element of array';
@@ -18314,7 +18314,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -18324,7 +18324,7 @@ function arrayAdapterOnce( test )
   var dst = new Set( [] );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
@@ -18332,8 +18332,8 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.once( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - filled Set, no onEval';
@@ -18341,7 +18341,7 @@ function arrayAdapterOnce( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - empty Set, no onEval';
@@ -18349,7 +18349,7 @@ function arrayAdapterOnce( test )
   var dst = new Set( [] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, no onEval';
@@ -18357,7 +18357,7 @@ function arrayAdapterOnce( test )
   var dst = new Set( [ 1, 2, null, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, same content, no onEval';
@@ -18365,7 +18365,7 @@ function arrayAdapterOnce( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.once( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, one evaluator';
@@ -18373,7 +18373,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, equalizer';
@@ -18381,7 +18381,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator returns undefined';
@@ -18389,7 +18389,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator checks element of array';
@@ -18397,7 +18397,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, evaluator checks element of array';
@@ -18405,7 +18405,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, two evaluators checks element of array';
@@ -18413,7 +18413,7 @@ function arrayAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only dst' );
@@ -18426,70 +18426,70 @@ function arrayAdapterOnce( test )
   var src = _.containerAdapter.make( [] );
   var got = src.once( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var got = src.once( null );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] );
   var got = src.once( null );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, two evaluators returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => e, ( ins ) => ins );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, equalizer';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator checks element of array, duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, two evaluators checks element of array, duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.once( null, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -18502,56 +18502,56 @@ function arrayAdapterOnce( test )
   var src = _.containerAdapter.make( [] );
   var got = src.once( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var got = src.once( src );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] );
   var got = src.once( src );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( src, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, equalizer';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( src, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.once( src, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.once( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, two evaluators checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.once( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -18565,7 +18565,7 @@ function arrayAdapterOnceRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.onceRight( null );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* - */
@@ -18576,35 +18576,35 @@ function arrayAdapterOnceRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'two evaluators returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e ) => e, ( ins ) => ins );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'equalizer';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
   var got = src.onceRight( ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 } ];
   var got = src.onceRight( ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'evaluator checks element of array';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
   var got = src.onceRight( ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'only onEval' );
@@ -18618,7 +18618,7 @@ function arrayAdapterOnceRight( test )
   var dst = [];
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - empty arrayAdapter, no onEval';
@@ -18626,8 +18626,8 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, exp );
 
   test.case = 'src - empty container, dst - filled array, no onEval';
@@ -18635,7 +18635,7 @@ function arrayAdapterOnceRight( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - empty array, no onEval';
@@ -18643,7 +18643,7 @@ function arrayAdapterOnceRight( test )
   var dst = [];
   var exp = [ false, undefined, null, 2, 1 ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, no onEval';
@@ -18651,7 +18651,7 @@ function arrayAdapterOnceRight( test )
   var dst = [ 1, 2, null, undefined, false ];
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, same content, no onEval';
@@ -18659,7 +18659,7 @@ function arrayAdapterOnceRight( test )
   var dst = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var exp = [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, no onEval, evaluator returns element';
@@ -18667,7 +18667,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, same content, equalizer';
@@ -18675,7 +18675,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled arrayAdapter, onEval returns undefined';
@@ -18683,7 +18683,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, evaluator checks element of array';
@@ -18691,7 +18691,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, dst - filled array, duplicates in src, evaluator checks element of array';
@@ -18699,7 +18699,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   /* */
@@ -18709,7 +18709,7 @@ function arrayAdapterOnceRight( test )
   var dst = new Set( [] );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
@@ -18717,8 +18717,8 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   var got = src.onceRight( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - empty container, dst - filled Set, no onEval';
@@ -18726,7 +18726,7 @@ function arrayAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - empty Set, no onEval';
@@ -18734,7 +18734,7 @@ function arrayAdapterOnceRight( test )
   var dst = new Set( [] );
   var exp = [ false, undefined, null, 2, 1 ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, no onEval';
@@ -18742,7 +18742,7 @@ function arrayAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, null, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled Set, same content, no onEval';
@@ -18750,7 +18750,7 @@ function arrayAdapterOnceRight( test )
   var dst = new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var exp = [ 1, 2, null, undefined, false ];
   var got = src.onceRight( dst );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, one evaluator';
@@ -18758,7 +18758,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e ) => e );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, same content, equalizer';
@@ -18766,7 +18766,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), { a : 0 }, [ 2 ] ];
   var got = src.onceRight( dst, ( e, e2 ) => e === e2 );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator returns undefined';
@@ -18774,7 +18774,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => undefined );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, evaluator checks element of array';
@@ -18782,7 +18782,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, evaluator checks element of array';
@@ -18790,7 +18790,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'src - filled container, dst - filled setAdapter, duplicates in src, two evaluators checks element of array';
@@ -18798,7 +18798,7 @@ function arrayAdapterOnceRight( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ];
   var got = src.onceRight( dst, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( [ ... got.original ], exp );
 
   test.close( 'only dst' );
@@ -18811,70 +18811,70 @@ function arrayAdapterOnceRight( test )
   var src = _.containerAdapter.make( [] );
   var got = src.onceRight( null );
   var exp = [];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var got = src.onceRight( null );
   var exp = [ false, undefined, null, 2, 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] );
   var got = src.onceRight( null );
   var exp = [ [ 2 ], [ 2 ], [ 2 ], false, undefined, null, 2, 1 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => e );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, two evaluators returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => e, ( ins ) => ins );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, equalizer';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e, e2 ) => e === e2 );
   var exp = [ { 'a' : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => undefined );
   var exp = [ { a : 0 } ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => e[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, evaluator checks element of array, duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => e[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, two evaluators checks element of array, duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( null, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   var exp = [ { a : 0 }, [ 2 ], [ true ], [ null ] ];
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, exp );
 
   test.close( 'dst === null' );
@@ -18887,56 +18887,56 @@ function arrayAdapterOnceRight( test )
   var src = _.containerAdapter.make( [] );
   var got = src.onceRight( src );
   var exp = [];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] );
   var got = src.onceRight( src );
   var exp = [ 1, 2, null, undefined, false ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, no onEval';
   var src = _.containerAdapter.make( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] );
   var got = src.onceRight( src );
   var exp = [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator returns element';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( src, ( e ) => e );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, equalizer';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( src, ( e, e2 ) => e === e2 );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator returns undefined';
   var src = _.containerAdapter.make( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( src, ( e ) => undefined );
   var exp = [ 0 ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, evaluator checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.case = 'src - filled container, complex data, two evaluators checks element of array, no duplicates in src';
   var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.onceRight( src, ( e ) => e[ 0 ] );
   var exp = [ 0, [ null ], [ true ], [ 2 ] ];
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
 
   test.close( 'dst === src' );
@@ -19032,7 +19032,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
   test.identical( exp, [] );
 
@@ -19040,7 +19040,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( 123 ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
   test.identical( exp, [] );
 
@@ -19048,7 +19048,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
   test.identical( exp, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
 
@@ -19056,7 +19056,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e, k ) => exp.push( k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ] );
 
@@ -19064,7 +19064,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e, k, c ) => c.length > 10 ? exp.push( k ) : exp.push( c.length - 1 - k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] );
 
@@ -19072,7 +19072,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( undefined ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 
@@ -19080,7 +19080,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( [ e ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ] );
 
@@ -19088,7 +19088,7 @@ function arrayAdapterEach( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.each( ( e ) => exp.push( e[ 0 ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
 }
@@ -19101,7 +19101,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
   test.identical( exp, [] );
 
@@ -19109,7 +19109,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( 123 ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, exp );
   test.identical( exp, [] );
 
@@ -19117,7 +19117,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, src.original );
   test.identical( exp, [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ] );
 
@@ -19125,7 +19125,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e, k ) => exp.push( k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] );
 
@@ -19133,7 +19133,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e, k, c ) => c.length > 10 ? exp.push( k ) : exp.push( c.length - 1 - k ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ] );
 
@@ -19141,7 +19141,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( undefined ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 
@@ -19149,7 +19149,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( [ e ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ] );
 
@@ -19157,7 +19157,7 @@ function arrayAdapterEachRight( test )
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var exp = [];
   var got = src.eachRight( ( e ) => exp.push( e[ 0 ] ) );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( got.original, [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 }
@@ -19197,7 +19197,7 @@ function arrayAdapterReduce( test )
   var src = _.containerAdapter.make( [] );
   var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
   test.identical( src.original, [] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0 ] );
 
   test.case = 'with accumulator, not empty src';
@@ -19205,7 +19205,7 @@ function arrayAdapterReduce( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
   var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] < e ? _.arrayAppend( a, e ) : a );
   test.identical( src.original, [ 1, 2, 3, 0, -2 ] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0, 1, 2, 3 ] );
 
   test.case = 'with accumulator, not empty src, use key';
@@ -19276,7 +19276,7 @@ function arrayAdapterReduceRight( test )
   var src = _.containerAdapter.make( [] );
   var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
   test.identical( src.original, [] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0 ] );
 
   test.case = 'with accumulator, not empty src';
@@ -19284,7 +19284,7 @@ function arrayAdapterReduceRight( test )
   var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
   var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] < e ? _.arrayAppend( a, e ) : a );
   test.identical( src.original, [ 1, 2, 3, 0, -2 ] );
-  test.is( got === accumulator );
+  test.true( got === accumulator );
   test.identical( got, [ 0, 3 ] );
 
   test.case = 'with accumulator, not empty src, use key';
@@ -19971,83 +19971,83 @@ function arrayAdapterReverse( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var got = src.reverse();
-  test.is( got !== src );
+  test.true( got !== src );
   test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty array';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = [];
   var got = src.reverse( [] );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty array';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = [ true, '' ];
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty Set';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = new Set();
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty Set';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = new Set( [ true, '' ] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got !== dst );
+  test.true( got !== src );
+  test.true( got !== dst );
   test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty arrayContainerAdapter';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = _.containerAdapter.make( [] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty arrayContainerAdapter';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = _.containerAdapter.make( [ true, '' ] );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - empty setContainerAdapter';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = _.containerAdapter.make( new Set() );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst - not empty setContainerAdapter';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var dst = _.containerAdapter.make( new Set( [ true, '' ] ) );
   var got = src.reverse( dst );
-  test.is( got !== src );
-  test.is( got === dst );
+  test.true( got !== src );
+  test.true( got === dst );
   test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst === src, odd number of elements';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
   var got = src.reverse( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
 
   test.case = 'dst === src, even number of elements';
   var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false }, true ] );
   var got = src.reverse( src );
-  test.is( got === src );
+  test.true( got === src );
   test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
 }
 
@@ -20078,15 +20078,15 @@ function arrayAdapterToArray( test )
   test.case = 'empty container';
   var src = _.containerAdapter.make( [] );
   var got = src.toArray();
-  test.is( got === src );
-  test.is( got.original === src.original );
+  test.true( got === src );
+  test.true( got.original === src.original );
   test.identical( got.original, src.original );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = src.toArray();
-  test.is( got === src );
-  test.is( got.original === src.original );
+  test.true( got === src );
+  test.true( got.original === src.original );
   test.identical( got.original, src.original );
 }
 //
@@ -20096,15 +20096,15 @@ function arrayAdapterToSet( test )
   test.case = 'empty container';
   var src = _.containerAdapter.make( [] );
   var got = src.toSet();
-  test.is( got !== src );
-  test.is( got.original !== src.original );
+  test.true( got !== src );
+  test.true( got.original !== src.original );
   test.identical( [ ... got.original ], src.original );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var got = src.toSet();
-  test.is( got !== src );
-  test.is( got.original !== src.original );
+  test.true( got !== src );
+  test.true( got.original !== src.original );
   test.identical( [ ... got.original ], src.original );
 }
 
@@ -20197,13 +20197,13 @@ function vectorizeVectorizeArray( test )
   var got = routine( src, [ 3, 4 ] )
   test.identical( [ ... got[ 0 ].original ], [ 1, 2 ] );
   test.identical( got[ 1 ], [ 3, 4 ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var got = routine( src, 2 );
   test.identical( [ ... got[ 0 ].original ], [ 1, 2, 3 ] );
   test.identical( got[ 1 ], 2 );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* - */
 
@@ -20224,29 +20224,29 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make([ 1 ]);
   var got = routine( src );
   test.identical( got.original, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 1, 2, 3 ]);
   var got = routine( src );
   test.identical( got.original, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make([ 1, 2, 3 ]);
   var got = routine( src, 2 );
   test.identical( got.original, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 2 ]);
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( got.original, [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 1, 2 ]);
   var got = routine( src, [ 3, 4 ] )
   test.identical( got.original, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -20255,29 +20255,29 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make( new Set([ 1 ]) );
   var got = routine( src );
   test.identical( [ ... got.original ], [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
   var got = routine( src );
   test.identical( [ ... got.original ], [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
   var got = routine( src, 2 );
   test.identical( [ ... got.original ], [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 2 ]) );
   var got = routine( src, [ 1, 2, 3 ] );
   test.identical( [ ... got.original ], [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 1, 2 ]) );
   var got = routine( src, [ 3, 4 ] )
   test.identical( [ ... got.original ], [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'containerAdapter, no unwraping' );
 
@@ -20301,29 +20301,29 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make([ 1 ]);
   var got = routine( src );
   test.identical( got, [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 1, 2, 3 ]);
   var got = routine( _.containerAdapter.make( [ 1, 2, 3 ] ) );
   test.identical( got, [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make([ 1, 2, 3 ]);
   var got = routine( _.containerAdapter.make( [ 1, 2, 3 ] ), 2 );
   test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 2 ]);
   var got = routine( _.containerAdapter.make( [ 2 ] ), [ 1, 2, 3 ] );
   test.identical( got, [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make([ 1, 2 ]);
   var got = routine( _.containerAdapter.make( [ 1, 2 ] ), [ 3, 4 ] )
   test.identical( got, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   /* */
 
@@ -20332,29 +20332,29 @@ function vectorizeVectorizeArray( test )
   var src = _.containerAdapter.make( new Set([ 1 ]) );
   var got = routine( src );
   test.identical( [ ... got ], [ [ 1 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) ) );
   test.identical( [ ... got ], [ [ 1 ], [ 2 ], [ 3 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.case = 'multiple argument';
 
   var src = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) ), 2 );
   test.identical( [ ... got ], [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 2 ]) );
   var got = routine( _.containerAdapter.make( new Set( [ 2 ] ) ), [ 1, 2, 3 ] );
   test.identical( [ ... got ], [ [ 2, [ 1, 2, 3 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   var src = _.containerAdapter.make( new Set([ 1, 2 ]) );
   var got = routine( _.containerAdapter.make( new Set( [ 1, 2 ] ) ), [ 3, 4 ] )
   test.identical( [ ... got ], [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
-  test.is( got !== src );
+  test.true( got !== src );
 
   test.close( 'containerAdapter, unwraping' );
 }

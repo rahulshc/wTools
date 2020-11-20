@@ -136,58 +136,58 @@ function make( test )
   var got = _.pair.make();
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'single argument - array';
   var src = [ 'x', 3 ];
   var got = _.pair.make( src );
   var expected = [ 'x', 3 ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - F32x';
   var src = new F32x([ 1, 3 ]);
   var got = _.pair.make( src );
   var expected = new F32x([ 1, 3 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - array - zero length';
   var src = [];
   var got = _.pair.make( src );
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - F32x - zero length';
   var src = new F32x([]);
   var got = _.pair.make( src );
   var expected = new F32x([ 0, 0 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - Array';
   var got = _.pair.make( Array );
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'single argument - F32x';
   var got = _.pair.make( F32x );
   var expected = new F32x([ 0, 0 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'two arguments';
   var got = _.pair.make( 'x', 3 );
   var expected = [ 'x', 3 ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   if( !Config.debug )
   return;
@@ -216,58 +216,58 @@ function construct( test )
   var got = new _.pair;
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'single argument - array';
   var src = [ 'x', 3 ];
   var got = new _.pair( src );
   var expected = [ 'x', 3 ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - F32x';
   var src = new F32x([ 1, 3 ]);
   var got = new _.pair( src );
   var expected = new F32x([ 1, 3 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - array - zero length';
   var src = [];
   var got = new _.pair( src );
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - F32x - zero length';
   var src = new F32x([]);
   var got = new _.pair( src );
   var expected = new F32x([ 0, 0 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   test.case = 'single argument - Array';
   var got = new _.pair( Array );
   var expected = [ undefined, undefined ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'single argument - F32x';
   var got = new _.pair( F32x );
   var expected = new F32x([ 0, 0 ]);
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
+  test.true( _.pair.is( got ) );
 
   test.case = 'two arguments';
   var got = new _.pair( 'x', 3 );
   var expected = [ 'x', 3 ];
   test.identical( got, expected );
-  test.is( _.pair.is( got ) );
-  test.is( src !== got );
+  test.true( _.pair.is( got ) );
+  test.true( src !== got );
 
   if( !Config.debug )
   return;

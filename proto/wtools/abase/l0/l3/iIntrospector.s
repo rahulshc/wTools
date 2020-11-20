@@ -673,7 +673,7 @@ function stack( stack, range )
     throw Error( 'stack : expects one or two or none arguments' );
   }
 
-  if( !_.rangeIs( range ) )
+  if( !_.intervalIs( range ) )
   {
     debugger;
     throw Error( 'stack : expects range but, got ' + _.strType( range ) );
@@ -682,7 +682,7 @@ function stack( stack, range )
   let first = range[ 0 ];
   let last = range[ 1 ];
 
-  // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.rangeIs checks number value in passed array
+  // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.intervalIs checks number value in passed array
   // {
   //   debugger;
   //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );

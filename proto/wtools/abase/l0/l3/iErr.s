@@ -1061,7 +1061,54 @@ function _err( o )
 
     if( _.strBegins( str, /\n/ ) )
     {
-      let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ );
+      let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ ); /* qqq2 for Dmytro : cant use _.strIsolate* on this level */
+
+/*
+
+_.strIsolateLeftOrAll is not a function
+TypeError: _.strIsolateLeftOrAll is not a function
+    at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/iErr.s:1062:27)
+    at Object.strConcat (/wtools/abase/l0/l3/iStr.s:723:13)
+    at originalMessageForm (/wtools/abase/l0/l3/iErr.s:1034:19)
+    at Object._err (/wtools/abase/l0/l3/iErr.s:577:5)
+    at Object.err (/wtools/abase/l0/l3/iErr.s:1192:12)
+    at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
+    at Module.require (internal/modules/cjs/loader.js:830:19)
+    at require (internal/modules/cjs/helpers.js:68:18)
+    at _wToolsLayer0_s_ (/wtools/abase/Layer0.s:90:3)
+    at Object.<anonymous> (/wtools/abase/Layer0.s:112:3)
+    at Module._compile (internal/modules/cjs/loader.js:936:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+    at Module.load (internal/modules/cjs/loader.js:790:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+    at Module.require (internal/modules/cjs/loader.js:830:19)
+    at require (internal/modules/cjs/helpers.js:68:18)
+    at _wToolsLayer1_s_ (/wtools/abase/Layer1.s:9:3)
+    at Object.<anonymous> (/wtools/abase/Layer1.s:28:3)
+    at Module._compile (internal/modules/cjs/loader.js:936:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+    at Module.load (internal/modules/cjs/loader.js:790:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+    at Module.require (internal/modules/cjs/loader.js:830:19)
+    at require (internal/modules/cjs/helpers.js:68:18)
+    at Object.<anonymous> (/wtools/Tools.s:19:5)
+    at Module._compile (internal/modules/cjs/loader.js:936:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+    at Module.load (internal/modules/cjs/loader.js:790:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+    at Module.require (internal/modules/cjs/loader.js:830:19)
+    at require (internal/modules/cjs/helpers.js:68:18)
+    at _StringTools_test_s_ (/wtools/abase/l5.test/Dissector.test.s:8:11)
+    at Object.<anonymous> (/wtools/abase/l5.test/Dissector.test.s:2061:3)
+    at Module._compile (internal/modules/cjs/loader.js:936:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
+    at Module.load (internal/modules/cjs/loader.js:790:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:703:12)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:999:10)
+    at internal/main/run_main_module.js:17:11
+
+*/
+
       if( splitsAfter[ 1 ] )
       {
         let splitsBefore = _.strIsolateRightOrAll( splitsAfter[ 0 ], /\n+/ );

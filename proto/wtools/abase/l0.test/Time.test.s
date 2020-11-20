@@ -593,12 +593,12 @@ function _begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -619,12 +619,12 @@ function _begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -641,12 +641,12 @@ function _begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -663,12 +663,12 @@ function _begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1109,12 +1109,12 @@ function _finally( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1131,12 +1131,12 @@ function _finally( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1153,12 +1153,12 @@ function _finally( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1175,12 +1175,12 @@ function _finally( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1331,7 +1331,7 @@ function _periodic( test )
     {
       test.identical( timer.onTime, onTime );
       test.identical( timer.onCancel, undefined );
-      test.is( timer.state === -2 );
+      test.true( timer.state === -2 );
       test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
@@ -1390,7 +1390,7 @@ function _periodic( test )
     {
       test.identical( timer.onTime, onTime );
       test.identical( timer.onCancel, onCancel );
-      test.is( timer.state === -2 );
+      test.true( timer.state === -2 );
       test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
@@ -1423,12 +1423,12 @@ function _periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -1449,12 +1449,12 @@ function _periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3309,12 +3309,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3328,12 +3328,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3347,12 +3347,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3366,12 +3366,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3387,12 +3387,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3412,12 +3412,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3434,12 +3434,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3456,12 +3456,12 @@ function begin( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3899,12 +3899,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3918,12 +3918,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3937,12 +3937,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3959,12 +3959,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -3981,12 +3981,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4003,12 +4003,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4025,12 +4025,12 @@ function finally_( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4181,7 +4181,7 @@ function periodic( test )
     {
       test.identical( timer.onTime, onTime );
       test.identical( timer.onCancel, undefined );
-      test.is( timer.state === -2 );
+      test.true( timer.state === -2 );
       test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
@@ -4240,7 +4240,7 @@ function periodic( test )
     {
       test.identical( timer.onTime, onTime );
       test.identical( timer.onCancel, onCancel );
-      test.is( timer.state === -2 );
+      test.true( timer.state === -2 );
       test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
@@ -4270,12 +4270,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4289,12 +4289,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4308,12 +4308,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4327,12 +4327,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4349,12 +4349,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4375,12 +4375,12 @@ function periodic( test )
     {
       if( arg )
       {
-        test.is( false );
+        test.true( false );
       }
       else
       {
         _.errAttend( err );
-        test.is( true );
+        test.true( true );
       }
       return null;
     });
@@ -4497,25 +4497,25 @@ function _sleep( test )
   var start = _.time.now();
   _.time._sleep( 0 );
   var got = _.time.now() - start;
-  test.is( 0 <= got );
+  test.true( 0 <= got );
 
   test.case = 'delay - 2';
   var start = _.time.now();
   _.time._sleep( 2 );
   var got = _.time.now() - start;
-  test.is( 1 <= got );
+  test.true( 1 <= got );
 
   test.case = 'delay - 100';
   var start = _.time.now();
   _.time._sleep( 100 );
   var got = _.time.now() - start;
-  test.is( 99 <= got );
+  test.true( 99 <= got );
 
   test.case = 'delay - 2000';
   var start = _.time.now();
   _.time._sleep( 2000 );
   var got = _.time.now() - start;
-  test.is( 1999 <= got );
+  test.true( 1999 <= got );
 
   /* - */
 
@@ -4549,25 +4549,25 @@ function sleep( test )
   var start = _.time.now();
   _.time.sleep( 0 );
   var got = _.time.now() - start;
-  test.is( 0 <= got );
+  test.true( 0 <= got );
 
   test.case = 'delay - 2';
   var start = _.time.now();
   _.time.sleep( 2 );
   var got = _.time.now() - start;
-  test.is( 1 <= got );
+  test.true( 1 <= got );
 
   test.case = 'delay - 100';
   var start = _.time.now();
   _.time.sleep( 100 );
   var got = _.time.now() - start;
-  test.is( 99 <= got );
+  test.true( 99 <= got );
 
   test.case = 'delay - 2000';
   var start = _.time.now();
   _.time.sleep( 2000 );
   var got = _.time.now() - start;
-  test.is( 1999 <= got );
+  test.true( 1999 <= got );
 
   /* - */
 

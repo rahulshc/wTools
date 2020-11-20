@@ -1,4 +1,4 @@
-( function _fRange_s_()
+( function _fInterval_s_()
 {
 
 'use strict';
@@ -107,78 +107,78 @@ function fromRight( range )
 //   return range;
 // }
 
+// //
 //
-
-function fromSingle( range )
-{
-  _.assert( arguments.length === 1 );
-  if( _.numberIs( range ) )
-  return [ range, range + 1 ];
-
-  _.assert( _.longIs( range ) );
-  _.assert( range.length === 1 || range.length === 2 );
-  _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-  _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
-
-  if( range[ 0 ] === undefined )
-  if( range[ 1 ] !== undefined )
-  return [ range[ 1 ]-1, range[ 1 ] ];
-  else
-  return [ 0, 1 ];
-
-  if( range[ 1 ] === undefined )
-  return [ range[ 0 ], range[ 0 ] + 1 ];
-  return range;
-}
-
+// function fromSingle( range )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.numberIs( range ) )
+//   return [ range, range + 1 ];
 //
-
-/* aaa : teach to accept number in second argument */ /* Dmytro : done */
-
-function clamp( dstRange, clampRange )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.rangeIs( dstRange ) );
-
-  if( _.numberIs( clampRange ) )
-  {
-    dstRange[ 0 ] = clampRange;
-    dstRange[ 1 ] = clampRange;
-  }
-  else
-  {
-    _.assert( _.rangeIs( clampRange ) );
-
-    if( dstRange[ 0 ] < clampRange[ 0 ] )
-    dstRange[ 0 ] = clampRange[ 0 ];
-    else if( dstRange[ 0 ] > clampRange[ 1 ] )
-    dstRange[ 0 ] = clampRange[ 1 ];
-
-    if( dstRange[ 1 ] < clampRange[ 0 ] )
-    dstRange[ 1 ] = clampRange[ 0 ];
-    else if( dstRange[ 1 ] > clampRange[ 1 ] )
-    dstRange[ 1 ] = clampRange[ 1 ];
-  }
-
-  return dstRange;
-}
-
+//   _.assert( _.longIs( range ) );
+//   _.assert( range.length === 1 || range.length === 2 );
+//   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
+//   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
 //
-
-function countElements( range, increment )
-{
-
-  _.assert( _.rangeIs( range ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( increment === undefined )
-  increment = 1;
-
-  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
-
-  return increment ? ( range[ 1 ]-range[ 0 ] ) / increment : 0;
-}
+//   if( range[ 0 ] === undefined )
+//   if( range[ 1 ] !== undefined )
+//   return [ range[ 1 ]-1, range[ 1 ] ];
+//   else
+//   return [ 0, 1 ];
+//
+//   if( range[ 1 ] === undefined )
+//   return [ range[ 0 ], range[ 0 ] + 1 ];
+//   return range;
+// }
+//
+// //
+//
+// /* aaa : teach to accept number in second argument */ /* Dmytro : done */
+//
+// function clamp( dstRange, clampRange )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.intervalIs( dstRange ) );
+//
+//   if( _.numberIs( clampRange ) )
+//   {
+//     dstRange[ 0 ] = clampRange;
+//     dstRange[ 1 ] = clampRange;
+//   }
+//   else
+//   {
+//     _.assert( _.intervalIs( clampRange ) );
+//
+//     if( dstRange[ 0 ] < clampRange[ 0 ] )
+//     dstRange[ 0 ] = clampRange[ 0 ];
+//     else if( dstRange[ 0 ] > clampRange[ 1 ] )
+//     dstRange[ 0 ] = clampRange[ 1 ];
+//
+//     if( dstRange[ 1 ] < clampRange[ 0 ] )
+//     dstRange[ 1 ] = clampRange[ 0 ];
+//     else if( dstRange[ 1 ] > clampRange[ 1 ] )
+//     dstRange[ 1 ] = clampRange[ 1 ];
+//   }
+//
+//   return dstRange;
+// }
+//
+// //
+//
+// function countElements( range, increment )
+// {
+//
+//   _.assert( _.intervalIs( range ) );
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   if( increment === undefined )
+//   increment = 1;
+//
+//   _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+//
+//   return increment ? ( range[ 1 ]-range[ 0 ] ) / increment : 0;
+// }
 
 //
 
@@ -200,7 +200,7 @@ function firstGet( range, options )
 
   if( _.longIs( range ) )
   {
-    _.assert( _.rangeIs( range ) );
+    _.assert( _.intervalIs( range ) );
     return range[ 0 ];
   }
   else if( _.mapIs( range ) )
@@ -210,35 +210,35 @@ function firstGet( range, options )
   _.assert( 0, 'unexpected type of range', _.strType( range ) );
 }
 
+// //
 //
-
-function lastGet( range, options )
-{
-
-  options = options || Object.create( null );
-  if( options.increment === undefined )
-  options.increment = 1;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( _.longIs( range ) )
-  {
-    _.assert( _.rangeIs( range ) );
-    return range[ 1 ];
-  }
-  else if( _.mapIs( range ) )
-  {
-    return range.last
-  }
-  _.assert( 0, 'unexpected type of range', _.strType( range ) );
-
-}
+// function lastGet( range, options )
+// {
+//
+//   options = options || Object.create( null );
+//   if( options.increment === undefined )
+//   options.increment = 1;
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   if( _.longIs( range ) )
+//   {
+//     _.assert( _.intervalIs( range ) );
+//     return range[ 1 ];
+//   }
+//   else if( _.mapIs( range ) )
+//   {
+//     return range.last
+//   }
+//   _.assert( 0, 'unexpected type of range', _.strType( range ) );
+//
+// }
 
 //
 
 function toStr( range )
 {
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( arguments.length === 1 );
   return range[ 0 ] + '..' + range[ 1 ];
 }
@@ -273,28 +273,28 @@ Self.original = Range;
 let Extension =
 {
 
-  is : _.rangeIs,
-  isEmpty : _.rangeIsEmpty,
-  defined : _.rangeDefined,
-  isPopulated : _.rangeIsPopulated,
+  is : _.intervalIs,
+  isEmpty : _.intervalIsEmpty,
+  defined : _.intervalDefined,
+  isPopulated : _.intervalIsPopulated,
 
-  inInclusive : _.rangeInInclusive,
-  inExclusive : _.rangeInExclusive,
-  inInclusiveLeft : _.rangeInInclusiveLeft,
-  inInclusiveRight : _.rangeInInclusiveRight,
-  in : _.rangeInInclusiveLeft,
+  // inInclusive : _.rangeInInclusive,
+  // inExclusive : _.rangeInExclusive,
+  // inInclusiveLeft : _.rangeInInclusiveLeft,
+  // inInclusiveRight : _.rangeInInclusiveRight,
+  // in : _.rangeInInclusiveLeft,
 
-  sureInRange : _.sureInRange,
-  assertInRange : _.assertInRange,
+  // sureInInterval : _.sureInInterval,
+  // assertInInterval : _.assertInInterval,
 
   fromLeft,
   fromRight,
-  fromSingle, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  // fromSingle, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
-  clamp, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
-  countElements, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  // clamp, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  // countElements, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
   firstGet,
-  lastGet, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  // lastGet, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
   toStr,
 
@@ -303,8 +303,9 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.range === undefined );
-_.range = Self;
+_.assert( _._interval === undefined );
+_._interval = Self;
+/* qqq for Dmytro : make possible to remove the namespace */
 
 // --
 // export
