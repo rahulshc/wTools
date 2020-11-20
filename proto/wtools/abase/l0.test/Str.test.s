@@ -9846,7 +9846,7 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'basic, o.pairing : 1, prefix and postfix are the same';
+  test.case = 'basic, o.pairing : 1, prefix and postfix are the same, complementary';
 
   var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
   _.strSplitsQuotedRejoin
@@ -9864,7 +9864,27 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'basic, o.pairing : 1, prefix and postfix are NOT the same';
+  test.case = 'basic, o.pairing : 1, prefix and postfix are NOT the same, not complementary';
+
+  var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
+  var delimeter = [ '<', '>' ]
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'basic, o.pairing : 1, prefix and postfix are NOT the same, complementary';
 
   var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
@@ -9877,12 +9897,12 @@ function strSplitsQuotedRejoin( test )
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  var expected = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  var expected = [ `<r1>`, `<r2>` ];
   test.identical( splits, expected );
 
   /* */
 
-  test.case = 'basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are the same, prefix[ 1 ] and postfix[ 1 ] are NOT the same';
+  test.case = 'basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are the same, prefix[ 1 ] and postfix[ 1 ] are NOT the same, complementary';
   var splits = [ `"`, `r1`, `"`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
   ({
@@ -9894,12 +9914,12 @@ function strSplitsQuotedRejoin( test )
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  var expected = [ '"r1"', '<', 'r2', '>' ];
+  var expected = [ '"r1"', '<r2>' ];
   test.identical( splits, expected );
 
   /* */
 
-  test.case = 'basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are NOT the same, prefix[ 1 ] and postfix[ 1 ] are the same';
+  test.case = 'basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are NOT the same, prefix[ 1 ] and postfix[ 1 ] are the same, complementary';
   var splits = [ `<`, `r1`, `>`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
   ({
@@ -9911,7 +9931,7 @@ function strSplitsQuotedRejoin( test )
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  var expected = [ '<', 'r1', '>', '"r2"' ];
+  var expected = [ '<r1>', '"r2"' ];
   test.identical( splits, expected );
 
   /* */
@@ -9930,7 +9950,26 @@ function strSplitsQuotedRejoin( test )
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  var expected = [ '<', 'r1', '>', '"', 'r2', '"' ];
+  var expected = [ '<r1>"', 'r2', '"' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'basic, o.pairing : 1, prefix[ 0 ], postfix[ 0 ] - complementary, prefix[ 1 ], postfix[ 1 ] - not complementary';
+  var delimeter = [ '<', '"', '{', '>' ];
+  var splits = [ `<`, `r1`, `"`, `{`, `r2`, `}` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<', '{' ],
+    quotingPostfixes : [ '"', '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ '<r1"', `{`, `r2`, `}` ];
   test.identical( splits, expected );
 
   /* */
@@ -10493,7 +10532,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix and postfix are the same, return 'el : ' + el`;
+  test.case = `basic, o.pairing : 1, prefix and postfix are the same, complementary, return 'el : ' + el`;
 
   var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
   _.strSplitsQuotedRejoin
@@ -10512,7 +10551,28 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix and postfix are NOT the same, return 'el : ' + el`;
+  test.case = `basic, o.pairing : 1, prefix and postfix are NOT the same, not complementary, return 'el : ' + el`;
+
+  var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
+  var delimeter = [ '<', '>' ]
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+    onQuoting : ( el, o ) => 'el : ' + el
+  });
+  var expected = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = `basic, o.pairing : 1, prefix and postfix are NOT the same, complementary, return 'el : ' + el`;
 
   var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
@@ -10526,12 +10586,12 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
     inliningQuoting : 0,
     onQuoting : ( el, o ) => 'el : ' + el
   });
-  var expected = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  var expected = [ `el : <r1>`, `el : <r2>` ];
   test.identical( splits, expected );
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are NOT the same, return 'el : ' + el`;
+  test.case = `basic, o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are NOT the same, complementary, return 'el : ' + el`;
   var splits = [ `"`, `r1`, `"`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
   ({
@@ -10544,12 +10604,12 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
     inliningQuoting : 0,
     onQuoting : ( el, o ) => 'el : ' + el
   });
-  var expected = [ 'el : "r1"', '<', 'r2', '>' ];
+  var expected = [ 'el : "r1"', 'el : <r2>' ];
   test.identical( splits, expected );
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are NOT the same, return 'el : ' + el`;
+  test.case = `basic, o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are the same, complementary, return 'el : ' + el`;
   var splits = [ `<`, `r1`, `>`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
   ({
@@ -10562,12 +10622,52 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
     inliningQuoting : 0,
     onQuoting : ( el, o ) => 'el : ' + el
   });
-  var expected = [ '<', 'r1', '>', 'el : "r2"' ];
+  var expected = [ 'el : <r1>', 'el : "r2"' ];
   test.identical( splits, expected );
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 0 ] and postfix[ 0 ] are the same, first el withot quoting, return 'el : ' + el`;
+  test.case = `basic, o.pairing : 1, prefix[ 0 ] = postfix[ 1 ] prefix[ 1 ] = postfix[ 0 ], return 'el : ' + el`;
+  var delimeter = [ '<', '"' ];
+  var splits = [ `<`, `r1`, `>`, `"`, `r2`, `"` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<', '"' ],
+    quotingPostfixes : [ '"', '<' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+    onQuoting : ( el, o ) => 'el : ' + el
+  });
+  var expected = [ 'el : <r1>"', 'r2', '"' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = `basic, o.pairing : 1, prefix[ 0 ], postfix[ 0 ] - complementary, prefix[ 1 ], postfix[ 1 ] - not complementary, return 'el : ' + el`;
+  var delimeter = [ '<', '"', '{', '>' ];
+  var splits = [ `<`, `r1`, `"`, `{`, `r2`, `}` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '<', '{' ],
+    quotingPostfixes : [ '"', '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+    onQuoting : ( el, o ) => 'el : ' + el
+  });
+  var expected = [ 'el : <r1"', `{`, `r2`, `}` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = `basic, o.pairing : 1, prefix and postfix are the same, first el withot quoting, return 'el : ' + el`;
   var splits = [ `r1`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
   ({
@@ -10581,6 +10681,24 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
     onQuoting : ( el, o ) => 'el : ' + el
   });
   var expected = [ 'r1', 'el : "r2"' ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = `basic, o.pairing : 1, prefix and postfix are the same, last el withot quoting, return 'el : ' + el`;
+  var splits = [ `"`, `r1`, `"`, `r2` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    pairing : 1,
+    quotingPrefixes : [ '"' ],
+    quotingPostfixes : [ '"' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+    onQuoting : ( el, o ) => 'el : ' + el
+  });
+  var expected = [ 'el : "r1"', 'r2' ];
   test.identical( splits, expected );
 
 }

@@ -1877,7 +1877,7 @@ function strSplitsQuotedRejoin_body( o )
         if( split2 === postfix )
         {
           if( o.pairing )
-          if( o.splits[ s ] !== o.splits[ s2 ] )
+          if( o.quotingPrefixes.indexOf( o.splits[ s ] ) !== o.quotingPostfixes.indexOf( o.splits[ s2 ] ) )
           break;
           let bextra = 0;
           let eextra = 0;
