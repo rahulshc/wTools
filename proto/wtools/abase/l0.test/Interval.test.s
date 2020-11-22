@@ -1,4 +1,4 @@
-( function _Range_test_s()
+( function _Interval_test_s()
 {
 
 'use strict';
@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/iRange.s
+// range l0/l3/iInterval.s
 //--
 
 function is( test )
