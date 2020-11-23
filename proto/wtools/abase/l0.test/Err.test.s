@@ -1353,7 +1353,9 @@ function errWithMultilineMessage( test )
   );
   var exp =
 `Error :
-    Exec : program
+    Exec :
+
+program
 end of message`;
   test.identical( got.originalMessage, exp );
 
@@ -1589,6 +1591,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1625,7 +1629,10 @@ Exec :`;
     ` \n  \n  `,
     `Exec :`,
   );
-  var exp = `Error : Exec :`;
+  var exp =
+`Error :
+
+Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1634,11 +1641,13 @@ Exec :`;
   var got = _.err
   (
     `Error :\n`,
-    ` \n\n\n  \n`,
+    ` \n\n  \n`,
     `Exec :`,
   );
   var exp =
 `Error :
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1653,6 +1662,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1667,6 +1679,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1681,6 +1696,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1695,6 +1713,7 @@ Exec :`;
   );
   var exp =
 `Error :
+
 
 
 Exec :`;
@@ -1748,6 +1767,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec : program`;
   test.identical( got.originalMessage, exp );
 
@@ -1766,6 +1787,8 @@ Exec : program`;
   var exp =
 `Error :
  new
+
+
 Exec : program`;
   test.identical( got.originalMessage, exp );
 }
@@ -1784,7 +1807,8 @@ function errMessageSecondLineHasNewLineSymbol( test )
     `Exec :`,
   );
   var exp =
-`Error : Exec :`;
+`Error :
+Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -2272,6 +2296,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2308,7 +2334,10 @@ Exec :`;
     ` \n  \n  `,
     `Exec :`,
   );
-  var exp = `Error : Exec :`;
+  var exp =
+`Error :
+
+Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -2322,6 +2351,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2336,6 +2368,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2350,6 +2385,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2364,6 +2402,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2378,6 +2419,7 @@ Exec :`;
   );
   var exp =
 `Error :
+
 
 
 Exec :`;
@@ -2431,6 +2473,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec : program`;
   test.identical( got.originalMessage, exp );
 
@@ -2449,6 +2493,8 @@ Exec : program`;
   var exp =
 `Error :
  new
+
+
 Exec : program`;
   test.identical( got.originalMessage, exp );
 }
@@ -2649,6 +2695,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2688,7 +2736,10 @@ Exec :`;
     ` \n  \n  `,
     `Exec :`,
   );
-  var exp = `Error : Exec :`;
+  var exp =
+`Error :
+
+Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
 
@@ -2703,6 +2754,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2718,6 +2772,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2733,6 +2790,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2748,6 +2808,9 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
+
 Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2763,6 +2826,7 @@ Exec :`;
   );
   var exp =
 `Error :
+
 
 
 Exec :`;
@@ -2819,6 +2883,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
 Exec : program`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
@@ -2838,6 +2904,8 @@ Exec : program`;
   var exp =
 `Error :
  new
+
+
 Exec : program`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
