@@ -38,7 +38,7 @@ function has( cinterval, src )
 
   _.assert( arguments.length === 2 );
   _.assert( _.intervalIs( cinterval ) );
-  _.assert( _.numberIs( src ) || _.intervalIs( src ) );
+  // _.assert( _.numberIs( src ) || _.intervalIs( src ) );
 
   if( _.intervalIs( src ) )
   {
@@ -47,12 +47,16 @@ function has( cinterval, src )
     if( src[ 1 ] > cinterval[ 1 ] )
     return false;
   }
-  else
+  else if( _.numberIs( src ) )
   {
     if( src < cinterval[ 0 ] )
     return false;
     if( src > cinterval[ 1 ] )
     return false;
+  }
+  else
+  {
+    _.assert( 0, 'Expects number or interval {-src-}.' );
   }
 
   return true;
@@ -140,8 +144,8 @@ function has( cinterval, src )
 function sureInInterval( src, cinterval )
 {
   _.assert( arguments.length >= 2 );
-  if( _.longIs( src ) )
-  src = src.length;
+  // if( _.longIs( src ) )
+  // src = src.length;
   let args = _.unrollFrom([ _.cinterval.has( cinterval, src ), () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
@@ -152,8 +156,8 @@ function sureInInterval( src, cinterval )
 function assertInInterval( src, cinterval )
 {
   _.assert( arguments.length >= 2 );
-  if( _.longIs( src ) )
-  src = src.length;
+  // if( _.longIs( src ) )
+  // src = src.length;
   let args = _.unrollFrom([ _.cinterval.has( cinterval, src ), () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
