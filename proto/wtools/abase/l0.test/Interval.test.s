@@ -4383,6 +4383,91 @@ function lintervalIsPopulated( test )
 
 //
 
+function lintervalHas( test )
+{
+  test.open( 'src - number' );
+
+  test.case = 'src < linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src > linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 8 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 7 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'linterval[ 0 ] < src < linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - interval' );
+
+  test.case = 'src[ 0 ] < linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 1, 4 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 0 ] === linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] > linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 6 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] === linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'linterval[ 0 ] < src[ 0 ] && src[ 1 ] < linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 3, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - interval' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'linterval is not linterval';
+  test.shouldThrowErrorSync( () => _.linterval.has( 'wrong', 3 ) );
+
+  test.case = 'src is not Interval, not Number';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
 function lintervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in linterval';
@@ -7317,6 +7402,7 @@ let Self =
     // lintervalInInclusiveLeft,
     // lintervalInInclusiveRight,
     /* qqq2 for Dmytro : test for routine _.linterval.has() */
+    lintervalHas,
     lintervalSureInRange,
     lintervalAssertInRange,
 
