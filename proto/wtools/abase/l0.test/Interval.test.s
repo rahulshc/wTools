@@ -7401,7 +7401,7 @@ let Self =
     // lintervalInExclusive,
     // lintervalInInclusiveLeft,
     // lintervalInInclusiveRight,
-    /* qqq2 for Dmytro : test for routine _.linterval.has() */
+    /* aaa2 for Dmytro : test for routine _.linterval.has() */ /* Dmytro : added, improved routine */
     lintervalHas,
     lintervalSureInRange,
     lintervalAssertInRange,

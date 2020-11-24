@@ -30,19 +30,29 @@ function isPopulated( linterval )
 
 //
 
-function has( linterval, srcNumber )
+function has( linterval, src )
 {
-  // if( _.longIs( srcNumber ) )
-  // srcNumber = srcNumber.length;
-
   _.assert( arguments.length === 2 );
   _.assert( _.intervalIs( linterval ) );
-  _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < linterval[ 0 ] )
-  return false;
-  if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-  return false;
+  if( _.intervalIs( src ) )
+  {
+    if( src[ 0 ] < linterval[ 0 ] )
+    return false;
+    if( src[ 1 ] > linterval[ 1 ] )
+    return false;
+  }
+  else if( _.numberIs( src ) )
+  {
+    if( src < linterval[ 0 ] )
+    return false;
+    if( src > linterval[ 0 ] + linterval[ 1 ] )
+    return false;
+  }
+  else
+  {
+    _.assert( 0, 'Expects interval or number {-src-}.' );
+  }
 
   return true;
 }
@@ -129,8 +139,8 @@ function has( linterval, srcNumber )
 function sureInInterval( src, linterval )
 {
   _.assert( arguments.length >= 2 );
-  if( _.longIs( src ) )
-  src = src.length;
+  // if( _.longIs( src ) )
+  // src = src.length;
   let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
@@ -342,7 +352,7 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.linterval === undefined ); /* qqq2 for Dmytro : rename in documentation */
+_.assert( _.linterval === undefined ); /* aaa2 for Dmytro : rename in documentation */ /* Dmytro : renamed */
 _.linterval = Self;
 
 // --
