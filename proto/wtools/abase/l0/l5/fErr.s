@@ -1,4 +1,5 @@
-( function _fErr_s_() {
+( function _fErr_s_()
+{
 
 'use strict';
 
@@ -140,7 +141,14 @@ function _handleUncaught2( o )
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.process && _realGlobal_.wTools.process.exitReason )
     result = _realGlobal_.wTools.process;
     // xxx : use _globals_
-    if( !result && _realGlobal_._globals_.testing && _globals_.testing.wTools && _globals_.testing.wTools.process && _globals_.testing.wTools.process.exitReason )
+    if
+    (
+      !result
+      && _realGlobal_._globals_.testing
+      && _globals_.testing.wTools
+      && _globals_.testing.wTools.process
+      && _globals_.testing.wTools.process.exitReason
+    )
     result = _globals_.testing.wTools.process;
     if( !result )
     result = _.process;
@@ -157,7 +165,14 @@ function _handleUncaught2( o )
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.Logger && _realGlobal_.wTools.Logger.ConsoleBar )
     result = _realGlobal_.wTools.Logger;
     // xxx : use _globals_
-    if( !result && _realGlobal_._globals_.testing && _globals_.testing.wTools && _globals_.testing.wTools.Logger && _globals_.testing.wTools.Logger.ConsoleBar )
+    if
+    (
+      !result
+      && _realGlobal_._globals_.testing
+      && _globals_.testing.wTools
+      && _globals_.testing.wTools.Logger
+      && _globals_.testing.wTools.Logger.ConsoleBar
+    )
     result = _globals_.testing.wTools.Logger;
     return result;
   }

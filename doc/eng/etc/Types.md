@@ -10,7 +10,7 @@
 | objectLike  |
 | mapLike   |
 | RegExp    | regular expression for matching text
-| Range | array-like object with two values : indecies of first and last + 1 element
+| Interval | array-like object with two values : indecies of first and last + 1 element
 | Time  | Date object or number and string that are convertable to Date object
 | Long  | array, typed array, array-like object
 | SortedArray | collection of elements with specific order

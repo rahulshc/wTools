@@ -1394,6 +1394,20 @@ end of message`;
 
 function errMessageWithSpacesAndNewLines( test )
 {
+  /*
+   * err1\n + \nerr2 -> err1\nerr2 // Dmytro : exists
+   * err1 + \nerr2 -> err1\nerr2 // Dmytro : exists
+   * err1\n + err2 -> err1\nerr2 // Dmytro : exists
+   * err1\n\n + \n\nerr2 -> err1\n\nerr2 // Dmytro : exists
+   * err1\n + \n\nerr2 -> err1\n\nerr2 // Dmytro : exists
+   * err1 + \n\nerr2 -> err1\n\nerr2 // Dmytro : exists
+   * err1\n\n + \nerr2 -> err1\n\nerr2 // Dmytro : exists
+   * err1\n\n + err2 -> err1\n\nerr2 // Dmytro : exists
+   * -
+   * err1\n\s\s\n\s + err2 -> err1\n\nerr2
+   * err1\n\n + \n\serr2 -> err1\n\n\serr2
+   */
+
   test.case = 'strings without spaces and new line symbols';
   var got = _.err
   (
@@ -1713,6 +1727,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
   Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2077,6 +2093,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
   Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -2462,6 +2480,8 @@ Exec :`;
   );
   var exp =
 `Error :
+
+
   Exec :`;
   var got = _.errBrief( err );
   test.identical( got.originalMessage, exp );
