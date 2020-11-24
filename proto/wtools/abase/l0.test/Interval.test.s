@@ -2191,7 +2191,7 @@ function cintervalHas( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'src = cinterval[ 1 ]';
+  test.case = 'src === cinterval[ 1 ]';
   var got = _.cinterval.has( [ 2, 5 ], 5 );
   var expected = true;
   test.identical( got, expected );
@@ -6450,6 +6450,91 @@ function ointervalIsPopulated( test )
 
 //
 
+function ointervalHas( test )
+{
+  test.open( 'src - number' );
+
+  test.case = 'src < ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src > ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 7 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 5 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'ointerval[ 0 ] < src < ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - interval' );
+
+  test.case = 'src[ 0 ] < ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 1, 4 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 0 ] === ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] > ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 6 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] === ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'ointerval[ 0 ] < src[ 0 ] && src[ 1 ] < ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 3, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - interval' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'ointerval is not ointerval';
+  test.shouldThrowErrorSync( () => _.ointerval.has( 'wrong', 3 ) );
+
+  test.case = 'src is not Interval, not Number';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
 function ointervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in ointerval';
@@ -7419,7 +7504,8 @@ let Self =
     // ointervalInExclusive,
     // ointervalInInclusiveLeft,
     // ointervalInInclusiveRight,
-    /* qqq2 for Dmytro : test for routine _.ointerval.has() */
+    /* aaa2 for Dmytro : test for routine _.ointerval.has() */ /* Dmytro : added, improved routine */
+    ointervalHas,
     ointervalSureInRange,
     ointervalAssertInRange,
 
