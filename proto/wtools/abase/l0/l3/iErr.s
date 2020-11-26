@@ -1057,7 +1057,8 @@ function _err( o )
 
       if( notSpaceLikeSymbol === null )
       {
-        str = '';
+        str = str.replace( /\x20+/g, '' );
+        strEndsWithRegular = true;
       }
       else
       {
