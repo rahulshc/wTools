@@ -617,6 +617,7 @@ function off_functor( ehandler, o )
 {
   return function( o2 )
   {
+    /* qqq : no arguments? */
     _.assert( arguments.length === 0 || arguments.length === 1, 'Expects single options map {-o-} or no arguments.' );
 
     if( o2 === undefined )
