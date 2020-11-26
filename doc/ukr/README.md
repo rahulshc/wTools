@@ -129,31 +129,31 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypeRange.md">
-    Тип <code>Range</code>
+  <summary><a href="./concept/TypeInterval.md">
+    Тип <code>Interval</code>
   </a></summary>
-    <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
+    <code>Interval</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
 <details>
-  <summary><a href="./concept/TypeRange.md#Тип-Orange">
-    Тип <code>Orange</code>
+  <summary><a href="./concept/TypeInterval.md#Тип-Ointerval">
+    Тип <code>Ointerval</code>
   </a></summary>
-    <code>Orange</code> ( від <code>open range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку та не включає його.
+    <code>Ointerval</code> ( від <code>open interval</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку та не включає його.
 </details>
 
 <details>
-  <summary><a href="./concept/TypeRange.md#Тип-Crange">
-    Тип <code>Crange</code>
+  <summary><a href="./concept/TypeInterval.md#Тип-Cinterval">
+    Тип <code>Cinterval</code>
   </a></summary>
-    <code>Crange</code> ( від <code>closed range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку включаючи його.
+    <code>Cinterval</code> ( від <code>closed interval</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку включаючи його.
 </details>
 
 <details>
-  <summary><a href="./concept/TypeRange.md#Тип-Lrange">
-    Тип <code>Lrange</code>
+  <summary><a href="./concept/TypeInterval.md#Тип-Linterval">
+    Тип <code>Linterval</code>
   </a></summary>
-    <code>Lrange</code> ( від <code>length range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік, а другий позначає довжину - кількість елементів, що потрбно перебрати.
+    <code>Linterval</code> ( від <code>length interval</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік, а другий позначає довжину - кількість елементів, що потрбно перебрати.
 </details>
 
 <details>

@@ -1,4 +1,4 @@
-( function _Range_test_s()
+( function _Interval_test_s()
 {
 
 'use strict';
@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/iRange.s
+// range l0/l3/iInterval.s
 //--
 
 function is( test )
@@ -1547,7 +1547,7 @@ function cintervalIsPopulated( test )
 
 // //
 //
-// function crangeInInclusive( test )
+// function cintervalInInclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < cinterval[ 0 ]';
 //   var got = _.cinterval.inInclusive( [ 2, 5 ], 1 );
@@ -1697,7 +1697,7 @@ function cintervalIsPopulated( test )
 //
 // //
 //
-// function crangeInExclusive( test )
+// function cintervalInExclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < cinterval[ 0 ]';
 //   var got = _.cinterval.inExclusive( [ 2, 5 ], 1 );
@@ -1872,7 +1872,7 @@ function cintervalIsPopulated( test )
 //
 // //
 //
-// function crangeInInclusiveLeft( test )
+// function cintervalInInclusiveLeft( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < cinterval[ 0 ]';
 //   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], 1 );
@@ -2022,7 +2022,7 @@ function cintervalIsPopulated( test )
 //
 // //
 //
-// function crangeInInclusiveRight( test )
+// function cintervalInInclusiveRight( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < cinterval[ 0 ]';
 //   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], 1 );
@@ -2172,7 +2172,92 @@ function cintervalIsPopulated( test )
 
 //
 
-function crangeSureInRange( test )
+function cintervalHas( test )
+{
+  test.open( 'src - number' );
+
+  test.case = 'src < cinterval[ 0 ]';
+  var got = _.cinterval.has( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === cinterval[ 0 ]';
+  var got = _.cinterval.has( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src > cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], 7 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], 5 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'cinterval[ 0 ] < src < cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - interval' );
+
+  test.case = 'src[ 0 ] < cinterval[ 0 ]';
+  var got = _.cinterval.has( [ 2, 5 ], [ 1, 4 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 0 ] === cinterval[ 0 ]';
+  var got = _.cinterval.has( [ 2, 5 ], [ 2, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] > cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], [ 2, 6 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] === cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], [ 2, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'cinterval[ 0 ] < src[ 0 ] && src[ 1 ] < cinterval[ 1 ]';
+  var got = _.cinterval.has( [ 2, 5 ], [ 3, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - interval' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.cinterval.has() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.cinterval.has( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.cinterval.has( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'cinterval is not cinterval';
+  test.shouldThrowErrorSync( () => _.cinterval.has( 'wrong', 3 ) );
+
+  test.case = 'src is not Interval, not Number';
+  test.shouldThrowErrorSync( () => _.cinterval.has( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
+function cintervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in cinterval';
   var got = _.cinterval.sureInInterval( 3, [ 1, 5 ] );
@@ -2214,7 +2299,7 @@ function crangeSureInRange( test )
 
 //
 
-function crangeAssertInRange( test )
+function cintervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in cinterval';
   var got = _.cinterval.assertInInterval( 3, [ 1, 5 ] );
@@ -2256,7 +2341,7 @@ function crangeAssertInRange( test )
 
 //
 
-function crangeFromSingle( test )
+function cintervalFromSingle( test )
 {
   test.case = 'cinterval - number';
   var got = _.cinterval.fromSingle( 1 );
@@ -2396,7 +2481,7 @@ function crangeFromSingle( test )
 
 //
 
-function crangeClamp( test )
+function cintervalClamp( test )
 {
   test.open( 'array' );
 
@@ -2697,7 +2782,7 @@ function crangeClamp( test )
 
 //
 
-function crangeCountElements( test )
+function cintervalCountElements( test )
 {
   test.case = 'increment - zero, positive substruction result';
   var got = _.cinterval.countElements( [ 1, 6 ], 0 );
@@ -2817,7 +2902,7 @@ function crangeCountElements( test )
 
 //
 
-function crangeLastGet( test )
+function cintervalLastGet( test )
 {
   test.open( 'cinterval - array' );
 
@@ -3598,7 +3683,7 @@ function lintervalIsPopulated( test )
 
 //
 
-// function lrangeInInclusive( test )
+// function lintervalInInclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < linterval[ 0 ]';
 //   var got = _.linterval.inInclusive( [ 2, 5 ], 1 );
@@ -3773,7 +3858,7 @@ function lintervalIsPopulated( test )
 //
 // //
 //
-// function lrangeInExclusive( test )
+// function lintervalInExclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < linterval[ 0 ]';
 //   var got = _.linterval.inExclusive( [ 2, 5 ], 1 );
@@ -3948,7 +4033,7 @@ function lintervalIsPopulated( test )
 //
 // //
 //
-// function lrangeInInclusiveLeft( test )
+// function lintervalInInclusiveLeft( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < linterval[ 0 ]';
 //   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], 1 );
@@ -4123,7 +4208,7 @@ function lintervalIsPopulated( test )
 //
 // //
 //
-// function lrangeInInclusiveRight( test )
+// function lintervalInInclusiveRight( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < linterval[ 0 ]';
 //   var got = _.linterval.inInclusiveRight( [ 2, 5 ], 1 );
@@ -4298,7 +4383,92 @@ function lintervalIsPopulated( test )
 
 //
 
-function lrangeSureInRange( test )
+function lintervalHas( test )
+{
+  test.open( 'src - number' );
+
+  test.case = 'src < linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src > linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 8 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 7 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'linterval[ 0 ] < src < linterval[ 0 ] + linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - interval' );
+
+  test.case = 'src[ 0 ] < linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 1, 4 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 0 ] === linterval[ 0 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] > linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 6 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] === linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 2, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'linterval[ 0 ] < src[ 0 ] && src[ 1 ] < linterval[ 1 ]';
+  var got = _.linterval.has( [ 2, 5 ], [ 3, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - interval' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'linterval is not linterval';
+  test.shouldThrowErrorSync( () => _.linterval.has( 'wrong', 3 ) );
+
+  test.case = 'src is not Interval, not Number';
+  test.shouldThrowErrorSync( () => _.linterval.has( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
+function lintervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in linterval';
   var got = _.linterval.sureInInterval( 3, [ 1, 5 ] );
@@ -4338,7 +4508,7 @@ function lrangeSureInRange( test )
 
 //
 
-function lrangeAssertInRange( test )
+function lintervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in linterval';
   var got = _.linterval.assertInInterval( 3, [ 1, 5 ] );
@@ -4371,14 +4541,14 @@ function lrangeAssertInRange( test )
 
   test.case = 'src out of linterval';
   test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 8, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 7, [ 2, 5 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 8, [ 2, 5 ], undefined ) );
 }
 
 //
 
-function lrangeFromSingle( test )
+function lintervalFromSingle( test )
 {
   test.case = 'linterval - number';
   var got = _.linterval.fromSingle( 1 );
@@ -4518,7 +4688,7 @@ function lrangeFromSingle( test )
 
 //
 
-function lrangeClamp( test )
+function lintervalClamp( test )
 {
   test.open( 'array' );
 
@@ -4819,7 +4989,7 @@ function lrangeClamp( test )
 
 //
 
-function lrangeCountElements( test )
+function lintervalCountElements( test )
 {
   test.case = 'increment - zero, positive substruction result';
   var got = _.linterval.countElements( [ 1, 6 ], 0 );
@@ -4939,7 +5109,7 @@ function lrangeCountElements( test )
 
 //
 
-function lrangeLastGet( test )
+function lintervalLastGet( test )
 {
   test.open( 'linterval - array' );
 
@@ -5680,7 +5850,7 @@ function ointervalIsPopulated( test )
 
 //
 
-// function orangeInInclusive( test )
+// function ointervalInInclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < ointerval[ 0 ]';
 //   var got = _.ointerval.inInclusive( [ 2, 5 ], 1 );
@@ -5830,7 +6000,7 @@ function ointervalIsPopulated( test )
 //
 // //
 //
-// function orangeInExclusive( test )
+// function ointervalInExclusive( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < ointerval[ 0 ]';
 //   var got = _.ointerval.inExclusive( [ 2, 5 ], 1 );
@@ -5980,7 +6150,7 @@ function ointervalIsPopulated( test )
 //
 // //
 //
-// function orangeInInclusiveLeft( test )
+// function ointervalInInclusiveLeft( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < ointerval[ 0 ]';
 //   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], 1 );
@@ -6130,7 +6300,7 @@ function ointervalIsPopulated( test )
 //
 // //
 //
-// function orangeInInclusiveRight( test )
+// function ointervalInInclusiveRight( test )
 // {
 //   test.case = 'srcNumber - number, srcNumber < ointerval[ 0 ]';
 //   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], 1 );
@@ -6280,7 +6450,92 @@ function ointervalIsPopulated( test )
 
 //
 
-function orangeSureInRange( test )
+function ointervalHas( test )
+{
+  test.open( 'src - number' );
+
+  test.case = 'src < ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src > ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 7 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src === ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 5 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'ointerval[ 0 ] < src < ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - interval' );
+
+  test.case = 'src[ 0 ] < ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 1, 4 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 0 ] === ointerval[ 0 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] > ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 6 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src[ 1 ] === ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 2, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'ointerval[ 0 ] < src[ 0 ] && src[ 1 ] < ointerval[ 1 ]';
+  var got = _.ointerval.has( [ 2, 5 ], [ 3, 4 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'src - interval' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'ointerval is not ointerval';
+  test.shouldThrowErrorSync( () => _.ointerval.has( 'wrong', 3 ) );
+
+  test.case = 'src is not Interval, not Number';
+  test.shouldThrowErrorSync( () => _.ointerval.has( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
+function ointervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in ointerval';
   var got = _.ointerval.sureInInterval( 3, [ 1, 5 ] );
@@ -6322,7 +6577,7 @@ function orangeSureInRange( test )
 
 //
 
-function orangeAssertInRange( test )
+function ointervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in ointerval';
   var got = _.ointerval.assertInInterval( 3, [ 1, 5 ] );
@@ -6364,7 +6619,7 @@ function orangeAssertInRange( test )
 
 //
 
-function orangeFromSingle( test )
+function ointervalFromSingle( test )
 {
   test.case = 'ointerval - number';
   var got = _.ointerval.fromSingle( 1 );
@@ -6504,7 +6759,7 @@ function orangeFromSingle( test )
 
 //
 
-function orangeClamp( test )
+function ointervalClamp( test )
 {
   test.open( 'array' );
 
@@ -6805,7 +7060,7 @@ function orangeClamp( test )
 
 //
 
-function orangeCountElements( test )
+function ointervalCountElements( test )
 {
   test.case = 'increment - zero, positive substruction result';
   var got = _.ointerval.countElements( [ 1, 6 ], 0 );
@@ -6925,7 +7180,7 @@ function orangeCountElements( test )
 
 //
 
-function orangeLastGet( test )
+function ointervalLastGet( test )
 {
   test.open( 'ointerval - array' );
 
@@ -7209,52 +7464,55 @@ let Self =
 
     cintervalIsEmpty,
     cintervalIsPopulated,
-    // crangeInInclusive,
-    // crangeInExclusive,
-    // crangeInInclusiveLeft,
-    // crangeInInclusiveRight,
-    /* qqq2 for Dmytro : test for routine _.cinterval.has() */
-    crangeSureInRange,
-    crangeAssertInRange,
+    // cintervalInInclusive,
+    // cintervalInExclusive,
+    // cintervalInInclusiveLeft,
+    // cintervalInInclusiveRight,
+    /* aaa2 for Dmytro : test for routine _.cinterval.has() */ /* Dmytro : added, improved routine */
+    cintervalHas,
+    cintervalSureInRange,
+    cintervalAssertInRange,
 
-    crangeFromSingle,
-    crangeClamp,
-    crangeCountElements,
-    crangeLastGet,
+    cintervalFromSingle,
+    cintervalClamp,
+    cintervalCountElements,
+    cintervalLastGet,
 
     // linterval
 
     lintervalIsEmpty,
     lintervalIsPopulated,
-    // lrangeInInclusive,
-    // lrangeInExclusive,
-    // lrangeInInclusiveLeft,
-    // lrangeInInclusiveRight,
-    /* qqq2 for Dmytro : test for routine _.linterval.has() */
-    lrangeSureInRange,
-    lrangeAssertInRange,
+    // lintervalInInclusive,
+    // lintervalInExclusive,
+    // lintervalInInclusiveLeft,
+    // lintervalInInclusiveRight,
+    /* aaa2 for Dmytro : test for routine _.linterval.has() */ /* Dmytro : added, improved routine */
+    lintervalHas,
+    lintervalSureInRange,
+    lintervalAssertInRange,
 
-    lrangeFromSingle,
-    lrangeClamp,
-    lrangeCountElements,
-    lrangeLastGet,
+    lintervalFromSingle,
+    lintervalClamp,
+    lintervalCountElements,
+    lintervalLastGet,
 
     // ointerval
 
     ointervalIsEmpty,
     ointervalIsPopulated,
-    // orangeInInclusive,
-    // orangeInExclusive,
-    // orangeInInclusiveLeft,
-    // orangeInInclusiveRight,
-    /* qqq2 for Dmytro : test for routine _.ointerval.has() */
-    orangeSureInRange,
-    orangeAssertInRange,
+    // ointervalInInclusive,
+    // ointervalInExclusive,
+    // ointervalInInclusiveLeft,
+    // ointervalInInclusiveRight,
+    /* aaa2 for Dmytro : test for routine _.ointerval.has() */ /* Dmytro : added, improved routine */
+    ointervalHas,
+    ointervalSureInRange,
+    ointervalAssertInRange,
 
-    orangeFromSingle,
-    orangeClamp,
-    orangeCountElements,
-    orangeLastGet,
+    ointervalFromSingle,
+    ointervalClamp,
+    ointervalCountElements,
+    ointervalLastGet,
 
   }
 
