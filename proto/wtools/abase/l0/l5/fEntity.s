@@ -350,14 +350,18 @@ function entityAssign( dst, src, onRecursive )
   {
 
     if( onRecursive )
-    result = _.mapCloneAssigning
-    ({
-      srcMap : src,
-      dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst,
-      onField : onRecursive
-    });
+    {
+      result = _.mapCloneAssigning
+      ({
+        srcMap : src,
+        dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst,
+        onField : onRecursive
+      });
+    }
     else
-    result = _.mapCloneAssigning({ srcMap : src });
+    {
+      result = _.mapCloneAssigning({ srcMap : src });
+    }
 
   }
   else

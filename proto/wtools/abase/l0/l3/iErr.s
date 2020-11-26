@@ -399,8 +399,10 @@ function _errMake( o )
     o.dstError[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.dstError.toString;
 
     if( o.fields )
-    for( let k in o.fields )
-    nonenumerable( k, o.fields[ k ] );
+    {
+      for( let k in o.fields )
+      nonenumerable( k, o.fields[ k ] );
+    }
 
     if( o.debugging )
     debugger;

@@ -1,4 +1,5 @@
-(function _Setup_s_() {
+( function _Setup_s_()
+{
 
 'use strict';
 
@@ -128,14 +129,14 @@ function _setupUncaughtErrorHandler2()
     debugger;
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
-    return [ { err : new Error( args[ 0 ] ), args : args } ];
+    return [ { err : new Error( args[ 0 ] ), args } ];
   }
 
   /* */
 
   function _handleUncaughtHeadNode( args )
   {
-    return [ { err : args[ 0 ], args : args } ];
+    return [ { err : args[ 0 ], args } ];
   }
 
   /* */
