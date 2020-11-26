@@ -458,6 +458,91 @@ function strLeft( src, ins, range )
 
 }
 
+function _strLeftSingle_( src, ins, cinterval )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.strIs( src ) );
+
+  if( _.numberIs( cinterval ) )
+  cinterval = [ cinterval, src.length - 1 ];
+  else if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+
+  cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  cinterval[ 1 ] = cinterval[ 1 ] === undefined ? src.length - 1 : cinterval[ 1 ];
+
+  if( cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] = src.length + cinterval[ 0 ];
+  if( cinterval[ 1 ] < -1 )
+  cinterval[ 1 ] = src.length + cinterval[ 1 ];
+
+  _.assert( _.intervalIs( cinterval ) );
+  _.assert( 0 <= cinterval[ 0 ] && cinterval[ 0 ] <= src.length );
+  _.assert( -1 <= cinterval[ 1 ] && cinterval[ 1 ] <= src.length - 1 );
+
+  let result = Object.create( null );
+  result.index = src.length;
+  result.instanceIndex = -1;
+  result.entry = undefined;
+
+  let src1 = src.substring( cinterval[ 0 ], cinterval[ 1 ] + 1 );
+
+  ins = _.arrayAs( ins );
+
+  for( let k = 0 ; k < ins.length ; k++ )
+  {
+    let entry = ins[ k ];
+    if( _.strIs( entry ) )
+    {
+      let found = src1.indexOf( entry );
+      if( found >= 0 && ( found < result.index || result.entry === undefined ) )
+      {
+        result.instanceIndex = k;
+        result.index = found;
+        result.entry = entry;
+      }
+    }
+    else if( _.regexpIs( entry ) )
+    {
+      let found = src1.match( entry );
+      if( found && ( found.index < result.index || result.entry === undefined ) )
+      {
+        result.instanceIndex = k;
+        result.index = found.index;
+        result.entry = found[ 0 ];
+      }
+    }
+    else _.assert( 0, 'Expects string-like ( string or regexp )' );
+  }
+
+  if( cinterval[ 0 ] !== 0 && result.index !== src.length )
+  result.index += cinterval[ 0 ];
+
+  return result;
+}
+
+//
+
+function strLeft_( src, ins, cinterval )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.arrayLike( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strLeftSingle_( src[ s ], ins, cinterval );
+    return result;
+  }
+  else
+  {
+    return _._strLeftSingle_( src, ins, cinterval );
+  }
+
+}
+
 //
 
 /*
@@ -705,6 +790,136 @@ function strRight( src, ins, range )
   else
   {
     return _._strRightSingle( src, ins, range );
+  }
+
+}
+
+//
+
+function _strRightSingle_( src, ins, cinterval )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.strIs( src ) );
+
+  if( _.numberIs( cinterval ) )
+  cinterval = [ cinterval, src.length - 1 ];
+  else if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+
+  cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  cinterval[ 1 ] = cinterval[ 1 ] === undefined ? src.length - 1 : cinterval[ 1 ];
+
+  if( cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] = src.length + cinterval[ 0 ];
+  if( cinterval[ 1 ] < -1 )
+  cinterval[ 1 ] = src.length + cinterval[ 1 ];
+
+  _.assert( _.intervalIs( cinterval ) );
+  _.assert( 0 <= cinterval[ 0 ] && cinterval[ 0 ] <= src.length );
+  _.assert( -1 <= cinterval[ 1 ] && cinterval[ 1 ] <= src.length - 1 );
+
+  let olength = src.length;
+
+  let result = Object.create( null );
+  result.index = -1;
+  result.instanceIndex = -1;
+  result.entry = undefined;
+
+  let src1 = src.substring( cinterval[ 0 ], cinterval[ 1 ] + 1 );
+
+  ins = _.arrayAs( ins );
+
+  for( let k = 0, len = ins.length ; k < len ; k++ )
+  {
+    let entry = ins[ k ];
+    if( _.strIs( entry ) )
+    {
+      let found = src1.lastIndexOf( entry );
+      if( found >= 0 && found > result.index )
+      {
+        result.instanceIndex = k;
+        result.index = found;
+        result.entry = entry;
+      }
+    }
+    else if( _.regexpIs( entry ) )
+    {
+
+      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
+      let match1 = src1.match( regexp1 );
+      if( !match1 )
+      continue;
+
+      let regexp2 = _.regexpsJoin([ entry, '(?!(?=.).*', entry, ')' ]);
+      let match2 = src1.match( regexp2 );
+      _.assert( !!match2 );
+
+      let found;
+      let found1 = match1[ 1 ];
+      let found2 = match2[ 0 ];
+      let index;
+      let index1 = match1.index + match1[ 0 ].length;
+      let index2 = match2.index + match2[ 0 ].length;
+
+      if( index1 === index2 )
+      {
+        if( found1.length < found2.length )
+        {
+          found = found2;
+          index = index2 - found.length;
+        }
+        else
+        {
+          found = found1;
+          index = index1 - found.length;
+        }
+      }
+      else if( index1 < index2 )
+      {
+        found = found2;
+        index = index2 - found.length;
+      }
+      else
+      {
+        found = found1;
+        index = index1 - found.length;
+      }
+
+      if( index > result.index )
+      {
+        result.instanceIndex = k;
+        result.index = index;
+        result.entry = found;
+      }
+
+    }
+    else _.assert( 0, 'Expects string-like ( string or regexp )' );
+  }
+
+  if( cinterval[ 0 ] !== 0 && result.index !== -1 )
+  result.index += cinterval[ 0 ];
+
+  return result;
+}
+
+//
+
+function strRight_( src, ins, cinterval )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.arrayLike( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strRightSingle_( src[ s ], ins, cinterval );
+    return result;
+  }
+  else
+  {
+    return _._strRightSingle_( src, ins, cinterval );
   }
 
 }
@@ -3216,9 +3431,13 @@ let Extension =
   // splitter
 
   _strLeftSingle,
-  strLeft, /* qqq2 for Dmytro : implement and cover strLeft_ with proper ranges */
+  strLeft, /* aaa2 for Dmytro : implement and cover strLeft_ with proper ranges */ /* Dmytro : implemented routine strLeft_ with cintervals, covered */
+  _strLeftSingle_,
+  strLeft_,
   _strRightSingle,
-  strRight, /* qqq2 for Dmytro : implement and cover strRight_ with proper ranges */
+  strRight, /* aaa2 for Dmytro : implement and cover strRight_ with proper ranges */ /* Dmytro : implemented routine strRight_ with cintervals, covered */
+  _strRightSingle_,
+  strRight_,
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
