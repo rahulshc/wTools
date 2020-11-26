@@ -163,7 +163,7 @@ function on( test )
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   /* */
 
@@ -183,7 +183,7 @@ function on( test )
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   /* */
 
@@ -374,8 +374,8 @@ function onCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off();
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
   _.event.eventGive( ehandler, 'event2' );
@@ -398,7 +398,7 @@ function onCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off({ callbackMap : { event : onEvent } });
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
@@ -422,7 +422,7 @@ function onCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off( 'event' );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
@@ -830,8 +830,8 @@ function onceCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off();
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
   _.event.eventGive( ehandler, 'event2' );
@@ -854,7 +854,7 @@ function onceCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off({ callbackMap : { event : onEvent } });
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
@@ -878,7 +878,7 @@ function onceCheckDescriptorMethod( test )
   test.true( _.routineIs( descriptor.off ) );
 
   descriptor.off( 'event' );
-  test.trueNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
