@@ -139,8 +139,8 @@ function has( linterval, src )
 function sureInInterval( src, linterval )
 {
   _.assert( arguments.length >= 2 );
-  // if( _.longIs( src ) )
-  // src = src.length;
+  if( _.longIs( src ) )
+  src = src.length;
   let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;

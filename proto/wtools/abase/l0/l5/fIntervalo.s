@@ -139,8 +139,8 @@ function has( ointerval, src )
 function sureInInterval( src, ointerval )
 {
   _.assert( arguments.length >= 2 );
-  // if( _.longIs( src ) )
-  // src = src.length;
+  if( _.longIs( src ) )
+  src = src.length;
   let args = _.unrollFrom([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
@@ -151,8 +151,8 @@ function sureInInterval( src, ointerval )
 function assertInInterval( src, ointerval )
 {
   _.assert( arguments.length >= 2 );
-  // if( _.longIs( src ) )
-  // src = src.length;
+  if( _.longIs( src ) )
+  src = src.length;
   let args = _.unrollFrom([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
