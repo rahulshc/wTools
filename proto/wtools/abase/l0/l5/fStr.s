@@ -1023,10 +1023,10 @@ function strInsideOf_head( routine, args )
   _.routineOptions( routine, o );
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
 
-  if( _.longIs( o.begin ) && o.begin.length === 1 )
-  o.begin = o.begin[ 0 ];
-  if( _.longIs( o.end ) && o.end.length === 1 )
-  o.end = o.end[ 0 ];
+  // if( _.longIs( o.begin ) && o.begin.length === 1 )
+  // o.begin = o.begin[ 0 ];
+  // if( _.longIs( o.end ) && o.end.length === 1 )
+  // o.end = o.end[ 0 ];
   if( _.longIs( o.begin || _.longIs( o.end )) )
   {
     o.begin = _.arrayAs( o.begin );
@@ -1054,10 +1054,14 @@ function strInsideOf_body( o )
   if( endOf === undefined )
   return undefined;
 
-  if( o.pairing )
-  if( beginOf !== endOf )
-  return undefined;
+  if( o.pairing && _.longIs( o.begin ) )
+  {
+    let beginIndex = _.longLeftIndex( o.begin, beginOf );
+    let endIndex = _.longLeftIndex( o.end, endOf );
 
+    if( beginIndex !== endIndex )
+    return undefined;
+  }
   let result = o.src.substring( beginOf.length, o.src.length - endOf.length );
 
   return result;
@@ -1150,10 +1154,14 @@ function strInsideOf__head( routine, args )
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
   _.routineOptions( routine, o );
 
-  if( _.longIs( o.begin ) && o.begin.length === 1 )
-  o.begin = o.begin[ 0 ];
-  if( _.longIs( o.end ) && o.end.length === 1 )
-  o.end = o.end[ 0 ];
+  o.begin = _.arrayAs( o.begin );
+  o.end = _.arrayAs( o.end );
+
+  _.assert
+  (
+    !o.pairing || o.begin.length === o.end.length,
+    `If {-o.paring-} is true then length of o.begin should be equal to length of o.end.`
+  );
 
   return o;
 }
@@ -1170,8 +1178,13 @@ function strInsideOf__body( o )
   return [ undefined, undefined, undefined ];
 
   if( o.pairing )
-  if( begin !== end )
-  return [ undefined, undefined, undefined ];
+  {
+    let beginIndex = _.longLeftIndex( o.begin, begin );
+    let endIndex = _.longLeftIndex( o.end, end );
+
+    if( beginIndex !== endIndex )
+    return [ undefined, undefined, undefined ];
+  }
 
   let mid = o.src.substring( begin.length, o.src.length - end.length );
 
