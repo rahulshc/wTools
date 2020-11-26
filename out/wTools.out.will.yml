@@ -279,6 +279,7 @@ module:
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Entity.test.s
           - ../proto/wtools/abase/l0.test/Err.test.s
+          - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/IntervalOld.test.s
