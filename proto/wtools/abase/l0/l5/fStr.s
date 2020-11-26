@@ -2039,6 +2039,12 @@ function strSplitsQuotedRejoin_head( routine, args )
     }
     else _.assert( 0, 'unexpected type of {-o.quoting-}' );
 
+    _.assert
+    (
+      !o.pairing || o.quotingPrefixes.length === o.quotingPostfixes.length,
+      `If option::o.paring is true then the length of o.quotingPrefixes should be equal to the length of o.quotingPostfixes`
+    );
+
     if( Config.debug )
     {
       _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
@@ -2085,6 +2091,9 @@ function strSplitsQuotedRejoin_body( o )
         let split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
+          if( o.pairing )
+          if( o.quotingPrefixes.indexOf( o.splits[ s ] ) !== o.quotingPostfixes.indexOf( o.splits[ s2 ] ) )
+          break;
           let bextra = 0;
           let eextra = 0;
           if( o.inliningQuoting )
@@ -2136,7 +2145,8 @@ strSplitsQuotedRejoin_body.defaults =
   inliningQuoting : 1,
   splits : null,
   delimeter : null,
-  onQuoting : null, /* qqq : cover */
+  onQuoting : null, /* qqq : cover | aaa : Done. Yevhen S. */
+  pairing : 0
 }
 
 //
