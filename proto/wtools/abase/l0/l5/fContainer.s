@@ -1,4 +1,5 @@
-( function _fContainer_s_() {
+( function _fContainer_s_()
+{
 
 'use strict';
 
@@ -52,10 +53,14 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    for( let i = src.length - 1 ; i >= 0 ; i-- )
-    dst[ i ] = src[ i ];
+    {
+      for( let i = src.length - 1 ; i >= 0 ; i-- )
+      dst[ i ] = src[ i ];
+    }
     else
-    dst = _.container.extendReplacing( null, src );
+    {
+      dst = _.container.extendReplacing( null, src );
+    }
 
   }
   else if( _.hashMapLike( src ) )

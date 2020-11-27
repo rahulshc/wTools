@@ -583,6 +583,248 @@ function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 
 //
 
+/**
+ * The routine strConcat() provides the concatenation of array of elements ( or single element )
+ * into a String. Returned string can be formatted by using options in options map {-o-}.
+ *
+ * @example
+ * _.strConcat( 'str' );
+ * // returns : 'str'
+ *
+ * @example
+ * _.strConcat( 11 );
+ * // returns : '11'
+ *
+ * @example
+ * _.strConcat([ 1, 2, 'str', [ 3, 4 ] ]);
+ * // returns : '1 2 str 3,4 '
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ], options );
+ * // returns : '** 1 2 str 3,4 **'
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
+ * // returns :
+ * // `** a **
+ * // ** b **
+ * // ** c **
+ *
+ * @example
+ * let onToStr = ( src ) => String( src ) + '*';
+ * let options = { onToStr };
+ * _.strConcat( [ 'a', 'b', 'c' ], options );
+ * // returns : 'a* b* c*'
+ *
+ * @example
+ * let onPairWithDelimeter = ( src1, src2 ) => src1 + ' ..' + src2;
+ * let options = { onPairWithDelimeter };
+ * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
+ * // returns :
+ * // `a ..
+ * // b ..
+ * // c`
+ *
+ * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
+ * If {-srcs-} is not ArrayLike, routine converts to string provided instance.
+ * @param { Map } o - Options map.
+ * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
+ * If an element of array has not delimeter at the end or next element has not delimeter at the begin,
+ * then routine inserts one space between this elements.
+ * @param { String } o.linePrefix - The prefix, which is added to each line. Default value is empty string.
+ * @param { String } o.linePostfix - The postfix, which is added to each line. Default value is empty string.
+ * @param { Map } o.optionsForToStr - The options for routine _.toStr that uses as default callback {-o.onToStr-}. Default value is null.
+ * @param { Function } o.onToStr - The callback, which uses for conversion of each element of {-srcs-}. Accepts element {-src-} and options map {-o-}.
+ * @param { Function } o.onPairWithDelimeter - The callback, which uses for concatenation of two strings.
+ * The callback calls if first string {-src1-} end with line delimeter {-o.lineDelimter-} or second string {-src2-}
+ * begins with line delimeter. Additionally accepts options map {-o-}.
+ * @returns { String } - Returns concatenated string.
+ * @function strConcat
+ * @throws { Error } If arguments.length is less then one or greater than two.
+ * @throws { Error } If options map {-o-} has unknown property.
+ * @throws { Error } If property {-o.optionsForToStr-} is not a MapLike.
+ * @throws { Error } If routine strConcat does not belong module Tools.
+ * @namespace Tools
+ */
+
+/*
+aaa : cover routine strConcat and extend it. ask how to
+Dmytro : routine covered and documented, not extended
+*/
+
+/*
+  aaa : does not work properly, remove indentation, but should not
+  srcs :
+[
+  'b',
+  `variant:: : #83
+  path::local
+  module::module-a
+`
+]
+
+
+  Dmytro : fixed, all comments below
+*/
+
+/* qqq for Dmytro : bad */
+function strConcat( srcs, o )
+{
+
+  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( this.strConcat === strConcat );
+
+  if( o.onToStr === null )
+  o.onToStr = onToStr;
+
+  let defaultOptionsForToStr =
+  {
+    stringWrapper : '',
+  };
+
+  o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+
+  if( _.routineIs( srcs ) )
+  srcs = srcs();
+
+  if( !_.arrayLike( srcs ) )
+  srcs = [ srcs ];
+
+  let result = '';
+  if( !srcs.length )
+  return result;
+
+  let concatenatePairWithLineDelimeter = o.onPairWithDelimeter ? o.onPairWithDelimeter : concatenateSimple;
+
+  /* */
+
+  let a = 0;
+
+  while( !result && a < srcs.length )
+  {
+    result = o.onToStr( srcs[ a ], o );
+    ++a;
+  }
+
+  for( ; a < srcs.length ; a++ )
+  {
+    let src = srcs[ a ];
+    src = o.onToStr( src, o );
+
+    result = result.replace( /[^\S\n]\s*$/, '' );
+
+    if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+    result = concatenatePairWithLineDelimeter( result, src, o );
+    else
+    result = result + ' ' + src.replace( /^\s+/, '' );
+  }
+
+  // for( let a = 0 ; a < srcs.length ; a++ )
+  // {
+  //   let src = srcs[ a ];
+  //
+  //   src = o.onToStr( src, o );
+  //
+  //   result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
+  //   // result = result.replace( /\s*$/m, '' );
+  //
+  //   if( !result )
+  //   {
+  //     result = src;
+  //   }
+  //   // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+  //   // {
+  //   //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
+  //   // }
+  //   else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+  //   {
+  //     result = result + src;
+  //   }
+  //   else
+  //   {
+  //     result = result + ' ' + src.replace( /^\s+/, '' );
+  //     // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
+  //   }
+  //
+  // }
+
+  // let nl = 1;
+  // for( let a = 0 ; a < srcs.length ; a++ )
+  // {
+  //   let src = srcs[ a ];
+  //   src = _.toStr( src, o.optionsForToStr );
+  //   if( !nl )
+  //   {
+  //     let i = src.trim().lastIndexOf( o.lineDelimter );
+  //     if( i === -1 )
+  //     {
+  //       if( result[ result.length-1 ] !== ' ' && src[ 0 ] !== ' ' )
+  //       result += o.delimeter;
+  //     }
+  //     else
+  //     {
+  //       if( i !== 0 )
+  //       result += o.lineDelimter;
+  //     }
+  //   }
+  //   if( src.length )
+  //   nl = src[ src.length-1 ] === o.lineDelimter;
+  //   // if( _.errIs( src ) )
+  //   // debugger;
+  //   result += src;
+  // }
+
+  /* */
+
+  if( o.linePrefix || o.linePostfix )
+  {
+    result = result.split( o.lineDelimter );
+    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
+  }
+
+  /* */
+
+  return result;
+
+  /* */
+
+  function onToStr( src, op )
+  {
+    return _.toStr( src, op.optionsForToStr );
+  }
+
+  /* */
+
+  function concatenateSimple( src1, src2 )
+  {
+    return src1 + src2;
+  }
+}
+
+strConcat.defaults =
+{
+  linePrefix : '',
+  linePostfix : '',
+  lineDelimter : '\n',
+  // delimeter : ' ',
+  optionsForToStr : null,
+  onToStr : null, /* Dmytro : maybe it should have name onEach */
+  onPairWithDelimeter : null,
+}
+
+//
+
 function _strBeginOf( src, begin )
 {
 
@@ -996,6 +1238,7 @@ let Extension =
   strPrimitive,
   strPrimitiveType,
   strType,
+  strConcat,
 
   //
 

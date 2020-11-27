@@ -1,4 +1,5 @@
-( function _fEntity_s_() {
+( function _fEntity_s_()
+{
 
 'use strict';
 
@@ -227,8 +228,12 @@ function entityMake( src )
  * @namespace Tools
  */
 
-function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
+function entityEntityEqualize( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -345,9 +350,18 @@ function entityAssign( dst, src, onRecursive )
   {
 
     if( onRecursive )
-    result = _.mapCloneAssigning({ srcMap : src, dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst, onField : onRecursive } );
+    {
+      result = _.mapCloneAssigning
+      ({
+        srcMap : src,
+        dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst,
+        onField : onRecursive
+      });
+    }
     else
-    result = _.mapCloneAssigning({ srcMap : src });
+    {
+      result = _.mapCloneAssigning({ srcMap : src });
+    }
 
   }
   else
@@ -400,8 +414,13 @@ function entityAssign( dst, src, onRecursive )
  *
  */
 
-function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRecursive )
+function entityAssignFieldFromContainer( /* dstContainer, srcContainer, name, onRecursive */ )
 {
+  let dstContainer = arguments[ 0 ];
+  let srcContainer = arguments[ 1 ];
+  let name = arguments[ 2 ];
+  let onRecursive = arguments[ 3 ];
+
   let result;
 
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
@@ -447,8 +466,13 @@ function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRec
  *
  */
 
-function entityAssignField( dstContainer, srcValue, name, onRecursive )
+function entityAssignField( /* dstContainer, srcValue, name, onRecursive */ )
 {
+  let dstContainer = arguments[ 0 ];
+  let srcValue = arguments[ 1 ];
+  let name = arguments[ 2 ];
+  let onRecursive = arguments[ 3 ];
+
   let result;
 
   _.assert( _.strIs( name ) || _.symbolIs( name ) );

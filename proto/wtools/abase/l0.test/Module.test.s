@@ -1,4 +1,5 @@
-( function _Module_test_s_() {
+( function _Module_test_s_()
+{
 
 'use strict';
 

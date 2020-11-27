@@ -1,4 +1,5 @@
-( function _Regexp_test_s_( ) {
+( function _Regexp_test_s_()
+{
 
 'use strict';
 
@@ -40,7 +41,7 @@ function regexpIdentical( test )
   test.case = 'same string';
 
   var expected = false;
-  var got = _.regexpIdentical( 'x','x' );
+  var got = _.regexpIdentical( 'x', 'x' );
   test.identical( got, expected );
 
   /* */
@@ -154,7 +155,7 @@ function regexpEquivalent( test )
 
 //
 
-function regexpMaybeFrom( test ) 
+function regexpMaybeFrom( test )
 {
   test.open( 'default options, without options map' );
 
@@ -198,7 +199,7 @@ function regexpMaybeFrom( test )
   test.case = 'srcStr - regexp with flags';
   var src = /[abc]$/gm;
   var got = _.regexpMaybeFrom( src );
-  test.identical( got, /[abc]$/gm ); 
+  test.identical( got, /[abc]$/gm );
 
   test.close( 'default options, without options map' );
 
@@ -246,7 +247,7 @@ function regexpMaybeFrom( test )
   test.case = 'srcStr - regexp with flags';
   var src = /[abc]$/gm;
   var got = _.regexpMaybeFrom( { srcStr : src } );
-  test.identical( got, /[abc]$/gm ); 
+  test.identical( got, /[abc]$/gm );
 
   test.close( 'default options, options map' );
 
@@ -294,7 +295,7 @@ function regexpMaybeFrom( test )
   test.case = 'srcStr - regexp with flags';
   var src = /[abc]$/gm;
   var got = _.regexpMaybeFrom( { srcStr : src, flags : '' } );
-  test.identical( got, /[abc]$/gm ); 
+  test.identical( got, /[abc]$/gm );
 
   test.close( 'not default flags' );
 
@@ -337,7 +338,7 @@ function regexpMaybeFrom( test )
   test.case = 'srcStr - regexp with flags';
   var src = /[ a b c ] $/gm;
   var got = _.regexpMaybeFrom( { srcStr : src, flags : '' } );
-  test.identical( got, /[ a b c ] $/gm ); 
+  test.identical( got, /[ a b c ] $/gm );
 
   test.close( 'toleratingSpaces - 0' );
 
@@ -385,7 +386,7 @@ function regexpMaybeFrom( test )
   test.case = 'srcStr - regexp with flags';
   var src = /[abc]$/gm;
   var got = _.regexpMaybeFrom( { srcStr : src, stringWithRegexp : 0 } );
-  test.identical( got, /[abc]$/gm ); 
+  test.identical( got, /[abc]$/gm );
 
   test.close( 'stringWithRegexp - 0' );
 
@@ -535,7 +536,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -556,7 +557,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -578,7 +579,7 @@ function regexpsSources( test )
   }
   var got = _.regexpsSources( o );
   test.identical( got, expected );
-  test.is( o === got );
+  test.true( o === got );
 
   /* */
 
@@ -613,7 +614,8 @@ function regexpsJoin( test )
 
   test.case = 'empty';
 
-  var expected = new RegExp( '','' );
+  var expected = /(?:)/;
+  // var expected = new RegExp( '', '' );
   var got = _.regexpsJoin([]);
   test.identical( got, expected );
 
@@ -634,7 +636,7 @@ function regexpsJoin( test )
   var expected = /abc/i;
   var got = _.regexpsJoin([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   /* */
 
@@ -689,7 +691,8 @@ function regexpsJoin( test )
     sources : [],
     flags : null,
   }
-  var expected = new RegExp( '','' );
+  var expected = /(?:)/;
+  // var expected = new RegExp( '', '' );
   var got = _.regexpsJoin( o );
   test.identical( got, expected );
 
@@ -755,7 +758,8 @@ function regexpsAtLeastFirst( test )
 
   test.case = 'empty';
 
-  var expected = new RegExp( '' );
+  var expected = /(?:)/;
+  // var expected = new RegExp( '' );
   var got = _.regexpsAtLeastFirst([]);
   test.identical( got, expected );
 
@@ -765,7 +769,7 @@ function regexpsAtLeastFirst( test )
   var expected = /.+/i;
   var got = _.regexpsAtLeastFirst([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 
@@ -834,7 +838,7 @@ function regexpsNone( test )
   var expected = /^(?:(?!(?:.+)).)+$/i;
   var got = _.regexpsNone([ r1 ]);
   test.identical( got, expected );
-  test.is( got !== r1 );
+  test.true( got !== r1 );
 
   test.case = 'strings';
 
@@ -903,7 +907,7 @@ function regexpsAny( test )
   var expected = /.+/i;
   var got = _.regexpsAny([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 
@@ -962,7 +966,8 @@ function regexpsAll( test )
 
   test.case = 'empty';
 
-  var expected = new RegExp( '' );
+  var expected = /(?:)/;
+  // var expected = new RegExp( '' );
   var got = _.regexpsAll([]);
   test.identical( got, expected );
 
@@ -972,7 +977,7 @@ function regexpsAll( test )
   var expected = /.+/i;
   var got = _.regexpsAll([ r1 ]);
   test.identical( got, expected );
-  test.is( got === r1 );
+  test.true( got === r1 );
 
   test.case = 'strings';
 
@@ -1272,7 +1277,7 @@ function regexpTestAll( test )
   test.case = 'Regexp not in string array';
 
   var r1 = /.abc/;
-  var r2 = [ 'abcd','efgh', 'ijkl' ];
+  var r2 = [ 'abcd', 'efgh', 'ijkl' ];
   var expected = false ;
   var got = _.regexpTestAll( r1, r2 );
   test.identical( got, expected );
@@ -1985,7 +1990,7 @@ function regexpsTestNone( test )
 
   test.case = 'one regexps in only one string array';
 
-  var r1 = [ /.abc/, /\d$/];
+  var r1 = [ /.abc/, /\d$/ ];
   var r2 = [ 'dabcd', 'efgh', 'ijkl' ];
   var expected = false;
   var got = _.regexpsTestNone( r1, r2 );
@@ -2027,8 +2032,6 @@ function regexpsTestNone( test )
   test.shouldThrowErrorSync( () => _.regexpsTestNone([ 'h', [] ]) );
 
 }
-
-
 
 // --
 // suite definition

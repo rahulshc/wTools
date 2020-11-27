@@ -180,7 +180,7 @@ function numberRandom( range )
 
   if( _.numberIs( range ) )
   range = range >= 0 ? [ 0, range ] : [ range, 0 ];
-  _.assert( arguments.length === 1 && _.rangeIs( range ), 'Expects range' );
+  _.assert( arguments.length === 1 && _.intervalIs( range ), 'Expects range' );
 
   let result = Math.random()*( range[ 1 ] - range[ 0 ] ) + range[ 0 ];
   return result;
@@ -251,7 +251,7 @@ function intRandom( range )
 
   if( _.numberIs( range ) )
   range = range >= 0 ? [ 0, range ] : [ range, 0 ];
-  _.assert( arguments.length === 1 && _.rangeIs( range ), 'Expects range' );
+  _.assert( arguments.length === 1 && _.intervalIs( range ), 'Expects range' );
 
   let result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
   return result;

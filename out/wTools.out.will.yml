@@ -192,13 +192,13 @@ module:
           - ../proto/wtools/abase/l0/l3/iEntity.s
           - ../proto/wtools/abase/l0/l3/iErr.s
           - ../proto/wtools/abase/l0/l3/iFunctional.s
+          - ../proto/wtools/abase/l0/l3/iInterval.s
           - ../proto/wtools/abase/l0/l3/iIntrospector.s
           - ../proto/wtools/abase/l0/l3/iLong.s
           - ../proto/wtools/abase/l0/l3/iMap.s
           - ../proto/wtools/abase/l0/l3/iModule.s
           - ../proto/wtools/abase/l0/l3/iNumber.s
           - ../proto/wtools/abase/l0/l3/iProcess.s
-          - ../proto/wtools/abase/l0/l3/iRange.s
           - ../proto/wtools/abase/l0/l3/iRegexp.s
           - ../proto/wtools/abase/l0/l3/iRoutine.s
           - ../proto/wtools/abase/l0/l3/iSet.s
@@ -206,28 +206,29 @@ module:
           - ../proto/wtools/abase/l0/l3/iTime.s
           - ../proto/wtools/abase/l0/l3/iType.s
           - ../proto/wtools/abase/l0/l3/iUnroll.s
+          - ../proto/wtools/abase/l0/l4
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/fArray.s
           - ../proto/wtools/abase/l0/l5/fBool.s
           - ../proto/wtools/abase/l0/l5/fBuffer.s
           - ../proto/wtools/abase/l0/l5/fContainer.s
-          - ../proto/wtools/abase/l0/l5/fCrange.s
           - ../proto/wtools/abase/l0/l5/fCt.s
           - ../proto/wtools/abase/l0/l5/fEntity.s
           - ../proto/wtools/abase/l0/l5/fErr.s
           - ../proto/wtools/abase/l0/l5/fEvent.s
           - ../proto/wtools/abase/l0/l5/fFunctional.s
+          - ../proto/wtools/abase/l0/l5/fInterval.s
+          - ../proto/wtools/abase/l0/l5/fIntervalc.s
+          - ../proto/wtools/abase/l0/l5/fIntervall.s
+          - ../proto/wtools/abase/l0/l5/fIntervalo.s
+          - ../proto/wtools/abase/l0/l5/fIntervalOld.s
           - ../proto/wtools/abase/l0/l5/fIntrospector.s
           - ../proto/wtools/abase/l0/l5/fLong.s
-          - ../proto/wtools/abase/l0/l5/fLrange.s
           - ../proto/wtools/abase/l0/l5/fMap.s
           - ../proto/wtools/abase/l0/l5/fModule.s
           - ../proto/wtools/abase/l0/l5/fNumber.s
-          - ../proto/wtools/abase/l0/l5/fOrange.s
           - ../proto/wtools/abase/l0/l5/fPath.s
           - ../proto/wtools/abase/l0/l5/fProcess.s
-          - ../proto/wtools/abase/l0/l5/fRange.s
-          - ../proto/wtools/abase/l0/l5/fRangeOld.s
           - ../proto/wtools/abase/l0/l5/fRegexp.s
           - ../proto/wtools/abase/l0/l5/fRoutine.s
           - ../proto/wtools/abase/l0/l5/fSet.s
@@ -253,6 +254,7 @@ module:
           - ../proto/wtools/abase/l0/l8/gEntity.s
           - ../proto/wtools/abase/l0/l8/gErr.s
           - ../proto/wtools/abase/l0/l8/gFunctional.s
+          - ../proto/wtools/abase/l0/l8/gInterval.s
           - ../proto/wtools/abase/l0/l8/gIntrospector.s
           - ../proto/wtools/abase/l0/l8/gLong.s
           - ../proto/wtools/abase/l0/l8/gMap.s
@@ -260,7 +262,6 @@ module:
           - ../proto/wtools/abase/l0/l8/gNumber.s
           - ../proto/wtools/abase/l0/l8/gPair.s
           - ../proto/wtools/abase/l0/l8/gProcess.s
-          - ../proto/wtools/abase/l0/l8/gRange.s
           - ../proto/wtools/abase/l0/l8/gRegexp.s
           - ../proto/wtools/abase/l0/l8/gRoutine.s
           - ../proto/wtools/abase/l0/l8/gSet.s
@@ -274,10 +275,14 @@ module:
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
+          - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Entity.test.s
           - ../proto/wtools/abase/l0.test/Err.test.s
+          - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
+          - ../proto/wtools/abase/l0.test/Interval.test.s
+          - ../proto/wtools/abase/l0.test/IntervalOld.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
@@ -287,8 +292,6 @@ module:
           - ../proto/wtools/abase/l0.test/Pair.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
-          - ../proto/wtools/abase/l0.test/Range.test.s
-          - ../proto/wtools/abase/l0.test/RangeOld.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
           - ../proto/wtools/abase/l0.test/Routine.test.s
           - ../proto/wtools/abase/l0.test/Sorted.test.s

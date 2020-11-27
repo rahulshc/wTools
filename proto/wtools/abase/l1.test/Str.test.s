@@ -1764,11 +1764,11 @@ function strRandom( test )
   test.case = 'o - number > 0';
   var got = _.strRandom( 4 );
   test.identical( got.length, 4 );
-  test.is( _.strIs( got ) );
-  test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
-  test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 1 ] ) );
-  test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 2 ] ) );
-  test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 3 ] ) );
+  test.true( _.strIs( got ) );
+  test.true( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
+  test.true( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 1 ] ) );
+  test.true( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 2 ] ) );
+  test.true( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 3 ] ) );
 
   test.case = 'range';
   for( let i = 0 ; i < 10 ; i++ )
@@ -1776,7 +1776,7 @@ function strRandom( test )
     let got = _.strRandom( [ 1, 3 ] );
     test.ge( got.length, 1 );
     test.lt( got.length, 3 );
-    test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
+    test.true( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
   }
 
   test.case = 'options';
@@ -1785,7 +1785,7 @@ function strRandom( test )
     let got = _.strRandom({ length : [ 1, 5 ], alphabet : _.strAlphabetFromRange( [ 33, 130 ] ) });
     test.ge( got.length, 1 );
     test.lt( got.length, 5 );
-    test.is( _.strHas( _.strAlphabetFromRange( [ 33, 130 ] ), got[ 0 ] ) );
+    test.true( _.strHas( _.strAlphabetFromRange( [ 33, 130 ] ), got[ 0 ] ) );
   }
 
   test.case = 'set with single symbol';
@@ -5602,7 +5602,7 @@ function strButInsIsLong( test )
 
   /* */
 
-  test.open( 'range is crange' );
+  test.open( 'range is cinterval' );
 
   test.case = 'srcStr - empty strings, range - inside string';
   var got = _.strBut( [ '', '' ], [ 0, -1 ], [ 'bb', 'dd' ] );
@@ -5885,7 +5885,7 @@ function strButInsIsLong( test )
   var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
-  test.close( 'range is crange' );
+  test.close( 'range is cinterval' );
 
   test.close( 'src - vector of strings' );
 }
@@ -6722,306 +6722,6 @@ function strJoinPath( test )
   test.case = 'arrays with different length';
   var src = [ [ 1, 2 ], [ 1 ] ];
   test.shouldThrowErrorSync( () => _.strJoinPath( src, '/' ) );
-}
-
-//
-
-function strConcat( test )
-{
-  test.case = 'srcs - empty array';
-  var srcs = [];
-  var got = _.strConcat( srcs );
-  test.identical( got, '' );
-
-  test.case = 'srcs - empty string';
-  var srcs = '';
-  var got = _.strConcat( srcs );
-  test.identical( got, '' );
-
-  test.case = 'srcs - not empty string';
-  var srcs = 'str';
-  var got = _.strConcat( srcs );
-  test.identical( got, 'str' );
-
-  /* - */
-
-  test.open( 'type of src is not the String' );
-
-  test.case = 'srcs - number';
-  var srcs = 1;
-  var got = _.strConcat( srcs );
-  test.identical( got, '1' );
-
-  test.case = 'srcs - function';
-  var srcs = ( e ) => 'str';
-  var got = _.strConcat( srcs );
-  test.identical( got, 'str' );
-
-  test.case = 'srcs - map';
-  var srcs = { a : 2 };
-  var got = _.strConcat( srcs );
-  if( _.toStrFine )
-  test.identical( got, '{ a : 2 }' );
-  else
-  test.identical( got, '[object Object]' );
-
-  test.case = 'srcs - BufferRaw';
-  var srcs = new BufferRaw( 3 );
-  var got = _.strConcat( srcs );
-  if( _.toStrFine )
-  test.identical( got, '( new U8x([ 0x0, 0x0, 0x0 ]) ).buffer' );
-  else
-  test.identical( got, '[object ArrayBuffer]' );
-
-  test.case = 'srcs - BufferTyped';
-  var srcs = new U8x( [ 1, 2, 3 ] );
-  var got = _.strConcat( srcs );
-  if( _.toStrFine )
-  test.identical( got, '( new Uint8Array([ 1, 2, 3 ]) )' );
-  else
-  test.identical( got, '1,2,3' );
-
-  test.case = 'srcs - array';
-  var srcs = [ 1, 2, 'str', 3, [ 2 ] ];
-  var got = _.strConcat( srcs );
-  if( _.toStrFine )
-  test.identical( got, '1 2 str 3 [ 2 ]' );
-  else
-  test.identical( got, '1 2 str 3 2' );
-
-  test.case = 'srcs - unroll';
-  var srcs = _.unrollMake( [ 1, 2, 'str', 3, [ 2 ] ] );
-  var got = _.strConcat( srcs );
-  if( _.toStrFine )
-  test.identical( got, '1 2 str 3 [ 2 ]' );
-  else
-  test.identical( got, '1 2 str 3 2' );
-
-  test.close( 'type of src is not the String' );
-
-  /* - */
-
-  test.open( 'srcs - array of strings, common cases' );
-
-  test.case = 'new line symbol in the string';
-  var srcs =
-  [
-    'b',
-    'variant:: : #83\n  path::local'
-  ];
-  var got = _.strConcat( srcs );
-  test.identical( got, 'b variant:: : #83\n  path::local' );
-
-  test.case = 'strings begin with spaces';
-  var srcs = [ '  b', '    a:: : c', '    d::e' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '  b a:: : c d::e' );
-
-  test.case = 'strings end with spaces';
-  var srcs = [ 'b    ', 'variant:: : #83    ', 'path::local    ' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, 'b variant:: : #83 path::local    ' );
-
-  test.case = 'strings begin and end with spaces';
-  var srcs = [ '    b    ', '    variant:: : #83    ', '    path::local    ' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '    b variant:: : #83 path::local    ' );
-
-  test.case = 'strings begin with spaces, end with new line symbol';
-  var srcs = [ '  b\n', '  variant:: : #83\n', '  path::local' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '  b\n  variant:: : #83\n  path::local' );
-
-  test.case = 'strings begin with new line symbol, end with spaces';
-  var srcs = [ '\nb    ', '\nvariant:: : #83    ', '\npath::local    ' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '\nb\nvariant:: : #83\npath::local    ' );
-
-  test.case = 'strings begin and end with new line symbol';
-  var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
-
-  test.case = 'strings begin and end with new line symbol';
-  var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
-
-  test.case = 'strings begin with new line symbol, end with new line symbol and spaces';
-  var srcs = [ '\nb\n    ', '\nvariant:: : #83\n    ', '\npath::local\n    ' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n    ' );
-
-  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
-  var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
-
-  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
-  var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
-
-  test.case = 'strings begin with new line symbol and spaces, end with new line symbol and spaces';
-  var srcs = [ '    \nb\n    ', '    \nvariant:: : #83\n    ', '    \npath::local\n    ' ];
-  var got = _.strConcat( srcs );
-  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n    ' );
-
-  test.close( 'srcs - array of strings, common cases' );
-
-  /* - */
-
-  test.case = 'lineDelimter - not default, lineDelimter at the end of lines, the spaces after lineDelimter';
-  var srcs = [ 'a || ', 'b || ', 'c || ', 'd' ];
-  var o = { lineDelimter : '||' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a ||b ||c ||d' );
-
-  test.case = 'lineDelimter - not default, the spaces after lineDelimter';
-  var srcs = [ ' || a', '    || b', '  || c', '|d' ];
-  var o = { lineDelimter : '||' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, ' || a || b || c |d' );
-
-  /* */
-
-  test.case = 'onToStr - not default, not uses options';
-  var onToStr = ( src ) => String( src ) + 1;
-  var srcs = [ 1, 2, 3, 4 ];
-  var o = { onToStr };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '11 21 31 41' );
-
-  test.case = 'onToStr - not default, uses options';
-  var onToStr = ( src, o ) => String( src ) + o.lineDelimter;
-  var srcs = [ 1, 2, 3, 4 ];
-  var o = { onToStr };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '1\n2\n3\n4\n' );
-
-  test.case = 'onToStr - not default, uses options from o.optionsForToStr';
-  var onToStr = ( src, o ) => String( src ) + o.optionsForToStr.postfix;
-  var srcs = [ 1, 2, 3, 4 ];
-  var optionsForToStr = { postfix : '...' }
-  var o = { onToStr, optionsForToStr };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '1... 2... 3... 4...' );
-
-  /* */
-
-  test.case = 'linePrefix, not uses lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var o = { linePrefix : '|| ' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '|| a b c d' );
-
-  test.case = 'linePrefix, lineDelimter';
-  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
-  var o = { linePrefix : '|| ' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '|| a\n|| b\n|| c\n|| d\n|| ' );
-
-  test.case = 'linePostfix, not uses lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var o = { linePostfix : ' ||' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a b c d ||' );
-
-  test.case = 'linePostfix, lineDelimter';
-  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
-  var o = { linePostfix : ' ||' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a ||\nb ||\nc ||\nd ||\n ||' );
-
-  test.case = 'linePrefix and linePostfix, not uses lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var o = { linePostfix : ' ||', linePrefix : '|| ' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '|| a b c d ||' )
-
-  test.case = 'linePrefix and linePostfix, lineDelimter';
-  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
-  var o = { linePostfix : ' ||', linePrefix : '|| ' };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '|| a ||\n|| b ||\n|| c ||\n|| d ||\n||  ||' );
-
-  /* */
-
-  test.case = 'onPairWithDelimeter - not default, lines without lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
-  var o = { onPairWithDelimeter };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a b c d' );
-
-  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the end of line';
-  var srcs = [ 'a\n', 'b\n', 'c' ];
-  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
-  var o = { onPairWithDelimeter };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a\n ... b\n ... c' );
-
-  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin of line';
-  var srcs = [ '\na', '\nb', '\nc' ];
-  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
-  var o = { onPairWithDelimeter };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na ... \nb ... \nc' );
-
-  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin and the end of line';
-  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
-  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
-  var o = { onPairWithDelimeter };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na\n ... \nb\n ... \nc\n' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines without lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a b c d' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the end of line';
-  var srcs = [ 'a\n', 'b\n', 'c' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a\n .. b\n .. c' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin of line';
-  var srcs = [ '\na', '\nb', '\nc' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na .. \nb .. \nc' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin and the end of line';
-  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na\n .. \nb\n .. \nc\n' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strConcat() );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { lineDelimter : '\n' }, 'extra' ) );
-
-  test.case = 'wrong type of options map o';
-  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], 'wrong' ) );
-
-  test.case = 'unknown property in options map o';
-  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { unknown : 1 } ) );
-
-  test.case = 'property optionsForToStr in not a MapLike';
-  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { optionsForToStr : 1 } ) );
 }
 
 //--
@@ -8426,70 +8126,70 @@ function strLinesStrip( test )
   var got = _.strLinesStrip( dst );
   var expected = [];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'empty array with empty string';
   var dst = [ '' ];
   var got = _.strLinesStrip( dst );
   var expected = [];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'src stays unchanged';
   var dst = [ '\na\n\nbc\ndef\n' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'a\n\nbc\ndef' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'only escape sequences';
   var dst = [ '', '\t\r\n' ];
   var got = _.strLinesStrip( dst );
   var expected = [];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string without escape sequences and begin/end spaces';
   var dst = [ 'Hello world', '', '\t\r\n' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'Hello world' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string with begin/end spaces';
   var dst = [ '  Hello ', ' world   ' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'Hello', 'world' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string with begin/end escape sequences';
   var dst = [ '\t\r\nHello  ', '  world\r\n\t' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'Hello', 'world' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string with escape sequences';
   var dst = [ '\n\tHello\r\n\tworld\r\n' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'Hello\r\n\tworld' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string with escape sequences';
   var dst = [ '\n\tHello\r\n\t\t\r\nworld\r\n' ];
   var got = _.strLinesStrip( dst  );
   var expected = [ 'Hello\r\n\t\t\r\nworld' ];
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.case = 'string with escape sequences and spaces';
   var dst = [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ];
   var got = _.strLinesStrip( dst );
   var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.true( got !== dst );
 
   test.close( 'src - single array' );
 
@@ -8501,19 +8201,19 @@ function strLinesStrip( test )
   var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
   var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
   test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+  test.true( _.unrollIs( got ) );
 
   test.case = 'several arrays';
   var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], [ '  \n\r\t ' ]  );
   var expected = [ [ 'Hello', 'World \t\r\n!' ], [ 'How', 'are', 'you \n ?' ], [ ] ];
   test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+  test.true( _.unrollIs( got ) );
 
   test.case = 'several strings and arrays';
   var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', [ ' World \t\r\n ', ' ! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], ' I am \n\r\t good \n\n ' );
   var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
   test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+  test.true( _.unrollIs( got ) );
 
   test.close( 'several arguments' );
 
@@ -8538,7 +8238,7 @@ function strLinesStrip( test )
   test.identical( gotArr[ 0 ], gotStr[ 0 ].split( '\n' ) );
   test.identical( gotArr[ 1 ], gotStr[ 1 ].split( '\n' ) );
   test.identical( gotArr[ 2 ], gotStr[ 2 ].split( '\n' ) );
-  test.is( _.unrollIs( gotArr ) );
+  test.true( _.unrollIs( gotArr ) );
 
   /* - */
 
@@ -9507,7 +9207,7 @@ function strLinesSelect( test )
 
   /* - */
 
-  test.open( 'range - orange' );
+  test.open( 'range - ointerval' );
 
   test.case = 'src - multiline, range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] < range[ 1 ]';
   var src = 'a\nb\nc\nd';
@@ -9577,7 +9277,7 @@ function strLinesSelect( test )
   var got = _.strLinesSelect( src, [ 2, 1 ] );
   var expected = '';
 
-  test.close( 'range - orange' );
+  test.close( 'range - ointerval' );
 
   /* - */
 
@@ -10649,7 +10349,7 @@ ghij
   test.open( 'Range is a number' );
 
   test.case = 'nearestLines : 0';
-  var crange = 6;
+  var cinterval = 6;
 
   var expectedSplits =
   [
@@ -10662,7 +10362,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 0,
   });
 
@@ -10673,7 +10373,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 1';
-  var crange = 6;
+  var cinterval = 6;
 
   var expectedSplits =
   [
@@ -10686,7 +10386,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 1,
   });
 
@@ -10696,7 +10396,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 2';
-  var crange = 6;
+  var cinterval = 6;
 
   var expectedSplits =
   [
@@ -10709,7 +10409,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 2,
   });
 
@@ -10719,7 +10419,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 8 ( > all lines )';
-  var crange = 6;
+  var cinterval = 6;
 
   var expectedSplits =
   [
@@ -10732,7 +10432,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 8,
   });
 
@@ -10742,7 +10442,7 @@ ghij
   /* */
 
   test.case = 'NaN range';
-  var crange = NaN;
+  var cinterval = NaN;
 
   var expectedSplits =
   [
@@ -10755,7 +10455,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 8,
   });
 
@@ -10769,7 +10469,7 @@ ghij
   test.open( 'aligned range, single line' );
 
   test.case = 'nearestLines not defined ( = 3 )';
-  var crange = [ 3, 5 ];
+  var cinterval = [ 3, 5 ];
 
   var expectedSplits =
   [
@@ -10782,7 +10482,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : undefined,
   });
 
@@ -10792,7 +10492,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : NaN';
-  var crange = [ 3, 5 ];
+  var cinterval = [ 3, 5 ];
 
   var expectedSplits =
   [
@@ -10805,7 +10505,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : NaN,
   });
 
@@ -10815,7 +10515,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : null';
-  var crange = [ 3, 5 ];
+  var cinterval = [ 3, 5 ];
 
   var expectedSplits =
   [
@@ -10828,7 +10528,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : null,
   });
 
@@ -10838,7 +10538,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 0';
-  var crange = [ 6, 9 ];
+  var cinterval = [ 6, 9 ];
 
   var expectedSplits =
   [
@@ -10851,7 +10551,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 0,
   });
 
@@ -10861,7 +10561,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 1';
-  var crange = [ 6, 9 ];
+  var cinterval = [ 6, 9 ];
 
   var expectedSplits =
   [
@@ -10874,7 +10574,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 1,
   });
 
@@ -10884,7 +10584,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 2';
-  var crange = [ 6, 9 ];
+  var cinterval = [ 6, 9 ];
 
   var expectedSplits =
   [
@@ -10897,7 +10597,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 2,
   });
 
@@ -10907,7 +10607,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 3';
-  var crange = [ 6, 9 ];
+  var cinterval = [ 6, 9 ];
 
   var expectedSplits =
   [
@@ -10920,7 +10620,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 3,
   });
 
@@ -10931,8 +10631,8 @@ ghij
 
   test.case = 'nearestLines : 4';
 
-  var crange = [ 6, 9 ];
-  var sub = _.strOnly( srcStr, crange );
+  var cinterval = [ 6, 9 ];
+  var sub = _.strOnly( srcStr, cinterval );
 
   var expectedSplits =
   [
@@ -10945,7 +10645,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   });
 
@@ -10959,7 +10659,7 @@ ghij
   test.open( 'not aligned range, several lines' );
 
   test.case = 'nearestLines : 0';
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -10972,7 +10672,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 0,
   });
 
@@ -10982,7 +10682,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 1';
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -10995,7 +10695,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 1,
   });
 
@@ -11005,7 +10705,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 2';
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -11018,7 +10718,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 2,
   });
 
@@ -11028,7 +10728,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 3';
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -11041,7 +10741,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 3,
   });
 
@@ -11051,7 +10751,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 4';
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -11064,7 +10764,7 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   });
 
@@ -11080,11 +10780,11 @@ ghij
 
   test.open( 'Wrong range' );
 
-  var crange = [ 4, 11, 12 ];
+  var cinterval = [ 4, 11, 12 ];
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
@@ -11098,7 +10798,7 @@ ghij
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    charsRangeLeft : 'crange',
+    charsRangeLeft : 'cinterval',
     nearestLines : 4,
   }));
 
@@ -11114,45 +10814,45 @@ ghij
 
   test.open( 'Wrong src' );
 
-  var crange = [ 4, 11 ];
+  var cinterval = [ 4, 11 ];
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : null,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : NaN,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : undefined,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : 3,
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : [ 'abd', 'ef' ],
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   }));
 
@@ -11172,7 +10872,7 @@ ghij
   let o =
   {
     src : [ 'abd', 'ef' ],
-    charsRangeLeft : crange,
+    charsRangeLeft : cinterval,
     nearestLines : 4,
   };
   test.shouldThrowErrorSync( () =>  _.strLinesNearest(  ));
@@ -11513,82 +11213,82 @@ ghij
   /* */
 
   test.case = 'single line in the middle';
-  var crange = [ 3, 4 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2, 3 ] );
+  var cinterval = [ 3, 4 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 2, 3 ] );
   test.identical( sub, 'bc' );
 
   /* */
 
   test.case = 'line in the middle with NL';
-  var crange = [ 3, 5 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2, 4 ] );
+  var cinterval = [ 3, 5 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 2, 4 ] );
   test.identical( sub, 'bc\n' );
 
   /* */
 
   test.case = 'single line in the beginning';
-  var crange = [ 1, 1 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1, 2 ] );
+  var cinterval = [ 1, 1 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 1, 2 ] );
   test.identical( sub, 'a' );
 
   /* */
 
   test.case = 'line in the beginning with NL';
-  var crange = [ 1, 2 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1, 3 ] );
+  var cinterval = [ 1, 2 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 1, 3 ] );
   test.identical( sub, 'a\n' );
 
   /* */
 
   test.case = 'single line in the end';
-  var crange = [ 10, 13 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 4, 5 ] );
+  var cinterval = [ 10, 13 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 4, 5 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'line in the end with NL';
-  var crange = [ 10, 14 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 4, 6 ] );
+  var cinterval = [ 10, 14 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 4, 6 ] );
   test.identical( sub, 'ghij\n' );
 
   /* */
 
   test.case = 'not aligned range with multiple lines';
-  var crange = [ 4, 10 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2, 5 ] );
+  var cinterval = [ 4, 10 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 2, 5 ] );
   test.identical( sub, 'c\ndef\ng' );
 
   /* */
 
   test.case = 'empty line in the beginning';
-  var crange = [ 0, -1 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0, 1 ] );
+  var cinterval = [ 0, -1 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 0, 1 ] );
   test.identical( sub, '' );
 
   /* */
 
   test.case = 'empty line in the end';
-  var crange = [ 15, 14 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 5, 6 ] );
+  var cinterval = [ 15, 14 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 5, 6 ] );
   test.identical( sub, '' );
 
   test.close( 'embraced by empty lines' );
@@ -11606,64 +11306,64 @@ ghij`;
   /* */
 
   test.case = 'single line in the middle';
-  var crange = [ 2, 3 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1, 2 ] );
+  var cinterval = [ 2, 3 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 1, 2 ] );
   test.identical( sub, 'bc' );
 
   /* */
 
   test.case = 'line in the middle with NL';
-  var crange = [ 2, 4 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1, 3 ] );
+  var cinterval = [ 2, 4 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 1, 3 ] );
   test.identical( sub, 'bc\n' );
 
   /* */
 
   test.case = 'single line in the beginning';
-  var crange = [ 0, 0 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0, 1 ] );
+  var cinterval = [ 0, 0 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 0, 1 ] );
   test.identical( sub, 'a' );
 
   /* */
 
   test.case = 'line in the beginning with NL';
-  var crange = [ 0, 1 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0, 2 ] );
+  var cinterval = [ 0, 1 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 0, 2 ] );
   test.identical( sub, 'a\n' );
 
   /* */
 
   test.case = 'single line in the end';
-  var crange = [ 9, 12 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 3, 4 ] );
+  var cinterval = [ 9, 12 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 3, 4 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'line in the end with NL';
-  var crange = [ 9, 13 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 3, 4 ] );
+  var cinterval = [ 9, 13 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 3, 4 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'not aligned range with multiple lines';
-  var crange = [ 3, 9 ];
-  var sub = _.strOnly( srcStr, crange );
-  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1, 4 ] );
+  var cinterval = [ 3, 9 ];
+  var sub = _.strOnly( srcStr, cinterval );
+  var linterval = _.strLinesRangeWithCharRange( srcStr, cinterval );
+  test.identical( linterval, [ 1, 4 ] );
   test.identical( sub, 'c\ndef\ng' );
 
   test.close( 'not embraced by empty lines' );
@@ -11878,7 +11578,6 @@ let Self =
     strDup,
     strJoin,
     strJoinPath,
-    strConcat,
 
     // liner
 

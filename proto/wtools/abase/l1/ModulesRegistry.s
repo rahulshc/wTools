@@ -698,7 +698,7 @@ let wStarter =
 
 let wTesting =
 {
-  sourcePath : sourcePath( 'atop/tester/entry/Main.s', 'wTesting' ),
+  sourcePath : sourcePath( 'atop/testing/entry/Main.s', 'wTesting' ),
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 

@@ -81,8 +81,8 @@ function rangeClamp( dstRange, clampRange )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.rangeIs( dstRange ) );
-  _.assert( _.rangeIs( clampRange ) );
+  _.assert( _.intervalIs( dstRange ) );
+  _.assert( _.intervalIs( clampRange ) );
 
   if( dstRange[ 0 ] < clampRange[ 0 ] )
   dstRange[ 0 ] = clampRange[ 0 ];
@@ -102,7 +102,7 @@ function rangeClamp( dstRange, clampRange )
 function rangeCountElements( range, increment )
 {
 
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( increment === undefined )
@@ -126,7 +126,7 @@ function rangeFirstGet( range, options )
 
   if( _.longIs( range ) )
   {
-    _.assert( _.rangeIs( range ) );
+    _.assert( _.intervalIs( range ) );
     return range[ 0 ];
   }
   else if( _.mapIs( range ) )
@@ -150,7 +150,7 @@ function rangeLastGet( range, options )
 
   if( _.longIs( range ) )
   {
-    _.assert( _.rangeIs( range ) );
+    _.assert( _.intervalIs( range ) );
     return range[ 1 ];
   }
   else if( _.mapIs( range ) )
@@ -166,7 +166,7 @@ function rangeLastGet( range, options )
 
 function rangeToStr( range )
 {
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.intervalIs( range ) );
   _.assert( arguments.length === 1 );
   return range[ 0 ] + '..' + range[ 1 ];
 }
