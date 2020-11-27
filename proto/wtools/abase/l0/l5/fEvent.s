@@ -323,10 +323,10 @@ function on( ehandler, o )
   for( let c in o.callbackMap )
   {
     let callback = o.callbackMap[ c ];
-    descriptors[ c ] = descriptorMake( c, callback );
+    descriptors[ c ] = descriptorMake();
 
     if( _.longIs( callback ) )
-    callback = _.event._chainToCallback( [ c, ... callback ] );
+    callback = _.event._chainToCallback([ c, ... callback ]);
 
     _.assert( _.routineIs( callback ) );
 
@@ -364,7 +364,7 @@ function on( ehandler, o )
 
   /* */
 
-  function descriptorMake( name, callback )
+  function descriptorMake()
   {
     let descriptor = Object.create( null );
     descriptor.off = null;
@@ -459,9 +459,12 @@ function once( ehandler, o )
   _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
+  let descriptors = Object.create( null );
+
   for( let c in o.callbackMap )
   {
     let callback = o.callbackMap[ c ];
+    descriptors[ c ] = descriptorMake();
 
     if( _.longIs( callback ) )
     {
@@ -470,32 +473,32 @@ function once( ehandler, o )
 
       let name = callback[ length - 2 ] || c;
       name = name.value !== undefined ? name.value : name;
-      callback[ length - 1 ] = callbackOnce_functor( name, callback[ length - 1 ] );
-      callback = _.event._chainToCallback( [ c, ... callback ] );
+      callback[ length - 1 ] = callbackOnce_functor.call( descriptors[ c ], name, callback[ length - 1 ] );
+      callback = _.event._chainToCallback([ c, ... callback ]);
     }
     else
     {
-      callback = callbackOnce_functor( c, callback );
+      callback = callbackOnce_functor.call( descriptors[ c ], c, callback );
     }
+    descriptors[ c ].off = _.event.off_functor.call( descriptors[ c ], ehandler, { callbackMap : { [ c ] : callback } } );
 
     _.assert( _.routineIs( callback ) );
 
     callbackAdd( ehandler, c, callback );
   }
 
-  o.off = off_functor( ehandler, o.callbackMap );
-  o.enabled = true;
-
-  return o;
+  return descriptors;
 
   /* */
 
   function callbackOnce_functor( name, callback )
   {
+    let self = this;
+
     function callbackOnce()
     {
       let result;
-      if( o.enabled )
+      if( self.enabled )
       {
         callback.apply( this, arguments );
         _.event.off( ehandler, { callbackMap : { [ name ] : callbackOnce } } );
@@ -507,12 +510,27 @@ function once( ehandler, o )
     return callbackOnce;
   }
 
+  /* */
+
   function callbackAdd( handler, name, callback )
   {
     if( o.first )
     _.arrayPrepend( handler.events[ name ], callback );
     else
     _.arrayAppend( handler.events[ name ], callback );
+  }
+
+  /* */
+
+  function descriptorMake()
+  {
+    let descriptor = Object.create( null );
+    descriptor.off = null;
+    descriptor.enabled = true;
+    descriptor.first = o.first; /* Dmytro : please, explain, does it need to save original value? */
+    descriptor.callbackMap = o.callbackMap; /* Dmytro : please, explain, does it need to save link to original callback map? */
+
+    return descriptor;
   }
 }
 
