@@ -13,27 +13,21 @@ let Self = _.process = _.process || Object.create( null );
 
 function on( o )
 {
-
   o = _.event.on.head( _.event.on, arguments );
-  _.event.on( _.process._ehandler, o );
-
-  return o;
+  return _.event.on( _.process._ehandler, o );
 }
 
 on.defaults =
 {
   callbackMap : null,
-}
+};
 
 //
 
 function once( o )
 {
-
   o = _.event.once.head( _.event.once, arguments );
-  _.event.once( _.process._ehandler, o );
-
-  return o;
+  return _.event.once( _.process._ehandler, o );
 }
 
 once.defaults =
@@ -45,17 +39,14 @@ once.defaults =
 
 function off( o )
 {
-
   o = _.event.off.head( _.event.off, arguments );
-  _.event.off( _.process._ehandler, o );
-
-  return o;
+  return _.event.off( _.process._ehandler, o );
 }
 
 off.defaults =
 {
   callbackMap : null,
-}
+};
 
 //
 
