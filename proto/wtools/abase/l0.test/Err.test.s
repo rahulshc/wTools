@@ -775,6 +775,15 @@ function _errOptionBrief( test )
   test.true( _.errIs( err ) );
   test.identical( err.brief, srcErr.brief );
   test.identical( err.brief, true );
+  console.log( 'stack: ', err.stack );
+  console.log( 'combinedStack: ', err.combinedStack );
+  console.log( 'throwCallsStack: ', err.throwCallsStack );
+  console.log( 'location: ', err.location );
+  console.log( 'stack: ', err.combinedStack );
+  test.true( !err.stack );
+  test.true( !err.throwCallsStack );
+  test.true( !err.combinedStack );
+  test.true( !err.location );
 }
 
 //
