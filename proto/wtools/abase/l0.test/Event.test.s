@@ -831,7 +831,6 @@ function onceCheckDescriptor( test )
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
   var descriptor = _.event.once( ehandler, callbackMap );
-  debugger;
 
   test.identical( _.mapKeys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
