@@ -4593,7 +4593,7 @@ function sleep( test )
   test.shouldThrowErrorSync( () => _.time.sleep( NaN ) );
 }
 
-sleep.timeOut = 30000;
+sleep.timeOut = 60000;
 
 //
 
