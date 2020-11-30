@@ -74,14 +74,6 @@ function symbolIs( src )
   return result;
 }
 
-//
-
-function bigIntIs( src )
-{
-  let result = Object.prototype.toString.call( src ) === '[object BigInt]';
-  return result;
-}
-
 // --
 // math
 // --
@@ -386,7 +378,6 @@ function workerIs( src )
 function streamIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-
   return _.objectIs( src ) && _.routineIs( src.pipe )
 }
 
@@ -508,7 +499,18 @@ function traitIs( trait )
 {
   if( !_.definitionIs( trait ) )
   return false;
-  return trait.definitionKind === 'trait';
+  return trait.definitionGroup === 'trait';
+}
+
+//
+
+function blueprintIs( blueprint )
+{
+  if( !blueprint )
+  return false;
+  if( !_.blueprint.is )
+  return false;
+  return _.blueprint.is( blueprint );
 }
 
 // --
@@ -534,7 +536,6 @@ let Routines =
   definedIs,
   primitiveIs,
   symbolIs,
-  bigIntIs,
 
   //
 
@@ -572,6 +573,7 @@ let Routines =
   procedureIs,
   definitionIs,
   traitIs,
+  blueprintIs,
 
 }
 

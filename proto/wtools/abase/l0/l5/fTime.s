@@ -703,11 +703,10 @@ function cancel( timer )
 function _sleep( delay )
 {
   _.assert( _.intIs( delay ) && delay >= 0, 'Specify valid value {-delay-}.' );
-
   let now = _.time.now();
-
   while( ( _.time.now() - now ) < delay )
   {
+    if( Math.random() === 0 );
   }
 }
 
@@ -742,7 +741,6 @@ function _sleep( delay )
 function sleep( delay )
 {
   _.assert( arguments.length === 1 );
-
   _.time._sleep.apply( this, arguments );
 }
 

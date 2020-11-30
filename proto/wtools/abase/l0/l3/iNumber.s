@@ -75,6 +75,14 @@ function intIs( src )
 
 //
 
+function bigIntIs( src )
+{
+  let result = Object.prototype.toString.call( src ) === '[object BigInt]';
+  return result;
+}
+
+//
+
 function numbersAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -311,7 +319,9 @@ let Routines =
   numberIsFinite,
   numberDefined : numberIsFinite,
   numberIsInfinite,
+
   intIs,
+  bigIntIs,
 
   numbersAreAll,
   numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
