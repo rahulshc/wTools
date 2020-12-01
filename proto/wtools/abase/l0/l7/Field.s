@@ -594,8 +594,25 @@ function dstNotHasAssigningRecursive()
 dstNotHasAssigningRecursive.functionFamily = 'field-mapper';
 
 // --
-// dstNotOwn
+// dstOwn
 // --
+
+// function dstOwn()
+// {
+//   let routine = dstOwn;
+//   routine.functionFamily = 'field-filter';
+//   return routine;
+//
+//   function dstOwn( dstContainer, srcContainer, key )
+//   {
+//     if( !Object.hasOwnProperty.call( dstContainer, key ) )
+//     return false;
+//     return true;
+//   }
+//
+// }
+//
+// dstOwn.functionFamily = 'field-filter';
 
 function dstNotOwn()
 {
@@ -615,6 +632,29 @@ function dstNotOwn()
 }
 
 dstNotOwn.functionFamily = 'field-filter';
+
+//
+
+function dstNotOwnNotSame()
+{
+  let routine = dstNotOwnNotSame;
+  routine.functionFamily = 'field-filter';
+  return routine;
+
+  function dstNotOwnNotSame( dstContainer, srcContainer, key )
+  {
+    if( key === 'groupTextualReport' )
+    debugger;
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
+    return false;
+    if( dstContainer[ key ] === srcContainer[ key ] )
+    return false;
+    return true;
+  }
+
+}
+
+dstNotOwnNotSame.functionFamily = 'field-filter';
 
 //
 
@@ -1240,9 +1280,10 @@ let make =
   dstNotHasSrcOwnRoutines,
   dstNotHasAssigningRecursive,
 
-  // dstNotOwn
+  // dstOwn
 
   dstNotOwn,
+  dstNotOwnNotSame,
   dstNotOwnSrcOwn,
   dstNotOwnSrcOwnAssigning,
   dstNotOwnOrUndefinedAssigning,

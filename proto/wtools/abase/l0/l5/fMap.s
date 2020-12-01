@@ -982,6 +982,50 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   return dstMap;
 }
 
+// //
+//
+// function mapExtendSrcOwnNotSame( dstMap, srcMap )
+// {
+//   if( dstMap === null && arguments.length === 2 )
+//   return _.mapExtend( dstMap, srcMap );
+//   let args = _.longSlice( arguments );
+//   args.unshift( _.field.mapper.dstOwn );
+//   return _.mapExtendConditional.apply( this, args );
+// }
+//
+// //
+//
+// function mapsExtendSrcOwnNotSame( dstMap, srcMaps )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   if( dstMap === null )
+//   return _.mapExtend( null, srcMaps[ 0 ] );
+//   return _.mapsExtendConditional( _.field.mapper.dstOwn, dstMap, srcMaps );
+// }
+
+//
+
+// mapSupplementOwn -> mapExtendDstNotOwn
+function mapExtendDstNotOwn( dstMap, srcMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( dstMap, srcMap );
+  let args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwn );
+  return _.mapExtendConditional.apply( this, args );
+}
+
+//
+
+// mapsSupplementOwn -> mapsExtendDstNotOwn
+function mapsExtendDstNotOwn( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  if( dstMap === null )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapsExtendConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
+}
+
 //
 
 function mapExtendHiding( dstMap )
@@ -1131,7 +1175,6 @@ function mapSupplementNils( dstMap )
 function mapSupplementAssigning( dstMap )
 {
   let args = _.longSlice( arguments );
-  // args.unshift( _.field.mapper.dstNotOwnAssigning );
   args.unshift( _.field.mapper.dstNotHasAssigning );
   return _.mapExtendConditional.apply( this, args );
 }
@@ -1153,28 +1196,6 @@ function mapsSupplementAppending( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.dstNotHasAppending, dstMap, srcMaps );
-}
-
-//
-
-// function mapStretch( dstMap )
-function mapSupplementOwn( dstMap, srcMap )
-{
-  if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( dstMap, srcMap );
-  let args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.dstNotOwn );
-  return _.mapExtendConditional.apply( this, args );
-}
-
-//
-
-function mapsSupplementOwn( dstMap, srcMaps )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  if( dstMap === null )
-  return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapsExtendConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
 }
 
 //
@@ -1603,7 +1624,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  let filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
+  let filters = { onField : _.field.mapper.dstOwn, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
   return _.mapExtendRecursiveConditional.apply( _, args );
@@ -1615,7 +1636,7 @@ function mapsSupplementOwnRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  let filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
+  let filters = { onField : _.field.mapper.dstOwn, onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
@@ -4325,6 +4346,8 @@ let Extension =
   mapsExtend,
   mapExtendConditional,
   mapsExtendConditional,
+  // mapExtendOwn, /* qqq : cover */ 
+  // mapsExtendOwn, /* qqq : cover */
 
   mapExtendHiding,
   mapsExtendHiding,
@@ -4346,8 +4369,8 @@ let Extension =
   mapSupplementAppending,
   mapsSupplementAppending,
 
-  mapSupplementOwn,
-  mapsSupplementOwn,
+  mapExtendDstNotOwn, /* qqq : cover */
+  mapsExtendDstNotOwn, /* qqq : cover */
   mapSupplementOwnAssigning,
   mapSupplementOwnFromDefinition,
   mapSupplementOwnFromDefinitionStrictlyPrimitives,

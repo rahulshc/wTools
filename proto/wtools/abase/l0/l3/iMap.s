@@ -1027,7 +1027,7 @@ function mapOwnProperties( srcMap, o )
 
 mapOwnProperties.defaults =
 {
-  enumerable : 1,
+  enumerable : 1, /* xxx : rename? */
 }
 
 //
@@ -1312,7 +1312,7 @@ function mapFields( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapFields, o );
+  o = _.routineOptions( mapFields, o ); /* xxx : routineOptions should has no dependencies */
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )

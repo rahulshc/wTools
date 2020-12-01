@@ -405,6 +405,12 @@ function routineOptions( routine, args, defaults )
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
+/* qqq
+  inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
+  to make the routine available on low levels
+  error in fMaps.s cause problem with catching unchaugt error
+*/
+
   _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
   _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fields, but it does have` );
@@ -427,6 +433,11 @@ function assertRoutineOptions( routine, args, defaults )
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+
+/* qqq
+  inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
+  to make the routine available on low levels
+*/
 
   _.assertMapHasOnly( options, defaults );
   _.assertMapHasAll( options, defaults );
