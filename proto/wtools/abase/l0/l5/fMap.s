@@ -982,27 +982,6 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   return dstMap;
 }
 
-// //
-//
-// function mapExtendSrcOwnNotSame( dstMap, srcMap )
-// {
-//   if( dstMap === null && arguments.length === 2 )
-//   return _.mapExtend( dstMap, srcMap );
-//   let args = _.longSlice( arguments );
-//   args.unshift( _.field.mapper.dstOwn );
-//   return _.mapExtendConditional.apply( this, args );
-// }
-//
-// //
-//
-// function mapsExtendSrcOwnNotSame( dstMap, srcMaps )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   if( dstMap === null )
-//   return _.mapExtend( null, srcMaps[ 0 ] );
-//   return _.mapsExtendConditional( _.field.mapper.dstOwn, dstMap, srcMaps );
-// }
-
 //
 
 // mapSupplementOwn -> mapExtendDstNotOwn
@@ -1025,6 +1004,27 @@ function mapsExtendDstNotOwn( dstMap, srcMaps )
   return _.mapExtend( null, srcMaps[ 0 ] );
   return _.mapsExtendConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
 }
+
+// //
+//
+// function mapExtendSrcOwnNotSame( dstMap, srcMap )
+// {
+//   if( dstMap === null && arguments.length === 2 )
+//   return _.mapExtend( dstMap, srcMap );
+//   let args = _.longSlice( arguments );
+//   args.unshift( _.field.mapper.dstOwn );
+//   return _.mapExtendConditional.apply( this, args );
+// }
+//
+// //
+//
+// function mapsExtendSrcOwnNotSame( dstMap, srcMaps )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   if( dstMap === null )
+//   return _.mapExtend( null, srcMaps[ 0 ] );
+//   return _.mapsExtendConditional( _.field.mapper.dstOwn, dstMap, srcMaps );
+// }
 
 //
 
@@ -4346,8 +4346,10 @@ let Extension =
   mapsExtend,
   mapExtendConditional,
   mapsExtendConditional,
-  // mapExtendOwn, /* qqq : cover */ 
+  // mapExtendOwn, /* qqq : cover */
   // mapsExtendOwn, /* qqq : cover */
+  mapExtendDstNotOwn, /* qqq : cover */
+  mapsExtendDstNotOwn, /* qqq : cover */
 
   mapExtendHiding,
   mapsExtendHiding,
@@ -4369,8 +4371,6 @@ let Extension =
   mapSupplementAppending,
   mapsSupplementAppending,
 
-  mapExtendDstNotOwn, /* qqq : cover */
-  mapsExtendDstNotOwn, /* qqq : cover */
   mapSupplementOwnAssigning,
   mapSupplementOwnFromDefinition,
   mapSupplementOwnFromDefinitionStrictlyPrimitives,
