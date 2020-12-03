@@ -1090,7 +1090,7 @@ function routineUnite_body( o )
         _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
 
         result = tail.call( this, result, o );
-        /* aaa for Dmytro : not optimal!!! */ /* Dmytro : optimized */
+        /* aaa for Dmytro : not optimal */ /* Dmytro : optimized */
 
         return result;
       }

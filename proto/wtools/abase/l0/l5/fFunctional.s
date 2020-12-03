@@ -3632,7 +3632,7 @@ function _filter_functor( condition, levels )
  *   return v * v;
  * };
  *
- * _.entityMap( numbers, sqrt );
+ * _.map_( null, numbers, sqrt );
  * // returns [ 9, 16, 36 ]
  * // numbers is still [ 3, 4, 6 ]
  *
@@ -3651,7 +3651,7 @@ function _filter_functor( condition, levels )
  *   return v < sumOthers;
  * }
  *
- * _.entityMap( numbers, checkSidesOfTriangle );
+ * _.map_( null, numbers, checkSidesOfTriangle );
  * // returns [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
@@ -4647,13 +4647,13 @@ let Extension =
 
   _filter_functor,
 
-  entityMap,
-  map : entityMap,
-  entityMap_, /* !!! : use instead of entityMap */
+  // entityMap,
+  // map : entityMap,/* !!! : use instead of entityMap */
+  entityMap_,
   map_ : entityMap_,
-  entityFilter,
-  filter : entityFilter,
-  entityFilter_, /* !!! : use instead of entityFilter */
+  // entityFilter,
+  // filter : entityFilter, /* !!! : use instead of entityFilter */
+  entityFilter_,
   filter_ : entityFilter_,
   entityFirst,
   first : entityFirst,

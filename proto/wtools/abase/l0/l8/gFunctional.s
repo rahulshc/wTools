@@ -392,7 +392,7 @@ function eachSample( o )
   let sindex = 0;
   let breaking = 0;
 
-  o.sets = _.filter( o.sets, function( set, k )
+  o.sets = _.filter_( null, o.sets, function( set, k )
   {
     _.assert( _.longIs( set ) || _.primitiveIs( set ) );
 

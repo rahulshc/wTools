@@ -208,7 +208,7 @@ function longHasUniques( o )
 
   // if( o.onEvaluate )
   // {
-  //   o.src = _.entityMap( o.src, ( e ) => o.onEvaluate( e ) );
+  //   o.src = _.map_( null, o.src, ( e ) => o.onEvaluate( e ) );
   // }
 
   /* */

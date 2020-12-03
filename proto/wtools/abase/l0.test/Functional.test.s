@@ -15457,36 +15457,36 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
   test.open( 'src is arrayLike' );
 
   test.case = 'simple test with mapping array by sqr';
-  var got = _.entityMap( [ 3, 4, 5 ], ( v, i, ent ) => v * v );
+  var got = _.map_( null, [ 3, 4, 5 ], ( v, i, ent ) => v * v );
   test.identical( got,[ 9, 16, 25 ] );
 
   test.case = 'array';
   var src = [ 1, 2, null, 'str' ];
-  var got = _.entityMap( src, ( v, i, s ) => v + i );
+  var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 2, 'str3' ] );
 
   test.case = 'unroll';
   var src = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
-  var got = _.entityMap( src, ( v, i, s ) => v + i );
+  var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.true( _.arrayIs( got ) );
   test.false( _.unrollIs( got ) );
 
   test.case = 'argument array';
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
-  var got = _.entityMap( src, ( v, i, s ) => v + i );
+  var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'Array';
   var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityMap( src, ( v, i, s ) => v + i );
+  var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'F32x';
   var src = new F32x( [ 1, 2, [ 8 ], 3, 4 ] );
-  var got = _.entityMap( src, ( v, i, s ) => v + i );
+  var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.equivalent( got, [ 1, 3, 10, 6, 8 ] );
   test.true( _.longIs( got ) );
 
@@ -15497,12 +15497,12 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
   test.open( 'src is objectLike' );
 
   test.case = 'simple test with mapping object by sqr';
-  var got = _.entityMap( { '3' : 3, '4' : 4, '5' : 5 }, ( v, i, ent ) => v * v );
+  var got = _.map_( null, { '3' : 3, '4' : 4, '5' : 5 }, ( v, i, ent ) => v * v );
   test.identical( got,{ '3' : 9, '4' : 16, '5' : 25 } );
   test.true( _.mapIs( got ) );
 
   var src = { a : 1, b : 2, c : null, d : 'str' };
-  var got = _.entityMap( src, ( v, k, s ) => v + k );
+  var got = _.map_( null, src, ( v, k, s ) => v + k );
   test.identical( got, { a : '1a', b : '2b', c : 'nullc', d : 'strd' } );
   test.true( _.mapIs( got ) );
 
@@ -15514,7 +15514,7 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
     return v * v + i;
   };
   var externEnt = {};
-  var got = _.entityMap( Object.assign( {}, { 'a' : 1, 'b' : 3, 'c' : 4 } ), callback );
+  var got = _.map_( null, Object.assign( {}, { 'a' : 1, 'b' : 3, 'c' : 4 } ), callback );
   test.identical( externEnt, { 'a' : 1, 'b' : 3, 'c' : 4 } );
 
   test.case = 'mapping object by sqr : source object should be unmodified';
@@ -15527,16 +15527,16 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
   test.open( 'not longLike, not mapLike' );
 
   test.case = 'number';
-  var got = _.entityMap( 2, ( v, u, u2 ) => v + v );
+  var got = _.map_( null, 2, ( v, u, u2 ) => v + v );
   test.identical( got, 4 );
 
   test.case = 'string';
-  var got = _.entityMap( 'a', ( v, u, u2 ) => v + v );
+  var got = _.map_( null, 'a', ( v, u, u2 ) => v + v );
   test.identical( got, 'aa' );
 
   test.case = 'Set';
   var src = new Set([ 1, 2 ]);
-  var got = _.entityMap( src, ( v, u, u2 ) => v );
+  var got = _.map_( null, src, ( v, u, u2 ) => v );
   test.identical( got, src );
 
   test.case = 'object, onEach returns undefined';
@@ -15548,7 +15548,7 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
     return this;
   }
   var src = new constr();
-  var got = _.entityMap( src, ( e, i, ent ) => undefined );
+  var got = _.map_( null, src, ( e, i, ent ) => undefined );
   test.identical( got, src );
   test.true( got === src );
 
@@ -15560,13 +15560,13 @@ function entityMap( test ) /* Dmytro : if have a time, improve coverage for diff
   return;
 
   test.case = 'missed arguments';
-  test.shouldThrowErrorSync( () => _.entityMap() );
+  test.shouldThrowErrorSync( () => _.map_( null,) );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.entityMap( [ 1,3 ], callback1, callback2 ) );
+  test.shouldThrowErrorSync( () => _.map_( null, [ 1,3 ], callback1, callback2 ) );
 
   test.case = 'second argument is not routine';
-  test.shouldThrowErrorSync( () => _.entityMap( [ 1, 2 ], {} ) );
+  test.shouldThrowErrorSync( () => _.map_( null, [ 1, 2 ], {} ) );
 }
 
 //
@@ -15577,25 +15577,25 @@ function entityMapDifferentCallbacks( test )
 
   test.case = 'onEach returns element';
   var src = [ 3, -1, 2 ];
-  var got = _.entityMap( src, ( v, i, ent ) => v );
+  var got = _.map_( null, src, ( v, i, ent ) => v );
   test.identical( got, [ 3, -1, 2 ] );
   test.true( got !== src );
 
   test.case = 'onEach returns key';
   var src = [ 3, -1, 2 ];
-  var got = _.entityMap( src, ( v, i, ent ) => i );
+  var got = _.map_( null, src, ( v, i, ent ) => i );
   test.identical( got, [ 0, 1, 2 ] );
   test.true( got !== src );
 
   test.case = 'onEach checks entity';
   var src = [ 3, -1, 2 ];
-  var got = _.entityMap( src, ( v, i, ent ) => ent.length > 2 ? v : i );
+  var got = _.map_( null, src, ( v, i, ent ) => ent.length > 2 ? v : i );
   test.identical( got, [ 3, -1, 2 ] );
   test.true( got !== src );
 
   test.case = 'onEach returns undefined';
   var src = [ 3, -1, 2 ];
-  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  var got = _.map_( null, src, ( v, i, ent ) => undefined );
   test.identical( got, [ 3, -1, 2 ] );
   test.true( got !== src );
 
@@ -15607,25 +15607,25 @@ function entityMapDifferentCallbacks( test )
 
   test.case = 'onEach returns element';
   var src = { a : 1, b : 'a', c : -1 };
-  var got = _.entityMap( src, ( v, i, ent ) => v );
+  var got = _.map_( null, src, ( v, i, ent ) => v );
   test.identical( got, { a : 1, b : 'a', c : -1 } );
   test.true( got !== src );
 
   test.case = 'onEach returns key';
   var src = { a : 1, b : 'a', c : -1 };
-  var got = _.entityMap( src, ( v, i, ent ) => i );
+  var got = _.map_( null, src, ( v, i, ent ) => i );
   test.identical( got, { a : 'a', b : 'b', c : 'c' } );
   test.true( got !== src );
 
   test.case = 'onEach checks entity';
   var src = { a : 1, b : 'a', c : -1 };
-  var got = _.entityMap( src, ( v, i, ent ) => ent.a > 2 ? v : i );
+  var got = _.map_( null, src, ( v, i, ent ) => ent.a > 2 ? v : i );
   test.identical( got, { a : 'a', b : 'b', c : 'c' } );
   test.true( got !== src );
 
   test.case = 'onEach returns undefined';
   var src = { a : 1, b : 'a', c : -1 };
-  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  var got = _.map_( null, src, ( v, i, ent ) => undefined );
   test.identical( got, { a : 1, b : 'a', c : -1 } );
   test.true( got !== src );
 
@@ -15637,25 +15637,25 @@ function entityMapDifferentCallbacks( test )
 
   test.case = 'onEach returns element';
   var src = 'str';
-  var got = _.entityMap( src, ( v, i, ent ) => v + 1 );
+  var got = _.map_( null, src, ( v, i, ent ) => v + 1 );
   test.identical( got, 'str1' );
   test.true( got !== src );
 
   test.case = 'onEach returns key';
   var src = 'str';
-  var got = _.entityMap( src, ( v, i, ent ) => i );
+  var got = _.map_( null, src, ( v, i, ent ) => i );
   test.identical( got, 'str' );
   test.true( got === src );
 
   test.case = 'onEach checks entity';
   var src = 'str';
-  var got = _.entityMap( src, ( v, i, ent ) => ent === undefined ? v : i );
+  var got = _.map_( null, src, ( v, i, ent ) => ent === undefined ? v : i );
   test.identical( got, 'str' );
   test.true( got === src );
 
   test.case = 'onEach returns undefined';
   var src = 'str';
-  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  var got = _.map_( null, src, ( v, i, ent ) => undefined );
   test.identical( got, 'str' );
   test.true( got === src );
 
@@ -16628,24 +16628,24 @@ function entityFilter( test )
 
   test.case = 'number';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var got = _.entityFilter( 3, callback );
+  var got = _.filter_( null, 3, callback );
   test.identical( got, Math.sqrt( 3 ) );
 
   test.case = 'string';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var got = _.entityFilter( 'str', ( v ) => v + ' ' + v );
+  var got = _.filter_( null, 'str', ( v ) => v + ' ' + v );
   test.identical( got, 'str str' );
 
   test.case = 'array';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback );
+  var got = _.filter_( null, [ 9, -16, 25, 36, -49 ], callback );
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
   test.case = 'unroll';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var src = _.unrollMake( [ 9, _.unrollMake( [ -16, 25, _.unrollFrom( [ 36, -49 ] ) ] ) ] );
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
   test.false( _.unrollIs( got) );
@@ -16653,20 +16653,20 @@ function entityFilter( test )
   test.case = 'argumentsArray';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var src = _.argumentsArrayMake( [ 9, -16, 25, 36, -49 ] );
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, [ 3, 5, 6 ] );
 
   test.case = 'BufferTyped to Array';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var src = new F32x( [ 9, -16, 25, 36, -49 ] );
   var src = Array.from( src );
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
   test.case = 'mapLike';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var got = _.entityFilter( { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
+  var got = _.filter_( null, { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
   test.notIdentical( got, { '3' : 3, '4' : 4, '5' : 5, '6' : 6 } );
 
@@ -16674,7 +16674,7 @@ function entityFilter( test )
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var testFn1 = function()
   {
-    return _.entityFilter( arguments, callback );
+    return _.filter_( null, arguments, callback );
   }
   var got = testFn1( 9, -16, 25, 36, -49 );
   test.identical( got, [ 3, 5, 6 ] );
@@ -16682,7 +16682,7 @@ function entityFilter( test )
   test.case = 'src is array, filter makes unrolls';
   var onEach = ( e, i, s ) => _.unrollMake( [ e ] );
   var src = [ 1, [ 2, 3 ], [ 'str', null, undefined ] ];
-  var got = _.entityFilter( src, onEach );
+  var got = _.filter_( null, src, onEach );
   test.identical( got, [ 1, [ 2, 3 ], [ 'str', null, undefined ] ] );
   test.false( _.unrollIs( got ) );
   test.true( _.arrayIs( got ) );
@@ -16690,7 +16690,7 @@ function entityFilter( test )
   test.case = 'src is array, filter check equality';
   var onEach = ( e, i, s ) => e === i;
   var src = [ 0, 2, 2, [ 'str', null ], undefined ];
-  var got = _.entityFilter( src, onEach );
+  var got = _.filter_( null, src, onEach );
   test.identical( got, [ true, false, true, false, false ] );
   test.notIdentical( got, [ true, false, true, false, false, false ] );
   test.true( _.arrayIs( got ) );
@@ -16701,19 +16701,19 @@ function entityFilter( test )
 
   test.case = 'onEach is objectLike - condition, one entry';
   var callback = { '3' : 9 };
-  var got = _.entityFilter( { a : { '3' : 9 }, b : { '3' : 4 } }, callback );
+  var got = _.filter_( null, { a : { '3' : 9 }, b : { '3' : 4 } }, callback );
   test.identical( got, { a : { '3' : 9 } } );
 
   test.case = 'onEach is objectLike - condition, a few entry';
   var callback = { '3' : 9 };
   var src = { a : { '3' : 9 }, b : { '3' : 4 }, c : { '3' : 9 }, d : { '3' : 9 } };
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, { a : { '3' : 9 }, c : { '3' : 9 }, d : { '3' : 9 } } );
 
   test.case = 'onEach is objectLike - condition, entry nested to next level';
   var callback = { '3' : 9 };
   var src = { a : { b : { '3' : 9 } } };
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, {} );
   test.notIdentical( got, { a : { b : { '3' : 9 } } } );
 
@@ -16721,7 +16721,7 @@ function entityFilter( test )
   var onEach = ( e ) => true;
   var callback = { '3' : onEach };
   var src = { a : { '3' : 9 } };
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, {} );
   test.notIdentical( got, { a : { '3' : 9 } } );
 
@@ -16729,7 +16729,7 @@ function entityFilter( test )
   var onEach = ( e ) => true;
   var callback = { '3' : onEach };
   var src = { a : { '3' : onEach } };
-  var got = _.entityFilter( src, callback );
+  var got = _.filter_( null, src, callback );
   test.identical( got, { a : { '3' : onEach } } );
   test.notIdentical( got, {} );
 
@@ -16739,13 +16739,13 @@ function entityFilter( test )
   return;
 
   test.case = 'missed arguments';
-  test.shouldThrowErrorSync( () => _.entityFilter() );
+  test.shouldThrowErrorSync( () => _.filter_( null,) );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], () => true, 1 ) );
+  test.shouldThrowErrorSync( () => _.filter_( null, [ 1,3 ], () => true, 1 ) );
 
   test.case = 'onEach is not routine';
-  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], 'callback' ) );
+  test.shouldThrowErrorSync( () => _.filter_( null, [ 1,3 ], 'callback' ) );
 }
 
 //
@@ -25556,14 +25556,14 @@ value for dst             dst                dst                    first +     
 
     _filter_functor,
 
-    entityMap,
-    entityMapDifferentCallbacks,
+    // entityMap, /* qqq2 for Dmytro : rewrite please */
+    // entityMapDifferentCallbacks, /* qqq2 for Dmytro : rewrite please */
 
     entityMapWithoutDst_,
     entityMapDstNull_,
     entityMapDstNotNull_,
 
-    entityFilter,
+    // entityFilter,  /* qqq2 for Dmytro : rewrite please */
 
     entityFilterWithoutDst_,
     entityFilterDstNull_,

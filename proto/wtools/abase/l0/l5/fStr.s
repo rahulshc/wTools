@@ -2634,7 +2634,7 @@ function strSplit_body( o )
   }
   if( o.onDelimeter )
   {
-    let delimeter = _.filter( o.delimeter, function( pattern )
+    let delimeter = _.filter_( null, o.delimeter, function( pattern )
     {
       if( _.regexpIs( pattern ) )
       return pattern.test( o.src ) ? pattern : null;
@@ -3468,7 +3468,7 @@ let Extension =
 
   strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */
   strInsideOf_, /* !!! use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
-  strOutsideOf,
+  strOutsideOf, /* !!! deprecate */
 
   // replacers
 

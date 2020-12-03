@@ -513,7 +513,7 @@ let Extension =
 
   entityEntityEqualize,
 
-  entityAssign, /* refactor!!! */
+  entityAssign, /* xxx : refactor */
   entityAssignFieldFromContainer, /* dubious */
   entityAssignField, /* dubious */
 
