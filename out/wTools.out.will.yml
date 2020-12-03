@@ -271,6 +271,7 @@ module:
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
           - ../proto/wtools/abase/l0.test/Array.test.s
+          - ../proto/wtools/abase/l0.test/ArraySet.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
