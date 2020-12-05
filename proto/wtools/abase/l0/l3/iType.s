@@ -504,13 +504,24 @@ function traitIs( trait )
 
 //
 
-function blueprintIs( blueprint )
+function blueprintIsDefinitive( blueprint )
 {
   if( !blueprint )
   return false;
-  if( !_.blueprint.is )
+  if( !_.blueprint.isDefinitive )
   return false;
-  return _.blueprint.is( blueprint );
+  return _.blueprint.isDefinitive( blueprint );
+}
+
+//
+
+function blueprintIsRuntime( blueprint )
+{
+  if( !blueprint )
+  return false;
+  if( !_.blueprint.isRuntime )
+  return false;
+  return _.blueprint.isRuntime( blueprint );
 }
 
 // --
@@ -573,7 +584,8 @@ let Routines =
   procedureIs,
   definitionIs,
   traitIs,
-  blueprintIs,
+  blueprintIsDefinitive,
+  blueprintIsRuntime,
 
 }
 

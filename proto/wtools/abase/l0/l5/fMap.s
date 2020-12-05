@@ -1218,6 +1218,7 @@ function mapSupplementOwnFromDefinition( dstMap, srcMap )
 
 //
 
+/* xxx : move out */
 function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
 {
   let args = _.longSlice( arguments );

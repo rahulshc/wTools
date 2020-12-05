@@ -1143,6 +1143,63 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
 
 //
 
+function routineEr( routine, erhead )
+{
+  if( routine.er )
+  return routine.er;
+  routine.er = _.routineErFor( ... arguments );
+  return routine;
+}
+
+//
+
+function routineErFor( routine, erhead )
+{
+
+  erhead = erhead || routine.erhead || routine.head;
+  let head = routine.head;
+  let body = routine.body || routine.body;
+  let defaults = routine.defaults || routine.defaults;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.routineIs( erhead ) );
+  _.assert( _.routineIs( head ) );
+  _.assert( _.routineIs( body ) );
+  _.assert( _.objectIs( defaults ) );
+
+  return er_functor;
+
+  /* xxx qqq : cover */
+  function er_functor()
+  {
+    let self = this;
+    let op = erhead.call( self, routine, arguments );
+
+    _.assert( _.mapIs( op ) );
+    _.assertMapHasOnly( op, defaults );
+
+    er.defaults = _.mapSupplement( op, defaults );
+
+    return er;
+
+    function er()
+    {
+      let result;
+      let op2 = head.call( self, er, arguments );
+      if( _.unrollIs( op2 ) )
+      result = body.apply( self, op2 );
+      else if( _.mapIs( op2 ) )
+      result = body.call( self, op2 );
+      return result;
+    }
+
+  }
+
+}
+
+//
+
 function vectorize_head( routine, args )
 {
   let o = args[ 0 ];
@@ -2205,6 +2262,8 @@ let Routines =
   routineExtend : routineExtend_,
   routineDefaults,
   routineUnite,
+  routineEr,
+  routineErFor,
 
   routineVectorize_functor : vectorize,
   vectorize,
