@@ -268,19 +268,19 @@ function prototypeIs( src )
   return Object.hasOwnProperty.call( src, 'constructor' );
 }
 
+// //
 //
-
-function prototypeIsStandard( src )
-{
-
-  if( !_.prototypeIs( src ) )
-  return false;
-
-  if( !Object.hasOwnProperty.call( src, 'Composes' ) )
-  return false;
-
-  return true;
-}
+// function prototypeIsStandard( src )
+// {
+//
+//   if( !_.workpiece.prototypeIs( src ) )
+//   return false;
+//
+//   if( !Object.hasOwnProperty.call( src, 'Composes' ) )
+//   return false;
+//
+//   return true;
+// }
 
 //
 
@@ -316,9 +316,6 @@ function instanceIs( src )
   if( Object.hasOwnProperty.call( src, 'constructor' ) )
   return false;
 
-  // if( Object.hasOwnProperty.call( src, 'prototype' ) && src.prototype )
-  // return false;
-
   let prototype = Object.getPrototypeOf( src );
 
   if( prototype === null || prototype === undefined )
@@ -332,15 +329,6 @@ function instanceIs( src )
   return false;
 
   return Object.hasOwnProperty.call( prototype, 'constructor' );
-
-  // return _.prototypeIs( prototype );
-//
-//   if( prototype === Object.prototype )
-//   return false;
-//   if( prototype === null )
-//   return false;
-//
-//   return true;
 }
 
 //
@@ -569,7 +557,7 @@ let Routines =
   isPrototypeOf,
   prototypeHas,
   prototypeIs,
-  prototypeIsStandard,
+  // prototypeIsStandard,
   constructorIs,
   instanceIs,
   instanceLike,

@@ -58,14 +58,14 @@ function objectLike( src )
   return false;
 }
 
+// //
 //
-
-function objectLikeOrRoutine( src )
-{
-  if( _.routineIs( src ) )
-  return true;
-  return _.objectLike( src );
-}
+// function objectLikeOrRoutine( src )
+// {
+//   if( _.routineIs( src ) )
+//   return true;
+//   return _.objectLike( src );
+// }
 
 //
 
@@ -1860,7 +1860,7 @@ let Routines =
 
   objectIs,
   objectLike,
-  objectLikeOrRoutine,
+  // objectLikeOrRoutine,
 
   mapIs,
   mapIsEmpty,

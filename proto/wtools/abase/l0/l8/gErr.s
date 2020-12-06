@@ -841,7 +841,7 @@ function isInstanceOrClass( _constructor, _this )
 
 function ownNoConstructor( ins )
 {
-  _.assert( _.objectLikeOrRoutine( ins ) );
+  _.assert( !_.primitiveIs( ins ) );
   _.assert( arguments.length === 1 );
   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
   return result;
@@ -859,8 +859,7 @@ function sureInstanceOrClass( _constructor, _this )
 
 function sureOwnNoConstructor( ins )
 {
-  _.sure( _.objectLikeOrRoutine( ins ) );
-  // let args = _.longSlice( arguments );
+  _.sure( !_.primitiveIs( ins ) );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.ownNoConstructor( ins );
   _.sure.apply( _, args );
@@ -878,8 +877,7 @@ function assertInstanceOrClass( _constructor, _this )
 
 function assertOwnNoConstructor( ins )
 {
-  _.assert( _.objectLikeOrRoutine( ins ) );
-  // let args = _.longSlice( arguments );
+  _.assert( !_.primitiveIs( ins ) );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.ownNoConstructor( ins );
 

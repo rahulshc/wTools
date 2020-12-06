@@ -1976,7 +1976,6 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   let result;
   if( Config.debug )
   {
-    debugger;
     result = arrayPrependedOnce.apply( this, arguments );
     _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
   }
