@@ -948,7 +948,7 @@ function strBegins( src, begin )
 function strEnds( src, end )
 {
 
-  _.assert( _.strIs( src ), 'Expects string {-src-}' );
+  _.assert( _.strIs( src ), () => `Expects argument::src of type::string, but got ${_.strType( src )}` );
   _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ), 'Expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -956,7 +956,6 @@ function strEnds( src, end )
   {
     let result = _._strEndOf( src, end );
     return !( result === undefined );
-    // return result === undefined ? false : true;
   }
 
   for( let b = 0, blen = end.length ; b < blen; b++ )
