@@ -54,7 +54,6 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Intervalc.s' );
   require( './l0/l5/Intervall.s' );
   require( './l0/l5/Intervalo.s' );
-  require( './l0/l5/IntervalOld.s' );
   require( './l0/l5/Introspector.s' );
   require( './l0/l5/Long.s' );
   require( './l0/l5/Map.s' );
