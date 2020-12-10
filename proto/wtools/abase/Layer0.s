@@ -17,8 +17,12 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Ct.s' );
   require( './l0/l3/Entity.s' );
   require( './l0/l3/Err.s' );
+  require( './l0/l3/Event.s' );
   require( './l0/l3/Functional.s' );
   require( './l0/l3/Interval.s' );
+  require( './l0/l3/Intervalc.s' );
+  require( './l0/l3/Intervall.s' );
+  require( './l0/l3/Intervalo.s' );
   require( './l0/l3/Introspector.s' );
   require( './l0/l3/Long.s' );
   require( './l0/l3/Map.s' );
@@ -27,9 +31,11 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Process.s' );
   require( './l0/l3/Path.s' );
   require( './l0/l3/Property.s' );
+  require( './l0/l3/PropertyTransformer.s' );
   require( './l0/l3/Regexp.s' );
   require( './l0/l3/Routine.s' );
   require( './l0/l3/Set.s' );
+  require( './l0/l3/Sorted.s' );
   require( './l0/l3/Str.s' );
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
@@ -64,6 +70,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Set.s' );
   require( './l0/l5/Str.s' );
   require( './l0/l5/Time.s' );
+  require( './l0/l5/Type.s' );
   require( './l0/l5/Unroll.s' );
 
   require( './l0/l6/ContainerAdapter.s' );

@@ -456,7 +456,9 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.cinterval === undefined );
+// _.assert( _.cinterval === undefined );
+_.assert( _.cinterval !== undefined );
+_.mapSupplement( Self, _.cinterval );
 _.cinterval = Self;
 
 // --

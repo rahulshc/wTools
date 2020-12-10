@@ -352,7 +352,9 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.ointerval === undefined );
+// _.assert( _.ointerval === undefined );
+_.assert( _.ointerval !== undefined );
+_.mapSupplement( Self, _.ointerval );
 _.ointerval = Self;
 
 // --
