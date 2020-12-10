@@ -352,7 +352,9 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.linterval === undefined ); /* aaa2 for Dmytro : rename in documentation */ /* Dmytro : renamed */
+// _.assert( _.linterval === undefined ); /* aaa2 for Dmytro : rename in documentation */ /* Dmytro : renamed */
+_.assert( _.linterval !== undefined );
+_.mapSupplement( Self, _.linterval );
 _.linterval = Self;
 
 // --
