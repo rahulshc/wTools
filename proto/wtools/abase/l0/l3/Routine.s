@@ -208,7 +208,7 @@ function _routineJoin( o )
         return __joinedArguments[ name ];
       }
     }
-    else if( context === undefined && args === undefined ) // zzz
+    else if( context === undefined && args === undefined ) /* zzz */
     {
       return routine;
     }
