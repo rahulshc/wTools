@@ -3014,6 +3014,46 @@ function routineErFor( test )
   var got = gotRoutine();
   test.identical( got, { arg : 'arg2' } );
 
+  /* */
+
+  test.case = 'routine - without field erhead, erhead - routine, head return not a Map, not an Unroll';
+  var head = () => 'head';
+  var routine = _.routineUnite( head, test_body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+
+  var gotFunctor = _.routineErFor( routine, erhead );
+  test.true( _.routineIs( gotFunctor ) );
+  test.identical( gotFunctor.defaults, undefined );
+
+  var gotRoutine = gotFunctor();
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg' } );
+
+  var got = gotRoutine();
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'routine - without field erhead, erhead - routine, body expects Unroll';
+  var head = ( r, a ) => { return _.unrollMake( a ) };
+  var body = ( o ) => o;
+  body.defaults = { arg : null };
+  var routine = _.routineUnite( head, body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+
+  var gotFunctor = _.routineErFor( routine, erhead );
+  test.true( _.routineIs( gotFunctor ) );
+  test.identical( gotFunctor.defaults, undefined );
+
+  var gotRoutine = gotFunctor();
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg' } );
+
+  var got = gotRoutine({ arg2 : 'arg2' });
+  test.identical( got, { arg2 : 'arg2' } );
+
   /* - */
 
   if( !Config.debug )

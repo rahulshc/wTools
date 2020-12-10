@@ -1144,7 +1144,7 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
 function routineEr( routine, erhead )
 {
   if( routine.er )
-  return routine.er;
+  return routine.er; /* Dmytro : maybe before return should be assert like : _.assert( _.routineIs( routine.er ) ) */
   routine.er = _.routineErFor( ... arguments );
   return routine;
 }
@@ -1173,7 +1173,7 @@ function routineErFor( routine, erhead )
 
   return er_functor;
 
-  /* xxx qqq : cover */
+  /* xxx aaa : cover */ /* Dmytro : covered */
   function er_functor()
   {
     let self = this;
@@ -1186,7 +1186,7 @@ function routineErFor( routine, erhead )
 
     return er;
 
-    function er()
+    function er() /* Dmytro : using of routineUnite can extend behavior of routine _.routineUnite({ head, body, head, name : 'er' }) */
     {
       let result;
       let op2 = head.call( self, er, arguments );
