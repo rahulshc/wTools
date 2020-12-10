@@ -17562,7 +17562,7 @@ let Self =
     // array manipulator
 
     longSwapElements,
-    // longPut, /* Dmytro : has not link in l8/gLong.s */
+    // longPut, /* Dmytro : has not link in l8/Long.s */
     // longFillTimes,
     longFill,
 
@@ -17577,8 +17577,8 @@ let Self =
     longFromRangeWithStepDefaultLongDescriptor,
     longFromRangeWithStepNotDefaultLongDescriptor,
 
-    // longToMap, // Dmytro : routine longToMap commented in gLong.s
-    // longToStr, // Dmytro : routine longToStr commented in gLong.s
+    // longToMap, // Dmytro : routine longToMap commented in Long.s
+    // longToStr, // Dmytro : routine longToStr commented in Long.s
 
     // long checker
 

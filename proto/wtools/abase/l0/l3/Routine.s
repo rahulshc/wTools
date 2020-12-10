@@ -408,7 +408,7 @@ function routineOptions( routine, args, defaults )
 /* qqq
   inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
   to make the routine available on low levels
-  error in fMaps.s cause problem with catching unchaugt error
+  error in Map.s cause problem with catching unchaugt error
 */
 
   _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );

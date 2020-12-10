@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/iInterval.s
+// range l0/l3/Interval.s
 //--
 
 function is( test )
