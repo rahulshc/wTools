@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l3/iBool.s
+// l0/l3/Bool.s
 //--
 
 function boolIs( test )
@@ -555,7 +555,7 @@ function fuzzyLikeTrue( test )
 }
 
 //--
-// l0/l8/gBool.s
+// l0/l8/Bool.s
 //--
 
 function boolFrom( test )
@@ -822,7 +822,7 @@ let Self =
   tests :
   {
 
-    // l0/l3/iBool.s
+    // l0/l3/Bool.s
 
     boolIs,
     boolLike,
@@ -834,7 +834,7 @@ let Self =
     fuzzyLikeFalse,
     fuzzyLikeTrue,
 
-    // l0/l8/gBool.s
+    // l0/l8/Bool.s
 
     boolFrom,
     boolFromMaybe,

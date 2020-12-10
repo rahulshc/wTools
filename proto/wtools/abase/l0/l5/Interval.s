@@ -11,7 +11,7 @@
 // // --
 //
 // /* aaa : use _.pair as example to make the same thing */
-// /* Dmytro : new namespace and class is created. As _.pair, this module has Proxy. Routines from l3/iRange.s connected too */
+// /* Dmytro : new namespace and class is created. As _.pair, this module has Proxy. Routines from l3/Range.s connected too */
 //
 // function fromLeft( range )
 // {

@@ -11275,7 +11275,7 @@ let Self =
   tests :
   {
 
-    // map checker l0/l3/iMap.s
+    // map checker l0/l3/Map.s
 
     mapIs,
 

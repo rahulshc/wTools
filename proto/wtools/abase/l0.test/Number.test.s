@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l3/iNumber.s
+// l0/l3/Number.s
 //--
 
 function numberIs( test )
@@ -1331,7 +1331,7 @@ function numbersAreInt( test )
 
 
 //--
-// l0/l5/fNumber.s
+// l0/l5/Number.s
 //--
 
 function bigIntFrom( test )
@@ -1398,7 +1398,7 @@ function bigIntFrom( test )
 }
 
 //--
-// l0/l8/gNumber.s
+// l0/l8/Number.s
 //--
 
 function numbersTotal( test )
@@ -2736,7 +2736,7 @@ let Self =
   tests :
   {
 
-    // l0/l3/iNumber.s
+    // l0/l3/Number.s
 
     numberIs,
     numberIsNotNan,
@@ -2752,10 +2752,10 @@ let Self =
     numbersArePositive,
     numbersAreInt,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
     bigIntFrom,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
 
     numbersTotal,
     numberFrom,
