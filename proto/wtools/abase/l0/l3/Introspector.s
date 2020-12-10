@@ -559,7 +559,7 @@ function locationToStack( o )
   return `at (${o.filePathLineCol})`;
 
   /*
-    at Object.locationToStack (http://127.0.0.1:5000//builder/include/wtools/abase/l0/l3/iIntrospector.s:723:10)
+    at Object.locationToStack (http://127.0.0.1:5000//builder/include/wtools/abase/l0/l3/Introspector.s:723:10)
   */
 }
 

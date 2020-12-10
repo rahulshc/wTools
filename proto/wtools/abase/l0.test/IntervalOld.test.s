@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/iRange.s
+// range l0/l3/Range.s
 //--
 
 function intervalIs( test )
@@ -2794,7 +2794,7 @@ let Self =
   tests :
   {
 
-    // range l0/l3/iRange.s
+    // range l0/l3/Range.s
 
     intervalIs,
     // intervalIsEmpty,
@@ -2808,7 +2808,7 @@ let Self =
     // sureInInterval,
     // assertInRange,
 
-    // // range, l0/l5/fRange.s
+    // // range, l0/l5/Range.s
     //
     // rangeFromLeft,
     // rangeFromRight, /* qqq : fix */

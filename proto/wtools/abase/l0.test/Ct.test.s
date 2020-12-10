@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l8/gCt.s
+// l0/l8/Ct.s
 //--
 
 function strip( test )
@@ -168,7 +168,7 @@ let Self =
   tests :
   {
 
-    // l0/l8/gCt.s
+    // l0/l8/Ct.s
 
     strip,
 

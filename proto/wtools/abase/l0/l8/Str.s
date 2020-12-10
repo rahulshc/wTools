@@ -667,7 +667,8 @@ function strIsolateInsideSignle( src, begin, end )
       let end = pairs[ b.instanceIndex ][ 1 ];
 
       // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
-      e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) );
+      // e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) ); /* Dmytro : if cinterval is a Number, it is defined first index, not last */
+      e = _.strRight_( src, end, Math.min( b.index, src.length ) );
 
       if( e.entry === undefined )
       l = b.index+1;
@@ -692,7 +693,8 @@ function strIsolateInsideSignle( src, begin, end )
     return notFound();
 
     // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
-    e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) );
+    // e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) ); /* Dmytro : if cinterval is a Number, it is defined first index, not last */
+    e = _.strRight_( src, end, Math.min( b.index, src.length ) );
 
     if( e.entry === undefined )
     return notFound();

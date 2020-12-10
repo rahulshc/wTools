@@ -1079,11 +1079,11 @@ function _err( o )
 
     _.strIsolateLeftOrAll is not a function
     TypeError: _.strIsolateLeftOrAll is not a function
-        at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/iErr.s:1062:27)
-        at Object.strConcat (/wtools/abase/l0/l3/iStr.s:723:13)
-        at originalMessageForm (/wtools/abase/l0/l3/iErr.s:1034:19)
-        at Object._err (/wtools/abase/l0/l3/iErr.s:577:5)
-        at Object.err (/wtools/abase/l0/l3/iErr.s:1192:12)
+        at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/Err.s:1062:27)
+        at Object.strConcat (/wtools/abase/l0/l3/Str.s:723:13)
+        at originalMessageForm (/wtools/abase/l0/l3/Err.s:1034:19)
+        at Object._err (/wtools/abase/l0/l3/Err.s:577:5)
+        at Object.err (/wtools/abase/l0/l3/Err.s:1192:12)
         at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
         at Module.require (internal/modules/cjs/loader.js:830:19)
         at require (internal/modules/cjs/helpers.js:68:18)
