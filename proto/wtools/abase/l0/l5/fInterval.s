@@ -1,4 +1,4 @@
-// ( function _fInterval_s_()
+// ( function _l5_Interval_s_()
 // {
 //
 // 'use strict';
@@ -313,5 +313,5 @@
 // // --
 //
 // if( typeof module !== 'undefined' )
-// module[ 'exports' ] = Self;
+// module[ 'exports' ] = _;
 // })();

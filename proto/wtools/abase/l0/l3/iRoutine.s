@@ -1,4 +1,4 @@
-( function _iRoutine_s_()
+( function _l3_Routine_s_()
 {
 
 'use strict';
@@ -673,132 +673,132 @@ routinesCompose.head = _routinesCompose_head;
 routinesCompose.body = _routinesCompose_body;
 routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose.body.defaults );
 
+// //
 //
-
-/**
- * The routineExtend_old() is used to copy the values of all properties
- * from source routine to a target routine.
- *
- * It takes first routine (dst), and shallow clone each destination property of type map.
- * Then it checks properties of source routine (src) and extends dst by source properties.
- * The dst properties can be owerwriten by values of source routine
- * if descriptor (writable) of dst property is set.
- *
- * If the first routine (dst) is null then
- * routine routineExtend_old() makes a routine from routines head and body
- * @see {@link wTools.routineUnite} - Automatic routine generating
- * from preparation routine and main routine (body).
- *
- * @param{ routine } dst - The target routine or null.
- * @param{ * } src - The source routine or object to copy.
- *
- * @example
- * var src =
- * {
- *   head : _.routinesCompose.head,
- *   body : _.routinesCompose.body,
- *   someOption : 1,
- * }
- * var got = _.routineExtend_old( null, src );
- * // returns [ routine routinesCompose ], got.option === 1
- *
- * @example
- * _.routineExtend_old( null, _.routinesCompose );
- * // returns [ routine routinesCompose ]
- *
- * @example
- * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
- * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
- *
- * @example
- * _.routinesComposes.someOption = 22;
- * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
- * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
- *
- * @returns { routine } It will return the target routine with extended properties.
- * @function routineExtend_old
- * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
- * @throws { Error } Throw an error if dst is not routine or not null.
- * @throws { Error } Throw an error if dst is null and src has not head and body properties.
- * @throws { Error } Throw an error if src is primitive value.
- * @namespace Tools
- */
-
-function routineExtend_old( dst, src )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
-
-  /* generate dst routine */
-
-  if( dst === null )
-  {
-
-    let dstMap = Object.create( null );
-    for( let a = 0 ; a < arguments.length ; a++ )
-    {
-      let src = arguments[ a ];
-      if( src === null )
-      continue;
-      _.mapExtend( dstMap, src )
-    }
-
-    if( dstMap.head && dstMap.body )
-    {
-      dst = _.routineUnite( dstMap.head, dstMap.body );
-    }
-    else
-    {
-      _.assert( _.routineIs( src ) );
-      dst = function(){ return src.apply( this, arguments ); }
-    }
-    // _.assert( 0, 'Not clear how to construct the routine' );
-    // dst = dstMap;
-
-  }
-
-  /* shallow clone properties of dst routine */
-
-  for( let s in dst )
-  {
-    let property = dst[ s ];
-    if( _.mapIs( property ) )
-    {
-      property = _.mapExtend( null, property );
-      dst[ s ] = property;
-    }
-  }
-
-  /* extend dst routine */
-
-  for( let a = 0 ; a < arguments.length ; a++ )
-  {
-    let src = arguments[ a ];
-    if( src === null )
-    continue;
-    _.assert( _.mapLike( src ) || _.routineIs( src ) );
-    for( let s in src )
-    {
-      let property = src[ s ];
-      let d = Object.getOwnPropertyDescriptor( dst, s );
-      if( d && !d.writable )
-      continue;
-      if( _.objectIs( property ) )
-      {
-        _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
-        property = Object.create( property );
-        // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
-        if( dst[ s ] )
-        _.mapSupplement( property, dst[ s ] );
-      }
-      dst[ s ] = property;
-    }
-  }
-
-  return dst;
-}
+// /**
+//  * The routineExtend_old() is used to copy the values of all properties
+//  * from source routine to a target routine.
+//  *
+//  * It takes first routine (dst), and shallow clone each destination property of type map.
+//  * Then it checks properties of source routine (src) and extends dst by source properties.
+//  * The dst properties can be owerwriten by values of source routine
+//  * if descriptor (writable) of dst property is set.
+//  *
+//  * If the first routine (dst) is null then
+//  * routine routineExtend_old() makes a routine from routines head and body
+//  * @see {@link wTools.routineUnite} - Automatic routine generating
+//  * from preparation routine and main routine (body).
+//  *
+//  * @param{ routine } dst - The target routine or null.
+//  * @param{ * } src - The source routine or object to copy.
+//  *
+//  * @example
+//  * var src =
+//  * {
+//  *   head : _.routinesCompose.head,
+//  *   body : _.routinesCompose.body,
+//  *   someOption : 1,
+//  * }
+//  * var got = _.routineExtend_old( null, src );
+//  * // returns [ routine routinesCompose ], got.option === 1
+//  *
+//  * @example
+//  * _.routineExtend_old( null, _.routinesCompose );
+//  * // returns [ routine routinesCompose ]
+//  *
+//  * @example
+//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
+//  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
+//  *
+//  * @example
+//  * _.routinesComposes.someOption = 22;
+//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
+//  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
+//  *
+//  * @returns { routine } It will return the target routine with extended properties.
+//  * @function routineExtend_old
+//  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
+//  * @throws { Error } Throw an error if dst is not routine or not null.
+//  * @throws { Error } Throw an error if dst is null and src has not head and body properties.
+//  * @throws { Error } Throw an error if src is primitive value.
+//  * @namespace Tools
+//  */
+//
+// function routineExtend_old( dst, src )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+//   _.assert( _.routineIs( dst ) || dst === null );
+//   _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+//
+//   /* generate dst routine */
+//
+//   if( dst === null )
+//   {
+//
+//     let dstMap = Object.create( null );
+//     for( let a = 0 ; a < arguments.length ; a++ )
+//     {
+//       let src = arguments[ a ];
+//       if( src === null )
+//       continue;
+//       _.mapExtend( dstMap, src )
+//     }
+//
+//     if( dstMap.head && dstMap.body )
+//     {
+//       dst = _.routineUnite( dstMap.head, dstMap.body );
+//     }
+//     else
+//     {
+//       _.assert( _.routineIs( src ) );
+//       dst = function(){ return src.apply( this, arguments ); }
+//     }
+//     // _.assert( 0, 'Not clear how to construct the routine' );
+//     // dst = dstMap;
+//
+//   }
+//
+//   /* shallow clone properties of dst routine */
+//
+//   for( let s in dst )
+//   {
+//     let property = dst[ s ];
+//     if( _.mapIs( property ) )
+//     {
+//       property = _.mapExtend( null, property );
+//       dst[ s ] = property;
+//     }
+//   }
+//
+//   /* extend dst routine */
+//
+//   for( let a = 0 ; a < arguments.length ; a++ )
+//   {
+//     let src = arguments[ a ];
+//     if( src === null )
+//     continue;
+//     _.assert( _.mapLike( src ) || _.routineIs( src ) );
+//     for( let s in src )
+//     {
+//       let property = src[ s ];
+//       let d = Object.getOwnPropertyDescriptor( dst, s );
+//       if( d && !d.writable )
+//       continue;
+//       if( _.objectIs( property ) )
+//       {
+//         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+//         property = Object.create( property );
+//         // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
+//         if( dst[ s ] )
+//         _.mapSupplement( property, dst[ s ] );
+//       }
+//       dst[ s ] = property;
+//     }
+//   }
+//
+//   return dst;
+// }
 
 //
 
@@ -956,8 +956,6 @@ function routineUnite_head( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  // _.assert( args[ 0 ] !== undefined );
-  // _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
   _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
@@ -1233,7 +1231,7 @@ function vectorize_body( o )
   o.routine = o.routine[ 0 ];
 
   let routine = o.routine;
-  let fieldFilter = o.fieldFilter;
+  let propertyFilter = o.propertyFilter;
   let bypassingFilteredOut = o.bypassingFilteredOut;
   let bypassingEmpty = o.bypassingEmpty;
   let vectorizingArray = o.vectorizingArray;
@@ -1259,7 +1257,7 @@ function vectorize_body( o )
 
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )
     resultRoutine = routine;
-    else if( fieldFilter )
+    else if( propertyFilter )
     resultRoutine = vectorizeWithFilters;
     else if( vectorizingMapKeys )
     {
@@ -1292,7 +1290,7 @@ function vectorize_body( o )
       head = routine.head;
       routine = routine.body;
     }
-    if( fieldFilter )
+    if( propertyFilter )
     {
       _.assert( 0, 'not implemented' );
     }
@@ -1465,14 +1463,14 @@ function vectorize_body( o )
       // let args2 = [ ... args ]; // Dmytro : if args[ 1 ] and next elements is not primitive, then vectorized routine can affects on this elements and array args
       // // let result = [];
       // let result;
-      // result = _.longMakeEmpty( src ); /* xxx qqq : use this code */
+      // result = _.longMakeEmpty( src ); /* qqq : use this code */
       // // if( _.argumentsArrayIs( src ) )
       // // result = [];
       // // else
       // // result = new src.constructor();
       // let append = _.long_.appender( result );
       // let each = _.long_.eacher( src );
-      // // for( let r = 0 ; r < src.length ; r++ ) /* xxx : replace other */
+      // // for( let r = 0 ; r < src.length ; r++ )
       // // let r = 0;
       // each( ( e ) =>
       // {
@@ -1567,7 +1565,7 @@ function vectorize_body( o )
       {
         // args2[ 0 ] = e;
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get */
+        args2[ m ] = args[ m ][ r ]; /* zzz qqq : use _.long_.get */
         append( routine.apply( this, args2 ) );
       });
       return result;
@@ -1706,7 +1704,7 @@ function vectorize_body( o )
       {
 
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get? */
+        args2[ m ] = args[ m ][ r ]; /* qqq zzz : use _.long_.get? */
 
         // args2[ 0 ] = e;
         append( routine.apply( this, args2 ) );
@@ -1797,7 +1795,7 @@ function vectorize_body( o )
       let each = _.long_.eacher( src );
       each( ( e, r ) =>
       {
-        if( fieldFilter( e, r, src ) )
+        if( propertyFilter( e, r, src ) )
         {
           args[ 0 ] = e;
           append( routine.apply( this, args ) );
@@ -1814,7 +1812,7 @@ function vectorize_body( o )
 
       // for( let r = 0 ; r < src.length ; r++ )
       // {
-      //   if( fieldFilter( src[ r ], r, src ) )
+      //   if( propertyFilter( src[ r ], r, src ) )
       //   {
       //     args[ 0 ] = src[ r ];
       //     result.push( routine.apply( this, args ) );
@@ -1833,7 +1831,7 @@ function vectorize_body( o )
       throw _.err( 'not tested' ); /* qqq : cover please */
       for( let r in src )
       {
-        if( fieldFilter( src[ r ], r, src ) )
+        if( propertyFilter( src[ r ], r, src ) )
         {
           args[ 0 ] = src[ r ];
           result[ r ] = routine.apply( this, args );
@@ -1920,7 +1918,7 @@ function vectorize_body( o )
       each( ( e, r ) =>
       {
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get */
+        args2[ m ] = args[ m ][ r ]; /* qqq zzz : use _.long_.get */
         append( routine.apply( this, args2 ) );
       });
       return result;
@@ -1950,7 +1948,7 @@ function vectorize_body( o )
 vectorize_body.defaults =
 {
   routine : null,
-  fieldFilter : null,
+  propertyFilter : null,
   bypassingFilteredOut : 1,
   bypassingEmpty : 0,
   vectorizingArray : 1,
@@ -2223,18 +2221,10 @@ function vectorizeAccess( vector )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
 
   routineIs,
@@ -2257,7 +2247,7 @@ let Routines =
   routineOptionsFromThis,
 
   routinesCompose,
-  routineExtend_old, /* xxx : deprecate */
+  // routineExtend_old, /* xxx : deprecate */
   routineExtend_,
   routineExtend : routineExtend_,
   routineDefaults,
@@ -2277,14 +2267,13 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 // --
 // export
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

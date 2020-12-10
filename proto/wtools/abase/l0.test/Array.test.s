@@ -6043,7 +6043,7 @@ function arrayPrepend( test )
   test.identical( got, [ [ 1, 0, -1 ], 'Choose an option' ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6144,7 +6144,7 @@ function arrayPrependOnce( test )
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6231,7 +6231,7 @@ function arrayPrependOnceStrictly( test )
   test.identical( got, [ 4, { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6340,7 +6340,7 @@ function arrayPrepended( test )
   test.identical( dst, [ [ 1, 0, -1 ], 'Choose an option' ] );
   test.identical( got, 0 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6523,7 +6523,7 @@ function arrayPrependedOnceStrictly( test )
   test.identical( dst, [ 4, { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.identical( got, 0 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6717,7 +6717,7 @@ function arrayPrependElementOnce( test )
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -6808,7 +6808,7 @@ function arrayPrependElementOnceStrictly( test )
   test.identical( got, [ 4, { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -7080,7 +7080,7 @@ function arrayPrependedElementOnceStrictly( test )
   test.identical( dst, [ 4, { num : 1 }, { num : 2 }, { num : 3 } ] );
   test.identical( got, 4 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -8938,7 +8938,7 @@ function arrayAppendOnce( test )
   var got = _.arrayAppendOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -9018,7 +9018,7 @@ function arrayAppendOnceStrictly( test )
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 }, 4 ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -9461,7 +9461,7 @@ function arrayAppendElementOnce( test )
   var got = _.arrayAppendElementOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -9541,7 +9541,7 @@ function arrayAppendElementOnceStrictly( test )
   test.identical( got, [ { num : 1 }, { num : 2 }, { num : 3 }, 4 ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -10749,7 +10749,7 @@ function arrayAppendArrays( test )
   // test.case = 'dstArray is undefined, src is scalar';
   // var got = _.arrayAppendArrays( undefined, 1 );
   // test.identical( got, 1 );
-  //
+  /* */
   // test.case = 'dstArray is undefined, src = array';
   // let src = [ 1 ];
   // var got = _.arrayAppendArrays( undefined, src );
@@ -11857,7 +11857,7 @@ function arrayRemoveOnce( test )
   var got = _.arrayRemoveOnce( dst, 1, onEqualize, onEqualize2 );
   test.identical( got, [ { num : 2 }, { num : 1 }, { num : 3 } ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -11910,7 +11910,7 @@ function arrayRemoveOnceStrictly( test )
   test.identical( got, [ { num : 1 }, { num : 2 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -12520,7 +12520,7 @@ function arrayRemoveElementOnce( test )
   var got = _.arrayRemoveElementOnce( dst, 1, onEqualize, onEqualize2 );
   test.identical( got, [ { num : 2 }, { num : 1 }, { num : 3 } ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -12629,7 +12629,7 @@ function arrayRemoveElementOnceStrictly( test )
   test.identical( got, [ { num : 1 }, { num : 2 } ] );
   test.true( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -13523,7 +13523,7 @@ function arrayRemovedElementOnceStrictly( test )
   test.identical( dst, [ { num : 2 }, { num : 3 } ] );
   test.identical( got, { num : 1 } );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -13945,7 +13945,7 @@ function arrayRemoveArrayOnce( test )
   var got = _.arrayRemoveArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
   test.identical( got, [ 1, 1, 2, 2, 3, 3 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -14054,7 +14054,7 @@ function arrayRemoveArrayOnceStrictly( test )
   }
   test.identical( dst, [ 1, 1, 2, 2, 3, 3 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -14380,7 +14380,7 @@ function arrayRemovedArrayOnceStrictly( test )
   }
   test.identical( dst, [ 1, 1, 2, 2, 3, 3 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -15472,7 +15472,7 @@ function arrayRemoveDuplicates( test )
   test.identical( dst, expected );
   test.identical( got, expected );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -25940,7 +25940,7 @@ function arrayReplacedArraysOnceStrictly( test )
 //   var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
 //   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
 //
-//   //
+//   /* */
 //
 //   if( !Config.debug )
 //   return;
@@ -26043,7 +26043,7 @@ function arrayReplacedArraysOnceStrictly( test )
 //   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
 //   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
 //
-//   //
+//   /* */
 //
 //   if( !Config.debug )
 //   return;
@@ -26179,7 +26179,7 @@ function arrayReplacedArraysOnceStrictly( test )
 //   test.identical( dst, [ [ 0 ], [ 0 ], [ 0 ] ] );
 //   test.identical( got, 3 );
 //
-//   //
+//   /* */
 //
 //   if( !Config.debug )
 //   return;

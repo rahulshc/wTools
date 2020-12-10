@@ -1390,7 +1390,7 @@ function entityEach( test )
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
-  //
+  /* */
 
   test.case = 'not empty arrayLike objects';
 
@@ -1424,7 +1424,7 @@ function entityEach( test )
   test.identical( got, [ 0, 2, 6 ] );
   test.true( _.longIs( src ) );
 
-  //
+  /* */
 
   test.case = 'routine counter';
 
@@ -1529,7 +1529,7 @@ function entityEach( test )
   _.entityEach( { a : 1, b : 3, c : 5 }, ( v, k ) => got[ k ] = v * v + k );
   test.identical( got, { a : '1a', b : '9b', c : '25c' } );
 
-  //
+  /* */
 
   test.case = 'routine counter';
 
@@ -1553,7 +1553,7 @@ function entityEach( test )
   _.entityEach( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach );
   test.identical( got, 29 );
 
-  //
+  /* */
 
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
@@ -1595,7 +1595,7 @@ function entityEach( test )
   _.entityEach( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
   test.identical( got, 'function undefined' );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1652,7 +1652,7 @@ function entityEach( test )
 //   _.entityEachKey( src, ( v, i ) => got[ i ] = v + i );
 //   test.identical( got, [] );
 //
-//   //
+//   /* */
 //
 //   test.case = 'not empty arrayLike objects';
 //
@@ -1686,7 +1686,7 @@ function entityEach( test )
 //   test.identical( got, [ 0, 1, 4 ] );
 //   test.true( _.longIs( src ) );
 //
-//   //
+//   /* */
 //
 //   test.case = 'routine counter';
 //
@@ -1788,7 +1788,7 @@ function entityEach( test )
 //   _.entityEachKey( { a : 1, b : 3, c : 5 }, ( k, v ) => got[ k ] = v * v + k );
 //   test.identical( got, { a : '1a', b : '9b', c : '25c' } );
 //
-//   //
+//   /* */
 //
 //   test.case = 'routine counter';
 //   var onEach = function( k, v )
@@ -1815,7 +1815,7 @@ function entityEach( test )
 //   _.entityEachKey( { a : [ 'a', 'b' ], b : { e : 1 } }, onEach );
 //   test.identical( got, -2 );
 //
-//   //
+//   /* */
 //
 //   test.case = 'Third argument in onEach'
 //   var onEach = function( v, k, i )
@@ -1907,7 +1907,7 @@ function entityEachOwn( test )
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
-  //
+  /* */
 
   test.case = 'not empty arrayLike objects';
 
@@ -1941,7 +1941,7 @@ function entityEachOwn( test )
   test.identical( got, [ 0, 2, 6 ] );
   test.true( _.longIs( src ) );
 
-  //
+  /* */
 
   test.case = 'routine counter';
 
@@ -25489,7 +25489,7 @@ let Self =
 
     scalarToVector,
 
-    //
+    /* */
 
     entityTimeExperiment,
 
@@ -25552,7 +25552,7 @@ value for dst             dst                dst                    first +     
     entityAny,
     entityNone,
 
-    //
+    /* */
 
     _filter_functor,
 
@@ -25571,7 +25571,7 @@ value for dst             dst                dst                    first +     
 
     entityFilterDeep,
 
-    //
+    /* */
 
     first,
     last,
@@ -25592,7 +25592,7 @@ value for dst             dst                dst                    first +     
     // indexInplace,
     // indexInplaceSupplementing,
 
-    //
+    /* */
 
     _entityMost,
     entityMin,

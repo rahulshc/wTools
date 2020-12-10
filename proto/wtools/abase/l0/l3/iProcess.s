@@ -1,4 +1,4 @@
-( function _iProcess_s_()
+( function _l3_Process_s_()
 {
 
 'use strict';
@@ -189,6 +189,6 @@ Object.assign( _.process, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

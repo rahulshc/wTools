@@ -1,4 +1,4 @@
-( function _fSet_s_()
+( function _l5_Set_s_()
 {
 
 'use strict';
@@ -1280,6 +1280,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _gTime_s_()
+( function _l8_Time_s_()
 {
 
 'use strict';
@@ -30,61 +30,6 @@ function rarely_functor( perTime, routine )
   }
 
 }
-
-// //
-//
-// function periodic( delay, onReady )
-// {
-//   _.assert( _.routineIs( _.Consequence ) );
-//
-//   let con = new _.Consequence();
-//   let id;
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.numberIs( delay ) );
-//
-//   let _onReady = null;
-//
-//   if( _.routineIs( onReady ) )
-//   _onReady = function()
-//   {
-//     let result = onReady.call();
-//     if( result === false )
-//     clearInterval( id );
-//     _.Consequence.take( con, undefined );
-//     con.finally( handlePeriodicCon );
-//   }
-//   else if( onReady instanceof wConsquence )
-//   _onReady = function()
-//   {
-//     let result = onReady.ping();
-//     if( result === false )
-//     clearInterval( id );
-//     _.Consequence.take( con, undefined );
-//     con.finally( handlePeriodicCon );
-//   }
-//   else if( onReady === undefined )
-//   _onReady = function()
-//   {
-//     _.Consequence.take( con, undefined );
-//     con.finally( handlePeriodicCon );
-//   }
-//   else throw _.err( 'unexpected type of onReady' );
-//
-//   id = setInterval( _onReady, delay );
-//
-//   return con;
-//
-//   function handlePeriodicCon( err )
-//   {
-//     if( arg === _.dont )
-//     clearInterval( id );
-//     // if( err )
-//     // clearInterval( id );
-//     /* zzz */
-//   }
-//
-// }
 
 //
 
@@ -235,16 +180,7 @@ let Fields =
 let Routines =
 {
 
-  // ready, /* Dmytro : moved to gProcess.s */
-  // readyJoin, /* Dmytro : moved to module Consequence */
-
-  // out,
-  // outError,
-  //
-  // _errTimeOut,
-
   rarely_functor, /* check */
-  // periodic, /* dubious */
   once, /* qqq : cover by light test */
 
   debounce

@@ -7446,7 +7446,7 @@ function ointervalLastGet( test )
 let Self =
 {
 
-  name : 'Tools.Range',
+  name : 'Tools.Interval',
   silencing : 1,
   enabled : 1,
 

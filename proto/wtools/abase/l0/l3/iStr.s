@@ -1,4 +1,4 @@
-( function _iString_s_()
+( function _l3_Str_s_()
 {
 
 'use strict';
@@ -1269,6 +1269,6 @@ Object.assign( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

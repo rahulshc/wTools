@@ -197,7 +197,8 @@ function strCount( src, ins )
   let i = 0;
   do
   {
-    let found = _.strLeft( src, ins, [ i, src.length ] );
+    // let found = _.strLeft( src, ins, [ i, src.length ] );
+    let found = _.strLeft_( src, ins, [ i, src.length-1 ] );
     if( found.entry === undefined )
     break;
     i = found.index + found.entry.length;
@@ -2168,7 +2169,7 @@ function strJoinPath( srcs, joiner )
   _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
   _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strType( joiner ) );
 
-  /* xxx */
+  /* xxx : investigate */
 
   for( let a = 0 ; a < srcs.length ; a++ )
   {

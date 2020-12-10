@@ -1,4 +1,4 @@
-( function _fArray_s_()
+( function _l5_Array_s_()
 {
 
 'use strict';
@@ -659,7 +659,7 @@ function arrayBut( src, range, ins )
   _.assert( _.intervalIs( range ) );
   _.assert( ins === undefined || _.longLike( ins ) );
 
-  _.rangeClamp( range, [ 0, src.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -757,7 +757,7 @@ function arrayButInplace( src, range, ins )
   _.assert( ins === undefined || _.longLike( ins ) );
 
   // Dmytro : missed
-  _.rangeClamp( range, [ 0, src.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
   //
@@ -944,7 +944,7 @@ function arrayShrink( src, range, ins )
   _.assert( _.arrayIs( src ) );
   _.assert( _.intervalIs( range ) );
 
-  _.rangeClamp( range, [ 0, src.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -1038,7 +1038,7 @@ function arrayShrinkInplace( src, range, ins )
   _.assert( _.arrayIs( src ) );
   _.assert( _.intervalIs( range ) );
 
-  _.rangeClamp( range, [ 0, src.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -6868,6 +6868,6 @@ _.mapSupplement( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

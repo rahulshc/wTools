@@ -1,4 +1,4 @@
-( function _fModule_s_()
+( function _l5_Module_s_()
 {
 
 'use strict';
@@ -29,6 +29,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

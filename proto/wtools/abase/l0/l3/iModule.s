@@ -1,4 +1,4 @@
-( function _iModule_s_()
+( function _l3_Module_s_()
 {
 
 'use strict';
@@ -29,6 +29,6 @@ Object.assign( _.module, ModuleExtension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

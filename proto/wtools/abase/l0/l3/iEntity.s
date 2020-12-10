@@ -1,4 +1,4 @@
-( function _iEntity_s_()
+( function _l3_Entity_s_()
 {
 
 'use strict';
@@ -189,6 +189,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _fTime_s_()
+( function _l5_Time_s_()
 {
 
 'use strict';

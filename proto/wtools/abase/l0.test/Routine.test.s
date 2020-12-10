@@ -1515,430 +1515,430 @@ function routinesChain( test )
 
 }
 
+// //
 //
-
-function routineExtend_old( test )
-{
-
-  test.open( 'dst is null, src has head and body properties');
-
-  test.case = 'dst is null, src is routine maked by routineUnite';
-  var got = _.routineExtend_old( null, _.routineUnite );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
-  test.identical( typeof got, 'function' );
-
-  var got = _.routineExtend_old( null, _.routinesCompose );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
-  test.identical( typeof got, 'function' );
-
-  function f1(){}
-  f1.map1 = {};
-  f1.map1.a = 1;
-  f1.map2 = Object.create( {} );
-  f1.map2.a = 2;
-  f1.str = 'str';
-  f1.number = 13;
-  f1.routine = function r(){};
-
-  var got = _.routineExtend_old( null, f1 );
-  test.equivalent( got.map1, f1.map1 );
-  test.equivalent( got.map2, f1.map2 );
-  test.equivalent( got.str, f1.str );
-  test.equivalent( got.number, f1.number );
-  test.equivalent( got.routine, f1.routine );
-
-  test.case = 'second arg has not head and body properties';
-  var got = _.routineExtend_old( null, _.unrollIs );
-  test.true( _.routineIs( got ) );
-  test.true( got( _.unrollFrom( [] ) ) );
-
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
-    map : { a : 2 },
-  }
-  var got = _.routineExtend_old( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
-  test.equivalent( got.map, { a : 2 } );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
-    map : { a : 2 },
-  };
-  var got = _.routineExtend_old( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
-  test.equivalent( got.map, { a : 2 } );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
-    a : [ 1 ],
-    b : 'str',
-    c : { str : 'str' }
-  }
-  var got = _.routineExtend_old( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
-  test.identical( got.a, [ 1 ] );
-  test.identical( got.b, 'str' );
-  test.identical( got.c, Object.create( { str : 'str' } ) );
-  test.identical( typeof got, 'function' );
-
-  test.close( 'dst is null, src has head and body properties');
-
-  /* - */
-
-  test.open( 'single dst');
-
-  test.case = 'single dst';
-  var dst = ( o ) =>
-  {
-  }
-  var got = _.routineExtend_old( dst );
-  test.identical( got, dst );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'single dst is routine, has properties';
-  var dst = ( o ) =>
-  {
-  };
-  dst.a = 0;
-  dst.b = 3;
-  dst.c = 'c';
-  var got = _.routineExtend_old( dst );
-  test.identical( got, dst );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 0 );
-  test.identical( got.b, 3 );
-  test.identical( got.c, 'c' );
-
-  test.case = 'single dst is routine, has hiden properties';
-  var dst = ( o ) =>
-  {
-  };
-  var props =
-  {
-    'a' :
-    {
-      value : 0,
-      enumerable : true,
-      writable : false,
-    },
-    'b' :
-    {
-      value : { a : 2 },
-      enumerable : false,
-      writable : false,
-    }
-  };
-  Object.defineProperties( dst, props );
-  var got = _.routineExtend_old( dst );
-  test.identical( got, dst );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 0 );
-  test.identical( got.b, { a : 2 } );
-  var got = Object.getOwnPropertyDescriptor( got, 'b' );
-  test.false( got.enumerable );
-
-  test.close( 'single dst');
-
-  test.case = 'dst has properties, src map has different properties';
-  var dst = ( o ) =>
-  {
-  };
-  dst.a = 0;
-  dst.b = 0;
-  var got = _.routineExtend_old( dst, { c : 1, d : 1, e : { s : 1 } } );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 0 );
-  test.identical( got.b, 0 );
-  test.identical( got.c, 1 );
-  test.identical( got.e, Object.create( { s : 1 } ) );
-
-  test.case = 'dst has properties, src map has the same properties';
-  var dst = ( o ) =>
-  {
-  };
-  dst.a = 0;
-  dst.b = 0;
-  var got = _.routineExtend_old( dst, { a : 1, b : 1 } );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 1 );
-
-  /* */
-
-  test.case = 'dst has non-writable properties';
-  var dst = ( o ) =>
-  {
-  };
-  var props =
-  {
-    'a' :
-    {
-      enumerable : true,
-      writable : false,
-      value : 0,
-    },
-    'b' :
-    {
-      enumerable : true,
-      writable : false,
-      value : 0,
-    }
-  };
-  Object.defineProperties( dst, props );
-  var got = _.routineExtend_old( dst, { a : 3, b : 2 } );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 0 );
-  test.identical( got.b, 0 );
-
-  test.case = 'src has non-writable properties';
-  var dst = ( o ) =>
-  {
-  };
-  dst.a = 0;
-  dst.b = 0;
-  var src = {};
-  var props =
-  {
-    'a' :
-    {
-      enumerable : true,
-      writable : false,
-      value : 3,
-    },
-    'b' :
-    {
-      enumerable : true,
-      writable : false,
-      value : 2,
-    }
-  };
-  Object.defineProperties( src, props );
-  var got = _.routineExtend_old( dst, src );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 3 );
-  test.identical( got.b, 2 );
-
-  test.case = 'src is an array';
-  test.shouldThrowErrorSync( () =>
-  {
-    var dst = ( o ) =>
-    {
-    };
-    var got = _.routineExtend_old( dst, [ 'a', 1 ] );
-    test.identical( typeof got, 'function' );
-    test.identical( got[ 0 ], 'a' );
-    test.identical( got[ 1 ], 1 );
-  });
-
-  test.open( 'few extends');
-
-  test.case = 'null extends other routine, null extends result';
-  var src = _.routineExtend_old( null, _.routinesCompose );
-  var got = _.routineExtend_old( null, src );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'src extends routine, result extends map ';
-  var src1 =
-  {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
-    a : 'str',
-    b : { b : 3 },
-  };
-  var src = _.routineExtend_old( null, _.routinesCompose );
-  var got = _.routineExtend_old( src, src1 );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
-  test.identical( got.b, Object.create( { b : 3 } ) );
-  test.true( got.a === 'str' );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst extends map, dst extends other map';
-  var dst = () =>
-  {
-  };
-  var src1 =
-  {
-    head : _.routinesCompose.head,
-    body : _.routinesCompose.body,
-    a : [ 'str' ],
-    c : { d : 2 },
-  };
-  var src = _.routineExtend_old( dst, { c : {}, b : 'str' } );
-  var got = _.routineExtend_old( dst, src1 );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
-  test.identical( got.a, [ 'str' ] );
-  test.identical( got.b, 'str' );
-  test.identical( got.c, Object.create( { d : 2 } ) );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst has map property, dst extends other map';
-  var dst = () =>
-  {
-  };
-  dst.map = { a : 'str' };
-  var src1 =
-  {
-    head : _.routinesCompose.head,
-    body : _.routinesCompose.body,
-    a : [ 'str' ],
-    map : { d : 2 },
-  };
-  var src = _.routineExtend_old( dst, { c : {} } );
-  var got = _.routineExtend_old( dst, src1 );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
-  test.identical( got.a, [ 'str' ] );
-  var expectedMap = Object.create( { d : 2 } );
-  expectedMap.a = 'str';
-  test.identical( got.map, expectedMap );
-  test.equivalent( got.c, {} );
-  test.identical
-  (
-    _.mapBut( _.mapAllProperties( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.mapAllProperties( {} ), [ '__proto__' ] )
-  );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst extends routine1, src extends routine, dst extends src';
-  var dst = () =>
-  {
-  };
-  var src = () =>
-  {
-  };
-  var routine = () =>
-  {
-  };
-  routine.a = 0;
-  routine.b = [ 'str' ];
-  var routine1 = () =>
-  {
-  };
-  routine1.a = 2;
-  routine1.c = 'str';
-  var src1 = _.routineExtend_old( src, routine );
-  var src2 = _.routineExtend_old( dst, routine1 );
-  var got = _.routineExtend_old( src2, src1 )
-  test.identical( got.a, 0 );
-  test.identical( got.b, [ 'str' ] );
-  test.identical( got.c, 'str' );
-  test.identical( dst.a, got.a );
-  test.identical( dst.b, got.b );
-  test.identical( dst.c, got.c );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'dst extends map, src extends map, dst extends src';
-  var dst = () =>
-  {
-  };
-  var src = () =>
-  {
-  };
-  var src1 = _.routineExtend_old( src, { o1 : 1, o2 : 'str' } );
-  var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map' } );
-  var got = _.routineExtend_old( src2, src1 )
-  test.identical( got.o1, 1 );
-  test.identical( got.o2, 'str' );
-  test.identical( got.o3, 'o3' );
-  test.identical( dst.a, got.a );
-  test.identical( dst.b, got.b );
-  test.identical( dst.c, got.c );
-  test.identical( typeof got, 'function' );
-
-  test.case = 'extend by map';
-  var dst = () =>
-  {
-  };
-  Object.defineProperties( dst, {
-    'b' : {
-      value : { a : 2 },
-      enumerable : true,
-      writable : true,
-    }
-  });
-  var got = _.routineExtend_old( dst );
-  test.equivalent( got.b, { a : 2 } );
-
-  test.case = 'extend by map';
-  var dst = ( o ) =>
-  {
-  };
-  dst.b = { map : 2 };
-  var got = _.routineExtend_old( dst, { b : { map : 3 } } );
-  test.equivalent( got.b, { map : 3 } );
-
-  test.close( 'few extends');
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old();
-  });
-
-  test.case = 'three arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( null, { a : 1 }, { b : 2 });
-  });
-
-  test.case = 'single dst is null';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( null );
-  });
-
-  // test.case = 'second arg has not head and body properties';
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.routineExtend_old( null, _.unrollIs );
-  // });
-
-  test.case = 'second arg is primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( _.unrollIs, 'str' );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( _.unrollIs, 1 );
-  });
-
-  test.case = 'dst is not routine or null';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( 1, { a : 1 } );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineExtend_old( 'str', { a : 1 } );
-  });
-
-}
+// function routineExtend_old( test )
+// {
+//
+//   test.open( 'dst is null, src has head and body properties');
+//
+//   test.case = 'dst is null, src is routine maked by routineUnite';
+//   var got = _.routineExtend_old( null, _.routineUnite );
+//   test.identical( got.head, _.routineUnite.head );
+//   test.identical( got.body, _.routineUnite.body );
+//   test.identical( typeof got, 'function' );
+//
+//   var got = _.routineExtend_old( null, _.routinesCompose );
+//   test.identical( got.head, _.routinesCompose.head );п
+//   test.identical( got.body, _.routinesCompose.body );
+//   test.identical( typeof got, 'function' );
+//
+//   function f1(){}
+//   f1.map1 = {};
+//   f1.map1.a = 1;
+//   f1.map2 = Object.create( {} );
+//   f1.map2.a = 2;
+//   f1.str = 'str';
+//   f1.number = 13;
+//   f1.routine = function r(){};
+//
+//   var got = _.routineExtend_old( null, f1 );
+//   test.equivalent( got.map1, f1.map1 );
+//   test.equivalent( got.map2, f1.map2 );
+//   test.equivalent( got.str, f1.str );
+//   test.equivalent( got.number, f1.number );
+//   test.equivalent( got.routine, f1.routine );
+//
+//   test.case = 'second arg has not head and body properties';
+//   var got = _.routineExtend_old( null, _.unrollIs );
+//   test.true( _.routineIs( got ) );
+//   test.true( got( _.unrollFrom( [] ) ) );
+//
+//   test.case = 'dst is null, src is map with head and body properties';
+//   var src =
+//   {
+//     head : _.routineUnite.head,
+//     body : _.routineUnite.body,
+//     map : { a : 2 },
+//   }
+//   var got = _.routineExtend_old( null, src );
+//   test.identical( got.head, _.routineUnite.head );
+//   test.identical( got.body, _.routineUnite.body );
+//   test.equivalent( got.map, { a : 2 } );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst is null, src is map with head and body properties';
+//   var src =
+//   {
+//     head : _.routineUnite.head,
+//     body : _.routineUnite.body,
+//     map : { a : 2 },
+//   };
+//   var got = _.routineExtend_old( null, src );
+//   test.identical( got.head, _.routineUnite.head );
+//   test.identical( got.body, _.routineUnite.body );
+//   test.equivalent( got.map, { a : 2 } );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst is null, src is map with head and body properties';
+//   var src =
+//   {
+//     head : _.routineUnite.head,
+//     body : _.routineUnite.body,
+//     a : [ 1 ],
+//     b : 'str',
+//     c : { str : 'str' }
+//   }
+//   var got = _.routineExtend_old( null, src );
+//   test.identical( got.head, _.routineUnite.head );
+//   test.identical( got.body, _.routineUnite.body );
+//   test.identical( got.a, [ 1 ] );
+//   test.identical( got.b, 'str' );
+//   test.identical( got.c, Object.create( { str : 'str' } ) );
+//   test.identical( typeof got, 'function' );
+//
+//   test.close( 'dst is null, src has head and body properties');
+//
+//   /* - */
+//
+//   test.open( 'single dst');
+//
+//   test.case = 'single dst';
+//   var dst = ( o ) =>
+//   {
+//   }
+//   var got = _.routineExtend_old( dst );
+//   test.identical( got, dst );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'single dst is routine, has properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   dst.a = 0;
+//   dst.b = 3;
+//   dst.c = 'c';
+//   var got = _.routineExtend_old( dst );
+//   test.identical( got, dst );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 0 );
+//   test.identical( got.b, 3 );
+//   test.identical( got.c, 'c' );
+//
+//   test.case = 'single dst is routine, has hiden properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   var props =
+//   {
+//     'a' :
+//     {
+//       value : 0,
+//       enumerable : true,
+//       writable : false,
+//     },
+//     'b' :
+//     {
+//       value : { a : 2 },
+//       enumerable : false,
+//       writable : false,
+//     }
+//   };
+//   Object.defineProperties( dst, props );
+//   var got = _.routineExtend_old( dst );
+//   test.identical( got, dst );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 0 );
+//   test.identical( got.b, { a : 2 } );
+//   var got = Object.getOwnPropertyDescriptor( got, 'b' );
+//   test.false( got.enumerable );
+//
+//   test.close( 'single dst');
+//
+//   test.case = 'dst has properties, src map has different properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   dst.a = 0;
+//   dst.b = 0;
+//   var got = _.routineExtend_old( dst, { c : 1, d : 1, e : { s : 1 } } );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 0 );
+//   test.identical( got.b, 0 );
+//   test.identical( got.c, 1 );
+//   test.identical( got.e, Object.create( { s : 1 } ) );
+//
+//   test.case = 'dst has properties, src map has the same properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   dst.a = 0;
+//   dst.b = 0;
+//   var got = _.routineExtend_old( dst, { a : 1, b : 1 } );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 1 );
+//   test.identical( got.b, 1 );
+//
+//   /* */
+//
+//   test.case = 'dst has non-writable properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   var props =
+//   {
+//     'a' :
+//     {
+//       enumerable : true,
+//       writable : false,
+//       value : 0,
+//     },
+//     'b' :
+//     {
+//       enumerable : true,
+//       writable : false,
+//       value : 0,
+//     }
+//   };
+//   Object.defineProperties( dst, props );
+//   var got = _.routineExtend_old( dst, { a : 3, b : 2 } );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 0 );
+//   test.identical( got.b, 0 );
+//
+//   test.case = 'src has non-writable properties';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   dst.a = 0;
+//   dst.b = 0;
+//   var src = {};
+//   var props =
+//   {
+//     'a' :
+//     {
+//       enumerable : true,
+//       writable : false,
+//       value : 3,
+//     },
+//     'b' :
+//     {
+//       enumerable : true,
+//       writable : false,
+//       value : 2,
+//     }
+//   };
+//   Object.defineProperties( src, props );
+//   var got = _.routineExtend_old( dst, src );
+//   test.identical( typeof got, 'function' );
+//   test.identical( got.a, 3 );
+//   test.identical( got.b, 2 );
+//
+//   test.case = 'src is an array';
+//   test.shouldThrowErrorSync( () =>
+//   {
+//     var dst = ( o ) =>
+//     {
+//     };
+//     var got = _.routineExtend_old( dst, [ 'a', 1 ] );
+//     test.identical( typeof got, 'function' );
+//     test.identical( got[ 0 ], 'a' );
+//     test.identical( got[ 1 ], 1 );
+//   });
+//
+//   test.open( 'few extends');
+//
+//   test.case = 'null extends other routine, null extends result';
+//   var src = _.routineExtend_old( null, _.routinesCompose );
+//   var got = _.routineExtend_old( null, src );
+//   test.identical( got.head, _.routinesCompose.head );
+//   test.identical( got.body, _.routinesCompose.body );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'src extends routine, result extends map ';
+//   var src1 =
+//   {
+//     head : _.routineUnite.head,
+//     body : _.routineUnite.body,
+//     a : 'str',
+//     b : { b : 3 },
+//   };
+//   var src = _.routineExtend_old( null, _.routinesCompose );
+//   var got = _.routineExtend_old( src, src1 );
+//   test.identical( got.head, _.routineUnite.head );
+//   test.identical( got.body, _.routineUnite.body );
+//   test.identical( got.b, Object.create( { b : 3 } ) );
+//   test.true( got.a === 'str' );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst extends map, dst extends other map';
+//   var dst = () =>
+//   {
+//   };
+//   var src1 =
+//   {
+//     head : _.routinesCompose.head,
+//     body : _.routinesCompose.body,
+//     a : [ 'str' ],
+//     c : { d : 2 },
+//   };
+//   var src = _.routineExtend_old( dst, { c : {}, b : 'str' } );
+//   var got = _.routineExtend_old( dst, src1 );
+//   test.identical( got.head, _.routinesCompose.head );
+//   test.identical( got.body, _.routinesCompose.body );
+//   test.identical( got.a, [ 'str' ] );
+//   test.identical( got.b, 'str' );
+//   test.identical( got.c, Object.create( { d : 2 } ) );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst has map property, dst extends other map';
+//   var dst = () =>
+//   {
+//   };
+//   dst.map = { a : 'str' };
+//   var src1 =
+//   {
+//     head : _.routinesCompose.head,
+//     body : _.routinesCompose.body,
+//     a : [ 'str' ],
+//     map : { d : 2 },
+//   };
+//   var src = _.routineExtend_old( dst, { c : {} } );
+//   var got = _.routineExtend_old( dst, src1 );
+//   test.identical( got.head, _.routinesCompose.head );
+//   test.identical( got.body, _.routinesCompose.body );
+//   test.identical( got.a, [ 'str' ] );
+//   var expectedMap = Object.create( { d : 2 } );
+//   expectedMap.a = 'str';
+//   test.identical( got.map, expectedMap );
+//   test.equivalent( got.c, {} );
+//   test.identical
+//   (
+//     _.mapBut( _.property.all( got.c ), [ '__proto__' ] ),
+//     _.mapBut( _.property.all( {} ), [ '__proto__' ] )
+//   );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst extends routine1, src extends routine, dst extends src';
+//   var dst = () =>
+//   {
+//   };
+//   var src = () =>
+//   {
+//   };
+//   var routine = () =>
+//   {
+//   };
+//   routine.a = 0;
+//   routine.b = [ 'str' ];
+//   var routine1 = () =>
+//   {
+//   };
+//   routine1.a = 2;
+//   routine1.c = 'str';
+//   var src1 = _.routineExtend_old( src, routine );
+//   var src2 = _.routineExtend_old( dst, routine1 );
+//   var got = _.routineExtend_old( src2, src1 )
+//   test.identical( got.a, 0 );
+//   test.identical( got.b, [ 'str' ] );
+//   test.identical( got.c, 'str' );
+//   test.identical( dst.a, got.a );
+//   test.identical( dst.b, got.b );
+//   test.identical( dst.c, got.c );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'dst extends map, src extends map, dst extends src';
+//   var dst = () =>
+//   {
+//   };
+//   var src = () =>
+//   {
+//   };
+//   var src1 = _.routineExtend_old( src, { o1 : 1, o2 : 'str' } );
+//   var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map' } );
+//   var got = _.routineExtend_old( src2, src1 )
+//   test.identical( got.o1, 1 );
+//   test.identical( got.o2, 'str' );
+//   test.identical( got.o3, 'o3' );
+//   test.identical( dst.a, got.a );
+//   test.identical( dst.b, got.b );
+//   test.identical( dst.c, got.c );
+//   test.identical( typeof got, 'function' );
+//
+//   test.case = 'extend by map';
+//   var dst = () =>
+//   {
+//   };
+//   Object.defineProperties( dst, {
+//     'b' : {
+//       value : { a : 2 },
+//       enumerable : true,
+//       writable : true,
+//     }
+//   });
+//   var got = _.routineExtend_old( dst );
+//   test.equivalent( got.b, { a : 2 } );
+//
+//   test.case = 'extend by map';
+//   var dst = ( o ) =>
+//   {
+//   };
+//   dst.b = { map : 2 };
+//   var got = _.routineExtend_old( dst, { b : { map : 3 } } );
+//   test.equivalent( got.b, { map : 3 } );
+//
+//   test.close( 'few extends');
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old();
+//   });
+//
+//   test.case = 'three arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( null, { a : 1 }, { b : 2 });
+//   });
+//
+//   test.case = 'single dst is null';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( null );
+//   });
+//
+//   // test.case = 'second arg has not head and body properties';
+//   // test.shouldThrowErrorSync( function()
+//   // {
+//   //   _.routineExtend_old( null, _.unrollIs );
+//   // });
+//
+//   test.case = 'second arg is primitive';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( _.unrollIs, 'str' );
+//   });
+//
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( _.unrollIs, 1 );
+//   });
+//
+//   test.case = 'dst is not routine or null';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( 1, { a : 1 } );
+//   });
+//
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.routineExtend_old( 'str', { a : 1 } );
+//   });
+//
+// }
 
 //
 
@@ -2239,8 +2239,8 @@ function routineExtend( test )
   test.equivalent( got.c, {} );
   test.identical
   (
-    _.mapBut( _.mapAllProperties( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.mapAllProperties( Object.create( null ) ), [ '__proto__' ] )
+    _.mapBut( _.property.all( got.c ), [ '__proto__' ] ),
+    _.mapBut( _.property.all( Object.create( null ) ), [ '__proto__' ] )
   );
   test.identical( typeof got, 'function' );
 
@@ -3689,7 +3689,7 @@ function vectorizeVectorizeForOptionsMapForKeys( test )
   }
   var srcRoutine = routine;
 
-  //
+  /* */
 
   var o =
   {
@@ -3764,7 +3764,7 @@ function vectorize( test )
     return _.longSlice( arguments );
   }
 
-  //
+  /* */
 
   test.open( 'vectorizingArray : 1, select : 2' );
 
@@ -3800,7 +3800,7 @@ function vectorize( test )
 
   test.close( 'vectorizingArray : 1, select : 2' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 2' );
 
@@ -3940,7 +3940,7 @@ function vectorize( test )
   test.identical( routine( [ 1 ], { b : true, c : false }, 'd' ), { '1,b,d' : true, '1,c,d' : false } );
   test.identical( routine( [ 1, 2 ], { b : true }, 'c' ), { '1,b,c' : true, '2,b,c' : true } );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], { b : true, c : false }, [ 'd', 'e' ] );
   var expected =
@@ -3952,7 +3952,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], [ 'd', 'e' ], { b : true, c : false } );
   var expected =
@@ -3964,7 +3964,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( { b : true, c : false }, [ 1, 2 ], [ 'd', 'e' ]  );
   var expected =
@@ -3976,7 +3976,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], { b : true, c : false, d : true }, [ 'e', 'f' ] );
   var expected =
@@ -3990,7 +3990,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], [ 'e', 'f' ], { b : true, c : false, d : true } );
   var expected =
@@ -4004,7 +4004,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( { b : true, c : false, d : true }, [ 1, 2 ], [ 'e', 'f' ] );
   var expected =
@@ -4018,7 +4018,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( 1, { b : true, c : false, d : true }, 2 );
   var expected =
@@ -4029,7 +4029,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( { b : true, c : false, d : true }, 1, 2 );
   var expected =
@@ -4040,7 +4040,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( 1, 2, { b : true, c : false, d : true } );
   var expected =
@@ -4051,7 +4051,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], { b : true }, 'c' );
   var expected =
@@ -4061,7 +4061,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( { b : true }, [ 1, 2 ], 'c' );
   var expected =
@@ -4071,7 +4071,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], 'c', { b : true } );
   var expected =
@@ -4081,7 +4081,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], { b : true, c : false }, 'd' );
   var expected =
@@ -4093,7 +4093,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( { b : true, c : false }, [ 1, 2 ], 'd' );
   var expected =
@@ -4105,7 +4105,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   var got =  routine( [ 1, 2 ], 'd', { b : true, c : false } );
   var expected =
@@ -4117,7 +4117,7 @@ function vectorize( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   if( Config.debug )
   {
@@ -4166,7 +4166,7 @@ function vectorizeBypassingEmpty( test )
     return arguments[ 0 ] + 1;
   }
 
-  //
+  /* */
 
   test.open( 'vectorizing off, bypassingEmpty:0' );
 
@@ -4190,7 +4190,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizing off, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizing off, bypassingEmpty:0' );
 
@@ -4214,7 +4214,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizing off, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, bypassingEmpty:0' );
 
@@ -4238,7 +4238,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, bypassingEmpty:1' );
 
@@ -4264,7 +4264,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingMapVals:1, bypassingEmpty:1' );
 
@@ -4290,7 +4290,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingMapVals:1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingMapVals:1, bypassingEmpty:0' );
 
@@ -4314,7 +4314,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingMapVals:1, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:1' );
 
@@ -4340,7 +4340,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:0' );
 
@@ -4364,7 +4364,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingMapKeys:1, bypassingEmpty:1' );
 
@@ -4390,7 +4390,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingMapKeys:1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingMapKeys:1, bypassingEmpty:0' );
 
@@ -4414,7 +4414,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingMapKeys:1, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:1' );
 
@@ -4440,7 +4440,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:0' );
 
@@ -4464,7 +4464,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:1' );
 
@@ -4490,7 +4490,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:1' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:0' );
 
@@ -4543,7 +4543,7 @@ function vectorizeBypassingEmpty( test )
 
   test.close( 'vectorizingArray:1, select : array, bypassingEmpty:0' );
 
-  //
+  /* */
 
   test.open( 'vectorizingArray:1, select : array, bypassingEmpty:1' );
 
@@ -4933,7 +4933,7 @@ var Self =
     routinesComposeAllReturningLast,
     routinesChain,
 
-    routineExtend_old,
+    // routineExtend_old,
     routineExtend,
     routineDefaults,
     routineUnite,

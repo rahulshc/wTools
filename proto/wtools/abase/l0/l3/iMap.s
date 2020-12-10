@@ -1,4 +1,4 @@
-( function _iMap_s_()
+( function _l3_Map_s_()
 {
 
 'use strict';
@@ -6,8 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
-
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // map checker
@@ -246,14 +244,14 @@ function hashMapIsPopulated()
 // map selector
 // --
 
-// function _mapEnumerableKeys( srcMap, own )
+// function _mapEnumerableKeys( srcMap, onlyOwn )
 // {
 //   let result = [];
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //   _.assert( !_.primitiveIs( srcMap ) );
 //
-//   if( own )
+//   if( onlyOwn )
 //   {
 //     for( let k in srcMap )
 //     if( Object.hasOwnProperty.call( srcMap, k ) )
@@ -279,6 +277,7 @@ function _mapKeys( o )
   let srcMap = o.srcMap;
   let selectFilter = o.selectFilter;
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( o ) );
   _.assert( !( srcMap instanceof Map ), 'not implemented' );
@@ -286,13 +285,13 @@ function _mapKeys( o )
 
   /* */
 
-  if( o.enumerable )
+  if( o.onlyEnumerable )
   {
     let result1 = [];
 
     _.assert( !_.primitiveIs( srcMap ) );
 
-    if( o.own )
+    if( o.onlyOwn )
     {
       for( let k in srcMap )
       if( Object.hasOwnProperty.call( srcMap, k ) )
@@ -311,7 +310,7 @@ function _mapKeys( o )
   {
     _.assert( !( srcMap instanceof Map ), 'not implemented' );
 
-    if( o.own  )
+    if( o.onlyOwn  )
     {
       filter( srcMap, Object.getOwnPropertyNames( srcMap ) );
     }
@@ -354,15 +353,15 @@ function _mapKeys( o )
 _mapKeys.defaults =
 {
   srcMap : null,
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
   selectFilter : null,
 }
 
 //
 
 /**
- * This routine returns an array of a given objects enumerable properties,
+ * This routine returns an array of a given objects onlyEnumerable properties,
  * in the same order as that provided by a for...in loop.
  * Accept single object. Each element of result array is unique.
  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
@@ -376,16 +375,16 @@ _mapKeys.defaults =
  * // returns [ "a", "b" ]
  *
  * @example
- * let o = { own : 1, enumerable : 0 };
+ * let o = { onlyOwn : 1, onlyEnumerable : 0 };
  * _.mapKeys.call( o, { a : 1 } );
  * // returns [ "a" ]
  *
  * @param { objectLike } srcMap - object of interest to extract keys.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyOwn = false ] - count only object`s own properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  * @return { array } Returns an array with unique string elements.
- * corresponding to the enumerable properties found directly upon object or empty array
+ * corresponding to the onlyEnumerable properties found directly upon object or empty array
  * if nothing found.
  * @function mapKeys
  * @throws { Exception } Throw an exception if {-srcMap-} is not an objectLike entity.
@@ -397,6 +396,7 @@ function mapKeys( srcMap, o )
 {
   let result;
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
@@ -410,8 +410,8 @@ function mapKeys( srcMap, o )
 
 mapKeys.defaults =
 {
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
 }
 
 //
@@ -422,20 +422,20 @@ mapKeys.defaults =
  *
  * @param { objectLike } srcMap - The object whose properties keys are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
  * _.mapOwnKeys({ a : 7, b : 13 });
  * // returns [ "a", "b" ]
  *
  * @example
- * let o = { enumerable : 0 };
+ * let o = { onlyEnumerable : 0 };
  * _.mapOwnKeys.call( o, { a : 1 } );
  * // returns [ "a" ]
 
  *
  * @return { array } Returns an array whose elements are strings
- * corresponding to the own enumerable properties found directly upon object or empty
+ * corresponding to the own onlyEnumerable properties found directly upon object or empty
  * array if nothing found.
  * @function mapOwnKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
@@ -447,16 +447,17 @@ function mapOwnKeys( srcMap, o )
 {
   let result;
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
-  o.own = 1;
+  o.onlyOwn = 1;
 
   result = _._mapKeys( o );
 
-  if( !o.enumerable )
+  if( !o.onlyEnumerable )
   debugger;
 
   return result;
@@ -464,7 +465,7 @@ function mapOwnKeys( srcMap, o )
 
 mapOwnKeys.defaults =
 {
-  enumerable : 1,
+  onlyEnumerable : 1,
 }
 
 //
@@ -492,13 +493,14 @@ mapOwnKeys.defaults =
 function mapAllKeys( srcMap, o )
 {
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
+  o.onlyOwn = 0;
+  o.onlyEnumerable = 0;
 
   let result = _._mapKeys( o );
 
@@ -518,6 +520,7 @@ function _mapVals( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( o.selectFilter === null );
+  _.assert( this === _ );
 
   let result = _._mapKeys( o );
 
@@ -532,8 +535,8 @@ function _mapVals( o )
 _mapVals.defaults =
 {
   srcMap : null,
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
   selectFilter : null,
 }
 
@@ -541,7 +544,7 @@ _mapVals.defaults =
 
 /**
  * The mapVals() routine returns an array of a given object's
- * enumerable property values, in the same order as that provided by a for...in loop.
+ * onlyEnumerable property values, in the same order as that provided by a for...in loop.
  *
  * It takes an object {-srcMap-} creates an empty array,
  * checks if {-srcMap-} is an object.
@@ -550,15 +553,15 @@ _mapVals.defaults =
  *
  * @param { objectLike } srcMap - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyOwn = false ] - count only object`s own properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
  * _.mapVals( { a : 7, b : 13 } );
  * // returns [ "7", "13" ]
  *
  * @example
- * let o = { own : 1 };
+ * let o = { onlyOwn : 1 };
  * let a = { a : 7 };
  * let b = { b : 13 };
  * Object.setPrototypeOf( a, b );
@@ -566,7 +569,7 @@ _mapVals.defaults =
  * // returns [ 7 ]
  *
  * @returns { array } Returns an array whose elements are strings.
- * corresponding to the enumerable property values found directly upon object.
+ * corresponding to the onlyEnumerable property values found directly upon object.
  * @function mapVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
@@ -579,6 +582,7 @@ function mapVals( srcMap, o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( this === _ );
 
   o.srcMap = srcMap;
 
@@ -589,15 +593,15 @@ function mapVals( srcMap, o )
 
 mapVals.defaults =
 {
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
 }
 
 //
 
 /**
  * The mapOwnVals() routine returns an array of a given object's
- * own enumerable property values,
+ * own onlyEnumerable property values,
  * in the same order as that provided by a for...in loop.
  *
  * It takes an object {-srcMap-} creates an empty array,
@@ -607,21 +611,21 @@ mapVals.defaults =
  *
  * @param { objectLike } srcMap - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
  * _.mapOwnVals( { a : 7, b : 13 } );
  * // returns [ "7", "13" ]
  *
  * @example
- * let o = { enumerable : 0 };
+ * let o = { onlyEnumerable : 0 };
  * let a = { a : 7 };
- * Object.defineProperty( a, 'x', { enumerable : 0, value : 1 } )
+ * Object.defineProperty( a, 'x', { onlyEnumerable : 0, value : 1 } )
  * _.mapOwnVals.call( o, a )
  * // returns [ 7, 1 ]
  *
  * @returns { array } Returns an array whose elements are strings.
- * corresponding to the enumerable property values found directly upon object.
+ * corresponding to the onlyEnumerable property values found directly upon object.
  * @function mapOwnVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
@@ -634,9 +638,10 @@ function mapOwnVals( srcMap, o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( this === _ );
 
   o.srcMap = srcMap;
-  o.own = 1;
+  o.onlyOwn = 1;
 
   let result = _._mapVals( o );
 
@@ -646,7 +651,7 @@ function mapOwnVals( srcMap, o )
 
 mapOwnVals.defaults =
 {
-  enumerable : 1,
+  onlyEnumerable : 1,
 }
 
 //
@@ -667,7 +672,7 @@ mapOwnVals.defaults =
  * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
  *
  * @returns { array } Returns an array whose elements are strings.
- * corresponding to the enumerable property values found directly upon object.
+ * corresponding to the onlyEnumerable property values found directly upon object.
  * @function mapAllVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @namespace Tools
@@ -679,10 +684,11 @@ function mapAllVals( srcMap, o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( this === _ );
 
   o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
+  o.onlyOwn = 0;
+  o.onlyEnumerable = 0;
 
   let result = _._mapVals( o );
 
@@ -703,6 +709,7 @@ function _mapPairs( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( !_.primitiveIs( o.srcMap ) );
+  _.assert( this === _ );
 
   let selectFilter = o.selectFilter;
 
@@ -723,8 +730,8 @@ function _mapPairs( o )
 _mapPairs.defaults =
 {
   srcMap : null,
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
   selectFilter : null,
 }
 
@@ -740,8 +747,8 @@ _mapPairs.defaults =
  *
  * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyOwn = false ] - count only object`s own properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
  * _.mapPairs( { a : 7, b : 13 } );
@@ -751,7 +758,7 @@ _mapPairs.defaults =
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.mapPairs.call( { own : 1 }, a );
+ * _.mapPairs.call( { onlyOwn : 1 }, a );
  * // returns [ [ "a", 1 ] ]
  *
  * @returns { array } A list of [ key, value ] pairs.
@@ -764,6 +771,7 @@ _mapPairs.defaults =
 function mapPairs( srcMap, o )
 {
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapPairs, o );
 
@@ -776,8 +784,8 @@ function mapPairs( srcMap, o )
 
 mapPairs.defaults =
 {
-  own : 0,
-  enumerable : 1,
+  onlyOwn : 0,
+  onlyEnumerable : 1,
 }
 
 //
@@ -793,7 +801,7 @@ mapPairs.defaults =
  *
  * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
  * _.mapOwnPairs( { a : 7, b : 13 } );
@@ -808,7 +816,7 @@ mapPairs.defaults =
  *
  * @example
  * let a = { a : 1 };
- * _.mapOwnPairs.call( { enumerable : 0 }, a );
+ * _.mapOwnPairs.call( { onlyEnumerable : 0 }, a );
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapOwnPairs
@@ -820,11 +828,12 @@ mapPairs.defaults =
 function mapOwnPairs( srcMap, o )
 {
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnPairs, o );
 
   o.srcMap = srcMap;
-  o.own = 1;
+  o.onlyOwn = 1;
 
   let result = _._mapPairs( o );
 
@@ -834,7 +843,7 @@ function mapOwnPairs( srcMap, o )
 
 mapOwnPairs.defaults =
 {
-  enumerable : 1,
+  onlyEnumerable : 1,
 }
 
 //
@@ -869,12 +878,13 @@ mapOwnPairs.defaults =
 function mapAllPairs( srcMap, o )
 {
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllPairs, o );
 
   o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
+  o.onlyOwn = 0;
+  o.onlyEnumerable = 0;
 
   let result = _._mapPairs( o );
 
@@ -883,580 +893,6 @@ function mapAllPairs( srcMap, o )
 }
 
 mapAllPairs.defaults =
-{
-}
-
-//
-
-function _mapProperties( o )
-{
-  let result = Object.create( null );
-
-  _.routineOptions( _mapProperties, o );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( !_.primitiveIs( o.srcMap ) );
-
-  let keys = _._mapKeys( o );
-
-  for( let k = 0 ; k < keys.length ; k++ )
-  {
-    result[ keys[ k ] ] = o.srcMap[ keys[ k ] ];
-  }
-
-  return result;
-}
-
-_mapProperties.defaults =
-{
-  srcMap : null,
-  own : 0,
-  enumerable : 1,
-  selectFilter : null,
-}
-
-//
-
-/**
- * The mapProperties() gets enumerable properties of the object{-srcMap-} and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies unique enumerable properties of the provided object to the new map using
- * their original name/value and returns the result,
- * otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Object to get a map of enumerable properties.
- * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapProperties( { a : 7, b : 13 } );
- * // returns { a : 7, b : 13 }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2 };
- * Object.setPrototypeOf( a, b );
- * _.mapProperties( a );
- * // returns { a : 1, b : 2 }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2 };
- * Object.setPrototypeOf( a, b );
- * _.mapProperties.call( { own : 1 }, a )
- * // returns { a : 1 }
- *
- * @returns { object } A new map with unique enumerable properties from source{-srcMap-}.
- * @function mapProperties
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapProperties( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapProperties, o );
-
-  o.srcMap = srcMap;
-
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapProperties.defaults =
-{
-  own : 0,
-  enumerable : 1,
-}
-
-//
-
-/**
- * The mapOwnProperties() gets the object's {-srcMap-} own enumerable properties and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies object's own enumerable properties to the new map using
- * their original name/value and returns the result,
- * otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Source to get a map of object`s own enumerable properties.
- * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapOwnProperties( { a : 7, b : 13 } );
- * // returns { a : 7, b : 13 }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2 };
- * Object.setPrototypeOf( a, b );
- * _.mapOwnProperties( a );
- * // returns { a : 1 }
- *
- * @example
- * let a = { a : 1 };
- * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } );
- * _.mapOwnProperties.call( { enumerable : 0 }, a )
- * // returns { a : 1, b : 2 }
- *
- * @returns { object } A new map with source {-srcMap-} own enumerable properties.
- * @function mapOwnProperties
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapOwnProperties( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnProperties, o );
-
-  o.srcMap = srcMap;
-  o.own = 1;
-
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapOwnProperties.defaults =
-{
-  enumerable : 1, /* xxx : rename? */
-}
-
-//
-
-/**
- * The mapAllProperties() gets all properties from provided object {-srcMap-} and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies all unique object's properties to the new map using
- * their original name/value and returns the result,
- * otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Source to get a map of all object`s properties.
- *
- * @example
- * _.mapAllProperties( { a : 7, b : 13 } );
- * // returns { a : 7, b : 13, __defineGetter__ : function...}
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2 };
- * Object.setPrototypeOf( a, b );
- * _.mapAllProperties( a );
- * // returns { a : 1, b : 2, __defineGetter__ : function...}
- *
- * @returns { object } A new map with all unique properties from source {-srcMap-}.
- * @function mapAllProperties
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapAllProperties( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllProperties, o );
-
-  o.srcMap = srcMap; /* xxx */
-  // o.own = 0;
-  // o.enumerable = 0;
-
-  let result = _._mapProperties( o );
-
-  return result;
-}
-
-mapAllProperties.defaults =
-{
-  own : 0,
-  enumerable : 0,
-}
-
-//
-
-/**
- * The mapRoutines() gets enumerable properties that contains routines as value from the object {-srcMap-} and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies unique enumerable properties that holds routines from source {-srcMap-} to the new map using
- * original name/value of the property and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Source to get a map of object`s properties.
- * @param { objectLike } o - routine options, can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapRoutines( { a : 7, b : 13, f : function(){} } );
- * // returns { f : function(){} }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, f : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapRoutines( a )
- * // returns { f : function(){} }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, f : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapRoutines.call( { own : 1 }, a )
- * // returns {}
- *
- * @returns { object } A new map with unique enumerable routine properties from source {-srcMap-}.
- * @function mapRoutines
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-
-function mapRoutines( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapRoutines, o );
-
-  o.srcMap = srcMap;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    debugger;
-    if( _.routineIs( srcMap[ k ] ) )
-    return k;
-    debugger;
-  }
-
-  debugger;
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapRoutines.defaults =
-{
-  own : 0,
-  enumerable : 1,
-}
-
-//
-
-/**
- * The mapOwnRoutines() gets object`s {-srcMap-} own enumerable properties that contains routines as value and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies object`s {-srcMap-} own unique enumerable properties that holds routines to the new map using
- * original name/value of the property and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Source to get a map of object`s properties.
- * @param { objectLike } o - routine options, can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapOwnRoutines( { a : 7, b : 13, f : function(){} } );
- * // returns { f : function(){} }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, f : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapOwnRoutines( a )
- * // returns {}
- *
- * @example
- * let a = { a : 1 };
- * Object.defineProperty( a, 'b', { enumerable : 0, value : function(){} } );
- * _.mapOwnRoutines.call( { enumerable : 0 }, a )
- * // returns { b : function(){} }
- *
- * @returns { object } A new map with unique object`s own enumerable routine properties from source {-srcMap-}.
- * @function mapOwnRoutines
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapOwnRoutines( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnRoutines, o );
-
-  o.srcMap = srcMap;
-  o.own = 1;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    debugger;
-    if( _.routineIs( srcMap[ k ] ) )
-    return k;
-    debugger;
-  }
-
-  debugger;
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapOwnRoutines.defaults =
-{
-  enumerable : 1,
-}
-
-//
-
-/**
- * The mapAllRoutines() gets all properties of object {-srcMap-} that contains routines as value and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies all unique properties of source {-srcMap-} that holds routines to the new map using
- * original name/value of the property and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Source to get a map of object`s properties.
- *
- * @example
- * _.mapAllRoutines( { a : 7, b : 13, f : function(){} } );
- * // returns { f : function, __defineGetter__ : function...}
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, f : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapAllRoutines( a )
- * // returns { f : function, __defineGetter__ : function...}
- *
- * @returns { object } A new map with all unique object`s {-srcMap-} properties that are routines.
- * @function mapAllRoutines
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapAllRoutines( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllRoutines, o );
-
-  o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    debugger;
-    if( _.routineIs( srcMap[ k ] ) )
-    return k;
-  }
-
-  debugger;
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapAllRoutines.defaults =
-{
-}
-
-//
-
-/**
- * The mapFields() gets enumerable fields( all properties except routines ) of the object {-srcMap-} and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies unique enumerable properties of the provided object {-srcMap-} that are not routines to the new map using
- * their original name/value and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Object to get a map of enumerable properties.
- * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapFields( { a : 7, b : 13, c : function(){} } );
- * // returns { a : 7, b : 13 }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, c : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapFields( a );
- * // returns { a : 1, b : 2 }
- *
- * @example
- * let a = { a : 1, x : function(){} };
- * let b = { b : 2 };
- * Object.setPrototypeOf( a, b );
- * _.mapFields.call( { own : 1 }, a )
- * // returns { a : 1 }
- *
- * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source {-srcMap-}.
- * @function mapFields
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapFields( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapFields, o ); /* xxx : routineOptions should has no dependencies */
-
-  o.srcMap = srcMap;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    if( !_.routineIs( srcMap[ k ] ) )
-    return k;
-  }
-
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapFields.defaults =
-{
-  own : 0,
-  enumerable : 1,
-}
-
-//
-
-/**
- * The mapOwnFields() gets object`s {-srcMap-} own enumerable fields( all properties except routines ) and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies object`s own enumerable properties that are not routines to the new map using
- * their original name/value and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Object to get a map of enumerable properties.
- * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
- *
- * @example
- * _.mapOwnFields( { a : 7, b : 13, c : function(){} } );
- * // returns { a : 7, b : 13 }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, c : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapOwnFields( a );
- * // returns { a : 1 }
- *
- * @example
- * let a = { a : 1, x : function(){} };
- * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
- * _.mapFields.call( { enumerable : 0 }, a )
- * // returns { a : 1, b : 2 }
- *
- * @returns { object } A new map with object`s {-srcMap-} own enumerable fields( all properties except routines ).
- * @function mapOwnFields
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapOwnFields( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnFields, o );
-
-  o.srcMap = srcMap;
-  o.own = 1;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    if( !_.routineIs( srcMap[ k ] ) )
-    return k;
-  }
-
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapOwnFields.defaults =
-{
-  enumerable : 1,
-}
-
-//
-
-/**
- * The mapAllFields() gets all object`s {-srcMap-} fields( properties except routines ) and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies all object`s properties that are not routines to the new map using
- * their original name/value and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Object to get a map of all properties.
- *
- * @example
- * _.mapAllFields( { a : 7, b : 13, c : function(){} } );
- * // returns { a : 7, b : 13, __proto__ : Object }
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, c : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapAllFields( a );
- * // returns { a : 1, b : 2, __proto__ : Object }
- *
- * @example
- * let a = { a : 1, x : function(){} };
- * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
- * _.mapAllFields( a );
- * // returns { a : 1, b : 2, __proto__ : Object }
- *
- * @returns { object } A new map with all fields( properties except routines ) from source {-srcMap-}.
- * @function mapAllFields
- * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools
- */
-
-function mapAllFields( srcMap, o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllFields, o );
-
-  o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    if( !_.routineIs( srcMap[ k ] ) )
-    return k;
-  }
-
-  if( _.routineIs( srcMap ) )
-  o.selectFilter = function selectRoutine( srcMap, k )
-  {
-    if( _.longHas( [ 'arguments', 'caller' ], k ) )
-    return;
-    if( !_.routineIs( srcMap[ k ] ) )
-    return k;
-  }
-
-  let result = _._mapProperties( o );
-  return result;
-}
-
-mapAllFields.defaults =
 {
 }
 
@@ -1488,6 +924,7 @@ mapAllFields.defaults =
 function mapFirstPair( srcMap )
 {
 
+  _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( srcMap ) );
 
@@ -1842,18 +1279,10 @@ function mapOptionsApplyDefaults( options, defaults )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   // map checker
@@ -1893,19 +1322,19 @@ let Routines =
   mapOwnPairs,
   mapAllPairs,
 
-  _mapProperties,
-
-  mapProperties,
-  mapOwnProperties,
-  mapAllProperties,
-
-  mapRoutines,
-  mapOwnRoutines,
-  mapAllRoutines,
-
-  mapFields,
-  mapOwnFields,
-  mapAllFields,
+  // property._select,
+  //
+  // mapProperties,
+  // mapOwnProperties,
+  // mapAllProperties,
+  //
+  // mapRoutines,
+  // mapOwnRoutines,
+  // mapAllRoutines,
+  //
+  // mapFields,
+  // mapOwnFields,
+  // mapAllFields,
 
   mapFirstPair,
   mapValsSet,
@@ -1931,14 +1360,13 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 // --
 // export
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

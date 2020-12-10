@@ -1,4 +1,4 @@
-( function _iErr_s_()
+( function _l3_Err_s_()
 {
 
 'use strict';
@@ -145,9 +145,9 @@ function errOriginalMessage( err )
   if( !message && message !== '' )
   message = err.name;
 
-  if( _.mapFields )
+  if( _.property.fields )
   {
-    let fields = _.mapFields( err );
+    let fields = _.property.fields( err );
     if( Object.keys( fields ).length )
     message += '\n' + _.toStr( fields, { wrap : 0, multiline : 1, levels : 2 } );
   }
@@ -2215,6 +2215,6 @@ Error.stackTraceLimit = Infinity;
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _gString_s_()
+( function _l8_String_s_()
 {
 
 'use strict';
@@ -293,7 +293,8 @@ function strIsolate_body( o )
 
   function strLeft( index )
   {
-    let r = _._strLeftSingle( o.src, o.delimeter, [ index, undefined ] );
+    // let r = _._strLeftSingle( o.src, o.delimeter, [ index, undefined ] );
+    let r = _._strLeftSingle_( o.src, o.delimeter, [ index, undefined ] );
     if( quote )
     if( r.entry !== undefined )
     {
@@ -308,7 +309,8 @@ function strIsolate_body( o )
 
   function strRight( index )
   {
-    let r = _._strRightSingle( o.src, o.delimeter, [ undefined, index ] );
+    // let r = _._strRightSingle( o.src, o.delimeter, [ undefined, index ] );
+    let r = _._strRightSingle_( o.src, o.delimeter, [ undefined, index-1 ] );
     if( quote )
     if( r.entry !== undefined )
     {
@@ -655,7 +657,8 @@ function strIsolateInsideSignle( src, begin, end )
     do
     {
 
-      b = _.strLeft( src, begin, [ l, src.length ] );
+      // b = _.strLeft( src, begin, [ l, src.length ] );
+      b = _.strLeft_( src, begin, [ l, src.length-1 ] );
 
       if( b.entry === undefined )
       return notFound();
@@ -663,7 +666,8 @@ function strIsolateInsideSignle( src, begin, end )
       _.assert( _.numberIs( b.instanceIndex ) );
       let end = pairs[ b.instanceIndex ][ 1 ];
 
-      e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
+      // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
+      e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) );
 
       if( e.entry === undefined )
       l = b.index+1;
@@ -681,12 +685,14 @@ function strIsolateInsideSignle( src, begin, end )
   else
   {
 
-    b = _.strLeft( src, begin );
+    // b = _.strLeft( src, begin );
+    b = _.strLeft_( src, begin );
 
     if( b.entry === undefined )
     return notFound();
 
-    e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
+    // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );
+    e = _.strRight_( src, end, Math.min( b.index, src.length-1 ) );
 
     if( e.entry === undefined )
     return notFound();
@@ -839,6 +845,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

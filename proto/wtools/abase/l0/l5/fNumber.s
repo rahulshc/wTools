@@ -1,4 +1,4 @@
-( function _fNumbers_s_()
+( function _l5_Numbers_s_()
 {
 
 'use strict';
@@ -10,19 +10,6 @@ let Self = _global_.wTools;
 // --
 // number
 // --
-
-// function numberInRange( n, range )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( range.length === 2 );
-//   _.assert( _.numberIs( range[ 0 ] ) );
-//   _.assert( _.numberIs( range[ 1 ] ) );
-//   if( !_.numberIs( n ) )
-//   return false;
-//   return range[ 0 ] <= n && n <= range[ 1 ]; // zzz : review
-// }
-
-//
 
 function bigIntFrom( src )
 {
@@ -102,7 +89,6 @@ let Extension =
   bigIntFrom,
   bigIntsFrom,
 
-  // numberInRange,
   numberClamp,
   numberMix,
 
@@ -117,6 +103,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

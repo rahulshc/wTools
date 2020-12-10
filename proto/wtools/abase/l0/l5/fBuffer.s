@@ -1,4 +1,4 @@
-( function _fBuffer_s_()
+( function _l5_Buffer_s_()
 {
 
 'use strict';
@@ -115,6 +115,6 @@ _.mapSupplement( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

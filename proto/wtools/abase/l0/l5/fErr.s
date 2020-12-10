@@ -1,4 +1,4 @@
-( function _fErr_s_()
+( function _l5_Err_s_()
 {
 
 'use strict';
@@ -106,7 +106,7 @@ function _handleUncaught2( o )
     if( !o.err.originalMessage && _.objectLike && _.objectLike( o.err ) )
     try
     {
-      let serr = _.toStr && _.field ? _.toStr.fields( o.err, { errorAsMap : 1 } ) : o.err;
+      let serr = _.toStr && _.property ? _.toStr.fields( o.err, { errorAsMap : 1 } ) : o.err;
       o.logger.error( serr );
     }
     catch( err2 )
@@ -453,6 +453,6 @@ _.mapExtend( _.error, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

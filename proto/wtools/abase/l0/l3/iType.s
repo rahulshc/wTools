@@ -1,4 +1,4 @@
-( function _iType_s_()
+( function _l3_Type_s_()
 {
 
 'use strict';
@@ -6,8 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
-
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // type test
@@ -587,6 +585,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

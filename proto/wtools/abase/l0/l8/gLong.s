@@ -1,4 +1,4 @@
-( function _gLong_s_()
+( function _l8_Long_s_()
 {
 
 'use strict';
@@ -15,7 +15,6 @@ let _ArraySlice = Array.prototype.slice;
 let _ArraySplice = Array.prototype.splice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 
 // --
@@ -1489,6 +1488,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

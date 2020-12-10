@@ -1,4 +1,4 @@
-( function _fLong_s_()
+( function _l5_Long_s_()
 {
 
 'use strict';
@@ -1676,7 +1676,7 @@ function longBut( array, range, val )
   // if( _.numberIs( range ) )
   // range = [ range, range + 1 ];
 
-  _.rangeClamp( range, [ 0, array.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -1801,7 +1801,7 @@ function longButInplace( array, range, val )
   _.assert( _.longLike( array ) );
   _.assert( _.intervalIs( range ) );
 
-  _.rangeClamp( range, [ 0, array.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -1823,7 +1823,7 @@ function longButInplace( array, range, val )
   // if( _.numberIs( range ) )
   // range = [ range, range + 1 ];
   //
-  // _.rangeClamp( range, [ 0, src.length ] );
+  // _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
   // if( range[ 1 ] < range[ 0 ] )
   // range[ 1 ] = range[ 0 ];
   //
@@ -2088,7 +2088,7 @@ function longShrink( array, range, val )
   //   f -= f;
   // }
 
-  _.rangeClamp( range, [ 0, array.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -2217,7 +2217,7 @@ function longShrinkInplace( array, range, val )
   _.assert( _.longLike( array ) );
   _.assert( _.intervalIs( range ) );
 
-  _.rangeClamp( range, [ 0, array.length ] );
+  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -2246,7 +2246,7 @@ function longShrinkInplace( array, range, val )
   // _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
   //
-  // _.rangeClamp( range, [ 0, array.length ] );
+  // _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
   // if( range[ 1 ] < range[ 0 ] )
   // range[ 1 ] = range[ 0 ];
   //
@@ -3789,6 +3789,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

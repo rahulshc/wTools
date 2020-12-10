@@ -1,4 +1,4 @@
-( function _gNumber_s_()
+( function _l8_Number_s_()
 {
 
 'use strict';
@@ -13,7 +13,6 @@ let _ArraySlice = Array.prototype.slice;
 let _ArraySplice = Array.prototype.splice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 let _ceil = Math.ceil;
 let _floor = Math.floor;
@@ -624,6 +623,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _iContainer_s_()
+( function _l3_Container_s_()
 {
 
 'use strict';
@@ -86,6 +86,6 @@ Object.assign( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

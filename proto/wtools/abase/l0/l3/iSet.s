@@ -1,4 +1,4 @@
-( function _iSet_s_()
+( function _l3_Set_s_()
 {
 
 'use strict';
@@ -135,6 +135,6 @@ Object.assign( Self, ToolsExtension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

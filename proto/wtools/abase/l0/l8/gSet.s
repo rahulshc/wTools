@@ -1,4 +1,4 @@
-( function _gSet_s_()
+( function _l8_Set_s_()
 {
 
 'use strict';
@@ -6,7 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _;
-// let Self = _.set = _.set || Object.create( null );
 
 // --
 // array set
@@ -29,6 +28,6 @@ Object.assign( Self, NamespaceExtension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

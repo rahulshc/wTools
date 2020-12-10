@@ -1,4 +1,4 @@
-( function _gCt_s_()
+( function _l8_Ct_s_()
 {
 
 'use strict';
@@ -382,6 +382,6 @@ Object.assign( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

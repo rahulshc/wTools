@@ -1,4 +1,4 @@
-( function _gMap_s_()
+( function _l8_Map_s_()
 {
 
 'use strict';
@@ -6,11 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
-
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // routines
@@ -43,6 +38,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _fIntervalo_s_()
+( function _l5_Intervalo_s_()
 {
 
 'use strict';
@@ -360,5 +360,5 @@ _.ointerval = Self;
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 })();

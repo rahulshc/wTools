@@ -1,4 +1,4 @@
-( function _iIntrospector_s_()
+( function _l3_Introspector_s_()
 {
 
 'use strict';
@@ -944,6 +944,6 @@ Object.assign( _.introspector, Extnesion );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

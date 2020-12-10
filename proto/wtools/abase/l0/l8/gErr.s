@@ -1,9 +1,8 @@
-( function _gErr_s_()
+( function _l8_Err_s_()
 {
 
 'use strict';
 
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 let _global = _global_;
 let _ = _global.wTools;
 let _err = _._err;
@@ -141,7 +140,7 @@ diagnosticWatchFields.defaults =
 
 _.diagnosticProxyFields
 ({
-  target : _.field,
+  target : _.property,
 });
 
 _.diagnosticWatchFields

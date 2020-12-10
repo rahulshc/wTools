@@ -1,4 +1,4 @@
-( function _fFunctional_s_()
+( function _l5_Functional_s_()
 {
 
 'use strict';
@@ -4677,6 +4677,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

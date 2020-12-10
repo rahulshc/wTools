@@ -800,7 +800,7 @@ _.assert( _.containerAdapter === Self );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 if( _global !== _realGlobal_ )
 return ExportTo( _realGlobal_, _global );

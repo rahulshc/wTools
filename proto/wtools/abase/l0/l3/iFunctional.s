@@ -1,4 +1,4 @@
-( function _iFunctional_s_()
+( function _l3_Functional_s_()
 {
 
 'use strict';
@@ -37,6 +37,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

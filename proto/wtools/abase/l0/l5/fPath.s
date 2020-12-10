@@ -1,4 +1,4 @@
-( function _fPath_s_()
+( function _l5_Path_s_()
 {
 
 'use strict';
@@ -100,27 +100,6 @@ function isRefined( path )
   return true;
 }
 
-// //
-//
-// /**
-//  * Checks if string path is refined: checks that the string doesn´t contain left( \\ ) or double slashes ( // ) ), and that it is not trailed
-//  * @param {String} filePath Source path for check
-//  * @returns {boolean}
-//  * @function isRefined
-//  * @namespace Tools.path
-//  */
-//
-// function isRefined( path )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.strIs( path ), 'Expects string {-path-}, but got', _.strType( path ) );
-//
-//   if( !this.isRefined( path ) )
-//   return false;
-//
-//   return true;
-// }
-
 //
 
 /**
@@ -139,24 +118,6 @@ function isNormalized( filePath )
   let trailedPath = this.trail( normalizedPath );
   return normalizedPath === filePath || trailedPath === filePath;
 }
-
-// //
-//
-// /**
-//  * Checks if string path is normalized.
-//  * @param {String} filePath Source path for check
-//  * @returns {boolean}
-//  * @function isNormalized
-//  * @namespace Tools.path
-//  */
-//
-// function isNormalized( filePath )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.strIs( filePath ), 'Expects string' );
-//   let normalizedPath = this.normalize( filePath )
-//   return normalizedPath === filePath;
-// }
 
 //
 
@@ -694,7 +655,7 @@ function escape( filePath )
       split = split + split.substring( i+1, split.length );
     }
 
-    let left = _.strLeft( split, self.escapeTokens )
+    let left = _.strLeft_( split, self.escapeTokens )
     if( left.entry )
     return `"${split}"`;
     return split;
@@ -710,7 +671,9 @@ function _unescape( filePath )
 {
   let self = this;
   // let splits = self.split( filePath );
-  /* xxx : cant use routine self.split because it normalizes path */
+  /*
+  cant use routine self.split because it normalizes path
+  */
   let splits = filePath.split( self.upToken );
 
   let result = Object.create( null );
@@ -1191,6 +1154,6 @@ Self.Init();
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

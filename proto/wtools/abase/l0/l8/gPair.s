@@ -1,4 +1,4 @@
-( function _gPair_s_()
+( function _l8_Pair_s_()
 {
 
 'use strict';
@@ -111,6 +111,6 @@ _.pair = Self;
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

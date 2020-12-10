@@ -1,4 +1,4 @@
-( function _fContainer_s_()
+( function _l5_Container_s_()
 {
 
 'use strict';
@@ -424,6 +424,6 @@ _.container.types = types;
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _fRoutine_s_()
+( function _l5_Routine_s_()
 {
 
 'use strict';
@@ -28,6 +28,6 @@ _.mapSupplement( _, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

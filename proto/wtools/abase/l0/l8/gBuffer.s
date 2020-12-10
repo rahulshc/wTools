@@ -1,4 +1,4 @@
-( function _gBuffer_s_()
+( function _l8_Buffer_s_()
 {
 
 'use strict';
@@ -3988,6 +3988,6 @@ Object.assign( Self, Routines );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _fEntity_s_()
+( function _l5_Entity_s_()
 {
 
 'use strict';
@@ -529,6 +529,6 @@ _.mapSupplement( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

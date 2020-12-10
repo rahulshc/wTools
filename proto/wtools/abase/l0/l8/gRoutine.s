@@ -1,4 +1,4 @@
-( function _gRoutine_s_()
+( function _l8_Routine_s_()
 {
 
 'use strict';
@@ -201,7 +201,7 @@ let Routines =
 
   routinesComposeReturningLast,
   routinesComposeAll,
-  routinesComposeAllReturningLast, /* !!! */
+  routinesComposeAllReturningLast, /* xxx */
   routinesChain,
 
   _equalizerFromMapper,
@@ -219,6 +219,6 @@ Object.assign( Self, Fields );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1,4 +1,4 @@
-( function _fString_s_()
+( function _l5_Str_s_()
 {
 
 'use strict';
@@ -308,47 +308,42 @@ strQuoteAnalyze.defaults =
 // splitter
 // --
 
-// function _strLeftSingle( src, ins, first, last )
+// function _strLeftSingle( src, ins, range )
 // {
 //
-//   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
-//   _.assert( first === undefined || _.numberIs( first ) );
-//   _.assert( last === undefined || _.numberIs( last ) );
 //
-//   ins = _.arrayAs( ins );
+//   if( _.numberIs( range ) )
+//   range = [ range, src.length ];
+//   else if( range === undefined )
+//   range = [ 0, src.length ];
 //
-//   let olength = src.length;
+//   range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
+//   range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
+//   if( range[ 0 ] < 0 )
+//   range[ 0 ] = src.length + range[ 0 ];
+//   if( range[ 1 ] < 0 )
+//   range[ 1 ] = src.length + range[ 1 ];
+//
+//   _.assert( _.intervalIs( range ) );
+//   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
+//   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
+//
 //   let result = Object.create( null );
-//   result.index = olength;
+//   result.index = src.length;
 //   result.instanceIndex = -1;
 //   result.entry = undefined;
 //
-//   if( first !== undefined || last !== undefined )
-//   {
-//     if( first === undefined )
-//     first = 0;
-//     if( last === undefined )
-//     last = src.length;
-//     if( first < 0 )
-//     first = src.length + first;
-//     if( last < 0 )
-//     last = src.length + last;
-//     // if( first >= src.length )
-//     // return result;
-//     // if( last <= -1 )
-//     // return result;
-//     _.assert( 0 <= first && first <= src.length );
-//     _.assert( 0 <= last && last <= src.length );
-//     src = src.substring( first, last );
-//   }
+//   ins = _.arrayAs( ins );
+//   let src1 = src.substring( range[ 0 ], range[ 1 ] );
 //
-//   for( let k = 0, len = ins.length ; k < len ; k++ )
+//   for( let k = 0 ; k < ins.length ; k++ )
 //   {
 //     let entry = ins[ k ];
 //     if( _.strIs( entry ) )
 //     {
-//       let found = src.indexOf( entry );
+//       let found = src1.indexOf( entry );
 //       if( found >= 0 && ( found < result.index || result.entry === undefined ) )
 //       {
 //         result.instanceIndex = k;
@@ -358,7 +353,7 @@ strQuoteAnalyze.defaults =
 //     }
 //     else if( _.regexpIs( entry ) )
 //     {
-//       let found = src.match( entry );
+//       let found = src1.match( entry );
 //       if( found && ( found.index < result.index || result.entry === undefined ) )
 //       {
 //         result.instanceIndex = k;
@@ -369,94 +364,34 @@ strQuoteAnalyze.defaults =
 //     else _.assert( 0, 'Expects string-like ( string or regexp )' );
 //   }
 //
-//   if( first !== undefined && result.index !== olength )
-//   result.index += first;
+//   if( range[ 0 ] !== 0 && result.index !== src.length )
+//   result.index += range[ 0 ];
 //
 //   return result;
 // }
-
-function _strLeftSingle( src, ins, range )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.strIs( src ) );
-
-  if( _.numberIs( range ) )
-  range = [ range, src.length ];
-  else if( range === undefined )
-  range = [ 0, src.length ];
-
-  range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
-  range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
-  if( range[ 0 ] < 0 )
-  range[ 0 ] = src.length + range[ 0 ];
-  if( range[ 1 ] < 0 )
-  range[ 1 ] = src.length + range[ 1 ];
-
-  _.assert( _.intervalIs( range ) );
-  _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
-  _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
-
-  let result = Object.create( null );
-  result.index = src.length;
-  result.instanceIndex = -1;
-  result.entry = undefined;
-
-  ins = _.arrayAs( ins );
-  let src1 = src.substring( range[ 0 ], range[ 1 ] );
-
-  for( let k = 0 ; k < ins.length ; k++ )
-  {
-    let entry = ins[ k ];
-    if( _.strIs( entry ) )
-    {
-      let found = src1.indexOf( entry );
-      if( found >= 0 && ( found < result.index || result.entry === undefined ) )
-      {
-        result.instanceIndex = k;
-        result.index = found;
-        result.entry = entry;
-      }
-    }
-    else if( _.regexpIs( entry ) )
-    {
-      let found = src1.match( entry );
-      if( found && ( found.index < result.index || result.entry === undefined ) )
-      {
-        result.instanceIndex = k;
-        result.index = found.index;
-        result.entry = found[ 0 ];
-      }
-    }
-    else _.assert( 0, 'Expects string-like ( string or regexp )' );
-  }
-
-  if( range[ 0 ] !== 0 && result.index !== src.length )
-  result.index += range[ 0 ];
-
-  return result;
-}
+//
+// //
+//
+// function strLeft( src, ins, range )
+// {
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   if( _.arrayLike( src ) )
+//   {
+//     let result = [];
+//     for( let s = 0 ; s < src.length ; s++ )
+//     result[ s ] = _._strLeftSingle( src[ s ], ins, range );
+//     return result;
+//   }
+//   else
+//   {
+//     return _._strLeftSingle( src, ins, range );
+//   }
+//
+// }
 
 //
-
-function strLeft( src, ins, range )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( _.arrayLike( src ) )
-  {
-    let result = [];
-    for( let s = 0 ; s < src.length ; s++ )
-    result[ s ] = _._strLeftSingle( src[ s ], ins, range );
-    return result;
-  }
-  else
-  {
-    return _._strLeftSingle( src, ins, range );
-  }
-
-}
 
 function _strLeftSingle_( src, ins, cinterval )
 {
@@ -561,47 +496,42 @@ aa_bb_bb|b|_cc_cc
 
 */
 
-// function _strRightSingle( src, ins, first, last )
+// function _strRightSingle( src, ins, range )
 // {
 //
-//   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
-//   _.assert( first === undefined || _.numberIs( first ) );
-//   _.assert( last === undefined || _.numberIs( last ) );
 //
-//   ins = _.arrayAs( ins );
+//   if( _.numberIs( range ) )
+//   range = [ range, src.length ];
+//   else if( range === undefined )
+//   range = [ 0, src.length ];
+//
+//   range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
+//   range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
+//   if( range[ 0 ] < 0 )
+//   range[ 0 ] = src.length + range[ 0 ];
+//   if( range[ 1 ] < 0 )
+//   range[ 1 ] = src.length + range[ 1 ];
+//
+//   _.assert( _.intervalIs( range ) );
+//   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
+//   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
 //
 //   let olength = src.length;
 //   let result = Object.create( null );
 //   result.index = -1;
 //   result.instanceIndex = -1;
 //   result.entry = undefined;
-//
-//   if( first !== undefined || last !== undefined )
-//   {
-//     if( first === undefined )
-//     first = 0;
-//     if( last === undefined )
-//     last = src.length;
-//     if( first < 0 )
-//     first = src.length + first;
-//     if( last < 0 )
-//     last = src.length + last;
-//     // if( first >= src.length )
-//     // return result;
-//     // if( last <= -1 )
-//     // return result;
-//     _.assert( 0 <= first && first <= src.length );
-//     _.assert( 0 <= last && last <= src.length );
-//     src = src.substring( first, last );
-//   }
+//   ins = _.arrayAs( ins );
+//   let src1 = src.substring( range[ 0 ], range[ 1 ] );
 //
 //   for( let k = 0, len = ins.length ; k < len ; k++ )
 //   {
 //     let entry = ins[ k ];
 //     if( _.strIs( entry ) )
 //     {
-//       let found = src.lastIndexOf( entry );
+//       let found = src1.lastIndexOf( entry );
 //       if( found >= 0 && found > result.index )
 //       {
 //         result.instanceIndex = k;
@@ -613,12 +543,12 @@ aa_bb_bb|b|_cc_cc
 //     {
 //
 //       let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
-//       let match1 = src.match( regexp1 );
+//       let match1 = src1.match( regexp1 );
 //       if( !match1 )
 //       continue;
 //
 //       let regexp2 = _.regexpsJoin([ entry, '(?!(?=.).*', entry, ')' ]);
-//       let match2 = src.match( regexp2 );
+//       let match2 = src1.match( regexp2 );
 //       _.assert( !!match2 );
 //
 //       let found;
@@ -632,7 +562,6 @@ aa_bb_bb|b|_cc_cc
 //       {
 //         if( found1.length < found2.length )
 //         {
-//           // debugger;
 //           found = found2;
 //           index = index2 - found.length;
 //         }
@@ -664,135 +593,32 @@ aa_bb_bb|b|_cc_cc
 //     else _.assert( 0, 'Expects string-like ( string or regexp )' );
 //   }
 //
-//   if( first !== undefined && result.index !== -1 )
-//   result.index += first;
+//   if( range[ 0 ] !== 0 && result.index !== -1 )
+//   result.index += range[ 0 ];
 //
 //   return result;
 // }
-
-function _strRightSingle( src, ins, range )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.strIs( src ) );
-
-  if( _.numberIs( range ) )
-  range = [ range, src.length ];
-  else if( range === undefined )
-  range = [ 0, src.length ];
-
-  range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
-  range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
-  if( range[ 0 ] < 0 )
-  range[ 0 ] = src.length + range[ 0 ];
-  if( range[ 1 ] < 0 )
-  range[ 1 ] = src.length + range[ 1 ];
-
-  _.assert( _.intervalIs( range ) );
-  _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
-  _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
-
-  let olength = src.length;
-  let result = Object.create( null );
-  result.index = -1;
-  result.instanceIndex = -1;
-  result.entry = undefined;
-  ins = _.arrayAs( ins );
-  let src1 = src.substring( range[ 0 ], range[ 1 ] );
-
-  for( let k = 0, len = ins.length ; k < len ; k++ )
-  {
-    let entry = ins[ k ];
-    if( _.strIs( entry ) )
-    {
-      let found = src1.lastIndexOf( entry );
-      if( found >= 0 && found > result.index )
-      {
-        result.instanceIndex = k;
-        result.index = found;
-        result.entry = entry;
-      }
-    }
-    else if( _.regexpIs( entry ) )
-    {
-
-      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
-      let match1 = src1.match( regexp1 );
-      if( !match1 )
-      continue;
-
-      let regexp2 = _.regexpsJoin([ entry, '(?!(?=.).*', entry, ')' ]);
-      let match2 = src1.match( regexp2 );
-      _.assert( !!match2 );
-
-      let found;
-      let found1 = match1[ 1 ];
-      let found2 = match2[ 0 ];
-      let index;
-      let index1 = match1.index + match1[ 0 ].length;
-      let index2 = match2.index + match2[ 0 ].length;
-
-      if( index1 === index2 )
-      {
-        if( found1.length < found2.length )
-        {
-          found = found2;
-          index = index2 - found.length;
-        }
-        else
-        {
-          found = found1;
-          index = index1 - found.length;
-        }
-      }
-      else if( index1 < index2 )
-      {
-        found = found2;
-        index = index2 - found.length;
-      }
-      else
-      {
-        found = found1;
-        index = index1 - found.length;
-      }
-
-      if( index > result.index )
-      {
-        result.instanceIndex = k;
-        result.index = index;
-        result.entry = found;
-      }
-
-    }
-    else _.assert( 0, 'Expects string-like ( string or regexp )' );
-  }
-
-  if( range[ 0 ] !== 0 && result.index !== -1 )
-  result.index += range[ 0 ];
-
-  return result;
-}
-
 //
-
-function strRight( src, ins, range )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( _.arrayLike( src ) )
-  {
-    let result = [];
-    for( let s = 0 ; s < src.length ; s++ )
-    result[ s ] = _._strRightSingle( src[ s ], ins, range );
-    return result;
-  }
-  else
-  {
-    return _._strRightSingle( src, ins, range );
-  }
-
-}
+// //
+//
+// function strRight( src, ins, range )
+// {
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   if( _.arrayLike( src ) )
+//   {
+//     let result = [];
+//     for( let s = 0 ; s < src.length ; s++ )
+//     result[ s ] = _._strRightSingle( src[ s ], ins, range );
+//     return result;
+//   }
+//   else
+//   {
+//     return _._strRightSingle( src, ins, range );
+//   }
+//
+// }
 
 //
 
@@ -1196,7 +1022,7 @@ strInsideOf__body.defaults =
   src : null,
   begin : null,
   end : null,
-  pairing : 0, /* xxx : set to 1 */
+  pairing : 1, /* xxx : set to 1 */
 }
 
 let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
@@ -3453,12 +3279,12 @@ let Extension =
 
   // splitter
 
-  _strLeftSingle,
-  strLeft, /* aaa2 for Dmytro : implement and cover strLeft_ with proper ranges */ /* Dmytro : implemented routine strLeft_ with cintervals, covered */
+  // _strLeftSingle,
+  // strLeft, /* aaa2 for Dmytro : implement and cover strLeft_ with proper ranges */ /* Dmytro : implemented routine strLeft_ with cintervals, covered */
   _strLeftSingle_,
   strLeft_,
-  _strRightSingle,
-  strRight, /* aaa2 for Dmytro : implement and cover strRight_ with proper ranges */ /* Dmytro : implemented routine strRight_ with cintervals, covered */
+  // _strRightSingle,
+  // strRight, /* aaa2 for Dmytro : implement and cover strRight_ with proper ranges */ /* Dmytro : implemented routine strRight_ with cintervals, covered */
   _strRightSingle_,
   strRight_,
 
@@ -3524,6 +3350,6 @@ _.mapExtend( Self, Extension );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

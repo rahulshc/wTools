@@ -1,4 +1,4 @@
-( function _iBuffer_s_()
+( function _l3_Buffer_s_()
 {
 
 'use strict';
@@ -29,6 +29,6 @@ Object.assign( Self, Routines );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();
