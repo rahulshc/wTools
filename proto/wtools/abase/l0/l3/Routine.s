@@ -1156,8 +1156,13 @@ function routineErFor( routine, erhead )
 
   erhead = erhead || routine.erhead || routine.head;
   let head = routine.head;
-  let body = routine.body || routine.body;
-  let defaults = routine.defaults || routine.defaults;
+  // let body = routine.body || routine.body; /* Dmytro : duplicated value */
+  let body = routine.body;
+  // let defaults = routine.defaults || routine.defaults; /* Dmytro : duplicated value, routine constructed by routineUnite should have defaults  */
+  /* Dmytro : alternative but not useful variant
+  let defaults = routine.defaults || Object.create( null );
+  */
+  let defaults = routine.defaults;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( routine ) );
