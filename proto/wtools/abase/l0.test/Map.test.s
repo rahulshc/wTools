@@ -134,7 +134,7 @@ function mapExtendConditional( test )
 {
 
   test.case = 'an unique object';
-  var got = _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1, c : 3 } );
+  var got = _.mapExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, { a : 1, c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
@@ -152,7 +152,7 @@ function mapExtendConditional( test )
   test.case = 'few argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapExtendConditional( _.field.mapper.dstNotHas );
+    _.mapExtendConditional( _.property.mapper.dstNotHas() );
   });
 
   test.case = 'wrong type of array';
@@ -656,7 +656,7 @@ mapMakeBugWithArray.description =
    _.mapMake( {...}, {...} );
 
    After changing behavior of mapMake call should be
-   _.mapMake.apply( this. [ src ] );
+   _.mapMake.apply( this, [ src ] );
 `
 
 //
@@ -1370,30 +1370,32 @@ function mapToArray( test )
   var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
   test.identical( got, expected );
 
-  test.case = 'src - map prototyped by another map, own pairs';
+  test.case = 'src - map prototyped by another map, onlyOwn pairs';
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
-  var got = _.mapToArray.call( { own : 1 }, a );
-  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  var got = _.mapToArray( a, { onlyOwn : 1 } );
+  var expected = [ [ 'a', 1 ] ];
   test.identical( got, expected );
 
-  test.case = 'src - map prototyped by another map, own pairs, not enumerable property';
+  test.case = 'src - map prototyped by another map, onlyOwn pairs, not enumerable property';
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapToArray.call( { enumerable : 0, own : 1 }, a );
-  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  var got = _.mapToArray( a, { onlyEnumerable : 0, onlyOwn : 1 } );
+  var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
-  test.case = 'src - map prototyped by another map, own pairs disable, not enumerable property';
-  var a = { a : 1 };
-  var b = { b : 2 };
+  test.case = 'src - map prototyped by another map, onlyOwn pairs disable, not enumerable property';
+  var a = Object.create( null );
+  a.a = 1;
+  var b = Object.create( null );
+  b.b = 2;
   Object.setPrototypeOf( a, b );
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapToArray.call( { enumerable : 0, own : 0 }, a );
-  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  var got = _.mapToArray( a, { onlyEnumerable : 0, onlyOwn : 0 } );
+  var expected = [ [ 'a', 1 ], [ 'k', 3 ], [ 'b', 2 ] ];
   test.identical( got, expected );
 
   /* - */
@@ -1502,43 +1504,55 @@ function mapKeys( test )
   var expected = [ ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'options';
   var a = { a : 1 }
   var b = { b : 2 }
   Object.setPrototypeOf( a, b );
 
-  /* own off */
+  /* onlyOwn off */
 
   var got = _.mapKeys( a );
   var expected = [ 'a', 'b' ];
   test.identical( got, expected );
 
-  /* own on */
+  /* onlyOwn on */
 
-  var o = { own : 1 };
-  var got = _.mapKeys.call( o, a, o );
+  var o = { onlyOwn : 1 };
+  var got = _.mapKeys( a, o );
   var expected = [ 'a' ];
   test.identical( got, expected );
 
-  /* enumerable/own off */
+  /* enumerable/onlyOwn off */
 
-  var o = { enumerable : 0, own : 0 };
+  var o = { onlyEnumerable : 0, onlyOwn : 0 };
   Object.defineProperty( b, 'k', { enumerable : 0 } );
-  var got = _.mapKeys.call( o, a, o );
+  var got = _.mapKeys( a, o );
   var expected = _.mapAllKeys( a );
   test.identical( got, expected );
 
-  /* enumerable off, own on */
+  /* enumerable off, onlyOwn on */
 
-  var o = { enumerable : 0, own : 1 };
+  var o = { onlyEnumerable : 0, onlyOwn : 1 };
   Object.defineProperty( a, 'k', { enumerable : 0 } );
-  var got = _.mapKeys.call( o, a, o );
+  var got = _.mapKeys( a, o );
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
-  //
+  /**/
+
+  test.case = 'onlyEnumerable : 0, onlyOwn : 0'
+  var a = Object.create( null );
+  a.a = 1;
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
+  var b = Object.create( a );
+  b.b = 2;
+  var exp = [ 'b', 'a', 'k' ];
+  var got = _.mapKeys( b, { onlyEnumerable : 0, onlyOwn : 0 } );
+  test.identical( got, exp );
+
+  /* */
 
   if( !Config.debug )
   return;
@@ -1555,7 +1569,7 @@ function mapKeys( test )
     _.mapKeys( 'wrong arguments' );
   });
 
-  test.case = 'unknown option';
+  test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
     _.mapKeys( { x : 1 }, { 'wrong' : null } );
@@ -1572,7 +1586,7 @@ function mapOwnKeys( test )
   var expected = [];
   test.identical( got, expected )
 
-  //
+  /* */
 
   test.case = 'simplest'
 
@@ -1584,7 +1598,7 @@ function mapOwnKeys( test )
   var expected = [ ];
   test.identical( got, expected )
 
-  //
+  /* */
 
   test.case = ''
 
@@ -1606,7 +1620,7 @@ function mapOwnKeys( test )
   var expected = [ 'c' ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'enumerable on/off';
   var a = { a : '1' };
@@ -1616,12 +1630,12 @@ function mapOwnKeys( test )
   test.identical( got, expected );
 
   Object.defineProperty( a, 'k', { enumerable : false } );
-  var o = { enumerable : 0 };
-  var got = _.mapOwnKeys.call( o, a, o );
+  var o = { onlyEnumerable : 0 };
+  var got = _.mapOwnKeys( a, o );
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1638,10 +1652,10 @@ function mapOwnKeys( test )
     _.mapOwnKeys( 1 );
   })
 
-  test.case = 'unknown option';
+  test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKeys.call( {}, { own : 0 }, { 'wrong' : null } );
+    _.mapOwnKeys( { onlyOwn : 0 }, { 'wrong' : null } );
   })
 
 }
@@ -1666,27 +1680,27 @@ function mapAllKeys( test )
     'isPrototypeOf'
   ]
 
-  //
+  /* */
 
   test.case = 'empty'
   var got = _.mapAllKeys( {} );
   test.identical( got.sort(), _expected.sort() )
 
-  //
+  /* */
 
-  test.case = 'one own property'
+  test.case = 'one onlyOwn property'
   var got = _.mapAllKeys( { a : 1 } );
   var expected = _expected.slice();
   expected.push( 'a' );
   test.identical( got.sort(), expected.sort() )
 
-  //
+  /* */
 
   test.case = 'date'
   var got = _.mapAllKeys( new Date );
   test.identical( got.length, 55 );
 
-  //
+  /* */
 
   test.case = 'not enumerable'
   var a = { };
@@ -1696,7 +1710,7 @@ function mapAllKeys( test )
   expected.push( 'k' );
   test.identical( got.sort(), expected.sort() );
 
-  //
+  /* */
 
   test.case = 'from prototype'
   var a = { a : 1 };
@@ -1709,7 +1723,7 @@ function mapAllKeys( test )
   expected = expected.concat( [ 'a', 'b', 'k', 'y' ] );
   test.identical( got.sort(), expected.sort() );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1726,10 +1740,10 @@ function mapAllKeys( test )
     _.mapAllKeys();
   })
 
-  test.case = 'unknown option';
+  test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllKeys.call( {}, { own : 0 }, { 'wrong' : null } );
+    _.mapAllKeys( { onlyOwn : 0 }, { 'wrong' : null } );
   })
 
 }
@@ -1763,26 +1777,26 @@ function mapVals( test )
 
   /* */
 
-  test.case = 'own'
+  test.case = 'onlyOwn'
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
   /**/
 
-  var o = { own : 0, enumerable : 1 };
-  var got = _.mapVals.call( o, a, o );
+  var o = { onlyOwn : 0, onlyEnumerable : 1 };
+  var got = _.mapVals( a, o );
   var expected = [ 1, 2 ]
   test.identical( got, expected );
 
   /**/
 
-  var o = { own : 1, enumerable : 1 };
-  var got = _.mapVals.call( o, a, o );
+  var o = { onlyOwn : 1, onlyEnumerable : 1 };
+  var got = _.mapVals( a, o );
   var expected = [ 1 ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'enumerable'
   var a = { a : 1 };
@@ -1790,23 +1804,23 @@ function mapVals( test )
 
   /**/
 
-  var got = _.mapVals.call( { enumerable : 1, own : 0 }, a );
+  var got = _.mapVals( a, { onlyEnumerable : 1, onlyOwn : 0 } );
   var expected = [ 1 ];
   test.identical( got, expected );
 
   /**/
 
-  var got = _.mapVals.call( { enumerable : 0, own : 0 }, a );
-  var contains = false;
-  for( var i = 0; i < got.length; i++ )
-  {
-    contains = _.mapContain( a, got[ i ] )
-    if( !contains )
-    break;
-  }
-  test.true( contains );
+  test.case = 'onlyEnumerable : 0, onlyOwn : 0'
+  var a = Object.create( null );
+  a.a = 1;
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
+  var b = Object.create( a );
+  b.b = 2;
+  var exp = [ 2, 1, 3 ];
+  var got = _.mapVals( b, { onlyEnumerable : 0, onlyOwn : 0 } );
+  test.identical( got, exp );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1854,9 +1868,9 @@ function mapOwnVals( test )
   var expected = [ ];
   test.identical( got, expected );
 
-  //
+  /* */
 
-  test.case = ' only own values'
+  test.case = ' only onlyOwn values'
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
@@ -1872,11 +1886,11 @@ function mapOwnVals( test )
   test.case = 'enumerable - 0';
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : 4 } );
-  var got = _.mapOwnVals( a, { enumerable : 0 } );
+  var got = _.mapOwnVals( a, { onlyEnumerable : 0 } );
   var expected = [ 1, 3 ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1922,7 +1936,7 @@ function mapAllVals( test )
   var got = _.mapAllVals( new Date );
   test.true( got.length > _.mapAllVals( {} ).length );
 
-  //
+  /* */
 
   test.case = 'from prototype'
   var a = { a : 1 };
@@ -1937,7 +1951,7 @@ function mapAllVals( test )
   test.true( got.indexOf( 1 ) !== -1 );
   test.true( got.indexOf( 2 ) !== -1 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -2015,25 +2029,25 @@ function mapPairs( test )
   var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
   test.identical( got, expected );
 
-  /* using own */
+  /* using onlyOwn */
 
-  var got = _.mapPairs( a, { own : 1 } );
+  var got = _.mapPairs( a, { onlyOwn : 1 } );
   var expected = [ [ 'a', 1 ] ];
   test.identical( got, expected );
 
-  /* using enumerable off, own on */
+  /* using enumerable off, onlyOwn on */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var o = { enumerable : 0, own : 1 };
-  var got = _.mapPairs.call( o, a, o );
+  var o = { onlyEnumerable : 0, onlyOwn : 1 };
+  var got = _.mapPairs( a, o );
   var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
-  /* using enumerable off, own off */
+  /* using enumerable off, onlyOwn off */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var o = { enumerable : 0, own : 0 };
-  var got = _.mapPairs.call( o, a, o );
+  var o = { onlyEnumerable : 0, onlyOwn : 0 };
+  var got = _.mapPairs( a, o );
   test.true( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'k', 3 ] );
@@ -2084,7 +2098,7 @@ function mapOwnPairs( test )
   var expected = [];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'a list of [ key, value ] pairs';
 
@@ -2106,7 +2120,7 @@ function mapOwnPairs( test )
   var expected = [];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'from prototype';
 
@@ -2120,11 +2134,11 @@ function mapOwnPairs( test )
   /* using enumerable off */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnPairs( a, { enumerable : 0 } );
+  var got = _.mapOwnPairs( a, { onlyEnumerable : 0 } );
   var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -2157,7 +2171,7 @@ function mapAllPairs( test )
   var got = _.mapAllPairs( {} );
   test.true( got.length !== 0 );
 
-  //
+  /* */
 
   test.case = 'a list of [ key, value ] pairs';
 
@@ -2184,7 +2198,7 @@ function mapAllPairs( test )
   test.true( got.indexOf( 'constructor' ) !== -1 );
   test.identical( got[ got.indexOf( 'constructor' ) + 1 ].name, 'Date' );
 
-  //
+  /* */
 
   test.case = 'from prototype';
 
@@ -2196,7 +2210,7 @@ function mapAllPairs( test )
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'b', 2 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -2217,933 +2231,6 @@ function mapAllPairs( test )
   test.shouldThrowErrorSync( function()
   {
     _.mapAllPairs( 'wrong argument' );
-  });
-
-}
-
-//
-
-function mapProperties( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapProperties( {} );
-  test.identical( got, {} );
-
-  var got = _.mapProperties( [] );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapProperties( { a : 1 } );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  var a = [];
-  a.a = 1;
-  var got = _.mapProperties( a );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  var got = _.mapProperties( new Date() );
-  var expected = {};
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2 };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapProperties( a );
-  var expected = { a : 1, b : 2 };
-  test.identical( got, expected );
-
-  /**/
-
-  var o = { own : 1, enumerable : 1 };
-  var got = _.mapProperties.call( o, a, o );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  /**/
-
-  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var o = { enumerable : 0, own : 1 };
-  var got = _.mapProperties.call( o, a, o );
-  var expected = { a : 1, k : 3 };
-  test.identical( got, expected );
-
-  /**/
-
-  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapProperties( a, { enumerable : 0, own : 0 } );
-  test.true( Object.keys( got ).length > 3 );
-  test.true( got.a === 1 );
-  test.true( got.b === 2 );
-  test.true( got.k === 3 );
-
-  /**/
-
-  var got = _.mapProperties( new Date(), { enumerable : 0, own : 0 } );
-  test.true( Object.keys( got ).length !== 0 );
-  test.true( got.constructor.name === 'Date' );
-  test.true( _.routineIs( got.getDate ) );
-  test.true( _.routineIs( got.toString ) );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapProperties();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapProperties( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapProperties( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapProperties.call( {}, { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapOwnProperties( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapOwnProperties( {} );
-  test.identical( got, {} );
-
-  var got = _.mapOwnProperties( [] );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapOwnProperties( { a : 1 } );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  var a = [];
-  a.a = 1;
-  var got = _.mapOwnProperties( a );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  var got = _.mapOwnProperties( new Date() );
-  var expected = {};
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2 };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapOwnProperties( a );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  /**/
-
-  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnProperties( a, { enumerable : 0 } );
-  var expected = { a : 1, k : 3 };
-  test.identical( got, expected );
-
-  /**/
-
-  var got = _.mapOwnProperties.call( { enumerable : 0 }, new Date() );
-  test.identical( got, {} )
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnProperties();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnProperties( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnProperties( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnProperties( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapAllProperties( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapAllProperties( {} );
-  test.true( Object.keys( got ).length !== 0 )
-  test.identical( got.constructor.name, 'Object' );
-
-  var got = _.mapAllProperties( [] );
-  test.true( Object.keys( got ).length !== 0 )
-  test.identical( got.constructor.name, 'Array' );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapAllProperties( { a : 1 } );
-  test.true( Object.keys( got ).length > 1 )
-  test.identical( got.a, 1 );
-
-  var a = [];
-  a.a = 1;
-  var got = _.mapAllProperties( a );
-  test.true( Object.keys( got ).length > 1 )
-  var expected = { a : 1 };
-  test.identical( got.a, 1 );
-
-  var got = _.mapAllProperties( new Date() );
-  test.true( _.routineIs( got.getDate ) );
-  test.identical( got.constructor.name, 'Date' );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2 };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapAllProperties( a );
-  test.true( Object.keys( got ).length > 2 )
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-
-  /**/
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapAllProperties( a );
-  test.true( Object.keys( got ).length > 3 )
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.k, 3 );
-
-  /**/
-
-  var a = { a : 1 };
-  var b = { b : 2 };
-  Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'k', { enumerable : 0, value : undefined } );
-  var got = _.mapAllProperties( a );
-  test.true( Object.keys( got ).length > 3 )
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.k, undefined );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllProperties();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllProperties( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllProperties( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllProperties( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapRoutines( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapRoutines( {} );
-  test.identical( got, {} );
-
-  var got = _.mapRoutines( [] );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapRoutines( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.b ) );
-
-  var a = [];
-  a.a = function(){};
-  var got = _.mapRoutines( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.a ) );
-
-  var got = _.mapRoutines( new Date() );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapRoutines( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.c ) );
-
-  /**/
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapRoutines( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.c ) );
-
-  /* enumerable : 0 */
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var o = { enumerable : 0 };
-  var got = _.mapRoutines.call( o, a, o );
-  test.true( Object.keys( got ).length > 1 )
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-
-
-  /**/
-
-  a.y = function(){}
-  var got = _.mapRoutines( a, { own : 1 } );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.y ) );
-
-  /* own : 0 */
-
-  var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-  var got = _.mapRoutines.call( { own : 0 }, a );
-  test.true( Object.keys( got ).length === 2 )
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.c ) );
-
-  /* own : 0, enumerable : 0 */
-
-  var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
-  var o = { own : 0, enumerable : 0 };
-  var got = _.mapRoutines.call( o, a, o );
-  test.true( Object.keys( got ).length > 3 )
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.k ) );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapRoutines();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapRoutines( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapRoutines( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapRoutines( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapOwnRoutines( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapOwnRoutines( {} );
-  test.identical( got, {} );
-
-  var got = _.mapOwnRoutines( [] );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapOwnRoutines( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.b ) );
-
-  var a = [];
-  a.a = function(){};
-  var got = _.mapOwnRoutines( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.a ) );
-
-  var got = _.mapRoutines( new Date() );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapOwnRoutines( a );
-  test.identical( got, {} );
-
-  /* enumerable : 0 */
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnRoutines( a );
-  test.identical( got, {} );
-
-  /* enumerable : 0 */
-
-  var a = {};
-  var b = {};
-  Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
-  var got = _.mapOwnRoutines( a );
-  test.identical( got, {} );
-
-  /* enumerable : 0 */
-
-  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
-  test.identical( got, {} );
-
-  /* enumerable : 0 */
-
-  var a = {};
-  var b = {};
-  Object.defineProperty( a, 'k', { enumerable : 0, value : function(){} } );
-  var got = _.mapOwnRoutines( a, { enumerable : 0 } );
-  test.identical( got.k, a.k );
-  test.true( _.routineIs( got.k ) );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnRoutines();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnRoutines( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnRoutines( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnRoutines( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapAllRoutines( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapAllRoutines( {} );
-  test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-
-  var got = _.mapAllRoutines( [] );
-  test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapAllRoutines( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-  test.true( _.routineIs( got.b ) );
-
-  var a = [];
-  a.a = function(){};
-  var got = _.mapAllRoutines( a );
-  test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-  test.true( _.routineIs( got.a ) );
-
-  var got = _.mapAllRoutines( new Date() );
-  test.true( Object.keys( got ).length !== 0 );
-  test.identical( got.constructor.name, 'Date' );
-  test.true( _.routineIs( got.getDate ) );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapAllRoutines( a );
-  test.true( Object.keys( got ).length > 1 );
-  test.true( _.routineIs( got.c ) );
-
-  /**/
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapAllRoutines( a );
-  test.true( Object.keys( got ).length > 1 );
-  test.true( _.routineIs( got.c ) );
-
-  /**/
-
-  Object.defineProperty( a, 'z', { enumerable : 0, value : function(){} } );
-  Object.defineProperty( b, 'y', { enumerable : 0, value : function(){} } );
-  var got = _.mapAllRoutines( a );
-  test.true( Object.keys( got ).length > 2 );
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.z ) );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllRoutines();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllRoutines( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllRoutines( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllRoutines( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapFields( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapFields( {} );
-  test.identical( got, {} );
-
-  var got = _.mapFields( [] );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapFields( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( got.a === 1 );
-
-  var a = [ ];
-  a.a = function(){};
-  a.b = 1;
-  var got = _.mapFields( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( got.b === 1 );
-
-  var got = _.mapFields( new Date() );
-  test.identical( got, {} );
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapFields( a );
-  test.true( Object.keys( got ).length === 2 );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-
-  /**/
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapFields( a );
-  test.true( Object.keys( got ).length === 2 );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-
-  /* enumerable : 0 */
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapFields( a, { enumerable : 0 } );
-  test.true( Object.keys( got ).length === 4 )
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.k, 3 );
-
-  /**/
-
-  a.y = function(){}
-  var got = _.mapFields( a, { own : 1 } );
-  test.true( Object.keys( got ).length === 1 )
-  test.identical( got.a, 1 );
-
-  /* own : 0 */
-
-  var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-  var got = _.mapFields.call( { own : 0, enumerable : 1 }, a );
-  test.true( Object.keys( got ).length === 2 )
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-
-  /* enumerable : 0 */
-
-  var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
-  Object.defineProperty( b, 'z', { enumerable : 0, value : 3 } );
-  var got = _.mapFields( a, { enumerable : 0 } );
-  test.identical( Object.keys( got ).length, 4 );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.z, 3 );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapFields();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapFields( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapFields( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapFields( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapOwnFields( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapOwnFields( {} );
-  test.identical( got, {} );
-
-  var got = _.mapOwnFields( [] );
-  test.identical( got, {} );
-
-  /* */
-
-  test.case = 'trivial';
-
-  var got = _.mapOwnFields( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( got.a === 1 );
-
-  var a = [ ];
-  a.a = function(){};
-  a.b = 1;
-  var got = _.mapOwnFields( a );
-  test.true( Object.keys( got ).length === 1 )
-  test.true( got.b === 1 );
-
-  var got = _.mapOwnFields( new Date() );
-  test.identical( got, {} );
-
-  /* */
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /* */
-
-  var got = _.mapOwnFields( a );
-  test.true( Object.keys( got ).length === 1 );
-  test.identical( got.a, 1 );
-
-  /* */
-
-  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnFields( a );
-  test.true( Object.keys( got ).length === 1 );
-  test.identical( got.a, 1 );
-
-  /* enumerable : 0 */
-
-  Object.defineProperty( a, 'y', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnFields( a, { enumerable : 0 } );
-  test.true( Object.keys( got ).length === 3 )
-  test.identical( got.a, 1 );
-  test.identical( got.y, 3 );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnFields();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnFields( 'x' );
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnFields( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnFields( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapOwnFields( { x : 1 }, { 'wrong' : null } );
-  });
-
-}
-
-//
-
-function mapAllFields( test )
-{
-  test.case = 'empty';
-
-  var got = _.mapAllFields( {} );
-  test.true( Object.keys( got ).length === 1 )
-  test.identical( got.__proto__, {}.__proto__ );
-
-  var got = _.mapAllFields( [] );
-  test.true( Object.keys( got ).length === 2 )
-  test.identical( got.__proto__, [].__proto__ );
-  test.identical( got.length, 0 );
-
-  //
-
-  test.case = 'trivial';
-
-  var got = _.mapAllFields( { a : 1, b : function(){} } );
-  test.true( Object.keys( got ).length === 2 )
-  test.true( got.a === 1 );
-  test.true( got.__proto__ === {}.__proto__ );
-
-  var a = [ ];
-  a.a = function(){};
-  a.b = 1;
-  var got = _.mapAllFields( a );
-  console.log(got);
-  test.true( Object.keys( got ).length === 3 )
-  test.true( got.length === 0 );
-  test.true( got.b === 1 );
-  test.true( got.__proto__ === [].__proto__ );
-
-  var str = new Date();
-  var got = _.mapAllFields( str );
-  test.identical( got.__proto__, str.__proto__);
-
-  //
-
-  test.case = 'prototype'
-  var a = { a : 1 };
-  var b = { b : 2, c : function(){} };
-  Object.setPrototypeOf( a, b );
-
-  /**/
-
-  var got = _.mapAllFields( a );
-  test.true( Object.keys( got ).length === 3 );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.__proto__, b );
-
-  /**/
-
-  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapAllFields( a );
-  test.true( Object.keys( got ).length === 4 );
-  test.identical( got.a, 1 );
-  test.identical( got.b, 2 );
-  test.identical( got.k, 3 );
-  test.identical( got.__proto__, b );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllFields();
-  });
-
-  test.case = 'primitive';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllFields( 1 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllFields( 'wrong argument' );
-  });
-
-  test.case = 'unknown option';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapAllFields( { x : 1 }, { 'wrong' : null } );
   });
 
 }
@@ -3512,7 +2599,7 @@ function mapButConditional( test )
 {
 
   test.case = 'an object';
-  var got = _.mapButConditional( _.field.filter.dstNotHasSrcPrimitive, { a : 1, b : 'ab', c : [ 1, 2, 3 ] }, { a : 1, b : 'ab', d : [ 1, 2, 3 ] }  );
+  var got = _.mapButConditional( _.property.filter.dstNotHasSrcPrimitive(), { a : 1, b : 'ab', c : [ 1, 2, 3 ] }, { a : 1, b : 'ab', d : [ 1, 2, 3 ] }  );
   var expected = {};
   test.identical( got, expected );
 
@@ -3530,13 +2617,13 @@ function mapButConditional( test )
   test.case = 'few arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapButConditional( _.field.mapper.primitive );
+    _.mapButConditional( _.property.mapper.primitive() );
   });
 
   test.case = 'second argument is wrong type of array';
   test.shouldThrowErrorSync( function()
   {
-    _.mapButConditional( _.field.mapper.primitive, [] );
+    _.mapButConditional( _.property.mapper.primitive(), [] );
   });
 
   test.case = 'wrong type of arguments';
@@ -3562,7 +2649,7 @@ function mapButConditionalThreeArguments_( test )
 
     return true;
   }
-  filter.functionFamily = 'field-filter';
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
 
@@ -3787,11 +2874,11 @@ function mapButConditionalThreeArguments_( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, [], {}, [] ) );
 
-  test.case = 'wrong type of fieldFilter';
+  test.case = 'wrong type of propertyFilter';
   test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( [], null, {}, {} ) );
 
-  test.case = 'fieldFilter has not field field-filter';
+  test.case = 'propertyFilter has no PropertyFilter';
   var filter = ( a, b, c ) => a > ( b + c );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, {}, {} ) );
 
@@ -3819,7 +2906,7 @@ function mapButConditionalDstMapNull_( test )
 
     return true;
   }
-  filter.functionFamily = 'field-filter';
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
 
@@ -4010,7 +3097,7 @@ function mapButConditionalDstMapMap_( test )
 
     return true;
   }
-  filter.functionFamily = 'field-filter';
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
 
@@ -5769,7 +4856,7 @@ function mapOwnButThreeArguments_( test )
   test.true( got === srcMap );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
@@ -5780,7 +4867,7 @@ function mapOwnButThreeArguments_( test )
   test.true( got === srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
@@ -5791,7 +4878,7 @@ function mapOwnButThreeArguments_( test )
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
@@ -5801,7 +4888,7 @@ function mapOwnButThreeArguments_( test )
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
@@ -5811,7 +4898,7 @@ function mapOwnButThreeArguments_( test )
   test.true( got === srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
@@ -5867,7 +4954,7 @@ function mapOwnButThreeArguments_( test )
   test.identical( srcMap, [] );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( srcMap, screenMap );
@@ -5877,7 +4964,7 @@ function mapOwnButThreeArguments_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOwnBut_( srcMap, screenMap );
@@ -5887,7 +4974,7 @@ function mapOwnButThreeArguments_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( srcMap, screenMap );
@@ -5897,7 +4984,7 @@ function mapOwnButThreeArguments_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOwnBut_( srcMap, screenMap );
@@ -5974,7 +5061,7 @@ function mapOwnButDstMapNull_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
@@ -5984,7 +5071,7 @@ function mapOwnButDstMapNull_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
@@ -5994,7 +5081,7 @@ function mapOwnButDstMapNull_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
@@ -6004,7 +5091,7 @@ function mapOwnButDstMapNull_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
@@ -6014,7 +5101,7 @@ function mapOwnButDstMapNull_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
@@ -6070,7 +5157,7 @@ function mapOwnButDstMapNull_( test )
   test.identical( srcMap, [] );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( null, srcMap, screenMap );
@@ -6080,7 +5167,7 @@ function mapOwnButDstMapNull_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOwnBut_( null, srcMap, screenMap );
@@ -6090,7 +5177,7 @@ function mapOwnButDstMapNull_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( null, srcMap, screenMap );
@@ -6100,7 +5187,7 @@ function mapOwnButDstMapNull_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOwnBut_( null, srcMap, screenMap );
@@ -6159,7 +5246,7 @@ function mapOwnButDstMapMap_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
@@ -6170,7 +5257,7 @@ function mapOwnButDstMapMap_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
@@ -6181,7 +5268,7 @@ function mapOwnButDstMapMap_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
@@ -6192,7 +5279,7 @@ function mapOwnButDstMapMap_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
@@ -6203,7 +5290,7 @@ function mapOwnButDstMapMap_( test )
   test.true( got !== srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
@@ -6264,7 +5351,7 @@ function mapOwnButDstMapMap_( test )
   test.identical( srcMap, [] );
   test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var dstMap = { 0 : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
@@ -6275,7 +5362,7 @@ function mapOwnButDstMapMap_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
@@ -6286,7 +5373,7 @@ function mapOwnButDstMapMap_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled map, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
@@ -6297,7 +5384,7 @@ function mapOwnButDstMapMap_( test )
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
   test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
-  test.case = 'srcMap - filled map has not own property, butMap - filled array, has identical keys';
+  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
@@ -9875,7 +8962,7 @@ function mapHasAll( test )
   var got = _.mapHasAll( a, { a : 1 } );
   test.true( got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -9972,7 +9059,7 @@ function mapHasAny( test )
   var got = _.mapHasAny( a, { a : 1, x : 1 } );
   test.true( got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -10073,7 +9160,7 @@ function mapHasNone( test )
   var got = _.mapHasNone( a, { a : 1 } );
   test.true( !got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -10163,7 +9250,7 @@ function mapOwnAll( test )
   var got = _.mapOwnAll( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -10271,7 +9358,7 @@ function mapOwnAny( test )
   var got = _.mapOwnAny( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -10379,7 +9466,7 @@ function mapOwnNone( test )
   var got = _.mapOwnNone( {}, { x : 1, toString : 1 } );
   test.true( got );
 
-  //
+  /* */
 
   if( Config.degub )
   {
@@ -10451,7 +9538,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10466,7 +9553,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10481,7 +9568,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10496,7 +9583,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10511,7 +9598,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10526,7 +9613,7 @@ function sureMapHasExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -10547,7 +9634,7 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  try
+  try /* qqq : use test.shouldThrowErrorSync() instead of try */
   {
     _.sureMapOwnExactly( srcMap, screenMaps )
   }
@@ -10556,7 +9643,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10571,7 +9658,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10586,7 +9673,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10601,7 +9688,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10616,7 +9703,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10631,7 +9718,7 @@ function sureMapOwnExactly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -10664,7 +9751,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10679,7 +9766,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10694,7 +9781,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10709,7 +9796,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10724,7 +9811,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10739,7 +9826,7 @@ function sureMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -10769,7 +9856,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10784,7 +9871,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10799,7 +9886,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10814,7 +9901,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10829,7 +9916,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10844,7 +9931,7 @@ function sureMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -10874,7 +9961,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have fields : "name"' ), true );
+  test.identical( err.originalMessage, 'Object should have fields : "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10889,7 +9976,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "name"' ), true );
+  test.identical( err.originalMessage, '90 "name"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10904,7 +9991,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "name"' ), true );
+  test.identical( err.originalMessage, 'msg "name"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10919,7 +10006,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10934,7 +10021,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "name"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10949,7 +10036,7 @@ function sureMapHasAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -10979,7 +10066,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own fields : "name"' ), true );
+  test.identical( err.originalMessage, 'Object should own fields : "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10994,7 +10081,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "name"' ), true );
+  test.identical( err.originalMessage, '90 "name"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11009,7 +10096,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "name"' ), true );
+  test.identical( err.originalMessage, 'msg "name"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11024,7 +10111,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11039,7 +10126,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "name"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11054,7 +10141,7 @@ function sureMapOwnAll( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -11084,7 +10171,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11099,7 +10186,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, '90 "a", "b", "c"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11114,7 +10201,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg "a", "b", "c"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11129,7 +10216,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11144,7 +10231,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "a", "b", "c"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11159,7 +10246,7 @@ function sureMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 //
@@ -11189,7 +10276,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11204,7 +10291,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, '90 "a", "b", "c"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11219,7 +10306,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg "a", "b", "c"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11234,7 +10321,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11249,7 +10336,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "a", "b", "c"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11264,7 +10351,7 @@ function sureMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 }
 
 // --
@@ -11298,7 +10385,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11313,7 +10400,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11328,7 +10415,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11343,7 +10430,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11358,7 +10445,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11373,7 +10460,7 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11415,7 +10502,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11430,7 +10517,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11445,7 +10532,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11460,7 +10547,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11475,7 +10562,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11490,7 +10577,7 @@ function assertMapOwnFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11532,7 +10619,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11547,7 +10634,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11562,7 +10649,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11577,7 +10664,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11592,7 +10679,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11607,7 +10694,7 @@ function assertMapHasOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11649,7 +10736,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11664,7 +10751,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11679,7 +10766,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11694,7 +10781,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11709,7 +10796,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11724,7 +10811,7 @@ function assertMapOwnOnly( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11766,7 +10853,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no fields : "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'Object should have no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11781,7 +10868,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, '90 "a", "b", "c"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11796,7 +10883,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg "a", "b", "c"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11811,7 +10898,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11826,7 +10913,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "a", "b", "c"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11841,7 +10928,7 @@ function assertMapHasNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11883,7 +10970,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should own no fields : "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'Object should own no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11898,7 +10985,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, '90 "a", "b", "c"' );
 
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11913,7 +11000,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg "a", "b", "c"' );
 
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11928,7 +11015,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11943,7 +11030,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "a", "b", "c"' );
 
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11958,7 +11045,7 @@ function assertMapOwnNone( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
 
   /* - */
 
@@ -11996,7 +11083,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no undefines, but has : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
@@ -12010,7 +11097,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var otherMap = { 'd' : undefined };
@@ -12023,7 +11110,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var otherMap = { 'd' : undefined };
@@ -12037,7 +11124,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
@@ -12051,7 +11138,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, four or more arguments';
   var otherMap = { 'd' : undefined };
@@ -12065,7 +11152,7 @@ function sureMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects one, two or three arguments' ), true );
+  test.identical( err.originalMessage, 'Expects one, two or three arguments' );
 }
 
 //
@@ -12095,7 +11182,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Object should have no undefines, but has : "d"' ), true );
+  test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
@@ -12109,7 +11196,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  test.identical( err.originalMessage, '90 "d"' );
 
   test.case = 'check error message, msg string';
   var otherMap = { 'd' : undefined };
@@ -12122,7 +11209,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg "d"' ), true );
+  test.identical( err.originalMessage, 'msg "d"' );
 
   test.case = 'check error message, msg string & msg routine';
   var otherMap = { 'd' : undefined };
@@ -12136,7 +11223,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
+  test.identical( err.originalMessage, 'msg 90 "d"' );
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
@@ -12150,7 +11237,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+  test.identical( err.originalMessage, 'This is explanation "d"' );
 
   test.case = 'check error message, four or more arguments';
   var otherMap = { 'd' : undefined };
@@ -12164,7 +11251,7 @@ function assertMapHasNoUndefine( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects one, two or three arguments' ), true );
+  test.identical( err.originalMessage, 'Expects one, two or three arguments' );
 
   /* - */
 
@@ -12188,7 +11275,7 @@ let Self =
   tests :
   {
 
-    // map checker l0/l3/iMap.s
+    // map checker l0/l3/Map.s
 
     mapIs,
 
@@ -12235,17 +11322,17 @@ let Self =
     mapOwnPairs,
     mapAllPairs,
 
-    mapProperties,
-    mapOwnProperties,
-    mapAllProperties,
-
-    mapRoutines,
-    mapOwnRoutines,
-    mapAllRoutines,
-
-    mapFields,
-    mapOwnFields,
-    mapAllFields,
+    // mapProperties,
+    // mapOwnProperties,
+    // mapAllProperties,
+    /* */
+    // mapRoutines,
+    // mapOwnRoutines,
+    // mapAllRoutines,
+    /* */
+    // mapFields,
+    // mapOwnFields,
+    // mapAllFields,
 
     // hash map
 

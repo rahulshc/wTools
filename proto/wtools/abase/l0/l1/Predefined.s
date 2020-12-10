@@ -155,6 +155,6 @@ _global.wTools = Self;
 _global.wBase = Self;
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

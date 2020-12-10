@@ -2596,7 +2596,7 @@ function unrollPrepend( test )
   test.true( src !== got );
   test.false( _.unrollIs( got ) );
 
-  //
+  /* */
 
   test.case = 'dst is array, second arg is null';
   var got = _.unrollPrepend( [ 1 ], null );
@@ -2637,7 +2637,7 @@ function unrollPrepend( test )
   test.true( _.arrayIs( got ) );
   test.false( _.unrollIs( got ) );
 
-  //
+  /* */
 
   test.case = 'dst is unroll, second arg is null';
   var dst = _.unrollMake( [ 1 ] );
@@ -2684,7 +2684,7 @@ function unrollPrepend( test )
   test.true( _.arrayIs( got ) );
   test.true( _.unrollIs( got ) );
 
-  //
+  /* */
 
   test.case = 'dst is complex unroll, second arg is null';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
@@ -2933,7 +2933,7 @@ function unrollAppend( test )
   test.false( _.unrollIs( got ) );
   test.true( src !== got );
 
-  //
+  /* */
 
   test.case = 'dst is array, second arg is null';
   var got = _.unrollAppend( [ 1 ], null );
@@ -2974,7 +2974,7 @@ function unrollAppend( test )
   test.true( _.arrayIs( got ) );
   test.false( _.unrollIs( got ) );
 
-  //
+  /* */
 
   test.case = 'dst is unroll, second arg is null';
   var dst = _.unrollMake( [ 1 ] );
@@ -3021,7 +3021,7 @@ function unrollAppend( test )
   test.true( _.arrayIs( got ) );
   test.true( _.unrollIs( got ) );
 
-  //
+  /* */
 
   test.case = 'dst is complex unroll, second arg is null';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );

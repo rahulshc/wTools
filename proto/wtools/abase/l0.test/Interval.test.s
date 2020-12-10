@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/iInterval.s
+// range l0/l3/Interval.s
 //--
 
 function is( test )
@@ -2265,7 +2265,7 @@ function cintervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in cinterval';
-  var got = _.cinterval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.cinterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -2275,9 +2275,11 @@ function cintervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in cinterval';
-  var got = _.cinterval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -2291,10 +2293,8 @@ function cintervalSureInRange( test )
   test.case = 'src out of cinterval';
   test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 1, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 6, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 7, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 1, [ 2, 5 ], [] ) );
   test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 6, [ 2, 5 ], {} ) );
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 7, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -2307,7 +2307,7 @@ function cintervalAssertInRange( test )
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in cinterval';
-  var got = _.cinterval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.cinterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -2317,9 +2317,11 @@ function cintervalAssertInRange( test )
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in cinterval';
-  var got = _.cinterval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -2333,10 +2335,8 @@ function cintervalAssertInRange( test )
   test.case = 'src out of cinterval';
   test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 1, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 6, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 7, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 1, [ 2, 5 ], [] ) );
   test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 6, [ 2, 5 ], {} ) );
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 7, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -4476,7 +4476,7 @@ function lintervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in linterval';
-  var got = _.linterval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.linterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -4486,9 +4486,11 @@ function lintervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in linterval';
-  var got = _.linterval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -4516,7 +4518,7 @@ function lintervalAssertInRange( test )
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in linterval';
-  var got = _.linterval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.linterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -4526,9 +4528,11 @@ function lintervalAssertInRange( test )
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in linterval';
-  var got = _.linterval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -6543,7 +6547,7 @@ function ointervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in ointerval';
-  var got = _.ointerval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.ointerval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -6553,9 +6557,11 @@ function ointervalSureInRange( test )
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in ointerval';
-  var got = _.ointerval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.ointerval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -6569,9 +6575,7 @@ function ointervalSureInRange( test )
   test.case = 'src out of ointerval';
   test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 1, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 5, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 7, [ 2, 5 ] ) );
   test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 5, [ 2, 5 ], {} ) );
   test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 7, [ 2, 5 ], undefined ) );
 }
 
@@ -7442,7 +7446,7 @@ function ointervalLastGet( test )
 let Self =
 {
 
-  name : 'Tools.Range',
+  name : 'Tools.Interval',
   silencing : 1,
   enabled : 1,
 

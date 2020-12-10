@@ -109,7 +109,7 @@ let wArraySparse =
 
 let wProcess =
 {
-  sourcePath : sourcePath( 'abase/l4_process/Basic.s', 'wprocess' ),
+  sourcePath : sourcePath( 'abase/l4_process/module/Process.s', 'wprocess' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.process && !!_global.wTools.process.start },
 }
 

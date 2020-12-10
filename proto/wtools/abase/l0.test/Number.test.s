@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l3/iNumber.s
+// l0/l3/Number.s
 //--
 
 function numberIs( test )
@@ -1895,7 +1895,7 @@ function numbersAreInt( test )
   var got = _.numbersAreInt([ -1, 1, 1 ]);
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = '1 1 -Infinity';
   var got = _.numbersAreInt([ 1, 1, -Infinity ]);
@@ -1909,7 +1909,7 @@ function numbersAreInt( test )
   var got = _.numbersAreInt([ 1, 1, NaN ]);
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = '1.00 1 0.00 ';
   var got = _.numbersAreInt([ 1.00, 1, 0.00 ]);
@@ -1937,7 +1937,7 @@ function numbersAreInt( test )
 
 
 //--
-// l0/l5/fNumber.s
+// l0/l5/Number.s
 //--
 
 function bigIntFrom( test )
@@ -2004,7 +2004,7 @@ function bigIntFrom( test )
 }
 
 //--
-// l0/l8/gNumber.s
+// l0/l8/Number.s
 //--
 
 function numbersTotal( test )
@@ -3342,7 +3342,7 @@ let Self =
   tests :
   {
 
-    // l0/l3/iNumber.s
+    // l0/l3/Number.s
 
     numberIs,
     numberIsNotNan,
@@ -3360,10 +3360,10 @@ let Self =
     numbersArePositive,
     numbersAreInt,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
     bigIntFrom,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
 
     numbersTotal,
     numberFrom,

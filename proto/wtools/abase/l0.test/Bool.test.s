@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l3/iBool.s
+// l0/l3/Bool.s
 //--
 
 function boolIs( test )
@@ -25,7 +25,7 @@ function boolIs( test )
   var got = _.boolIs( 'hello' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolIs( 1 );
@@ -43,7 +43,7 @@ function boolIs( test )
   var got = _.boolIs( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolIs( {} );
@@ -61,7 +61,7 @@ function boolIs( test )
   var got = _.boolIs( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolIs( false );
@@ -89,7 +89,7 @@ function boolLike( test )
   var got = _.boolLike( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolLike( 1 );
@@ -107,7 +107,7 @@ function boolLike( test )
   var got = _.boolLike( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolLike( {} );
@@ -125,7 +125,7 @@ function boolLike( test )
   var got = _.boolLike( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolLike( false );
@@ -152,7 +152,7 @@ function boolLikeFalse ( test )
   var got = _.boolLikeFalse( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolLikeFalse( 1 );
@@ -170,7 +170,7 @@ function boolLikeFalse ( test )
   var got = _.boolLikeFalse( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolLikeFalse( {} );
@@ -188,7 +188,7 @@ function boolLikeFalse ( test )
   var got = _.boolLikeFalse( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolLikeFalse( false );
@@ -215,7 +215,7 @@ function boolLikeTrue ( test )
   var got = _.boolLikeTrue( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolLikeTrue( 1 );
@@ -233,7 +233,7 @@ function boolLikeTrue ( test )
   var got = _.boolLikeTrue( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolLikeTrue( {} );
@@ -251,7 +251,7 @@ function boolLikeTrue ( test )
   var got = _.boolLikeTrue( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolLikeTrue( false );
@@ -278,7 +278,7 @@ function fuzzyIs( test )
   var got = _.fuzzyIs( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.fuzzyIs( 1 );
@@ -296,7 +296,7 @@ function fuzzyIs( test )
   var got = _.fuzzyIs( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.fuzzyIs( {} );
@@ -314,7 +314,7 @@ function fuzzyIs( test )
   var got = _.fuzzyIs( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.fuzzyIs( false );
@@ -324,7 +324,7 @@ function fuzzyIs( test )
   var got = _.fuzzyIs( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.fuzzyIs( _.maybe );
@@ -351,7 +351,7 @@ function fuzzyLike( test )
   var got = _.fuzzyLike( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.fuzzyLike( 1 );
@@ -369,7 +369,7 @@ function fuzzyLike( test )
   var got = _.fuzzyLike( 10 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.fuzzyLike( {} );
@@ -387,7 +387,7 @@ function fuzzyLike( test )
   var got = _.fuzzyLike( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.fuzzyLike( false );
@@ -397,7 +397,7 @@ function fuzzyLike( test )
   var got = _.fuzzyLike( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.fuzzyLike( _.maybe );
@@ -424,7 +424,7 @@ function fuzzyLikeFalse( test )
   var got = _.fuzzyLikeFalse( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.fuzzyLikeFalse( 1 );
@@ -442,7 +442,7 @@ function fuzzyLikeFalse( test )
   var got = _.fuzzyLikeFalse( 10 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.fuzzyLikeFalse( {} );
@@ -460,7 +460,7 @@ function fuzzyLikeFalse( test )
   var got = _.fuzzyLikeFalse( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.fuzzyLikeFalse( false );
@@ -470,7 +470,7 @@ function fuzzyLikeFalse( test )
   var got = _.fuzzyLikeFalse( true );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.fuzzyLikeFalse( _.maybe );
@@ -497,7 +497,7 @@ function fuzzyLikeTrue( test )
   var got = _.fuzzyLikeTrue( '1' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.fuzzyLikeTrue( 1 );
@@ -515,7 +515,7 @@ function fuzzyLikeTrue( test )
   var got = _.fuzzyLikeTrue( 10 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.fuzzyLikeTrue( {} );
@@ -533,7 +533,7 @@ function fuzzyLikeTrue( test )
   var got = _.fuzzyLikeTrue( [ 1, 2, 3 ] );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.fuzzyLikeTrue( false );
@@ -543,7 +543,7 @@ function fuzzyLikeTrue( test )
   var got = _.fuzzyLikeTrue( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.fuzzyLikeTrue( _.maybe );
@@ -555,7 +555,7 @@ function fuzzyLikeTrue( test )
 }
 
 //--
-// l0/l8/gBool.s
+// l0/l8/Bool.s
 //--
 
 function boolFrom( test )
@@ -576,7 +576,7 @@ function boolFrom( test )
   var got = _.boolFrom( 'false' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolFrom( 1 );
@@ -594,7 +594,7 @@ function boolFrom( test )
   var got = _.boolFrom( 10 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolFrom( false );
@@ -604,7 +604,7 @@ function boolFrom( test )
   var got = _.boolFrom( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -658,7 +658,7 @@ function boolFromMaybe( test )
   var got = _.boolFromMaybe( 'hello' );
   test.identical( got, 'hello' );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolFromMaybe( 1 );
@@ -676,7 +676,7 @@ function boolFromMaybe( test )
   var got = _.boolFromMaybe( 10 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolFromMaybe( {} );
@@ -694,7 +694,7 @@ function boolFromMaybe( test )
   var got = _.boolFromMaybe( [ 1, 2, 3 ] );
   test.identical( got, [ 1, 2, 3 ] );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolFromMaybe( false );
@@ -704,7 +704,7 @@ function boolFromMaybe( test )
   var got = _.boolFromMaybe( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.boolFromMaybe( _.maybe );
@@ -751,7 +751,7 @@ function boolFromForce( test )
   var got = _.boolFromForce( 'hello' );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'number 1 input';
   var got = _.boolFromForce( 1 );
@@ -769,7 +769,7 @@ function boolFromForce( test )
   var got = _.boolFromForce( 10 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'empty object input';
   var got = _.boolFromForce( {} );
@@ -787,7 +787,7 @@ function boolFromForce( test )
   var got = _.boolFromForce( [ 1, 2, 3 ] );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'bool false input';
   var got = _.boolFromForce( false );
@@ -797,7 +797,7 @@ function boolFromForce( test )
   var got = _.boolFromForce( true );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'Symbol( maybe ) input';
   var got = _.boolFromForce( _.maybe );
@@ -822,7 +822,7 @@ let Self =
   tests :
   {
 
-    // l0/l3/iBool.s
+    // l0/l3/Bool.s
 
     boolIs,
     boolLike,
@@ -834,7 +834,7 @@ let Self =
     fuzzyLikeFalse,
     fuzzyLikeTrue,
 
-    // l0/l8/gBool.s
+    // l0/l8/Bool.s
 
     boolFrom,
     boolFromMaybe,
