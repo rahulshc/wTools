@@ -3140,6 +3140,152 @@ function routineEr( test )
 
 //
 
+function routineErShouldSupplementNotDefinedFields( test )
+{
+  function test_head( routine, args )
+  {
+    let o = args[ 0 ];
+    if( !_.mapIs( o ) )
+    {
+      if( o !== undefined )
+      o = { arg : o };
+      else
+      o = Object.create( null );
+    }
+
+    _.routineOptions( routine, o );
+    return o;
+  }
+
+  function test_body( o )
+  {
+    return o;
+  }
+  test_body.defaults = { arg : null, arg2 : 'arg2' };
+
+  /* - */
+
+  test.case = 'routine - no field erhead, erhead - undefined, call without argument';
+  var routine = _.routineUnite( test_head, test_body );
+
+  var got = _.routineEr( routine );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er();
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : null, arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : null, arg2 : 'arg2' } );
+
+  /* */
+
+  test.case = 'routine - no field erhead, erhead - undefined, call with argument';
+  var routine = _.routineUnite( test_head, test_body );
+
+  var got = _.routineEr( routine );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er( 'arg1' );
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : 'arg1', arg2 : 'arg2' } );
+
+  /* */
+
+  test.case = 'routine - with field erhead, erhead - erhead, call without argument';
+  var routine = _.routineUnite( test_head, test_body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+  routine.erhead = erhead;
+
+  var got = _.routineEr( routine );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er();
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : 'arg', arg2 : 'arg2' } );
+
+  /* */
+
+  test.case = 'routine - with field erhead, erhead - undefined, call with argument';
+  var routine = _.routineUnite( test_head, test_body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+  routine.erhead = erhead;
+
+  var got = _.routineEr( routine );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er( 'arg1' );
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : 'arg1', arg2 : 'arg2' } );
+
+  /* */
+
+  test.case = 'routine - no field erhead, erhead - routine, call without argument';
+  var routine = _.routineUnite( test_head, test_body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+
+  var got = _.routineEr( routine, erhead );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er();
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : 'arg', arg2 : 'arg2' } );
+
+  /* */
+
+  test.case = 'routine - no field erhead, erhead - routine, call with argument';
+  var routine = _.routineUnite( test_head, test_body );
+  var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
+
+  var got = _.routineEr( routine, erhead );
+  test.true( _.routineIs( got ) );
+  test.true( got === routine );
+  test.true( _.routineIs( got.er ) );
+  test.identical( got.er.defaults, undefined );
+
+  var gotRoutine = got.er( 'arg1' );
+  test.true( _.routineIs( gotRoutine ) );
+  test.identical( gotRoutine.name, 'er' );
+  test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
+
+  var got = gotRoutine();
+  test.identical( got, { arg : 'arg1', arg2 : 'arg2' } );
+}
+
+//
+
 function routineErFor( test )
 {
   function test_head( routine, args )
@@ -5617,6 +5763,7 @@ var Self =
     routineUnite,
 
     routineEr,
+    routineErShouldSupplementNotDefinedFields,
     routineErFor,
     routineErForShouldSupplementNotDefinedFields,
 
