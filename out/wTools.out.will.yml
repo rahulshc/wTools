@@ -202,6 +202,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Map.s
           - ../proto/wtools/abase/l0/l3/Module.s
           - ../proto/wtools/abase/l0/l3/Number.s
+          - ../proto/wtools/abase/l0/l3/Pair.s
           - ../proto/wtools/abase/l0/l3/Path.s
           - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Property.s
@@ -229,12 +230,12 @@ module:
           - ../proto/wtools/abase/l0/l5/Intervalc.s
           - ../proto/wtools/abase/l0/l5/Intervall.s
           - ../proto/wtools/abase/l0/l5/Intervalo.s
-          - ../proto/wtools/abase/l0/l5/IntervalOld.s
           - ../proto/wtools/abase/l0/l5/Introspector.s
           - ../proto/wtools/abase/l0/l5/Long.s
           - ../proto/wtools/abase/l0/l5/Map.s
           - ../proto/wtools/abase/l0/l5/Module.s
           - ../proto/wtools/abase/l0/l5/Number.s
+          - ../proto/wtools/abase/l0/l5/Pair.s
           - ../proto/wtools/abase/l0/l5/Path.s
           - ../proto/wtools/abase/l0/l5/Process.s
           - ../proto/wtools/abase/l0/l5/Property.s
@@ -264,8 +265,12 @@ module:
           - ../proto/wtools/abase/l0/l8/Ct.s
           - ../proto/wtools/abase/l0/l8/Entity.s
           - ../proto/wtools/abase/l0/l8/Err.s
+          - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
           - ../proto/wtools/abase/l0/l8/Interval.s
+          - ../proto/wtools/abase/l0/l8/Intervalc.s
+          - ../proto/wtools/abase/l0/l8/Intervall.s
+          - ../proto/wtools/abase/l0/l8/Intervalo.s
           - ../proto/wtools/abase/l0/l8/Introspector.s
           - ../proto/wtools/abase/l0/l8/Long.s
           - ../proto/wtools/abase/l0/l8/Map.s
@@ -275,11 +280,15 @@ module:
           - ../proto/wtools/abase/l0/l8/Path.s
           - ../proto/wtools/abase/l0/l8/Process.s
           - ../proto/wtools/abase/l0/l8/Property.s
+          - ../proto/wtools/abase/l0/l8/PropertyTransformer.s
           - ../proto/wtools/abase/l0/l8/Regexp.s
           - ../proto/wtools/abase/l0/l8/Routine.s
           - ../proto/wtools/abase/l0/l8/Set.s
+          - ../proto/wtools/abase/l0/l8/Sorted.s
           - ../proto/wtools/abase/l0/l8/Str.s
           - ../proto/wtools/abase/l0/l8/Time.s
+          - ../proto/wtools/abase/l0/l8/Type.s
+          - ../proto/wtools/abase/l0/l8/Unroll.s
           - ../proto/wtools/abase/l0/l9
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
@@ -296,7 +305,6 @@ module:
           - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
-          - ../proto/wtools/abase/l0.test/IntervalOld.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
