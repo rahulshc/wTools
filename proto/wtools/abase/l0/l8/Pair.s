@@ -103,7 +103,9 @@ var Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.pair === undefined );
+// _.assert( _.pair === undefined );
+_.assert( _.pair !== undefined );
+_.mapSupplement( Self, _.pair );
 _.pair = Self;
 
 // --
