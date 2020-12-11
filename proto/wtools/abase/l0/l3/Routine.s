@@ -2248,7 +2248,7 @@ let Extension =
 
   routinesCompose,
   // routineExtend_old, /* xxx : deprecate */
-  routineExtend_,
+  routineExtend_, /* xxx */
   routineExtend : routineExtend_,
   routineDefaults,
   routineUnite,
