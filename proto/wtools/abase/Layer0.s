@@ -29,6 +29,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Module.s' );
   require( './l0/l3/Number.s' );
   require( './l0/l3/Process.s' );
+  require( './l0/l3/Pair.s' );
   require( './l0/l3/Path.s' );
   require( './l0/l3/Property.s' );
   require( './l0/l3/PropertyTransformer.s' );
@@ -59,6 +60,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Map.s' );
   require( './l0/l5/Module.s' );
   require( './l0/l5/Number.s' );
+  require( './l0/l5/Pair.s' );
   require( './l0/l5/Path.s' );
   require( './l0/l5/Process.s' );
   require( './l0/l5/Property.s' );
@@ -88,8 +90,12 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Ct.s' );
   require( './l0/l8/Entity.s' );
   require( './l0/l8/Err.s' );
+  require( './l0/l8/Event.s' );
   require( './l0/l8/Functional.s' );
   require( './l0/l8/Interval.s' );
+  require( './l0/l8/Intervalc.s' );
+  require( './l0/l8/Intervall.s' );
+  require( './l0/l8/Intervalo.s' );
   require( './l0/l8/Introspector.s' );
   require( './l0/l8/Long.s' );
   require( './l0/l8/Map.s' );
@@ -99,11 +105,15 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Path.s' );
   require( './l0/l8/Process.s' );
   require( './l0/l8/Property.s' );
+  require( './l0/l8/PropertyTransformer.s' );
   require( './l0/l8/Regexp.s' );
   require( './l0/l8/Routine.s' );
   require( './l0/l8/Set.s' );
+  require( './l0/l8/Sorted.s' );
   require( './l0/l8/Str.s' );
   require( './l0/l8/Time.s' );
+  require( './l0/l8/Type.s' );
+  require( './l0/l8/Unroll.s' );
 
   require( './l0/l9/Setup.s' );
 
