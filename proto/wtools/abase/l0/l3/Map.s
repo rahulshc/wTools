@@ -1253,16 +1253,15 @@ function mapSupplementStructureless( dstMap, srcMap )
     {
       if( dstMap[ s ] !== undefined )
       continue;
+
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      {
-        debugger;
-        throw Error( 'Source map should have only primitive elements, but ' + s + ' is ' + srcMap[ s ] );
-      }
+      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+
       dstMap[ s ] = srcMap[ s ];
     }
   }
 
-  return dstMap
+  return dstMap;
 }
 
 //

@@ -3865,21 +3865,11 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
+    let msgKeys = _.strQuote( but ).join( ', ' );
     if( arguments.length === 2 )
-    {
-      throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ]);
-    }
+    throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
     else
-    {
-      let arr = [];
-      for( let i = 2; i < arguments.length; i++ )
-      {
-        if( _.routineIs( arguments[ i ] ) )
-        arguments[ i ] = arguments[ i ]();
-        arr.push( arguments[ i ] );
-      }
-      throw errFromArgs([ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ]);
-    }
+    throw errFromArgs([ msgMake( arguments ), msgKeys ]);
   }
 
   return true;
@@ -3934,6 +3924,20 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
       args,
       level : 2,
     });
+  }
+
+  /* */
+
+  function msgMake( args )
+  {
+    let arr = [];
+    for( let i = 2; i < args.length; i++ )
+    {
+      if( _.routineIs( args[ i ] ) )
+      args[ i ] = args[ i ]();
+      arr.push( args[ i ] );
+    }
+    return arr.join( ' ' );
   }
 }
 
@@ -4303,7 +4307,53 @@ function assertMapHasNoUndefine( srcMap, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasNoUndefine.apply( this, arguments );
+
+  /* */
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects one, two or three arguments' )
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  let but = [];
+
+  for( let s in srcMap )
+  if( srcMap[ s ] === undefined )
+  but.push( s );
+
+  if( but.length > 0 )
+  {
+    let msgKeys = _.strQuote( but ).join( ', ' );
+    if( arguments.length === 1 )
+    throw errFromArgs([ `${ _.strType( srcMap ) } should have no undefines, but has : ${ msgKeys }` ]);
+    else
+    throw errFromArgs([ msgMake( arguments ), msgKeys ])
+  }
+
+  return true;
+
+  /* */
+
+  function errFromArgs( args )
+  {
+    return _._err
+    ({
+      args,
+      level : 2,
+    });
+  }
+
+  /* */
+
+  function msgMake( args )
+  {
+    let arr = [];
+    for( let i = 1 ; i < args.length ; i++ )
+    {
+      if( _.routineIs( args[ i ] ) )
+      args[ i ] = args[ i ]();
+      arr.push( args[ i ] );
+    }
+    return arr.join( ' ' );
+  }
 }
 
 // --
