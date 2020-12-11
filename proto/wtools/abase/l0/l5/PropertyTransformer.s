@@ -173,7 +173,15 @@ function transformerIs( transformer )
   return false;
   if( !_.objectIs( transformer.identity ) )
   return false;
-  return !!( transformer.identity.propertyTransformer || transformer.identity.propertyFilter || transformer.identity.propertyMapper );
+
+  let result =
+  (
+    !!( transformer.identity.propertyTransformer
+    || transformer.identity.propertyFilter
+    || transformer.identity.propertyMapper )
+  );
+
+  return result;
 }
 
 //
