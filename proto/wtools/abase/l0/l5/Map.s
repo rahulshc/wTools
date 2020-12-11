@@ -3856,7 +3856,85 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasOnly.apply( this, arguments );
+
+  /* */
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4, 'Expects two, three or four arguments' );
+
+  let but = mapButKeys( srcMap, screenMaps );
+
+  if( but.length > 0 )
+  {
+    if( arguments.length === 2 )
+    {
+      throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ]);
+    }
+    else
+    {
+      let arr = [];
+      for( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) )
+        arguments[ i ] = arguments[ i ]();
+        arr.push( arguments[ i ] );
+      }
+      throw errFromArgs([ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ]);
+    }
+  }
+
+  return true;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+    _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
+
+    if( _.longLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          break;
+          if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          break;
+        }
+
+        if( m === butMap.length )
+        result.push( s );
+      }
+    }
+    else if( _.objectLike( butMap ) || _.routineIs( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        if( !( s in butMap ) )
+        result.push( s );
+      }
+    }
+    else
+    {
+      _.assert( 0, 'Expects object-like or long-like {-butMap-}' );
+    }
+
+    return result;
+  }
+
+  /* */
+
+  function errFromArgs( args )
+  {
+    return _._err
+    ({
+      args,
+      level : 2,
+    });
+  }
 }
 
 //
