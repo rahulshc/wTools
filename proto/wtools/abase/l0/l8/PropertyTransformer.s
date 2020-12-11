@@ -1,4 +1,4 @@
-( function _l3_PropertyTransformer_s_()
+( function _l8_PropertyTransformer_s_()
 {
 
 'use strict';
@@ -17,9 +17,9 @@ let Self = _global_.wTools.property = _global_.wTools.property || Object.create(
 
 let Extension =
 {
-}
+};
 
-Object.assign( _.property, Extension );
+_.mapSupplement( _.property, Extension );
 
 // --
 // export
