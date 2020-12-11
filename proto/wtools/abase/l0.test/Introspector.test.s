@@ -1109,7 +1109,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1136,7 +1136,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1159,7 +1159,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1186,7 +1186,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1213,7 +1213,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1240,7 +1240,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:1',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1266,7 +1266,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:531:17',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* - */
@@ -1327,7 +1327,7 @@ function locationNormalize( test )
   test.true( got === o );
 
   test.case = 'stack frame line with posix path';
-  var o = { original : "at node (/home/user/file.txt)" };
+  var o = { original : 'at node (/home/user/file.txt)' };
   var exp =
   {
     'original' : 'at node (/home/user/file.txt)',
@@ -1548,7 +1548,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has two underscores, abstraction - 2';
-  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
@@ -1570,7 +1570,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has single underscore, abstraction - 1';
-  var o = { original :'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
@@ -1592,7 +1592,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has two underscores, abstraction - 2';
-  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
