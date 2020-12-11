@@ -1,4 +1,5 @@
-(function _wToolsLayer2_s_(){
+( function _wToolsLayer2_s_()
+{
 
 'use strict';
 
