@@ -11409,107 +11409,273 @@ function sureMapHasNoUndefine( test )
 
 function assertMapHasNoUndefine( test )
 {
-  var err;
+  test.open( 'correct map' );
+
+  test.case = 'without message';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   /* */
 
-  test.case = 'correct input';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = () => { return srcMap.a + srcMap.b };
-  test.identical( _.assertMapHasNoUndefine( srcMap), true );
+  test.case = 'array, without message';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - string';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - routine';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
   test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - two strings';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - string and routine';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - routine and string';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
   test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
-  test.identical( _.assertMapHasNoUndefine( srcMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
 
-  test.case = 'check error message, no msg';
-  var otherMap = { 'd' : undefined };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+  test.case = 'array, message - two routines';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
 
-  test.case = 'check error message, msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, '90 "d"' );
+  test.close( 'correct map' );
 
-  test.case = 'check error message, msg string';
-  var otherMap = { 'd' : undefined };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, 'msg' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg "d"' );
+  /* - */
 
-  test.case = 'check error message, msg string & msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, 'msg', msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg 90 "d"' );
+  test.open( 'map with undefined' );
 
-  test.case = 'check error message, msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
+  test.case = 'without message';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'This is explanation "d"' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
-  test.case = 'check error message, four or more arguments';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
+  test.case = 'message - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
-  }
-  catch( e )
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
   {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Expects one, two or three arguments' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  /* */
+
+  test.case = 'array, without message';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Array should have no undefines, but has : "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - string';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - routine';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - two strings';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - string and routine';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - routine and string';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - two routines';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.close( 'map with undefined' );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'map with undefined';
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { 'd' : undefined } ) );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { a : 1 }, 'msg', 'msg', 'extra' ) );
+
+  test.case = 'wrong type of srcMap';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( 'wrong' ) );
 }
 
 // --
