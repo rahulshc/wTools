@@ -851,7 +851,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @namespace Tools
  */
 
-function routineExtend_( dst, src )
+function routineExtend( dst, src )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -1018,7 +1018,7 @@ function routineUnite_body( o )
 
   _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routineExtend_( unitedRoutine, o.body );
+  _.routineExtend( unitedRoutine, o.body );
 
   unitedRoutine.head = o.head;
   unitedRoutine.body = o.body;
@@ -1324,6 +1324,43 @@ function routineErFor( routine, erhead )
       return result;
     }
 
+  }
+
+}
+
+//
+
+function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
+{
+  let self = this;
+  let defaults = routine.defaults;
+  erhead = erhead || routine.erhead || routine.head;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.routineIs( erhead ) );
+  _.assert( _.routineIs( head ) );
+  _.assert( _.routineIs( body ) );
+  _.assert( _.objectIs( defaults ) );
+
+  let op = erhead.call( self, routine, arguments );
+
+  _.assert( _.mapIs( op ) );
+  _.assertMapHasOnly( op, defaults );
+
+  er.defaults = _.mapSupplement( op, defaults );
+
+  return er;
+
+  function er()
+  {
+    let result;
+    let op2 = head.call( self, er, arguments );
+    if( _.unrollIs( op2 ) )
+    result = body.apply( self, op2 );
+    else if( _.mapIs( op2 ) )
+    result = body.call( self, op2 );
+    return result;
   }
 
 }
@@ -2380,12 +2417,13 @@ let Extension =
 
   routinesCompose,
   // routineExtend_old, /* xxx : deprecate */
-  routineExtend_, /* xxx */
-  routineExtend : routineExtend_,
+  // routineExtend : routineExtend_,
+  routineExtend, 
   routineDefaults,
   routineUnite,
   routineEr,
   routineErFor,
+  routineErJoin,
 
   routineVectorize_functor : vectorize,
   vectorize,

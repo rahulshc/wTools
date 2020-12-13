@@ -72,7 +72,7 @@ function diagnosticWatchFields( o )
   for( let f in o.names ) ( function()
   {
 
-    let fieldName = f;
+    let propName = f;
     let fieldSymbol = Symbol.for( f );
     //o.target[ fieldSymbol ] = o.target[ f ];
     let val = o.target[ f ];
@@ -84,9 +84,9 @@ function diagnosticWatchFields( o )
       //let result = o.target[ fieldSymbol ];
       let result = val;
       if( o.verbosity > 1 )
-      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
+      console.log( 'reading ' + propName + ' ' + _.toStr( result ) );
       else
-      console.log( 'reading ' + fieldName );
+      console.log( 'reading ' + propName );
       if( o.debugging > 1 )
       debugger;
       return result;
@@ -97,9 +97,9 @@ function diagnosticWatchFields( o )
     function write( src )
     {
       if( o.verbosity > 1 )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( o.target[ fieldName ] ) + ' -> ' + _.toStr( src ) );
+      console.log( 'writing ' + propName + ' ' + _.toStr( o.target[ propName ] ) + ' -> ' + _.toStr( src ) );
       else
-      console.log( 'writing ' + fieldName );
+      console.log( 'writing ' + propName );
       if( o.debugging )
       debugger;
       //o.target[ fieldSymbol ] = src;
@@ -112,7 +112,7 @@ function diagnosticWatchFields( o )
     debugger;
 
     if( o.verbosity > 1 )
-    console.log( 'watching for', fieldName, 'in', o.target );
+    console.log( 'watching for', propName, 'in', o.target );
     let properties =
     {
       enumerable : true,
@@ -120,7 +120,7 @@ function diagnosticWatchFields( o )
       get : read,
       set : write,
     };
-    Object.defineProperty( o.target, fieldName, properties );
+    Object.defineProperty( o.target, propName, properties );
 
   })();
 
