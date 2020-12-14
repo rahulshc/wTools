@@ -100,7 +100,7 @@ function errReason( err, reason )
 
   /* */
 
-  function nonenumerable( fieldName, value )
+  function nonenumerable( propName, value )
   {
     try
     {
@@ -111,7 +111,7 @@ function errReason( err, reason )
         writable : true,
         value,
       };
-      Object.defineProperty( err, fieldName, o );
+      Object.defineProperty( err, propName, o );
     }
     catch( err2 )
     {
@@ -411,7 +411,7 @@ function _errMake( o )
 
   /* */
 
-  function nonenumerable( fieldName, value )
+  function nonenumerable( propName, value )
   {
     try
     {
@@ -422,7 +422,7 @@ function _errMake( o )
         writable : true,
         value,
       };
-      Object.defineProperty( o.dstError, fieldName, o2 );
+      Object.defineProperty( o.dstError, propName, o2 );
     }
     catch( err2 )
     {
@@ -432,9 +432,9 @@ function _errMake( o )
 
   /* */
 
-  function logging( fieldName, value )
+  function logging( propName, value )
   {
-    let symbol = Symbol.for( fieldName );
+    let symbol = Symbol.for( propName );
     try
     {
       let o2 =
@@ -445,7 +445,7 @@ function _errMake( o )
         set,
       };
       nonenumerable( symbol, value );
-      Object.defineProperty( o.dstError, fieldName, o2 );
+      Object.defineProperty( o.dstError, propName, o2 );
     }
     catch( err2 )
     {

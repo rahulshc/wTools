@@ -141,7 +141,7 @@ function onWithOptionsMap( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent }} );
+  var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent } } );
   _.event.eventGive( _.process._ehandler, 'event1' );
   test.identical( result, [ 0 ] );
   _.event.eventGive( _.process._ehandler, 'event1' );

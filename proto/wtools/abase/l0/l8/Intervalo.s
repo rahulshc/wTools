@@ -1,25 +1,27 @@
-( function _l3_PropertyTransformer_s_()
+( function _l8_Intervalo_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools.property = _global_.wTools.property || Object.create( null );
+let Self = _global_.wTools.ointerval = _global_.wTools.ointerval || Object.create( null );
 
 // --
 //
 // --
 
 // --
-//
+// routines
 // --
 
 let Extension =
 {
-}
+};
 
-Object.assign( _.property, Extension );
+//
+
+_.mapSupplement( Self, Extension );
 
 // --
 // export
@@ -27,5 +29,4 @@ Object.assign( _.property, Extension );
 
 if( typeof module !== 'undefined' )
 module[ 'exports' ] = _;
-
 })();
