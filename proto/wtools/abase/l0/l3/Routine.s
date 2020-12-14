@@ -395,8 +395,10 @@ function routineOptions( routine, args, defaults )
   args = [ args ];
   let options = args[ 0 ];
   let name = routine ? routine.name : '';
+
   if( options === undefined )
   options = Object.create( null );
+
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
@@ -405,15 +407,11 @@ function routineOptions( routine, args, defaults )
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-/* aaa
-  inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-  error in Map.s cause problem with catching uncaught error
-*/
-/*
-  Dmytro : inlined, extended coverage, routines assertMapHasOnly and assertMapHasNoUndefine are placed in l5/Map.s
-  Possible problems if routines will be moved to l3 : types checking
-*/
+  /* qqq
+    inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+    error in Map.s cause problem with catching uncaught error
+  */
 
   _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
@@ -438,14 +436,10 @@ function assertRoutineOptions( routine, args, defaults )
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-/* aaa
-  inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-*/
-/*
-  Dmytro : inlined, extended coverage, routines assertMapHasOnly and assertMapHasNoUndefine are placed in l5/Map.s
-  Possible problems if routines will be moved to l3 : types checking
-*/
+  /* qqq
+    inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+  */
 
   _.assertMapHasOnly( options, defaults );
   _.assertMapHasAll( options, defaults );
@@ -2426,7 +2420,7 @@ let Extension =
   routinesCompose,
   // routineExtend_old, /* xxx : deprecate */
   // routineExtend : routineExtend_,
-  routineExtend, 
+  routineExtend,
   routineDefaults,
   routineUnite,
   routineEr,
