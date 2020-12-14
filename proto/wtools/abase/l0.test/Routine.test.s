@@ -1376,34 +1376,76 @@ function routineOptions( test )
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, {} ) );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ) );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ) );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } ) );
+  var msg = 'Routine testRoutine does not expect options: "unknown", "b"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } ), errCallback );
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
   testRoutine.defaults = { known : 1 };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true } ) );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true } ] ) );
+  var msg = 'Routine testRoutine does not expect options: "unknown"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true } ] ), errCallback );
 
   test.case = 'defaults has objectLike value';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : { objectLike : true } } ) );
+  var msg = 'Source map should have only primitive elements, but known is [object Object]';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : { objectLike : true } } ), errCallback );
 
   test.case = 'defaults has objectLike value';
   var testRoutine = () => true;
   testRoutine.defaults = { known : { objectLike : true } };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ) );
+  var msg = 'Source map should have only primitive elements, but known is [object Object]';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ), errCallback );
 
   test.case = 'defaults has value `undefined`';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : undefined } ) );
+  var msg = 'Options map for routine testRoutine should have no undefined fields, but it does have "known"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : undefined } ), errCallback );
 
   test.case = 'defaults has value `undefined`';
   var testRoutine = () => true;
   testRoutine.defaults = { known : undefined };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ) );
+  var msg = 'Options map for routine testRoutine should have no undefined fields, but it does have "known"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ), errCallback );
 }
 
 //
