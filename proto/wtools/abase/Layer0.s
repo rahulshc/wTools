@@ -1,5 +1,6 @@
 //#! /usr/bin/env node
-(function _wToolsLayer0_s_(){
+( function _wToolsLayer0_s_()
+{
 
 'use strict';
 
