@@ -414,17 +414,20 @@ function routineOptions( routine, args, defaults )
   */
   /* Dmytro : all routines are inlined */
 
-  let extraKeys = mapButKeys( options, defaults );
-  _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
 
-  mapSupplementStructurelessMin( options, defaults );
+    mapSupplementStructurelessMin( options, defaults );
 
-  let undefineKeys = mapUndefineKeys( options );
-  _.assert
-  (
-    undefineKeys.length === 0,
-    () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
-  );
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert
+    (
+      undefineKeys.length === 0,
+      () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
+    );
+  }
 
   return options;
 
@@ -499,17 +502,21 @@ function assertRoutineOptions( routine, args, defaults )
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-  /* qqq
+  /* aaa
     inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
     to make the routine available on low levels
   */
+  /* Dmytro : all routines are inlined */
 
-  let extraOptionsKeys = mapButKeys( options, defaults );
-  _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
-  let extraDefaultsKeys = mapButKeys( defaults, options );
-  _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
-  let undefineKeys = mapUndefineKeys( options );
-  _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ keysQuote( undefineKeys ) }`);
+  if( Config.debug )
+  {
+    let extraOptionsKeys = mapButKeys( options, defaults );
+    _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
+    let extraDefaultsKeys = mapButKeys( defaults, options );
+    _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ keysQuote( undefineKeys ) }`);
+  }
 
   return options;
 
