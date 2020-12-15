@@ -393,17 +393,19 @@ function routineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
-  let name = routine ? routine.name : '';
   if( options === undefined )
   options = Object.create( null );
+
+  let name = routine ? routine.name : '';
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   /* aaa
     inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
@@ -421,7 +423,7 @@ function routineOptions( routine, args, defaults )
   _.assert
   (
     undefineKeys.length === 0,
-    () => `Options map for routine ${name} should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
+    () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
   );
 
   return options;
@@ -486,25 +488,66 @@ function assertRoutineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
+
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   /* qqq
     inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
     to make the routine available on low levels
   */
 
-  _.assertMapHasOnly( options, defaults );
-  _.assertMapHasAll( options, defaults );
-  _.assertMapHasNoUndefine( options );
+  let extraOptionsKeys = mapButKeys( options, defaults );
+  _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
+  let extraDefaultsKeys = mapButKeys( defaults, options );
+  _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
+  let undefineKeys = mapUndefineKeys( options );
+  _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ keysQuote( undefineKeys ) }`);
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function mapUndefineKeys( srcMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( srcMap[ s ] === undefined )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 //
