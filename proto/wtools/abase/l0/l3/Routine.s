@@ -112,29 +112,38 @@ function _routineJoin( o )
   {
     _.mapExtend( result, routine );
 
-    Object.defineProperty( result, 'originalRoutine',
+    let o2 =
     {
       value : routine,
       enumerable : false,
-    });
+    };
+    Object.defineProperty( result, 'originalRoutine', o2 );
 
     if( context !== undefined )
-    Object.defineProperty( result, 'boundContext',
     {
-      value : context,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : context,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundContext', o3 );
+    }
 
     if( args !== undefined )
-    Object.defineProperty( result, 'boundArguments',
     {
-      value : args,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : args,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundArguments', o3 );
+    }
 
   }
 
   return result;
+
+  /* */
 
   function act()
   {

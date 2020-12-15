@@ -1694,7 +1694,11 @@ function assertRoutineOptions( test )
   test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
   test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
   test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () =>
+  {
+    return _.assertRoutineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } );
+  },
+  errCallback );
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
