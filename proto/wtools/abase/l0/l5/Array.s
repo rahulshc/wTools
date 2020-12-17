@@ -6673,17 +6673,17 @@ let Extension =
   arrayExtendPrepending,
 
   arrayBut,
-  arrayButInplace,
-  arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
+  arrayButInplace, /* !!! : use instead of arrayBut, arrayButInplace */
+  arrayBut_,
   arrayShrink,
-  arrayShrinkInplace,
-  arrayShrink_, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
+  arrayShrinkInplace, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
+  arrayShrink_,
   arrayGrow,
-  arrayGrowInplace,
-  arrayGrow_, /* !!! : use instead of arrayGrow, arrayGrowInplace */
+  arrayGrowInplace, /* !!! : use instead of arrayGrow, arrayGrowInplace */
+  arrayGrow_,
   arrayRelength,
-  arrayRelengthInplace,
-  arrayRelength_, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
+  arrayRelengthInplace, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
+  arrayRelength_,
 
   // array prepend
 
@@ -6757,12 +6757,12 @@ let Extension =
   arrayRemoveElement,
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
-  arrayRemovedElement,
-  arrayRemovedElement_, /* !!! : use instead of arrayBut, arrayRemovedElement */
-  arrayRemovedElementOnce,
-  arrayRemovedElementOnce_, /* !!! : use instead of arrayBut, arrayRemovedElementOnce */
-  arrayRemovedElementOnceStrictly,
-  arrayRemovedElementOnceStrictly_, /* !!! : use instead of arrayBut, arrayRemovedElementOnceStrictly */
+  arrayRemovedElement, /* !!! : use instead of arrayRemovedElement */
+  arrayRemovedElement_,
+  arrayRemovedElementOnce, /* !!! : use instead of arrayRemovedElementOnce */
+  arrayRemovedElementOnce_,
+  arrayRemovedElementOnceStrictly, /* !!! : use instead of arrayRemovedElementOnceStrictly */
+  arrayRemovedElementOnceStrictly_,
 
   arrayRemoveArray,
   arrayRemoveArrayOnce,

@@ -3292,8 +3292,8 @@ let Extension =
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */
-  strInsideOf_, /* !!! use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
+  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */ /* !!! : use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
+  strInsideOf_,
   strOutsideOf, /* !!! deprecate */
 
   // replacers
