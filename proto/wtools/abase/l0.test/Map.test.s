@@ -10594,117 +10594,367 @@ function assertMapOwnFields( test )
 
 function assertMapHasOnly( test )
 {
-  var err;
+  test.open( 'correct input maps' );
+
+  test.case = 'correct input, no msg';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
+
+  test.case = 'correct input, msg - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
   /* */
 
-  test.case = 'correct input';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = () => { return srcMap.a + screenMaps.b };
+  test.case = 'correct input, no msg';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
   test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'correct input, msg - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+
+  test.close( 'correct input maps' );
+
+  /* - */
+
+  test.open( 'wrong options' );
 
   test.case = 'check error message, no msg';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  try
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasOnly( srcMap, screenMaps )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
-
-  test.case = 'check error message, msg routine';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = () => { return srcMap.a + screenMaps.b };
-  try
-  {
-    _.assertMapHasOnly( srcMap, screenMaps, msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, '90 "d"' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
   test.case = 'check error message, msg string';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  try
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasOnly( srcMap, screenMaps, 'msg' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg "d"' );
-
-  test.case = 'check error message, msg string & msg routine';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = () => { return srcMap.a + screenMaps.b };
-  try
-  {
-    _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg 90 "d"' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
   test.case = 'check error message, msg routine';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  try
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'This is explanation "d"' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
-  test.case = 'check error message, five or more arguments';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.case = 'check error message, msg - string and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
+
+  test.case = 'check error message, msg - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  try
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
-  }
-  catch( e )
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
+
+  test.case = 'check error message, msg - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  var errCallback = ( err, arg ) =>
   {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Expects two, three or four arguments' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
+
+  test.case = 'check error message, msg - routine and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' };
+  var msg = () => { return srcMap.a + screenMaps.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
+
+  /* */
+
+  test.case = 'check error message, no msg';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var msg = () => { return srcMap.a + screenMaps.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var msg = () => { return srcMap.a + srcMap.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg - string and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var msg = () => { return srcMap.a + srcMap.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var msg = () => { return srcMap.a + srcMap.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.case = 'check error message, msg - routine and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [ 'a', 'b', 'c', 'e', 'f' ];
+  var msg = () => { return srcMap.a + srcMap.b };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
+
+  test.close( 'wrong options' );
+
+  /* - */
+
+  test.case = 'screenMaps - empty, shold show all fields, msg - routine and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = {};
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, {} );
+
+  test.case = 'screenMaps - empty, shold show all fields, msg - routine and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : 'd' };
+  var screenMaps = [];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
+  test.identical( screenMaps, [] );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'Config.debug === false';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ) );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 } ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 }, { 'a' : 2 }, 'msg', 'msg', 'extra' ) );
+
+  test.case = 'wrong type of srcMap';
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( 'wrong', { 'a' : 2 } ) );
+
+  test.case = 'wrong type of screenMaps';
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 }, 'wrong' ) );
 }
 
 //
@@ -11159,107 +11409,273 @@ function sureMapHasNoUndefine( test )
 
 function assertMapHasNoUndefine( test )
 {
-  var err;
+  test.open( 'correct map' );
+
+  test.case = 'without message';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
+
+  test.case = 'message - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   /* */
 
-  test.case = 'correct input';
-  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = () => { return srcMap.a + srcMap.b };
-  test.identical( _.assertMapHasNoUndefine( srcMap), true );
+  test.case = 'array, without message';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - string';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - routine';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
   test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - two strings';
+  var srcMap = [ 0, 'a', null ];
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - string and routine';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
+
+  test.case = 'array, message - routine and string';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
   test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
-  test.identical( _.assertMapHasNoUndefine( srcMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
 
-  test.case = 'check error message, no msg';
-  var otherMap = { 'd' : undefined };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+  test.case = 'array, message - two routines';
+  var srcMap = [ 0, 'a', null ];
+  var msg = () => srcMap.a + srcMap.b;
+  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( srcMap, [ 0, 'a', null ] );
 
-  test.case = 'check error message, msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, '90 "d"' );
+  test.close( 'correct map' );
 
-  test.case = 'check error message, msg string';
-  var otherMap = { 'd' : undefined };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, 'msg' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg "d"' );
+  /* - */
 
-  test.case = 'check error message, msg string & msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
-  {
-    _.assertMapHasNoUndefine( otherMap, 'msg', msg )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'msg 90 "d"' );
+  test.open( 'map with undefined' );
 
-  test.case = 'check error message, msg routine';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
+  test.case = 'without message';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
-  }
-  catch( e )
-  {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'This is explanation "d"' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
-  test.case = 'check error message, four or more arguments';
-  var otherMap = { 'd' : undefined };
-  var msg = () => { return srcMap.a + srcMap.b };
-  try
+  test.case = 'message - string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
   {
-    _.assertMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
-  }
-  catch( e )
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
   {
-    err = e;
-  }
-  test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Expects one, two or three arguments' );
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - two strings';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - string and routine';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - routine and string';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  test.case = 'message - two routines';
+  var srcMap = { 'a' : 13, 'b' : 77, 'd' : undefined };
+  var msg = () => srcMap.a + srcMap.b;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "d"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
+
+  /* */
+
+  test.case = 'array, without message';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'Array should have no undefines, but has : "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - string';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - routine';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - two strings';
+  var srcMap = [ 0, 'a', undefined ];
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - string and routine';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, 'msg 90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - routine and string';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 msg "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.case = 'array, message - two routines';
+  var srcMap = [ 0, 'a', undefined ];
+  var msg = () => 90;
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( err.originalMessage, '90 90 "2"' );
+  };
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.identical( srcMap, [ 0, 'a', undefined ] );
+
+  test.close( 'map with undefined' );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'map with undefined';
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { 'd' : undefined } ) );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { a : 1 }, 'msg', 'msg', 'extra' ) );
+
+  test.case = 'wrong type of srcMap';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( 'wrong' ) );
 }
 
 // --
