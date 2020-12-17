@@ -112,29 +112,38 @@ function _routineJoin( o )
   {
     _.mapExtend( result, routine );
 
-    Object.defineProperty( result, 'originalRoutine',
+    let o2 =
     {
       value : routine,
       enumerable : false,
-    });
+    };
+    Object.defineProperty( result, 'originalRoutine', o2 );
 
     if( context !== undefined )
-    Object.defineProperty( result, 'boundContext',
     {
-      value : context,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : context,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundContext', o3 );
+    }
 
     if( args !== undefined )
-    Object.defineProperty( result, 'boundArguments',
     {
-      value : args,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : args,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundArguments', o3 );
+    }
 
   }
 
   return result;
+
+  /* */
 
   function act()
   {
@@ -393,29 +402,95 @@ function routineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
-  let name = routine ? routine.name : '';
   if( options === undefined )
   options = Object.create( null );
+
+  let name = routine ? routine.name : '';
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-/* qqq
-  inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-  error in Map.s cause problem with catching unchaugt error
-*/
+  /* aaa
+    inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+    error in Map.s cause problem with catching uncaught error
+  */
+  /* Dmytro : all routines are inlined */
 
-  _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
-  _.mapSupplementStructureless( options, defaults );
-  _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fields, but it does have` );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+
+    mapSupplementStructurelessMin( options, defaults );
+
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert
+    (
+      undefineKeys.length === 0,
+      () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
+    );
+  }
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function mapUndefineKeys( srcMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( srcMap[ s ] === undefined )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
+
+  /* */
+
+  function mapSupplementStructurelessMin( dstMap, srcMap )
+  {
+    for( let s in srcMap )
+    {
+      if( dstMap[ s ] !== undefined )
+      continue;
+
+      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+
+      dstMap[ s ] = srcMap[ s ];
+    }
+  }
 }
 
 //
@@ -425,25 +500,70 @@ function assertRoutineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
+
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-/* qqq
-  inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-*/
+  /* aaa
+    inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+  */
+  /* Dmytro : all routines are inlined */
 
-  _.assertMapHasOnly( options, defaults );
-  _.assertMapHasAll( options, defaults );
-  _.assertMapHasNoUndefine( options );
+  if( Config.debug )
+  {
+    let extraOptionsKeys = mapButKeys( options, defaults );
+    _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
+    let extraDefaultsKeys = mapButKeys( defaults, options );
+    _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ keysQuote( undefineKeys ) }`);
+  }
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function mapUndefineKeys( srcMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( srcMap[ s ] === undefined )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 //
@@ -2418,7 +2538,7 @@ let Extension =
   routinesCompose,
   // routineExtend_old, /* xxx : deprecate */
   // routineExtend : routineExtend_,
-  routineExtend, 
+  routineExtend,
   routineDefaults,
   routineUnite,
   routineEr,
