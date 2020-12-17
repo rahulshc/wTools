@@ -3708,17 +3708,17 @@ let Extension =
   longEmpty,
 
   longBut,
-  longButInplace,
-  longBut_, /* !!! : use instead of longBut, longButInplace */
+  longButInplace, /* !!! : use instead of longBut, longButInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  longBut_,
   longShrink,
-  longShrink_, /* !!! : use instead of longShrink, longShrinkInplace */
-  longShrinkInplace,
+  longShrinkInplace, /* !!! : use instead of longShrink, longShrinkInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  longShrink_,
   longGrow,
-  longGrow_, /* !!! : use instead of longGrow, longGrowInplace */
-  longGrowInplace,
+  longGrowInplace, /* !!! : use instead of longGrow, longGrowInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  longGrow_,
   longRelength,
-  longRelengthInplace,
-  longRelength_, /* !!! : use instead of longRelength, longRelengthInplace */
+  longRelengthInplace, /* !!! : use instead of longRelength, longRelengthInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  longRelength_,
 
   // array checker
 

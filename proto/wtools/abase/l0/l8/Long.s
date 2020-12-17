@@ -1427,8 +1427,8 @@ let Routines =
 
   // long repeater
 
-  longOnce, /* zzz : review */
-  longOnce_, /* !!! : use instead of longOnce */
+  longOnce, /* zzz : review */ /* !!! : use instead of longOnce */
+  longOnce_,
 
   longHasUniques,
   longAreRepeatedProbe,

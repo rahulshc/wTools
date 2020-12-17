@@ -3916,7 +3916,7 @@ function mapButDstMapNull_( test )
 
 //
 
-function mapButDstMapMap_( test )
+function mapButDstMapIsMap_( test )
 {
   test.open( 'srcMap - map' );
 
@@ -5202,7 +5202,7 @@ function mapOwnButDstMapNull_( test )
 
 //
 
-function mapOwnButDstMapMap_( test )
+function mapOwnButDstMapIsMap_( test )
 {
   test.open( 'srcMap - map' );
 
@@ -5981,7 +5981,7 @@ function mapOnlyTwoArguments_( test )
 
 //
 
-function mapOnlyDstMapNull_( test )
+function mapOnlyDstMapIsNull_( test )
 {
   test.open( 'srcMap - map' );
 
@@ -6216,7 +6216,7 @@ function mapOnlyDstMapNull_( test )
 
 //
 
-function mapOnlyDstMapMap_( test )
+function mapOnlyDstMapIsMap_( test )
 {
   test.open( 'srcMap - map' );
 
@@ -11770,7 +11770,7 @@ let Self =
 
     mapButTwoArguments_,
     mapButDstMapNull_,
-    mapButDstMapMap_,
+    mapButDstMapIsMap_,
 
     mapButIgnoringUndefinesThreeArguments_,
     mapButIgnoringUndefinesDstMapNull_,
@@ -11780,13 +11780,13 @@ let Self =
 
     mapOwnButThreeArguments_,
     mapOwnButDstMapNull_,
-    mapOwnButDstMapMap_,
+    mapOwnButDstMapIsMap_,
 
     mapOnly,
 
     mapOnlyTwoArguments_,
-    mapOnlyDstMapNull_,
-    mapOnlyDstMapMap_,
+    mapOnlyDstMapIsNull_,
+    mapOnlyDstMapIsMap_,
 
     mapOnlyOwnTwoArguments_,
     mapOnlyOwnDstMapNull_,
