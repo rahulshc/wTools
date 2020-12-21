@@ -420,6 +420,9 @@ function printerLike( src )
 
   if( consoleIs( src ) )
   return true;
+  
+  if( src === _global_.logger )
+  return true;
 
   return false;
 }
