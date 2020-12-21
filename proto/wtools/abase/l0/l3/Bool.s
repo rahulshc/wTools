@@ -81,8 +81,9 @@ function boolIs( src )
 
 function boolLike( src )
 {
-  let type = Object.prototype.toString.call( src );
-  return type === '[object Boolean]' || src === 0 || src === 1;
+  return src === true || src === false || src === 0 || src === 1;
+  // let type = Object.prototype.toString.call( src );
+  // return type === '[object Boolean]' || src === 0 || src === 1;
 }
 
 //
@@ -232,8 +233,9 @@ function fuzzyLike( src )
 {
   if( src === _.maybe )
   return true;
-  let type = Object.prototype.toString.call( src );
-  return type === '[object Boolean]' || type === '[object Number]';
+  return src === true || src === false || src === 0 || src === 1;
+  // let type = Object.prototype.toString.call( src );
+  // return type === '[object Boolean]' || type === '[object Number]';
 }
 
 //
