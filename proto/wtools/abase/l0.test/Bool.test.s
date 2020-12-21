@@ -363,11 +363,11 @@ function fuzzyLike( test )
 
   test.case = 'number negative input';
   var got = _.fuzzyLike( -10 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'number positive input';
   var got = _.fuzzyLike( 10 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   /* */
 
@@ -509,11 +509,11 @@ function fuzzyLikeTrue( test )
 
   test.case = 'number negative input';
   var got = _.fuzzyLikeTrue( -10 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'number positive input';
   var got = _.fuzzyLikeTrue( 10 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   /* */
 
