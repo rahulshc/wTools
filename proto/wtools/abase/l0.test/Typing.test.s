@@ -3929,6 +3929,11 @@ function printerLike( test )
   var src = console;
   var got = _.printerLike( src );
   test.identical( got, true );
+  
+  test.case = 'check global logger';
+  var src = _global.logger;
+  var got = _.printerLike( src );
+  test.identical( got, true );
 
   // instance of _.Logger tested in module wLogger
 }
