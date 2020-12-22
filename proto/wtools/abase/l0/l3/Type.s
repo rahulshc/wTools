@@ -226,7 +226,7 @@ function typeOf( src, constructor )
 
 //
 
-function isPrototypeOf( superPrototype, subPrototype )
+function prototypeIsPrototypeOf( superPrototype, subPrototype )
 {
   _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
   if( superPrototype === subPrototype )
@@ -244,7 +244,7 @@ function prototypeHas( superPrototype, subPrototype )
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
   // eslint-disable-next-line no-prototype-builtins
-  return _.isPrototypeOf( subPrototype, superPrototype );
+  return _.prototypeIsPrototypeOf( subPrototype, superPrototype );
 }
 
 //
@@ -420,7 +420,7 @@ function printerLike( src )
 
   if( consoleIs( src ) )
   return true;
-  
+
   if( src === _global_.logger )
   return true;
 
@@ -555,7 +555,7 @@ let Routines =
   promiseLike,
 
   typeOf,
-  isPrototypeOf,
+  prototypeIsPrototypeOf,
   prototypeHas,
   prototypeIs,
   // prototypeIsStandard,

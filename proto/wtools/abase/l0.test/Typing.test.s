@@ -1986,11 +1986,11 @@ function typeOf( test )
 
 //
 
-function isPrototypeOf( test )
+function prototypeIsPrototypeOf( test )
 {
   test.open( 'subPrototype === superPrototype' );
 
-  var prototypeOf = _.isPrototypeOf;
+  var prototypeOf = _.prototypeIsPrototypeOf;
 
   test.case = 'check null';
   var src = null;
