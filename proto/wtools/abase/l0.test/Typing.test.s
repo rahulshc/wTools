@@ -4688,7 +4688,7 @@ var Self =
     promiseLike,
 
     typeOf,
-    isPrototypeOf,
+    prototypeIsPrototypeOf,
     prototypeHas,
     prototypeIs,
     // prototypeIsStandard,
