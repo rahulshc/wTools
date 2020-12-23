@@ -1,4 +1,5 @@
-( function _Entity_test_s_( ) {
+( function _Entity_test_s_()
+{
 
 'use strict';
 
@@ -64,7 +65,7 @@ function entityMakeConstructing( test )
   test.identical( got, NaN );
 
   test.case = 'Symbol';
-  var src = Symbol();
+  var src = Symbol( 'a' );
   var got = _.entityMakeConstructing( src );
   test.identical( got, src );
 
@@ -175,7 +176,7 @@ function entityMakeConstructing( test )
   test.true( _.mapIsPure( got ) );
 
   test.case = 'instance of constructor';
-  var Constr = function( src )
+  function Constr( src )
   {
     this.x = src || 1;
     return this;
@@ -186,12 +187,12 @@ function entityMakeConstructing( test )
   test.true( got !== src );
 
   test.case = 'instance of constructor, length';
-  var Constr = function( src )
+  function Constr2( src )
   {
     this.x = src || 1;
     return this;
   };
-  var src = new Constr( 2 );
+  var src = new Constr2( 2 );
   var got = _.entityMakeConstructing( src, 2 );
   test.identical( got.x, 1 );
   test.true( got !== src );
@@ -442,7 +443,7 @@ function entityMakeConstructingLongDescriptor( test )
     test.identical( got, NaN );
 
     test.case = 'Symbol';
-    var src = Symbol();
+    var src = Symbol( 'a' );
     var got = descriptor.entityMakeConstructing( src );
     test.identical( got, src );
 
@@ -525,7 +526,7 @@ function entityMakeConstructingLongDescriptor( test )
     test.true( _.mapIsPure( got ) );
 
     test.case = 'instance of constructor';
-    var Constr = function( src )
+    function Constr( src )
     {
       this.x = src || 1;
       return this;
@@ -536,12 +537,12 @@ function entityMakeConstructingLongDescriptor( test )
     test.true( got !== src );
 
     test.case = 'instance of constructor, length';
-    var Constr = function( src )
+    function Constr2( src )
     {
       this.x = src || 1;
       return this;
     };
-    var src = new Constr( 2 );
+    var src = new Constr2( 2 );
     var got = descriptor.entityMakeConstructing( src, 2 );
     test.identical( got.x, 1 );
     test.true( got !== src );
@@ -802,7 +803,7 @@ function entityMakeEmpty( test )
   test.identical( got, NaN );
 
   test.case = 'Symbol';
-  var src = Symbol();
+  var src = Symbol( 'a' );
   var got = _.entityMakeEmpty( src );
   test.identical( got, src );
 
@@ -902,7 +903,7 @@ function entityMakeEmpty( test )
 
   test.case = 'unknown type of entity';
   test.shouldThrowErrorSync( () => _.entityMakeEmpty( new BufferRaw() ) );
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
   test.shouldThrowErrorSync( () => _.entityMakeEmpty( new Constr() ) );
 }
 
@@ -966,7 +967,7 @@ function entityMakeEmptyLongDescriptor( test )
     test.identical( got, NaN );
 
     test.case = 'Symbol';
-    var src = Symbol();
+    var src = Symbol( 'a' );
     var got = descriptor.entityMakeEmpty( src );
     test.identical( got, src );
 
@@ -1062,10 +1063,17 @@ function entityMakeEmptyLongDescriptor( test )
 
       test.case = 'unknown type of entity';
       test.shouldThrowErrorSync( () => descriptor.entityMakeEmpty( new BufferRaw() ) );
-      var Constr = function(){ this.x = 1; return this };
       test.shouldThrowErrorSync( () => descriptor.entityMakeEmpty( new Constr() ) );
     }
   }
+
+  /* */
+
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  };
 }
 
 //
@@ -1109,7 +1117,7 @@ function entityMakeUndefined( test )
   test.identical( got, NaN );
 
   test.case = 'Symbol';
-  var src = Symbol();
+  var src = Symbol( 'a' );
   var got = _.entityMakeUndefined( src );
   test.identical( got, src );
 
@@ -1272,7 +1280,7 @@ function entityMakeUndefined( test )
 
   test.case = 'unknown type of entity';
   test.shouldThrowErrorSync( () => _.entityMakeUndefined( new BufferRaw() ) );
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
   test.shouldThrowErrorSync( () => _.entityMakeUndefined( new Constr() ) );
 }
 
@@ -1336,7 +1344,7 @@ function entityMakeUndefinedLongDescriptor( test )
     test.identical( got, NaN );
 
     test.case = 'Symbol';
-    var src = Symbol();
+    var src = Symbol( 'a' );
     var got = descriptor.entityMakeUndefined( src );
     test.identical( got, src );
 
@@ -1490,10 +1498,17 @@ function entityMakeUndefinedLongDescriptor( test )
 
       test.case = 'unknown type of entity';
       test.shouldThrowErrorSync( () => descriptor.entityMakeUndefined( new BufferRaw() ) );
-      var Constr = function(){ this.x = 1; return this };
       test.shouldThrowErrorSync( () => descriptor.entityMakeUndefined( new Constr() ) );
     }
   }
+
+  /* */
+
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  };
 }
 
 //
@@ -1537,7 +1552,7 @@ function entityMake( test )
   test.identical( got, NaN );
 
   test.case = 'Symbol';
-  var src = Symbol();
+  var src = Symbol( 'a' );
   var got = _.entityMake( src );
   test.identical( got, src );
 
@@ -1687,7 +1702,7 @@ function entityMake( test )
 
   test.case = 'unknown type of entity';
   test.shouldThrowErrorSync( () => _.entityMake( new BufferRaw() ) );
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
   test.shouldThrowErrorSync( () => _.entityMake( new Constr() ) );
 }
 
@@ -1751,7 +1766,7 @@ function entityMakeLongDescriptor( test )
     test.identical( got, NaN );
 
     test.case = 'Symbol';
-    var src = Symbol();
+    var src = Symbol( 'a' );
     var got = descriptor.entityMake( src );
     test.identical( got, src );
 
@@ -1793,7 +1808,7 @@ function entityMakeLongDescriptor( test )
     var src = _.unrollMake( [] );
     var got = descriptor.entityMake( src );
     test.identical( got, [] );
-     test.true( got !== src );
+    test.true( got !== src );
 
     test.case = 'not empty unroll';
     var src = _.unrollMake( [ null, undefined, 1, 2 ] );
@@ -1884,10 +1899,17 @@ function entityMakeLongDescriptor( test )
 
       test.case = 'unknown type of entity';
       test.shouldThrowErrorSync( () => descriptor.entityMake( new BufferRaw() ) );
-      var Constr = function(){ this.x = 1; return this };
       test.shouldThrowErrorSync( () => descriptor.entityMake( new Constr() ) );
     }
   }
+
+  /* */
+
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  };
 }
 
 //
@@ -1950,7 +1972,7 @@ function entityEntityEqualize( test )
 
   test.close( 'without callbacks' );
 
-	/* - */
+  /* - */
 
   test.open( 'only onEvaluate1' );
 
@@ -2004,7 +2026,7 @@ function entityEntityEqualize( test )
 
   test.close( 'only onEvaluate1' );
 
-	/* - */
+  /* - */
 
   test.open( 'onEvaluate1 is equalizer' );
 
@@ -2058,7 +2080,7 @@ function entityEntityEqualize( test )
 
   test.close( 'onEvaluate1 is equalizer' );
 
-	/* - */
+  /* - */
 
   test.open( 'onEvaluate1 and onEvaluate2' );
 
@@ -2151,15 +2173,22 @@ function entityEntityEqualize( test )
 function entityAssign( test )
 {
   test.case = 'src null';
-  var dst = new String( 'string' );
+  var dst = 'string';
   var src = null;
-  var got = _.entityAssign( dst, src  );
+  var got = _.entityAssign( dst, src );
   var expected = null;
   test.identical( got, expected );
 
   test.case = 'dst.copy';
-  var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } };
-  var src = { src : 'string', num : 123 }
+  var dst =
+  {
+    copy : function( src )
+    {
+      for( var i in src )
+      this[ i ] = src[ i ]
+    }
+  };
+  var src = { src : 'string', num : 123 };
   _.entityAssign( dst, src  );
   var got = dst;
   var expected =
@@ -2183,7 +2212,7 @@ function entityAssign( test )
 
   test.case = 'src.slice returns copy of array';
   var dst = [ ];
-  var src = [ 1, 2 ,3 ];
+  var src = [ 1, 2, 3 ];
   var got = _.entityAssign( dst, src  );
   var expected = src;
   test.identical( got, expected );
@@ -2199,7 +2228,7 @@ function entityAssign( test )
   test.case = 'onRecursive ';
   var dst = { };
   var src = { value : 100, a : {  b : 101 } };
-  function onRecursive( dstContainer,srcContainer,key )
+  function onRecursive( dstContainer, srcContainer, key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
@@ -2259,12 +2288,12 @@ function entityAssignFieldFromContainer( test )
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
-  function onRecursive( dstContainer,srcContainer,key )
+  function onRecursive( dstContainer, srcContainer, key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  var got = _.entityAssignFieldFromContainer(dst, src, name,onRecursive );
+  var got = _.entityAssignFieldFromContainer( dst, src, name, onRecursive );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -2369,8 +2398,8 @@ function entityLength( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got = _.entityLength( BufferNode.from([ 1, 2, 3, 4 ]) );
-    test.identical( got, 1 );
+    var got1 = _.entityLength( BufferNode.from([ 1, 2, 3, 4 ]) );
+    test.identical( got1, 1 );
   }
 
   test.case = 'Set';
@@ -2397,7 +2426,6 @@ function entityLength( test )
   test.case = 'object with iterator, empty';
   var obj1 = new Obj1({ elements : [] });
   obj1[ Symbol.iterator ] = _iterate;
-  debugger;
   var got = _.entityLength( obj1 );
   test.identical( got, 0 );
 
@@ -2412,7 +2440,7 @@ function entityLength( test )
   {
     this.a = 34;
     this.b = 's';
-    this[100] = 'sms';
+    this[ 100 ] = 'sms';
   };
   Constr1.prototype.toString = function()
   {
@@ -2424,24 +2452,25 @@ function entityLength( test )
 
   test.case = 'object, some properties are non enumerable';
   var src = Object.create( null );
-  Object.defineProperties( src,
+  var o =
   {
-    "property1" :
+    'property1' :
     {
       value : true,
       writable : true
     },
-    "property2" : {
-      value : "Hello",
+    'property2' : {
+      value : 'Hello',
       writable : true
     },
-    "property3" :
+    'property3' :
     {
       enumerable : true,
-      value : "World",
+      value : 'World',
       writable : true
     }
-  });
+  };
+  Object.defineProperties( src, o );
   var got = _.entityLength( src );
   test.identical( got, 1 );
 
@@ -2560,8 +2589,8 @@ function uncountableSize( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got = _.uncountableSize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-    test.identical( got, 4 );
+    var got1 = _.uncountableSize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+    test.identical( got1, 4 );
   }
 
   test.case = 'Set';
@@ -2585,22 +2614,23 @@ function uncountableSize( test )
   {
     this.a = 34;
     this.b = 's';
-    this[100] = 'sms';
+    this[ 100 ] = 'sms';
   };
   var got = _.uncountableSize( new Constr1() );
   test.identical( got, 8 );
 
   test.case = 'object, some properties are non enumerable';
   var src = Object.create( null );
-  Object.defineProperties( src,
+  var o =
+  {
+    'property3' :
     {
-      "property3" :
-      {
-        enumerable : true,
-        value : "World",
-        writable : true
-      }
-  });
+      enumerable : true,
+      value : 'World',
+      writable : true
+    }
+  };
+  Object.defineProperties( src, o );
   var got = _.uncountableSize( src );
   test.identical( got, NaN );
 
@@ -2698,8 +2728,8 @@ function entitySize( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got = _.entitySize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-    test.identical( got, 4 );
+    var got1 = _.entitySize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+    test.identical( got1, 4 );
   }
 
   test.case = 'Set';
@@ -2726,22 +2756,23 @@ function entitySize( test )
   {
     this.a = 34;
     this.b = 's';
-    this[100] = 'sms';
+    this[ 100 ] = 'sms';
   };
   var got = _.entitySize( new Constr1() );
   test.identical( got, 8 );
 
   test.case = 'object, some properties are non enumerable';
   var src = Object.create( null );
-  Object.defineProperties( src,
+  var o =
+  {
+    'property3' :
     {
-      "property3" :
-      {
-        enumerable : true,
-        value : "World",
-        writable : true
-      }
-  });
+      enumerable : true,
+      value : 'World',
+      writable : true
+    }
+  };
+  Object.defineProperties( src, o );
   var got = _.entitySize( src );
   var exp = _.look ? 5 : NaN;
   test.identical( got, exp );
@@ -2814,7 +2845,7 @@ function iterableIs( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -2861,9 +2892,9 @@ function iterableIs( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got = _.iterableIs( BufferNode.alloc( 5 ) );
-    var expected = true;
-    test.identical( got, expected );
+    var got1 = _.iterableIs( BufferNode.alloc( 5 ) );
+    var expected1 = true;
+    test.identical( got1, expected1 );
   }
 
   test.case = 'Set';

@@ -1,4 +1,5 @@
-( function _Container_test_s_( ) {
+( function _Container_test_s_()
+{
 
 'use strict';
 
@@ -357,7 +358,7 @@ function extendReplacingDstNull( test )
 
   test.case = 'dst - map, src - function';
   var dst = { a : 2 };
-  var src = function(){};
+  var src = () => {};
   var got = _.container.extendReplacing( dst, src );
   var exp = src;
   test.identical( got, exp );
@@ -373,7 +374,7 @@ function extendReplacingDstNull( test )
 
   test.case = 'dst - Set, src - object';
   var dst = new Set( [ 1, 2 ] );
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1289,7 +1290,7 @@ function extendAppendingDstNull( test )
 
   test.case = 'dst - map, src - function';
   var dst = { a : 2 };
-  var func = function(){};
+  var func = () => {};
   var got = _.container.extendAppending( dst, func );
   var exp = [ { a : 2 }, func ];
   test.identical( got, exp );
@@ -1302,7 +1303,7 @@ function extendAppendingDstNull( test )
 
   test.case = 'dst - Set, src - object';
   var dst = new Set( [ 1, 2 ] );
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1367,7 +1368,7 @@ function extendAppendingDstNull( test )
   test.true( got === src );
 
   test.case = 'dst - function, src - map';
-  var dst = function(){};
+  var dst = () => {};
   var src = { a : 2 };
   var got = _.container.extendAppending( dst, src );
   var exp = { a : 2 };
@@ -1383,7 +1384,7 @@ function extendAppendingDstNull( test )
   test.true( got === src );
 
   test.case = 'dst - object, src - Set';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -2075,7 +2076,7 @@ function empty( test )
   test.true( got === dst );
 
   test.case = 'filled Map';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', ''], [ false, false ], [ {}, {} ], [ [], [] ] ] );
+  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', '' ], [ false, false ], [ {}, {} ], [ [], [] ] ] );
   var got = _.container.empty( dst );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -2091,7 +2092,7 @@ function empty( test )
   test.true( got === dst );
 
   test.case = 'filled simple map';
-  var dst = { 1 : 1, null : null, undefined : undefined, 'str' : 'str', '' : '', false : false };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', '' : '', 'false' : false };
   var got = _.container.empty( dst );
   var exp = {};
   test.identical( got, exp );
@@ -2123,7 +2124,7 @@ function empty( test )
   test.shouldThrowErrorSync( () => _.container.empty() );
   test.shouldThrowErrorSync( () => _.container.empty( 'wrong' ) );
   test.shouldThrowErrorSync( () => _.container.empty( 1 ) );
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this

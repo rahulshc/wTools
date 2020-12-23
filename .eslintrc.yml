@@ -204,7 +204,7 @@ rules :
   no-negated-in-lhs : error
   no-nested-ternary : error
   no-new : error
-  no-new-func : error
+  no-new-func : warn
   no-new-object : error
   no-new-require : error
   no-new-wrappers : error
@@ -289,7 +289,7 @@ rules :
   prefer-exponentiation-operator : off
   prefer-numeric-literals : error
   prefer-object-spread : error
-  prefer-promise-reject-errors : error
+  prefer-promise-reject-errors : off
   prefer-reflect : off
   prefer-regex-literals : error
   prefer-rest-params : off

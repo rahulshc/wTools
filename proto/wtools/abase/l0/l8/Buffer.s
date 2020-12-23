@@ -3872,21 +3872,21 @@ let Routines =
   bufferNodeFrom,
 
   bufferBut,
-  bufferButInplace,
-  bufferBut_, /* !!! : use instead of bufferBut, bufferButInplace */
+  bufferButInplace, /* !!! : use instead of bufferBut, bufferButInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
+  bufferBut_,
   bufferSelect,
-  bufferSelectInplace,
-  bufferSelect_, /* !!! : use instead of bufferSelect, bufferSelectInplace */
+  bufferSelectInplace, /* !!! : use instead of bufferSelect, bufferSelectInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
+  bufferSelect_,
   bufferGrow,
-  bufferGrowInplace,
-  bufferGrow_, /* !!! : use instead of bufferGrow, bufferGrowInplace */
-  bufferRelength, /* qqq fro Dmytro : dont understand. explain how what it does. ask */
-  bufferRelengthInplace,
-  bufferRelength_, /* !!! : use instead of bufferRelength, bufferRelengthInplace */
+  bufferGrowInplace, /* !!! : use instead of bufferGrow, bufferGrowInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
+  bufferGrow_,
+  bufferRelength, /* qqq for Dmytro : don't understand. explain how what it does. ask */
+  bufferRelengthInplace, /* !!! : use instead of bufferRelength, bufferRelengthInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
+  bufferRelength_,
   bufferRelen,
   bufferResize,
-  bufferResizeInplace,
-  bufferResize_, /* !!! : use instead of bufferResize, bufferResizeInplace */
+  bufferResizeInplace, /* !!! : use instead of bufferResize, bufferResizeInplace */ 
+  bufferResize_,
 
   bufferBytesGet,
   bufferRetype,

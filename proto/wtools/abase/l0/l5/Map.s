@@ -3856,7 +3856,89 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasOnly.apply( this, arguments );
+
+  /* */
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4, 'Expects two, three or four arguments' );
+
+  let but = mapButKeys( srcMap, screenMaps );
+
+  if( but.length > 0 )
+  {
+    let msgKeys = _.strQuote( but ).join( ', ' );
+    if( arguments.length === 2 )
+    throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
+    else
+    throw errFromArgs([ msgMake( arguments ), msgKeys ]);
+  }
+
+  return true;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+    _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
+
+    if( _.longLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          break;
+          if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          break;
+        }
+
+        if( m === butMap.length )
+        result.push( s );
+      }
+    }
+    else if( _.objectLike( butMap ) || _.routineIs( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        if( !( s in butMap ) )
+        result.push( s );
+      }
+    }
+    else
+    {
+      _.assert( 0, 'Expects object-like or long-like {-butMap-}' );
+    }
+
+    return result;
+  }
+
+  /* */
+
+  function errFromArgs( args )
+  {
+    return _._err
+    ({
+      args,
+      level : 2,
+    });
+  }
+
+  /* */
+
+  function msgMake( args )
+  {
+    let arr = [];
+    for( let i = 2; i < args.length; i++ )
+    {
+      if( _.routineIs( args[ i ] ) )
+      args[ i ] = args[ i ]();
+      arr.push( args[ i ] );
+    }
+    return arr.join( ' ' );
+  }
 }
 
 //
@@ -4225,7 +4307,53 @@ function assertMapHasNoUndefine( srcMap, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasNoUndefine.apply( this, arguments );
+
+  /* */
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects one, two or three arguments' )
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  let but = [];
+
+  for( let s in srcMap )
+  if( srcMap[ s ] === undefined )
+  but.push( s );
+
+  if( but.length > 0 )
+  {
+    let msgKeys = _.strQuote( but ).join( ', ' );
+    if( arguments.length === 1 )
+    throw errFromArgs([ `${ _.strType( srcMap ) } should have no undefines, but has : ${ msgKeys }` ]);
+    else
+    throw errFromArgs([ msgMake( arguments ), msgKeys ])
+  }
+
+  return true;
+
+  /* */
+
+  function errFromArgs( args )
+  {
+    return _._err
+    ({
+      args,
+      level : 2,
+    });
+  }
+
+  /* */
+
+  function msgMake( args )
+  {
+    let arr = [];
+    for( let i = 1 ; i < args.length ; i++ )
+    {
+      if( _.routineIs( args[ i ] ) )
+      args[ i ] = args[ i ]();
+      arr.push( args[ i ] );
+    }
+    return arr.join( ' ' );
+  }
 }
 
 // --
@@ -4359,21 +4487,21 @@ let Extension =
 
   // map logical operator
 
-  mapButConditional,
-  mapButConditional_, /* !!! : use instead of mapButConditional */ /* qqq : make it accept null in the first argument */
-  mapBut,
-  mapBut_, /* !!! : use instead of mapBut */ /* qqq : make it accept null in the first argument */
-  mapButIgnoringUndefines,
-  mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */ /* qqq : make it accept null in the first argument */
-  mapOwnBut,
-  mapOwnBut_, /* !!! : use instead of mapOwnBut */ /* qqq : make it accept null in the first argument */
+  mapButConditional, /* !!! : use instead of mapButConditional */ /* qqq : make it accept null in the first argument */ /* Dmytro : covered, coverage is more complex */
+  mapButConditional_,
+  mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
+  mapBut_, /* qqq : make it accept null in the first argument */
+  mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
+  mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
+  mapOwnBut, /* !!! : use instead of mapOwnBut */ /* Dmytro : covered, coverage is more complex */
+  mapOwnBut_, /* qqq : make it accept null in the first argument */
 
-  mapOnly,
-  mapOnly_, /* !!! : use instead of mapOnly */ /* qqq : make it accept null in the first argument */
-  mapOnlyOwn,
-  mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */ /* qqq : make it accept null in the first argument */
-  mapOnlyComplementing,
-  mapOnlyComplementing_, /* !!! : use instead of mapOnlyComplementing */ /* qqq : make it accept null in the first argument */
+  mapOnly, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
+  mapOnly_,  /* qqq : make it accept null in the first argument */
+  mapOnlyOwn, /* !!! : use instead of mapOnlyOwn */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyOwn_, /* qqq : make it accept null in the first argument */
+  mapOnlyComplementing, /* !!! : use instead of mapOnlyComplementing */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
   _mapOnly,
   _mapOnly_,
 

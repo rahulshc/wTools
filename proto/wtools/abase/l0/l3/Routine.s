@@ -112,29 +112,38 @@ function _routineJoin( o )
   {
     _.mapExtend( result, routine );
 
-    Object.defineProperty( result, 'originalRoutine',
+    let o2 =
     {
       value : routine,
       enumerable : false,
-    });
+    };
+    Object.defineProperty( result, 'originalRoutine', o2 );
 
     if( context !== undefined )
-    Object.defineProperty( result, 'boundContext',
     {
-      value : context,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : context,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundContext', o3 );
+    }
 
     if( args !== undefined )
-    Object.defineProperty( result, 'boundArguments',
     {
-      value : args,
-      enumerable : false,
-    });
+      let o3 =
+      {
+        value : args,
+        enumerable : false,
+      };
+      Object.defineProperty( result, 'boundArguments', o3 );
+    }
 
   }
 
   return result;
+
+  /* */
 
   function act()
   {
@@ -393,29 +402,95 @@ function routineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
-  let name = routine ? routine.name : '';
   if( options === undefined )
   options = Object.create( null );
+
+  let name = routine ? routine.name : '';
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-/* qqq
-  inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-  error in Map.s cause problem with catching unchaugt error
-*/
+  /* aaa
+    inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+    error in Map.s cause problem with catching uncaught error
+  */
+  /* Dmytro : all routines are inlined */
 
-  _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
-  _.mapSupplementStructureless( options, defaults );
-  _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fields, but it does have` );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+
+    mapSupplementStructurelessMin( options, defaults );
+
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert
+    (
+      undefineKeys.length === 0,
+      () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
+    );
+  }
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function mapUndefineKeys( srcMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( srcMap[ s ] === undefined )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
+
+  /* */
+
+  function mapSupplementStructurelessMin( dstMap, srcMap )
+  {
+    for( let s in srcMap )
+    {
+      if( dstMap[ s ] !== undefined )
+      continue;
+
+      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+
+      dstMap[ s ] = srcMap[ s ];
+    }
+  }
 }
 
 //
@@ -425,25 +500,70 @@ function assertRoutineOptions( routine, args, defaults )
 
   if( !_.arrayLike( args ) )
   args = [ args ];
+
   let options = args[ 0 ];
+
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-/* qqq
-  inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
-  to make the routine available on low levels
-*/
+  /* aaa
+    inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
+    to make the routine available on low levels
+  */
+  /* Dmytro : all routines are inlined */
 
-  _.assertMapHasOnly( options, defaults );
-  _.assertMapHasAll( options, defaults );
-  _.assertMapHasNoUndefine( options );
+  if( Config.debug )
+  {
+    let extraOptionsKeys = mapButKeys( options, defaults );
+    _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
+    let extraDefaultsKeys = mapButKeys( defaults, options );
+    _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
+    let undefineKeys = mapUndefineKeys( options );
+    _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ keysQuote( undefineKeys ) }`);
+  }
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function mapUndefineKeys( srcMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( srcMap[ s ] === undefined )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 //
@@ -851,7 +971,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @namespace Tools
  */
 
-function routineExtend_( dst, src )
+function routineExtend( dst, src )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -1018,7 +1138,7 @@ function routineUnite_body( o )
 
   _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routineExtend_( unitedRoutine, o.body );
+  _.routineExtend( unitedRoutine, o.body );
 
   unitedRoutine.head = o.head;
   unitedRoutine.body = o.body;
@@ -1141,23 +1261,155 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
 
 //
 
+/**
+ * The routine routineEr() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineEr() adds to routine {-routine-} field {-er-} that is a functor for generating
+ * of new routine similar to original routine but with changed map {-defaults-}.
+ *
+ * @example
+ * function test_head( routine, args )
+ * {
+ *   let o = args[ 0 ];
+ *   if( !_.mapIs( o ) )
+ *   {
+ *     if( o !== undefined )
+ *     o = { arg : 0 };
+ *     else
+ *     o = Object.create( null );
+ *   }
+ *
+ *   _.routineOptions( routine, o );
+ *   return o;
+ * }
+ *
+ * function test_body( o )
+ * {
+ *   return o;
+ * }
+ * test_body.defaults = { arg : null, arg2 : 'arg2' };
+ *
+ * let routine = _.routineUnite( test_head, test_body );
+ * console.log( routine.er === undefined );
+ * // log : true
+ *
+ * let erhead = ( routine, args ) =>
+ * {
+ *   if( _.mapIs( args[ 0 ] ) )
+ *   return args[ 0 ];
+ *   return { 'arg' : args[ 0 ] };
+ * };
+ * _.routineEr( routine, erhead );
+ * console.log( _.routineIs( routine.er ) );
+ * // log : true
+ *
+ * let newRoutine = routine.er( 'arg1' );
+ * console.log( newRoutine.defaults );
+ * // log : { arg : 'arg1', arg2 : 'arg2' }
+ *
+ * var resultOld = routine();
+ * console.log( resultOld );
+ * // log : { arg : null, arg2 : 'arg2' }
+ * var resultNew = newRoutine();
+ * console.log( resultNew );
+ * // log : { arg : 'arg1', arg2 : 'arg2' }
+ *
+ * @param { Function } routine - The routine from which generates new routine.
+ * Routine should be generated by routineUnite.
+ * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
+ * @returns { Function } - Returns original routine with functor in field {-er-}.
+ * @function routineEr
+ * @throws { Error } If arguments.length neither is 1, nor 2.
+ * @throws { Error } If {-routine-} is not a Function.
+ * @throws { Error } If {-erhead-} is not a Function.
+ * @throws { Error } If {-routine-} has not fields {-head-} and {-body-}.
+ * The fields should have type Function.
+ * @namespace Tools
+ */
+
 function routineEr( routine, erhead )
 {
   if( routine.er )
-  return routine.er;
+  return routine.er; /* Dmytro : maybe before return should be assert like : _.assert( _.routineIs( routine.er ) ) */
   routine.er = _.routineErFor( ... arguments );
   return routine;
 }
 
 //
 
+/**
+ * The routine routineErFor() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineErFor() returns functor for generating of new routine similar to original
+ * routine {-routine-} but with changed map {-defaults-}.
+ *
+ * @example
+ * function test_head( routine, args )
+ * {
+ *   let o = args[ 0 ];
+ *   if( !_.mapIs( o ) )
+ *   {
+ *     if( o !== undefined )
+ *     o = { arg : 0 };
+ *     else
+ *     o = Object.create( null );
+ *   }
+ *
+ *   _.routineOptions( routine, o );
+ *   return o;
+ * }
+ *
+ * function test_body( o )
+ * {
+ *   return o;
+ * }
+ * test_body.defaults = { arg : null, arg2 : 'arg2' };
+ *
+ * let routine = _.routineUnite( test_head, test_body );
+ * let erhead = ( routine, args ) =>
+ * {
+ *   if( _.mapIs( args[ 0 ] ) )
+ *   return args[ 0 ];
+ *   return { 'arg' : args[ 0 ] };
+ * };
+ * let functor = _.routineErFor( routine, erhead );
+ * console.log( _.routineIs( functor ) );
+ * // log : true
+ *
+ * let newRoutine = functor( 'arg1' );
+ * console.log( newRoutine.defaults );
+ * // log : { arg : 'arg1', arg2 : 'arg2' }
+ *
+ * var resultOld = routine();
+ * console.log( resultOld );
+ * // log : { arg : null, arg2 : 'arg2' }
+ * var resultNew = newRoutine();
+ * console.log( resultNew );
+ * // log : { arg : 'arg1', arg2 : 'arg2' }
+ *
+ * @param { Function } routine - The routine from which generates new routine.
+ * Routine should be generated by routineUnite.
+ * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
+ * @returns { Function } - Returns functor to generate new routine with changed map {-defaults-}.
+ * @function routineErFor
+ * @throws { Error } If arguments.length neither is 1, nor 2.
+ * @throws { Error } If {-routine-} is not a Function.
+ * @throws { Error } If {-erhead-} is not a Function.
+ * @throws { Error } If {-routine-} has not fields {-head-} and {-body-}.
+ * The fields should have type Function.
+ * @namespace Tools
+ */
+
 function routineErFor( routine, erhead )
 {
 
   erhead = erhead || routine.erhead || routine.head;
   let head = routine.head;
-  let body = routine.body || routine.body;
-  let defaults = routine.defaults || routine.defaults;
+  // let body = routine.body || routine.body; /* Dmytro : duplicated value */
+  let body = routine.body;
+  // let defaults = routine.defaults || routine.defaults; /* Dmytro : duplicated value, routine constructed by routineUnite should have defaults  */
+  /* Dmytro : alternative but not useful variant
+  let defaults = routine.defaults || Object.create( null );
+  */
+  let defaults = routine.defaults;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( routine ) );
@@ -1168,7 +1420,7 @@ function routineErFor( routine, erhead )
 
   return er_functor;
 
-  /* xxx qqq : cover */
+  /* xxx aaa : cover */ /* Dmytro : covered */
   function er_functor()
   {
     let self = this;
@@ -1181,7 +1433,7 @@ function routineErFor( routine, erhead )
 
     return er;
 
-    function er()
+    function er() /* Dmytro : using of routineUnite can extend behavior of routine _.routineUnite({ head, body, head, name : 'er' }) */
     {
       let result;
       let op2 = head.call( self, er, arguments );
@@ -1192,6 +1444,43 @@ function routineErFor( routine, erhead )
       return result;
     }
 
+  }
+
+}
+
+//
+
+function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
+{
+  let self = this;
+  let defaults = routine.defaults;
+  erhead = erhead || routine.erhead || routine.head;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.routineIs( erhead ) );
+  _.assert( _.routineIs( head ) );
+  _.assert( _.routineIs( body ) );
+  _.assert( _.objectIs( defaults ) );
+
+  let op = erhead.call( self, routine, arguments );
+
+  _.assert( _.mapIs( op ) );
+  _.assertMapHasOnly( op, defaults );
+
+  er.defaults = _.mapSupplement( op, defaults );
+
+  return er;
+
+  function er()
+  {
+    let result;
+    let op2 = head.call( self, er, arguments );
+    if( _.unrollIs( op2 ) )
+    result = body.apply( self, op2 );
+    else if( _.mapIs( op2 ) )
+    result = body.call( self, op2 );
+    return result;
   }
 
 }
@@ -2095,9 +2384,9 @@ vectorizeNone.defaults = { ... vectorizeNone_body.defaults };
  * let vector = _.vectorizeAccess( [ obj1, obj2 ] );
  * console.log( vector );
  * // log Proxy [
- *          [ { a : 1, b : 2, c : 3 }, { a : 5, b : 6 } ],
- *          { get: [Function: get], set: [Function: set] }
- *        ]
+ * //       [ { a : 1, b : 2, c : 3 }, { a : 5, b : 6 } ],
+ * //       { get: [Function: get], set: [Function: set] }
+ * //     ]
  * console.log( vector[ '$' ] );
  * // log [ { a : 1, b : 2, c : 3 }, { a : 5, b : 6 } ]
  * let vectorA = vector.a; // or vector[ 'a' ]
@@ -2248,12 +2537,13 @@ let Extension =
 
   routinesCompose,
   // routineExtend_old, /* xxx : deprecate */
-  routineExtend_,
-  routineExtend : routineExtend_,
+  // routineExtend : routineExtend_,
+  routineExtend,
   routineDefaults,
   routineUnite,
   routineEr,
   routineErFor,
+  routineErJoin,
 
   routineVectorize_functor : vectorize,
   vectorize,

@@ -1986,11 +1986,11 @@ function typeOf( test )
 
 //
 
-function isPrototypeOf( test )
+function prototypeIsPrototypeOf( test )
 {
   test.open( 'subPrototype === superPrototype' );
 
-  var prototypeOf = _.isPrototypeOf;
+  var prototypeOf = _.prototypeIsPrototypeOf;
 
   test.case = 'check null';
   var src = null;
@@ -3927,6 +3927,11 @@ function printerLike( test )
 
   test.case = 'check console';
   var src = console;
+  var got = _.printerLike( src );
+  test.identical( got, true );
+  
+  test.case = 'check global logger';
+  var src = _global.logger;
   var got = _.printerLike( src );
   test.identical( got, true );
 

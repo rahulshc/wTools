@@ -48,6 +48,9 @@ function _setupLoggerPlaceholder()
     error : function error() { console.error.apply( console, arguments ); },
     errorUp : function errorUp() { console.error.apply( console, arguments ); },
     errorDown : function errorDown() { console.error.apply( console, arguments ); },
+    info : function info() { console.info.apply( console, arguments ); },
+    warn : function warn() { console.warn.apply( console, arguments ); },
+    debug : function debug() { console.debug.apply( console, arguments ); },
   }
 
 }

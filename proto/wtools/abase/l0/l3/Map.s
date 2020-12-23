@@ -669,7 +669,7 @@ mapOwnVals.defaults =
  *
  * @example
  * _.mapAllVals( { a : 7, b : 13 } );
- * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
+ * // returns [ "7", "13", function __defineGetter__(), ... function prototypeIsPrototypeOf() ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the onlyEnumerable property values found directly upon object.
@@ -860,14 +860,14 @@ mapOwnPairs.defaults =
  *
  * @example
  * _.mapAllPairs( { a : 7, b : 13 } );
- * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function isPrototypeOf() ] ]
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
+ * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
@@ -1253,16 +1253,15 @@ function mapSupplementStructureless( dstMap, srcMap )
     {
       if( dstMap[ s ] !== undefined )
       continue;
+
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      {
-        debugger;
-        throw Error( 'Source map should have only primitive elements, but ' + s + ' is ' + srcMap[ s ] );
-      }
+      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+
       dstMap[ s ] = srcMap[ s ];
     }
   }
 
-  return dstMap
+  return dstMap;
 }
 
 //
