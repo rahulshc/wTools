@@ -783,43 +783,43 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
 // array converter
 // --
 
-// /**
-//  * The longToMap() converts an (array) into Object.
-//  *
-//  * @param { longIs } array - To convert into Object.
-//  *
-//  * @example
-//  * _.longToMap( [] );
-//  * // returns {}
-//  *
-//  * @example
-//  * _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
-//  * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
-//  *
-//  * @example
-//  * let args = ( function() {
-//  *   return arguments;
-//  * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
-//  * _.longToMap( args );
-//  * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
-//  *
-//  * @returns { Object } Returns an Object.
-//  * @function longToMap
-//  * @throws { Error } Will throw an Error if (array) is not an array-like.
-//  * @namespace Tools
-//  */
-//
-// function longToMap( array )
-// {
-//   let result = Object.create( null );
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.longIs( array ) );
-//
-//   for( let a = 0 ; a < array.length ; a++ )
-//   result[ a ] = array[ a ];
-//   return result;
-// }
+/**
+ * The longToMap() converts an (array) into Object.
+ *
+ * @param { longIs } array - To convert into Object.
+ *
+ * @example
+ * _.longToMap( [] );
+ * // returns {}
+ *
+ * @example
+ * _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+ * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
+ *
+ * @example
+ * let args = ( function() {
+ *   return arguments;
+ * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+ * _.longToMap( args );
+ * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
+ *
+ * @returns { Object } Returns an Object.
+ * @function longToMap
+ * @throws { Error } Will throw an Error if (array) is not an array-like.
+ * @namespace Tools
+ */
+
+function longToMap( array )
+{
+  let result = Object.create( null );
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.longIs( array ) );
+
+  for( let a = 0 ; a < array.length ; a++ )
+  result[ a ] = array[ a ];
+  return result;
+}
 //
 // //
 //
@@ -1450,7 +1450,7 @@ let Routines =
 
   // // array converter
   //
-  // longToMap, /* dubious */
+  longToMap, /* dubious */ /* Yevhen : uncommented, routine is used in module::wChangeTransactor */
   // longToStr, /* dubious */
 
   // long transformer
