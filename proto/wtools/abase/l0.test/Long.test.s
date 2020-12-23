@@ -17577,7 +17577,7 @@ let Self =
     longFromRangeWithStepDefaultLongDescriptor,
     longFromRangeWithStepNotDefaultLongDescriptor,
 
-    // longToMap, // Dmytro : routine longToMap commented in Long.s
+    longToMap, /* Dmytro : routine longToMap commented in Long.s */ /* Yevhen : uncommented, routine is used in module::wChangeTransactor */
     // longToStr, // Dmytro : routine longToStr commented in Long.s
 
     // long checker
