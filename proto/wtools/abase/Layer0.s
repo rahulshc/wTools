@@ -18,6 +18,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Ct.s' );
   require( './l0/l3/Entity.s' );
   require( './l0/l3/Err.s' );
+  require( './l0/l3/Escape.s' );
   require( './l0/l3/Event.s' );
   require( './l0/l3/Functional.s' );
   require( './l0/l3/Interval.s' );
@@ -50,6 +51,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Ct.s' );
   require( './l0/l5/Entity.s' );
   require( './l0/l5/Err.s' );
+  require( './l0/l5/Escape.s' );
   require( './l0/l5/Event.s' );
   require( './l0/l5/Functional.s' );
   require( './l0/l5/Interval.s' );
@@ -91,6 +93,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Ct.s' );
   require( './l0/l8/Entity.s' );
   require( './l0/l8/Err.s' );
+  require( './l0/l8/Escape.s' );
   require( './l0/l8/Event.s' );
   require( './l0/l8/Functional.s' );
   require( './l0/l8/Interval.s' );

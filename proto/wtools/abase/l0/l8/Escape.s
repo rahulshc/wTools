@@ -1,11 +1,11 @@
-( function _l5_Pair_s_()
+( function _l8_Escape_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools.pair = _global_.wTools.pair || Object.create( null );
+let Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( null );
 
 // --
 // implementation
