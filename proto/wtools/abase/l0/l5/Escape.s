@@ -47,8 +47,8 @@ function undo( src )
 
 var Extension =
 {
-  do : _do,
-  undo,
+  do : _do, /* qqq : cover please */
+  undo, /* qqq : cover please */
 }
 
 //

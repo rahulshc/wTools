@@ -191,6 +191,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Ct.s
           - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Err.s
+          - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/Functional.s
           - ../proto/wtools/abase/l0/l3/Interval.s
@@ -224,6 +225,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Ct.s
           - ../proto/wtools/abase/l0/l5/Entity.s
           - ../proto/wtools/abase/l0/l5/Err.s
+          - ../proto/wtools/abase/l0/l5/Escape.s
           - ../proto/wtools/abase/l0/l5/Event.s
           - ../proto/wtools/abase/l0/l5/Functional.s
           - ../proto/wtools/abase/l0/l5/Interval.s
@@ -265,6 +267,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Ct.s
           - ../proto/wtools/abase/l0/l8/Entity.s
           - ../proto/wtools/abase/l0/l8/Err.s
+          - ../proto/wtools/abase/l0/l8/Escape.s
           - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
           - ../proto/wtools/abase/l0/l8/Interval.s
