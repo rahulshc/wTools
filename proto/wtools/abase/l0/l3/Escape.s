@@ -14,7 +14,7 @@ function is( src )
 {
   if( !src )
   return false;
-  debugger;
+  // debugger;
   return src instanceof _.Escape;
 }
 
