@@ -1850,26 +1850,98 @@ function sureWithoutDebugger( condition )
 
 }
 
+// --
+// checker
+// --
 //
-
-function sureInstanceOrClass( _constructor, _this )
-{
-  _.sure( arguments.length === 2, 'Expects exactly two arguments' );
-  _.sure( _.isInstanceOrClass( _constructor, _this ) );
-}
-
+// function _isInstanceOrClass( _constructor, _this )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   debugger;
+//   let result =
+//   (
+//     _this === _constructor
+//     || _this instanceof _constructor
+//     || Object.isPrototypeOf.call( _constructor, _this )
+//     || Object.isPrototypeOf.call( _constructor, _this.prototype )
+//   );
+//   return result;
+// }
 //
+// //
+//
+// function _ownNoConstructor( ins )
+// {
+//   _.assert( !_.primitiveIs( ins ) );
+//   _.assert( arguments.length === 1 );
+//   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
+//   return result;
+// }
+//
+// //
+//
+// function sureInstanceOrClass( _constructor, _this )
+// {
+//   _.sure( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.sure( _._isInstanceOrClass( _constructor, _this ) );
+// }
+//
+// //
+//
+// function sureOwnNoConstructor( ins )
+// {
+//   _.sure( !_.primitiveIs( ins ) );
+//   let args = Array.prototype.slice.call( arguments );
+//   args[ 0 ] = _.sureOwnNoConstructor( ins );
+//   _.sure.apply( _, args );
+// }
+//
+// //
+//
+// function assertInstanceOrClass( _constructor, _this )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _._isInstanceOrClass( _constructor, _this ) );
+// }
+//
+// //
+//
+// function assertOwnNoConstructor( ins )
+// {
+//   _.assert( !_.primitiveIs( ins ) );
+//   let args = Array.prototype.slice.call( arguments );
+//   args[ 0 ] = _.sureOwnNoConstructor( ins );
+//
+//   if( args.length === 1 )
+//   args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
+//
+//   _.assert.apply( _, args );
+// }
 
-function sureOwnNoConstructor( ins )
-{
-  _.sure( !_.primitiveIs( ins ) );
-  let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _.ownNoConstructor( ins );
-  _.sure.apply( _, args );
-}
+// //
+//
+// function sureInstanceOrClass( _constructor, _this )
+// {
+//   _.sure( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.sure( _._isInstanceOrClass( _constructor, _this ) );
+// }
+//
+// //
+//
+// function sureOwnNoConstructor( ins )
+// {
+//   _.sure( !_.primitiveIs( ins ) );
+//   _.sure( arguments.length === 1 );
+//   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
+//   return result;
+//   // _.sure( !_.primitiveIs( ins ) );
+//   // let args = Array.prototype.slice.call( arguments );
+//   // args[ 0 ] = _.sureOwnNoConstructor( ins );
+//   // _.sure.apply( _, args );
+// }
 
 // --
-// assert
+//
 // --
 
 function breakpoint( condition )
@@ -2083,27 +2155,27 @@ function assertWarn( condition )
 
 }
 
+// //
 //
-
-function assertInstanceOrClass( _constructor, _this )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.isInstanceOrClass( _constructor, _this ) );
-}
-
+// function assertInstanceOrClass( _constructor, _this )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _._isInstanceOrClass( _constructor, _this ) );
+// }
 //
+// //
 
-function assertOwnNoConstructor( ins )
-{
-  _.assert( !_.primitiveIs( ins ) );
-  let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _.ownNoConstructor( ins );
-
-  if( args.length === 1 )
-  args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
-
-  _.assert.apply( _, args );
-}
+// function assertOwnNoConstructor( ins )
+// {
+//   _.assert( !_.primitiveIs( ins ) );
+//   let args = Array.prototype.slice.call( arguments );
+//   args[ 0 ] = _.sureOwnNoConstructor( ins );
+//
+//   if( args.length === 1 )
+//   args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
+//
+//   _.assert.apply( _, args );
+// }
 
 // --
 // namespace
@@ -2183,6 +2255,14 @@ let ToolsExtension =
   sure,
   sureBriefly,
   sureWithoutDebugger,
+
+  // sureInstanceOrClass,
+  // sureOwnNoConstructor,
+  //
+  // // checker
+  //
+  // _isInstanceOrClass,
+  // _ownNoConstructor,
 
   // assert
 

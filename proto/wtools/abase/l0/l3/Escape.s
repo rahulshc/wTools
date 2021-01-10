@@ -14,7 +14,6 @@ function is( src )
 {
   if( !src )
   return false;
-  // debugger;
   return src instanceof _.Escape;
 }
 
@@ -50,22 +49,7 @@ class Escape
     throw new Error( 'Expects exactly 1 argument' );
     this.val = val;
   }
-  // static[ Symbol.hasInstance ]( instance )
-  // {
-  //   return is( instance );
-  // }
 }
-
-// let Handler =
-// {
-//   construct( original, args )
-//   {
-//     return Escape.make( ... args );
-//   }
-// };
-//
-// let Self = new Proxy( Escape, Handler );
-// Self.original = Escape;
 
 //
 
@@ -78,15 +62,11 @@ var Extension =
 
 //
 
-// _.mapSupplement( Self, Extension );
 _.assert( _.escape === undefined );
 _.escape = Object.create( null );
 _.assert( _.Escape === undefined );
 _.Escape = Escape;
-// _.mapSupplement( Self, _.escape );
 Object.assign( _.escape, Extension );
-
-// _.escape = Self;
 
 // --
 // export

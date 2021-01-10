@@ -12,7 +12,21 @@ if( typeof module !== 'undefined' )
   require( '../l0/l3/Map.s' );
   require( '../l0/l3/Routine.s' );
   require( '../l0/l3/Type.s' ); /* Map.s require */
-  require( 'wTesting' );
+
+  let toolsPath = '../../atop/testing/include/Top.s';
+  let toolsExternal = 0;
+  try
+  {
+    toolsPath = require.resolve( toolsPath );
+  }
+  catch( err )
+  {
+    toolsExternal = 1;
+    require( 'wTesting' );
+  }
+  if( !toolsExternal )
+  require( toolsPath );
+
 }
 
 let _ = _global_.wTools;

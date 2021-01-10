@@ -667,7 +667,7 @@ eachPermutation.defaults =
 {
   onEach : null,
   container : null,
-  dst : null,
+  dst : null, /* qqq for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */
   returning : 0,
 }
 

@@ -907,7 +907,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //       continue;
 //       if( _.objectIs( property ) )
 //       {
-//         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+//         _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
 //         property = Object.create( property );
 //         // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
 //         if( dst[ s ] )
@@ -1031,7 +1031,7 @@ function routineExtend( dst, src )
       continue;
       if( _.objectIs( property ) )
       {
-        _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+        _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
         // property = Object.create( property );
         property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
         if( dst[ s ] )
@@ -1686,7 +1686,7 @@ function vectorize_body( o )
       }
       else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
       {
-        keys = _.mapOwnKeys( args[ d ] );
+        keys = _.mapOnlyOwnKeys( args[ d ] );
         break;
       }
     }
@@ -1708,7 +1708,7 @@ function vectorize_body( o )
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
       {
-        _.assert( _.arraySetIdentical( _.mapOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+        _.assert( _.arraySetIdentical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
       }
       else
       {

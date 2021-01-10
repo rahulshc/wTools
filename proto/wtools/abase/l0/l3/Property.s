@@ -101,7 +101,7 @@ _of.defaults =
 //
 
 /**
- * The own() gets the object's {-srcMap-} onlyOwn onlyEnumerable properties and returns them as new map.
+ * The onlyOwn() gets the object's {-srcMap-} onlyOwn onlyEnumerable properties and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -114,35 +114,35 @@ _of.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.property.own( { a : 7, b : 13 } );
+ * _.property.onlyOwn( { a : 7, b : 13 } );
  * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.property.own( a );
+ * _.property.onlyOwn( a );
  * // returns { a : 1 }
  *
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : 2 } );
- * _.property.own.call( { onlyEnumerable : 0 }, a )
+ * _.property.onlyOwn.call( { onlyEnumerable : 0 }, a )
  * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with source {-srcMap-} onlyOwn onlyEnumerable properties.
- * @function own
+ * @function onlyOwn
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function own( srcMap, o )
+function onlyOwn( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( own, o );
+  o = _.routineOptions( onlyOwn, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -151,7 +151,7 @@ function own( srcMap, o )
   return result;
 }
 
-own.defaults =
+onlyOwn.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -277,7 +277,7 @@ routines.defaults =
 //
 
 /**
- * The ownRoutines() gets object`s {-srcMap-} onlyOwn onlyEnumerable properties that contains routines as value and returns them as new map.
+ * The onlyOwnRoutines() gets object`s {-srcMap-} onlyOwn onlyEnumerable properties that contains routines as value and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -289,35 +289,35 @@ routines.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.property.ownRoutines( { a : 7, b : 13, f : function(){} } );
+ * _.property.onlyOwnRoutines( { a : 7, b : 13, f : function(){} } );
  * // returns { f : function(){} }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.property.ownRoutines( a )
+ * _.property.onlyOwnRoutines( a )
  * // returns {}
  *
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : function(){} } );
- * _.property.ownRoutines.call( { onlyEnumerable : 0 }, a )
+ * _.property.onlyOwnRoutines.call( { onlyEnumerable : 0 }, a )
  * // returns { b : function(){} }
  *
  * @returns { object } A new map with unique object`s onlyOwn onlyEnumerable routine properties from source {-srcMap-}.
- * @function ownRoutines
+ * @function onlyOwnRoutines
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function ownRoutines( srcMap, o )
+function onlyOwnRoutines( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( ownRoutines, o );
+  o = _.routineOptions( onlyOwnRoutines, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -334,7 +334,7 @@ function ownRoutines( srcMap, o )
   return result;
 }
 
-ownRoutines.defaults =
+onlyOwnRoutines.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -462,7 +462,7 @@ fields.defaults =
 //
 
 /**
- * The ownFields() gets object`s {-srcMap-} onlyOwn onlyEnumerable fields( all properties except routines ) and returns them as new map.
+ * The onlyOwnFields() gets object`s {-srcMap-} onlyOwn onlyEnumerable fields( all properties except routines ) and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -474,14 +474,14 @@ fields.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.property.ownFields( { a : 7, b : 13, c : function(){} } );
+ * _.property.onlyOwnFields( { a : 7, b : 13, c : function(){} } );
  * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.property.ownFields( a );
+ * _.property.onlyOwnFields( a );
  * // returns { a : 1 }
  *
  * @example
@@ -491,18 +491,18 @@ fields.defaults =
  * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with object`s {-srcMap-} onlyOwn onlyEnumerable fields( all properties except routines ).
- * @function ownFields
+ * @function onlyOwnFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function ownFields( srcMap, o )
+function onlyOwnFields( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( ownFields, o );
+  o = _.routineOptions( onlyOwnFields, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -516,7 +516,7 @@ function ownFields( srcMap, o )
   return result;
 }
 
-ownFields.defaults =
+onlyOwnFields.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -599,15 +599,15 @@ let Extension =
 
   _ofAct,
   of : _of,
-  own,
+  onlyOwn,
   all,
 
   routines,
-  ownRoutines,
+  onlyOwnRoutines,
   allRoutines,
 
   fields,
-  ownFields,
+  onlyOwnFields,
   allFields,
 
 }

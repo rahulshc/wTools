@@ -139,7 +139,7 @@ function entityLength( src )
   if( src === undefined )
   return 0;
   if( _.mapLike( src ) )
-  return _.mapOwnKeys( src ).length;
+  return _.mapOnlyOwnKeys( src ).length;
   if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
   return [ ... src ].length;
   if( _.longLike( src ) )

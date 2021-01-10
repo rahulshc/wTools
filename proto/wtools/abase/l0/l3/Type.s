@@ -45,13 +45,6 @@ function nothingIs( src )
 function definedIs( src )
 {
   return src !== undefined && src !== null && !Number.isNaN( src ) && src !== _.nothing;
-  // return src !== undefined && src !== null && src !== NaN && src !== _.nothing;
-  /* Dmytro : direct comparizon of NaN and src is uncorrect.
-  let a = NaN;
-  a == NaN // false
-  a === NaN // false
-  Function isNaN is unstable. So, method Number.isNaN is better choise for check it.
-  */
 }
 
 //
@@ -120,30 +113,6 @@ function constructorIsVectorAdapter( src )
   return false;
   return '_vectorBuffer' in src.prototype;
 }
-
-// //
-//
-// function matrixIs( src )
-// {
-//   if( !src )
-//   return false;
-//   if( !_.Matrix )
-//   return false;
-//   if( src instanceof _.Matrix )
-//   return true;
-// }
-//
-// //
-//
-// function constructorIsMatrix( src )
-// {
-//   // if( !_.Matrix )
-//   // return false;
-//   // if( src === _.Matrix )
-//   // return true;
-//   // return false;
-//   return _.Matrix ? src === _.Matrix : false;
-// }
 
 //
 
@@ -541,13 +510,11 @@ let Routines =
 
   vectorAdapterIs,
   vadIs : vectorAdapterIs,
-  vectorIs, /* qqq : cover */
+  vectorIs, /* qqq for Dmytro : cover */
   vectorLike,
 
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
-  // matrixIs,
-  // constructorIsMatrix,
 
   consequenceIs,
   consequenceLike,
@@ -558,7 +525,6 @@ let Routines =
   prototypeIsPrototypeOf,
   prototypeHas,
   prototypeIs,
-  // prototypeIsStandard,
   constructorIs,
   instanceIs,
   instanceLike,

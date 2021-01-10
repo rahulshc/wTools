@@ -227,13 +227,27 @@ objectSatisfy.defaults =
 
 //
 
+function mapOwnKey( srcMap, key )
+{
+  if( srcMap === null )
+  return false;
+  if( srcMap === undefined )
+  return false;
+  return Object.hasOwnProperty.call( srcMap, key );
+}
+
+//
+
 function mapHasKey( srcMap, key )
 {
 
-  if( !srcMap )
-  return false;
+  // if( !srcMap )
+  // return false;
+  // bad!
+  // if( typeof srcMap !== 'object' )
+  // return false;
 
-  if( typeof srcMap !== 'object' )
+  if( _.primitiveIs( srcMap ) )
   return false;
 
   if( !Reflect.has( srcMap, key ) )
@@ -242,27 +256,10 @@ function mapHasKey( srcMap, key )
   return true;
 }
 
-// //
-//
-// function mapHasKey( object, key )
-// {
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( _.strIs( key ) )
-//   return ( key in object );
-//   else if( _.mapIs( key ) )
-//   return ( _.nameUnfielded( key ).coded in object );
-//   else if( _.symbolIs( key ) )
-//   return ( key in object );
-//
-//   _.assert( 0, 'mapHasKey :', 'unknown type of key :', _.strType( key ) );
-// }
-
 //
 
 /**
- * The mapOwnKey() returns true if (object) has own property.
+ * The mapOnlyOwnKey() returns true if (object) has own property.
  *
  * It takes (name) checks if (name) is a String,
  * if (object) has own property with the (name).
@@ -272,22 +269,22 @@ function mapHasKey( srcMap, key )
  * @param { name } name - Target property.
  *
  * @example
- * _.mapOwnKey( { a : 7, b : 13 }, 'a' );
+ * _.mapOnlyOwnKey( { a : 7, b : 13 }, 'a' );
  * // returns true
  *
  * @example
- * _.mapOwnKey( { a : 7, b : 13 }, 'c' );
+ * _.mapOnlyOwnKey( { a : 7, b : 13 }, 'c' );
  * // returns false
  *
  * @returns { boolean } Returns true if (object) has own property.
- * @function mapOwnKey
- * @throws { mapOwnKey } Will throw an error if the (name) is unknown.
+ * @function mapOnlyOwnKey
+ * @throws { mapOnlyOwnKey } Will throw an error if the (name) is unknown.
  * @namespace Tools
  */
 
 //
 
-function mapOwnKey( object, key )
+function mapOnlyOwnKey( object, key )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -299,7 +296,7 @@ function mapOwnKey( object, key )
   else if( _.symbolIs( key ) )
   return Object.hasOwnProperty.call( object, key );
 
-  _.assert( 0, 'mapOwnKey :', 'unknown type of key :', _.strType( key ) );
+  _.assert( 0, 'mapOnlyOwnKey :', 'unknown type of key :', _.strType( key ) );
 }
 
 //
@@ -312,9 +309,9 @@ function mapHasVal( object, val )
 
 //
 
-function mapOwnVal( object, val )
+function mapOnlyOwnVal( object, val )
 {
-  let vals = _.mapOwnVals( object );
+  let vals = _.mapOnlyOwnVals( object );
   return vals.indexOf( val ) !== -1;
 }
 
@@ -458,7 +455,7 @@ function mapHasNone( src, screen )
 //
 
 /**
- * The mapOwnAll() returns true if object( src ) has all own keys from object( screen ).
+ * The mapOnlyOwnAll() returns true if object( src ) has all own keys from object( screen ).
  * Values of properties are not checked, only names.
  *
  * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
@@ -468,25 +465,25 @@ function mapHasNone( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * _.mapOwnAll( {}, {} );
+ * _.mapOnlyOwnAll( {}, {} );
  * // returns true
  *
  * @example
- * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
+ * _.mapOnlyOwnAll( { a : 1, b : 2 }, { a : 1 } );
  * // returns true
  *
  * @example
- * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
+ * _.mapOnlyOwnAll( { a : 1, b : 2 }, { c : 1 } );
  * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @function mapOwnAll
+ * @function mapOnlyOwnAll
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
  * @namespace Tools
  */
 
-function mapOwnAll( src, screen )
+function mapOnlyOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -507,7 +504,7 @@ function mapOwnAll( src, screen )
 //
 
 /**
- * The mapOwnAny() returns true if map( src ) has at least one own property from map( screen ).
+ * The mapOnlyOwnAny() returns true if map( src ) has at least one own property from map( screen ).
  * Values of properties are not checked, only names.
  *
  * Uses for..in to get each key name from map( screen ) and checks if source( src ) has at least one property with that key name.
@@ -517,25 +514,25 @@ function mapOwnAll( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * _.mapOwnAny( {}, {} );
+ * _.mapOnlyOwnAny( {}, {} );
  * // returns false
  *
  * @example
- * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
+ * _.mapOnlyOwnAny( { a : 1, b : 2 }, { a : 1 } );
  * // returns true
  *
  * @example
- * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
+ * _.mapOnlyOwnAny( { a : 1, b : 2 }, { c : 1 } );
  * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @function mapOwnAny
+ * @function mapOnlyOwnAny
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
  * @namespace Tools
  */
 
-function mapOwnAny( src, screen )
+function mapOnlyOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -556,7 +553,7 @@ function mapOwnAny( src, screen )
 //
 
 /**
- * The mapOwnNone() returns true if map( src ) not owns properties from map( screen ).
+ * The mapOnlyOwnNone() returns true if map( src ) not owns properties from map( screen ).
  * Values of properties are not checked, only names.
  *
  * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
@@ -566,25 +563,25 @@ function mapOwnAny( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * _.mapOwnNone( {}, {} );
+ * _.mapOnlyOwnNone( {}, {} );
  * // returns true
  *
  * @example
- * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
+ * _.mapOnlyOwnNone( { a : 1, b : 2 }, { a : 1 } );
  * // returns false
  *
  * @example
- * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
+ * _.mapOnlyOwnNone( { a : 1, b : 2 }, { c : 1 } );
  * // returns true
  *
  * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
- * @function mapOwnNone
+ * @function mapOnlyOwnNone
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
  * @namespace Tools
  */
 
-function mapOwnNone( src, screen )
+function mapOnlyOwnNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -618,14 +615,14 @@ function mapHasExactly( srcMap, screenMaps )
 
 //
 
-function mapOwnExactly( srcMap, screenMaps )
+function mapOnlyOwnExactly( srcMap, screenMaps )
 {
   let result = true;
 
   _.assert( arguments.length === 2 );
 
-  result = result && _.mapOwnOnly( srcMap, screenMaps );
-  result = result && _.mapOwnAll( srcMap, screenMaps );
+  result = result && _.mapOnlyOwnOnly( srcMap, screenMaps );
+  result = result && _.mapOnlyOwnAll( srcMap, screenMaps );
 
   return true;
 }
@@ -648,13 +645,13 @@ function mapHasOnly( srcMap, screenMaps )
 
 //
 
-function mapOwnOnly( srcMap, screenMaps )
+function mapOnlyOwnOnly( srcMap, screenMaps )
 {
 
   _.assert( arguments.length === 2 );
 
   let l = arguments.length;
-  let but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+  let but = Object.keys( _.mapOnlyOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   return false;
@@ -679,12 +676,12 @@ function mapOwnOnly( srcMap, screenMaps )
 //
 //
 //
-// function mapOwnAll( srcMap, all )
+// function mapOnlyOwnAll( srcMap, all )
 // {
 //
 //   _.assert( arguments.length === 2 );
 //
-//   let but = Object.keys( _.mapOwnBut( all, srcMap ) );
+//   let but = Object.keys( _.mapOnlyOwnBut( all, srcMap ) );
 //
 //   if( but.length > 0 )
 //   return false;
@@ -709,7 +706,7 @@ function mapOwnOnly( srcMap, screenMaps )
 //
 // //
 //
-// function mapOwnNone( srcMap, screenMaps )
+// function mapOnlyOwnNone( srcMap, screenMaps )
 // {
 //
 //   _.assert( arguments.length === 2 );
@@ -2583,7 +2580,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //
 
 /**
- * The mapOwnBut() returns new object with unique own keys.
+ * The mapOnlyOwnBut() returns new object with unique own keys.
  *
  * Takes any number of objects.
  * Returns new object filled by unique own keys
@@ -2603,12 +2600,12 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
  * // returns { a : 7 }
  *
  * @returns { object } Returns new (result) object with unique own keys.
- * @function mapOwnBut
+ * @function mapOnlyOwnBut
  * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
  * @namespace Tools
  */
 
-function mapOwnBut( srcMap, butMap )
+function mapOnlyOwnBut( srcMap, butMap )
 {
   let result = Object.create( null );
 
@@ -2619,7 +2616,7 @@ function mapOwnBut( srcMap, butMap )
 
 //
 
-function mapOwnBut_( dstMap, srcMap, butMap )
+function mapOnlyOwnBut_( dstMap, srcMap, butMap )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
@@ -3280,7 +3277,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+  let but = Object.keys( _.mapOnlyOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
@@ -3487,7 +3484,7 @@ function sureMapOwnAll( srcMap, all, msg )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOwnBut( all, srcMap ) );
+  let but = Object.keys( _.mapOnlyOwnBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
@@ -4370,25 +4367,32 @@ let Extension =
 
   objectSatisfy,
 
-  mapHas : mapHasKey,
-  mapHasKey,
+  /* xxx : move routines to ...? */
+
+  /* introduce routine::mapHasKey */
+  mapOwn : mapOwnKey, /* qqq : good coverage required! */
   mapOwnKey,
+
+  mapHas : mapHasKey, /* qqq : good coverage required! */
+  mapHasKey,
+
+  mapOnlyOwnKey,
   mapHasVal,
-  mapOwnVal,
+  mapOnlyOwnVal,
 
   mapHasAll,
   mapHasAny,
   mapHasNone,
 
-  mapOwnAll,
-  mapOwnAny,
-  mapOwnNone,
+  mapOnlyOwnAll,
+  mapOnlyOwnAny,
+  mapOnlyOwnNone,
 
   mapHasExactly,
-  mapOwnExactly,
+  mapOnlyOwnExactly,
 
   mapHasOnly,
-  mapOwnOnly,
+  mapOnlyOwnOnly,
 
   mapHasNoUndefine,
 
@@ -4493,8 +4497,8 @@ let Extension =
   mapBut_, /* qqq : make it accept null in the first argument */
   mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
   mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
-  mapOwnBut, /* !!! : use instead of mapOwnBut */ /* Dmytro : covered, coverage is more complex */
-  mapOwnBut_, /* qqq : make it accept null in the first argument */
+  mapOnlyOwnBut, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyOwnBut_, /* qqq : make it accept null in the first argument */
 
   mapOnly, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
   mapOnly_,  /* qqq : make it accept null in the first argument */

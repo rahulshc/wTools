@@ -1579,10 +1579,10 @@ function mapKeys( test )
 
 //
 
-function mapOwnKeys( test )
+function mapOnlyOwnKeys( test )
 {
   test.case = 'empty'
-  var got = _.mapOwnKeys( {} );
+  var got = _.mapOnlyOwnKeys( {} );
   var expected = [];
   test.identical( got, expected )
 
@@ -1590,11 +1590,11 @@ function mapOwnKeys( test )
 
   test.case = 'simplest'
 
-  var got = _.mapOwnKeys( { a : '1', b : '2' } );
+  var got = _.mapOnlyOwnKeys( { a : '1', b : '2' } );
   var expected = [ 'a', 'b' ];
   test.identical( got, expected )
 
-  var got = _.mapOwnKeys( new Date );
+  var got = _.mapOnlyOwnKeys( new Date );
   var expected = [ ];
   test.identical( got, expected )
 
@@ -1608,15 +1608,15 @@ function mapOwnKeys( test )
   Object.setPrototypeOf( a, b );
   Object.setPrototypeOf( b, c );
 
-  var got = _.mapOwnKeys( a );
+  var got = _.mapOnlyOwnKeys( a );
   var expected = [ 'a' ];
   test.identical( got, expected )
 
-  var got = _.mapOwnKeys( b );
+  var got = _.mapOnlyOwnKeys( b );
   var expected = [ 'b' ];
   test.identical( got, expected )
 
-  var got = _.mapOwnKeys( c );
+  var got = _.mapOnlyOwnKeys( c );
   var expected = [ 'c' ];
   test.identical( got, expected );
 
@@ -1625,13 +1625,13 @@ function mapOwnKeys( test )
   test.case = 'enumerable on/off';
   var a = { a : '1' };
 
-  var got = _.mapOwnKeys( a );
+  var got = _.mapOnlyOwnKeys( a );
   var expected = [ 'a' ]
   test.identical( got, expected );
 
   Object.defineProperty( a, 'k', { enumerable : false } );
   var o = { onlyEnumerable : 0 };
-  var got = _.mapOwnKeys( a, o );
+  var got = _.mapOnlyOwnKeys( a, o );
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
@@ -1643,19 +1643,19 @@ function mapOwnKeys( test )
   test.case = 'no args';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKeys();
+    _.mapOnlyOwnKeys();
   })
 
   test.case = 'invalid type';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKeys( 1 );
+    _.mapOnlyOwnKeys( 1 );
   })
 
   test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKeys( { onlyOwn : 0 }, { 'wrong' : null } );
+    _.mapOnlyOwnKeys( { onlyOwn : 0 }, { 'wrong' : null } );
   })
 
 }
@@ -1847,24 +1847,24 @@ function mapVals( test )
 
 //
 
-function mapOwnVals( test )
+function mapOnlyOwnVals( test )
 {
 
   test.case = 'trivial';
 
-  var got = _.mapOwnVals( {} );
+  var got = _.mapOnlyOwnVals( {} );
   var expected = [];
   test.identical( got, expected );
 
-  var got = _.mapOwnVals( { a : 7, b : 13 } );
+  var got = _.mapOnlyOwnVals( { a : 7, b : 13 } );
   var expected = [ 7, 13 ];
   test.identical( got, expected );
 
-  var got = _.mapOwnVals( { 7 : 'a', 3 : 'b', 13 : 'c' } );
+  var got = _.mapOnlyOwnVals( { 7 : 'a', 3 : 'b', 13 : 'c' } );
   var expected = [ 'b', 'a', 'c' ];
   test.identical( got, expected );
 
-  var got = _.mapOwnVals( new Date );
+  var got = _.mapOnlyOwnVals( new Date );
   var expected = [ ];
   test.identical( got, expected );
 
@@ -1877,7 +1877,7 @@ function mapOwnVals( test )
 
   /**/
 
-  var got = _.mapOwnVals( a );
+  var got = _.mapOnlyOwnVals( a );
   var expected = [ 1 ];
   test.identical( got, expected );
 
@@ -1886,7 +1886,7 @@ function mapOwnVals( test )
   test.case = 'enumerable - 0';
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : 4 } );
-  var got = _.mapOwnVals( a, { onlyEnumerable : 0 } );
+  var got = _.mapOnlyOwnVals( a, { onlyEnumerable : 0 } );
   var expected = [ 1, 3 ];
   test.identical( got, expected );
 
@@ -1898,19 +1898,19 @@ function mapOwnVals( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnVals();
+    _.mapOnlyOwnVals();
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnVals( 'wrong argument' );
+    _.mapOnlyOwnVals( 'wrong argument' );
   });
 
   test.case = 'wrong option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnVals( { a : 1 }, { 'wrong' : null } );
+    _.mapOnlyOwnVals( { a : 1 }, { 'wrong' : null } );
   });
 
 }
@@ -2091,10 +2091,10 @@ function mapPairs( test )
 
 //
 
-function mapOwnPairs( test )
+function mapOnlyOwnPairs( test )
 {
   test.case = 'empty';
-  var got = _.mapOwnPairs( {} );
+  var got = _.mapOnlyOwnPairs( {} );
   var expected = [];
   test.identical( got, expected );
 
@@ -2102,7 +2102,7 @@ function mapOwnPairs( test )
 
   test.case = 'a list of [ key, value ] pairs';
 
-  var got = _.mapOwnPairs( { a : 7, b : 13 } );
+  var got = _.mapOnlyOwnPairs( { a : 7, b : 13 } );
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
@@ -2110,13 +2110,13 @@ function mapOwnPairs( test )
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
-  var got = _.mapOwnPairs( arrObj );
+  var got = _.mapOnlyOwnPairs( arrObj );
   var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
   /**/
 
-  var got = _.mapOwnPairs( new Date );
+  var got = _.mapOnlyOwnPairs( new Date );
   var expected = [];
   test.identical( got, expected );
 
@@ -2127,14 +2127,14 @@ function mapOwnPairs( test )
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
-  var got = _.mapOwnPairs( a );
+  var got = _.mapOnlyOwnPairs( a );
   var expected = [ [ 'a', 1 ] ];
   test.identical( got, expected );
 
   /* using enumerable off */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnPairs( a, { onlyEnumerable : 0 } );
+  var got = _.mapOnlyOwnPairs( a, { onlyEnumerable : 0 } );
   var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
@@ -2146,19 +2146,19 @@ function mapOwnPairs( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnPairs();
+    _.mapOnlyOwnPairs();
   });
 
   test.case = 'primitive';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnPairs( 1 );
+    _.mapOnlyOwnPairs( 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnPairs( 'wrong argument' );
+    _.mapOnlyOwnPairs( 'wrong argument' );
   });
 
 }
@@ -4730,21 +4730,21 @@ function mapButIgnoringUndefinesDstMapMap_( test )
 
 //
 
-function mapOwnBut( test )
+function mapOnlyOwnBut( test )
 {
 
   test.case = 'an empty object';
-  var got = _.mapOwnBut( {}, {} );
+  var got = _.mapOnlyOwnBut( {}, {} );
   var expected = {  };
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.mapOwnBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+  var got = _.mapOnlyOwnBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
   var expected = { c : 3 };
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.mapOwnBut( { a : 7, toString : 5 }, { b : 33, c : 77 } );
+  var got = _.mapOnlyOwnBut( { a : 7, toString : 5 }, { b : 33, c : 77 } );
   var expected = { a : 7 };
   test.identical( got, expected );
 
@@ -4756,38 +4756,38 @@ function mapOwnBut( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnBut();
+    _.mapOnlyOwnBut();
   });
 
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnBut( {} );
+    _.mapOnlyOwnBut( {} );
   });
 
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnBut( [] );
+    _.mapOnlyOwnBut( [] );
   });
 
   test.case = 'wrong type of arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnBut( 'wrong arguments' );
+    _.mapOnlyOwnBut( 'wrong arguments' );
   });
 }
 
 //
 
-function mapOwnButThreeArguments_( test )
+function mapOnlyOwnButThreeArguments_( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - null, butMap - empty map';
   var srcMap = null;
   var screenMap = {};
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4796,7 +4796,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
   var screenMap = {};
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4805,7 +4805,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - null, butMap - empty array';
   var srcMap = null;
   var screenMap = [];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4814,7 +4814,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
   var screenMap = [];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4823,7 +4823,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - null, butMap - filled map';
   var srcMap = null;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4832,7 +4832,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4841,7 +4841,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - null, butMap - filled array';
   var srcMap = null;
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4850,7 +4850,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4860,7 +4860,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected =Object.create( { bb : 2, cc : 3 } );
   expected.aa = 1;
   test.identical( got, expected );
@@ -4871,7 +4871,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = Object.create( { bb : 2, cc : 3 } );
   expected.aa = 1;
   test.identical( got, expected );
@@ -4882,7 +4882,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4892,7 +4892,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4902,7 +4902,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.true( got === srcMap );
@@ -4917,7 +4917,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
   var screenMap = {};
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4927,7 +4927,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
   var screenMap = [];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4937,7 +4937,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4947,7 +4947,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4957,7 +4957,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = { 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4967,7 +4967,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = { 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4977,7 +4977,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -4987,7 +4987,7 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOwnBut_( srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5002,33 +5002,33 @@ function mapOwnButThreeArguments_( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.mapOwnBut_() );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( {}, [], {}, [] ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( {}, [], {}, [] ) );
 
   test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( 3, [] ) );
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( [], {}, {} ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( 3, [] ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( [], {}, {} ) );
 
   test.case = 'wrong type of butMap';
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( [], '' ) );
-  test.shouldThrowErrorSync( () => _.mapOwnBut_( null, [], '' ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( [], '' ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( null, [], '' ) );
 }
 
 //
 
-function mapOwnButDstMapNull_( test )
+function mapOnlyOwnButDstMapNull_( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
   var screenMap = {};
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5037,7 +5037,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
   var screenMap = [];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5046,7 +5046,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5055,7 +5055,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5065,7 +5065,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = { aa : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5075,7 +5075,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = { aa : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5085,7 +5085,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5095,7 +5095,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5105,7 +5105,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5120,7 +5120,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
   var screenMap = {};
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5130,7 +5130,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
   var screenMap = [];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5140,7 +5140,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5150,7 +5150,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5160,7 +5160,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = { 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5170,7 +5170,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = { 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5180,7 +5180,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5190,7 +5190,7 @@ function mapOwnButDstMapNull_( test )
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOwnBut_( null, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5202,7 +5202,7 @@ function mapOwnButDstMapNull_( test )
 
 //
 
-function mapOwnButDstMapIsMap_( test )
+function mapOnlyOwnButDstMapIsMap_( test )
 {
   test.open( 'srcMap - map' );
 
@@ -5210,7 +5210,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
   var screenMap = {};
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5220,7 +5220,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
   var screenMap = [];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5230,7 +5230,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5240,7 +5240,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5251,7 +5251,7 @@ function mapOwnButDstMapIsMap_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 2, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5262,7 +5262,7 @@ function mapOwnButDstMapIsMap_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 2, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5273,7 +5273,7 @@ function mapOwnButDstMapIsMap_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5284,7 +5284,7 @@ function mapOwnButDstMapIsMap_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5295,7 +5295,7 @@ function mapOwnButDstMapIsMap_( test )
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5311,7 +5311,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
   var screenMap = {};
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5322,7 +5322,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
   var screenMap = [];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5333,7 +5333,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5344,7 +5344,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
   var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5355,7 +5355,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { 0 : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { bb : 2, 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5366,7 +5366,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5377,7 +5377,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -5388,7 +5388,7 @@ function mapOwnButDstMapIsMap_( test )
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
@@ -8826,28 +8826,28 @@ function objectSatisfyOptionStrict( test )
 
 //
 
-function mapOwnKey( test )
+function mapOnlyOwnKey( test )
 {
 
   test.case = 'second argument is string';
-  var got = _.mapOwnKey( { a : 7, b : 13 }, 'a' );
+  var got = _.mapOnlyOwnKey( { a : 7, b : 13 }, 'a' );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'second argument is object';
-  var got = _.mapOwnKey( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
+  var got = _.mapOnlyOwnKey( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'second argument is symbol';
   var symbol = Symbol( 'b' );
   var obj = { a : 7, [ symbol ] : 13 };
-  var got = _.mapOwnKey( obj, symbol );
+  var got = _.mapOnlyOwnKey( obj, symbol );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'false';
-  var got = _.mapOwnKey( Object.create( { a : 7, b : 13 } ), 'a' );
+  var got = _.mapOnlyOwnKey( Object.create( { a : 7, b : 13 } ), 'a' );
   var expected = false;
   test.identical( got, expected );
 
@@ -8859,37 +8859,37 @@ function mapOwnKey( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey();
+    _.mapOnlyOwnKey();
   });
 
   test.case = 'few arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey( {}, 'a', 'b' );
+    _.mapOnlyOwnKey( {}, 'a', 'b' );
   });
 
   test.case = 'wrong type of key';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey( [], 1 );
+    _.mapOnlyOwnKey( [], 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey( 1 );
+    _.mapOnlyOwnKey( 1 );
   });
 
   test.case = 'wrong type of second argument';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey( {}, 13 );
+    _.mapOnlyOwnKey( {}, 13 );
   });
 
   test.case = 'wrong type of arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKey( '', 7 );
+    _.mapOnlyOwnKey( '', 7 );
   });
 
 }
@@ -9187,44 +9187,44 @@ function mapHasNone( test )
 
 //
 
-function mapOwnAll( test )
+function mapOnlyOwnAll( test )
 {
   test.case = 'empty';
-  var got = _.mapOwnAll( {}, {} );
+  var got = _.mapOnlyOwnAll( {}, {} );
   test.true( got );
 
   test.case = 'screen empty';
-  var got = _.mapOwnAll( { a : 1 }, {} );
+  var got = _.mapOnlyOwnAll( { a : 1 }, {} );
   test.true( got );
 
   test.case = 'same keys';
-  var got = _.mapOwnAll( { a : 1 }, { a : 2 } );
+  var got = _.mapOnlyOwnAll( { a : 1 }, { a : 2 } );
   test.true( got );
 
   test.case = 'has only one';
-  var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  var got = _.mapOnlyOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
   test.true( !got );
 
   test.case = 'has all';
-  var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  var got = _.mapOnlyOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
   test.true( got );
 
   test.case = 'one is mising';
-  var got = _.mapOwnAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  var got = _.mapOnlyOwnAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
   test.true( !got );
 
   test.case = 'has no one';
-  var got = _.mapOwnAll( { a : 1, b : 2 }, { x : 1, y : 1 } );
+  var got = _.mapOnlyOwnAll( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.true( !got );
 
   test.case = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnAll( a, { a : 1 } );
+  var got = _.mapOnlyOwnAll( a, { a : 1 } );
   test.true( got );
 
-  var got = _.mapOwnAll( a, a );
+  var got = _.mapOnlyOwnAll( a, a );
   test.true( got );
 
   test.case = 'screen has enumerable';
@@ -9233,21 +9233,21 @@ function mapOwnAll( test )
   var src = { a : 1 };
   var screen = {};
   Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnAll( src, screen );
+  var got = _.mapOnlyOwnAll( src, screen );
   test.true( got );
 
   test.case = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnAll( a, { a : undefined } );
+  var got = _.mapOnlyOwnAll( a, { a : undefined } );
   test.true( got );
 
-  var got = _.mapOwnAll( { a : undefined }, { a : undefined } );
+  var got = _.mapOnlyOwnAll( { a : undefined }, { a : undefined } );
   test.true( got );
 
   test.case = 'src has toString on proto';
-  var got = _.mapOwnAll( {}, { x : 1, toString : 1 } );
+  var got = _.mapOnlyOwnAll( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
   /* */
@@ -9257,19 +9257,19 @@ function mapOwnAll( test )
     test.case = 'src is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAll( 1, {} );
+      _.mapOnlyOwnAll( 1, {} );
     });
 
     test.case = 'screen is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAll( {}, 1 );
+      _.mapOnlyOwnAll( {}, 1 );
     });
 
     test.case = 'too much args';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAll( {}, {}, {} );
+      _.mapOnlyOwnAll( {}, {}, {} );
     });
 
     test.case = 'src is not a map';
@@ -9278,7 +9278,7 @@ function mapOwnAll( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAll( a, { a : 1 } );
+      _.mapOnlyOwnAll( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -9287,7 +9287,7 @@ function mapOwnAll( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAll( { a : 1 }, a );
+      _.mapOnlyOwnAll( { a : 1 }, a );
     });
   }
 
@@ -9295,44 +9295,44 @@ function mapOwnAll( test )
 
 //
 
-function mapOwnAny( test )
+function mapOnlyOwnAny( test )
 {
   test.case = 'empty';
-  var got = _.mapOwnAny( {}, {} );
+  var got = _.mapOnlyOwnAny( {}, {} );
   test.true( !got );
 
   test.case = 'screen empty';
-  var got = _.mapOwnAny( { a : 1 }, {} );
+  var got = _.mapOnlyOwnAny( { a : 1 }, {} );
   test.true( !got );
 
   test.case = 'same keys';
-  var got = _.mapOwnAny( { a : 1 }, { a : 2 } );
+  var got = _.mapOnlyOwnAny( { a : 1 }, { a : 2 } );
   test.true( got );
 
   test.case = 'has only one';
-  var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  var got = _.mapOnlyOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
   test.true( got );
 
   test.case = 'has all';
-  var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  var got = _.mapOnlyOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
   test.true( got );
 
   test.case = 'one is mising';
-  var got = _.mapOwnAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  var got = _.mapOnlyOwnAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
   test.true( got );
 
   test.case = 'has no one';
-  var got = _.mapOwnAny( { a : 1, b : 2 }, { x : 1, y : 1 } );
+  var got = _.mapOnlyOwnAny( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.true( !got );
 
   test.case = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnAny( a, { a : 1 } );
+  var got = _.mapOnlyOwnAny( a, { a : 1 } );
   test.true( got );
 
-  var got = _.mapOwnAny( a, a );
+  var got = _.mapOnlyOwnAny( a, a );
   test.true( !got );
 
   test.case = 'screen has enumerable';
@@ -9341,21 +9341,21 @@ function mapOwnAny( test )
   var src = { a : 1 };
   var screen = {};
   Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnAny( src, screen );
+  var got = _.mapOnlyOwnAny( src, screen );
   test.true( !got );
 
   test.case = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnAny( a, { a : undefined } );
+  var got = _.mapOnlyOwnAny( a, { a : undefined } );
   test.true( got );
 
-  var got = _.mapOwnAny( { a : undefined }, { a : undefined } );
+  var got = _.mapOnlyOwnAny( { a : undefined }, { a : undefined } );
   test.true( got );
 
   test.case = 'src has toString on proto';
-  var got = _.mapOwnAny( {}, { x : 1, toString : 1 } );
+  var got = _.mapOnlyOwnAny( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
   /* */
@@ -9365,19 +9365,19 @@ function mapOwnAny( test )
     test.case = 'src is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAny( 1, {} );
+      _.mapOnlyOwnAny( 1, {} );
     });
 
     test.case = 'screen is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAny( {}, 1 );
+      _.mapOnlyOwnAny( {}, 1 );
     });
 
     test.case = 'too much args';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnAny( {}, {}, {} );
+      _.mapOnlyOwnAny( {}, {}, {} );
     });
 
     test.case = 'src is not a map';
@@ -9386,7 +9386,7 @@ function mapOwnAny( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAny( a, { a : 1 } );
+      _.mapOnlyOwnAny( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -9395,7 +9395,7 @@ function mapOwnAny( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAny( { a : 1 }, a );
+      _.mapOnlyOwnAny( { a : 1 }, a );
     });
   }
 
@@ -9403,44 +9403,44 @@ function mapOwnAny( test )
 
 //
 
-function mapOwnNone( test )
+function mapOnlyOwnNone( test )
 {
   test.case = 'empty';
-  var got = _.mapOwnNone( {}, {} );
+  var got = _.mapOnlyOwnNone( {}, {} );
   test.true( got );
 
   test.case = 'screen empty';
-  var got = _.mapOwnNone( { a : 1 }, {} );
+  var got = _.mapOnlyOwnNone( { a : 1 }, {} );
   test.true( got );
 
   test.case = 'same keys';
-  var got = _.mapOwnNone( { a : 1 }, { a : 2 } );
+  var got = _.mapOnlyOwnNone( { a : 1 }, { a : 2 } );
   test.true( !got );
 
   test.case = 'has only one';
-  var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  var got = _.mapOnlyOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
   test.true( !got );
 
   test.case = 'has all';
-  var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  var got = _.mapOnlyOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
   test.true( !got );
 
   test.case = 'one is mising';
-  var got = _.mapOwnNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  var got = _.mapOnlyOwnNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
   test.true( !got );
 
   test.case = 'has no one';
-  var got = _.mapOwnNone( { a : 1, b : 2 }, { x : 1, y : 1 } );
+  var got = _.mapOnlyOwnNone( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.true( got );
 
   test.case = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnNone( a, { a : 1 } );
+  var got = _.mapOnlyOwnNone( a, { a : 1 } );
   test.true( !got );
 
-  var got = _.mapOwnNone( a, a );
+  var got = _.mapOnlyOwnNone( a, a );
   test.true( got );
 
   test.case = 'screen has enumerable';
@@ -9449,21 +9449,21 @@ function mapOwnNone( test )
   var src = { a : 1 };
   var screen = {};
   Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnNone( src, screen );
+  var got = _.mapOnlyOwnNone( src, screen );
   test.true( got );
 
   test.case = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a', { enumerable : 0 } );
 
-  var got = _.mapOwnNone( a, { a : undefined } );
+  var got = _.mapOnlyOwnNone( a, { a : undefined } );
   test.true( !got );
 
-  var got = _.mapOwnNone( { a : undefined }, { a : undefined } );
+  var got = _.mapOnlyOwnNone( { a : undefined }, { a : undefined } );
   test.true( !got );
 
   test.case = 'src has toString on proto';
-  var got = _.mapOwnNone( {}, { x : 1, toString : 1 } );
+  var got = _.mapOnlyOwnNone( {}, { x : 1, toString : 1 } );
   test.true( got );
 
   /* */
@@ -9473,19 +9473,19 @@ function mapOwnNone( test )
     test.case = 'src is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnNone( 1, {} );
+      _.mapOnlyOwnNone( 1, {} );
     });
 
     test.case = 'screen is no object like';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnNone( {}, 1 );
+      _.mapOnlyOwnNone( {}, 1 );
     });
 
     test.case = 'too much args';
     test.shouldThrowErrorSync( function()
     {
-      _.mapOwnNone( {}, {}, {} );
+      _.mapOnlyOwnNone( {}, {}, {} );
     });
 
     test.case = 'src is not a map';
@@ -9494,7 +9494,7 @@ function mapOwnNone( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnNone( a, { a : 1 } );
+      _.mapOnlyOwnNone( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -9503,7 +9503,7 @@ function mapOwnNone( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnNone( { a : 1 }, a );
+      _.mapOnlyOwnNone( { a : 1 }, a );
     });
   }
 
@@ -11727,27 +11727,27 @@ let Self =
     // map properties
 
     mapKeys,
-    mapOwnKeys,
+    mapOnlyOwnKeys,
     mapAllKeys,
 
     mapVals,
-    mapOwnVals,
+    mapOnlyOwnVals,
     mapAllVals,
 
     mapPairs,
-    mapOwnPairs,
+    mapOnlyOwnPairs,
     mapAllPairs,
 
     // mapProperties,
-    // mapOwnProperties,
+    // mapOnlyOwnProperties,
     // mapAllProperties,
     /* */
     // mapRoutines,
-    // mapOwnRoutines,
+    // mapOnlyOwnRoutines,
     // mapAllRoutines,
     /* */
     // mapFields,
-    // mapOwnFields,
+    // mapOnlyOwnFields,
     // mapAllFields,
 
     // hash map
@@ -11776,11 +11776,11 @@ let Self =
     mapButIgnoringUndefinesDstMapNull_,
     mapButIgnoringUndefinesDstMapMap_,
 
-    mapOwnBut,
+    mapOnlyOwnBut,
 
-    mapOwnButThreeArguments_,
-    mapOwnButDstMapNull_,
-    mapOwnButDstMapIsMap_,
+    mapOnlyOwnButThreeArguments_,
+    mapOnlyOwnButDstMapNull_,
+    mapOnlyOwnButDstMapIsMap_,
 
     mapOnly,
 
@@ -11804,15 +11804,15 @@ let Self =
     objectSatisfy,
     objectSatisfyOptionStrict,
 
-    mapOwnKey,
+    mapOnlyOwnKey,
 
     mapHasAll,
     mapHasAny,
     mapHasNone,
 
-    mapOwnAll,
-    mapOwnAny,
-    mapOwnNone,
+    mapOnlyOwnAll,
+    mapOnlyOwnAny,
+    mapOnlyOwnNone,
 
     // test sureMap*
 

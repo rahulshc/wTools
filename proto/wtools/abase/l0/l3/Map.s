@@ -244,30 +244,6 @@ function hashMapIsPopulated()
 // map selector
 // --
 
-// function _mapEnumerableKeys( srcMap, onlyOwn )
-// {
-//   let result = [];
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( !_.primitiveIs( srcMap ) );
-//
-//   if( onlyOwn )
-//   {
-//     for( let k in srcMap )
-//     if( Object.hasOwnProperty.call( srcMap, k ) )
-//     result.push( k );
-//   }
-//   else
-//   {
-//     for( let k in srcMap )
-//     result.push( k );
-//   }
-//
-//   return result;
-// }
-
-//
-
 function _mapKeys( o )
 {
   let result = [];
@@ -367,7 +343,7 @@ _mapKeys.defaults =
  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
  * which accept object only mapKeys accept any object-like entity.
  *
- * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
+ * @see {@link wTools.mapOnlyOwnKeys} - Similar routine taking into account own elements only.
  * @see {@link wTools.mapVals} - Similar routine returning values.
  *
  * @example
@@ -417,7 +393,7 @@ mapKeys.defaults =
 //
 
 /**
- * The mapOwnKeys() returns an array of a given object`s own enumerable properties,
+ * The mapOnlyOwnKeys() returns an array of a given object`s own enumerable properties,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
  * @param { objectLike } srcMap - The object whose properties keys are to be returned.
@@ -425,31 +401,31 @@ mapKeys.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.mapOwnKeys({ a : 7, b : 13 });
+ * _.mapOnlyOwnKeys({ a : 7, b : 13 });
  * // returns [ "a", "b" ]
  *
  * @example
  * let o = { onlyEnumerable : 0 };
- * _.mapOwnKeys.call( o, { a : 1 } );
+ * _.mapOnlyOwnKeys.call( o, { a : 1 } );
  * // returns [ "a" ]
 
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the own onlyEnumerable properties found directly upon object or empty
  * array if nothing found.
- * @function mapOwnKeys
+ * @function mapOnlyOwnKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
 */
 
-function mapOwnKeys( srcMap, o )
+function mapOnlyOwnKeys( srcMap, o )
 {
   let result;
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnKeys, o );
+  o = _.routineOptions( mapOnlyOwnKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -463,7 +439,7 @@ function mapOwnKeys( srcMap, o )
   return result;
 }
 
-mapOwnKeys.defaults =
+mapOnlyOwnKeys.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -499,16 +475,21 @@ function mapAllKeys( srcMap, o )
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
-  o.onlyOwn = 0;
-  o.onlyEnumerable = 0;
+  // o.onlyOwn = 0;
+  // o.onlyEnumerable = 0;
 
   let result = _._mapKeys( o );
 
   return result;
 }
 
+/* qqq : write test routine for each option */
+/* qqq : do the same for similar routines */
+/* qqq : adjust similar routine if they handle options no like routine mapAllKeys */
 mapAllKeys.defaults =
 {
+  onlyOwn : 0,
+  onlyEnumerable : 0,
 }
 
 //
@@ -600,7 +581,7 @@ mapVals.defaults =
 //
 
 /**
- * The mapOwnVals() routine returns an array of a given object's
+ * The mapOnlyOwnVals() routine returns an array of a given object's
  * own onlyEnumerable property values,
  * in the same order as that provided by a for...in loop.
  *
@@ -614,29 +595,29 @@ mapVals.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.mapOwnVals( { a : 7, b : 13 } );
+ * _.mapOnlyOwnVals( { a : 7, b : 13 } );
  * // returns [ "7", "13" ]
  *
  * @example
  * let o = { onlyEnumerable : 0 };
  * let a = { a : 7 };
  * Object.defineProperty( a, 'x', { onlyEnumerable : 0, value : 1 } )
- * _.mapOwnVals.call( o, a )
+ * _.mapOnlyOwnVals.call( o, a )
  * // returns [ 7, 1 ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the onlyEnumerable property values found directly upon object.
- * @function mapOwnVals
+ * @function mapOnlyOwnVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function mapOwnVals( srcMap, o )
+function mapOnlyOwnVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnVals, o );
+  o = _.routineOptions( mapOnlyOwnVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
   _.assert( this === _ );
 
@@ -649,7 +630,7 @@ function mapOwnVals( srcMap, o )
   return result;
 }
 
-mapOwnVals.defaults =
+mapOnlyOwnVals.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -791,7 +772,7 @@ mapPairs.defaults =
 //
 
 /**
- * The mapOwnPairs() converts an object's own properties into a list of [ key, value ] pairs.
+ * The mapOnlyOwnPairs() converts an object's own properties into a list of [ key, value ] pairs.
  *
  *
  * It takes an object {-srcMap-} creates an empty array,
@@ -804,33 +785,33 @@ mapPairs.defaults =
  * @param { boolean } [ o.onlyEnumerable = true ] - count only object`s onlyEnumerable properties.
  *
  * @example
- * _.mapOwnPairs( { a : 7, b : 13 } );
+ * _.mapOnlyOwnPairs( { a : 7, b : 13 } );
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.mapOwnPairs( a );
+ * _.mapOnlyOwnPairs( a );
  * // returns [ [ "a", 1 ] ]
  *
  * @example
  * let a = { a : 1 };
- * _.mapOwnPairs.call( { onlyEnumerable : 0 }, a );
+ * _.mapOnlyOwnPairs.call( { onlyEnumerable : 0 }, a );
  *
  * @returns { array } A list of [ key, value ] pairs.
- * @function mapOwnPairs
+ * @function mapOnlyOwnPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function mapOwnPairs( srcMap, o )
+function mapOnlyOwnPairs( srcMap, o )
 {
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOwnPairs, o );
+  o = _.routineOptions( mapOnlyOwnPairs, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -841,7 +822,7 @@ function mapOwnPairs( srcMap, o )
   return result;
 }
 
-mapOwnPairs.defaults =
+mapOnlyOwnPairs.defaults =
 {
   onlyEnumerable : 1,
 }
@@ -1101,7 +1082,7 @@ function mapIndexWithValue( srcMap, value )
 
 //
 
-function mapNulls( srcMap )
+function mapOnlyNulls( srcMap )
 {
   let result = Object.create( null );
 
@@ -1304,35 +1285,33 @@ let Extension =
 
   // map selector
 
-  // _mapEnumerableKeys,
-
   _mapKeys,
   mapKeys,
-  mapOwnKeys,
+  mapOnlyOwnKeys,
   mapAllKeys,
 
   _mapVals,
   mapVals,
-  mapOwnVals,
+  mapOnlyOwnVals,
   mapAllVals,
 
   _mapPairs,
   mapPairs,
-  mapOwnPairs,
+  mapOnlyOwnPairs,
   mapAllPairs,
 
   // property._select,
   //
   // mapProperties,
-  // mapOwnProperties,
+  // mapOnlyOwnProperties,
   // mapAllProperties,
   //
   // mapRoutines,
-  // mapOwnRoutines,
+  // mapOnlyOwnRoutines,
   // mapAllRoutines,
   //
   // mapFields,
-  // mapOwnFields,
+  // mapOnlyOwnFields,
   // mapAllFields,
 
   mapFirstPair,
@@ -1345,7 +1324,7 @@ let Extension =
   mapIndexWithKey,
   mapIndexWithValue,
 
-  mapNulls,
+  mapOnlyNulls,
   mapButNulls,
 
   // amender
