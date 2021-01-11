@@ -4367,7 +4367,7 @@ let Extension =
 
   objectSatisfy,
 
-  /* xxx : move routines to ...? */
+  /* xxx : move routines to another namespace? */
 
   /* introduce routine::mapHasKey */
   mapOwn : mapOwnKey, /* qqq : good coverage required! */
