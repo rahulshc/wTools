@@ -427,9 +427,12 @@ function routineOptions( routine, args, defaults )
   {
     let extraKeys = mapButKeys( options, defaults );
     _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
 
-    mapSupplementStructurelessMin( options, defaults );
+  mapSupplementStructurelessMin( options, defaults );
 
+  if( Config.debug )
+  {
     let undefineKeys = mapUndefineKeys( options );
     _.assert
     (
