@@ -2238,6 +2238,7 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
   }
   else if( dstLength !== resultLength )
   {
+    if( !_.arrayLikeResizable( result ) )
     result = _.bufferMakeUndefined( dst, resultLength );
   }
 

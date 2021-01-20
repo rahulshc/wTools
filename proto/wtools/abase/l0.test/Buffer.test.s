@@ -8005,24 +8005,6 @@ function bufferGrow_( test )
     test.true( got !== dst );
     test.true( got !== dst0 );
 
-    test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( [ 0, 1, 2, 3 ] );
-    var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
-    var expected = [ 0, 1, 2, 3 ];
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
-    test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( [ 0, 1, 2, 3 ] );
-    var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
-    var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
     test.close( 'not inplace' );
 
     /* - */
@@ -8110,6 +8092,24 @@ function bufferGrow_( test )
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got === dst );
+
+    test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( [ 0, 1, 2, 3 ] );
+    var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
+    var expected = [ 0, 1, 2, 3 ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
+
+    test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( [ 0, 1, 2, 3 ] );
+    var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
+    var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.close( 'inplace' );
   }
@@ -8274,15 +8274,6 @@ function bufferGrow_( test )
 
     /* */
 
-    test.case = 'dst0, range[ 0 ] < 0, range[ 1 ] < 0, val';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( 4 );
-    var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
-    var expected = [ [ 1 ], [ 1 ], 0, 0, 0, 0 ];
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
     test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
     var dst0 = new BufferView( new U8x( [ 1, 2, 3, 4 ] ).buffer );
     var dst = buf( 4 );
@@ -8302,10 +8293,10 @@ function bufferGrow_( test )
     test.true( got !== dst0 );
 
     test.case = 'dst0, dst = empty BufferTyped, val';
-    var dst0 = [ 1, 2, 3 ];
+    var dst0 = new U8x([ 1, 2, 3 ]);
     var dst = buf( [] );
     var got = _.bufferGrow_( dst0, dst, [ 0, -1 ], [ 2 ] );
-    var expected = [];
+    var expected = new U8x( [] );
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== dst0 );
@@ -8413,6 +8404,15 @@ function bufferGrow_( test )
     test.identical( got, expected );
     test.true( got === dst );
 
+    test.case = 'dst0, range[ 0 ] < 0, range[ 1 ] < 0, val';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( 4 );
+    var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
+    var expected = [ [ 1 ], [ 1 ], 0, 0, 0, 0 ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
+
     test.close( 'inplace' );
   }
 
@@ -8439,6 +8439,40 @@ function bufferGrow_( test )
   test.case = 'wrong type of dst';
   test.shouldThrowErrorSync( () => _.bufferGrow_( 'str', [ 1, 3 ], [ 1 ] ) );
 
+}
+
+//
+
+function bufferGrow_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferGrow_( src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferGrow_( null, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferGrow_( src, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.bufferGrow_( dst, src, [ 0, 2 ], 0 );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
 }
 
 //
@@ -14689,6 +14723,7 @@ let Self =
     bufferGrow,
     bufferGrowInplace,
     bufferGrow_,
+    bufferGrow_CheckReturnedContainer,
     bufferRelength,
     bufferRelengthInplace,
     bufferRelength_DstIsArrayUnroll,
