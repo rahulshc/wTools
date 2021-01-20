@@ -3009,6 +3009,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
   }
   else if( dst.length !== resultLength )
   {
+    if( !_.arrayLikeResizable( result ) )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
