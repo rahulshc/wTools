@@ -8862,6 +8862,40 @@ function longShrink_WithBufferTyped( test )
 
 //
 
+function longShrink_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longShrink_( src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longShrink_( null, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longShrink_( src, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longShrink_( dst, src, [ 0, 2 ] );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
+//
+
 function longGrowWithArrayUnrollArgumentsArray( test )
 {
   /* - */
@@ -17553,6 +17587,7 @@ let Self =
     longShrinkInplaceWithBufferTyped,
     longShrink_WithArrayUnrollArgumentsArray,
     longShrink_WithBufferTyped,
+    longShrink_CheckReturnedContainer,
 
     longGrowWithArrayUnrollArgumentsArray,
     longGrowWithBufferTyped,

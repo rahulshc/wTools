@@ -2361,6 +2361,7 @@ function longShrink_( dst, src, cinterval )
   }
   else if( dst.length !== resultLength )
   {
+    if( !_.arrayLikeResizable( dst ) )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
