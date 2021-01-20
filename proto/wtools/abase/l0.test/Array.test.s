@@ -4302,6 +4302,39 @@ function arrayShrink_( test )
   test.shouldThrowErrorSync( () => _.arrayShrink_( [ 1, 2 ], [] ) );
   test.shouldThrowErrorSync( () => _.arrayShrink_( [ 1, 2 ], [ 'a', 'b' ] ) );
 }
+//
+
+function arrayShrink_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( null, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( src, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayShrink_( dst, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
 
 //
 
@@ -26479,6 +26512,7 @@ let Self =
     arrayShrink,
     arrayShrinkInplace,
     arrayShrink_,
+    arrayShrink_CheckReturnedContainer,
     arrayGrow,
     arrayGrowInplace,
     arrayGrow_,
