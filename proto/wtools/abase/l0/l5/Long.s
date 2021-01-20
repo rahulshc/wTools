@@ -2362,7 +2362,9 @@ function longShrink_( dst, src, cinterval )
   else if( dst.length !== resultLength )
   {
     if( !_.arrayLikeResizable( result ) )
-    result = _.longMakeUndefined( dst, resultLength );
+    result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   for( let r = first2 ; r < last2 + 1 ; r++ )
@@ -2687,7 +2689,9 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   else if( dst.length !== resultLength )
   {
     if( !_.arrayLikeResizable( result ) )
-    result = _.longMakeUndefined( dst, resultLength );
+    result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   for( let r = first2 ; r < last2 + 1 ; r++ )
@@ -3010,7 +3014,9 @@ function longRelength_( /* dst, src, cinterval, ins */ )
   else if( dst.length !== resultLength )
   {
     if( !_.arrayLikeResizable( result ) )
-    result = _.longMakeUndefined( dst, resultLength );
+    result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   /* */

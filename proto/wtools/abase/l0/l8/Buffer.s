@@ -1928,6 +1928,8 @@ function bufferSelect_( dst, src, cinterval )
   {
     if( !_.arrayLikeResizable( result ) )
     result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   let resultTyped = result;
@@ -2240,6 +2242,8 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
   {
     if( !_.arrayLikeResizable( result ) )
     result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   let resultTyped = result;
@@ -2634,7 +2638,10 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
   }
   else if( dstLength !== resultLength )
   {
+    if( !_.arrayLikeResizable( result ) )
     result = _.bufferMakeUndefined( dst, resultLength );
+    else
+    result.splice( resultLength );
   }
 
   let resultTyped = result;

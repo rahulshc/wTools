@@ -9612,15 +9612,6 @@ function bufferRelength_DstIsBufferTyped( test )
 
     /* */
 
-    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < 0, src';
-    var dst = [ 1, 2, 3 ];
-    var src = makeBuffer( [ 0, 1, 2, 3 ] );
-    var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
-    var expected = [ 1, 1, 1, 1 ];
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got !== dst );
-
     test.case = 'dst, range[ 0 ] > range[ 1 ], src';
     var dst = new BufferRaw( 10 );
     var src = makeBuffer( [ 0, 1, 2, 3 ] );
@@ -9638,15 +9629,6 @@ function bufferRelength_DstIsBufferTyped( test )
     test.identical( got, expected );
     test.true( got !== src );
     test.true( got === dst );
-
-    test.case = 'dst, src = empty BufferTyped, src';
-    var dst = [ 1, 2, 3 ];
-    var src = makeBuffer( [] );
-    var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
-    var expected = [];
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got !== dst );
 
     test.close( 'not inplace' );
 
@@ -9695,6 +9677,24 @@ function bufferRelength_DstIsBufferTyped( test )
     var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.true( got === src );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < 0, src';
+    var dst = [ 1, 2, 3 ];
+    var src = makeBuffer( [ 0, 1, 2, 3 ] );
+    var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
+    var expected = [ 1, 1, 1, 1 ];
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got === dst );
+
+    test.case = 'dst, src = empty BufferTyped, src';
+    var dst = [ 1, 2, 3 ];
+    var src = makeBuffer( [] );
+    var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
@@ -9843,15 +9843,6 @@ function bufferRelength_DstIsBufferRaw( test )
 
     /* - */
 
-    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < 0, src';
-    var dst = [ 1, 2, 3 ];
-    var src = makeBuffer( 4 );
-    var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
-    var expected = [ 1, 1, 1, 1 ];
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got !== dst );
-
     test.case = 'dst, range[ 0 ] > range[ 1 ], src';
     var dst = new U8x();
     var src = makeBuffer( 4 );
@@ -9869,15 +9860,6 @@ function bufferRelength_DstIsBufferRaw( test )
     test.identical( got, expected );
     test.true( got !== src );
     test.true( got === dst );
-
-    test.case = 'dst, src = empty BufferTyped, src';
-    var dst = [ 1, 2, 3 ];
-    var src = makeBuffer( [] );
-    var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
-    var expected = [];
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got !== dst );
 
     test.case = 'src = undefined, range = 0';
     var src = makeBuffer( 4 );
@@ -9913,8 +9895,60 @@ function bufferRelength_DstIsBufferRaw( test )
     test.identical( got, expected );
     test.true( got === src );
 
+    test.case = 'dst, src = empty BufferTyped, src';
+    var dst = [ 1, 2, 3 ];
+    var src = makeBuffer( [] );
+    var got = _.bufferRelength_( dst, src, [ 0, -1 ], [ 2 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got === dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < 0, src';
+    var dst = [ 1, 2, 3 ];
+    var src = makeBuffer( 4 );
+    var got = _.bufferRelength_( dst, src, [ -5, -2 ], 1 );
+    var expected = [ 1, 1, 1, 1 ];
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got === dst );
+
     test.close( 'inplace' );
   }
+}
+
+//
+
+function bufferRelength_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferRelength_( src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferRelength_( null, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferRelength_( src, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.bufferRelength_( dst, src, [ 0, 2 ], 0 );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
 }
 
 //
@@ -14729,6 +14763,7 @@ let Self =
     bufferRelength_DstIsArrayUnroll,
     bufferRelength_DstIsBufferTyped,
     bufferRelength_DstIsBufferRaw,
+    bufferRelength_CheckReturnedContainer,
 
     bufferRelen,
     bufferResize,
