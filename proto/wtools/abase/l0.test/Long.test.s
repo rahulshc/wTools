@@ -9859,6 +9859,40 @@ function longGrow_WithBufferTyped( test )
 
 //
 
+function longGrow_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( null, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( src, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longGrow_( dst, src, [ 0, 2 ], 0 );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
+//
+
 function longRelengthWithArrayUnrollArgumentsArray( test )
 {
   /* - */
@@ -17595,6 +17629,7 @@ let Self =
     longGrowInplaceWithBufferTyped,
     longGrow_WithArrayUnrollArgumentsArray,
     longGrow_WithBufferTyped,
+    longGrow_CheckReturnedContainer,
 
     longRelengthWithArrayUnrollArgumentsArray,
     longRelengthWithBufferTyped,

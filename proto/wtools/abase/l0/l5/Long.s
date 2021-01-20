@@ -2361,7 +2361,7 @@ function longShrink_( dst, src, cinterval )
   }
   else if( dst.length !== resultLength )
   {
-    if( !_.arrayLikeResizable( dst ) )
+    if( !_.arrayLikeResizable( result ) )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
@@ -2686,6 +2686,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   }
   else if( dst.length !== resultLength )
   {
+    if( !_.arrayLikeResizable( result ) )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
