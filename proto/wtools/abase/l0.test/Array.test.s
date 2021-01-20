@@ -6063,6 +6063,40 @@ function arrayRelength_( test )
   test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
 }
 
+//
+
+function arrayRelength_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( null, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( src, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayRelength_( dst, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
 // ---
 // array transformation
 // ---
@@ -26554,6 +26588,7 @@ let Self =
     arrayRelength,
     arrayRelengthInplace,
     arrayRelength_,
+    arrayRelength_CheckReturnedContainer,
 
     // array prepend
 
