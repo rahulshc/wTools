@@ -6842,6 +6842,40 @@ function bufferSelect_DstIsBufferRaw( test )
 
 //
 
+function bufferSelect_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferSelect_( src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferSelect_( null, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.bufferSelect_( src, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.bufferSelect_( dst, src, [ 0, 2 ] );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
+//
+
 function bufferGrow( test )
 {
   /* not a buffer, trivial */
@@ -14651,6 +14685,7 @@ let Self =
     bufferSelect_DstIsArrayUnroll,
     bufferSelect_DstIsBufferTyped,
     bufferSelect_DstIsBufferRaw,
+    bufferSelect_CheckReturnedContainer,
     bufferGrow,
     bufferGrowInplace,
     bufferGrow_,

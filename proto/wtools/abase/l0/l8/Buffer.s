@@ -1926,6 +1926,7 @@ function bufferSelect_( dst, src, cinterval )
   }
   else if( dstLength !== resultLength )
   {
+    if( !_.arrayLikeResizable( result ) )
     result = _.bufferMakeUndefined( dst, resultLength );
   }
 
@@ -3885,7 +3886,7 @@ let Routines =
   bufferRelength_,
   bufferRelen,
   bufferResize,
-  bufferResizeInplace, /* !!! : use instead of bufferResize, bufferResizeInplace */ 
+  bufferResizeInplace, /* !!! : use instead of bufferResize, bufferResizeInplace */
   bufferResize_,
 
   bufferBytesGet,
