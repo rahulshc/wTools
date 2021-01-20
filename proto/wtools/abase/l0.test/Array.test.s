@@ -3673,6 +3673,40 @@ function arrayBut_( test )
 
 //
 
+function arrayBut_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( null, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( src, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayBut_( dst, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
+//
+
 function arrayShrink( test )
 {
   var array = ( src ) => _.arrayMake( src );
@@ -26441,6 +26475,7 @@ let Self =
     arrayBut,
     arrayButInplace,
     arrayBut_,
+    arrayBut_CheckReturnedContainer,
     arrayShrink,
     arrayShrinkInplace,
     arrayShrink_,
