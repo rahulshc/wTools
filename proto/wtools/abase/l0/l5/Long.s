@@ -1052,7 +1052,7 @@ function longFill( src, value, range )
   value = 0;
 
   // src = _.longGrowInplace( src, range );
-  src = _.longGrow_( src, src, range );
+  src = _.longGrow_( src, src, [ range[ 0 ], range[ 1 ] - 1 ] );
 
   let offset = Math.max( -range[ 0 ], 0 );
 
