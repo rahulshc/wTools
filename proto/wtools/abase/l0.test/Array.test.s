@@ -5593,7 +5593,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( null, src, 1 );
-    var expected = [ 1, 2 ];
+    var expected = [ 1 ];
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5607,7 +5607,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( null, src, 5, 'abc' );
-    var expected = [ 1, 2, 3, 'str', [ 1 ], 'abc' ];
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5703,7 +5703,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, 1 );
-    var expected = [ 1, 2 ];
+    var expected = [ 1 ];
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5717,7 +5717,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, 5, 'abc' );
-    var expected = [ 1, 2, 3, 'str', [ 1 ], 'abc' ];
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5806,7 +5806,7 @@ function arrayRelength_( test )
     var dst = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( dst );
     var got = _.arrayRelength_( dst, 2 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5814,7 +5814,7 @@ function arrayRelength_( test )
     var dst = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( dst );
     var got = _.arrayRelength_( dst, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5834,7 +5834,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( [ 1 ], src, 5, 'abc' );
-    var expected = make( [ 1, 2, 3, 'str', [ 1 ], 'abc' ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5882,7 +5882,7 @@ function arrayRelength_( test )
     Object.preventExtensions( dst );
     var src = make( [ 1, 2, 3, 4 ] );
     var got = _.arrayRelength_( dst, src, 2, [ 0 ] );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5891,7 +5891,7 @@ function arrayRelength_( test )
     Object.preventExtensions( dst );
     var src = make( [ 1, 2, 3, 4 ] );
     var got = _.arrayRelength_( dst, src, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5913,7 +5913,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, src, 1 );
-    var expected = make( [ 1, 2 ] );
+    var expected = make( [ 1 ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5927,7 +5927,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, src, 5, 'abc' );
-    var expected = make( [ 1, 2, 3, 'str', [ 1 ], 'abc' ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -6016,7 +6016,7 @@ function arrayRelength_( test )
     var src = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( src );
     var got = _.arrayRelength_( src, src, 2 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -6024,7 +6024,7 @@ function arrayRelength_( test )
     var src = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( src );
     var got = _.arrayRelength_( src, src, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === src );
 
