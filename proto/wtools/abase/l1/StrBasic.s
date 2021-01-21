@@ -2452,12 +2452,22 @@ function strLinesBut( src, range, ins )
     Dmytro : implemented
   */
 
+  let range2 = [ range[ 0 ], range[ 1 ] - 1 ]
+  /* qqq for Dmtro : check and improve code */
+
   if( _.longIs( ins ) )
-  return _.longBut( src, range, ins ).join( '\n' );
+  return _.longBut_( null, src, range2, ins ).join( '\n' );
   else if( _.strIs( ins ) )
-  return _.longBut( src, range, [ ins ] ).join( '\n' );
+  return _.longBut_( null, src, range2, [ ins ] ).join( '\n' );
   else
-  return _.longBut( src, range ).join( '\n' );
+  return _.longBut_( null, src, range2 ).join( '\n' );
+
+  // if( _.longIs( ins ) )
+  // return _.longBut( src, range, ins ).join( '\n' );
+  // else if( _.strIs( ins ) )
+  // return _.longBut( src, range, [ ins ] ).join( '\n' );
+  // else
+  // return _.longBut( src, range ).join( '\n' );
 
   // if( ins )
   // {

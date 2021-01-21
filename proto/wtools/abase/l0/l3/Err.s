@@ -647,7 +647,9 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          o.args = _.longBut( o.args, [ a, a+1 ], arg );
+          debugger;
+          o.args = _.longBut_( null, o.args, [ a, a ], arg );
+          // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
           continue;
         }
