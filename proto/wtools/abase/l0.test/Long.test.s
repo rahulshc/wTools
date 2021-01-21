@@ -7682,6 +7682,40 @@ function longBut_WithBufferTyped( test )
   }
 }
 
+//
+
+function longBut_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longBut_( src, 1, [ 0 ] );
+  var expected = new U8x([ 1, 0, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longBut_( null, src, 1, [ 0 ] );
+  var expected = new U8x([ 1, 0, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longBut_( src, src, 1, [ 0 ] );
+  var expected = new U8x([ 1, 0, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longBut_( dst, src, 1, [ 0 ] );
+  var expected = [ 1, 0, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
 // //
 //
 // function longOnlyWithArrayUnrollArgumentsArray( test )
@@ -8828,6 +8862,38 @@ function longOnly_WithBufferTyped( test )
 
 //
 
+function longOnly_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longOnly_( src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longOnly_( null, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longOnly_( src, src, [ 0, 2 ] );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longOnly_( dst, src, [ 0, 2 ] );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
 // function longGrowWithArrayUnrollArgumentsArray( test )
 // {
 //   /* - */
@@ -9789,6 +9855,40 @@ function longGrow_WithBufferTyped( test )
   }
 }
 
+//
+
+function longGrow_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( null, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longGrow_( src, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longGrow_( dst, src, [ 0, 2 ], 0 );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
 // //
 //
 // function longRelengthWithArrayUnrollArgumentsArray( test )
@@ -10384,6 +10484,13 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longRelength_( null, dst, 6 );
+    var expected = [ 1, 2, 3, 4, 5, undefined ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 6 ] );
     var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
     test.identical( got, expected );
@@ -10685,6 +10792,40 @@ function longRelength_WithBufferTyped( test )
 
     test.close( 'inplace' );
   }
+}
+
+//
+
+function longRelength_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longRelength_( src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longRelength_( null, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var got = _.longRelength_( src, src, [ 0, 2 ], 0 );
+  var expected = new U8x([ 1, 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = new U8x([ 1, 2, 3 ] );
+  var dst = [];
+  var got = _.longRelength_( dst, src, [ 0, 2 ], 0 );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
 }
 
 //
@@ -15376,94 +15517,94 @@ function longToStr( test )
   });
 }
 
+// //
 //
-
-function longCompare( test )
-{
-  test.case = 'empty arrays';
-  var got = _.longCompare( [], [] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'first array is empty';
-  var got = _.longCompare( [], [ 1, 2 ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'length of the first array is less than second';
-  var got = _.longCompare( [ 4 ], [ 1, 2 ] );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.case = 'arrays are equal';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 5 ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'a difference';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 2 ] );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.case = 'a negative difference';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 6 ] );
-  var expected = -1;
-  test.identical( got, expected );
-
-  test.case = 'array-like arguments';
-  var src1 = function src1()
-  {
-    return arguments;
-  }( 1, 5 );
-  var src2 = function src2()
-  {
-    return arguments;
-  }( 1, 2 );
-  var got = _.longCompare( src1, src2 );
-  var expected = 3;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare();
-  });
-
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ] );
-  });
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( 'wrong argument', 'wrong argument' );
-  });
-
-  test.case = 'second array is empty';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [] );
-  });
-
-  test.case = 'length of the second array is less than first';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [ 1 ] );
-  });
-};
+// function longCompare( test )
+// {
+//   test.case = 'empty arrays';
+//   var got = _.longCompare( [], [] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'first array is empty';
+//   var got = _.longCompare( [], [ 1, 2 ] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'length of the first array is less than second';
+//   var got = _.longCompare( [ 4 ], [ 1, 2 ] );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   test.case = 'arrays are equal';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 5 ] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'a difference';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 2 ] );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   test.case = 'a negative difference';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 6 ] );
+//   var expected = -1;
+//   test.identical( got, expected );
+//
+//   test.case = 'array-like arguments';
+//   var src1 = function src1()
+//   {
+//     return arguments;
+//   }( 1, 5 );
+//   var src2 = function src2()
+//   {
+//     return arguments;
+//   }( 1, 2 );
+//   var got = _.longCompare( src1, src2 );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare();
+//   });
+//
+//   test.case = 'not enough arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ] );
+//   });
+//
+//   test.case = 'extra argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
+//   });
+//
+//   test.case = 'wrong type of arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( 'wrong argument', 'wrong argument' );
+//   });
+//
+//   test.case = 'second array is empty';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [] );
+//   });
+//
+//   test.case = 'length of the second array is less than first';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [ 1 ] );
+//   });
+// }
 
 //
 
@@ -17511,6 +17652,7 @@ let Self =
     // longButInplaceWithBufferTyped,
     longBut_WithArrayUnrollArgumentsArray,
     longBut_WithBufferTyped,
+    longBut_CheckReturnedContainer,
 
     // longOnlyWithArrayUnrollArgumentsArray,
     // longOnlyWithBufferTyped,
@@ -17518,6 +17660,7 @@ let Self =
     // longOnlyInplaceWithBufferTyped,
     longOnly_WithArrayUnrollArgumentsArray,
     longOnly_WithBufferTyped,
+    longOnly_CheckReturnedContainer,
 
     // longGrowWithArrayUnrollArgumentsArray,
     // longGrowWithBufferTyped,
@@ -17525,6 +17668,7 @@ let Self =
     // longGrowInplaceWithBufferTyped,
     longGrow_WithArrayUnrollArgumentsArray,
     longGrow_WithBufferTyped,
+    longGrow_CheckReturnedContainer,
 
     // longRelengthWithArrayUnrollArgumentsArray,
     // longRelengthWithBufferTyped,
@@ -17532,6 +17676,7 @@ let Self =
     // longRelengthInplaceWithBufferTyped,
     longRelength_WithArrayUnrollArgumentsArray,
     longRelength_WithBufferTyped,
+    longRelength_CheckReturnedContainer,
 
     //
 
@@ -17582,7 +17727,7 @@ let Self =
 
     // long checker
 
-    longCompare,
+    // longCompare,
     longIdentical,
 
     longHasAnyWithoutCallback,

@@ -3673,6 +3673,40 @@ function arrayBut_( test )
 
 //
 
+function arrayBut_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( null, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayBut_( src, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayBut_( dst, src, 1, [ 3, 4 ] );
+  var expected = [ 1, 3, 4, 3 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
+
+//
+
 function arrayShrink( test )
 {
   var array = ( src ) => _.arrayMake( src );
@@ -4268,6 +4302,39 @@ function arrayShrink_( test )
   test.shouldThrowErrorSync( () => _.arrayShrink_( [ 1, 2 ], [] ) );
   test.shouldThrowErrorSync( () => _.arrayShrink_( [ 1, 2 ], [ 'a', 'b' ] ) );
 }
+//
+
+function arrayShrink_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( null, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayShrink_( src, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayShrink_( dst, src, 1 );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === dst );
+}
 
 //
 
@@ -4646,7 +4713,7 @@ function arrayGrow_( test )
 
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayGrow_( null, src, 5, [ 2 ] );
+    var got = _.arrayGrow_( null, src, 6, [ 2 ] );
     var expected = [ 1, 2, 3, 'str', [ 1 ], [ 2 ] ];
     test.identical( got, expected );
     test.true( got !== src );
@@ -4762,7 +4829,7 @@ function arrayGrow_( test )
 
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayGrow_( src, 5, [ 2 ] );
+    var got = _.arrayGrow_( src, 6, [ 2 ] );
     var expected = [ 1, 2, 3, 'str', [ 1 ], [ 2 ] ];
     test.identical( got, expected );
     test.true( got === src );
@@ -4887,7 +4954,7 @@ function arrayGrow_( test )
 
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayGrow_( [ 1 ], src, 5, [ 2 ] );
+    var got = _.arrayGrow_( [ 1 ], src, 6, [ 2 ] );
     var expected = make( [ 1, 2, 3, 'str', [ 1 ], [ 2 ] ] );
     test.identical( got, expected );
     test.true( got !== src );
@@ -4994,7 +5061,7 @@ function arrayGrow_( test )
 
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayGrow_( src, src, 5, [ 2 ] );
+    var got = _.arrayGrow_( src, src, 6, [ 2 ] );
     var expected = make( [ 1, 2, 3, 'str', [ 1 ], [ 2 ] ] );
     test.identical( got, expected );
     test.true( got === src );
@@ -5134,6 +5201,40 @@ function arrayGrow_( test )
   test.case = 'not a range';
   test.shouldThrowErrorSync( () => _.arrayGrow_( [ 1 ], 'str' ) );
 
+}
+
+//
+
+function arrayGrow_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayGrow_( src, [ -1, 3 ], 0 );
+  var expected = [ 0, 1, 2, 3, 0 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayGrow_( null, src, [ -1, 3 ], 0 );
+  var expected = [ 0, 1, 2, 3, 0 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayGrow_( src, src, [ -1, 3 ], 0 );
+  var expected = [ 0, 1, 2, 3, 0 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayGrow_( dst, src, [ -1, 3 ], 0 );
+  var expected = [ 0, 1, 2, 3, 0 ];
+  test.identical( got, expected );
+  test.true( got === dst );
 }
 
 //
@@ -5492,7 +5593,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( null, src, 1 );
-    var expected = [ 1, 2 ];
+    var expected = [ 1 ];
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5506,7 +5607,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( null, src, 5, 'abc' );
-    var expected = [ 1, 2, 3, 'str', [ 1 ], 'abc' ];
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5602,7 +5703,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, 1 );
-    var expected = [ 1, 2 ];
+    var expected = [ 1 ];
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5616,7 +5717,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, 5, 'abc' );
-    var expected = [ 1, 2, 3, 'str', [ 1 ], 'abc' ];
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5705,7 +5806,7 @@ function arrayRelength_( test )
     var dst = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( dst );
     var got = _.arrayRelength_( dst, 2 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5713,7 +5814,7 @@ function arrayRelength_( test )
     var dst = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( dst );
     var got = _.arrayRelength_( dst, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5733,7 +5834,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( [ 1 ], src, 5, 'abc' );
-    var expected = make( [ 1, 2, 3, 'str', [ 1 ], 'abc' ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -5781,7 +5882,7 @@ function arrayRelength_( test )
     Object.preventExtensions( dst );
     var src = make( [ 1, 2, 3, 4 ] );
     var got = _.arrayRelength_( dst, src, 2, [ 0 ] );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5790,7 +5891,7 @@ function arrayRelength_( test )
     Object.preventExtensions( dst );
     var src = make( [ 1, 2, 3, 4 ] );
     var got = _.arrayRelength_( dst, src, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -5812,7 +5913,7 @@ function arrayRelength_( test )
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, src, 1 );
-    var expected = make( [ 1, 2 ] );
+    var expected = make( [ 1 ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5826,7 +5927,7 @@ function arrayRelength_( test )
     test.case = 'range = number, range > src.length, ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, src, 5, 'abc' );
-    var expected = make( [ 1, 2, 3, 'str', [ 1 ], 'abc' ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5915,7 +6016,7 @@ function arrayRelength_( test )
     var src = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( src );
     var got = _.arrayRelength_( src, src, 2 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5923,7 +6024,7 @@ function arrayRelength_( test )
     var src = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( src );
     var got = _.arrayRelength_( src, src, 0, [ 0 ] );
-    var expected = make( [ 1 ] );
+    var expected = make( [] );
     test.identical( got, expected );
     test.true( got === src );
 
@@ -5960,6 +6061,40 @@ function arrayRelength_( test )
   test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [ 'str' ], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
+}
+
+//
+
+function arrayRelength_CheckReturnedContainer( test )
+{
+  test.case = 'dst - undefined, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - null, new container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( null, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got !== src );
+
+  test.case = 'dst - src, same container';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayRelength_( src, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === src );
+
+  test.case = 'dst - another container, dst container';
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var got = _.arrayRelength_( dst, src, [ -1, 1 ], 0 );
+  var expected = [ 0, 1, 2 ];
+  test.identical( got, expected );
+  test.true( got === dst );
 }
 
 // ---
@@ -26441,15 +26576,19 @@ let Self =
     arrayBut,
     arrayButInplace,
     arrayBut_,
+    arrayBut_CheckReturnedContainer,
     arrayShrink,
     arrayShrinkInplace,
     arrayShrink_,
+    arrayShrink_CheckReturnedContainer,
     arrayGrow,
     arrayGrowInplace,
     arrayGrow_,
+    arrayGrow_CheckReturnedContainer,
     arrayRelength,
     arrayRelengthInplace,
     arrayRelength_,
+    arrayRelength_CheckReturnedContainer,
 
     // array prepend
 

@@ -1665,7 +1665,8 @@ function _strBut( srcStr, cinterval, ins )
   /*
      aaa : implement for case ins is long
      Dmytro : implemented, elements of long joins by spaces
-     qqq for Dmytro : no really
+     aaa for Dmytro : no really
+     Dmytro : fixed
   */
 
   let result;

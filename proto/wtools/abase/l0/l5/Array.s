@@ -1374,7 +1374,7 @@ function arrayGrow_( /* dst, src, cinterval, ins */ )
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
   if( _.numberIs( cinterval ) )
-  cinterval = [ 0, cinterval ];
+  cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
   _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
@@ -1758,7 +1758,7 @@ function arrayRelength_( /* dst, src, cinterval, ins */ )
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
   if( _.numberIs( cinterval ) )
-  cinterval = [ 0, cinterval ];
+  cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
   _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
