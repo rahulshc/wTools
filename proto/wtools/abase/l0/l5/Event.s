@@ -255,7 +255,7 @@ function on_head( routine, args )
   //   _.assert( _.strIs( args[ 0 ] ) );
   //   o = Object.create( null );
   //   o.callbackMap = Object.create( null );
-  //   o.callbackMap[ args[ 0 ] ] = _.longShrink( args, 1 );
+  //   o.callbackMap[ args[ 0 ] ] = _.longOnly( args, 1 );
   // }
   if( args.length === 2 )
   {
@@ -267,7 +267,8 @@ function on_head( routine, args )
     if( _.event.chainIs( args[ 0 ] ) )
     {
       let chain = args[ 0 ].chain;
-      o.callbackMap[ chain[ 0 ].value ] = _.longShrink( chain, 1 );
+      // debugger; /* xxx qqq for Dmytro : check */
+      o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
       o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
     }
     else if( _.strIs( args[ 0 ] ) )

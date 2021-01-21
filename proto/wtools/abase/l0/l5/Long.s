@@ -15,7 +15,7 @@ let Self = _global_.wTools;
 /*
                |  can grow   |  can shrink  |   range
 grow                +                -         positive
-select              -                +         positive
+only                -                +         positive
 relength            +                +         positive
 but                 -                +         negative
 */
@@ -904,6 +904,92 @@ function longMakeFilling( type, value, length )
 
 //
 
+/* aaa : add good coverage for longFrom. */
+/* Dmytro : covered, two test routines implemented */
+
+function longFrom( src )
+{
+  _.assert( arguments.length === 1 );
+  if( src instanceof this.longDescriptor.type )
+  if( !_.unrollIs( src ) && _.longIs( src ) )
+  return src;
+  return this.longMake.call( this, src );
+}
+
+//
+
+/**
+ * The routine longFromCoercing() returns Long from provided argument {-src-}. The feature of routine is possibility of
+ * converting an object-like {-src-} into Long. Also, routine longFromCoercing() converts string with number literals
+ * to a Long.
+ * If routine convert {-src-}, then result returns in container with default Long type.
+ *
+ * @param { Long|ObjectLike|String } src - An instance to convert into Long.
+ * If {-src-} is a Long and it type is equal to current default Long type, then routine convert not {-src-}.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
+ *
+ * @example
+ * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+ * let got = _.longFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let got = _.longFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = { a : 3, b : 7, c : 13 };
+ * let got = _.longFromCoercing( src );
+ * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
+ *
+ * @example
+ * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
+ * let got = _.longFromCoercing( src );
+ * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
+ *
+ * @returns { Long } - Returns a Long. If {-src-} is Long with default Long type, then routine returns original {-src-}.
+ * Otherwise, it makes new container with default Long type.
+ * @function longFromCoercing
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-src-} is not a Long, not an object-like, not a string.
+ * @namespace Tools
+ */
+
+function longFromCoercing( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( src instanceof this.longDescriptor.type && _.longIs( src ) )
+  return src;
+
+  /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
+     ( ArgumentsArray.type is  Object ), and next make other long types without recursive call */
+  // if( _.argumentsArrayIs( src ) )
+  // return this.longFromCoercing( Array.prototype.slice.call( src ) );
+
+  if( _.longIs( src ) )
+  return this.longDescriptor.from( src );
+
+  if( _.objectIs( src ) )
+  return this.longFromCoercing( _.mapToArray( src ) );
+
+  /* aaa : cover */
+  /* Dmytro : covered */
+  if( _.strIs( src ) )
+  return this.longFromCoercing( this.arrayFromStr( src ) );
+
+  _.assert( 0, `Unknown data type : ${ _.strType( src ) }` );
+}
+
+//
+
 /**
  * The routine longFill() fills elements the given Long {-src-} by static value. The range of replaced elements
  * defines by a parameter {-range-}. If it possible, routine longFill() saves original container {-src-}.
@@ -965,7 +1051,8 @@ function longFill( src, value, range )
   if( value === undefined )
   value = 0;
 
-  src = _.longGrowInplace( src, range );
+  // src = _.longGrowInplace( src, range );
+  src = _.longGrow_( src, src, range );
 
   let offset = Math.max( -range[ 0 ], 0 );
 
@@ -1066,7 +1153,7 @@ function longDuplicate( o ) /* xxx : review interface */
       _.assert( _.longIs( o.dst ) || _.bufferTypedIs( o.dst ), 'Expects o.dst as longIs or TypedArray if nDupsPerElement equals 1' );
 
       if( _.bufferTypedIs( o.dst ) )
-      o.dst = _.longShallowClone( o.dst, o.src );
+      o.dst = _.longJoin( o.dst, o.src );
       else if( _.longIs( o.dst ) )
       o.dst.push.apply( o.dst, o.src );
     }
@@ -1125,7 +1212,8 @@ aaa Dmytro : module has not _.buffer* analog of routine _longClone. The closest 
 zzz
 */
 
-function _longClone( src )
+// function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyped buffers. _bufferClone should accept untyped buffer */
+function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyped buffers. _bufferClone should accept untyped buffer */
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1154,7 +1242,180 @@ function _longClone( src )
 //
 
 /**
- * The routine longShallowClone() makes new container with type defined by first argument. Routine clones content of provided arguments
+ * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
+ *
+ * If ( l ) is omitted or ( l ) > ( array.length ), _longShallow extracts through the end of the sequence ( array.length ).
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( f ) < 0, zero is assigned to begin index( f ).
+
+ * @param { Array/BufferNode } array - Source array or buffer.
+ * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
+ * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
+ *
+ * @example
+ * _._longShallow( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _._longShallow( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * // end index is bigger then length of array
+ * _._longShallow( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
+ *
+ * @returns { Array } Returns a shallow copy of elements from the original array.
+ * @function _longShallow
+ * @throws { Error } Will throw an Error if ( array ) is not an Array or BufferNode.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if no arguments provided.
+ * @namespace Tools
+ */
+
+/* aaa : optimize */
+/* Dmytro : optimized */
+
+// function longSlice( array, f, l )
+function _longShallow( array, f, l )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( f === undefined || _.numberIs( f ) );
+  _.assert( l === undefined || _.numberIs( l ) );
+
+  /* xxx qqq for Dmytro : check and cover */
+
+  if( _.bufferTypedIs( array ) )
+  return _.longOnly( f, l );
+  return Array.prototype.slice.call( array, f, l );
+
+  // if( _.bufferTypedIs( array ) )
+  // return array.subarray( f, l );
+  // else if( _.arrayLikeResizable( array ) )
+  // return array.slice( f, l );
+  // else if( _.argumentsArrayIs( array ) )
+  // return Array.prototype.slice.call( array, f, l );
+  // else
+  // _.assert( 0 );
+}
+
+//
+
+/**
+ * The longRepresent() routine returns a shallow copy of a portion of an array
+ * or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index,
+ * but not including (end).
+ *
+ * @param { Array } src - Source array.
+ * @param { Number } begin - Index at which to begin extraction.
+ * @param { Number } end - Index at which to end extraction.
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
+ * // returns [ 3, 4 ]
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
+ * // returns [ 2, 3 ]
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
+ * @function longRepresent
+ * @throws { Error } If the passed arguments is more than three.
+ * @throws { Error } If the first argument is not an array.
+ * @namespace Tools
+ */
+
+/* qqq2 : review. ask */
+/* qqq2 : implement bufferRepresent_( any buffer )
+should return undefined if cant create representation
+let representation = _.bufferRepresent_( src );
+representation[ 4 ] = x; // src changed too
+*/
+
+/* qqq2 : implement longRepresent_( src, cinterval ~ [ first, last ] ) */
+/* xxx qqq for Dmytro : implement longRepresent_ */
+
+function longRepresent( src, begin, end )
+{
+
+  _.assert( arguments.length <= 3 );
+  _.assert( _.longLike( src ), 'Unknown type of (-src-) argument' );
+  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
+
+  if( _.routineIs( src.subarray ) )
+  return src.subarray( begin, end );
+
+  return src.slice( begin, end );
+}
+
+// function longSlice( array, f, l )
+// {
+//   let result;
+//
+//   if( _.argumentsArrayIs( array ) )
+//   if( f === undefined && l === undefined )
+//   {
+//     if( array.length === 2 )
+//     return [ array[ 0 ], array[ 1 ] ];
+//     else if( array.length === 1 )
+//     return [ array[ 0 ] ];
+//     else if( array.length === 0 )
+//     return [];
+//   }
+//
+//   _.assert( _.longIs( array ) );
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   {
+//     _.assert( f === undefined || _.numberIs( f ) );
+//     _.assert( l === undefined || _.numberIs( l ) );
+//     result = array.slice( f, l );
+//     return result;
+//   }
+//
+//   f = f !== undefined ? f : 0;
+//   l = l !== undefined ? l : array.length;
+//
+//   _.assert( _.numberIs( f ) );
+//   _.assert( _.numberIs( l ) );
+//
+//   if( f < 0 )
+//   f = array.length + f;
+//   if( l < 0 )
+//   l = array.length + l;
+//
+//   if( f < 0 )
+//   f = 0;
+//   if( l > array.length )
+//   l = array.length;
+//   if( l < f )
+//   l = f;
+//
+//   result = _.longMakeUndefined( array, l-f );
+//   // if( _.bufferTypedIs( array ) )
+//   // result = new array.constructor( l-f );
+//   // else
+//   // result = new Array( l-f );
+//
+//   for( let r = f ; r < l ; r++ )
+//   result[ r-f ] = array[ r ];
+//
+//   return result;
+// }
+
+//
+
+/**
+ * The routine longJoin() makes new container with type defined by first argument. Routine clones content of provided arguments
  * into created container.
  *
  * @param { Long|Buffer } arguments[ 0 ] - Long or Buffer, defines type of returned container. If provided only {-arguments[ 0 ]-}, then
@@ -1163,7 +1424,7 @@ function _longClone( src )
  *
  * @example
  * let src = [];
- * let got = _.longShallowClone( src );
+ * let got = _.longJoin( src );
  * console.log( got );
  * // log []
  * console.log( src === got );
@@ -1171,7 +1432,7 @@ function _longClone( src )
  *
  * @example
  * var src = new U8x( [ 1, 2, 3, 4 ] );
- * var got = _.longShallowClone( src );
+ * var got = _.longJoin( src );
  * console.log( got );
  * // log Uint8Array [ 1, 2, 3, 4 ];
  * console.log( src === got );
@@ -1179,7 +1440,7 @@ function _longClone( src )
  *
  * @example
  * let src = _.unrollMake( [] );
- * let got = _.longShallowClone( src, 1, 'str', new F32x( [ 3 ] ) );
+ * let got = _.longJoin( src, 1, 'str', new F32x( [ 3 ] ) );
  * console.log( got );
  * // log [ 1, 'str', 3 ]
  * console.log( _.unrollIs( got ) );
@@ -1189,23 +1450,21 @@ function _longClone( src )
  *
  * @example
  * let src = new BufferRaw( 3 );
- * let got = _.longShallowClone( src, 1, 2, _.argumentsArrayMake( [ 3, 4 ] ) );
+ * let got = _.longJoin( src, 1, 2, _.argumentsArrayMake( [ 3, 4 ] ) );
  * console.log( got );
  * // log ArrayBuffer { [Uint8Contents]: <00 00 00 01 02 03 04>, byteLength: 7 }
  * console.log( src === got );
  * // log false
  *
  * @returns { Long|Buffer } - Returns a Long or a Buffer with type of first argument. Returned container filled by content of provided arguments.
- * @function longShallowClone
+ * @function longJoin
  * @throws { Error } If arguments.length is less than one.
  * @throws { Error } If the {-arguments[ 0 ]-} is not a Long or not a Buffer.
  * @throws { Error } If {-arguments-} has undefined value.
  * @namespace Tools
  */
 
-/* zzz : review longShallowClone */
-
-function longShallowClone()
+function longJoin()
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
 
@@ -1315,257 +1574,6 @@ function longShallowClone()
 
 //
 
-/* aaa : add good coverage for longFrom. */
-/* Dmytro : covered, two test routines implemented */
-
-function longFrom( src )
-{
-  _.assert( arguments.length === 1 );
-  if( src instanceof this.longDescriptor.type )
-  if( !_.unrollIs( src ) && _.longIs( src ) )
-  return src;
-  return this.longMake.call( this, src );
-}
-
-//
-
-/**
- * The routine longFromCoercing() returns Long from provided argument {-src-}. The feature of routine is possibility of
- * converting an object-like {-src-} into Long. Also, routine longFromCoercing() converts string with number literals
- * to a Long.
- * If routine convert {-src-}, then result returns in container with default Long type.
- *
- * @param { Long|ObjectLike|String } src - An instance to convert into Long.
- * If {-src-} is a Long and it type is equal to current default Long type, then routine convert not {-src-}.
- *
- * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
- *
- * @example
- * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
- * let got = _.longFromCoercing( src );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
- * console.log( got === src );
- * // log true
- *
- * @example
- * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
- * let got = _.longFromCoercing( src );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * let src = { a : 3, b : 7, c : 13 };
- * let got = _.longFromCoercing( src );
- * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
- *
- * @example
- * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
- * let got = _.longFromCoercing( src );
- * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
- *
- * @returns { Long } - Returns a Long. If {-src-} is Long with default Long type, then routine returns original {-src-}.
- * Otherwise, it makes new container with default Long type.
- * @function longFromCoercing
- * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If {-src-} is not a Long, not an object-like, not a string.
- * @namespace Tools
- */
-
-function longFromCoercing( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( src instanceof this.longDescriptor.type && _.longIs( src ) )
-  return src;
-
-  /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
-     ( ArgumentsArray.type is  Object ), and next make other long types without recursive call */
-  // if( _.argumentsArrayIs( src ) )
-  // return this.longFromCoercing( Array.prototype.slice.call( src ) );
-
-  if( _.longIs( src ) )
-  return this.longDescriptor.from( src );
-
-  if( _.objectIs( src ) )
-  return this.longFromCoercing( _.mapToArray( src ) );
-
-  /* aaa : cover */
-  /* Dmytro : covered */
-  if( _.strIs( src ) )
-  return this.longFromCoercing( this.arrayFromStr( src ) );
-
-  _.assert( 0, `Unknown data type : ${ _.strType( src ) }` );
-}
-
-//
-
-/**
- * The longRepresent() routine returns a shallow copy of a portion of an array
- * or a new TypedArray that contains
- * the elements from (begin) index to the (end) index,
- * but not including (end).
- *
- * @param { Array } src - Source array.
- * @param { Number } begin - Index at which to begin extraction.
- * @param { Number } end - Index at which to end extraction.
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
- * // returns [ 3, 4 ]
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
- * // returns [ 2, 3 ]
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
- * // returns [ 1, 2, 3, 4, 5 ]
- *
- * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
- * @function longRepresent
- * @throws { Error } If the passed arguments is more than three.
- * @throws { Error } If the first argument is not an array.
- * @namespace Tools
- */
-
-/* qqq2 : review. ask */
-/* qqq2 : implement bufferRepresent_( any buffer )
-should return undefined if cant create representation
-let representation = _.bufferRepresent_( src );
-representation[ 4 ] = x; // src changed too
-*/
-/* qqq2 : implement longRepresent_( src, cinterval ~ [ first, last ] ) */
-
-function longRepresent( src, begin, end )
-{
-
-  _.assert( arguments.length <= 3 );
-  _.assert( _.longLike( src ), 'Unknown type of (-src-) argument' );
-  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
-
-  if( _.routineIs( src.subarray ) )
-  return src.subarray( begin, end );
-
-  return src.slice( begin, end );
-}
-
-//
-
-/**
- * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
- * but not including ( l ).
- *
- * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
- * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
- * If ( f ) < 0, zero is assigned to begin index( f ).
-
- * @param { Array/BufferNode } array - Source array or buffer.
- * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
- * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
- *
- * @example
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
- * // returns [ 3, 4, 5, 6 ]
- *
- * @example
- * // begin index is less then zero
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
- * // returns [ 1, 2 ]
- *
- * @example
- * // end index is bigger then length of array
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
- * // returns [ 6, 7 ]
- *
- * @returns { Array } Returns a shallow copy of elements from the original array.
- * @function longSlice
- * @throws { Error } Will throw an Error if ( array ) is not an Array or BufferNode.
- * @throws { Error } Will throw an Error if ( f ) is not a Number.
- * @throws { Error } Will throw an Error if ( l ) is not a Number.
- * @throws { Error } Will throw an Error if no arguments provided.
- * @namespace Tools
- */
-
-/* aaa : optimize */
-/* Dmytro : optimized */
-
-function longSlice( array, f, l )
-{
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( f === undefined || _.numberIs( f ) );
-  _.assert( l === undefined || _.numberIs( l ) );
-
-  if( _.bufferTypedIs( array ) )
-  return array.subarray( f, l );
-  else if( _.arrayLikeResizable( array ) )
-  return array.slice( f, l );
-  else if( _.argumentsArrayIs( array ) )
-  return Array.prototype.slice.call( array, f, l );
-  else
-  _.assert( 0 );
-
-}
-
-// function longSlice( array, f, l )
-// {
-//   let result;
-//
-//   if( _.argumentsArrayIs( array ) )
-//   if( f === undefined && l === undefined )
-//   {
-//     if( array.length === 2 )
-//     return [ array[ 0 ], array[ 1 ] ];
-//     else if( array.length === 1 )
-//     return [ array[ 0 ] ];
-//     else if( array.length === 0 )
-//     return [];
-//   }
-//
-//   _.assert( _.longIs( array ) );
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( _.arrayLikeResizable( array ) )
-//   {
-//     _.assert( f === undefined || _.numberIs( f ) );
-//     _.assert( l === undefined || _.numberIs( l ) );
-//     result = array.slice( f, l );
-//     return result;
-//   }
-//
-//   f = f !== undefined ? f : 0;
-//   l = l !== undefined ? l : array.length;
-//
-//   _.assert( _.numberIs( f ) );
-//   _.assert( _.numberIs( l ) );
-//
-//   if( f < 0 )
-//   f = array.length + f;
-//   if( l < 0 )
-//   l = array.length + l;
-//
-//   if( f < 0 )
-//   f = 0;
-//   if( l > array.length )
-//   l = array.length;
-//   if( l < f )
-//   l = f;
-//
-//   result = _.longMakeUndefined( array, l-f );
-//   // if( _.bufferTypedIs( array ) )
-//   // result = new array.constructor( l-f );
-//   // else
-//   // result = new Array( l-f );
-//
-//   for( let r = f ; r < l ; r++ )
-//   result[ r-f ] = array[ r ];
-//
-//   return result;
-// }
-
-//
-
 function longEmpty( dstLong )
 {
   if( _.arrayIs( dstLong ) )
@@ -1577,319 +1585,319 @@ function longEmpty( dstLong )
   _.assert( 0, () => `Cant change length of fixed-length container ${_.strType( dstLong )}` );
 }
 
+// //
 //
-
-/**
- * The routine longBut() returns a shallow copy of provided Long {-array-}. Routine removes existing
- * elements in bounds defined by {-range-} and inserts new elements from {-val-}. The original
- * source Long {-array-} will not be modified.
- *
- * @param { Long } array - The Long from which makes a shallow copy.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
- * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
- * If {-range-} is undefined, routine returns copy of {-array-}.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
- * @param { Long } val - The Long with elements for insertion. Inserting begins at start index.
- * If quantity of removed elements is not equal to val.length, then returned Long will have length different to array.length.
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longBut( src );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longBut( src, 2, [ 'str' ] );
- * console.log( got );
- * // log [ 1, 2, 'str', 4, 5 ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longBut( src, [ 1, 4 ], [ 5, 6, 7 ] );
- * console.log( got );
- * // log Float32Array[ 1, 5, 6, 7, 5 ]
- * console.log( _.bufferTypedIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longBut( src, [ -5, 10 ], [ 'str' ] );
- * console.log( got );
- * // log [ 'str' ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longBut( src, [ 4, 1 ], [ 'str' ] );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 'str', 5 ]
- * console.log( got === src );
- * // log false
- *
- * @returns { Long } - Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
- * @function longBut
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-val-} is not Long / undefined.
- * @namespace Tools
- */
-
-/*
-qqq : routine longBut requires good test coverage and documentation | Dmytro : extended routine coverage by using given clarifications, documented
- */
-
-function longBut( array, range, val )
-{
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( range === undefined )
-  return _.longShallowClone( array );
-  // return _.longMake( array );
-
-  if( _.arrayIs( array ) )
-  return _.arrayBut( array, range, val );
-
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( _.longLike( array ) );
-  _.assert( val === undefined || _.longLike( val ) );
-  _.assert( _.intervalIs( range ) );
-  // _.assert( _.longLike( range ), 'not tested' );
-  // _.assert( !_.longLike( range ), 'not tested' );
-
-  // if( _.numberIs( range ) )
-  // range = [ range, range + 1 ];
-
-  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  let d = range[ 1 ] - range[ 0 ];
-  let len = ( val ? val.length : 0 );
-  let d2 = d - len;
-  let l2 = array.length - d2;
-
-  let result = _.longMakeUndefined( array, l2 );
-
-  // debugger;
-  // _.assert( 0, 'not tested' )
-
-  for( let i = 0 ; i < range[ 0 ] ; i++ )
-  result[ i ] = array[ i ];
-
-  for( let i = range[ 1 ] ; i < array.length ; i++ )
-  result[ i-d2 ] = array[ i ];
-
-  if( val )
-  {
-    for( let i = 0 ; i < val.length ; i++ )
-    result[ range[ 0 ]+i ] = val[ i ];
-  }
-
-  return result;
-}
-
+// /**
+//  * The routine longBut() returns a shallow copy of provided Long {-array-}. Routine removes existing
+//  * elements in bounds defined by {-range-} and inserts new elements from {-val-}. The original
+//  * source Long {-array-} will not be modified.
+//  *
+//  * @param { Long } array - The Long from which makes a shallow copy.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+//  * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+//  * If {-range-} is undefined, routine returns copy of {-array-}.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+//  * @param { Long } val - The Long with elements for insertion. Inserting begins at start index.
+//  * If quantity of removed elements is not equal to val.length, then returned Long will have length different to array.length.
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longBut( src );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longBut( src, 2, [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 2, 'str', 4, 5 ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longBut( src, [ 1, 4 ], [ 5, 6, 7 ] );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 5, 6, 7, 5 ]
+//  * console.log( _.bufferTypedIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longBut( src, [ -5, 10 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 'str' ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longBut( src, [ 4, 1 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 'str', 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @returns { Long } - Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
+//  * @function longBut
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @throws { Error } If argument {-val-} is not Long / undefined.
+//  * @namespace Tools
+//  */
 //
+// /*
+// qqq : routine longBut requires good test coverage and documentation | Dmytro : extended routine coverage by using given clarifications, documented
+//  */
 
-/**
- * The routine longButInplace() returns a Long {-array-} with removed existing elements in bounds
- * defined by {-range-} and inserted new elements from {-val-}.
- * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
- *
- * @param { Long } array - The Long to remove, replace or add elements.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
- * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
- * If {-range-} is undefined, routine returns {-src-}.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
- * @param { Long } ins - The Long with elements for insertion. Inserting begins at start index.
- * If quantity of removed elements is not equal to val.length, then returned array will have length different to original array.length.
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longButInplace( src );
- * console.log( got );
- * // log Uint8Array[ 1, 2, 3, 4, 5 ]
- * console.log( _.bufferTypedIs( got ) );
- * // log true
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = new I32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longButInplace( src, 2, [ 6, 7 ] );
- * console.log( got );
- * // log Int8Array[ 1, 2, 6, 7, 4, 5 ]
- * console.log( _.bufferTypedIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longButInplace( src, [ 1, 4 ], [ 'str' ] );
- * console.log( got );
- * // log [ 1, 'str', 5 ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longButInplace( src, [ -5, 10 ], [ 'str' ] );
- * console.log( got );
- * // log [ 'str' ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longButInplace( src, [ 4, 1 ], [ 'str' ] );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 'str', 5 ]
- * console.log( got === src );
- * // log true
- *
- * @returns { Long } Returns Long with removed or replaced existing elements and / or added new elements.
- * If long is resizable, routine returns modified source long, otherwise, returns a copy.
- * @function longButInplace
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-val-} is not long / undefined.
- * @namespace Tools
- */
-
-/*
-aaa : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
- */
-
-function longButInplace( array, range, val )
-{
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayButInplace( array, range, val );
-
-  if( range === undefined )
-  return array;
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) );
-
-  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] === range[ 1 ] && val === undefined )
-  return array;
-  else
-  return _.longBut( array, range, val );
-
-  // let result;
-  //
-  // _.assert( _.longLike( src ) );
-  // _.assert( ins === undefined || _.longLike( ins ) );
-  // _.assert( _.longLike( range ), 'not tested' );
-  // _.assert( !_.longLike( range ), 'not tested' );
-  //
-  // _.assert( 0, 'not implemented' )
-
-  //
-  // if( _.numberIs( range ) )
-  // range = [ range, range + 1 ];
-  //
-  // _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
-  // if( range[ 1 ] < range[ 0 ] )
-  // range[ 1 ] = range[ 0 ];
-  //
-  // let d = range[ 1 ] - range[ 0 ];
-  // let range[ 1 ] = src.length - d + ( ins ? ins.length : 0 );
-  //
-  // result = _.longMakeUndefined( src, range[ 1 ] );
-  //
-  // debugger;
-  // _.assert( 0, 'not tested' )
-  //
-  // for( let i = 0 ; i < range[ 0 ] ; i++ )
-  // result[ i ] = src[ i ];
-  //
-  // for( let i = range[ 1 ] ; i < range[ 1 ] ; i++ )
-  // result[ i-d ] = src[ i ];
-  //
-  // return result;
-}
-
-//
-
-// function _relength_head( dst, src, range, ins )
+// function longBut( array, range, val )
 // {
-//   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 //
-//   /* aaa : suspicious */ /* Dmytro : removed */
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 //
-//   if( dst === null )
+//   if( range === undefined )
+//   return _.longJoin( array );
+//   // return _.longMake( array );
+//
+//   if( _.arrayIs( array ) )
+//   return _.arrayBut( array, range, val );
+//
+//   if( _.numberIs( range ) )
+//   range = [ range, range + 1 ];
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( val === undefined || _.longLike( val ) );
+//   _.assert( _.intervalIs( range ) );
+//   // _.assert( _.longLike( range ), 'not tested' );
+//   // _.assert( !_.longLike( range ), 'not tested' );
+//
+//   // if( _.numberIs( range ) )
+//   // range = [ range, range + 1 ];
+//
+//   _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+//
+//   let d = range[ 1 ] - range[ 0 ];
+//   let len = ( val ? val.length : 0 );
+//   let d2 = d - len;
+//   let l2 = array.length - d2;
+//
+//   let result = _.longMakeUndefined( array, l2 );
+//
+//   // debugger;
+//   // _.assert( 0, 'not tested' )
+//
+//   for( let i = 0 ; i < range[ 0 ] ; i++ )
+//   result[ i ] = array[ i ];
+//
+//   for( let i = range[ 1 ] ; i < array.length ; i++ )
+//   result[ i-d2 ] = array[ i ];
+//
+//   if( val )
 //   {
-//     dst = true;
-//   }
-//   else if( dst === src )
-//   {
-//     dst = false;
-//   }
-//   else if( arguments.length === 4 )
-//   {
-//     _.assert( _.longLike( dst ), '{-dst-} should be Long' );
-//   }
-//   else
-//   {
-//     /* aaa2 : wrong. src could pass check intervalIs if length is 2 */
-//     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
-//     // if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
-//     // {
-//     //   _.assert( _.longLike( dst ) );
-//     // }
-//     // else
-//     // {
-//     //   ins = range;
-//     //   range = src;
-//     //   src = dst;
-//     //   dst = false;
-//     // }
-//
-//     ins = range;
-//     range = src;
-//     src = dst;
-//     dst = false;
+//     for( let i = 0 ; i < val.length ; i++ )
+//     result[ range[ 0 ]+i ] = val[ i ];
 //   }
 //
-//   _.assert( _.longLike( src ) );
-//
-//   return [ dst, src, range, ins ];
+//   return result;
 // }
+
+// //
+//
+// /**
+//  * The routine longButInplace() returns a Long {-array-} with removed existing elements in bounds
+//  * defined by {-range-} and inserted new elements from {-val-}.
+//  * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
+//  *
+//  * @param { Long } array - The Long to remove, replace or add elements.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+//  * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
+//  * If {-range-} is undefined, routine returns {-src-}.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
+//  * @param { Long } ins - The Long with elements for insertion. Inserting begins at start index.
+//  * If quantity of removed elements is not equal to val.length, then returned array will have length different to original array.length.
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longButInplace( src );
+//  * console.log( got );
+//  * // log Uint8Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( _.bufferTypedIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = new I32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longButInplace( src, 2, [ 6, 7 ] );
+//  * console.log( got );
+//  * // log Int8Array[ 1, 2, 6, 7, 4, 5 ]
+//  * console.log( _.bufferTypedIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longButInplace( src, [ 1, 4 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 'str', 5 ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longButInplace( src, [ -5, 10 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 'str' ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longButInplace( src, [ 4, 1 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 'str', 5 ]
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @returns { Long } Returns Long with removed or replaced existing elements and / or added new elements.
+//  * If long is resizable, routine returns modified source long, otherwise, returns a copy.
+//  * @function longButInplace
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @throws { Error } If argument {-val-} is not long / undefined.
+//  * @namespace Tools
+//  */
+//
+// /*
+// aaa : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
+//  */
+//
+// function longButInplace( array, range, val )
+// {
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   return _.arrayButInplace( array, range, val );
+//
+//   if( range === undefined )
+//   return array;
+//   if( _.numberIs( range ) )
+//   range = [ range, range + 1 ];
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) );
+//
+//   _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+//
+//   if( range[ 0 ] === range[ 1 ] && val === undefined )
+//   return array;
+//   else
+//   return _.longBut( array, range, val );
+//
+//   // let result;
+//   //
+//   // _.assert( _.longLike( src ) );
+//   // _.assert( ins === undefined || _.longLike( ins ) );
+//   // _.assert( _.longLike( range ), 'not tested' );
+//   // _.assert( !_.longLike( range ), 'not tested' );
+//   //
+//   // _.assert( 0, 'not implemented' )
+//
+//   //
+//   // if( _.numberIs( range ) )
+//   // range = [ range, range + 1 ];
+//   //
+//   // _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
+//   // if( range[ 1 ] < range[ 0 ] )
+//   // range[ 1 ] = range[ 0 ];
+//   //
+//   // let d = range[ 1 ] - range[ 0 ];
+//   // let range[ 1 ] = src.length - d + ( ins ? ins.length : 0 );
+//   //
+//   // result = _.longMakeUndefined( src, range[ 1 ] );
+//   //
+//   // debugger;
+//   // _.assert( 0, 'not tested' )
+//   //
+//   // for( let i = 0 ; i < range[ 0 ] ; i++ )
+//   // result[ i ] = src[ i ];
+//   //
+//   // for( let i = range[ 1 ] ; i < range[ 1 ] ; i++ )
+//   // result[ i-d ] = src[ i ];
+//   //
+//   // return result;
+// }
+//
+// //
+//
+// // function _relength_head( dst, src, range, ins )
+// // {
+// //   _.assert( 1 <= arguments.length && arguments.length <= 4 );
+// //
+// //   /* aaa : suspicious */ /* Dmytro : removed */
+// //
+// //   if( dst === null )
+// //   {
+// //     dst = true;
+// //   }
+// //   else if( dst === src )
+// //   {
+// //     dst = false;
+// //   }
+// //   else if( arguments.length === 4 )
+// //   {
+// //     _.assert( _.longLike( dst ), '{-dst-} should be Long' );
+// //   }
+// //   else
+// //   {
+// //     /* aaa2 : wrong. src could pass check intervalIs if length is 2 */
+// //     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
+// //     // if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
+// //     // {
+// //     //   _.assert( _.longLike( dst ) );
+// //     // }
+// //     // else
+// //     // {
+// //     //   ins = range;
+// //     //   range = src;
+// //     //   src = dst;
+// //     //   dst = false;
+// //     // }
+// //
+// //     ins = range;
+// //     range = src;
+// //     src = dst;
+// //     dst = false;
+// //   }
+// //
+// //   _.assert( _.longLike( src ) );
+// //
+// //   return [ dst, src, range, ins ];
+// // }
 
 //
 
@@ -1988,316 +1996,316 @@ function longBut_( /* dst, src, cinterval, ins */ )
   return result;
 }
 
+// //
+//
+// /**
+//  * The routine longOnly() returns a copy of a portion of provided Long {-array-} into a new Long
+//  * selected by {-range-}. The original {-array-} will not be modified.
+//  *
+//  * @param { Long } array - The Long from which makes a shallow copy.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+//  * If {-range-} is undefined, routine returns copy of {-array-}.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+//  * @param { * } val - The object of any type for insertion.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.+( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnly( src, 2, [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 3, 4, 5 ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longOnly( src, [ 1, 4 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 2, 3, 4 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnly( src, [ -5, 10 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longOnly( src, [ 4, 1 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @returns { Long } Returns a copy of source Long containing the extracted elements. The copy has same type as source Long.
+//  * @function longOnly
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
+//
+// /*
+//   qqq : extend documentation and test coverage of longOnly | Dmytro : documented, covered.
+// */
+//
+// function longOnly( array, range, val )
+// {
+//   let result;
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( range === undefined )
+//   // return _.longMake( array, array.length ? array.length : 0 );
+//   return _.longJoin( array );
+//
+//   if( _.numberIs( range ) )
+//   range = [ range, array.length ];
+//
+//   // let f = range ? range[ 0 ] : undefined;
+//   // let l = range ? range[ 1 ] : undefined;
+//   //
+//   // f = f !== undefined ? f : 0;
+//   // l = l !== undefined ? l : array.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) )
+//
+//   // if( f < 0 )
+//   // {
+//   //   l -= f;
+//   //   f -= f;
+//   // }
+//
+//   _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+//
+//   // if( l < f )
+//   // l = f;
+//
+//   // if( f < 0 )
+//   // f = 0;
+//   // if( l > array.length )
+//   // l = array.length;
+//
+//   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+//   // return _.longMake( array, array.length );
+//   return _.longJoin( array );
+//
+//   result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+//
+//   let f2 = Math.max( range[ 0 ], 0 );
+//   let l2 = Math.min( array.length, range[ 1 ] );
+//   for( let r = f2 ; r < l2 ; r++ )
+//   result[ r-f2 ] = array[ r ];
+//
+//   if( val !== undefined )
+//   {
+//     for( let r = 0 ; r < -range[ 0 ] ; r++ )
+//     {
+//       result[ r ] = val;
+//     }
+//     for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+//     {
+//       result[ r ] = val;
+//     }
+//   }
+//
+//   return result;
+// }
+
+// //
+//
+// /**
+//  * The routine longOnlyInplace() returns a portion of provided Long {-array-} selected by {-range-}.
+//  * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
+//  *
+//  * @param { Long } array - The Long from which selects elements.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+//  * If {-range-} is undefined, routine returns {-array-}.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+//  * @param { * } val - The object of any type for insertion.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnlyInplace( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnlyInplace( src, 2, [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 3, 4, 5 ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnlyInplace( src, [ 1, 4 ], [ 1 ] );
+//  * console.log( got );
+//  * // log Uint8Array[ 2, 3, 4 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longOnlyInplace( src, [ -5, 10 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longOnlyInplace( src, [ 4, 1 ], [ 'str' ] );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @returns { Long } Returns a Long containing the selected elements. If Long is resizable,
+//  * routine returns modified source Long, otherwise, returns a copy.
+//  * @function longOnlyInplace
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
+//
+// /*
+//   qqq : extend documentation and test coverage of longOnlyInplace | Dmytro : documented, covered
+//   qqq : implement arrayShrink | Dmytro : implemented
+//   qqq : implement arrayShrinkInplace | Dmytro : implemented
+// */
+//
+// function longOnlyInplace( array, range, val )
+// {
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   return _.arrayShrinkInplace( array, range, val );
+//
+//   if( range === undefined )
+//   return array;
+//   if( _.numberIs( range ) )
+//   range = [ range, array.length ];
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) );
+//
+//   _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+//
+//   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+//   return array;
+//   else
+//   return _.longOnly( array, range, val );
+//   // let result;
+//   //
+//   // if( range === undefined )
+//   // return array;
+//   //
+//   // if( _.numberIs( range ) )
+//   // range = [ range, array.length ];
+//   //
+//   // // let f = range ? range[ 0 ] : undefined;
+//   // // let l = range ? range[ 1 ] : undefined;
+//   // //
+//   // // f = f !== undefined ? f : 0;
+//   // // l = l !== undefined ? l : array.length;
+//   //
+//   // _.assert( _.longLike( array ) );
+//   // _.assert( _.intervalIs( range ) )
+//   // // _.assert( _.numberIs( f ) );
+//   // // _.assert( _.numberIs( l ) );
+//   // _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//   // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
+//   //
+//   // _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
+//   // if( range[ 1 ] < range[ 0 ] )
+//   // range[ 1 ] = range[ 0 ];
+//   //
+//   // // if( l < f )
+//   // // l = f;
+//   // //
+//   // // if( f < 0 )
+//   // // f = 0;
+//   // // if( l > array.length )
+//   // // l = array.length;
+//   //
+//   // if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+//   // // if( range[ 0 ] === 0 && l === array.length ) // Dmytro : l is not defined
+//   // return array;
+//   //
+//   // // if( _.bufferTypedIs( array ) )
+//   // // result = new array.constructor( l-f );
+//   // // else
+//   // // result = new Array( l-f );
+//   //
+//   // result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+//   //
+//   // /* */
+//   //
+//   // let f2 = Math.max( range[ 0 ], 0 );
+//   // let l2 = Math.min( array.length, range[ 1 ] );
+//   // for( let r = f2 ; r < l2 ; r++ )
+//   // result[ r-range[ 0 ] ] = array[ r ];
+//   //
+//   // /* */
+//   //
+//   // if( val !== undefined )
+//   // {
+//   //   for( let r = 0 ; r < -range[ 0 ] ; r++ )
+//   //   {
+//   //     result[ r ] = val;
+//   //   }
+//   //   for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+//   //   {
+//   //     result[ r ] = val;
+//   //   }
+//   // }
+//   //
+//   // /* */
+//   //
+//   // return result;
+// }
+
 //
 
-/**
- * The routine longShrink() returns a copy of a portion of provided Long {-array-} into a new Long
- * selected by {-range-}. The original {-array-} will not be modified.
- *
- * @param { Long } array - The Long from which makes a shallow copy.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
- * If {-range-} is undefined, routine returns copy of {-array-}.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
- * @param { * } val - The object of any type for insertion.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrink( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrink( src, 2, [ 'str' ] );
- * console.log( got );
- * // log [ 3, 4, 5 ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longShrink( src, [ 1, 4 ], [ 'str' ] );
- * console.log( got );
- * // log [ 2, 3, 4 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrink( src, [ -5, 10 ], [ 'str' ] );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longShrink( src, [ 4, 1 ], [ 'str' ] );
- * console.log( got );
- * // log []
- * console.log( got === src );
- * // log false
- *
- * @returns { Long } Returns a copy of source Long containing the extracted elements. The copy has same type as source Long.
- * @function longShrink
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-/*
-  qqq : extend documentation and test coverage of longShrink | Dmytro : documented, covered.
-*/
-
-function longShrink( array, range, val )
-{
-  let result;
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( range === undefined )
-  // return _.longMake( array, array.length ? array.length : 0 );
-  return _.longShallowClone( array );
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  // let f = range ? range[ 0 ] : undefined;
-  // let l = range ? range[ 1 ] : undefined;
-  //
-  // f = f !== undefined ? f : 0;
-  // l = l !== undefined ? l : array.length;
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) )
-
-  // if( f < 0 )
-  // {
-  //   l -= f;
-  //   f -= f;
-  // }
-
-  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  // if( l < f )
-  // l = f;
-
-  // if( f < 0 )
-  // f = 0;
-  // if( l > array.length )
-  // l = array.length;
-
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  // return _.longMake( array, array.length );
-  return _.longShallowClone( array );
-
-  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
-
-  if( val !== undefined )
-  {
-    for( let r = 0 ; r < -range[ 0 ] ; r++ )
-    {
-      result[ r ] = val;
-    }
-    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
-  }
-
-  return result;
-}
-
-//
-
-/**
- * The routine longShrinkInplace() returns a portion of provided Long {-array-} selected by {-range-}.
- * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
- *
- * @param { Long } array - The Long from which selects elements.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
- * If {-range-} is undefined, routine returns {-array-}.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
- * @param { * } val - The object of any type for insertion.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrinkInplace( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrinkInplace( src, 2, [ 'str' ] );
- * console.log( got );
- * // log [ 3, 4, 5 ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrinkInplace( src, [ 1, 4 ], [ 1 ] );
- * console.log( got );
- * // log Uint8Array[ 2, 3, 4 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longShrinkInplace( src, [ -5, 10 ], [ 'str' ] );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longShrinkInplace( src, [ 4, 1 ], [ 'str' ] );
- * console.log( got );
- * // log []
- * console.log( got === src );
- * // log false
- *
- * @returns { Long } Returns a Long containing the selected elements. If Long is resizable,
- * routine returns modified source Long, otherwise, returns a copy.
- * @function longShrinkInplace
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-/*
-  qqq : extend documentation and test coverage of longShrinkInplace | Dmytro : documented, covered
-  qqq : implement arrayShrink | Dmytro : implemented
-  qqq : implement arrayShrinkInplace | Dmytro : implemented
-*/
-
-function longShrinkInplace( array, range, val )
-{
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayShrinkInplace( array, range, val );
-
-  if( range === undefined )
-  return array;
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) );
-
-  _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return array;
-  else
-  return _.longShrink( array, range, val );
-  // let result;
-  //
-  // if( range === undefined )
-  // return array;
-  //
-  // if( _.numberIs( range ) )
-  // range = [ range, array.length ];
-  //
-  // // let f = range ? range[ 0 ] : undefined;
-  // // let l = range ? range[ 1 ] : undefined;
-  // //
-  // // f = f !== undefined ? f : 0;
-  // // l = l !== undefined ? l : array.length;
-  //
-  // _.assert( _.longLike( array ) );
-  // _.assert( _.intervalIs( range ) )
-  // // _.assert( _.numberIs( f ) );
-  // // _.assert( _.numberIs( l ) );
-  // _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  //
-  // _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
-  // if( range[ 1 ] < range[ 0 ] )
-  // range[ 1 ] = range[ 0 ];
-  //
-  // // if( l < f )
-  // // l = f;
-  // //
-  // // if( f < 0 )
-  // // f = 0;
-  // // if( l > array.length )
-  // // l = array.length;
-  //
-  // if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  // // if( range[ 0 ] === 0 && l === array.length ) // Dmytro : l is not defined
-  // return array;
-  //
-  // // if( _.bufferTypedIs( array ) )
-  // // result = new array.constructor( l-f );
-  // // else
-  // // result = new Array( l-f );
-  //
-  // result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
-  //
-  // /* */
-  //
-  // let f2 = Math.max( range[ 0 ], 0 );
-  // let l2 = Math.min( array.length, range[ 1 ] );
-  // for( let r = f2 ; r < l2 ; r++ )
-  // result[ r-range[ 0 ] ] = array[ r ];
-  //
-  // /* */
-  //
-  // if( val !== undefined )
-  // {
-  //   for( let r = 0 ; r < -range[ 0 ] ; r++ )
-  //   {
-  //     result[ r ] = val;
-  //   }
-  //   for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
-  //   {
-  //     result[ r ] = val;
-  //   }
-  // }
-  //
-  // /* */
-  //
-  // return result;
-}
-
-//
-
-function longShrink_( dst, src, cinterval )
+function longOnly_( dst, src, cinterval )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} element' );
 
@@ -2373,245 +2381,245 @@ function longShrink_( dst, src, cinterval )
   return result;
 }
 
+// //
 //
-
-/**
- * Routine longGrow() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
- * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
- * Routine can only grows size of Long. The original {-array-} will not be modified.
- *
- * @param { Long } array - The Long from which makes a shallow copy.
- * @param { Range } The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the end index, and the start index is 0.
- * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
- * If range[ 0 ] > 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
- * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrow( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrow( src, 7, 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrow( src, [ 1, 6 ], 7 );
- * console.log( got );
- * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrow( src, [ -5, 6 ], 7 );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longGrow( src, [ 4, 1 ], 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log false
- *
- * @returns { Long } Returns a copy of provided Long with changed length.
- * @function longGrow
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-/*
-  aaa : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
-  aaa : implement arrayGrow | Dmytro : implemented
-  aaa : implement arrayGrowInplace | Dmytro : implemented
-*/
-
-function longGrow( array, range, val )
-{
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( range === undefined )
-  return _.longShallowClone( array );
-
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) )
-
-  if( l < f )
-  l = f;
-
-  if( f < 0 )
-  {
-    l -= f;
-    f -= f;
-  }
-
-  if( f > 0 )
-  f = 0;
-  if( l < array.length )
-  l = array.length;
-
-  if( l === array.length && -range[ 0 ] <= 0 )
-  return _.longShallowClone( array );
-
-  /* */
-
-  let f2 = Math.max( -range[ 0 ], 0 );
-  let l2 = Math.min( array.length, l );
-
-  // debugger;
-  let result = _.longMakeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
-  for( let r = f2 ; r < l2 + f2 ; r++ )
-  result[ r ] = array[ r - f2 ];
-
-  /* */
-
-  if( val !== undefined )
-  {
-    for( let r = 0 ; r < f2 ; r++ )
-    result[ r ] = val;
-    for( let r = l2 + f2; r < result.length ; r++ )
-    result[ r ] = val;
-  }
-
-  /* */
-
-  return result;
-}
-
+// /**
+//  * Routine longGrow() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
+//  * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
+//  * Routine can only grows size of Long. The original {-array-} will not be modified.
+//  *
+//  * @param { Long } array - The Long from which makes a shallow copy.
+//  * @param { Range } The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the end index, and the start index is 0.
+//  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+//  * If range[ 0 ] > 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
+//  * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrow( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrow( src, 7, 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrow( src, [ 1, 6 ], 7 );
+//  * console.log( got );
+//  * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrow( src, [ -5, 6 ], 7 );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longGrow( src, [ 4, 1 ], 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @returns { Long } Returns a copy of provided Long with changed length.
+//  * @function longGrow
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
 //
-
-/**
- * Routine longGrowInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
- * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
- * Long in place, otherwise, return copy. Routine can only grows size of Long.
- *
- * @param { Long } array - The Long to grow length.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the end index, and the start index is 0.
- * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
- * If range[ 0 ] > 0, then start index sets to 0.
- * If range[ 1 ] > array.length, end index sets to array.length.
- * If range[ 1 ] <= range[ 0 ], then routine returns origin array.
- * @param { * } val - The object of any type. Used to fill the space left of the original Long.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrowInplace( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrowInplace( src, 7, 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrowInplace( src, [ 1, 6 ], 7 );
- * console.log( got );
- * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longGrowInplace( src, [ -5, 6 ], 7 );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longGrowInplace( src, [ 4, 1 ], 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log true
- *
- * @returns { Long } Returns a Long with changed length.
- * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
- * @function longGrowInplace
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-function longGrowInplace( array, range, val )
-{
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayGrowInplace( array, range, val );
-
-  if( range === undefined )
-  return array;
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) )
-
-  if( l < f )
-  l = f;
-  if( f < 0 )
-  {
-    l -= f;
-    f -= f;
-  }
-  if( f > 0 )
-  f = 0;
-  if( l < array.length )
-  l = array.length;
-
-  if( l === array.length && -range[ 0 ] <= 0 )
-  return array;
-  else
-  return _.longGrow( array, range, val );
-}
+// /*
+//   aaa : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
+//   aaa : implement arrayGrow | Dmytro : implemented
+//   aaa : implement arrayGrowInplace | Dmytro : implemented
+// */
+//
+// function longGrow( array, range, val )
+// {
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( range === undefined )
+//   return _.longJoin( array );
+//
+//   if( _.numberIs( range ) )
+//   range = [ 0, range ];
+//
+//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) )
+//
+//   if( l < f )
+//   l = f;
+//
+//   if( f < 0 )
+//   {
+//     l -= f;
+//     f -= f;
+//   }
+//
+//   if( f > 0 )
+//   f = 0;
+//   if( l < array.length )
+//   l = array.length;
+//
+//   if( l === array.length && -range[ 0 ] <= 0 )
+//   return _.longJoin( array );
+//
+//   /* */
+//
+//   let f2 = Math.max( -range[ 0 ], 0 );
+//   let l2 = Math.min( array.length, l );
+//
+//   // debugger;
+//   let result = _.longMakeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
+//   for( let r = f2 ; r < l2 + f2 ; r++ )
+//   result[ r ] = array[ r - f2 ];
+//
+//   /* */
+//
+//   if( val !== undefined )
+//   {
+//     for( let r = 0 ; r < f2 ; r++ )
+//     result[ r ] = val;
+//     for( let r = l2 + f2; r < result.length ; r++ )
+//     result[ r ] = val;
+//   }
+//
+//   /* */
+//
+//   return result;
+// }
+//
+// //
+//
+// /**
+//  * Routine longGrowInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
+//  * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
+//  * Long in place, otherwise, return copy. Routine can only grows size of Long.
+//  *
+//  * @param { Long } array - The Long to grow length.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the end index, and the start index is 0.
+//  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+//  * If range[ 0 ] > 0, then start index sets to 0.
+//  * If range[ 1 ] > array.length, end index sets to array.length.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns origin array.
+//  * @param { * } val - The object of any type. Used to fill the space left of the original Long.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrowInplace( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrowInplace( src, 7, 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrowInplace( src, [ 1, 6 ], 7 );
+//  * console.log( got );
+//  * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longGrowInplace( src, [ -5, 6 ], 7 );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longGrowInplace( src, [ 4, 1 ], 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @returns { Long } Returns a Long with changed length.
+//  * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
+//  * @function longGrowInplace
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
+//
+// function longGrowInplace( array, range, val )
+// {
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   return _.arrayGrowInplace( array, range, val );
+//
+//   if( range === undefined )
+//   return array;
+//   if( _.numberIs( range ) )
+//   range = [ 0, range ];
+//
+//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) )
+//
+//   if( l < f )
+//   l = f;
+//   if( f < 0 )
+//   {
+//     l -= f;
+//     f -= f;
+//   }
+//   if( f > 0 )
+//   f = 0;
+//   if( l < array.length )
+//   l = array.length;
+//
+//   if( l === array.length && -range[ 0 ] <= 0 )
+//   return array;
+//   else
+//   return _.longGrow( array, range, val );
+// }
 
 //
 
@@ -2635,7 +2643,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
   if( _.numberIs( cinterval ) )
-  cinterval = [ 0, cinterval ];
+  cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
@@ -2701,7 +2709,6 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   {
     for( let r = 0 ; r < first2 ; r++ )
     result[ r ] = ins;
-
     for( let r = last2 + 1 ; r < resultLength ; r++ )
     result[ r ] = ins;
   }
@@ -2709,228 +2716,228 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   return result;
 }
 
+// //
 //
-
-/**
- * Routine longRelength() changes length of provided Long {-array-} by copying its elements to newly created Long of the same
- * type as source Long. Routine uses range {-range-} positions of the original Long and value {-val-} to fill free space after copy.
- * Routine can grows and reduces size of Long. The original {-array-} will not be modified.
- *
- * @param { Long } array - The Long from which makes a shallow copy.
- * @param { Range } The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
- * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelength( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelength( src, 7, 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelength( src, [ 1, 6 ], 7 );
- * console.log( got );
- * // log Uint8Array[ 2, 3, 4, 5, 7 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelength( src, [ -5, 6 ], 7 );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 7 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longRelength( src, [ 4, 1 ], 'str' );
- * console.log( got );
- * // log []
- * console.log( got === src );
- * // log false
- *
- * @returns { Long } Returns a copy of provided Long with changed length.
- * @function longRelength
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-function longRelength( array, range, val )
-{
-
-  let result;
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( range === undefined )
-  return _.longShallowClone( array );
-  // return _.longMake( array );
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) )
-
-  if( l < f )
-  l = f;
-  if( f > array.length )
-  f = array.length
-
-  if( f < 0 )
-  f = 0;
-
-  if( f === 0 && l === array.length )
-  return _.longMake( array );
-
-  result = _.longMakeUndefined( array, l-f );
-
-  /* */
-
-  let f2 = Math.max( f, 0 );
-  let l2 = Math.min( array.length, l );
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
-
-  /* */
-
-  if( val !== undefined )
-  {
-    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
-  }
-
-  /* */
-
-  return result;
-}
-
+// /**
+//  * Routine longRelength() changes length of provided Long {-array-} by copying its elements to newly created Long of the same
+//  * type as source Long. Routine uses range {-range-} positions of the original Long and value {-val-} to fill free space after copy.
+//  * Routine can grows and reduces size of Long. The original {-array-} will not be modified.
+//  *
+//  * @param { Long } array - The Long from which makes a shallow copy.
+//  * @param { Range } The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+//  * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelength( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelength( src, 7, 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelength( src, [ 1, 6 ], 7 );
+//  * console.log( got );
+//  * // log Uint8Array[ 2, 3, 4, 5, 7 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelength( src, [ -5, 6 ], 7 );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 7 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longRelength( src, [ 4, 1 ], 'str' );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @returns { Long } Returns a copy of provided Long with changed length.
+//  * @function longRelength
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
 //
-
-/**
- * Routine longRelengthInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
- * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
- * Long in place, otherwise, return copy. Routine can grows and reduce size of Long.
- *
- * @param { Long } array - The Long to change length.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
- * @param { * } val - The object of any type. Used to fill the space left of the original Long.
- *
- * @example
- * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelengthInplace( src );
- * console.log( got );
- * // log Float32Array[ 1, 2, 3, 4, 5 ]
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelengthInplace( src, 7, 'str' );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelengthInplace( src, [ 1, 6 ], 7 );
- * console.log( got );
- * // log Uint8Array[ 2, 3, 4, 5, 7 ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longRelengthInplace( src, [ -5, 6 ], 7 );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5, 7 ]
- * console.log( _.argumentsArrayIs( got ) );
- * // log false
- * console.log( got === src );
- * // log false
- *
- * @example
- * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longRelengthInplace( src, [ 4, 1 ], 'str' );
- * console.log( got );
- * // log []
- * console.log( got === src );
- * // log true
- *
- * @returns { Long } Returns a Long with changed length.
- * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
- * @function longRelengthInplace
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-array-} is not a Long.
- * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
- * @namespace Tools
- */
-
-function longRelengthInplace( array, range, val )
-{
-
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayRelengthInplace( array, range, val );
-
-  if( range === undefined )
-  return array;
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
-
-  _.assert( _.longLike( array ) );
-  _.assert( _.intervalIs( range ) )
-
-  if( l < f )
-  l = f;
-  if( f > array.length )
-  f = array.length;
-  if( f < 0 )
-  f = 0;
-
-  if( f === 0 && l === array.length )
-  return array;
-  else
-  return _.longRelength( array, range, val );
-
-}
+// function longRelength( array, range, val )
+// {
+//
+//   let result;
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( range === undefined )
+//   return _.longJoin( array );
+//   // return _.longMake( array );
+//
+//   if( _.numberIs( range ) )
+//   range = [ range, array.length ];
+//
+//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) )
+//
+//   if( l < f )
+//   l = f;
+//   if( f > array.length )
+//   f = array.length
+//
+//   if( f < 0 )
+//   f = 0;
+//
+//   if( f === 0 && l === array.length )
+//   return _.longMake( array );
+//
+//   result = _.longMakeUndefined( array, l-f );
+//
+//   /* */
+//
+//   let f2 = Math.max( f, 0 );
+//   let l2 = Math.min( array.length, l );
+//   for( let r = f2 ; r < l2 ; r++ )
+//   result[ r-f2 ] = array[ r ];
+//
+//   /* */
+//
+//   if( val !== undefined )
+//   {
+//     for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+//     {
+//       result[ r ] = val;
+//     }
+//   }
+//
+//   /* */
+//
+//   return result;
+// }
+//
+// //
+//
+// /**
+//  * Routine longRelengthInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
+//  * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
+//  * Long in place, otherwise, return copy. Routine can grows and reduce size of Long.
+//  *
+//  * @param { Long } array - The Long to change length.
+//  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+//  * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+//  * If range[ 0 ] < 0, then start index sets to 0.
+//  * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+//  * @param { * } val - The object of any type. Used to fill the space left of the original Long.
+//  *
+//  * @example
+//  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelengthInplace( src );
+//  * console.log( got );
+//  * // log Float32Array[ 1, 2, 3, 4, 5 ]
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelengthInplace( src, 7, 'str' );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelengthInplace( src, [ 1, 6 ], 7 );
+//  * console.log( got );
+//  * // log Uint8Array[ 2, 3, 4, 5, 7 ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+//  * var got = _.longRelengthInplace( src, [ -5, 6 ], 7 );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5, 7 ]
+//  * console.log( _.argumentsArrayIs( got ) );
+//  * // log false
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * var src = [ 1, 2, 3, 4, 5 ];
+//  * var got = _.longRelengthInplace( src, [ 4, 1 ], 'str' );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @returns { Long } Returns a Long with changed length.
+//  * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
+//  * @function longRelengthInplace
+//  * @throws { Error } If arguments.length is less then one or more then three.
+//  * @throws { Error } If argument {-array-} is not a Long.
+//  * @throws { Error } If range.length is less or more then two.
+//  * @throws { Error } If range elements is not number / undefined.
+//  * @namespace Tools
+//  */
+//
+// function longRelengthInplace( array, range, val )
+// {
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   return _.arrayRelengthInplace( array, range, val );
+//
+//   if( range === undefined )
+//   return array;
+//   if( _.numberIs( range ) )
+//   range = [ range, array.length ];
+//
+//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.intervalIs( range ) )
+//
+//   if( l < f )
+//   l = f;
+//   if( f > array.length )
+//   f = array.length;
+//   if( f < 0 )
+//   f = 0;
+//
+//   if( f === 0 && l === array.length )
+//   return array;
+//   else
+//   return _.longRelength( array, range, val );
+//
+// }
 
 //
 
@@ -2954,7 +2961,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
   if( _.numberIs( cinterval ) )
-  cinterval = [ 0, cinterval ];
+  cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
@@ -3056,43 +3063,43 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 // array checker
 // --
 
-/**
- * The longCompare() routine returns the first difference between the values of the first array from the second.
- *
- * @param { longLike } src1 - The first array.
- * @param { longLike } src2 - The second array.
- *
- * @example
- * _.longCompare( [ 1, 5 ], [ 1, 2 ] );
- * // returns 3
- *
- * @returns { Number } - Returns the first difference between the values of the two arrays.
- * @function longCompare
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
- * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
- * @namespace Tools
- */
-
-function longCompare( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longLike( src1 ) && _.longLike( src2 ) );
-  _.assert( src2.length >= src1.length );
-
-  let result = 0;
-
-  for( let s = 0 ; s < src1.length ; s++ )
-  {
-
-    result = src1[ s ] - src2[ s ];
-    if( result !== 0 )
-    return result;
-
-  }
-
-  return result;
-}
+// /**
+//  * The longCompare() routine returns the first difference between the values of the first array from the second.
+//  *
+//  * @param { longLike } src1 - The first array.
+//  * @param { longLike } src2 - The second array.
+//  *
+//  * @example
+//  * _.longCompare( [ 1, 5 ], [ 1, 2 ] );
+//  * // returns 3
+//  *
+//  * @returns { Number } - Returns the first difference between the values of the two arrays.
+//  * @function longCompare
+//  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+//  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
+//  * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
+//  * @namespace Tools
+//  */
+//
+// function longCompare( src1, src2 )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.longLike( src1 ) && _.longLike( src2 ) );
+//   _.assert( src2.length >= src1.length );
+//
+//   let result = 0;
+//
+//   for( let s = 0 ; s < src1.length ; s++ )
+//   {
+//
+//     result = src1[ s ] - src2[ s ];
+//     if( result !== 0 )
+//     return result;
+//
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -3703,35 +3710,35 @@ let Extension =
   /* qqq : check routine longMakeFilling, and add perfect coverage */
   /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
 
+  longFrom, /* aaa2 : cover please | Dmytro : covered */
+  longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
+
   longFill,
   longDuplicate,
 
   _longClone,
-  longShallowClone,
-
-  longFrom, /* aaa2 : cover please | Dmytro : covered */
-  longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
-
+  _longShallow,
+  longSlice : _longShallow,
   longRepresent, /* qqq2 : review. ask */
-  longSlice,
+  longJoin, /* qqq for Dmytro : look, analyze and cover _.buferJoin */
   longEmpty,
 
-  longBut,
-  longButInplace, /* !!! : use instead of longBut, longButInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  // longBut,
+  // longButInplace, /* !!! : use instead of longBut, longButInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
   longBut_,
-  longShrink,
-  longShrinkInplace, /* !!! : use instead of longShrink, longShrinkInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
-  longShrink_,
-  longGrow,
-  longGrowInplace, /* !!! : use instead of longGrow, longGrowInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  // longOnly,
+  // longOnlyInplace, /* !!! : use instead of longOnly, longOnlyInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  longOnly_,
+  // longGrow,
+  // longGrowInplace, /* !!! : use instead of longGrow, longGrowInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
   longGrow_,
-  longRelength,
-  longRelengthInplace, /* !!! : use instead of longRelength, longRelengthInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
+  // longRelength,
+  // longRelengthInplace, /* !!! : use instead of longRelength, longRelengthInplace */ /* Dmytro : the coverage of the alternative covers inplace and not inplace versions */
   longRelength_,
 
   // array checker
 
-  longCompare,
+  // longCompare,
   longIdentical,
 
   longHas,
@@ -3763,12 +3770,12 @@ let Extension =
   |                  |                                          | _.longBut_( dst, src, range ) if dst is resizable       |
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
-  | longShrink_      | _.longShrink_( null, src, range )        | _.longShrink_( src )                                    |
-  |                  | _.longShrink_( dst, src, range )         | _.longShrink_( src, range )                             |
-  |                  | if dst not resizable and change length   | _.longShrink_( dst, dst )                               |
-  |                  |                                          | _.longShrink_( dst, dst, range ) if dst is resizable    |
+  | longOnly_      | _.longOnly_( null, src, range )        | _.longOnly_( src )                                    |
+  |                  | _.longOnly_( dst, src, range )         | _.longOnly_( src, range )                             |
+  |                  | if dst not resizable and change length   | _.longOnly_( dst, dst )                               |
+  |                  |                                          | _.longOnly_( dst, dst, range ) if dst is resizable    |
   |                  |                                          | or dst not change length                                |
-  |                  |                                          | _.longShrink_( dst, src, range ) if dst is resizable    |
+  |                  |                                          | _.longOnly_( dst, src, range ) if dst is resizable    |
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
   | longGrow_        | _.longGrow_( null, src, range )          | _.longGrow_( src )                                      |
