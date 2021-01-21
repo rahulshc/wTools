@@ -14413,6 +14413,136 @@ function longFill( test )
 
 //
 
+function longFill_( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+  ];
+
+  for( let d = 0 ; d < list.length ; d++ )
+  {
+    test.open( list[ d ].name );
+    testRun( list[ d ] );
+    test.close( list[ d ].name );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'empty container, no value, no range';
+    var dst = new makeLong( [] );
+    var got = _.longFill_( dst );
+    var expected = new makeLong( [] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst - empty container, value';
+    var dst = new makeLong( [] );
+    var got = _.longFill_( dst, 1 );
+    var expected = new makeLong( [] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = empty container, value, range[ 1 ] > dst.length';
+    var dst = new makeLong( [] );
+    var got = _.longFill_( dst, 1, [ 0, 2 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1 ] : new makeLong( [ 1, 1, 1 ] );
+    test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = empty container, value, range[ 0 ] < 0, range[ 1 ] > dst.length';
+    var dst = new makeLong( [] );
+    var got = _.longFill_( dst, 1, [ -2, 2 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1, 1, 1 ] : new makeLong( [ 1, 1, 1, 1, 1 ] );
+    test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = empty container, value, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [] );
+    var got = _.longFill_( dst, 1, [ 0, -2 ] );
+    var expected = new makeLong( [] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = not empty container, no value, no range';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst );
+    var expected = new makeLong( [ 0, 0, 0 ] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = not empty container, value';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 3 );
+    var expected = new makeLong( [ 3, 3, 3 ] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst - not empty container, value, range - number';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 2, 4 );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2 ] );
+    test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
+    test.identical( got, expected );
+
+    test.case = 'dst = not empty container, value, range';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 4, [ 1, 1 ] );
+    var expected = new makeLong( [ 1, 4, 1 ] );
+    test.true( got === dst );
+    test.identical( got, expected );
+
+    test.case = 'dst - not empty container, value, range[ 0 ] < 0';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 2, [ -2, 1 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2, 2 ] );
+    test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
+    test.identical( got, expected );
+
+    test.case = 'dst - not empty container, value, range[ 1 ] > dst.length';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 2, [ 0, 3 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2 ] );
+    test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
+    test.identical( got, expected );
+
+    test.case = 'dst - not empty container, value, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [ 1, 1, 1 ] );
+    var got = _.longFill_( dst, 2, [ 2, 1 ] );
+    var expected = new makeLong( [ 1, 1, 1 ] );
+    test.true( got === dst );
+    test.identical( got, expected );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longFill_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longFill_( [ 1, 1, 1 ], 2, [ 1, 3 ], 1, 2 ) );
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.longFill_( [ 1, 1 ], 2, [ 1 ] ) );
+
+  test.case = 'wrong argument type';
+  test.shouldThrowErrorSync( () => _.longFill_( new BufferRaw(), 1 ) );
+  test.shouldThrowErrorSync( () => _.longFill_( BufferNode.alloc( 10 ), 1 ) );
+}
+
+//
+
 function longSupplement( test )
 {
 
@@ -17710,6 +17840,7 @@ let Self =
     // longPut, /* Dmytro : has not link in l8/Long.s */
     // longFillTimes,
     longFill,
+    longFill_,
 
     longSupplement,
     longExtendScreening,
