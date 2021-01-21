@@ -1280,24 +1280,38 @@ function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyp
 /* Dmytro : optimized */
 
 // function longSlice( array, f, l )
-function _longShallow( array, f, l )
+function _longShallow( src, f, l )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( src ), 'Expects long {-src-}' );
   _.assert( f === undefined || _.numberIs( f ) );
   _.assert( l === undefined || _.numberIs( l ) );
 
   /* xxx qqq for Dmytro : check and cover */
 
-  if( _.bufferTypedIs( array ) )
-  return _.longOnly( f, l );
-  return Array.prototype.slice.call( array, f, l );
+  f = f === undefined ? 0 : f;
+  l = l === undefined ? src.length : l;
 
-  // if( _.bufferTypedIs( array ) )
-  // return array.subarray( f, l );
-  // else if( _.arrayLikeResizable( array ) )
-  // return array.slice( f, l );
-  // else if( _.argumentsArrayIs( array ) )
-  // return Array.prototype.slice.call( array, f, l );
+  if( f < 0 )
+  f = src.length + f;
+  if( l < 0 )
+  l = src.length + l;
+
+  if( f < 0 )
+  f = 0;
+  if( f > l )
+  l = f;
+
+  if( _.bufferTypedIs( src ) )
+  return _.longOnly_( null, src, [ f, l - 1 ] );
+  return Array.prototype.slice.call( src, f, l );
+
+  // if( _.bufferTypedIs( src ) )
+  // return src.subsrc( f, l );
+  // else if( _.srcLikeResizable( src ) )
+  // return src.slice( f, l );
+  // else if( _.argumentssrcIs( src ) )
+  // return src.prototype.slice.call( src, f, l );
   // else
   // _.assert( 0 );
 }
