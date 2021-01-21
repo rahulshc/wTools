@@ -10484,6 +10484,13 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longRelength_( null, dst, 6 );
+    var expected = [ 1, 2, 3, 4, 5, undefined ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 6 ] );
     var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
     test.identical( got, expected );
