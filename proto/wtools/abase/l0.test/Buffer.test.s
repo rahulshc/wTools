@@ -7939,7 +7939,7 @@ function bufferGrow_( test )
     test.case = 'range = number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst, 5, [ 5 ] );
-    var expected = buf( [ 0, 1, 2, 3, 5, 5 ] );
+    var expected = buf( [ 0, 1, 2, 3, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8001,24 +8001,6 @@ function bufferGrow_( test )
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
     var expected = new U8x( [ 1, 1, 0, 1, 2, 3 ] ).buffer;
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
-    test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( [ 0, 1, 2, 3 ] );
-    var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
-    var expected = [ 0, 1, 2, 3 ];
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
-    test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( [ 0, 1, 2, 3 ] );
-    var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
-    var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== dst0 );
@@ -8110,6 +8092,24 @@ function bufferGrow_( test )
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got === dst );
+
+    test.case = 'dst0, range[ 0 ] > range[ 1 ], val';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( [ 0, 1, 2, 3 ] );
+    var got = _.bufferGrow_( dst0, dst, [ 4, 1 ], [ 1 ] );
+    var expected = [ 0, 1, 2, 3 ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
+
+    test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( [ 0, 1, 2, 3 ] );
+    var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
+    var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.close( 'inplace' );
   }
@@ -8219,7 +8219,7 @@ function bufferGrow_( test )
     test.case = 'range = number, val = number';
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst, 5, 1 );
-    var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1, 1 ] );
+    var expected = bufferExpected( dst, [ 0, 0, 0, 0, 1 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8275,10 +8275,10 @@ function bufferGrow_( test )
     /* */
 
     test.case = 'dst0, range[ 0 ] < 0, range[ 1 ] < 0, val';
-    var dst0 = [ 1, 2, 3 ];
+    var dst0 = new U8x([ 1, 2, 3 ]);
     var dst = buf( 4 );
-    var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], [ 1 ] );
-    var expected = [ [ 1 ], [ 1 ], 0, 0, 0, 0 ];
+    var got = _.bufferGrow_( dst0, dst, [ -2, -2 ], 1 );
+    var expected = new U8x([ 1, 1, 0, 0, 0, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== dst0 );
@@ -8297,15 +8297,6 @@ function bufferGrow_( test )
     var dst = buf( 4 );
     var got = _.bufferGrow_( dst0, dst, [ 1, 7 ], 1 );
     var expected = new BufferView( new U8x( [ 0, 0, 0, 0, 1, 1, 1, 1 ] ).buffer );
-    test.identical( got, expected );
-    test.true( got !== dst );
-    test.true( got !== dst0 );
-
-    test.case = 'dst0, dst = empty BufferTyped, val';
-    var dst0 = [ 1, 2, 3 ];
-    var dst = buf( [] );
-    var got = _.bufferGrow_( dst0, dst, [ 0, -1 ], [ 2 ] );
-    var expected = [];
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== dst0 );
@@ -8412,6 +8403,15 @@ function bufferGrow_( test )
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
     test.true( got === dst );
+
+    test.case = 'dst0, dst = empty BufferTyped, val';
+    var dst0 = [ 1, 2, 3 ];
+    var dst = buf( [] );
+    var got = _.bufferGrow_( dst0, dst, [ 0, -1 ], [ 2 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.true( got !== dst );
+    test.true( got === dst0 );
 
     test.close( 'inplace' );
   }
