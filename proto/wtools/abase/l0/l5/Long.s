@@ -1077,6 +1077,46 @@ function longFill( src, value, range )
 
 //
 
+function longFill_( src, ins, cinterval )
+{
+
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ 0, cinterval - 1 ];
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( src ) );
+  _.assert( _.intervalIs( cinterval ) );
+
+  if( ins === undefined )
+  ins = 0;
+
+  src = _.longGrow_( src, src, cinterval );
+
+  let offset = Math.max( -cinterval[ 0 ], 0 );
+
+  if( cinterval[ 0 ] < 0 )
+  {
+    cinterval[ 1 ] -= cinterval[ 0 ];
+    cinterval[ 0 ] = 0;
+  }
+
+  if( _.routineIs( src.fill ) )
+  {
+    src.fill( ins, cinterval[ 0 ], cinterval[ 1 ] + 1 + offset );
+  }
+  else
+  {
+    for( let t = cinterval[ 0 ] ; t < cinterval[ 1 ] + 1 + offset ; t++ )
+    src[ t ] = ins;
+  }
+
+  return src;
+}
+
+//
+
 /**
  * The longDuplicate() routine returns an array with duplicate values of a certain number of times.
  *
@@ -3728,6 +3768,7 @@ let Extension =
   longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
 
   longFill,
+  longFill_,
   longDuplicate,
 
   _longClone,
