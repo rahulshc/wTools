@@ -10580,7 +10580,7 @@ function bufferResize_( test )
 
   var expect = ( buf, offset, length ) =>
   {
-    let buffer = _.bufferRelength( buf.buffer, [ offset, offset + length ] );
+    let buffer = _.bufferRelength_( null, buf.buffer, [ offset, offset + length - 1 ] );
     if( _.bufferViewIs( buf ) )
     return bufferView( buffer );
     else

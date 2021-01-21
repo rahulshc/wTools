@@ -2846,7 +2846,7 @@ function bufferResize_( dst, srcBuffer, size )
     srcBuffer = dst;
   }
 
-  let range = _.intervalIs( size ) ? size : [ 0, size - 1 ];
+  let range = _.intervalIs( size ) ? size : [ 0, size ];
   size = range[ 1 ] - range[ 0 ];
 
   if( range[ 1 ] < range[ 0 ] )
