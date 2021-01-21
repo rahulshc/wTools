@@ -15510,94 +15510,94 @@ function longToStr( test )
   });
 }
 
+// //
 //
-
-function longCompare( test )
-{
-  test.case = 'empty arrays';
-  var got = _.longCompare( [], [] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'first array is empty';
-  var got = _.longCompare( [], [ 1, 2 ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'length of the first array is less than second';
-  var got = _.longCompare( [ 4 ], [ 1, 2 ] );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.case = 'arrays are equal';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 5 ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'a difference';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 2 ] );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.case = 'a negative difference';
-  var got = _.longCompare( [ 1, 5 ], [ 1, 6 ] );
-  var expected = -1;
-  test.identical( got, expected );
-
-  test.case = 'array-like arguments';
-  var src1 = function src1()
-  {
-    return arguments;
-  }( 1, 5 );
-  var src2 = function src2()
-  {
-    return arguments;
-  }( 1, 2 );
-  var got = _.longCompare( src1, src2 );
-  var expected = 3;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare();
-  });
-
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ] );
-  });
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( 'wrong argument', 'wrong argument' );
-  });
-
-  test.case = 'second array is empty';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [] );
-  });
-
-  test.case = 'length of the second array is less than first';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longCompare( [ 1, 5 ], [ 1 ] );
-  });
-};
+// function longCompare( test )
+// {
+//   test.case = 'empty arrays';
+//   var got = _.longCompare( [], [] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'first array is empty';
+//   var got = _.longCompare( [], [ 1, 2 ] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'length of the first array is less than second';
+//   var got = _.longCompare( [ 4 ], [ 1, 2 ] );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   test.case = 'arrays are equal';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 5 ] );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   test.case = 'a difference';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 2 ] );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   test.case = 'a negative difference';
+//   var got = _.longCompare( [ 1, 5 ], [ 1, 6 ] );
+//   var expected = -1;
+//   test.identical( got, expected );
+//
+//   test.case = 'array-like arguments';
+//   var src1 = function src1()
+//   {
+//     return arguments;
+//   }( 1, 5 );
+//   var src2 = function src2()
+//   {
+//     return arguments;
+//   }( 1, 2 );
+//   var got = _.longCompare( src1, src2 );
+//   var expected = 3;
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare();
+//   });
+//
+//   test.case = 'not enough arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ] );
+//   });
+//
+//   test.case = 'extra argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
+//   });
+//
+//   test.case = 'wrong type of arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( 'wrong argument', 'wrong argument' );
+//   });
+//
+//   test.case = 'second array is empty';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [] );
+//   });
+//
+//   test.case = 'length of the second array is less than first';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longCompare( [ 1, 5 ], [ 1 ] );
+//   });
+// }
 
 //
 
@@ -17720,7 +17720,7 @@ let Self =
 
     // long checker
 
-    longCompare,
+    // longCompare,
     longIdentical,
 
     longHasAnyWithoutCallback,
