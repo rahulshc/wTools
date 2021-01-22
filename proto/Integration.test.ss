@@ -240,8 +240,6 @@ function productionSuitability( test )
 
   con.then( () =>
   {
-    a.fileProvider.dirMake( a.abs( '.' ) );
-
     let sampleDir = a.abs( __dirname, '../sample' );
     let samplePath = a.find
     ({
@@ -252,6 +250,8 @@ function productionSuitability( test )
     if( !samplePath.length )
     throw _.err( `Sample with name "Sample.(s|ss|js)" does not exist in directory ${ sampleDir }` );
 
+    /* */
+
     samplePath = samplePath.filter( ( e ) =>
     {
       let ext = a.path.ext( e );
@@ -260,15 +260,16 @@ function productionSuitability( test )
 
     if( samplePath.length )
     {
+      a.fileProvider.dirMake( a.abs( '.' ) );
       samplePath = a.abs( sampleDir, samplePath[ 0 ] ) ;
       sampleName = a.path.fullName( samplePath );
       a.fileProvider.filesReflect({ reflectMap : { [ samplePath ] : a.abs( sampleName ) } });
-    }
 
-    let packagePath = a.abs( __dirname, '../package.json' );
-    let config = a.fileProvider.fileRead({ filePath : packagePath, encoding : 'json' });
-    let data = { dependencies : { [ config.name ] : 'alpha' } };
-    a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data, encoding : 'json' });
+      let packagePath = a.abs( __dirname, '../package.json' );
+      let config = a.fileProvider.fileRead({ filePath : packagePath, encoding : 'json' });
+      let data = { dependencies : { [ config.name ] : 'alpha' } };
+      a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data, encoding : 'json' });
+    }
 
     return null;
   });
