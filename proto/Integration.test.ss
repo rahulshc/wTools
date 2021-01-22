@@ -252,9 +252,10 @@ function productionSuitability( test )
 
     /* */
 
+    let ext = 'js';
     samplePath = samplePath.filter( ( e ) =>
     {
-      let ext = a.path.ext( e );
+      ext = a.path.ext( e );
       return ext === 's' || ext === 'ss';
     });
 
@@ -269,11 +270,9 @@ function productionSuitability( test )
       let config = a.fileProvider.fileRead({ filePath : packagePath, encoding : 'json' });
       let data = { dependencies : { [ config.name ] : 'alpha' } };
       a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data, encoding : 'json' });
-
-      return a.path.ext( sampleName );
     }
 
-    return 'js';
+    return ext;
   });
 
   con.then( ( ext ) =>
