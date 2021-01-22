@@ -269,14 +269,16 @@ function productionSuitability( test )
       let config = a.fileProvider.fileRead({ filePath : packagePath, encoding : 'json' });
       let data = { dependencies : { [ config.name ] : 'alpha' } };
       a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data, encoding : 'json' });
+
+      return a.path.ext( sampleName );
     }
 
-    return null;
+    return 'js';
   });
 
-  con.then( () =>
+  con.then( ( ext ) =>
   {
-    if( sampleName === '' )
+    if( ext === 'js' )
     {
       test.true( true );
       return null;
