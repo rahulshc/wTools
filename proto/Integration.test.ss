@@ -255,8 +255,13 @@ function productionSuitability( test )
     let ext = 'js';
     samplePath = samplePath.filter( ( e ) =>
     {
-      ext = a.path.ext( e );
-      return ext === 's' || ext === 'ss';
+      let current = a.path.ext( e );
+      if( current === 's' || current === 'ss' )
+      {
+        ext = current;
+        return true;
+      }
+      return false;
     });
 
     if( samplePath.length )
