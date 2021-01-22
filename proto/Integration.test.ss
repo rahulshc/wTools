@@ -26,7 +26,7 @@ function onSuiteBegin( test )
   let context = this;
   context.provider = fileProvider;
   let path = context.provider.path;
-  context.suiteTempPath = context.provider.path.tempOpen( path.join( __dirname, '../..'  ), 'moduleSuitability' );
+  context.suiteTempPath = context.provider.path.tempOpen( path.join( __dirname, '../..'  ), 'productionSuitability' );
 }
 
 //
@@ -35,7 +35,7 @@ function onSuiteEnd( test )
 {
   let context = this;
   let path = context.provider.path;
-  _.assert( _.strHas( context.suiteTempPath, 'moduleSuitability' ), context.suiteTempPath );
+  _.assert( _.strHas( context.suiteTempPath, 'productionSuitability' ), context.suiteTempPath );
   path.tempClose( context.suiteTempPath );
 }
 
@@ -218,11 +218,12 @@ eslint.rapidity = -2;
 
 //
 
-function moduleSuitability( test )
+function productionSuitability( test )
 {
   let context = this;
-  let a = test.assetFor( 'moduleSuitability' );
+  let a = test.assetFor( 'productionSuitability' );
 
+  let con = new _.Consequence().take( null );
   let ready = new _.Consequence().take( null );
   let start = _.process.starter
   ({
@@ -237,7 +238,7 @@ function moduleSuitability( test )
 
   let sampleName = '';
 
-  ready.then( () =>
+  con.then( () =>
   {
     a.fileProvider.dirMake( a.abs( '.' ) );
 
@@ -259,24 +260,35 @@ function moduleSuitability( test )
     return null;
   });
 
-  start( `npm i` )
-  .then( ( op ) =>
+  con.then( () =>
   {
-    test.case = 'install module';
-    test.identical( op.exitCode, 0 );
-    return null;
+    if( a.path.ext( sampleName ) === 'js' )
+    {
+      test.true( true );
+      return null;
+    }
+    else
+    {
+      start( `npm i` )
+      .then( ( op ) =>
+      {
+        test.case = 'install module';
+        test.identical( op.exitCode, 0 );
+        return null;
+      });
+      start( `node ${ sampleName }` )
+      .then( ( op ) =>
+      {
+        test.case = 'succefull running sample';
+        test.identical( op.exitCode, 0 );
+        test.ge( op.output.length, 3 );
+        return null;
+      });
+    }
+    return ready;
   });
 
-  start( `node ${ sampleName }` )
-  .then( ( op ) =>
-  {
-    test.case = 'succefull running sample';
-    test.identical( op.exitCode, 0 );
-    test.ge( op.output.length, 3 );
-    return null;
-  });
-
-  return ready;
+  return con;
 }
 
 // --
@@ -303,7 +315,7 @@ let Self =
   {
     samples,
     eslint,
-    moduleSuitability,
+    productionSuitability,
   },
 
 }
