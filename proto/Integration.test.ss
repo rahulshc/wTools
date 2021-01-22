@@ -248,9 +248,22 @@ function productionSuitability( test )
       filePath : sampleDir,
       filter : { filePath : { 'Sample.(s|js|ss)' : 1 } }
     });
-    samplePath = a.abs( sampleDir, samplePath[ 0 ] ) ;
-    sampleName = a.path.fullName( samplePath );
-    a.fileProvider.filesReflect({ reflectMap : { [ samplePath ] : a.abs( sampleName ) } });
+
+    if( !samplePath.length )
+    throw _.err( `Sample with name "Sample.(s|ss|js)" does not exist in directory ${ sampleDir }` );
+
+    samplePath = samplePath.filter( ( e ) =>
+    {
+      let ext = a.path.ext( e );
+      return ext === 's' || ext === 'ss';
+    });
+
+    if( samplePath.length )
+    {
+      samplePath = a.abs( sampleDir, samplePath[ 0 ] ) ;
+      sampleName = a.path.fullName( samplePath );
+      a.fileProvider.filesReflect({ reflectMap : { [ samplePath ] : a.abs( sampleName ) } });
+    }
 
     let packagePath = a.abs( __dirname, '../package.json' );
     let config = a.fileProvider.fileRead({ filePath : packagePath, encoding : 'json' });
@@ -262,14 +275,14 @@ function productionSuitability( test )
 
   con.then( () =>
   {
-    if( a.path.ext( sampleName ) === 'js' )
+    if( sampleName === '' )
     {
       test.true( true );
       return null;
     }
     else
     {
-      start( `npm i` )
+      start( `npm i --production` )
       .then( ( op ) =>
       {
         test.case = 'install module';
