@@ -9,7 +9,7 @@ Collection of general purpose tools for solving problems. Fundamentally extend J
 git clone https://github.com/Wandalen/wTools
 cd wTools
 npm install
-node sample/Sample.s
+node sample/trivial/Sample.s
 ```
 
 ## To add to your project
