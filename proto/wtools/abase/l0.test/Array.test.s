@@ -1428,6 +1428,8 @@ function arrayMakeUndefined( test )
   test.shouldThrowErrorSync( () => _.arrayMakeUndefined( [], {} ) );
 }
 
+arrayMakeUndefined.timeOut = 15000;
+
 //
 
 function arrayMakeUndefinedNotDefaultDescriptor( test )

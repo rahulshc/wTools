@@ -267,8 +267,9 @@ function on_head( routine, args )
     if( _.event.chainIs( args[ 0 ] ) )
     {
       let chain = args[ 0 ].chain;
-      // debugger; /* xxx qqq for Dmytro : check */
-      o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
+      // debugger; /* xxx aaa for Dmytro : check */ /* Dmytro : vector of events should be sliced from first argument */
+      // o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
+      o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, [ 1, chain.length - 1 ] );
       o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
     }
     else if( _.strIs( args[ 0 ] ) )
