@@ -33,10 +33,6 @@ function makeConstructing( src, length )
   {
     return Object.create( null );
   }
-  else if( _.objectIs( src ) )
-  {
-    return new src.constructor();
-  }
   else if( src === _.null )
   {
     return null;
@@ -45,9 +41,13 @@ function makeConstructing( src, length )
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( !src || _.primitiveIs( src ) )
   {
     return src;
+  }
+  else if( _.routineIs( src.constructor ) )
+  {
+    return new src.constructor();
   }
   else _.assert( 0, 'Not clear how to make a object of ', _.strType( src ) );
 
