@@ -7,7 +7,7 @@ let _global = _global_;
 let _ = _global_.wTools;
 
 // --
-// range
+// implement
 // --
 
 function is( src )
@@ -37,21 +37,80 @@ function from( src )
   return _.escape.make( src );
 }
 
+//
+
+function shallow()
+{
+  debugger;
+  return this;
+}
+
+//
+
+function deep()
+{
+  debugger;
+  return this;
+}
+
+//
+
+function equalAre( it )
+{
+  let self = this;
+
+  _.assert( arguments.length === 1 );
+
+  it.continue = false;
+
+  if( !it.srcEffective )
+  return false;
+  if( !it.srcEffective2 )
+  return false;
+  if( !it.srcEffective instanceof _.Escape )
+  return false;
+  if( !it.srcEffective2 instanceof _.Escape )
+  return false;
+
+  return it.srcEffective.val === it.srcEffective2.val;
+}
+
 // --
-// define
+// declare
 // --
 
-class Escape
+const iteratorSymbol = Symbol.iterator;
+const equalAreSymbol = Symbol.for( 'equalAre' );
+const shallowSymbol = Symbol.for( 'shallow' );
+const deepSymbol = Symbol.for( 'deep' );
+
+function Escape( val )
 {
-  constructor( val )
-  {
-    if( arguments.length !== 1 )
-    throw new Error( 'Expects exactly 1 argument' );
-    this.val = val;
-    Object.freeze( this );
-    return this;
-  }
+  if( arguments.length !== 1 )
+  throw new Error( 'Expects exactly 1 argument' );
+  this.val = val;
+  Object.freeze( this );
+  return this;
 }
+
+// class Escape
+// {
+//   constructor( val )
+//   {
+//     if( arguments.length !== 1 )
+//     throw new Error( 'Expects exactly 1 argument' );
+//     this.val = val;
+//     Object.freeze( this );
+//     return this;
+//   }
+// }
+
+Object.setPrototypeOf( Escape.prototype, null );
+Escape.prototype = Object.create( null );
+Escape.prototype[ shallowSymbol ] = shallow;
+Escape.prototype[ deepSymbol ] = deep;
+Escape.prototype[ equalAreSymbol ] = equalAre;
+Escape.prototype.constructor = Escape;
 
 //
 

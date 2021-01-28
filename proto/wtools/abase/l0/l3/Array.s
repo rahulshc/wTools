@@ -84,7 +84,8 @@ function arrayLike( src )
   return true;
   if( _.argumentsArrayIs( src ) )
   return true;
-  if( _.methodIteratorOf( src ) ) /* yyy */
+  debugger;
+  if( _.entity.methodIteratorOf( src ) ) /* yyy */
   if( !_.mapIs( src ) && _.objectIs( src ) )
   return true;
   return false;

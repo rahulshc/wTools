@@ -306,7 +306,7 @@ function elementGet( container, key, type )
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.methodIteratorOf( container ) )
+    else if( _.numberIs( key ) && _.entity.methodIteratorOf( container ) )
     {
       return [ ... container ][ key ];
     }
@@ -374,7 +374,6 @@ let knownTypeFields =
 // extension
 // --
 
-debugger;
 let types = _realGlobal_.wTools.container.types;
 
 let Extension =
@@ -399,10 +398,8 @@ let Extension =
 
 }
 
-debugger;
 _.mapSupplement( Self, Extension );
 _.container.types = types;
-debugger;
 
 // --
 // export

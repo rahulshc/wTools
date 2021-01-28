@@ -56,15 +56,14 @@ function methodIteratorOf( src ) /* qqq xxx : check. good coverage is required |
 {
   if( !src )
   return false;
-  if( _.routineIs( src[ Symbol.iterator ] ) )
-  return src[ Symbol.iterator ];
+  if( _.routineIs( src[ iteratorSymbol ] ) )
+  return src[ iteratorSymbol ];
   return false;
 }
 
 //
 
-const equalAreSymbol = Symbol.for( 'equalAre' );
-function methodEqualerOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+function methodEqualOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
 {
   if( !src )
   return false;
@@ -133,8 +132,8 @@ let ToolsExtension =
   // container
 
   iterableIs,
-  methodIteratorOf,
-  methodEqualerOf, /* xxx : add other similar routines */
+  // methodIteratorOf,
+  // methodEqualOf, /* xxx : add other similar routines */
   lengthOf,
   entityLengthOf : lengthOf,
 
@@ -148,6 +147,11 @@ Object.assign( _, ToolsExtension );
 // entity extension
 // --
 
+const iteratorSymbol = Symbol.iterator;
+const equalAreSymbol = Symbol.for( 'equalAre' );
+const shallowSymbol = Symbol.for( 'shallow' );
+const deepSymbol = Symbol.for( 'deep' );
+
 let EntityExtension =
 {
 
@@ -155,14 +159,19 @@ let EntityExtension =
 
   iterableIs,
   methodIteratorOf,
-  methodEqualerOf, /* xxx : add other similar routines */
+  methodEqualOf, /* xxx : add other similar routines */
   lengthOf,
+
+  iteratorSymbol,
+  equalAreSymbol,
+  shallowSymbol,
+  deepSymbol,
 
 }
 
 //
 
-Object.assign( _, EntityExtension );
+Object.assign( _.entity, EntityExtension );
 
 // --
 // export

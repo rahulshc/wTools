@@ -93,7 +93,7 @@ function longLike( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 {
   if( _.primitiveIs( src ) )
   return false;
-  if( _.methodIteratorOf( src ) ) /* yyy */
+  if( _.entity.methodIteratorOf( src ) ) /* yyy */
   if( !_.mapIs( src ) && _.objectIs( src ) )
   return true;
   // if( _.bufferNodeIs( src ) )
@@ -546,7 +546,7 @@ function eacher( src )
 
   _.assert( _.longLike( src ) );
 
-  if( _.methodIteratorOf( src ) )
+  if( _.entity.methodIteratorOf( src ) )
   return eachOf;
   else
   return eachLength;

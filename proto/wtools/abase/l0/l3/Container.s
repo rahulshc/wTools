@@ -49,7 +49,7 @@ function lengthOf( container )
   if( type && type._lengthGet )
   return type._lengthGet( container );
 
-  if( _.methodIteratorOf( container ) )
+  if( _.entity.methodIteratorOf( container ) )
   return [ ... container ].length;
 
   return _.lengthOf( container );
@@ -111,9 +111,7 @@ let ContainerExtension =
 
 _.container = Self;
 
-debugger;
 Object.assign( Self, ContainerExtension );
-debugger;
 
 // --
 // extend tools

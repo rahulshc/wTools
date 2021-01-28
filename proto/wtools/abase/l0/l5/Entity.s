@@ -587,6 +587,11 @@ _.mapSupplement( _, ToolsExtension );
 // entity extension
 // --
 
+const iteratorSymbol = Symbol.iterator;
+const equalAreSymbol = Symbol.for( 'equalAre' );
+const shallowSymbol = Symbol.for( 'shallow' );
+const deepSymbol = Symbol.for( 'deep' );
+
 let EntityExtension =
 {
 
