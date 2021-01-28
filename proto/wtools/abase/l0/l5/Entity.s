@@ -5,13 +5,14 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.entity = _.entity || Object.create( null );
+// let Self = _global_.wTools;
 
 // --
 //
 // --
 
-function entityMakeConstructing( src, length )
+function makeConstructing( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -54,7 +55,7 @@ function entityMakeConstructing( src, length )
 
 //
 
-function entityMakeEmpty( src )
+function makeEmpty( src )
 {
 
   _.assert( arguments.length === 1 );
@@ -97,7 +98,7 @@ function entityMakeEmpty( src )
 
 //
 
-function entityMakeUndefined( src, length )
+function makeUndefined( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -141,7 +142,7 @@ function entityMakeUndefined( src, length )
 
 //
 
-function entityMake( src )
+function make( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -181,7 +182,7 @@ function entityMake( src )
 //
 
 /**
- * The routine entityEntityEqualize() checks equality of two entities {-src1-} and {-src2-}.
+ * The routine equalize() checks equality of two entities {-src1-} and {-src2-}.
  * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to
  * entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
  * If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
@@ -193,31 +194,31 @@ function entityMake( src )
  * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-src2-} to search.
  *
  * @example
- * _.entityEntityEqualize( 1, 1 );
+ * _.entity.equalize( 1, 1 );
  * // returns true
  *
  * @example
- * _.entityEntityEqualize( 1, 'str' );
+ * _.entity.equalize( 1, 'str' );
  * // returns false
  *
  * @example
- * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns false
  *
  * @example
- * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
+ * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
  * // returns true
  *
  * @example
- * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
+ * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
  * // returns false
  *
  * @example
- * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
+ * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
  * // returns true
  *
  * @returns { Boolean } - Returns boolean value of equality of two entities.
- * @function entityEntityEqualize
+ * @function equalize
  * @throws { Error } If arguments.length is less then two or more then four.
  * @throws { Error } If {-onEvaluate1-} is not a routine.
  * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
@@ -225,10 +226,10 @@ function entityMake( src )
  * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
  * @throws { Error } If {-onEvaluate2-} is not a routine.
  * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @namespace Tools
+ * @namespace Tools.entity
  */
 
-function entityEntityEqualize( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function equalize( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -278,29 +279,29 @@ function entityEntityEqualize( /* src1, src2, onEvaluate1, onEvaluate2 */ )
  * @example
  * let dst = { set : function( src ) { this.str = src.src } };
  * let src = { src : 'string' };
- *  _.entityAssign( dst, src );
+ *  _.entity.assign2( dst, src );
  * console.log( dst.str )
  * // log "string"
  *
  * @example
  * let dst = { copy : function( src ) { for( let i in src ) this[ i ] = src[ i ] } }
  * let src = { src : 'string', num : 123 }
- *  _.entityAssign( dst, src );
+ *  _._.entity.assign2( dst, src );
  * console.log( dst )
  * // log Object { src: "string", num: 123 }
  *
  * @example
- *  _.entityAssign( null, new String( 'string' ) );
+ *  _._.entity.assign2( null, new String( 'string' ) );
  * // returns 'string'
  *
- * @function entityAssign
+ * @function assign
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
  * @throws {exception} If( onRecursive ) is not a Routine.
- * @namespace Tools
+ * @namespace Tools.entity
  *
  */
 
-function entityAssign( dst, src, onRecursive )
+function assign2( dst, src, onRecursive )
 {
   let result;
 
@@ -377,7 +378,7 @@ function entityAssign( dst, src, onRecursive )
 //
 
 /**
- * Short-cut for entityAssign function. Copies specified( name ) field from
+ * Short-cut for _.entity.assign2 function. Copies specified( name ) field from
  * source container( srcContainer ) into( dstContainer ).
  *
  * @param {object} dstContainer - Destination object.
@@ -391,7 +392,7 @@ function entityAssign( dst, src, onRecursive )
  * let dst = {};
  * let src = { a : 'string' };
  * let name = 'a';
- * _.entityAssignFieldFromContainer(dst, src, name );
+ * _.entity.assign2FieldFromContainer( dst, src, name );
  * console.log( dst.a === src.a );
  * // log true
  *
@@ -404,17 +405,17 @@ function entityAssign( dst, src, onRecursive )
  *   _.assert( _.strIs( key ) );
  *   dstContainer[ key ] = srcContainer[ key ];
  * };
- * _.entityAssignFieldFromContainer(dst, src, name, onRecursive );
+ * _.entity.assign2FieldFromContainer( dst, src, name, onRecursive );
  * console.log( dst.a === src.a );
  * // log true
  *
- * @function entityAssignFieldFromContainer
+ * @function assignFieldFromContainer
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
- * @namespace Tools
+ * @namespace Tools.entity
  *
  */
 
-function entityAssignFieldFromContainer( /* dstContainer, srcContainer, name, onRecursive */ )
+function assign2FieldFromContainer( /* dstContainer, srcContainer, name, onRecursive */ )
 {
   let dstContainer = arguments[ 0 ];
   let srcContainer = arguments[ 1 ];
@@ -430,9 +431,9 @@ function entityAssignFieldFromContainer( /* dstContainer, srcContainer, name, on
   let srcValue = srcContainer[ name ];
 
   if( onRecursive )
-  result = entityAssign( dstValue, srcValue, onRecursive );
+  result = _.entity.assign2( dstValue, srcValue, onRecursive );
   else
-  result = entityAssign( dstValue, srcValue );
+  result = _.entity.assign2( dstValue, srcValue );
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -443,7 +444,7 @@ function entityAssignFieldFromContainer( /* dstContainer, srcContainer, name, on
 //
 
 /**
- * Short-cut for entityAssign function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ * Short-cut for _.entity.assign2 function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
  *
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
@@ -456,17 +457,17 @@ function entityAssignFieldFromContainer( /* dstContainer, srcContainer, name, on
  * let dstContainer = { a : 1 };
  * let srcValue = 15;
  * let name = 'a';
- * _.entityAssignField( dstContainer, srcValue, name );
+ * _.entity.assign2Field( dstContainer, srcValue, name );
  * console.log( dstContainer.a );
  * // log 15
  *
- * @function entityAssignField
+ * @function assignField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
  * @namespace Tools
  *
  */
 
-function entityAssignField( /* dstContainer, srcValue, name, onRecursive */ )
+function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 {
   let dstContainer = arguments[ 0 ];
   let srcValue = arguments[ 1 ];
@@ -483,11 +484,11 @@ function entityAssignField( /* dstContainer, srcValue, name, onRecursive */ )
   if( onRecursive )
   {
     throw _.err( 'not tested' );
-    result = entityAssign( dstValue, srcValue, onRecursive );
+    result = _.entity.assign2( dstValue, srcValue, onRecursive );
   }
   else
   {
-    result = entityAssign( dstValue, srcValue );
+    result = _.entity.assign2( dstValue, srcValue );
   }
 
   if( result !== undefined )
@@ -497,32 +498,55 @@ function entityAssignField( /* dstContainer, srcValue, name, onRecursive */ )
 }
 
 // --
-// routines
+// tools extension
 // --
 
-let Extension =
+let ToolsExtension =
 {
 
-  entityMakeConstructing, /* aaa2 : should take into account long descriptor */ /* Dmytro : takes into account longDescriptor if src is long, but not an array. Covered */
-  entityMakeEmpty, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
-  makeEmpty : entityMakeEmpty,
-  entityMakeUndefined, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
-  makeUndefined : entityMakeUndefined,
-  entityMake, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : routine takes into account longDescriptor, covered */
-  make : entityMake,
+  entityMakeConstructing : makeConstructing,
+  makeEmpty,
+  entityMakeEmpty : makeEmpty,
+  makeUndefined,
+  entityMakeUndefined : makeUndefined,
+  make,
+  entityMake : make,
 
-  entityEntityEqualize,
+  entityEntityEqualize : equalize,
 
-  entityAssign, /* xxx : refactor */
-  entityAssignFieldFromContainer, /* dubious */
-  entityAssignField, /* dubious */
+  entityAssign2 : assign2, /* xxx : refactor */
+  entityAssign2FieldFromContainer : assign2FieldFromContainer, /* dubious */
+  entityAssign2Field : assign2Field, /* dubious */
 
 }
 
 //
 
-_.mapSupplement( Self, Extension );
+_.mapSupplement( _, ToolsExtension );
 
+// --
+// entity extension
+// --
+
+let EntityExtension =
+{
+
+  makeConstructing,
+  makeEmpty,
+  makeUndefined,
+  make,
+
+  equalize,
+
+  assign2, /* xxx : refactor */
+  assign2FieldFromContainer, /* dubious */
+  assign2Field, /* dubious */
+
+}
+
+//
+
+_.mapSupplement( _.entity, EntityExtension );
 
 // --
 // export

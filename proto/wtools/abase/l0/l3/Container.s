@@ -103,7 +103,7 @@ let ContainerExtension =
 
   //
 
-  types
+  types,
 
 }
 

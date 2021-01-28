@@ -2175,7 +2175,7 @@ function entityAssign( test )
   test.case = 'src null';
   var dst = 'string';
   var src = null;
-  var got = _.entityAssign( dst, src );
+  var got = _.entitiy.assign2( dst, src );
   var expected = null;
   test.identical( got, expected );
 
@@ -2189,7 +2189,7 @@ function entityAssign( test )
     }
   };
   var src = { src : 'string', num : 123 };
-  _.entityAssign( dst, src  );
+  _.entitiy.assign2( dst, src  );
   var got = dst;
   var expected =
   {
@@ -2204,7 +2204,7 @@ function entityAssign( test )
   var dst = 1;
   // var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
   var src = { src : 'string', num : 123, clone : function() { return { src : 'string', num : 123 } } }
-  var got = _.entityAssign( dst, src  );
+  var got = _.entitiy.assign2( dst, src  );
   var expected = { src : 'string', num : 123 };
   test.identical( got, expected );
   test.true( got !== expected );
@@ -2213,14 +2213,14 @@ function entityAssign( test )
   test.case = 'src.slice returns copy of array';
   var dst = [ ];
   var src = [ 1, 2, 3 ];
-  var got = _.entityAssign( dst, src  );
+  var got = _.entitiy.assign2( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'dst.set ';
   var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
   var src = { value : 100 };
-  _.entityAssign( dst, src  );
+  _.entitiy.assign2( dst, src  );
   var got = dst;
   var expected = { set : dst.set, value : 100 };
   test.identical( got, expected );
@@ -2233,14 +2233,14 @@ function entityAssign( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  _.entityAssign( dst, src, onRecursive  );
+  _.entitiy.assign2( dst, src, onRecursive  );
   var got = dst;
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'atomic ';
   var src = 2;
-  var got = _.entityAssign( null, src );
+  var got = _.entitiy.assign2( null, src );
   var expected = src;
   test.identical( got, expected );
 
@@ -2250,7 +2250,7 @@ function entityAssign( test )
   test.case = 'missed arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.entityAssign( );
+    _.entitiy.assign2( );
   });
 
   test.case = 'src.clone throws "unexpected"';
@@ -2258,7 +2258,7 @@ function entityAssign( test )
   {
     var dst = {};
     var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
-    _.entityAssign( dst, src  );
+    _.entitiy.assign2( dst, src  );
   });
 
 }
@@ -2272,7 +2272,7 @@ function entityAssignFieldFromContainer( test )
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
-  var got = _.entityAssignFieldFromContainer(dst, src, name );
+  var got = _.entitiy.assign2FieldFromContainer(dst, src, name );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -2280,7 +2280,7 @@ function entityAssignFieldFromContainer( test )
   var dst ={};
   var src = { a : undefined };
   var name = 'a';
-  var got = _.entityAssignFieldFromContainer(dst, src, name );
+  var got = _.entitiy.assign2FieldFromContainer(dst, src, name );
   var expected = undefined;
   test.identical( got, expected );
 
@@ -2293,7 +2293,7 @@ function entityAssignFieldFromContainer( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  var got = _.entityAssignFieldFromContainer( dst, src, name, onRecursive );
+  var got = _.entitiy.assign2FieldFromContainer( dst, src, name, onRecursive );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -2303,7 +2303,7 @@ function entityAssignFieldFromContainer( test )
   test.case = 'argument missed';
   test.shouldThrowErrorSync( function()
   {
-    _.entityAssignFieldFromContainer( );
+    _.entitiy.assign2FieldFromContainer( );
   });
 
 }

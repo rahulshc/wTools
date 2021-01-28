@@ -1243,7 +1243,7 @@ function mapComplement( dstMap, srcMap )
       if( dstContainer[ key ] !== undefined )
       return;
     }
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }

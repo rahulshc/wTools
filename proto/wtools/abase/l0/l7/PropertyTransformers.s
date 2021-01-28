@@ -35,7 +35,7 @@ function assigning()
   return routine;
   function assigning( dstContainer, srcContainer, key )
   {
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 }
 
@@ -213,7 +213,7 @@ function notPrimitiveAssigning()
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -230,7 +230,7 @@ function assigningRecursive()
 
   function assigningRecursive( dstContainer, srcContainer, key )
   {
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entitiy.assign2FieldFromContainer );
   }
 
 }
@@ -447,7 +447,7 @@ function dstNotHasAssigning()
     if( dstContainer[ key ] !== undefined )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -540,7 +540,7 @@ function dstNotHasSrcOwnAssigning()
     if( key in dstContainer )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -586,7 +586,7 @@ function dstNotHasAssigningRecursive()
     if( key in dstContainer )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entitiy.assign2FieldFromContainer );
   }
 
 }
@@ -695,7 +695,7 @@ function dstNotOwnSrcOwnAssigning()
     if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -721,7 +721,7 @@ function dstNotOwnOrUndefinedAssigning()
 
     }
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -744,7 +744,7 @@ function dstNotOwnAssigning()
 
     let srcElement = srcContainer[ key ];
     if( _.mapIs( srcElement ) || _.arrayIs( srcElement ) )
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
     else
     dstContainer[ key ] = srcContainer[ key ];
 
@@ -921,7 +921,7 @@ function srcOwnAssigning()
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -966,7 +966,7 @@ function srcOwnNotPrimitiveAssigning()
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -988,7 +988,7 @@ function srcOwnNotPrimitiveAssigningRecursive()
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entitiy.assign2FieldFromContainer );
   }
 
 }
@@ -1008,7 +1008,7 @@ function srcOwnAssigningRecursive()
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entitiy.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entitiy.assign2FieldFromContainer );
   }
 
 }

@@ -57,7 +57,7 @@ function methodIteratorOf( src ) /* qqq xxx : check. good coverage is required |
   if( !src )
   return false;
   if( _.routineIs( src[ Symbol.iterator ] ) )
-  return true;
+  return src[ Symbol.iterator ];
   return false;
 }
 
@@ -69,7 +69,7 @@ function methodEqualerOf( src ) /* qqq xxx : check. good coverage is required | 
   if( !src )
   return false;
   if( _.routineIs( src[ equalAreSymbol ] ) )
-  return true;
+  return src[ equalAreSymbol ];
   return false;
 }
 
