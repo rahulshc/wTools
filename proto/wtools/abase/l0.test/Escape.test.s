@@ -232,7 +232,7 @@ function equal( test )
 
   /* */
 
-  // test.case = '2 levels';
+  // test.case = 'equal, 2 levels';
   // var src1 = _.escape.left( _.escape.left( null ) );
   // var src2 = _.escape.left( _.escape.left( null ) );
   // test.true( src1 === _.escape.null );
@@ -244,7 +244,7 @@ function equal( test )
   //
   // /* */
   //
-  // test.case = '3 levels';
+  // test.case = 'equal, 3 levels';
   // var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
   // var src2 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
   // test.true( src1 !== _.escape.null );
@@ -255,24 +255,74 @@ function equal( test )
   // test.identical( src2, src1 );
   // test.equivalent( src1, src2 );
   // test.equivalent( src2, src1 );
+  //
+  // /* */
+  //
+  // test.case = 'equal, 4 levels';
+  // var src1 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
+  // var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
+  // test.true( src1 !== _.escape.null );
+  // test.true( src1 !== src2 );
+  // test.true( src1.val.val.val === src2.val.val.val );
+  // test.true( src1.val.val.val === _.null );
+  // test.identical( src1, src2 );
+  // test.identical( src2, src1 );
+  // test.equivalent( src1, src2 );
+  // test.equivalent( src2, src1 );
+  //
+  // /* */
+  //
+  // test.case = 'not equal, 2 levels';
+  // var src1 = _.escape.left( _.escape.left( null ) );
+  // var src2 = _.escape.left( _.escape.left( undefined ) );
+  // test.true( src1 === _.escape.null );
+  // test.true( src1 !== src2 );
+  // test.ni( src1, src2 );
+  // test.ni( src2, src1 );
+  // test.ne( src1, src2 );
+  // test.ne( src2, src1 );
 
   /* */
 
-  test.case = '4 levels';
-  var src1 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
-  var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
+  test.case = 'not equal, 3 levels';
+  var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
+  var src2 = _.escape.left( _.escape.left( _.escape.left( undefined ) ) );
   test.true( src1 !== _.escape.null );
   test.true( src1 !== src2 );
-  test.true( src1.val.val.val === src2.val.val.val );
-  test.true( src1.val.val.val === _.null );
-  debugger;
-  test.identical( src1, src2 );
-  debugger;
-  test.identical( src2, src1 );
-  test.equivalent( src1, src2 );
-  test.equivalent( src2, src1 );
+  test.true( src1.val.val !== src2.val.val );
+  test.true( src1.val.val === _.null );
+  test.ni( src1, src2 );
+  // test.ni( src2, src1 );
+  // test.ne( src1, src2 );
+  // test.ne( src2, src1 );
 
-  debugger; return; xxx
+  /* */
+
+  // test.case = 'not equal, 4 levels';
+  // var src1 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
+  // var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( undefined ) ) ) );
+  // test.true( src1 !== _.escape.null );
+  // test.true( src1 !== src2 );
+  // test.true( src1.val.val.val !== src2.val.val.val );
+  // test.true( src1.val.val.val === _.null );
+  // test.ni( src1, src2 );
+  // test.ni( src2, src1 );
+  // test.ne( src1, src2 );
+  // test.ne( src2, src1 );
+  //
+  // /* */
+  //
+  // test.case = 'not equal, 2 and 4 levels';
+  // var src1 = _.escape.left( _.escape.left( null ) );
+  // var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( undefined ) ) ) );
+  // test.true( src1 !== _.escape.null );
+  // test.true( src1 !== src2 );
+  // test.true( src1.val.val.val === src2.val.val.val );
+  // test.true( src1.val.val.val === _.null );
+  // test.ni( src1, src2 );
+  // test.ni( src2, src1 );
+  // test.ne( src1, src2 );
+  // test.ne( src2, src1 );
 
   /* */
 

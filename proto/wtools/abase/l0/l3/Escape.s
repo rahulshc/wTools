@@ -59,7 +59,7 @@ function equalAre( it )
 {
   let self = this;
 
-  _.assert( arguments.length === 1 ); debugger;
+  _.assert( arguments.length === 1 );
 
   if( !it.srcEffective )
   return end( false );
@@ -70,8 +70,17 @@ function equalAre( it )
   if( !it.srcEffective2 instanceof _.Escape )
   return end( false );
 
+  debugger;
+
   if( it.srcEffective.val === it.srcEffective2.val )
   return end( true );
+
+  if( !( it.srcEffective.val instanceof _.Escape ) )
+  return end( false );
+  if( !( it.srcEffective.val instanceof _.Escape ) )
+  return end( false );
+
+  return true;
 
   function end( result )
   {
