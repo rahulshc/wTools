@@ -71,12 +71,13 @@ function equalAre( it )
   return end( false );
 
   if( it.srcEffective.val === it.srcEffective2.val )
-  end( true );
+  return end( true );
 
   function end( result )
   {
     it.result = result;
     it.continue = false;
+    return result;
   }
 }
 

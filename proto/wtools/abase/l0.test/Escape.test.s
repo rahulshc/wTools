@@ -232,29 +232,29 @@ function equal( test )
 
   /* */
 
-  test.case = '2 levels';
-  var src1 = _.escape.left( _.escape.left( null ) );
-  var src2 = _.escape.left( _.escape.left( null ) );
-  test.true( src1 === _.escape.null );
-  test.true( src1 === src2 );
-  test.identical( src1, src2 );
-  test.identical( src2, src1 );
-  test.equivalent( src1, src2 );
-  test.equivalent( src2, src1 );
-
-  /* */
-
-  test.case = '3 levels';
-  var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
-  var src2 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
-  test.true( src1 !== _.escape.null );
-  test.true( src1 !== src2 );
-  test.true( src1.val.val === src2.val.val );
-  test.true( src1.val.val === _.null );
-  test.identical( src1, src2 );
-  test.identical( src2, src1 );
-  test.equivalent( src1, src2 );
-  test.equivalent( src2, src1 );
+  // test.case = '2 levels';
+  // var src1 = _.escape.left( _.escape.left( null ) );
+  // var src2 = _.escape.left( _.escape.left( null ) );
+  // test.true( src1 === _.escape.null );
+  // test.true( src1 === src2 );
+  // test.identical( src1, src2 );
+  // test.identical( src2, src1 );
+  // test.equivalent( src1, src2 );
+  // test.equivalent( src2, src1 );
+  //
+  // /* */
+  //
+  // test.case = '3 levels';
+  // var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
+  // var src2 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
+  // test.true( src1 !== _.escape.null );
+  // test.true( src1 !== src2 );
+  // test.true( src1.val.val === src2.val.val );
+  // test.true( src1.val.val === _.null );
+  // test.identical( src1, src2 );
+  // test.identical( src2, src1 );
+  // test.equivalent( src1, src2 );
+  // test.equivalent( src2, src1 );
 
   /* */
 
@@ -265,10 +265,14 @@ function equal( test )
   test.true( src1 !== src2 );
   test.true( src1.val.val.val === src2.val.val.val );
   test.true( src1.val.val.val === _.null );
+  debugger;
   test.identical( src1, src2 );
+  debugger;
   test.identical( src2, src1 );
   test.equivalent( src1, src2 );
   test.equivalent( src2, src1 );
+
+  debugger; return; xxx
 
   /* */
 
