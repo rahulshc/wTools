@@ -5,41 +5,12 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.entity = _.entity || Object.create( null );
+// let Self = _global_.wTools;
 
 // --
 // container
 // --
-
-function containerIs( src )
-{
-  if( _.longLike( src ) )
-  return true;
-  if( _.mapLike( src ) )
-  return true;
-  if( _.hashMapLike( src ) )
-  return true;
-  if( _.setLike( src ) )
-  return true;
-  return false;
-}
-
-//
-
-function containerLike( src )
-{
-  if( _.longLike( src ) )
-  return true;
-  if( _.objectLike( src ) )
-  return true;
-  if( _.hashMapLike( src ) )
-  return true;
-  if( _.setLike( src ) )
-  return true;
-  return false;
-}
-
-//
 
 /**
  * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
@@ -81,7 +52,7 @@ function iterableIs( src ) /* qqq xxx : check. good coverage is required */
 
 //
 
-function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+function methodIteratorOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
 {
   if( !src )
   return false;
@@ -92,11 +63,12 @@ function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required 
 
 //
 
-function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+const equalAreSymbol = Symbol.for( 'equalAre' );
+function methodEqualerOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
 {
   if( !src )
   return false;
-  if( _.routineIs( src[ Symbol.for( 'equalAre' ) ] ) )
+  if( _.routineIs( src[ equalAreSymbol ] ) )
   return true;
   return false;
 }
@@ -113,28 +85,28 @@ function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required |
  * @param { * } src - Source entity.
  *
  * @example
- * _.entityLength( [ 1, 2, 3 ] );
+ * _.lengthOf( [ 1, 2, 3 ] );
  * // returns 3
  *
  * @example
- * _.entityLength( 'string' );
+ * _.lengthOf( 'string' );
  * // returns 1
  *
  * @example
- * _.entityLength( { a : 1, b : 2 } );
+ * _.lengthOf( { a : 1, b : 2 } );
  * // returns 2
  *
  * @example
  * let src = undefined;
- * _.entityLength( src );
+ * _.lengthOf( src );
  * // returns 0
  *
  * @returns {number} Returns "length" of entity.
- * @function entityLength
+ * @function lengthOf
  * @namespace Tools
 */
 
-function entityLength( src )
+function lengthOf( src )
 {
   if( src === undefined )
   return 0;
@@ -152,37 +124,45 @@ function entityLength( src )
 }
 
 // --
-// fields
+// tools extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ToolsExtension =
 {
 
   // container
 
-  containerIs,
-  containerLike,
   iterableIs,
-  hasMethodIterator,
-  hasMethodEqualer, /* xxx : add other similar routines */
-
-  entityLength,
-  lengthOf : entityLength,
+  methodIteratorOf,
+  methodEqualerOf, /* xxx : add other similar routines */
+  lengthOf,
+  entityLengthOf : lengthOf,
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _, ToolsExtension );
+
+// --
+// entity extension
+// --
+
+let EntityExtension =
+{
+
+  // container
+
+  iterableIs,
+  methodIteratorOf,
+  methodEqualerOf, /* xxx : add other similar routines */
+  lengthOf,
+
+}
+
+//
+
+Object.assign( _, EntityExtension );
 
 // --
 // export

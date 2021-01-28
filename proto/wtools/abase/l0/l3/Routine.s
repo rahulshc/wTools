@@ -1770,7 +1770,7 @@ function vectorize_body( o )
       //   append( routine.apply( this, args2 ) );
       // });
       // // // debugger;
-      // // if( _.hasMethodIterator( src ) )
+      // // if( _.methodIteratorOf( src ) )
       // // for( let e of src )
       // // {
       // //   // debugger;

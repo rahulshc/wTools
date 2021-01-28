@@ -306,7 +306,7 @@ function elementGet( container, key, type )
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.hasMethodIterator( container ) )
+    else if( _.numberIs( key ) && _.methodIteratorOf( container ) )
     {
       return [ ... container ][ key ];
     }
@@ -354,23 +354,6 @@ function elementSet( container, key, value )
 
 }
 
-//
-
-function lengthOf( container )
-{
-
-  _.assert( arguments.length === 1 );
-
-  let type = _.container.typeOf( container );
-  if( type && type._lengthGet )
-  return type._lengthGet( container );
-
-  if( _.hasMethodIterator( container ) )
-  return [ ... container ].length;
-
-  return _.lengthOf( container );
-}
-
 // --
 // structure
 // --
@@ -391,6 +374,7 @@ let knownTypeFields =
 // extension
 // --
 
+debugger;
 let types = _realGlobal_.wTools.container.types;
 
 let Extension =
@@ -408,7 +392,6 @@ let Extension =
   typeUndeclare,
   elementGet, /* qqq : cover please */
   elementSet,
-  lengthOf, /* qqq : cover please */
 
   // fields
 
@@ -416,8 +399,10 @@ let Extension =
 
 }
 
+debugger;
 _.mapSupplement( Self, Extension );
 _.container.types = types;
+debugger;
 
 // --
 // export

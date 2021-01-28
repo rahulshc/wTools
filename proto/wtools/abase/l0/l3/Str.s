@@ -293,7 +293,7 @@ function strEntityShort( src )
     }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-      result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements -}';
+      result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
     }
     else if( _.longLike( src ) )
     {
@@ -302,7 +302,7 @@ function strEntityShort( src )
     else if( _.objectLike( src ) )
     {
       /* xxx : call exportString() if exists */
-      result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
+      result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements' + ' -}';
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */

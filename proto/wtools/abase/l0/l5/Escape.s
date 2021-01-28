@@ -11,12 +11,25 @@ let Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( nul
 // implementation
 // --
 
+function isEscapable( src )
+{
+  if( _.escape._EscapeMap.has( src ) )
+  return true;
+  if( _.escape.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function dir( src )
 {
   _.assert( arguments.length === 1 );
   // debugger;
   if( _.escape._EscapeMap.has( src ) )
   return _.escape._EscapeMap.get( src );
+  if( _.escape.is( src ) )
+  return new _.Escape( src );
   return src;
   // if( src === null )
   // return _.null;
@@ -91,6 +104,7 @@ function unwrap( src )
 
 var Extension =
 {
+  isEscapable, /* qqq : cover please */
   dir, /* qqq : cover please */
   revWithNothing, /* qqq : cover please */
   revWithoutNothing, /* qqq : cover please */
