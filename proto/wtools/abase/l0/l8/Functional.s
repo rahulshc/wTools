@@ -373,7 +373,7 @@ function eachSample( o )
   /* sample */
 
   if( !o.sample )
-  o.sample = _.entityMakeUndefined( o.sets );
+  o.sample = _.entity.makeUndefined( o.sets );
 
   /* */
 
@@ -967,7 +967,7 @@ function _entityFilterDeep( o )
   }
   else
   {
-    result = _.entityMakeUndefined( o.src );
+    result = _.entity.makeUndefined( o.src );
     for( let s in o.src )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );

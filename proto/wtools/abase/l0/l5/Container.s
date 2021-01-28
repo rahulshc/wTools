@@ -13,7 +13,7 @@ let Self = _.container;
 
 function make()
 {
-  return _.entityMakeConstructing( ... arguments );
+  return _.entity.makeConstructing( ... arguments );
 }
 
 //

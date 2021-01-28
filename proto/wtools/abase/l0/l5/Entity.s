@@ -6,54 +6,10 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _.entity = _.entity || Object.create( null );
-// let Self = _global_.wTools;
 
 // --
 //
 // --
-
-function makeConstructing( src, length )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( _.arrayIs( src ) )
-  {
-    return new Array( length !== undefined ? length : src.length );
-  }
-  else if( _.longIs( src ) )
-  {
-    return this.longMake( src, length );
-    // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
-    // return new src.constructor( length !== undefined ? length : src.length );
-    // else
-    // return new Array( length !== undefined ? length : src.length );
-  }
-  else if( _.mapLike( src ) )
-  {
-    return Object.create( null );
-  }
-  else if( src === _.null )
-  {
-    return null;
-  }
-  else if( src === _.undefined )
-  {
-    return undefined;
-  }
-  else if( !src || _.primitiveIs( src ) )
-  {
-    return src;
-  }
-  else if( _.routineIs( src.constructor ) )
-  {
-    return new src.constructor();
-  }
-  else _.assert( 0, 'Not clear how to make a object of ', _.strType( src ) );
-
-}
-
-//
 
 function makeEmpty( src )
 {
@@ -88,11 +44,15 @@ function makeEmpty( src )
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( !src || _.primitiveIs( src ) )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
+  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  {
+    return new src.constructor();
+  }
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeEmpty()\`` );
 
 }
 
@@ -110,7 +70,6 @@ function makeUndefined( src, length )
   else if( _.longIs( src ) )
   {
     return this.longMakeUndefined( src, length );
-    // return this.longMake( src, length ); /* Dmytro : incorrect usage of routine */
   }
   else if( _.setIs( src ) )
   {
@@ -132,13 +91,55 @@ function makeUndefined( src, length )
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( !src || _.primitiveIs( src ) )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
+  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  {
+    return new src.constructor();
+  }
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
 
 }
+
+// //
+//
+// function makeNonConstructing( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( _.arrayIs( src ) )
+//   {
+//     return Array.from( src );
+//   }
+//   else if( _.longLike( src ) )
+//   {
+//     return this.longMake( src );
+//   }
+//   else if( _.hashMapLike( src ) || _.setLike( src ) )
+//   {
+//     return new src.constructor( src );
+//   }
+//   else if( _.mapLike( src ) )
+//   {
+//     return _.mapShallowClone( src )
+//   }
+//   else if( src === _.null )
+//   {
+//     return null;
+//   }
+//   else if( src === _.undefined )
+//   {
+//     return undefined;
+//   }
+//   else if( !src || _.primitiveIs( src ) )
+//   {
+//     return src;
+//   }
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.make()\`` );
+//
+// }
 
 //
 
@@ -153,7 +154,6 @@ function make( src )
   else if( _.longLike( src ) )
   {
     return this.longMake( src );
-    // return _.longJoin( src ); /* Dmytro : longJoin not use longDescriptor for constructing of long
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -171,13 +171,64 @@ function make( src )
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( !src || _.primitiveIs( src ) )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
+  else if( _.routineIs( src[ shallowSymbol ] ) ) /* qqq2 : cover */
+  {
+    return new src[ shallowSymbol ]();
+  }
+  else if( _.routineIs( src.shallow ) ) /* qqq2 : cover */
+  {
+    return new src.shallow();
+  }
+  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  {
+    return new src.constructor( src );
+  }
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeConstructing()\`` );
 
 }
+
+// //
+//
+// function makeConstructing( src, length )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   if( _.arrayIs( src ) )
+//   {
+//     return new Array( length !== undefined ? length : src.length );
+//   }
+//   else if( _.longIs( src ) )
+//   {
+//     return this.longMake( src, length );
+//   }
+//   else if( _.mapLike( src ) )
+//   {
+//     return Object.create( null );
+//   }
+//   else if( src === _.null )
+//   {
+//     return null;
+//   }
+//   else if( src === _.undefined )
+//   {
+//     return undefined;
+//   }
+//   else if( !src || _.primitiveIs( src ) )
+//   {
+//     return src;
+//   }
+//   else if( _.routineIs( src.constructor ) )
+//   {
+//     return new src.constructor();
+//   }
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeConstructing()\`` );
+//
+// }
 
 //
 
@@ -504,7 +555,6 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 let ToolsExtension =
 {
 
-  entityMakeConstructing : makeConstructing,
   makeEmpty,
   entityMakeEmpty : makeEmpty,
   makeUndefined,
@@ -512,11 +562,20 @@ let ToolsExtension =
   make,
   entityMake : make,
 
-  entityEntityEqualize : equalize,
+  makeConstructing : make, /* xxx : remove later */
 
-  entityAssign2 : assign2, /* xxx : refactor */
-  entityAssign2FieldFromContainer : assign2FieldFromContainer, /* dubious */
-  entityAssign2Field : assign2Field, /* dubious */
+  // makeNonConstructing,
+  // entityMakeNonConstructing : makeNonConstructing,
+
+  // makeConstructing,
+  // entityMakeConstructing : makeConstructing,
+  // make : makeConstructing,
+  // entityMake : makeConstructing,
+
+  // entityEntityEqualize : equalize,
+  // entityAssign2 : assign2, /* xxx : refactor */
+  // entityAssign2FieldFromContainer : assign2FieldFromContainer, /* dubious */
+  // entityAssign2Field : assign2Field, /* dubious */
 
 }
 
@@ -531,10 +590,13 @@ _.mapSupplement( _, ToolsExtension );
 let EntityExtension =
 {
 
-  makeConstructing,
   makeEmpty,
   makeUndefined,
   make,
+  // makeNonConstructing,
+  // makeConstructing,
+  // make : makeConstructing,
+  makeConstructing : make, /* xxx : remove later */
 
   equalize,
 

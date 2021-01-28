@@ -3674,8 +3674,8 @@ function entityMap( src, onEach )
 
   if( _.longIs( src ) )
   {
-    // result = _.entityMakeUndefined( src );
-    result = _.entityMake( src );
+    // result = _.entity.makeUndefined( src );
+    result = _.entity.make( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach( src[ s ], s, src );
@@ -3687,8 +3687,8 @@ function entityMap( src, onEach )
   // else if( _.objectLike( src ) )
   else if( _.mapLike( src ) )
   {
-    // result = _.entityMakeUndefined( src );
-    result = _.entityMake( src );
+    // result = _.entity.makeUndefined( src );
+    result = _.entity.make( src );
     for( let s in src )
     {
       let r = onEach( src[ s ], s, src );
@@ -3770,7 +3770,7 @@ function entityMap_( dst, src, onEach )
     if( _.longIs( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src, src.length );
+      result = _.entity.makeUndefined( src, src.length );
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
@@ -3785,7 +3785,7 @@ function entityMap_( dst, src, onEach )
     else if( _.mapLike( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src );
+      result = _.entity.makeUndefined( src );
       else
       _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
 
@@ -3866,7 +3866,7 @@ function entityFilter( src, onEach )
   else if( _.mapLike( src ) )
   {
 
-    result = _.entityMakeUndefined( src );
+    result = _.entity.makeUndefined( src );
     for( let s in src )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3974,7 +3974,7 @@ function entityFilter_( dst, src, onEach )
     else if( _.mapLike( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src );
+      result = _.entity.makeUndefined( src );
       else
       _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
 

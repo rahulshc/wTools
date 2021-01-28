@@ -787,7 +787,7 @@ function arraySetContainAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
     {
       if( from === 0 )
       {
-        if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
         {
           result = true;
           break;
@@ -898,7 +898,7 @@ function arraySetContainAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
       {
         if( from === 0 )
         {
-          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
           return true;
         }
         else
@@ -977,7 +977,7 @@ function arraySetContainNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
       {
         if( from === 0 )
         {
-          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
           return false;
         }
         else
@@ -1126,7 +1126,7 @@ function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     {
       if( from === 0 )
       {
-        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equalize( e, ins, onEvaluate1, onEvaluate2 ) )
         {
           result.index = index;
           result.element = e;
@@ -1186,7 +1186,7 @@ function arraySetRight( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     {
       if( index < to )
       {
-        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equalize( e, ins, onEvaluate1, onEvaluate2 ) )
         {
           result.index = index;
           result.element = e;
