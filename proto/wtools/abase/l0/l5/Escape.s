@@ -22,7 +22,7 @@ function isEscapable( src )
 
 //
 
-function dir( src )
+function left( src )
 {
   _.assert( arguments.length === 1 );
   // debugger;
@@ -46,7 +46,7 @@ function dir( src )
 
 //
 
-function revWithNothing( src )
+function rightWithNothing( src )
 {
   _.assert( arguments.length === 1 );
   if( _.escape.is( src ) )
@@ -65,7 +65,7 @@ function revWithNothing( src )
 
 //
 
-function revWithoutNothing( src )
+function rightWithoutNothing( src )
 {
   _.assert( arguments.length === 1 );
   if( _.escape.is( src ) )
@@ -105,10 +105,10 @@ function unwrap( src )
 var Extension =
 {
   isEscapable, /* qqq : cover please */
-  dir, /* qqq : cover please */
-  revWithNothing, /* qqq : cover please */
-  revWithoutNothing, /* qqq : cover please */
-  rev : revWithNothing,
+  left, /* qqq : cover please */
+  rightWithNothing, /* qqq : cover please */
+  rightWithoutNothing, /* qqq : cover please */
+  right : rightWithNothing,
   wrap, /* qqq : cover please */
   unwrap, /* qqq : cover please */
 }
