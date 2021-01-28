@@ -155,6 +155,8 @@ const deepSymbol = Symbol.for( 'deep' );
 let EntityExtension =
 {
 
+  tools : _,
+
   // container
 
   iterableIs,

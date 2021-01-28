@@ -22,7 +22,7 @@ function makeEmpty( src )
   }
   else if( _.longIs( src ) )
   {
-    return this.longMakeEmpty( src );
+    return this.tools.longMakeEmpty( src );
   }
   else if( _.setIs( src ) )
   {
@@ -69,7 +69,7 @@ function makeUndefined( src, length )
   }
   else if( _.longIs( src ) )
   {
-    return this.longMakeUndefined( src, length );
+    return this.tools.longMakeUndefined( src, length );
   }
   else if( _.setIs( src ) )
   {
@@ -115,7 +115,7 @@ function makeUndefined( src, length )
 //   }
 //   else if( _.longLike( src ) )
 //   {
-//     return this.longMake( src );
+//     return this.tools.longMake( src );
 //   }
 //   else if( _.hashMapLike( src ) || _.setLike( src ) )
 //   {
@@ -153,7 +153,7 @@ function make( src )
   }
   else if( _.longLike( src ) )
   {
-    return this.longMake( src );
+    return this.tools.longMake( src );
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -204,7 +204,7 @@ function make( src )
 //   }
 //   else if( _.longIs( src ) )
 //   {
-//     return this.longMake( src, length );
+//     return this.tools.longMake( src, length );
 //   }
 //   else if( _.mapLike( src ) )
 //   {
