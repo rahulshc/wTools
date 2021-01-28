@@ -59,7 +59,7 @@ function equalAre( it )
 {
   let self = this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 ); debugger;
 
   it.continue = false;
 

@@ -9,13 +9,13 @@ if( typeof module !== 'undefined' )
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
 
-  try
-  {
-    _.include( 'wLooker' );
-  }
-  catch( err )
-  {
-  }
+  // try
+  // {
+  //   _.include( 'wLooker' );
+  // }
+  // catch( err )
+  // {
+  // }
 
 }
 
