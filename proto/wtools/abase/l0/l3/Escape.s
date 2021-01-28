@@ -61,18 +61,23 @@ function equalAre( it )
 
   _.assert( arguments.length === 1 ); debugger;
 
-  it.continue = false;
-
   if( !it.srcEffective )
-  return false;
+  return end( false );
   if( !it.srcEffective2 )
-  return false;
+  return end( false );
   if( !it.srcEffective instanceof _.Escape )
-  return false;
+  return end( false );
   if( !it.srcEffective2 instanceof _.Escape )
-  return false;
+  return end( false );
 
-  return it.srcEffective.val === it.srcEffective2.val;
+  if( it.srcEffective.val === it.srcEffective2.val )
+  end( true );
+
+  function end( result )
+  {
+    it.result = result;
+    it.continue = false;
+  }
 }
 
 //
@@ -88,7 +93,7 @@ function iterate()
 
   function next()
   {
-    let result = Object.create( null );
+    let result = Object.create( null ); debugger;
     result.done = this.index === 1;
     if( result.done )
     return result;
