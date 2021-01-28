@@ -48,6 +48,8 @@ class Escape
     if( arguments.length !== 1 )
     throw new Error( 'Expects exactly 1 argument' );
     this.val = val;
+    Object.freeze( this );
+    return this;
   }
 }
 
