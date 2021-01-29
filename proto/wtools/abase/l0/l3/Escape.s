@@ -132,18 +132,6 @@ function Escape( val )
   return this;
 }
 
-// class Escape
-// {
-//   constructor( val )
-//   {
-//     if( arguments.length !== 1 )
-//     throw new Error( 'Expects exactly 1 argument' );
-//     this.val = val;
-//     Object.freeze( this );
-//     return this;
-//   }
-// }
-
 Object.setPrototypeOf( Escape.prototype, null );
 Escape.prototype = Object.create( null );
 Escape.prototype[ shallowSymbol ] = shallow;
