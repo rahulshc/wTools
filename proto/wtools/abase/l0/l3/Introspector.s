@@ -524,16 +524,6 @@ locationNormalize.defaults =
 
 function locationToStack( o )
 {
-
-  /* */
-
-  if( locationNormalize.defaults )
-  for( let e in o )
-  {
-    if( locationNormalize.defaults[ e ] === undefined )
-    throw Error( `Location does not have field ${e}` );
-  }
-
   if( !( arguments.length === 1 ) )
   throw Error( 'Expects single argument' );
 
@@ -542,16 +532,22 @@ function locationToStack( o )
 
   /* */
 
-  _.assertMapHasOnly( o, locationToStack.defaults );
+  // _.assertMapHasOnly( o, locationToStack.defaults );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( o, locationToStack.defaults );
+    _.assert( extraKeys.length === 0, () => `Routine "locationToStack" does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
+
   _.introspector.locationNormalize( o );
 
   if( !o.filePathLineCol )
   return null;
 
-  if( o.routineFilePathLineCol )
-  {
-    _.assert( 0, 'not tested' );
-  }
+  // if( o.routineFilePathLineCol )
+  // {
+  //   _.assert( 0, 'not tested' );
+  // }
 
   if( o.routineName )
   return `at ${o.routineName} (${o.filePathLineCol})`;
@@ -561,6 +557,29 @@ function locationToStack( o )
   /*
     at Object.locationToStack (http://127.0.0.1:5000//builder/include/wtools/abase/l0/l3/Introspector.s:723:10)
   */
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 locationToStack.defaults =
