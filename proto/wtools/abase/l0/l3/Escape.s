@@ -80,13 +80,13 @@ function equalAre( it )
   if( !( it.srcEffective.val instanceof _.Escape ) )
   return end( false );
 
-  return true;
+  // return true;
 
   function end( result )
   {
     it.result = result;
     it.continue = false;
-    return result;
+    // return result;
   }
 }
 
