@@ -2714,6 +2714,118 @@ function locationToStackOptionFilePath( test )
 
 //
 
+function locationToStackOptionsRoutineNameAndRoutineAlias( test )
+{
+  test.open( 'field routineName' );
+
+  test.case = 'only field routineName - empty string';
+  var o = { routineName : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - simple name';
+  var o = { routineName : 'routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - name has <anonymous>';
+  var o = { routineName : '<anonymous>' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - complex name with dot';
+  var o = { routineName : 'Object.routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - empty string, options map has original';
+  var o =
+  {
+    original : 'at iteration (/C/dir/File.js:5:47)',
+    routineName : '',
+  };
+  var exp = 'at iteration (/C/dir/File.js:5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string with underscore';
+  var o =
+  {
+    original : 'at _iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '_routine',
+  };
+  var exp = 'at _routine (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string with two underscores, ends by one dot';
+  var o =
+  {
+    original : 'at __iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine.',
+  };
+  var exp = 'at __routine. (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string, which ends by two dots';
+  var o =
+  {
+    original : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine..',
+  };
+  var exp = 'at __routine.. (/C/dir/(Introspector.test.s):5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineName' );
+
+  /* - */
+
+  test.open( 'field routineAlias' );
+
+  test.case = 'only field routineAlias - empty string';
+  var o = { routineAlias : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - simple name';
+  var o = { routineAlias : 'routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has <anonymous>';
+  var o = { routineAlias : '<anonymous>' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has single underscore, abstraction - 1';
+  var o = { routineAlias : '_now' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has two underscores, abstraction - 2';
+  var o = { routineAlias : '__now' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineAlias' );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -3926,6 +4038,7 @@ let Self =
 
     locationToStack,
     locationToStackOptionFilePath,
+    locationToStackOptionsRoutineNameAndRoutineAlias,
 
     stackBasic,
     stack,
