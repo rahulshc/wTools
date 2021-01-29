@@ -2655,6 +2655,65 @@ function locationToStack( test )
 
 //
 
+function locationToStackOptionFilePath( test )
+{
+  test.case = 'only field filePath - empty string';
+  var o = { filePath : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - simple path';
+  var o = { filePath : '/C/dir/Introspector.test.s' };
+  var exp = 'at (/C/dir/Introspector.test.s)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'internal/event' };
+  var exp = 'at (internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'node:internal/event' };
+  var exp = 'at (node:internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'field filePath - empty string, options map with original';
+  var o =
+  {
+    original : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
+    filePath : '',
+  };
+  var exp = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'field filePath - path to file, options map has field original';
+  var o =
+  {
+    original : 'at iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+  };
+  var exp = 'at iteration (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'filePath - relative path, options map has field original';
+  var o =
+  {
+    original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    filePath : 'internal/index.js'
+  };
+  var exp = 'at wConsequence._handle__Now (internal/index.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -3866,6 +3925,7 @@ let Self =
     locationNormalizeWithOtherOptions,
 
     locationToStack,
+    locationToStackOptionFilePath,
 
     stackBasic,
     stack,
