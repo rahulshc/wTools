@@ -291,10 +291,12 @@ function equal( test )
   test.true( src1 !== src2 );
   test.true( src1.val.val !== src2.val.val );
   test.true( src1.val.val === _.null );
+  debugger;
   test.ni( src1, src2 );
   // test.ni( src2, src1 );
   // test.ne( src1, src2 );
   // test.ne( src2, src1 );
+  debugger;
 
   /* */
 
