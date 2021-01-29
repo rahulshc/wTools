@@ -2826,6 +2826,129 @@ function locationToStackOptionsRoutineNameAndRoutineAlias( test )
 
 //
 
+function locationToStackWithOtherOptions( test )
+{
+  test.open( 'field internal' );
+
+  test.case = 'only field internal - number';
+  var o = { internal : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field internal - number, not defined';
+  var o = { internal : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field internal' );
+
+  /* - */
+
+  test.open( 'field abstraction' );
+
+  test.case = 'only field abstraction - number';
+  var o = { abstraction : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field abstraction - number, not defined';
+  var o = { abstraction : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field abstraction' );
+
+  /* - */
+
+  test.open( 'field line' );
+
+  test.case = 'only field line - number';
+  var o = { line : 10 };
+  var exp = 'at (:10)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - number, not defined';
+  var o = { line : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - string';
+  var o = { line : 'str' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - string-number';
+  var o = { line : '2' };
+  var exp = 'at (:2)'
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field line' );
+
+  /* - */
+
+  test.open( 'field col' );
+
+  test.case = 'only field col - number';
+  var o = { col : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - number, not defined';
+  var o = { col : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - string';
+  var o = { col : 'str' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - string-number';
+  var o = { col : '1' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - number, line - number';
+  var o = { col : 10, line : 1 };
+  var exp = 'at (:1:10)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - number, not defined, line - number';
+  var o = { col : NaN, line : 1 };
+  var exp = 'at (:1)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - string, line - number';
+  var o = { col : 'str', line : 1 };
+  var exp = 'at (:1)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - string-number, line - string-number';
+  var o = { col : '20.1', line : '1' };
+  var exp = 'at (:1:20)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field col' );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -4039,6 +4162,7 @@ let Self =
     locationToStack,
     locationToStackOptionFilePath,
     locationToStackOptionsRoutineNameAndRoutineAlias,
+    locationToStackWithOtherOptions,
 
     stackBasic,
     stack,
