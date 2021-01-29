@@ -532,12 +532,12 @@ function locationToStack( o )
 
   /* */
 
-  _.assertMapHasOnly( o, locationToStack.defaults );
-  // if( Config.debug )
-  // {
-  //   let extraKeys = mapButKeys( o, locationToStack.defaults );
-  //   _.assert( extraKeys.length === 0, () => `Routine "locationToStack" does not expect options: ${ keysQuote( extraKeys ) }` );
-  // }
+  // _.assertMapHasOnly( o, locationToStack.defaults );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( o, locationToStack.defaults );
+    _.assert( extraKeys.length === 0, () => `Routine "locationToStack" does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
 
   _.introspector.locationNormalize( o );
 
