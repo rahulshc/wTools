@@ -2529,6 +2529,132 @@ function locationNormalizeWithOtherOptions( test )
 
 //
 
+function locationToStack( test )
+{
+  test.case = 'without options';
+  var o = {};
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  /* - */
+
+  test.case = 'empty string';
+  var o = { original : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'stack frame line with posix path';
+  var o = { original : 'at node (/home/user/file.txt)' };
+  var exp = 'at node (/home/user/file.txt)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'stack frame with Windows path';
+  var o = { original : 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)' };
+  var exp = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = '<anonymous> in stack frame, windows path';
+  var o = { original : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)' };
+  var exp = 'at wConsequence.{-anonymous-} (/C/dir/File.js:9:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'a few <anonymous> in stack frame, normalized path';
+  var o = { original : 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)' };
+  var exp = 'at wConsequence.{-anonymous-}.{-anonymous-} (/C/dir/File.js:9:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'eval and <anonymous> in stack frame';
+  var o = { original : 'at eval (<anonymous>:1:16)' };
+  var exp = 'at eval (<anonymous>:1:16)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'windows filePath nested in parentheses with routineName and <anonymous>';
+  var o = { original : 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)' };
+  var exp = 'at program2 (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'normalized filePath nested in parentheses with routineName and <anonymous>';
+  var o = { original : 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)' };
+  var exp = 'at program2 (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with routine alias';
+  var o = { original : 'at routine [as time] (/C/basic/program2.js:13:5)' };
+  var exp = 'at routine (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with internal in path';
+  var o = { original : 'at routine [as time] (internal/event)' };
+  var exp = 'at routine (internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with internal in path';
+  var o = { original : 'at routine [as time] (node:internal/event)' };
+  var exp = 'at routine (node:internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.__handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has single underscore, abstraction - 1';
+  var o = { original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence._handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.__handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineAlias has single underscore, abstraction - 1';
+  var o = { original : 'at wConsequence.now [as _now] (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineAlias has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.now [as __now] (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack( { original : '' }, { filePath : '/home/user' } ) );
+
+  test.case = 'wrong type of o';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack([ '/some/path' ]) );
+
+  test.case = 'unknown option in map o';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack({ unknown : '', original : '' }) );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -3738,6 +3864,8 @@ let Self =
     locationNormalizeOptionFilePath,
     locationNormalizeOptionsRoutineNameAndRoutineAlias,
     locationNormalizeWithOtherOptions,
+
+    locationToStack,
 
     stackBasic,
     stack,
