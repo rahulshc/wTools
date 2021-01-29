@@ -80,13 +80,10 @@ function equalAre( it )
   if( !( it.srcEffective.val instanceof _.Escape ) )
   return end( false );
 
-  // return true;
-
   function end( result )
   {
     it.result = result;
     it.continue = false;
-    // return result;
   }
 }
 
@@ -103,7 +100,7 @@ function iterate()
 
   function next()
   {
-    let result = Object.create( null ); debugger;
+    let result = Object.create( null );
     result.done = this.index === 1;
     if( result.done )
     return result;
@@ -114,11 +111,35 @@ function iterate()
 
 }
 
+//
+
+function TypeNameGet()
+{
+  return 'Escape';
+}
+
+//
+
+function exportStringIgnoringArgs()
+{
+  return this.exportString();
+}
+
+//
+
+function exportString()
+{
+  return `Escape( ${_.strType( this.val )} )`;
+}
+
 // --
 // declare
 // --
 
 const iteratorSymbol = Symbol.iterator;
+const typeNameGetterSymbol = Symbol.toStringTag; /* xxx */
+const toPrimitiveSymbol = Symbol.toPrimitive;
+const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
 const shallowSymbol = Symbol.for( 'shallow' );
 const deepSymbol = Symbol.for( 'deep' );
@@ -134,11 +155,21 @@ function Escape( val )
 
 Object.setPrototypeOf( Escape.prototype, null );
 Escape.prototype = Object.create( null );
+Escape.prototype[ iteratorSymbol ] = iterate;
+Escape.prototype[ toPrimitiveSymbol ] = exportStringIgnoringArgs;
+Escape.prototype[ toStrNjsSymbol ] = exportStringIgnoringArgs;
 Escape.prototype[ shallowSymbol ] = shallow;
 Escape.prototype[ deepSymbol ] = deep;
 Escape.prototype[ equalAreSymbol ] = equalAre;
-Escape.prototype[ iteratorSymbol ] = iterate;
+Escape.prototype.exportString = exportString;
 Escape.prototype.constructor = Escape;
+
+Object.defineProperty( Escape.prototype, typeNameGetterSymbol,
+{
+  enumerable : false,
+  configurable : false,
+  get : TypeNameGet,
+});
 
 //
 

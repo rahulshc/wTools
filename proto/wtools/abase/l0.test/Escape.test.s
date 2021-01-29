@@ -328,6 +328,42 @@ function equal( test )
 
 }
 
+//
+
+function toStrStandard( test )
+{
+
+  /* */
+
+  test.case = 'String( Escape( null ) )';
+  var src = new _.Escape( null );
+  console.log( src );
+  var got = String( src );
+  var exp = `Escape( Null )`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'strType( Escape( null ) )';
+  var src = new _.Escape( null );
+  console.log( src );
+  var got = _.strType( src );
+  var exp = `Escape`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'Object.prototype.toString( Escape( null ) )';
+  var src = new _.Escape( null );
+  console.log( src );
+  var got = Object.prototype.toString.call( src );
+  var exp = '[object Escape]';
+  test.identical( got, exp );
+
+  /* */
+
+}
+
 // --
 // declare
 // --
@@ -344,6 +380,7 @@ let Self =
     basic,
     right,
     equal,
+    toStrStandard,
 
   }
 

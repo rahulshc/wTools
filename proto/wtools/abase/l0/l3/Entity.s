@@ -148,9 +148,17 @@ Object.assign( _, ToolsExtension );
 // --
 
 const iteratorSymbol = Symbol.iterator;
+const typeNameGetterSymbol = Symbol.toStringTag;
+const toPrimitiveSymbol = Symbol.toPrimitive;
+const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
 const shallowSymbol = Symbol.for( 'shallow' );
 const deepSymbol = Symbol.for( 'deep' );
+
+// _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
+// _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );
+// _metaDefine( 'field', Symbol.toPrimitive, _toPrimitive );
+// _metaDefine( 'field', Symbol.toPrimitive, _toPrimitive );
 
 let EntityExtension =
 {
@@ -165,6 +173,9 @@ let EntityExtension =
   lengthOf,
 
   iteratorSymbol,
+  typeNameGetterSymbol,
+  toPrimitiveSymbol,
+  toStrNjsSymbol,
   equalAreSymbol,
   shallowSymbol,
   deepSymbol,
