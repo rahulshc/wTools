@@ -42,6 +42,7 @@ function from( src )
 function shallow()
 {
   debugger;
+  _.assert( !( this instanceof shallow ) );
   return this;
 }
 
@@ -50,6 +51,7 @@ function shallow()
 function deep()
 {
   debugger;
+  _.assert( !( this instanceof deep ) );
   return this;
 }
 
@@ -129,7 +131,10 @@ function exportStringIgnoringArgs()
 
 function exportString()
 {
-  return `Escape( ${_.strType( this.val )} )`;
+  if( _.symbolIs( this.val ) )
+  return `Escape( Symbol( ${Symbol.keyFor( this.val )} ) )`;
+  else
+  return `Escape( ${String( this.val )} )`;
 }
 
 // --

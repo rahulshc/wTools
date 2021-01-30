@@ -339,7 +339,7 @@ function toStrStandard( test )
   var src = new _.Escape( null );
   console.log( src );
   var got = String( src );
-  var exp = `Escape( Null )`;
+  var exp = `Escape( null )`;
   test.identical( got, exp );
 
   /* */
@@ -355,6 +355,33 @@ function toStrStandard( test )
 
   test.case = 'Object.prototype.toString( Escape( null ) )';
   var src = new _.Escape( null );
+  console.log( src );
+  var got = Object.prototype.toString.call( src );
+  var exp = '[object Escape]';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'String( Escape( _.null ) )';
+  var src = new _.Escape( _.null );
+  console.log( src );
+  var got = String( src );
+  var exp = `Escape( Symbol( null ) )`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'strType( Escape( null ) )';
+  var src = new _.Escape( _.null );
+  console.log( src );
+  var got = _.strType( src );
+  var exp = `Escape`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'Object.prototype.toString( Escape( null ) )';
+  var src = new _.Escape( _.null );
   console.log( src );
   var got = Object.prototype.toString.call( src );
   var exp = '[object Escape]';
