@@ -25,7 +25,6 @@ function isEscapable( src )
 function left( src )
 {
   _.assert( arguments.length === 1 );
-  // debugger;
   if( _.escape._EscapeMap.has( src ) )
   return _.escape._EscapeMap.get( src );
   if( _.escape.is( src ) )

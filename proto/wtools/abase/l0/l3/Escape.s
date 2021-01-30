@@ -41,7 +41,6 @@ function from( src )
 
 function shallow()
 {
-  debugger;
   _.assert( !( this instanceof shallow ) );
   return this;
 }
@@ -180,9 +179,9 @@ Object.defineProperty( Escape.prototype, typeNameGetterSymbol,
 
 var Extension =
 {
-  is,
-  make,
-  from,
+  is, /* qqq : cover */
+  make, /* qqq : cover */
+  from, /* qqq : cover */
 }
 
 //
