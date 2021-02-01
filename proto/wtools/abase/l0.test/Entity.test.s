@@ -1291,6 +1291,22 @@ function entityMakeUndefined( test )
   var got = _.entity.makeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
   test.identical( got, new Map( [] ) );
 
+  test.case = 'BufferRaw, has constructor';
+  var got = _.entity.makeUndefined( new BufferRaw() );
+  test.identical( got, new BufferRaw( [] ) );
+
+  test.case = 'constructor';
+  function func(){ return 0 };
+  var got = _.entity.makeUndefined( func );
+  var exp = new func.constructor();
+  test.equivalent( got(), exp() );
+
+  test.case = 'constructor';
+  function Constr(){ this.x = 1; return this };
+  var got = _.entity.makeUndefined( new Constr() );
+  var exp = new Constr();
+  test.identical( got.x, exp.x );
+
   /* - */
 
   if( !Config.debug )
@@ -1301,11 +1317,6 @@ function entityMakeUndefined( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.entity.makeUndefined( [], 1, 1 ) );
-
-  test.case = 'unknown type of entity';
-  test.shouldThrowErrorSync( () => _.entity.makeUndefined( new BufferRaw() ) );
-  function Constr(){ this.x = 1; return this };
-  test.shouldThrowErrorSync( () => _.entity.makeUndefined( new Constr() ) );
 }
 
 //
@@ -1510,6 +1521,22 @@ function entityMakeUndefinedLongDescriptor( test )
     var got = descriptor.entityMakeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
     test.identical( got, new Map( [] ) );
 
+    test.case = 'BufferRaw, has constructor';
+    var got = descriptor.entityMakeUndefined( new BufferRaw() );
+    test.identical( got, new BufferRaw( [] ) );
+
+    test.case = 'constructor';
+    function func(){ return 0 };
+    var got = descriptor.entityMakeUndefined( func );
+    var exp = new func.constructor();
+    test.equivalent( got(), exp() );
+
+    test.case = 'constructor';
+    function Constr(){ this.x = 1; return this };
+    var got = descriptor.entityMakeUndefined( new Constr() );
+    var exp = new Constr();
+    test.identical( got.x, exp.x );
+
     /* - */
 
     if( Config.debug )
@@ -1519,10 +1546,6 @@ function entityMakeUndefinedLongDescriptor( test )
 
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.entityMakeUndefined( [], 1, 1 ) );
-
-      test.case = 'unknown type of entity';
-      test.shouldThrowErrorSync( () => descriptor.entityMakeUndefined( new BufferRaw() ) );
-      test.shouldThrowErrorSync( () => descriptor.entityMakeUndefined( new Constr() ) );
     }
   }
 
