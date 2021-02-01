@@ -1003,6 +1003,7 @@ function entityMakeEmptyLongDescriptor( test )
     test.identical( got, [] );
 
     test.case = 'empty argumentArray';
+    debugger;
     var got = descriptor.entityMakeEmpty( _.argumentsArrayMake( [] ) );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
@@ -1062,6 +1063,22 @@ function entityMakeEmptyLongDescriptor( test )
     var got = descriptor.entityMakeEmpty( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
     test.identical( got, new Map( [] ) );
 
+    test.case = 'BufferRaw, has constructor';
+    var got = descriptor.entityMakeEmpty( new BufferRaw() );
+    test.identical( got, new BufferRaw( [] ) );
+
+    test.case = 'constructor';
+    function func(){ return 0 };
+    var got = descriptor.entityMakeEmpty( func );
+    var exp = new func.constructor();
+    test.equivalent( got(), exp() );
+
+    test.case = 'constructor';
+    function Constr(){ this.x = 1; return this };
+    var got = descriptor.entityMakeEmpty( new Constr() );
+    var exp = new Constr();
+    test.identical( got.x, exp.x );
+
     /* - */
 
     if( Config.debug )
@@ -1071,10 +1088,6 @@ function entityMakeEmptyLongDescriptor( test )
 
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.entityMakeEmpty( [], 1 ) );
-
-      test.case = 'unknown type of entity';
-      test.shouldThrowErrorSync( () => descriptor.entityMakeEmpty( new BufferRaw() ) );
-      test.shouldThrowErrorSync( () => descriptor.entityMakeEmpty( new Constr() ) );
     }
   }
 
