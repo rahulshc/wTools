@@ -22,7 +22,8 @@ function makeEmpty( src )
   }
   else if( _.longIs( src ) )
   {
-    return this.tools.longMakeEmpty( src );
+    // return this.tools.longMakeEmpty( src );
+    return this.longMakeEmpty( src );
   }
   else if( _.setIs( src ) )
   {
@@ -48,7 +49,7 @@ function makeEmpty( src )
   {
     return src;
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
