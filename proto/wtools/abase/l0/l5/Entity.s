@@ -13,7 +13,6 @@ let Self = _.entity = _.entity || Object.create( null );
 
 function makeEmpty( src )
 {
-
   _.assert( arguments.length === 1 );
 
   if( _.arrayIs( src ) )
@@ -23,7 +22,8 @@ function makeEmpty( src )
   else if( _.longIs( src ) )
   {
     // return this.tools.longMakeEmpty( src );
-    return this.longMakeEmpty( src );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMakeEmpty( src );
   }
   else if( _.setIs( src ) )
   {
@@ -61,7 +61,6 @@ function makeEmpty( src )
 
 function makeUndefined( src, length )
 {
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( src ) )
@@ -70,7 +69,9 @@ function makeUndefined( src, length )
   }
   else if( _.longIs( src ) )
   {
-    return this.tools.longMakeUndefined( src, length );
+    // return this.tools.longMakeUndefined( src, length );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMakeUndefined( src, length );
   }
   else if( _.setIs( src ) )
   {
@@ -96,12 +97,11 @@ function makeUndefined( src, length )
   {
     return src;
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
-
 }
 
 // //
