@@ -2281,7 +2281,7 @@ function entityAssign( test )
   test.case = 'src null';
   var dst = 'string';
   var src = null;
-  var got = _.entitiy.assign2( dst, src );
+  var got = _.entity.assign2( dst, src );
   var expected = null;
   test.identical( got, expected );
 
@@ -2295,7 +2295,7 @@ function entityAssign( test )
     }
   };
   var src = { src : 'string', num : 123 };
-  _.entitiy.assign2( dst, src  );
+  _.entity.assign2( dst, src  );
   var got = dst;
   var expected =
   {
@@ -2308,9 +2308,8 @@ function entityAssign( test )
 
   test.case = 'src.clone';
   var dst = 1;
-  // var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
   var src = { src : 'string', num : 123, clone : function() { return { src : 'string', num : 123 } } }
-  var got = _.entitiy.assign2( dst, src  );
+  var got = _.entity.assign2( dst, src  );
   var expected = { src : 'string', num : 123 };
   test.identical( got, expected );
   test.true( got !== expected );
@@ -2319,14 +2318,14 @@ function entityAssign( test )
   test.case = 'src.slice returns copy of array';
   var dst = [ ];
   var src = [ 1, 2, 3 ];
-  var got = _.entitiy.assign2( dst, src  );
+  var got = _.entity.assign2( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'dst.set ';
   var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
   var src = { value : 100 };
-  _.entitiy.assign2( dst, src  );
+  _.entity.assign2( dst, src  );
   var got = dst;
   var expected = { set : dst.set, value : 100 };
   test.identical( got, expected );
@@ -2339,14 +2338,14 @@ function entityAssign( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  _.entitiy.assign2( dst, src, onRecursive  );
+  _.entity.assign2( dst, src, onRecursive  );
   var got = dst;
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'atomic ';
   var src = 2;
-  var got = _.entitiy.assign2( null, src );
+  var got = _.entity.assign2( null, src );
   var expected = src;
   test.identical( got, expected );
 
@@ -2356,7 +2355,7 @@ function entityAssign( test )
   test.case = 'missed arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.entitiy.assign2( );
+    _.entity.assign2( );
   });
 
   test.case = 'src.clone throws "unexpected"';
@@ -2364,7 +2363,7 @@ function entityAssign( test )
   {
     var dst = {};
     var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
-    _.entitiy.assign2( dst, src  );
+    _.entity.assign2( dst, src  );
   });
 
 }
@@ -2373,12 +2372,11 @@ function entityAssign( test )
 
 function entityAssignFieldFromContainer( test )
 {
-
   test.case = 'non recursive';
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
-  var got = _.entitiy.assign2FieldFromContainer(dst, src, name );
+  var got = _.entity.assign2FieldFromContainer(dst, src, name );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -2386,7 +2384,7 @@ function entityAssignFieldFromContainer( test )
   var dst ={};
   var src = { a : undefined };
   var name = 'a';
-  var got = _.entitiy.assign2FieldFromContainer(dst, src, name );
+  var got = _.entity.assign2FieldFromContainer(dst, src, name );
   var expected = undefined;
   test.identical( got, expected );
 
@@ -2399,32 +2397,25 @@ function entityAssignFieldFromContainer( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  var got = _.entitiy.assign2FieldFromContainer( dst, src, name, onRecursive );
+  var got = _.entity.assign2FieldFromContainer( dst, src, name, onRecursive );
   var expected = dst[ name ];
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
-  test.case = 'argument missed';
-  test.shouldThrowErrorSync( function()
-  {
-    _.entitiy.assign2FieldFromContainer( );
-  });
-
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entity.assign2FieldFromContainer() );
 }
 
 //
 
 /*
-qqq : improve test entityLengthOf, normalize it, please | Dmytro : improved, normalized, extended
+  aaa : improve test entityLengthOf, normalize it, please | Dmytro : improved, normalized, extended
 */
 
 function entityLengthOf( test )
 {
-
-  /* */
-
   test.case = 'undefined';
   var got = _.entityLengthOf( undefined );
   test.identical( got, 0 );
@@ -2611,9 +2602,6 @@ function entityLengthOf( test )
     }
 
   }
-
-  /* */
-
 }
 
 //
@@ -3108,23 +3096,27 @@ function methodIteratorOf( test )
   test.identical( got, expected );
 
   test.case = 'a string';
-  var got = _.entity.methodIteratorOf( 'str' );
-  var expected = true;
+  var src = 'str';
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.entity.methodIteratorOf( [] );
-  var expected = true;
+  var src = [];
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'an unroll';
-  var got = _.entity.methodIteratorOf( _.unrollMake( [ 1 ] ) );
-  var expected = true;
+  var src = _.unrollMake( 1 );
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'an argumentsArray';
+  var src = _.argumentsArrayMake( 1 );
   var got = _.entity.methodIteratorOf( _.argumentsArrayMake( [ 1 ] ) );
-  var expected = true;
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'BufferRaw';
@@ -3138,26 +3130,30 @@ function methodIteratorOf( test )
   test.identical( got, expected );
 
   test.case = 'BufferTyped';
-  var got = _.entity.methodIteratorOf( new U8x( 5 ) );
-  var expected = true;
+  var src = new U8x([ 5 ]);
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    let got = _.entity.methodIteratorOf( BufferNode.alloc( 5 ) );
-    let expected = true;
+    var src = BufferNode.alloc( 3 );
+    let got = _.entity.methodIteratorOf( src );
+    var expected = src[ _.entity.iteratorSymbol ];
     test.identical( got, expected );
   }
 
   test.case = 'Set';
-  var got = _.entity.methodIteratorOf( new Set( [ 5 ] ) );
-  var expected = true;
+  var src = new Set([ 5 ]);
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.entity.methodIteratorOf( new Map( [ [ 1, 2 ] ] ) );
-  var expected = true;
+  var src = new Map([ [ 1, 2 ] ]);
+  var got = _.entity.methodIteratorOf( src );
+  var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
   test.case = 'pure empty map';
