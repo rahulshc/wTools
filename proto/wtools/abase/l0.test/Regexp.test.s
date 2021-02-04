@@ -20,8 +20,6 @@ function regexpIdentical( test )
 {
   var context = this;
 
-  console.log( _.regexp )
-
   /* */
 
   test.case = 'null';
