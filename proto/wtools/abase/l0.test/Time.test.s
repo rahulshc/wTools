@@ -7,7 +7,6 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
-  // _.include( 'wConsequence' );
 }
 
 let _global = _global_;
@@ -3451,7 +3450,7 @@ function begin( test )
     var timer = _globals_.testing.wTools.time.begin( Infinity, onTime, onCancel );
     timer.cancel();
 
-    return _.time.out( context.t1, () => timer.time() )
+    return _globals_.testing.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )

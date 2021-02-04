@@ -197,7 +197,8 @@ function strCount( src, ins )
   let i = 0;
   do
   {
-    let found = _.strLeft( src, ins, [ i, src.length ] );
+    // let found = _.strLeft( src, ins, [ i, src.length ] );
+    let found = _.strLeft_( src, ins, [ i, src.length-1 ] );
     if( found.entry === undefined )
     break;
     i = found.index + found.entry.length;
@@ -1664,7 +1665,8 @@ function _strBut( srcStr, cinterval, ins )
   /*
      aaa : implement for case ins is long
      Dmytro : implemented, elements of long joins by spaces
-     qqq for Dmytro : no really
+     aaa for Dmytro : no really
+     Dmytro : fixed
   */
 
   let result;
@@ -2168,7 +2170,7 @@ function strJoinPath( srcs, joiner )
   _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
   _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strType( joiner ) );
 
-  /* xxx */
+  /* xxx : investigate */
 
   for( let a = 0 ; a < srcs.length ; a++ )
   {
@@ -2451,12 +2453,22 @@ function strLinesBut( src, range, ins )
     Dmytro : implemented
   */
 
+  let range2 = [ range[ 0 ], range[ 1 ] - 1 ]
+  /* qqq for Dmtro : check and improve code */
+
   if( _.longIs( ins ) )
-  return _.longBut( src, range, ins ).join( '\n' );
+  return _.longBut_( null, src, range2, ins ).join( '\n' );
   else if( _.strIs( ins ) )
-  return _.longBut( src, range, [ ins ] ).join( '\n' );
+  return _.longBut_( null, src, range2, [ ins ] ).join( '\n' );
   else
-  return _.longBut( src, range ).join( '\n' );
+  return _.longBut_( null, src, range2 ).join( '\n' );
+
+  // if( _.longIs( ins ) )
+  // return _.longBut( src, range, ins ).join( '\n' );
+  // else if( _.strIs( ins ) )
+  // return _.longBut( src, range, [ ins ] ).join( '\n' );
+  // else
+  // return _.longBut( src, range ).join( '\n' );
 
   // if( ins )
   // {

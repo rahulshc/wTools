@@ -84,6 +84,6 @@ _.assert( _.longDescriptor );
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

@@ -1109,7 +1109,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1136,7 +1136,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1159,7 +1159,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1186,7 +1186,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1213,7 +1213,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1240,7 +1240,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:1',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* */
@@ -1266,7 +1266,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:531:17',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackFrame, location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame, location } );
   test.identical( got, exp );
 
   /* - */
@@ -1327,7 +1327,7 @@ function locationNormalize( test )
   test.true( got === o );
 
   test.case = 'stack frame line with posix path';
-  var o = { original : "at node (/home/user/file.txt)" };
+  var o = { original : 'at node (/home/user/file.txt)' };
   var exp =
   {
     'original' : 'at node (/home/user/file.txt)',
@@ -1548,7 +1548,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has two underscores, abstraction - 2';
-  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
@@ -1570,7 +1570,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has single underscore, abstraction - 1';
-  var o = { original :'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
@@ -1592,7 +1592,7 @@ function locationNormalize( test )
   /* */
 
   test.case = 'routineName has two underscores, abstraction - 2';
-  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
@@ -2522,6 +2522,426 @@ function locationNormalizeWithOtherOptions( test )
     'fileNameLineCol' : ':1:20',
   };
   var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field col' );
+}
+
+//
+
+function locationToStack( test )
+{
+  test.case = 'without options';
+  var o = {};
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  /* - */
+
+  test.case = 'empty string';
+  var o = { original : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'stack frame line with posix path';
+  var o = { original : 'at node (/home/user/file.txt)' };
+  var exp = 'at node (/home/user/file.txt)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'stack frame with Windows path';
+  var o = { original : 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)' };
+  var exp = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = '<anonymous> in stack frame, windows path';
+  var o = { original : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)' };
+  var exp = 'at wConsequence.{-anonymous-} (/C/dir/File.js:9:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'a few <anonymous> in stack frame, normalized path';
+  var o = { original : 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)' };
+  var exp = 'at wConsequence.{-anonymous-}.{-anonymous-} (/C/dir/File.js:9:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'eval and <anonymous> in stack frame';
+  var o = { original : 'at eval (<anonymous>:1:16)' };
+  var exp = 'at eval (<anonymous>:1:16)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'windows filePath nested in parentheses with routineName and <anonymous>';
+  var o = { original : 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)' };
+  var exp = 'at program2 (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'normalized filePath nested in parentheses with routineName and <anonymous>';
+  var o = { original : 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)' };
+  var exp = 'at program2 (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with routine alias';
+  var o = { original : 'at routine [as time] (/C/basic/program2.js:13:5)' };
+  var exp = 'at routine (/C/basic/program2.js:13:5)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with internal in path';
+  var o = { original : 'at routine [as time] (internal/event)' };
+  var exp = 'at routine (internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'original with internal in path';
+  var o = { original : 'at routine [as time] (node:internal/event)' };
+  var exp = 'at routine (node:internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.__handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has single underscore, abstraction - 1';
+  var o = { original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence._handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.__handle__Now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineAlias has single underscore, abstraction - 1';
+  var o = { original : 'at wConsequence.now [as _now] (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineAlias has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.now [as __now] (C:\\dir\\File.js:5:15)' };
+  var exp = 'at wConsequence.now (/C/dir/File.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack( { original : '' }, { filePath : '/home/user' } ) );
+
+  test.case = 'wrong type of o';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack([ '/some/path' ]) );
+
+  test.case = 'unknown option in map o';
+  test.shouldThrowErrorSync( () => _.introspector.locationToStack({ unknown : '', original : '' }) );
+}
+
+//
+
+function locationToStackOptionFilePath( test )
+{
+  test.case = 'only field filePath - empty string';
+  var o = { filePath : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - simple path';
+  var o = { filePath : '/C/dir/Introspector.test.s' };
+  var exp = 'at (/C/dir/Introspector.test.s)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'internal/event' };
+  var exp = 'at (internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'node:internal/event' };
+  var exp = 'at (node:internal/event)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'field filePath - empty string, options map with original';
+  var o =
+  {
+    original : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
+    filePath : '',
+  };
+  var exp = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'field filePath - path to file, options map has field original';
+  var o =
+  {
+    original : 'at iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+  };
+  var exp = 'at iteration (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'filePath - relative path, options map has field original';
+  var o =
+  {
+    original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    filePath : 'internal/index.js'
+  };
+  var exp = 'at wConsequence._handle__Now (internal/index.js:5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+}
+
+//
+
+function locationToStackOptionsRoutineNameAndRoutineAlias( test )
+{
+  test.open( 'field routineName' );
+
+  test.case = 'only field routineName - empty string';
+  var o = { routineName : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - simple name';
+  var o = { routineName : 'routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - name has <anonymous>';
+  var o = { routineName : '<anonymous>' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineName - complex name with dot';
+  var o = { routineName : 'Object.routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - empty string, options map has original';
+  var o =
+  {
+    original : 'at iteration (/C/dir/File.js:5:47)',
+    routineName : '',
+  };
+  var exp = 'at iteration (/C/dir/File.js:5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string with underscore';
+  var o =
+  {
+    original : 'at _iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '_routine',
+  };
+  var exp = 'at _routine (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string with two underscores, ends by one dot';
+  var o =
+  {
+    original : 'at __iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine.',
+  };
+  var exp = 'at __routine. (/C/dir/(Introspector.test.s):5:47)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'routineName - string, which ends by two dots';
+  var o =
+  {
+    original : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine..',
+  };
+  var exp = 'at __routine.. (/C/dir/(Introspector.test.s):5:15)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineName' );
+
+  /* - */
+
+  test.open( 'field routineAlias' );
+
+  test.case = 'only field routineAlias - empty string';
+  var o = { routineAlias : '' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - simple name';
+  var o = { routineAlias : 'routine' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has <anonymous>';
+  var o = { routineAlias : '<anonymous>' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has single underscore, abstraction - 1';
+  var o = { routineAlias : '_now' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field routineAlias - name has two underscores, abstraction - 2';
+  var o = { routineAlias : '__now' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineAlias' );
+}
+
+//
+
+function locationToStackWithOtherOptions( test )
+{
+  test.open( 'field internal' );
+
+  test.case = 'only field internal - number';
+  var o = { internal : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field internal - number, not defined';
+  var o = { internal : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field internal' );
+
+  /* - */
+
+  test.open( 'field abstraction' );
+
+  test.case = 'only field abstraction - number';
+  var o = { abstraction : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field abstraction - number, not defined';
+  var o = { abstraction : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field abstraction' );
+
+  /* - */
+
+  test.open( 'field line' );
+
+  test.case = 'only field line - number';
+  var o = { line : 10 };
+  var exp = 'at (:10)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - number, not defined';
+  var o = { line : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - string';
+  var o = { line : 'str' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field line - string-number';
+  var o = { line : '2' };
+  var exp = 'at (:2)'
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.close( 'field line' );
+
+  /* - */
+
+  test.open( 'field col' );
+
+  test.case = 'only field col - number';
+  var o = { col : 10 };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - number, not defined';
+  var o = { col : NaN };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - string';
+  var o = { col : 'str' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'only field col - string-number';
+  var o = { col : '1' };
+  var exp = null;
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - number, line - number';
+  var o = { col : 10, line : 1 };
+  var exp = 'at (:1:10)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - number, not defined, line - number';
+  var o = { col : NaN, line : 1 };
+  var exp = 'at (:1)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - string, line - number';
+  var o = { col : 'str', line : 1 };
+  var exp = 'at (:1)';
+  var got = _.introspector.locationToStack( o );
+  test.identical( got, exp );
+
+  test.case = 'col - string-number, line - string-number';
+  var o = { col : '20.1', line : '1' };
+  var exp = 'at (:1:20)';
+  var got = _.introspector.locationToStack( o );
   test.identical( got, exp );
 
   test.close( 'field col' );
@@ -3738,6 +4158,11 @@ let Self =
     locationNormalizeOptionFilePath,
     locationNormalizeOptionsRoutineNameAndRoutineAlias,
     locationNormalizeWithOtherOptions,
+
+    locationToStack,
+    locationToStackOptionFilePath,
+    locationToStackOptionsRoutineNameAndRoutineAlias,
+    locationToStackWithOtherOptions,
 
     stackBasic,
     stack,

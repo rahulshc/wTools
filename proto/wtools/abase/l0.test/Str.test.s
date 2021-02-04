@@ -20,502 +20,504 @@ let _ = _global_.wTools;
 //
 // --
 
-function strLeft( test )
-{
-  test.open( 'string' );
-
-  test.case = 'begin';
-  var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'aa' );
-  test.identical( got, expected );
-
-  test.case = 'middle';
-  var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'bb' );
-  test.identical( got, expected );
-
-  test.case = 'end';
-  var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'cc' );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry';
-  var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
-  test.identical( got, expected );
-
-  var expected = { index : 0, entry : 'aa', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry';
-  var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
-  test.identical( got, expected );
-
-  var expected = { index : 6, entry : 'bb', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry';
-  var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
-
-  test.identical( got, expected );
-  var expected = { index : 12, entry : 'cc', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry, several sources';
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry, several sources';
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry, several sources';
-  var expected = [ { index : 12, entry : 'cc', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 12, entry : 'cc', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'with window';
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -17 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -15 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -2 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 0 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 3 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 6 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 7 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 12, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -2, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 8 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'no entry';
-  var expected = { index : 17, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [] );
-  test.identical( got, expected );
-
-  test.case = 'not found';
-  var expected = { index : 17, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'dd' );
-  test.identical( got, expected );
-
-  test.case = 'empty entry';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', '' );
-  test.identical( got, expected );
-
-  test.case = 'empty entry, empty src';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strLeft( '', '' );
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var expected = { index : 0, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( '', 'aa' );
-  test.identical( got, expected );
-
-  test.close( 'string' );
-
-  /* - */
-
-  test.open( 'regexp' );
-
-  test.case = 'begin';
-  var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /a+/ );
-  test.identical( got, expected );
-
-  test.case = 'middle';
-  var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /b+/ );
-  test.identical( got, expected );
-
-  test.case = 'end';
-  var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /c+/ );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin smeared';
-  var expected = { index : 0, entry : 'xa', instanceIndex : 0 }
-  var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wa/ );
-  test.identical( got, expected );
-
-  test.case = 'middle smeared';
-  var expected = { index : 10, entry : 'xb', instanceIndex : 0 }
-  var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wb/ );
-  test.identical( got, expected );
-
-  test.case = 'end ';
-  var expected = { index : 20, entry : 'xc', instanceIndex : 0 }
-  var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wc/ );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry';
-  var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
-  test.identical( got, expected );
-
-  var expected = { index : 0, entry : 'aa', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry';
-  var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
-  test.identical( got, expected );
-
-  var expected = { index : 6, entry : 'bb', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry';
-  var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
-  test.identical( got, expected );
-
-  var expected = { index : 12, entry : 'cc', instanceIndex : 1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry, several sources';
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry, several sources';
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry, several sources';
-  var expected = [ { index : 12, entry : 'cc', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 12, entry : 'cc', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'with window, mixed';
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -17 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -15 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 16, entry : 'a', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -2 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], 0 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ -17, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 1, entry : 'a', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 1, entry : 'a', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'a', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 8 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'no entry';
-  var expected = { index : 17, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [] );
-  test.identical( got, expected );
-
-  test.case = 'not found';
-  var expected = { index : 17, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /d+/ );
-  test.identical( got, expected );
-
-  test.case = 'empty entry';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /(?:)/ );
-  test.identical( got, expected );
-
-  test.case = 'empty entry, empty src';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strLeft( '', /(?:)/ );
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var expected = { index : 0, entry : undefined, instanceIndex : -1 }
-  var got = _.strLeft( '', /a+/ );
-  test.identical( got, expected );
-
-  test.close( 'regexp' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.open( 'throwing' );
-
-  test.case = 'wrong first index';
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', -100 ) );
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 100 ) );
-
-  test.case = 'wrong lalt index';
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 0, -100 ) );
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 0, 100 ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.strLeft( /a/, /a+/ ) );
-
-  test.case = 'wrong type of first index'
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', /a+/, 'a' ) );
-
-  test.case = 'wrong type of last index'
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc', /a+/, 1, '' ) );
-
-  test.case = 'wrong type of ins'
-  test.shouldThrowErrorSync( () => _.strLeft( '123', 1 ) );
-  test.shouldThrowErrorSync( () => _.strLeft( '123', [ 1 ] ) );
-
-  test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.strLeft() );
-
-  test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.strLeft( 'abc' ) );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strLeft( 'abcd', 'a', 0, 2, 'extra' ) );
-
-  test.close( 'throwing' );
-}
+// function strLeft( test )
+// {
+//   test.open( 'string' );
+//
+//   test.case = 'begin';
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'aa' );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle';
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'bb' );
+//   test.identical( got, expected );
+//
+//   test.case = 'end';
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'cc' );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry';
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry';
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry';
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
+//
+//   test.identical( got, expected );
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry, several sources';
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry, several sources';
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry, several sources';
+//   var expected = [ { index : 12, entry : 'cc', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 12, entry : 'cc', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'with window';
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -17 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -15 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -2 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 0 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 3 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 6 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 7 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 12, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -2, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 8 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'no entry';
+//   var expected = { index : 17, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [] );
+//   test.identical( got, expected );
+//
+//   test.case = 'not found';
+//   var expected = { index : 17, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'dd' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', '' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry, empty src';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strLeft( '', '' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty src';
+//   var expected = { index : 0, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( '', 'aa' );
+//   test.identical( got, expected );
+//
+//   test.close( 'string' );
+//
+//   /* - */
+//
+//   test.open( 'regexp' );
+//
+//   test.case = 'begin';
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /a+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle';
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /b+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'end';
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /c+/ );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin smeared';
+//   var expected = { index : 0, entry : 'xa', instanceIndex : 0 }
+//   var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wa/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle smeared';
+//   var expected = { index : 10, entry : 'xb', instanceIndex : 0 }
+//   var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wb/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'end ';
+//   var expected = { index : 20, entry : 'xc', instanceIndex : 0 }
+//   var got = _.strLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wc/ );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry';
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 0, entry : 'aa', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry';
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 6, entry : 'bb', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry';
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 12, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry, several sources';
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry, several sources';
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry, several sources';
+//   var expected = [ { index : 12, entry : 'cc', instanceIndex : 0 }, { index : 0, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 12, entry : 'cc', instanceIndex : 1 }, { index : 0, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'with window, mixed';
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -17 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -15 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 16, entry : 'a', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 17, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -2 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], 0 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ -17, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 1, entry : 'a', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 1, entry : 'a', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'a', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 17, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strLeft( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 8 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'no entry';
+//   var expected = { index : 17, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', [] );
+//   test.identical( got, expected );
+//
+//   test.case = 'not found';
+//   var expected = { index : 17, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /d+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', /(?:)/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry, empty src';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strLeft( '', /(?:)/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty src';
+//   var expected = { index : 0, entry : undefined, instanceIndex : -1 }
+//   var got = _.strLeft( '', /a+/ );
+//   test.identical( got, expected );
+//
+//   test.close( 'regexp' );
+//
+//   /* - */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.open( 'throwing' );
+//
+//   test.case = 'wrong first index';
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', -100 ) );
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 100 ) );
+//
+//   test.case = 'wrong lalt index';
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 0, -100 ) );
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 0, 100 ) );
+//
+//   test.case = 'wrong type of src';
+//   test.shouldThrowErrorSync( () => _.strLeft( /a/, /a+/ ) );
+//
+//   test.case = 'wrong type of first index'
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', /a+/, 'a' ) );
+//
+//   test.case = 'wrong type of last index'
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc', /a+/, 1, '' ) );
+//
+//   test.case = 'wrong type of ins'
+//   test.shouldThrowErrorSync( () => _.strLeft( '123', 1 ) );
+//   test.shouldThrowErrorSync( () => _.strLeft( '123', [ 1 ] ) );
+//
+//   test.case = 'without argument';
+//   test.shouldThrowErrorSync( () => _.strLeft() );
+//
+//   test.case = 'one argument';
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abc' ) );
+//
+//   test.case = 'extra arguments';
+//   test.shouldThrowErrorSync( () => _.strLeft( 'abcd', 'a', 0, 2, 'extra' ) );
+//
+//   test.close( 'throwing' );
+// }
+
+//
 
 function strLeft_( test )
 {
@@ -1010,502 +1012,502 @@ function strLeft_( test )
   test.shouldThrowErrorSync( () => _.strLeft_( 'abcd', 'a', 0, 2, 'extra' ) );
 }
 
+// //
 //
-
-function strRight( test )
-{
-  test.open( 'string' );
-
-  test.case = 'begin';
-  var expected = { index : 3, entry : 'aa', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'aa' );
-  test.identical( got, expected );
-
-  test.case = 'middle';
-  var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'bb' );
-  test.identical( got, expected );
-
-  test.case = 'end';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'cc' );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry';
-  var expected = { index : 9, entry : 'bb', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
-  test.identical( got, expected );
-
-  var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
-  test.identical( got, expected );
-
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
-  test.identical( got, expected );
-
-  var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry, several sources';
-  var expected = [ { index : 9, entry : 'bb', instanceIndex :  1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 0 }, { index : 15, entry : 'aa', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry, several sources';
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry, several sources';
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 3, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 3, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'with window';
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -17 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -15 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -2 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 0 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 3 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 6 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 7 );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -2, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -10 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -9 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -12 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 17 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 8 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'no entry';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [] );
-  test.identical( got, expected );
-
-  test.case = 'not found';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'dd' );
-  test.identical( got, expected );
-
-  test.case = 'empty entry';
-  var expected = { index : 17, entry : '', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', '' );
-  test.identical( got, expected );
-
-  test.case = 'empty entry, empty src';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strRight( '', '' );
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( '', 'aa' );
-  test.identical( got, expected );
-
-  test.close( 'string' );
-
-  /* - */
-
-  test.open( 'regexp' );
-
-  test.case = 'begin';
-  var expected = { index : 3, entry : 'aa', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /a+/ );
-  test.identical( got, expected );
-
-  test.case = 'middle';
-  var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /b+/ );
-  test.identical( got, expected );
-
-  test.case = 'end';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /c+/ );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin smeared';
-  var expected = { index : 7, entry : 'ax', instanceIndex : 0 }
-  var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /a\w/ );
-  test.identical( got, expected );
-
-  test.case = 'middle smeared';
-  var expected = { index : 17, entry : 'bx', instanceIndex : 0 }
-  var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /b\w/ );
-  test.identical( got, expected );
-
-  test.case = 'end ';
-  var expected = { index : 27, entry : 'cx', instanceIndex : 0 }
-  var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/ );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry';
-  var expected = { index : 9, entry : 'bb', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
-  test.identical( got, expected );
-
-  var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
-  test.identical( got, expected );
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry';
-  var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
-  test.identical( got, expected );
-  var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'begin, several entry, several sources';
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 0 }, { index : 15, entry : 'aa', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'middle, several entry, several sources';
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
-  test.identical( got, expected );
-
-  test.case = 'end, several entry, several sources';
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 3, entry : 'cc', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 3, entry : 'cc', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'with window, mixed';
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -17 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -15 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -10 );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 16, entry : 'a', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -1 );
-  test.identical( got, expected );
-
-  var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -2 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], 0 );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ -17, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 2 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -15 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 0, entry : 'a', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -16 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 8 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 7 ] );
-  test.identical( got, expected );
-
-  var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
-  var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 8 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'no entry';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [] );
-  test.identical( got, expected );
-
-  test.case = 'not found';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /d+/ );
-  test.identical( got, expected );
-
-  test.case = 'empty entry';
-  var expected = { index : 17, entry : '', instanceIndex : 0 }
-  var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /(?:)/ );
-  test.identical( got, expected );
-
-  test.case = 'empty entry, empty src';
-  var expected = { index : 0, entry : '', instanceIndex : 0 }
-  var got = _.strRight( '', /(?:)/ );
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var expected = { index : -1, entry : undefined, instanceIndex : -1 }
-  var got = _.strRight( '', /a+/ );
-  test.identical( got, expected );
-
-  test.close( 'regexp' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.open( 'throwing' );
-
-  test.case = 'wrong first index';
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', -100 ) );
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 100 ) );
-
-  test.case = 'wrong lalt index';
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 0, -100 ) );
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 0, 100 ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.strRight( /a/, /a+/ ) );
-
-  test.case = 'wrong type of first index'
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', /a+/, '' ) );
-
-  test.case = 'wrong type of last index'
-  test.shouldThrowErrorSync( () => _.strRight( 'abc', /a+/, 1, '' ) );
-
-  test.case = 'wrong type of ins'
-  test.shouldThrowErrorSync( () => _.strRight( '123', 1 ) );
-  test.shouldThrowErrorSync( () => _.strRight( '123', [ 1 ] ) );
-
-  test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.strRight() );
-
-  test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.strRight( 'abc' ) );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strRight( 'abcd', 'a', 0, 2, 'extra' ) );
-
-  test.close( 'throwing' );
-}
+// function strRight( test )
+// {
+//   test.open( 'string' );
+//
+//   test.case = 'begin';
+//   var expected = { index : 3, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'aa' );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle';
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'bb' );
+//   test.identical( got, expected );
+//
+//   test.case = 'end';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'cc' );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry';
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry, several sources';
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex :  1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 0 }, { index : 15, entry : 'aa', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry, several sources';
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry, several sources';
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 3, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 3, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'with window';
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -17 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -15 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], -2 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 0 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 3 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 6 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 7 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], 10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -17, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -15, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ -2, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 1, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ undefined, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -10 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -9 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, -12 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 17 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 0, 8 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'no entry';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [] );
+//   test.identical( got, expected );
+//
+//   test.case = 'not found';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', 'dd' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry';
+//   var expected = { index : 17, entry : '', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', '' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry, empty src';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strRight( '', '' );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty src';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( '', 'aa' );
+//   test.identical( got, expected );
+//
+//   test.close( 'string' );
+//
+//   /* - */
+//
+//   test.open( 'regexp' );
+//
+//   test.case = 'begin';
+//   var expected = { index : 3, entry : 'aa', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /a+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle';
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /b+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'end';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /c+/ );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin smeared';
+//   var expected = { index : 7, entry : 'ax', instanceIndex : 0 }
+//   var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /a\w/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle smeared';
+//   var expected = { index : 17, entry : 'bx', instanceIndex : 0 }
+//   var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /b\w/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'end ';
+//   var expected = { index : 27, entry : 'cx', instanceIndex : 0 }
+//   var got = _.strRight( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/ );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry';
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = { index : 9, entry : 'bb', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
+//   test.identical( got, expected );
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry';
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
+//   test.identical( got, expected );
+//   var expected = { index : 15, entry : 'cc', instanceIndex : 1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'begin, several entry, several sources';
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 0 }, { index : 15, entry : 'aa', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'middle, several entry, several sources';
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 9, entry : 'bb', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 9, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'end, several entry, several sources';
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 0 }, { index : 3, entry : 'cc', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 15, entry : 'cc', instanceIndex : 1 }, { index : 3, entry : 'cc', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'with window, mixed';
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -17 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -15 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -10 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 16, entry : 'a', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -1 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : -1, entry : undefined, instanceIndex : -1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], -2 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 9, entry : 'bb', instanceIndex : 1 }, { index : 15, entry : 'aa', instanceIndex : 0 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], 0 );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ -17, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 2 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 1, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -15 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 0, entry : 'a', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, -16 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ undefined, 8 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 3, entry : 'aa', instanceIndex : 0 }, { index : -1, entry : undefined, instanceIndex : -1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 7 ] );
+//   test.identical( got, expected );
+//
+//   var expected = [ { index : 6, entry : 'bb', instanceIndex : 1 }, { index : 6, entry : 'bb', instanceIndex : 1 } ];
+//   var got = _.strRight( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, 'bb' ], [ 0, 8 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'no entry';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', [] );
+//   test.identical( got, expected );
+//
+//   test.case = 'not found';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /d+/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry';
+//   var expected = { index : 17, entry : '', instanceIndex : 0 }
+//   var got = _.strRight( 'aa_aa_bb_bb_cc_cc', /(?:)/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty entry, empty src';
+//   var expected = { index : 0, entry : '', instanceIndex : 0 }
+//   var got = _.strRight( '', /(?:)/ );
+//   test.identical( got, expected );
+//
+//   test.case = 'empty src';
+//   var expected = { index : -1, entry : undefined, instanceIndex : -1 }
+//   var got = _.strRight( '', /a+/ );
+//   test.identical( got, expected );
+//
+//   test.close( 'regexp' );
+//
+//   /* - */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.open( 'throwing' );
+//
+//   test.case = 'wrong first index';
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', -100 ) );
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 100 ) );
+//
+//   test.case = 'wrong lalt index';
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 0, -100 ) );
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 0, 100 ) );
+//
+//   test.case = 'wrong type of src';
+//   test.shouldThrowErrorSync( () => _.strRight( /a/, /a+/ ) );
+//
+//   test.case = 'wrong type of first index'
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', /a+/, '' ) );
+//
+//   test.case = 'wrong type of last index'
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc', /a+/, 1, '' ) );
+//
+//   test.case = 'wrong type of ins'
+//   test.shouldThrowErrorSync( () => _.strRight( '123', 1 ) );
+//   test.shouldThrowErrorSync( () => _.strRight( '123', [ 1 ] ) );
+//
+//   test.case = 'without argument';
+//   test.shouldThrowErrorSync( () => _.strRight() );
+//
+//   test.case = 'one argument';
+//   test.shouldThrowErrorSync( () => _.strRight( 'abc' ) );
+//
+//   test.case = 'extra arguments';
+//   test.shouldThrowErrorSync( () => _.strRight( 'abcd', 'a', 0, 2, 'extra' ) );
+//
+//   test.close( 'throwing' );
+// }
 
 //
 
@@ -3309,7 +3311,7 @@ function strType( test )
   test.identical( got, expected );
 
   test.case = 'function';
-  var src = function a(){};
+  var src = () => {};
   var expected = 'Function';
   var got = _.strType( src );
   test.identical( got, expected );
@@ -3667,11 +3669,11 @@ function strQuote( test )
   // test.case = 'src - map';
   // var got = _.strQuote( { src : {} } );
   // test.identical( got, '"[object Object] "' );
-  //
+  /* */
   // test.case = 'src - Set';
   // var got = _.strQuote( new Set() );
   // test.identical( got, '"[object Set] "' );
-  //
+  /* */
   // test.case = 'src - BufferRaw';
   // var got = _.strQuote( new BufferRaw( 10 ) );
   // test.identical( got, '"[object ArrayBuffer] "' );
@@ -3688,7 +3690,7 @@ function strQuote( test )
   var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ] );
   test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
 
-  //
+  /* */
 
   test.case = 'src - empty string';
   var got = _.strQuote( { src : '' } );
@@ -3764,7 +3766,7 @@ function strQuote( test )
   var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ], '"' );
   test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
 
-  //
+  /* */
 
   test.case = 'src - empty string';
   var got = _.strQuote( { src : '', quote : '\'' } );
@@ -4423,7 +4425,7 @@ function strInsideOf( test )
   test.identical( got, 'tr' );
 
   test.case = 'src - string, begin - strings, end - strings full occurrence';
-  var got = _.strInsideOf( 'str', [ 'str', 't', 'r' ], [ 'str', 't', 's' ], );
+  var got = _.strInsideOf( 'str', [ 'str', 't', 'r' ], [ 'str', 't', 's' ] );
   test.identical( got, 'str' );
 
   test.case = 'src - string, begin - empty strings, end - empty strings';
@@ -4781,6 +4783,245 @@ function strInsideOfOptionPairing( test )
   test.identical( got, undefined );
 
   test.close( 'src - string, begin !== end, pairing - 1' );
+}
+
+//
+
+function strInsideOf_( test )
+{
+  test.open( 'src - empty string' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf_( '', '', '' );
+  test.identical( got, [ '', '', '' ] );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf_( '', 'a', '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf_( '', '', 'a' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf_( '', 'a', 'a' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  /* */
+
+  test.case = 'begin - array with entry, end - empty string';
+  var got = _.strInsideOf_( '', [ '' ], '' );
+  test.identical( got, [ '', '', '' ] );
+
+  test.case = 'begin - array without entry, end - empty string';
+  var got = _.strInsideOf_( '', [ 'b' ], '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - array with entry';
+  var got = _.strInsideOf_( '', '', [ '' ] );
+  test.identical( got, [ '', '', '' ] );
+
+  test.case = 'begin - empty string, end - array without entry';
+  var got = _.strInsideOf_( '', '', [ 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry, end - array with entry';
+  var got = _.strInsideOf_( '', [ '', 'b' ], [ 'a', '' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry, end - array without entry';
+  var got = _.strInsideOf_( '', [ 'a', 'b' ], [ 'a', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.close( 'src - empty string' );
+
+  /* - */
+
+  test.open( 'src - string, begin === end' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf_( 'abba', '', '' );
+  test.identical( got, [ '', 'abba', '' ] );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf_( 'abba', 'a', '' );
+  test.identical( got, [ 'a', 'bba', '' ] );
+
+  test.case = 'begin - string, not entry, end - empty string';
+  var got = _.strInsideOf_( 'abba', 'b', '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf_( 'abba', '', 'a' );
+  test.identical( got, [ '', 'abb', 'a' ] );
+
+  test.case = 'begin - empty string, end - string, not entry';
+  var got = _.strInsideOf_( 'abba', '', 'c' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf_( 'abba', 'a', 'a' );
+  test.identical( got, [ 'a', 'bb', 'a' ] );
+
+  test.case = 'begin - string, not entry, end - string, not entry';
+  var got = _.strInsideOf_( 'abba', 'b', 'b' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  /* */
+
+  test.case = 'begin - array with entry - empty string, end - empty string';
+  var got = _.strInsideOf_( 'abba', [ '' ], '' );
+  test.identical( got, [ '', 'abba', '' ] );
+
+  test.case = 'begin - array with entry - string, end - empty string';
+  var got = _.strInsideOf_( 'abba', [ 'b' ], '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry, end - empty string';
+  var got = _.strInsideOf_( 'abba', [ 'c' ], '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abba', '', [ '' ] );
+  test.identical( got, [ '', 'abba', '' ] );
+
+  test.case = 'begin - empty string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abba', '', [ 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - array without entry';
+  var got = _.strInsideOf_( 'abba', '', [ 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abba', [ 'b', '' ], [ '', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abba', [ '', 'b' ], [ '', 'b' ] );
+  test.identical( got, [ '', 'abba', '' ] );
+
+  test.case = 'begin - array with entry - empty string, end - array without entry';
+  var got = _.strInsideOf_( 'abba', [ 'b', '' ], [ 'c', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry, end - array without entry - empty string';
+  var got = _.strInsideOf_( 'abba', [ 'b', 'c' ], [ '', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abba', [ 'a', 'b' ], [ 'b', 'a' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abba', [ 'a', 'b' ], [ 'a', 'b' ] );
+  test.identical( got, [ 'a', 'bb', 'a' ] );
+
+  test.case = 'begin - array without entry - string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abba', [ 'b', 'c' ], [ 'b', 'a' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - string, end - array without entry - string';
+  var got = _.strInsideOf_( 'abba', [ 'b', 'a' ], [ 'b', 'c' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry - string, end - array without entry - string';
+  var got = _.strInsideOf_( 'abba', [ 'b', 'c' ], [ 'b', 'c' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.close( 'src - string, begin === end' );
+
+  /* - */
+
+  test.open( 'src - string, begin !== end' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf_( 'abcd', '', '' );
+  test.identical( got, [ '', 'abcd', '' ] );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf_( 'abcd', 'a', '' );
+  test.identical( got, [ 'a', 'bcd', '' ] );
+
+  test.case = 'begin - string, not entry, end - empty string';
+  var got = _.strInsideOf_( 'abcd', 'b', '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf_( 'abcd', '', 'd' );
+  test.identical( got, [ '', 'abc', 'd' ] );
+
+  test.case = 'begin - empty string, end - string, not entry';
+  var got = _.strInsideOf_( 'abcd', '', 'b' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf_( 'abcd', 'a', 'd' );
+  test.identical( got, [ 'a', 'bc', 'd' ] );
+
+  test.case = 'begin - string, not entry, end - string, not entry';
+  var got = _.strInsideOf_( 'abcd', 'c', 'b' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  /* */
+
+  test.case = 'begin - array with entry - empty string, end - empty string';
+  var got = _.strInsideOf_( 'abcd', [ '' ], '' );
+  test.identical( got, [ '', 'abcd', '' ] );
+
+  test.case = 'begin - array with entry - string, end - empty string';
+  var got = _.strInsideOf_( 'abcd', [ 'b' ], '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry, end - empty string';
+  var got = _.strInsideOf_( 'abcd', [ 'c' ], '' );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abcd', '', [ '' ] );
+  test.identical( got, [ '', 'abcd', '' ] );
+
+  test.case = 'begin - empty string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abcd', '', [ 'd' ] );
+  test.identical( got, [ '', 'abc', 'd' ] );
+
+  test.case = 'begin - empty string, end - array without entry';
+  var got = _.strInsideOf_( 'abcd', '', [ 'c' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', '' ], [ '', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - empty string, end - array with entry - empty string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', '' ], [ 'b', '' ] );
+  test.identical( got, [ '', 'abcd', '' ] );
+
+  test.case = 'begin - array with entry - empty string, end - array without entry';
+  var got = _.strInsideOf_( 'abcd', [ 'b', '' ], [ 'c', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry, end - array without entry - empty string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', 'c' ], [ '', 'b' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abcd', [ 'a', 'b' ], [ 'd', 'b' ] );
+  test.identical( got, [ 'a', 'bc', 'd' ] );
+
+  test.case = 'begin - array without entry - string, end - array with entry - string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', 'c' ], [ 'b', 'd' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array with entry - string, end - array without entry - string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', 'a' ], [ 'b', 'c' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.case = 'begin - array without entry - string, end - array without entry - string';
+  var got = _.strInsideOf_( 'abcd', [ 'b', 'c' ], [ 'b', 'c' ] );
+  test.identical( got, [ undefined, undefined, undefined ] );
+
+  test.close( 'src - string, begin !== end' );
 }
 
 //
@@ -11682,7 +11923,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = 'basic, add strings';
+  test.case = 'add strings';
 
   var delimeter = [ '<', '>' ];
   var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
@@ -11702,7 +11943,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = 'basic, preservingQuoting : 0, add strings';
+  test.case = 'preservingQuoting : 0, add strings';
 
   var delimeter = [ '<', '>' ];
   var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
@@ -11901,7 +12142,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix and postfix are the same, complementary, return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix and postfix are the same, complementary, return 'el : ' + el`;
 
   var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
   _.strSplitsQuotedRejoin
@@ -11920,7 +12161,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix and postfix are NOT the same, not complementary, return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix and postfix are NOT the same, not complementary, return 'el : ' + el`;
 
   var splits = [ `<`, `r1`, `<`, `<`, `r2`, `<` ];
   var delimeter = [ '<', '>' ]
@@ -11941,7 +12182,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix and postfix are NOT the same, complementary, return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix and postfix are NOT the same, complementary, return 'el : ' + el`;
 
   var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
@@ -11960,7 +12201,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are NOT the same, complementary, return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are NOT the same, complementary, return 'el : ' + el`;
   var splits = [ `"`, `r1`, `"`, `<`, `r2`, `>` ];
   _.strSplitsQuotedRejoin
   ({
@@ -11978,7 +12219,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are the same, complementary, return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix[ 1 ] and postfix[ 1 ] are the same, complementary, return 'el : ' + el`;
   var splits = [ `<`, `r1`, `>`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
   ({
@@ -11996,7 +12237,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 0 ] = postfix[ 1 ] prefix[ 1 ] = postfix[ 0 ], return 'el : ' + el`;
+  test.case = `o.pairing : 1, prefix[ 0 ] = postfix[ 1 ] prefix[ 1 ] = postfix[ 0 ], return 'el : ' + el`;
   var delimeter = [ '<', '"' ];
   var splits = [ `<`, `r1`, `>`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
@@ -12016,7 +12257,8 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `basic, o.pairing : 1, prefix[ 0 ], postfix[ 0 ] - complementary, prefix[ 1 ], postfix[ 1 ] - not complementary, return 'el : ' + el`;
+  test.case =
+  `o.pairing : 1, prefix[ 0 ], postfix[ 0 ] - complementary, prefix[ 1 ], postfix[ 1 ] - not complementary, return 'el : ' + el`;
   var delimeter = [ '<', '"', '{', '>' ];
   var splits = [ `<`, `r1`, `"`, `{`, `r2`, `}` ];
   _.strSplitsQuotedRejoin
@@ -19063,11 +19305,11 @@ var Self =
   tests :
   {
 
-    //
+    /* */
 
-    strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */
+    // strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* xxx !!! */
     strLeft_,
-    strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */
+    // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* xxx !!! */
     strRight_,
 
     strEquivalent,
@@ -19095,6 +19337,7 @@ var Self =
 
     strInsideOf,
     strInsideOfOptionPairing,
+    strInsideOf_,
     strInsideOf_OptionPairingIs0,
     strInsideOf_OptionPairingIs1,
     strOutsideOf,
@@ -19121,7 +19364,7 @@ var Self =
     strSplitsCoupledGroup,
     strSplitsDropEmpty,
     strSplitsUngroupedJoin,
-    strSplitsQuotedRejoin, /* qqq xxx : extend, please | aaa : Done. Yevhen S. */
+    strSplitsQuotedRejoin,
     strSplitsQuotedRejoinOptionOnQuoting,
     // splitter
 

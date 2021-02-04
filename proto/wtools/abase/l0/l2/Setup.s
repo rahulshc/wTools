@@ -113,7 +113,8 @@ function _setupUncaughtErrorHandler2()
     _realGlobal_.process.on( 'uncaughtException', _.error._handleUncaught1 );
     _realGlobal_.process.on( 'unhandledRejection', _.error._handleUncaughtPromise1 );
     _.error._handleUncaughtHead = _handleUncaughtHeadNode;
-
+    if( Config.interpreter === 'browser' )
+    _.error._handleUncaughtHead = _handleUncaughtHeadBrowser;
   }
   else if( Object.hasOwnProperty.call( _realGlobal_, 'onerror' ) )
   {
@@ -186,6 +187,6 @@ _.error._setup2();
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

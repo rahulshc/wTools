@@ -48,6 +48,9 @@ function _setupLoggerPlaceholder()
     error : function error() { console.error.apply( console, arguments ); },
     errorUp : function errorUp() { console.error.apply( console, arguments ); },
     errorDown : function errorDown() { console.error.apply( console, arguments ); },
+    info : function info() { console.info.apply( console, arguments ); },
+    warn : function warn() { console.warn.apply( console, arguments ); },
+    debug : function debug() { console.debug.apply( console, arguments ); },
   }
 
 }
@@ -179,17 +182,6 @@ function _Setup9()
 // routines
 // --
 
-// let ErrorExtension =
-// {
-//
-//   _handleUncaught2,
-//   _handleUncaughtAsync,
-//   _setupUncaughtErrorHandler9,
-//
-//   uncaughtDelayTime : 100,
-//
-// }
-
 let SetupExtension =
 {
 
@@ -208,7 +200,6 @@ let SetupExtension =
 
 }
 
-// Object.assign( _.error, ErrorExtension );
 Object.assign( _.setup, SetupExtension );
 Self._Setup9();
 
@@ -217,6 +208,6 @@ Self._Setup9();
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

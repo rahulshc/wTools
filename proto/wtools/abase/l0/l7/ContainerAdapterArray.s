@@ -5,7 +5,6 @@
 
 let _global = _realGlobal_;
 let _ = _global_.wTools;
-// let ContainerAdapterAbstract = _.containerAdapter.Abstract;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -164,13 +163,13 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
-    _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
+    _.assert( e === undefined || _.entity.equalize( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entityEntityEqualize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
+    _.assert( _.entity.equalize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
 
     var poped = this.original.pop();
     return poped;
@@ -762,7 +761,6 @@ function ExportTo( dstGlobal, srcGlobal )
   let _ = dstGlobal.wTools;
   _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
-  // _.containerAdapter = srcGlobal.wTools.containerAdapter;
   if( typeof module !== 'undefined' )
   module[ 'exports' ] = _.containerAdapter;
 }
@@ -793,14 +791,13 @@ var Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 _.assert( _.containerAdapter === Self );
-// _.containerAdapter = Self;
 
 // --
 // export
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 if( _global !== _realGlobal_ )
 return ExportTo( _realGlobal_, _global );

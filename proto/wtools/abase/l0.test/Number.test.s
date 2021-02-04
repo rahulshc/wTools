@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// l0/l3/iNumber.s
+// l0/l3/Number.s
 //--
 
 function numberIs( test )
@@ -1022,7 +1022,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( 1, 1.04999, 0.05 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'numbers 1 and 2, acc = 1 ';
   var got = _.numbersAreEquivalent( 1, 2, 1 );
@@ -1032,7 +1032,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( 10, 20, 11 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'numbers 0.999 and 0.998001, acc = 0.001 ';
   var got = _.numbersAreEquivalent( 0.999, 0.9980001, 0.001 );
@@ -1050,7 +1050,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( 0.999999, 0.999998, 0.0000001 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'numbers 0.9999999999 and 0.999999999801, acc = 0.0000000001 ';
   var got = _.numbersAreEquivalent( 0.9999999999, 0.999999999801, 0.0000000001 );
@@ -1068,7 +1068,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998001, 0.00000000001 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'numbers 0.999 and 0.998, acc = 0 ';
   var got = _.numbersAreEquivalent( 0.999, 0.998, 0 );
@@ -1096,7 +1096,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( -1.0001, -1.05, 0.05 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'numbers -1 and -2, acc = 1 ';
   var got = _.numbersAreEquivalent( -1, -2, 1 );
@@ -1106,7 +1106,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( -10, -20, 11 );
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = 'numbers -0.999 and -0.9980001, acc = 0.001 ';
   var got = _.numbersAreEquivalent( -0.999, -0.9980001, 0.001 );
@@ -1124,7 +1124,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
   var got = _.numbersAreEquivalent( -0.999999, -0.999998, 0.0000001 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'numbers -0.9999999999 and -0.99999999980001, acc = 0.0000000001 ';
   var got = _.numbersAreEquivalent( -0.9999999999, -0.99999999980001, 0.0000000001 );
@@ -1289,7 +1289,7 @@ function numbersAreInt( test )
   var got = _.numbersAreInt([ -1, 1, 1 ]);
   test.identical( got, true );
 
-  //
+  /* */
 
   test.case = '1 1 -Infinity';
   var got = _.numbersAreInt([ 1, 1, -Infinity ]);
@@ -1303,7 +1303,7 @@ function numbersAreInt( test )
   var got = _.numbersAreInt([ 1, 1, NaN ]);
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = '1.00 1 0.00 ';
   var got = _.numbersAreInt([ 1.00, 1, 0.00 ]);
@@ -1331,7 +1331,7 @@ function numbersAreInt( test )
 
 
 //--
-// l0/l5/fNumber.s
+// l0/l5/Number.s
 //--
 
 function bigIntFrom( test )
@@ -1398,7 +1398,7 @@ function bigIntFrom( test )
 }
 
 //--
-// l0/l8/gNumber.s
+// l0/l8/Number.s
 //--
 
 function numbersTotal( test )
@@ -2736,7 +2736,7 @@ let Self =
   tests :
   {
 
-    // l0/l3/iNumber.s
+    // l0/l3/Number.s
 
     numberIs,
     numberIsNotNan,
@@ -2752,10 +2752,10 @@ let Self =
     numbersArePositive,
     numbersAreInt,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
     bigIntFrom,
 
-    // l0/l8/gNumber.s
+    // l0/l8/Number.s
 
     numbersTotal,
     numberFrom,

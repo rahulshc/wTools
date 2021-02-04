@@ -2011,13 +2011,13 @@ function isAbsolute( test )
   test.shouldThrowErrorOfAnyKind( () => _.path.isAbsolute( NaN ) );
 
   // // Input is not Refined
-  //
+  /* */
   // test.case = '\\ in the beggining';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isAbsolute( '\\C:/foo/baz/bar' ) );
-  //
+  /* */
   // test.case = '\\ in the middle';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isAbsolute( 'C:/foo\\baz\\bar' ) );
-  //
+  /* */
   // test.case = '\\ in the end';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isAbsolute( 'C:/foo/baz/bar\\' ) );
 
@@ -2208,13 +2208,13 @@ function isRelative( test )
   test.shouldThrowErrorOfAnyKind( () => _.path.isRelative( NaN ) );
 
   // // Input is not Normalized
-  //
+  /* */
   // test.case = '\\ in the beggining';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isRelative( '\\C:/foo/baz/bar' ) );
-  //
+  /* */
   // test.case = '\\ in the middle';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isRelative( 'C:/foo\\baz\\bar' ) );
-  //
+  /* */
   // test.case = '\\ in the end';
   // test.shouldThrowErrorOfAnyKind( () => _.path.isRelative( 'C:/foo/baz/bar\\' ) );
 
@@ -3112,7 +3112,7 @@ function ends( test )
   var got = _.path.ends( 'foo/bar//baz/asdf/quux/..', '/..' );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'Ends';
 
