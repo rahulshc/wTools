@@ -154,7 +154,8 @@ function make( src )
   }
   else if( _.longLike( src ) )
   {
-    return this.tools.longMake( src );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMake( src );
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -176,15 +177,15 @@ function make( src )
   {
     return src;
   }
-  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* qqq2 : cover */
+  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.shallowClone ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.shallowClone ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method shallowClone */
   {
     return src.shallowClone();
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
