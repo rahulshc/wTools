@@ -13,7 +13,6 @@ let Self = _.entity = _.entity || Object.create( null );
 
 function makeEmpty( src )
 {
-
   _.assert( arguments.length === 1 );
 
   if( _.arrayIs( src ) )
@@ -22,7 +21,9 @@ function makeEmpty( src )
   }
   else if( _.longIs( src ) )
   {
-    return this.tools.longMakeEmpty( src );
+    // return this.tools.longMakeEmpty( src );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMakeEmpty( src );
   }
   else if( _.setIs( src ) )
   {
@@ -48,7 +49,7 @@ function makeEmpty( src )
   {
     return src;
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
@@ -60,7 +61,6 @@ function makeEmpty( src )
 
 function makeUndefined( src, length )
 {
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( src ) )
@@ -69,7 +69,9 @@ function makeUndefined( src, length )
   }
   else if( _.longIs( src ) )
   {
-    return this.tools.longMakeUndefined( src, length );
+    // return this.tools.longMakeUndefined( src, length );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMakeUndefined( src, length );
   }
   else if( _.setIs( src ) )
   {
@@ -95,12 +97,11 @@ function makeUndefined( src, length )
   {
     return src;
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
-
 }
 
 // //
@@ -153,7 +154,8 @@ function make( src )
   }
   else if( _.longLike( src ) )
   {
-    return this.tools.longMake( src );
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMake( src );
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -175,15 +177,15 @@ function make( src )
   {
     return src;
   }
-  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* qqq2 : cover */
+  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.shallowClone ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.shallowClone ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method shallowClone */
   {
     return src.shallowClone();
   }
-  else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
