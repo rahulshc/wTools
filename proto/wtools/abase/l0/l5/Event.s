@@ -799,13 +799,13 @@ let Extension =
   Name,
   Chain,
 
-  on, /* aaa : cover please, take into accout chain case */ /* Dmytro : covered */
+  on,
   once,
-  off, /* aaa : cover please */ /* Dmytro : covered */
+  off,
   off_functor,
 
-  eventHasHandler, /* aaa : cover please */ /* Dmytro : covered */
-  eventGive, /* aaa : cover please */ /* Dmytro : covered */
+  eventHasHandler,
+  eventGive,
 
 }
 

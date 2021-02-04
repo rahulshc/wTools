@@ -175,13 +175,13 @@ function make( src )
   {
     return src;
   }
-  else if( _.routineIs( src[ shallowSymbol ] ) ) /* qqq2 : cover */
+  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* qqq2 : cover */
   {
-    return src[ shallowSymbol ]();
+    return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.shallow ) ) /* qqq2 : cover */
+  else if( _.routineIs( src.shallowClone ) ) /* qqq2 : cover */
   {
-    return src.shallow();
+    return src.shallowClone();
   }
   else if( _.routineIs( src.constructor ) ) /* qqq2 : cover */
   {
@@ -587,18 +587,13 @@ _.mapSupplement( _, ToolsExtension );
 // entity extension
 // --
 
-// const iteratorSymbol = Symbol.iterator;
-// const equalAreSymbol = Symbol.for( 'equalAre' );
-// const shallowSymbol = Symbol.for( 'shallow' );
-// const deepSymbol = Symbol.for( 'deep' );
-
 const iteratorSymbol = _.entity.iteratorSymbol;
 const typeNameGetterSymbol = _.entity.typeNameGetterSymbol;
 const toPrimitiveSymbol = _.entity.toPrimitiveSymbol;
 const toStrNjsSymbol = _.entity.toStrNjsSymbol;
 const equalAreSymbol = _.entity.equalAreSymbol;
-const shallowSymbol = _.entity.shallowSymbol;
-const deepSymbol = _.entity.deepSymbol;
+const shallowCloneSymbol = _.entity.shallowCloneSymbol;
+const deepCloneSymbol = _.entity.deepCloneSymbol;
 
 let EntityExtension =
 {

@@ -89,7 +89,7 @@ let Extension =
   bigIntFrom,
   bigIntsFrom,
 
-  numberClamp,
+  numberClamp, /* teach it to accept cintervals */
   numberMix,
 
 }

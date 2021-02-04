@@ -182,17 +182,6 @@ function _Setup9()
 // routines
 // --
 
-// let ErrorExtension =
-// {
-//
-//   _handleUncaught2,
-//   _handleUncaughtAsync,
-//   _setupUncaughtErrorHandler9,
-//
-//   uncaughtDelayTime : 100,
-//
-// }
-
 let SetupExtension =
 {
 
@@ -211,7 +200,6 @@ let SetupExtension =
 
 }
 
-// Object.assign( _.error, ErrorExtension );
 Object.assign( _.setup, SetupExtension );
 Self._Setup9();
 

@@ -152,8 +152,8 @@ const typeNameGetterSymbol = Symbol.toStringTag;
 const toPrimitiveSymbol = Symbol.toPrimitive;
 const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
-const shallowSymbol = Symbol.for( 'shallow' );
-const deepSymbol = Symbol.for( 'deep' );
+const shallowCloneSymbol = Symbol.for( 'shallowClone' );
+const deepCloneSymbol = Symbol.for( 'deepClone' );
 
 // _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
 // _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );
@@ -177,8 +177,8 @@ let EntityExtension =
   toPrimitiveSymbol,
   toStrNjsSymbol,
   equalAreSymbol,
-  shallowSymbol,
-  deepSymbol,
+  shallowCloneSymbol,
+  deepCloneSymbol,
 
 }
 

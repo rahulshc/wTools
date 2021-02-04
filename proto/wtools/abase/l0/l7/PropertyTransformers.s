@@ -1073,8 +1073,6 @@ let _Transformers =
   dstNotOwnOrUndefinedAssigning,
   dstNotOwnAssigning,
   dstNotOwnAppending,
-  // dstNotOwnFromDefinition, /* yyy : move it and related to blueprint */
-  // dstNotOwnFromDefinitionStrictlyPrimitive, /* yyy : move it and related to blueprint */
 
   // dstHas
 
