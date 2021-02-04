@@ -1,7 +1,7 @@
 ( function _Compose_s_()
 {
 
-'use strict';
+'use strict'; /* xxx : deprecate? */
 
 let _global = _global_;
 let _ = _global_.wTools;

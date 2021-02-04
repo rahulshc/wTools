@@ -5,7 +5,6 @@
 
 let _global = _realGlobal_;
 let _ = _global_.wTools;
-// let ContainerAdapterAbstract = _.containerAdapter.Abstract;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -762,7 +761,6 @@ function ExportTo( dstGlobal, srcGlobal )
   let _ = dstGlobal.wTools;
   _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
-  // _.containerAdapter = srcGlobal.wTools.containerAdapter;
   if( typeof module !== 'undefined' )
   module[ 'exports' ] = _.containerAdapter;
 }
@@ -793,7 +791,6 @@ var Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 _.assert( _.containerAdapter === Self );
-// _.containerAdapter = Self;
 
 // --
 // export

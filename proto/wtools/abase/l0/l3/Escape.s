@@ -39,18 +39,18 @@ function from( src )
 
 //
 
-function shallow()
+function shallowClone()
 {
-  _.assert( !( this instanceof shallow ) );
+  _.assert( !( this instanceof shallowClone ) );
   return this;
 }
 
 //
 
-function deep()
+function deepClone()
 {
   debugger;
-  _.assert( !( this instanceof deep ) );
+  _.assert( !( this instanceof deepClone ) );
   return this;
 }
 
@@ -141,12 +141,12 @@ function exportString()
 // --
 
 const iteratorSymbol = Symbol.iterator;
-const typeNameGetterSymbol = Symbol.toStringTag; /* xxx */
+const typeNameGetterSymbol = Symbol.toStringTag;
 const toPrimitiveSymbol = Symbol.toPrimitive;
 const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
-const shallowSymbol = Symbol.for( 'shallow' );
-const deepSymbol = Symbol.for( 'deep' );
+const shallowCloneSymbol = Symbol.for( 'shallowClone' );
+const deepCloneSymbol = Symbol.for( 'deepClone' );
 
 function Escape( val )
 {
@@ -162,9 +162,9 @@ Escape.prototype = Object.create( null );
 Escape.prototype[ iteratorSymbol ] = iterate;
 Escape.prototype[ toPrimitiveSymbol ] = exportStringIgnoringArgs;
 Escape.prototype[ toStrNjsSymbol ] = exportStringIgnoringArgs;
-Escape.prototype[ shallowSymbol ] = shallow;
-Escape.prototype[ deepSymbol ] = deep;
-Escape.prototype[ equalAreSymbol ] = equalAre;
+Escape.prototype[ shallowCloneSymbol ] = shallowClone; /* qqq : cover */
+Escape.prototype[ deepCloneSymbol ] = deepClone; /* xxx : implement */
+Escape.prototype[ equalAreSymbol ] = equalAre; /* qqq : cover */
 Escape.prototype.exportString = exportString;
 Escape.prototype.constructor = Escape;
 

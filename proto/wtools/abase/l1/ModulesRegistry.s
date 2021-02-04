@@ -540,7 +540,7 @@ let wTemplateFileWriter =
 
 let wColor =
 {
-  sourcePath : sourcePath( 'amid/color/Color.s', 'wColor' ),
+  sourcePath : sourcePath( 'amid/color/entry/ColorBasic.s', 'wColor' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap },
 }
 

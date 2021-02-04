@@ -152,7 +152,7 @@ let Extension =
 
 //
 
-_.mapSupplement( _, Extension );
+_.mapSupplement( _, Extension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR */
 
 // --
 // export

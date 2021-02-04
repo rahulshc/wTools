@@ -66,7 +66,6 @@ function extendReplacing( dst, src )
   else if( _.hashMapLike( src ) )
   {
 
-    // _.assert( 0, 'not tested' );
     if( _.hashMapLike( dst ) || _.mapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
@@ -76,7 +75,6 @@ function extendReplacing( dst, src )
   else if( _.setLike( src ) )
   {
 
-    // _.assert( 0, 'not tested' );
     if( _.setLike( dst ) || _.longLike( dst ) )
     dst = _.arraySetUnion_( dst, src );
     else

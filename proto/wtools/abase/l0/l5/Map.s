@@ -1262,11 +1262,6 @@ function mapComplementReplacingUndefines( dstMap, srcMap )
 {
   _.assert( !!_.property.mapper );
   return _.mapExtendConditional( _.property.mapper.dstNotOwnOrUndefinedAssigning(), ... arguments );
-  // if( arguments.length === 2 )
-  // return _.mapExtendConditional( _.property.mapper.dstNotOwnOrUndefinedAssigning(), dstMap, srcMap );
-  // let args = _.longSlice( arguments );
-  // args.unshift( _.property.mapper.dstNotOwnOrUndefinedAssigning() );
-  // return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1282,9 +1277,6 @@ function mapsComplementReplacingUndefines( dstMap, srcMaps )
 function mapComplementPreservingUndefines( dstMap )
 {
   return _.mapExtendConditional( _.property.mapper.dstNotOwnAssigning(), ... arguments );
-  // let args = _.longSlice( arguments );
-  // args.unshift( _.property.mapper.dstNotOwnAssigning() );
-  // return _.mapExtendConditional.apply( this, args );
 }
 
 //

@@ -188,7 +188,7 @@ function _routineJoin( o )
         return Function.prototype.bind.call( routine, context );
       }
     }
-    else if( context === undefined && args !== undefined ) // zzz
+    else if( context === undefined && args !== undefined )
     {
       if( o.sealing === true )
       {
@@ -416,13 +416,6 @@ function routineOptions( routine, args, defaults )
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
-  /* aaa
-    inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
-    to make the routine available on low levels
-    error in Map.s cause problem with catching uncaught error
-  */
-  /* Dmytro : all routines are inlined */
-
   if( Config.debug )
   {
     let extraKeys = mapButKeys( options, defaults );
@@ -513,12 +506,6 @@ function assertRoutineOptions( routine, args, defaults )
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
-
-  /* aaa
-    inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
-    to make the routine available on low levels
-  */
-  /* Dmytro : all routines are inlined */
 
   if( Config.debug )
   {
