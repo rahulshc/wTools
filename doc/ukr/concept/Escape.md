@@ -3,37 +3,34 @@
 Ескейпінг - процес маскування певного значення. Реалізується рутинами і засобами, щоб вирішити проблему обмеженості значень.
 Неймспейс <code>_.escape</code> містить засоби для створення, перевірки та маніпулювання таких значень.
 
-## Рутина `_.escape.left` використовується для ескейпінгу значень
+### Рутина `_.escape.make` використовується для cтворення обгортки зі значенням.
+```
+var left = _.escape.make( null );
+console.log( left.val === null );
+/* log : true */
 
-### Ескейпінг null
+var left = _.escape.make( 12 );
+console.log( left.val === 12 );
+/* log : true */
+```
+
+### Рутина `_.escape.left` використовується для cтворення обгортки для спеціальних значень : <code>null</code>, <code>undefined</code>, <code>_.nothing</code>.
+Виклик з не спеціальним значенням повертає вхідне значення.
 ```
 var left = _.escape.left( null );
 console.log( left === _.null );
 /* log : true */
 
-```
-
-### Ескейпінг undefined
-```
 var left = _.escape.left( undefined );
 console.log( left === _.undefined );
 /* log : true */
 
-```
-
-### Ескейпінг _.nothing
-```
 var left = _.escape.left( _.nothing );
 console.log( left === _.escape.nothing );
 /* log : true */
 
-```
-
-### Ескейпінг числа
-Ескейпінг не спеціальних значень -> повертається вхідне значення
-```
-var left = _.escape.left( 13 );
-console.log( left === 13 );
+var left = _.escape.left( 1 );
+console.log( left === 1 );
 /* log : true */
 
 ```
