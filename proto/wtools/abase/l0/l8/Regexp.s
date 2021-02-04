@@ -5,7 +5,8 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+// let Self = _global_.wTools;
+let Self = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -675,6 +676,8 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
+Object.assign( _, Routines );
+Object.assign( _, Fields );
 
 // --
 // export

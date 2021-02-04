@@ -10,6 +10,16 @@ let _ = _global_.wTools;
 // implement
 // --
 
+/*
+  Limitations :
+  - no control about field's names
+  - don't rewrite routine,
+  - use interface !
+  - value is defined by routing input unless defined otherwise
+  - no object modifying
+  - second argument keeps semantics
+*/
+
 function is( src )
 {
   if( !src )

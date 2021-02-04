@@ -5,7 +5,8 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+// let Self = _global_.wTools;
+let Self = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
 
 // --
 // regexp
@@ -151,8 +152,8 @@ let Extension =
 }
 
 //
-
-_.mapSupplement( _, Extension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR */
+_.mapSupplement( Self, Extension );
+_.mapSupplement( _, Extension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
 
 // --
 // export

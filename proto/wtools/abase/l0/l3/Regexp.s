@@ -119,6 +119,10 @@ let Routines =
 
 //
 
+_.assert( _.regexp === undefined );
+_.regexp = Object.create( null );
+Object.assign( _.regexp, Routines );
+Object.assign( _.regexp, Fields );
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 
