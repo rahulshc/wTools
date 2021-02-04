@@ -1736,6 +1736,40 @@ function entityMake( test )
   test.identical( got, new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
   test.true( got !== src );
 
+  test.case = 'BufferRaw, has constructor';
+  var got = _.entity.make( new BufferRaw() );
+  test.identical( got, new BufferRaw( [] ) );
+
+  test.case = 'constructor';
+  function func(){ return 0 };
+  var got = _.entity.make( func );
+  var exp = new func.constructor();
+  test.equivalent( got(), exp() );
+
+  test.case = 'constructor';
+  function Constr(){ this.x = 1; return this };
+  var got = _.entity.make( new Constr() );
+  var exp = new Constr();
+  test.identical( got.x, exp.x );
+
+  /* */
+
+  test.case = 'routine for key shallowSymbol';
+  function Constr1(){ this.x = 1; return this };
+  var src = new Constr1();
+  src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+  var got = _.entity.make( src );
+  var exp = new Constr1();
+  test.identical( got.x, exp.x );
+
+  test.case = 'routine for key shallowSymbol';
+  function Constr2(){ this.x = 1; return this };
+  var src = new Constr2();
+  src.shallowClone = () => new Constr2();
+  var got = _.entity.make( src );
+  var exp = new Constr1();
+  test.identical( got.x, exp.x );
+
   /* - */
 
   if( !Config.debug )
@@ -1746,11 +1780,6 @@ function entityMake( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.entity.make( [], 1 ) );
-
-  test.case = 'unknown type of entity';
-  test.shouldThrowErrorSync( () => _.entity.make( new BufferRaw() ) );
-  function Constr(){ this.x = 1; return this };
-  test.shouldThrowErrorSync( () => _.entity.make( new Constr() ) );
 }
 
 //
@@ -1934,6 +1963,40 @@ function entityMakeLongDescriptor( test )
     test.identical( got, new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
     test.true( got !== src );
 
+    test.case = 'BufferRaw, has constructor';
+    var got = descriptor.entityMake( new BufferRaw() );
+    test.identical( got, new BufferRaw( [] ) );
+
+    test.case = 'constructor';
+    function func(){ return 0 };
+    var got = descriptor.entityMake( func );
+    var exp = new func.constructor();
+    test.equivalent( got(), exp() );
+
+    test.case = 'constructor';
+    function Constr(){ this.x = 1; return this };
+    var got = descriptor.entityMake( new Constr() );
+    var exp = new Constr();
+    test.identical( got.x, exp.x );
+
+    /* */
+
+    test.case = 'routine for key shallowSymbol';
+    function Constr1(){ this.x = 1; return this };
+    var src = new Constr1();
+    src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+    var got = descriptor.entityMake( src );
+    var exp = new Constr1();
+    test.identical( got.x, exp.x );
+
+    test.case = 'routine for key shallowSymbol';
+    function Constr2(){ this.x = 1; return this };
+    var src = new Constr2();
+    src.shallowClone = () => new Constr2();
+    var got = descriptor.entityMake( src );
+    var exp = new Constr1();
+    test.identical( got.x, exp.x );
+
     /* - */
 
     if( Config.debug )
@@ -1943,10 +2006,6 @@ function entityMakeLongDescriptor( test )
 
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.entityMake( [], 1 ) );
-
-      test.case = 'unknown type of entity';
-      test.shouldThrowErrorSync( () => descriptor.entityMake( new BufferRaw() ) );
-      test.shouldThrowErrorSync( () => descriptor.entityMake( new Constr() ) );
     }
   }
 
