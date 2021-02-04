@@ -3330,6 +3330,27 @@ function methodEqualOf( test )
   var got = _.entity.methodEqualOf( { a : 7, b : 13 } );
   var expected = false;
   test.identical( got, expected );
+
+  /* */
+
+  test.case = 'map with routine under symbol equalAreSymbol';
+  var equivalentAre = ( e1, e2 ) => e1 === e2;
+  var src = {};
+  src[ _.entity.equalAreSymbol ] = equivalentAre;
+  var got = _.entity.methodEqualOf( src );
+  test.identical( got, equivalentAre );
+
+  test.case = 'object with routine under symbol equalAreSymbol';
+  var equivalentAre = ( e1, e2 ) => e1 === e2;
+  function Constr1()
+  {
+    this.x = 2;
+    this[ _.entity.equalAreSymbol ] = equivalentAre;
+    return this;
+  };
+  var src = new Constr1();
+  var got = _.entity.methodEqualOf( src );
+  test.identical( got, equivalentAre );
 }
 
 //
