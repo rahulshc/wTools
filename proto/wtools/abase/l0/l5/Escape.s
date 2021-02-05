@@ -104,7 +104,7 @@ function unwrap( src )
 var Extension =
 {
   isEscapable, /* qqq : cover please | aaa : Done. Yevhen S. */
-  left, /* qqq : cover please */
+  left, /* qqq : cover please | aaa : Done. Yevhen S. */
   rightWithNothing, /* qqq : cover please */
   rightWithoutNothing, /* qqq : cover please */
   right : rightWithNothing,
