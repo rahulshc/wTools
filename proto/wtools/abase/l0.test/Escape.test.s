@@ -487,6 +487,7 @@ function make( test )
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
   test.identical( got, _.escape.null );
+  test.identical( got.val, src );
 
   test.case = '_.undefined';
   var src = _.undefined;
@@ -494,6 +495,7 @@ function make( test )
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
   test.identical( got, _.escape.undefined );
+  test.identical( got.val, src );
 
   test.case = '_.nothing';
   var src = _.nothing;
@@ -501,6 +503,7 @@ function make( test )
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
   test.identical( got, _.escape.nothing );
+  test.identical( got.val, src );
 
   test.case = '_.escape.null';
   var src = _.escape.null;
@@ -508,6 +511,7 @@ function make( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.undefined';
   var src = _.escape.undefined;
@@ -515,6 +519,7 @@ function make( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.nothing';
   var src = _.escape.nothing;
@@ -522,12 +527,14 @@ function make( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.make( 1 )';
   var src = _.escape.make( 1 );
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
   test.identical( _.escape.unwrap( got ), src );
 
   test.case = 'null';
@@ -535,36 +542,42 @@ function make( test )
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'undefined';
   var src = undefined;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'string';
   var src = 'string';
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'number';
   var src = 1;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'boolean';
   var src = true;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'object';
   var src = {};
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
 }
 
@@ -627,36 +640,42 @@ function from( test )
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'undefined';
   var src = undefined;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'string';
   var src = 'string';
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'number';
   var src = 1;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'boolean';
   var src = true;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
   test.case = 'object';
   var src = {};
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
 
 }
 
@@ -776,7 +795,7 @@ function left( test )
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
-  test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.undefined';
   var src = _.escape.undefined;
@@ -784,6 +803,7 @@ function left( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.nothing';
   var src = _.escape.nothing;
@@ -791,6 +811,7 @@ function left( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = '_.escape.make( 1 )';
   var src = _.escape.make( 1 );
@@ -798,6 +819,7 @@ function left( test )
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
+  test.identical( got.val, src );
 
   test.case = 'null';
   var src = null;
@@ -919,24 +941,28 @@ function rightWithNothing( test )
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'number';
   var src = 1;
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'boolean';
   var src = true;
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'object';
   var src = {};
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
 }
 
@@ -1018,24 +1044,106 @@ function rightWithoutNothing( test )
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'number';
   var src = 1;
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'boolean';
   var src = true;
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
 
   test.case = 'object';
   var src = {};
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), false );
+  test.identical( got, src );
+
+}
+
+//
+
+function wrap( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.null );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.undefined );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.nothing );
+
+  test.case = 'null';
+  var src = null;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  test.case = 'string';
+  var src = 'string';
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  test.case = 'number';
+  var src = 1;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  test.case = 'boolean';
+  var src = true;
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  test.case = 'object';
+  var src = {};
+  var got = _.escape.wrap( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got.val, src );
+
+  /* - */
+
+  test.case = 'already escaped - _.escape.null'
+  test.shouldThrowErrorSync( () => _.escape.wrap( _.escape.null ) );
+
+  test.case = 'already escaped - _.escape.make( 1 )'
+  test.shouldThrowErrorSync( () => _.escape.wrap( _.escape.make( 1 ) ) );
 
 }
 
@@ -1069,7 +1177,9 @@ let Self =
     isEscapable,
     left,
     rightWithNothing,
-    rightWithoutNothing
+    rightWithoutNothing,
+    wrap,
+    // unwrap
 
   }
 
