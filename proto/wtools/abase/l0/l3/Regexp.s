@@ -115,16 +115,59 @@ let Routines =
 
   regexpEscape,
 
+  Fields
+
+}
+
+// --
+// extension
+// --
+
+let ExtensionGlobal =
+{
+  // routines
+
+  regexpIs,
+  regexpObjectIs,
+  regexpLike,
+  regexpsLike,
+  regexpIdentical, /* qqq : cover please */
+  regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
+
+  regexpEscape,
+
+  // fields
+
+  Fields
 }
 
 //
 
+let Extension =
+{
+  // routines
+
+  is : regexpIs,
+  objectIs : regexpObjectIs,
+  like : regexpLike,
+  regexpsLike, // ?
+  identical : regexpIdentical, /* qqq : cover please */
+  equivalent : regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
+
+  escape : regexpEscape,
+
+  // fields
+
+  Fields
+}
+
+
 _.assert( _.regexp === undefined );
 _.regexp = Object.create( null );
-Object.assign( _.regexp, Routines );
-Object.assign( _.regexp, Fields );
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _.regexp, Extension )
+Object.assign( Self, ExtensionGlobal )
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
 
 // --
 // export
