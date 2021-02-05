@@ -628,8 +628,8 @@ function from( test )
   test.identical( _.escape.is( got ), exp );
   test.identical( got, src );
 
-  test.case = '_.escape.from( 1 )';
-  var src = _.escape.from( 1 );
+  test.case = '_.escape.make( 1 )';
+  var src = _.escape.make( 1 );
   var exp = true;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), true );
@@ -765,6 +765,98 @@ function isEscapable( test )
 
 }
 
+//
+
+function left( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.null );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.undefined );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), true );
+  test.identical( got, _.escape.nothing );
+
+  test.case = '_.escape.null';
+  var src = _.escape.null;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), true );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.undefined';
+  var src = _.escape.undefined;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), true );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.nothing';
+  var src = _.escape.nothing;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), true );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.make( 1 )';
+  var src = _.escape.make( 1 );
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), true );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = 'null';
+  var src = null;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( got, _.null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( got, _.undefined );
+
+  test.case = 'string';
+  var src = 'string';
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), false );
+
+  test.case = 'number';
+  var src = 1;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), false );
+
+  test.case = 'boolean';
+  var src = true;
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), false );
+
+  test.case = 'object';
+  var src = {};
+  var got = _.escape.left( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), false );
+
+}
+
 
 // --
 // declare
@@ -793,6 +885,7 @@ let Self =
     // l5
 
     isEscapable,
+    left,
 
   }
 
