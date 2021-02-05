@@ -391,6 +391,394 @@ function toStrStandard( test )
 
 }
 
+//
+
+function is( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.escape.null';
+  var src = _.escape.null;
+  var exp = true;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.escape.undefined';
+  var src = _.escape.undefined;
+  var exp = true;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.escape.nothing';
+  var src = _.escape.nothing;
+  var exp = true;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = '_.escape.make( 1 )';
+  var src = _.escape.make( 1 );
+  var exp = true;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'null';
+  var src = null;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'string';
+  var src = 'string';
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'number';
+  var src = 1;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'boolean';
+  var src = true;
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+  test.case = 'object';
+  var src = {};
+  var exp = false;
+  var got = _.escape.is( src )
+  test.identical( got, exp );
+
+}
+
+//
+
+function make( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.null';
+  var src = _.escape.null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.undefined';
+  var src = _.escape.undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.nothing';
+  var src = _.escape.nothing;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.make( 1 )';
+  var src = _.escape.make( 1 );
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'null';
+  var src = null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'string';
+  var src = 'string';
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'number';
+  var src = 1;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'boolean';
+  var src = true;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'object';
+  var src = {};
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+}
+
+//
+
+function make( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.null';
+  var src = _.escape.null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.undefined';
+  var src = _.escape.undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.nothing';
+  var src = _.escape.nothing;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = '_.escape.make( 1 )';
+  var src = _.escape.make( 1 );
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( _.escape.unwrap( got ), src );
+
+  test.case = 'null';
+  var src = null;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'string';
+  var src = 'string';
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'number';
+  var src = 1;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'boolean';
+  var src = true;
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'object';
+  var src = {};
+  var exp = true;
+  var got = _.escape.make( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+}
+
+//
+
+function from( test )
+{
+
+  test.case = '_.null';
+  var src = _.null;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.undefined';
+  var src = _.undefined;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.nothing';
+  var src = _.nothing;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = '_.escape.null';
+  var src = _.escape.null;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( got, src );
+
+  test.case = '_.escape.undefined';
+  var src = _.escape.undefined;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( got, src );
+
+  test.case = '_.escape.nothing';
+  var src = _.escape.nothing;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( got, src );
+
+  test.case = '_.escape.from( 1 )';
+  var src = _.escape.from( 1 );
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), true );
+  test.identical( _.escape.is( got ), exp );
+  test.identical( got, src );
+
+  test.case = 'null';
+  var src = null;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'string';
+  var src = 'string';
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'number';
+  var src = 1;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'boolean';
+  var src = true;
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+  test.case = 'object';
+  var src = {};
+  var exp = true;
+  var got = _.escape.from( src );
+  test.identical( _.escape.is( src ), false );
+  test.identical( _.escape.is( got ), exp );
+
+}
+
+
 // --
 // declare
 // --
@@ -408,6 +796,12 @@ let Self =
     right,
     equal,
     toStrStandard,
+
+    // l3
+
+    is,
+    make,
+    from
 
   }
 
