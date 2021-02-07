@@ -15,7 +15,11 @@ function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.arrayIs( src ) )
+  if( !src || _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else if( _.arrayIs( src ) )
   {
     return new Array();
   }
@@ -37,18 +41,18 @@ function makeEmpty( src )
   {
     return Object.create( null );
   }
-  else if( src === _.null )
-  {
-    return null;
-  }
-  else if( src === _.undefined )
-  {
-    return undefined;
-  }
-  else if( !src || _.primitiveIs( src ) )
-  {
-    return src;
-  }
+  // else if( src === _.null )
+  // {
+  //   return null;
+  // }
+  // else if( src === _.undefined )
+  // {
+  //   return undefined;
+  // }
+  // else if( !src || _.primitiveIs( src ) )
+  // {
+  //   return src;
+  // }
   else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
@@ -63,7 +67,11 @@ function makeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( src ) )
+  if( !src || _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else if( _.arrayIs( src ) )
   {
     return new Array( length !== undefined ? length : src.length );
   }
@@ -85,18 +93,18 @@ function makeUndefined( src, length )
   {
     return Object.create( null );
   }
-  else if( src === _.null )
-  {
-    return null;
-  }
-  else if( src === _.undefined )
-  {
-    return undefined;
-  }
-  else if( !src || _.primitiveIs( src ) )
-  {
-    return src;
-  }
+  // else if( src === _.null )
+  // {
+  //   return null;
+  // }
+  // else if( src === _.undefined )
+  // {
+  //   return undefined;
+  // }
+  // else if( !src || _.primitiveIs( src ) )
+  // {
+  //   return src;
+  // }
   else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
@@ -144,11 +152,15 @@ function makeUndefined( src, length )
 
 //
 
-function make( src )
+function shallowClone( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.arrayIs( src ) )
+  if( !src || _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else if( _.arrayIs( src ) )
   {
     return Array.from( src );
   }
@@ -165,18 +177,18 @@ function make( src )
   {
     return _.mapShallowClone( src )
   }
-  else if( src === _.null )
-  {
-    return null;
-  }
-  else if( src === _.undefined )
-  {
-    return undefined;
-  }
-  else if( !src || _.primitiveIs( src ) )
-  {
-    return src;
-  }
+  // else if( src === _.null )
+  // {
+  //   return null;
+  // }
+  // else if( src === _.undefined )
+  // {
+  //   return undefined;
+  // }
+  // else if( !src || _.primitiveIs( src ) )
+  // {
+  //   return src;
+  // }
   else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ shallowCloneSymbol ]();
@@ -189,48 +201,68 @@ function make( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeConstructing()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.shallowClone()\`` );
 
 }
 
-// //
 //
-// function makeConstructing( src, length )
-// {
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   if( _.arrayIs( src ) )
-//   {
-//     return new Array( length !== undefined ? length : src.length );
-//   }
-//   else if( _.longIs( src ) )
-//   {
-//     return this.tools.longMake( src, length );
-//   }
-//   else if( _.mapLike( src ) )
-//   {
-//     return Object.create( null );
-//   }
-//   else if( src === _.null )
-//   {
-//     return null;
-//   }
-//   else if( src === _.undefined )
-//   {
-//     return undefined;
-//   }
-//   else if( !src || _.primitiveIs( src ) )
-//   {
-//     return src;
-//   }
-//   else if( _.routineIs( src.constructor ) )
-//   {
-//     return new src.constructor();
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeConstructing()\`` );
-//
-// }
+
+function deepClone( src )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( !src || _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else if( _.replicate )
+  {
+    return _.replicate( src );
+  }
+  else if( _.routineIs( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  {
+    return src[ deepCloneSymbol ]();
+  }
+  else if( _.routineIs( src.deepClone ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method shallowClone */
+  {
+    return src.deepClone();
+  }
+  else if( _.arrayIs( src ) )
+  {
+    return Array.from( src );
+  }
+  else if( _.longLike( src ) )
+  {
+    let toolsNamespace = this.tools ? this.tools : this;
+    return toolsNamespace.longMake( src );
+  }
+  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  {
+    return new src.constructor( src );
+  }
+  else if( _.mapLike( src ) )
+  {
+    return _.mapShallowClone( src );
+  }
+  // else if( src === _.null )
+  // {
+  //   return null;
+  // }
+  // else if( src === _.undefined )
+  // {
+  //   return undefined;
+  // }
+  // else if( !src || _.primitiveIs( src ) )
+  // {
+  //   return src;
+  // }
+  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  {
+    return new src.constructor( src );
+  }
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.deepClone()\`` );
+
+}
 
 //
 
@@ -561,23 +593,11 @@ let ToolsExtension =
   entityMakeEmpty : makeEmpty,
   makeUndefined,
   entityMakeUndefined : makeUndefined,
-  make,
-  entityMake : make,
 
-  makeConstructing : make, /* xxx : remove later */
-
-  // makeNonConstructing,
-  // entityMakeNonConstructing : makeNonConstructing,
-
-  // makeConstructing,
-  // entityMakeConstructing : makeConstructing,
-  // make : makeConstructing,
-  // entityMake : makeConstructing,
-
-  // entityEntityEqualize : equalize,
-  // entityAssign2 : assign2, /* xxx : refactor */
-  // entityAssign2FieldFromContainer : assign2FieldFromContainer, /* dubious */
-  // entityAssign2Field : assign2Field, /* dubious */
+  make : shallowClone,
+  entityMake : shallowClone, /* xxx : remove the alias */
+  shallowClone, /* xxx */
+  deepClone,
 
 }
 
@@ -602,11 +622,9 @@ let EntityExtension =
 
   makeEmpty,
   makeUndefined,
-  make,
-  // makeNonConstructing,
-  // makeConstructing,
-  // make : makeConstructing,
-  makeConstructing : make, /* xxx : remove later */
+  shallowClone,
+  deepClone,
+  make : shallowClone, /* xxx */
 
   equalize,
 

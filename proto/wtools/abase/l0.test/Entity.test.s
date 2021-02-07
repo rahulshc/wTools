@@ -29,149 +29,149 @@ let _ = _global_.wTools;
 // function entityMakeConstructing( test )
 // {
 //   test.case = 'null';
-//   var got = _.entity.makeConstructing( null );
+//   var got = _.entity.shallowClone( null );
 //   test.identical( got, null );
 //
 //   test.case = 'undefined';
-//   var got = _.entity.makeConstructing( undefined );
+//   var got = _.entity.shallowClone( undefined );
 //   test.identical( got, undefined );
 //
 //   test.case = 'zero';
-//   var got = _.entity.makeConstructing( 0 );
+//   var got = _.entity.shallowClone( 0 );
 //   test.identical( got, 0 );
 //
 //   test.case = 'number';
-//   var got = _.entity.makeConstructing( 3 );
+//   var got = _.entity.shallowClone( 3 );
 //   test.identical( got, 3 );
 //
 //   test.case = 'bigInt';
-//   var got = _.entity.makeConstructing( 1n );
+//   var got = _.entity.shallowClone( 1n );
 //   test.identical( got, 1n );
 //
 //   test.case = 'empty string';
-//   var got = _.entity.makeConstructing( '' );
+//   var got = _.entity.shallowClone( '' );
 //   test.identical( got, '' );
 //
 //   test.case = 'string';
-//   var got = _.entity.makeConstructing( 'str' );
+//   var got = _.entity.shallowClone( 'str' );
 //   test.identical( got, 'str' );
 //
 //   test.case = 'false';
-//   var got = _.entity.makeConstructing( false );
+//   var got = _.entity.shallowClone( false );
 //   test.identical( got, false );
 //
 //   test.case = 'NaN';
-//   var got = _.entity.makeConstructing( NaN );
+//   var got = _.entity.shallowClone( NaN );
 //   test.identical( got, NaN );
 //
 //   test.case = 'Symbol';
 //   var src = Symbol( 'a' );
-//   var got = _.entity.makeConstructing( src );
+//   var got = _.entity.shallowClone( src );
 //   test.identical( got, src );
 //
 //   test.case = '_.null';
-//   var got = _.entity.makeConstructing( _.null );
+//   var got = _.entity.shallowClone( _.null );
 //   test.identical( got, null );
 //
 //   test.case = '_.undefined';
-//   var got = _.entity.makeConstructing( _.undefined );
+//   var got = _.entity.shallowClone( _.undefined );
 //   test.identical( got, undefined );
 //
 //   test.case = '_.nothing';
-//   var got = _.entity.makeConstructing( _.nothing );
+//   var got = _.entity.shallowClone( _.nothing );
 //   test.identical( got, _.nothing );
 //
 //   test.case = 'empty array';
-//   var got = _.entity.makeConstructing( [] );
+//   var got = _.entity.shallowClone( [] );
 //   test.identical( got, [] );
 //
 //   test.case = 'empty array, length';
-//   var got = _.entity.makeConstructing( [], 4 );
+//   var got = _.entity.shallowClone( [], 4 );
 //   test.identical( got, [ undefined, undefined, undefined, undefined ] );
 //
 //   test.case = 'not empty array';
-//   var got = _.entity.makeConstructing( [ null, undefined, 1, 2 ] );
+//   var got = _.entity.shallowClone( [ null, undefined, 1, 2 ] );
 //   test.identical( got, [ undefined, undefined, undefined, undefined ] );
 //
 //   test.case = 'not empty array, length';
-//   var got = _.entity.makeConstructing( [ null, undefined, 1, 2 ], 2 );
+//   var got = _.entity.shallowClone( [ null, undefined, 1, 2 ], 2 );
 //   test.identical( got, [ undefined, undefined ] );
 //
 //   test.case = 'empty arguments array';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [] ) );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [] ) );
 //   test.identical( got, [] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'empty arguments array, length';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [] ), 4 );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [] ), 4 );
 //   test.identical( got, [ undefined, undefined, undefined, undefined ] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'not empty argumentsArray';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
 //   test.identical( got, [ null, undefined, 1, 2 ] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'not empty argumentsArray, length';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
 //   test.identical( got, [ null, undefined ] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'empty unroll';
-//   var got = _.entity.makeConstructing( _.unrollMake( [] ) );
+//   var got = _.entity.shallowClone( _.unrollMake( [] ) );
 //   test.identical( got, [] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'empty unroll, length';
-//   var got = _.entity.makeConstructing( _.unrollMake( [] ), 4 );
+//   var got = _.entity.shallowClone( _.unrollMake( [] ), 4 );
 //   test.identical( got, [ undefined, undefined, undefined, undefined ] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'not empty unroll';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
 //   test.identical( got, [ null, undefined, 1, 2 ] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'not empty unroll, length';
-//   var got = _.entity.makeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+//   var got = _.entity.shallowClone( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
 //   test.identical( got, [ null, undefined ] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'BufferTyped';
-//   var got = _.entity.makeConstructing( new U8x( 10 ) );
+//   var got = _.entity.shallowClone( new U8x( 10 ) );
 //   test.identical( got, new U8x( 10 ) );
 //
 //   test.case = 'BufferTyped, length';
-//   var got = _.entity.makeConstructing( new U8x( 10 ), 4 );
+//   var got = _.entity.shallowClone( new U8x( 10 ), 4 );
 //   test.identical( got, new U8x( 4 ) );
 //
 //   test.case = 'empty map';
-//   var got = _.entity.makeConstructing( {} );
+//   var got = _.entity.shallowClone( {} );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
 //   test.case = 'empty map, length';
-//   var got = _.entity.makeConstructing( {}, 4 );
+//   var got = _.entity.shallowClone( {}, 4 );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
 //   test.case = 'not empty map';
-//   var got = _.entity.makeConstructing( { '' : null } );
+//   var got = _.entity.shallowClone( { '' : null } );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
 //   test.case = 'not empty map, length';
-//   var got = _.entity.makeConstructing( { '' : null }, 4 );
+//   var got = _.entity.shallowClone( { '' : null }, 4 );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
 //   test.case = 'empty pure map';
-//   var got = _.entity.makeConstructing( Object.create( null ) );
+//   var got = _.entity.shallowClone( Object.create( null ) );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
 //   test.case = 'empty pure map, length';
-//   var got = _.entity.makeConstructing( Object.create( null ) );
+//   var got = _.entity.shallowClone( Object.create( null ) );
 //   test.identical( got, {} );
 //   test.true( _.mapIsPure( got ) );
 //
@@ -182,7 +182,7 @@ let _ = _global_.wTools;
 //     return this;
 //   };
 //   var src = new Constr( 2 );
-//   var got = _.entity.makeConstructing( src );
+//   var got = _.entity.shallowClone( src );
 //   test.identical( got.x, 1 );
 //   test.true( got !== src );
 //
@@ -193,7 +193,7 @@ let _ = _global_.wTools;
 //     return this;
 //   };
 //   var src = new Constr2( 2 );
-//   var got = _.entity.makeConstructing( src, 2 );
+//   var got = _.entity.shallowClone( src, 2 );
 //   test.identical( got.x, 1 );
 //   test.true( got !== src );
 //
@@ -203,15 +203,15 @@ let _ = _global_.wTools;
 //   return;
 //
 //   test.case = 'without arguments';
-//   test.shouldThrowErrorSync( () => _.entity.makeConstructing() );
+//   test.shouldThrowErrorSync( () => _.entity.shallowClone() );
 //
 //   test.case = 'extra arguments';
-//   test.shouldThrowErrorSync( () => _.entity.makeConstructing( [], 1, 1 ) );
+//   test.shouldThrowErrorSync( () => _.entity.shallowClone( [], 1, 1 ) );
 //
 //   test.case = 'unknown type of entity';
-//   test.shouldThrowErrorSync( () => _.entity.makeConstructing( new Set( [ 1, 'str', false ] ) ) );
-//   test.shouldThrowErrorSync( () => _.entity.makeConstructing( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) ) );
-//   test.shouldThrowErrorSync( () => _.entity.makeConstructing( new BufferRaw() ) );
+//   test.shouldThrowErrorSync( () => _.entity.shallowClone( new Set( [ 1, 'str', false ] ) ) );
+//   test.shouldThrowErrorSync( () => _.entity.shallowClone( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) ) );
+//   test.shouldThrowErrorSync( () => _.entity.shallowClone( new BufferRaw() ) );
 // }
 //
 // //
@@ -220,48 +220,48 @@ let _ = _global_.wTools;
 // {
 //   test.case = 'src = empty long, not ins';
 //   var src = _.argumentsArrayMake( [] );
-//   var got = _.entity.makeConstructing( src );
+//   var got = _.entity.shallowClone( src );
 //   var expected = _.longDescriptor.make( [] );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = long, not ins';
 //   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
-//   var got = _.entity.makeConstructing( src );
+//   var got = _.entity.shallowClone( src );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = null';
 //   var src = _.argumentsArrayMake( [] );
-//   var got = _.entity.makeConstructing( src, null );
+//   var got = _.entity.shallowClone( src, null );
 //   var expected = _.longDescriptor.make( 0 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = number';
 //   var src = _.argumentsArrayMake( [] );
-//   var got = _.entity.makeConstructing( src, 2 );
+//   var got = _.entity.shallowClone( src, 2 );
 //   var expected = _.longDescriptor.make( 2 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = number, ins < src.length';
 //   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
-//   var got = _.entity.makeConstructing( src, 2 );
+//   var got = _.entity.shallowClone( src, 2 );
 //   var expected = _.longDescriptor.make( [ 1, 2 ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long with an element, ins = empty array';
 //   var src = new F64x( 10 );
-//   var got = _.entity.makeConstructing( src, [] );
+//   var got = _.entity.shallowClone( src, [] );
 //   var expected = new F64x( 0 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = number, ins > src.length';
 //   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
-//   var got = _.entity.makeConstructing( src, 4 );
+//   var got = _.entity.shallowClone( src, 4 );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
@@ -269,7 +269,7 @@ let _ = _global_.wTools;
 //   test.case = 'src = long, ins = array, ins.length > src.length';
 //   var src = _.argumentsArrayMake( [ 0, 1 ] );
 //   var ins = [ 1, 2, 3 ];
-//   var got = _.entity.makeConstructing( src, ins );
+//   var got = _.entity.shallowClone( src, ins );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
 //   test.identical( got, expected );
 //   test.true( got !== ins );
@@ -278,7 +278,7 @@ let _ = _global_.wTools;
 //   test.case = 'src = long, ins = array, ins.length === src.length'
 //   var src = _.argumentsArrayMake( 5 );
 //   var ins = [ 1, 2, 3, 4, 5 ];
-//   var got = _.entity.makeConstructing( src, ins );
+//   var got = _.entity.shallowClone( src, ins );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
@@ -311,13 +311,13 @@ let _ = _global_.wTools;
 //   {
 //     test.case = 'src = empty long, not ins';
 //     var src = new long( [] );
-//     var got = _.entity.makeConstructing( src );
+//     var got = _.entity.shallowClone( src );
 //     var expected = new long( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
 //     var src = new long( [ 1, 2, 3 ] );
-//     var got = _.entity.makeConstructing( src );
+//     var got = _.entity.shallowClone( src );
 //     var expected = new long( [ 1, 2, 3 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
@@ -325,7 +325,7 @@ let _ = _global_.wTools;
 //
 //     test.case = 'src = empty long, ins = null';
 //     var src = new long( [] );
-//     var got = _.entity.makeConstructing( src, null );
+//     var got = _.entity.shallowClone( src, null );
 //     var expected = new long( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
@@ -333,7 +333,7 @@ let _ = _global_.wTools;
 //
 //     test.case = 'src = empty long, ins = number';
 //     var src = new long( [] );
-//     var got = _.entity.makeConstructing( src, 2 );
+//     var got = _.entity.shallowClone( src, 2 );
 //     var expected = new long( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
@@ -341,7 +341,7 @@ let _ = _global_.wTools;
 //
 //     test.case = 'src = long, ins = number, ins < src.length';
 //     var src = new long( [ 1, 2, 3 ] );
-//     var got = _.entity.makeConstructing( src, 2 );
+//     var got = _.entity.shallowClone( src, 2 );
 //     var expected = new long( [ 1, 2 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
@@ -349,14 +349,14 @@ let _ = _global_.wTools;
 //
 //     test.case = 'src = long with an element, ins = empty array';
 //     var src = new F64x( 10 );
-//     var got = _.entity.makeConstructing( src, [] );
+//     var got = _.entity.shallowClone( src, [] );
 //     var expected = new F64x( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins > src.length';
 //     var src = new long( [ 1, 2, 3 ] );
-//     var got = _.entity.makeConstructing( src, 4 );
+//     var got = _.entity.shallowClone( src, 4 );
 //     var expected = new long( [ 1, 2, 3, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
@@ -365,7 +365,7 @@ let _ = _global_.wTools;
 //     test.case = 'src = long, ins = array, ins.length > src.length';
 //     var src = new long( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
-//     var got = _.entity.makeConstructing( src, ins );
+//     var got = _.entity.shallowClone( src, ins );
 //     var expected = new long( [ 1, 2, 3 ] );
 //     test.identical( got, expected );
 //     test.true( got !== ins );
@@ -375,7 +375,7 @@ let _ = _global_.wTools;
 //     test.case = 'src = long, ins = array, ins.length === src.length'
 //     var src = new long( 5 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
-//     var got = _.entity.makeConstructing( src, ins );
+//     var got = _.entity.shallowClone( src, ins );
 //     var expected = new long( [ 1, 2, 3, 4, 5 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
