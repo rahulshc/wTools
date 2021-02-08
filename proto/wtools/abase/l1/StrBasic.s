@@ -1065,39 +1065,39 @@ function strEscape( o )
     else switch( code )
     {
 
-    case 0x5c /* '\\' */ :
-      result += '\\\\';
-      break;
+      case 0x5c /* '\\' */ :
+        result += '\\\\';
+        break;
 
-    case 0x08 /* '\b' */ :
-      result += '\\b';
-      break;
+      case 0x08 /* '\b' */ :
+        result += '\\b';
+        break;
 
-    case 0x0c /* '\f' */ :
-      result += '\\f';
-      break;
+      case 0x0c /* '\f' */ :
+        result += '\\f';
+        break;
 
-    case 0x0a /* '\n' */ :
-      result += '\\n';
-      break;
+      case 0x0a /* '\n' */ :
+        result += '\\n';
+        break;
 
-    case 0x0d /* '\r' */ :
-      result += '\\r';
-      break;
+      case 0x0d /* '\r' */ :
+        result += '\\r';
+        break;
 
-    case 0x09 /* '\t' */ :
-      result += '\\t';
-      break;
+      case 0x09 /* '\t' */ :
+        result += '\\t';
+        break;
 
-    default :
-      if( code < 32 )
-      {
-        result += _.strCodeUnicodeEscape( code );
-      }
-      else
-      {
-        result += String.fromCharCode( code );
-      }
+      default :
+        if( code < 32 )
+        {
+          result += _.strCodeUnicodeEscape( code );
+        }
+        else
+        {
+          result += String.fromCharCode( code );
+        }
 
     }
 
@@ -3369,7 +3369,8 @@ function strLinesCount( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
-  let result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
+  let result = src.indexOf( '\n' ) === -1 ? 1 : src.split( '\n' ).length;
+  // let result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
   return result;
 }
 
