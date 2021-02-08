@@ -559,7 +559,7 @@ function _err( o )
   // let message = null;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
   if( _global_.debugger )
   debugger;
@@ -1732,7 +1732,7 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
 }
 
@@ -1853,119 +1853,29 @@ function sureWithoutDebugger( condition )
 }
 
 // --
-// checker
-// --
-//
-// function _isInstanceOrClass( _constructor, _this )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   debugger;
-//   let result =
-//   (
-//     _this === _constructor
-//     || _this instanceof _constructor
-//     || Object.isPrototypeOf.call( _constructor, _this )
-//     || Object.isPrototypeOf.call( _constructor, _this.prototype )
-//   );
-//   return result;
-// }
-//
-// //
-//
-// function _ownNoConstructor( ins )
-// {
-//   _.assert( !_.primitiveIs( ins ) );
-//   _.assert( arguments.length === 1 );
-//   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
-//   return result;
-// }
-//
-// //
-//
-// function sureInstanceOrClass( _constructor, _this )
-// {
-//   _.sure( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.sure( _._isInstanceOrClass( _constructor, _this ) );
-// }
-//
-// //
-//
-// function sureOwnNoConstructor( ins )
-// {
-//   _.sure( !_.primitiveIs( ins ) );
-//   let args = Array.prototype.slice.call( arguments );
-//   args[ 0 ] = _.sureOwnNoConstructor( ins );
-//   _.sure.apply( _, args );
-// }
-//
-// //
-//
-// function assertInstanceOrClass( _constructor, _this )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _._isInstanceOrClass( _constructor, _this ) );
-// }
-//
-// //
-//
-// function assertOwnNoConstructor( ins )
-// {
-//   _.assert( !_.primitiveIs( ins ) );
-//   let args = Array.prototype.slice.call( arguments );
-//   args[ 0 ] = _.sureOwnNoConstructor( ins );
-//
-//   if( args.length === 1 )
-//   args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
-//
-//   _.assert.apply( _, args );
-// }
-
-// //
-//
-// function sureInstanceOrClass( _constructor, _this )
-// {
-//   _.sure( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.sure( _._isInstanceOrClass( _constructor, _this ) );
-// }
-//
-// //
-//
-// function sureOwnNoConstructor( ins )
-// {
-//   _.sure( !_.primitiveIs( ins ) );
-//   _.sure( arguments.length === 1 );
-//   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
-//   return result;
-//   // _.sure( !_.primitiveIs( ins ) );
-//   // let args = Array.prototype.slice.call( arguments );
-//   // args[ 0 ] = _.sureOwnNoConstructor( ins );
-//   // _.sure.apply( _, args );
-// }
-
-// --
 //
 // --
 
-function breakpoint( condition )
-{
-
-  if( Config.debug === false )
-  return true;
-
-  if( !condition )
-  {
-    // let err = _err
-    // ({
-    //   args : Array.prototype.slice.call( arguments, 1 ),
-    //   level : 2,
-    // });
-    logger.log( _.introspector.stack() );
-
-    return false;
-  }
-
-  return true;
-}
+// function breakpoint( condition )
+// {
+//
+//   if( Config.debug === false )
+//   return true;
+//
+//   if( !condition )
+//   {
+//     // let err = _err
+//     // ({
+//     //   args : Array.prototype.slice.call( arguments, 1 ),
+//     //   level : 2,
+//     // });
+//     logger.log( _.introspector.stack() );
+//
+//     return false;
+//   }
+//
+//   return true;
+// }
 
 //
 
@@ -2072,7 +1982,7 @@ function assert( condition )
 
   function _assertDebugger( condition, args )
   {
-    if( !_.error.breakpointEnabled )
+    if( !_.error.breakpointOnAssertEnabled )
     return;
     debugger;
   }
@@ -2119,7 +2029,7 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
   _.assert( false, 'not tested : ' + stack( 1 ) );
 
@@ -2157,41 +2067,40 @@ function assertWarn( condition )
 
 }
 
-// //
 //
-// function assertInstanceOrClass( _constructor, _this )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _._isInstanceOrClass( _constructor, _this ) );
-// }
-//
-// //
 
-// function assertOwnNoConstructor( ins )
-// {
-//   _.assert( !_.primitiveIs( ins ) );
-//   let args = Array.prototype.slice.call( arguments );
-//   args[ 0 ] = _.sureOwnNoConstructor( ins );
-//
-//   if( args.length === 1 )
-//   args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
-//
-//   _.assert.apply( _, args );
-// }
+if( Config.debug )
+Object.defineProperty( _, 'debugger',
+{
+  enumerable : false,
+  configurable : false,
+  set : function( val )
+  {
+    _[ Symbol.for( 'debugger' ) ] = val;
+    if( val )
+    debugger;
+    return val;
+  },
+  get : function()
+  {
+    let val = _[ Symbol.for( 'debugger' ) ];
+    if( val )
+    debugger;
+    return val;
+  },
+});
 
 // --
 // namespace
 // --
 
-// let _errorCounter = 0;
-// let _errorMaking = false;
 let stackSymbol = Symbol.for( 'stack' );
 
 /* Error.stackTraceLimit = 99; */
 
 /**
  * @property {Object} error={}
- * @property {Boolean} breakpointEnabled=!!Config.debug
+ * @property {Boolean} breakpointOnAssertEnabled=!!Config.debug
  * @name ErrFields
  * @namespace Tools
  */
@@ -2199,8 +2108,9 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
-  breakpoint,
-  breakpointEnabled : !!Config.debug,
+  // breakpoint,
+  breakpointOnDebugger : 0,
+  breakpointOnAssertEnabled : !!Config.debug,
   _errorCounter : 0,
   _errorMaking : false,
 
@@ -2276,7 +2186,7 @@ let ToolsExtension =
   // fields
 
   // error : Object.create( null ),
-  // breakpointEnabled : !!Config.debug,
+  // breakpointOnAssertEnabled : !!Config.debug,
   //
   // _errorCounter,
   // _errorMaking,

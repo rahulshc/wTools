@@ -13,7 +13,7 @@ let Self = _.container;
 
 function make()
 {
-  return _.entity.makeConstructing( ... arguments );
+  return _.entity.shallowClone( ... arguments );
 }
 
 //

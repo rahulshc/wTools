@@ -3332,7 +3332,7 @@ let Extension =
   // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
-  strSplitInlinedStereo,
+  strSplitInlinedStereo, /* !!! xxx : deprecate */
   strSplitInlinedStereo_,
 
   // converter
