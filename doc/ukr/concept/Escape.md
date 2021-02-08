@@ -3,7 +3,7 @@
 Ескейпінг - процес маскування певного значення. Реалізується рутинами і засобами, щоб вирішити проблему обмеженості значень.
 Неймспейс <code>_.escape</code> містить засоби для створення, перевірки та маніпулювання таких значень.
 
-### Приклад - додавання константного поля об'єкту.
+### Приклад - створення рутини для додавання константного поля об'єкту.
 ```
 let _ = require( '../..' );
 
@@ -57,6 +57,16 @@ function objectSetValue( object, field, value )
   }
   return object;
 }
+
+module.exports = objectSetValue;
+
+```
+
+### Приклад - використання рутини для додавання константного поля об'єкту.
+```
+
+let _ = require( '../..' );
+let objectSetValue = require( './SampleImplementation.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
 objectSetValue( src, 'fieldToBeRemained', null );
@@ -113,4 +123,3 @@ src1 :
 */
 
 ```
-
