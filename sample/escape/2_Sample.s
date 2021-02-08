@@ -1,55 +1,5 @@
 let _ = require( '../..' );
-
-/*
-null serves as an identifier, that we should not change object property's value, but make it constant.
-*/
-
-function objectSetValue( object, field, value )
-{
-  if( _.escape.is( value ) )
-  {
-    Object.defineProperty
-    (
-      object,
-      field,
-      {
-        enumerable : true,
-        configurable : false,
-        writable : false,
-        value : _.escape.right( value )
-      }
-    );
-  }
-  else if( value === null )
-  {
-    Object.defineProperty
-    (
-      object,
-      field,
-      {
-        enumerable : true,
-        configurable : false,
-        writable : false,
-        value : object[ field ]
-      }
-    );
-  }
-  else
-  {
-    Object.defineProperty
-    (
-      object,
-      field,
-      {
-        enumerable : true,
-        configurable : false,
-        writable : false,
-        value
-      }
-    );
-  }
-  return object;
-}
+let objectSetValue = require( './SampleImplementation.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
 objectSetValue( src, 'fieldToBeRemained', null );
