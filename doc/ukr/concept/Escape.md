@@ -3,6 +3,148 @@
 Ескейпінг - процес маскування певного значення. Реалізується рутинами і засобами, щоб вирішити проблему обмеженості значень.
 Неймспейс <code>_.escape</code> містить засоби для створення, перевірки та маніпулювання таких значень.
 
+### Приклад - створення рутини для додавання поля об'єкту.
+```
+let _ = require( '../..' );
+
+/*
+  The problem of limited values :
+  Set object field to a value.
+  If value === null, do nothing
+
+  What if we want to add `null` as the value ?
+*/
+
+function objectSetValue( obj, field, value )
+{
+  if( value === null )
+  return;
+  else
+  obj[ field ] = value;
+}
+
+let obj = {};
+
+objectSetValue( obj, 'field1', 1 );
+objectSetValue( obj, 'field2', 2 );
+objectSetValue( obj, 'field3', null );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2 } */
+```
+
+### Приклад - створення рутини для додавання поля об'єкту з опціональним четвертим параметром.
+```
+let _ = require( '../..' );
+
+/*
+  A fourth argument can be provided to use as identifier whether to assign value or not
+*/
+
+function objectSetValue( obj, field, value, skip )
+{
+  if( skip === true )
+  return;
+  else
+  obj[ field ] = value;
+}
+
+let obj = {};
+
+objectSetValue( obj, 'field1', 1 );
+objectSetValue( obj, 'field2', 2 );
+objectSetValue( obj, 'field3', null );
+objectSetValue( obj, 'field4', null, true );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */
+
+```
+
+### Приклад - створення рутини для додавання поля об'єкту з використанням мапи з полями `skip` та `src` в якості першого аргументу.
+```
+let _ = require( '../..' );
+
+/*
+  A map can be provided as a first argument whether to assign value or not
+*/
+
+function objectSetValue( objectDescriptor, field, value )
+{
+  if( objectDescriptor.skip === true )
+  return;
+  else
+  objectDescriptor.src[ field ] = value;
+}
+
+let obj = {};
+
+objectSetValue( { src : obj, skip : false }, 'field1', 1 );
+objectSetValue( { src : obj, skip : false }, 'field2', 2 );
+objectSetValue( { src : obj, skip : false }, 'field3', null );
+objectSetValue( { src : obj, skip : true }, 'field4', null );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */
+
+```
+
+### Приклад - створення рутини для додавання поля об'єкту з використанням мапи з полями `skip` та `name` в якості другого аргументу.
+```
+let _ = require( '../..' );
+
+/*
+  A map can be provided as a second argument whether to assign value or not
+*/
+
+function objectSetValue( obj, fieldDescriptor, value )
+{
+  if( fieldDescriptor.skip === true )
+  return;
+  else
+  obj[ fieldDescriptor.name ] = value;
+}
+
+let obj = {};
+
+objectSetValue( obj, { name : 'field1', skip : false }, 1 );
+objectSetValue( obj, { name : 'field2', skip : false }, 2 );
+objectSetValue( obj, { name : 'field3', skip : false }, null );
+objectSetValue( obj, { name : 'field4', skip : true }, null );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */
+
+```
+
+### Приклад - створення рутини для додавання поля об'єкту з використанням мапи з полями `skip` та `value` в якості третього аргументу.
+```
+let _ = require( '../..' );
+
+/*
+  A map can be provided as a third argument whether to assign value or not
+*/
+
+function objectSetValue( obj, field, valueDescriptor )
+{
+  if( valueDescriptor.skip === true )
+  return;
+  else
+  obj[ field ] = valueDescriptor.value;
+}
+
+let obj = {};
+
+objectSetValue( obj, 'field1', { value : 1, skip : false } );
+objectSetValue( obj, 'field2', { value : 2, skip : false } );
+objectSetValue( obj, 'field3', { value : null, skip : false } );
+objectSetValue( obj, 'field4', { value : null, skip : true } );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */
+
+```
+
 ### Приклад - створення рутини для додавання константного поля об'єкту.
 ```
 let _ = require( '../..' );
