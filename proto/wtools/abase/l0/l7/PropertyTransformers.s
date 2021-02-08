@@ -264,6 +264,23 @@ function drop( dropContainer )
 
 drop.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
 
+//
+
+function notIdentical()
+{
+  let routine = notIdentical;
+  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  return routine;
+  function notIdentical( dstContainer, srcContainer, key )
+  {
+    if( dstContainer[ key ] === srcContainer[ key ] )
+    return false;
+    return true;
+  }
+}
+
+notIdentical.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+
 // --
 // src
 // --
@@ -293,7 +310,6 @@ function dstNotHasOrSrcNotNull()
   return routine;
   function dstNotHasOrSrcNotNull( dstContainer, srcContainer, key )
   {
-    // if( key in dstContainer && srcContainer[ key ] === null )
     if( key in dstContainer && dstContainer[ key ] !== undefined )
     return false;
     if( srcContainer[ key ] === null )
@@ -1036,6 +1052,7 @@ let _Transformers =
   notPrimitiveAssigning,
   assigningRecursive,
   drop,
+  notIdentical,
 
   // src
 

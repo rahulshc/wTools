@@ -152,7 +152,7 @@ function makeUndefined( src, length )
 
 //
 
-function shallowClone( src )
+function cloneShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -193,21 +193,21 @@ function shallowClone( src )
   {
     return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.shallowClone ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method shallowClone */
+  else if( _.routineIs( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
-    return src.shallowClone();
+    return src.cloneShallow();
   }
   else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.shallowClone()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneShallow()\`` );
 
 }
 
 //
 
-function deepClone( src )
+function cloneDeep( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -223,9 +223,9 @@ function deepClone( src )
   {
     return src[ deepCloneSymbol ]();
   }
-  else if( _.routineIs( src.deepClone ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method shallowClone */
+  else if( _.routineIs( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
-    return src.deepClone();
+    return src.cloneDeep();
   }
   else if( _.arrayIs( src ) )
   {
@@ -260,7 +260,7 @@ function deepClone( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.deepClone()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneDeep()\`` );
 
 }
 
@@ -594,10 +594,10 @@ let ToolsExtension =
   makeUndefined,
   entityMakeUndefined : makeUndefined,
 
-  make : shallowClone,
-  entityMake : shallowClone, /* xxx : remove the alias */
-  shallowClone, /* xxx */
-  deepClone,
+  make : cloneShallow,
+  entityMake : cloneShallow, /* xxx : remove the alias */
+  cloneShallow, /* xxx */
+  cloneDeep,
 
 }
 
@@ -622,9 +622,9 @@ let EntityExtension =
 
   makeEmpty,
   makeUndefined,
-  shallowClone,
-  deepClone,
-  make : shallowClone, /* xxx */
+  cloneShallow,
+  cloneDeep,
+  make : cloneShallow, /* xxx */
 
   equalize,
 

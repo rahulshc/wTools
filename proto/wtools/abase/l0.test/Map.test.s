@@ -447,6 +447,57 @@ function mapExtend( test )
 
 //
 
+function mapExtendNotIdentical( test )
+{
+
+  /* */
+
+  test.case = 'basic';
+  var prototype = Object.create( null );
+  prototype.a = 1;
+  prototype.b = 1;
+  var dst = Object.create( prototype );
+  dst.c = 1;
+  dst.d = 1;
+  var src = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  var got = _.mapExtendNotIdentical( dst, src );
+
+  var exp = { a : 1, b : 1 };
+  test.identical( _.property.onlyOwn( prototype ), exp );
+
+  var exp = { b : 2, c : 1, d : 2, e : 2 };
+  test.identical( _.property.onlyOwn( dst ), exp );
+
+  var exp = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  test.identical( src, exp );
+
+  /* */
+
+  test.case = 'undefined';
+  var prototype = Object.create( null );
+  prototype.a = undefined;
+  prototype.b = undefined;
+  var dst = Object.create( prototype );
+  dst.c = undefined;
+  dst.d = undefined;
+  var src = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  var got = _.mapExtendNotIdentical( dst, src );
+
+  var exp = { a : undefined, b : undefined };
+  test.identical( _.property.onlyOwn( prototype ), exp );
+
+  var exp = { b : 2, c : undefined, d : 2 };
+  test.identical( _.property.onlyOwn( dst ), exp );
+
+  var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  test.identical( src, exp );
+
+  /* */
+
+}
+
+//
+
 function mapSupplement( test )
 {
 
@@ -465,12 +516,6 @@ function mapSupplement( test )
   {
     _.mapSupplement();
   });
-
-  // test.case = 'wrong type of array';
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.mapSupplement( [] );
-  // });
 
   test.case = 'wrong type of arguments';
   test.shouldThrowErrorSync( function()
@@ -11701,6 +11746,7 @@ let Self =
 
     mapExtendConditional,
     mapExtend,
+    mapExtendNotIdentical,
     mapSupplement,
     mapComplement,
 
@@ -11737,18 +11783,6 @@ let Self =
     mapPairs,
     mapOnlyOwnPairs,
     mapAllPairs,
-
-    // mapProperties,
-    // mapOnlyOwnProperties,
-    // mapAllProperties,
-    /* */
-    // mapRoutines,
-    // mapOnlyOwnRoutines,
-    // mapAllRoutines,
-    /* */
-    // mapFields,
-    // mapOnlyOwnFields,
-    // mapAllFields,
 
     // hash map
 

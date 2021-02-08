@@ -152,8 +152,8 @@ const typeNameGetterSymbol = Symbol.toStringTag;
 const toPrimitiveSymbol = Symbol.toPrimitive;
 const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
-const shallowCloneSymbol = Symbol.for( 'shallowClone' );
-const deepCloneSymbol = Symbol.for( 'deepClone' );
+const shallowCloneSymbol = Symbol.for( 'cloneShallow' );
+const deepCloneSymbol = Symbol.for( 'cloneDeep' );
 
 // _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
 // _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );

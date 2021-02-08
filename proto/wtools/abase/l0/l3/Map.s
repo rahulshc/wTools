@@ -56,15 +56,6 @@ function objectLike( src )
   return false;
 }
 
-// //
-//
-// function objectLikeOrRoutine( src )
-// {
-//   if( _.routineIs( src ) )
-//   return true;
-//   return _.objectLike( src );
-// }
-
 //
 
 /**
@@ -1150,8 +1141,12 @@ function mapExtend( dstMap, srcMap )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
-  return Object.assign( dstMap, srcMap );
+  if( arguments.length === 2 )
+  {
+    let srcProto = Object.getPrototypeOf( srcMap );
+    if( srcProto === null || srcProto === Object.prototype )
+    return Object.assign( dstMap, srcMap );
+  }
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
@@ -1162,7 +1157,8 @@ function mapExtend( dstMap, srcMap )
 
     _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
 
-    if( Object.getPrototypeOf( srcMap ) === null )
+    let srcProto = Object.getPrototypeOf( srcMap );
+    if( srcProto === null || srcProto === Object.prototype )
     Object.assign( dstMap, srcMap );
     else
     for( let k in srcMap )
@@ -1269,7 +1265,6 @@ let Extension =
 
   objectIs,
   objectLike,
-  // objectLikeOrRoutine,
 
   mapIs,
   mapIsEmpty,
@@ -1299,20 +1294,6 @@ let Extension =
   mapPairs,
   mapOnlyOwnPairs,
   mapAllPairs,
-
-  // property._select,
-  //
-  // mapProperties,
-  // mapOnlyOwnProperties,
-  // mapAllProperties,
-  //
-  // mapRoutines,
-  // mapOnlyOwnRoutines,
-  // mapAllRoutines,
-  //
-  // mapFields,
-  // mapOnlyOwnFields,
-  // mapAllFields,
 
   mapFirstPair,
   mapValsSet,
