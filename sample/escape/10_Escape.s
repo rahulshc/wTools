@@ -1,5 +1,5 @@
 let _ = require( '../..' );
-let objectSetValue = require( './SampleImplementation.s' )
+let objectSetValue = require( './EscapeImplementation.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
 objectSetValue( src, 'fieldToBeRemained', null );
