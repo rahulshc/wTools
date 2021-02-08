@@ -6,7 +6,9 @@
 let _global = _global_;
 let _ = _global_.wTools;
 // let Self = _global_.wTools;
-let Self = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
+
 
 // --
 // regexp
@@ -128,13 +130,11 @@ function regexpsTestNone( regexps, strs )
 }
 
 // --
-// routines
+// extension
 // --
 
-let Extension =
+let ExtensionTools =
 {
-
-  // regexp
 
   regexpsEscape : _.vectorize( _.regexpEscape ),
 
@@ -152,8 +152,41 @@ let Extension =
 }
 
 //
-_.mapSupplement( Self, Extension );
-_.mapSupplement( _, Extension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
+
+let Extension =
+{
+
+  // regexp
+
+  _test : _regexpTest,
+  test : regexpTest,
+
+  testAll : regexpTestAll,
+  testAny : regexpTestAny,
+  testNone : regexpTestNone,
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  // regexps
+
+  escape : _.vectorize( _.regexpEscape ),
+
+  testAll : regexpsTestAll,
+  testAny : regexpsTestAny,
+  testNone : regexpsTestNone,
+
+}
+
+//
+
+_.mapSupplement( Regexp, Extension );
+_.mapSupplement( Regexps, ExtensionS );
+_.mapSupplement( _, ExtensionTools ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
 
 // --
 // export

@@ -89,41 +89,11 @@ function regexpEscape( src )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-
-}
-
-// --
-// routines
-// --
-
-// let Routines =
-// {
-
-//   // regexp
-
-//   regexpIs,
-//   regexpObjectIs,
-//   regexpLike,
-//   regexpsLike,
-//   regexpIdentical, /* qqq : cover please */
-//   regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
-
-//   regexpEscape,
-
-// }
-
-// --
 // extension
 // --
 
 let ExtensionTools =
 {
-  // routines
 
   regexpIs,
   regexpObjectIs,
@@ -133,35 +103,30 @@ let ExtensionTools =
   regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
 
   regexpEscape,
-
-  // fields
-
-  Fields
 }
 
 //
 
 let Extension =
 {
-  // routines
+
+  // regexp
 
   is : regexpIs,
   objectIs : regexpObjectIs,
   like : regexpLike,
-  identical : regexpIdentical, /* qqq : cover please */
-  equivalent : regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
+  identical : regexpIdentical,
+  equivalent : regexpEquivalent,
 
   escape : regexpEscape,
-
-  // fields
-
-  Fields
 }
 
 //
 
 let ExtensionS =
 {
+  // regexps
+
   regexpsLike
 }
 
@@ -172,7 +137,6 @@ _.assert( _.regexp.s === undefined );
 _.regexp.s = Object.create( null );
 
 Object.assign( _.regexp, Extension )
-// Object.assign( _.regexp, Routines, Fields )
 Object.assign( _.regexp.s, ExtensionS )
 Object.assign( Self, ExtensionTools )
 // Object.assign( Self, Routines );

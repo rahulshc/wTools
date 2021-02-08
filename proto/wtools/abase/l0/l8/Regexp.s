@@ -6,7 +6,8 @@
 let _global = _global_;
 let _ = _global_.wTools;
 // let Self = _global_.wTools;
-let Self = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -632,22 +633,11 @@ function regexpArrayNone( arr, ins, ifEmpty )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
+let ExtensionTools =
 {
-
-}
-
-// --
-// routines
-// --
-
-let Routines =
-{
-
-  // regexp
 
   regexpFrom,
 
@@ -674,10 +664,51 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
-Object.assign( _, Routines );
-Object.assign( _, Fields );
+let Extension =
+{
+
+  // regexp
+
+  from : regexpFrom,
+
+  maybeFrom : regexpMaybeFrom,
+
+  arrayMake : regexpArrayMake,
+  arrayIndex : regexpArrayIndex,
+  arrayAny : regexpArrayAny,
+  arrayAll : regexpArrayAll,
+  arrayNone : regexpArrayNone,
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  // regexps
+
+  maybeFrom : regexpsMaybeFrom,
+
+  sources : regexpsSources,
+  join : regexpsJoin,
+  joinEscaping : regexpsJoinEscaping,
+  atLeastFirst : regexpsAtLeastFirst,
+  atLeastFirstOnly : regexpsAtLeastFirstOnly,
+
+  none : regexpsNone,
+  any : regexpsAny,
+  all : regexpsAll,
+
+}
+
+Object.assign( _, ExtensionTools );
+Object.assign( Regexp, Extension );
+Object.assign( Regexps, ExtensionS );
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
+// Object.assign( _, Routines );
+// Object.assign( _, Fields );
 
 // --
 // export
