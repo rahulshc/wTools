@@ -6,83 +6,93 @@
 <details>
   <summary>
     <b>Приклад - створення рутини <code>objectSetValue</code>.</b>
-  </summary>
-    Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.
-    <code>
+  </summary></br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.</br></br>
 
-      function objectSetValue( obj, field, value )
-      {
-        if( value === null )
-        return;
-        else
-        obj[ field ] = value;
-      }
+<pre><code>function objectSetValue( obj, field, value )\n
+{
+  if( value === null )
+  return;
+  else
+  obj[ field ] = value;
+}
 
-      module.exports = objectSetValue;
-  </code>
+module.exports = objectSetValue;</code></pre>
+
 </details>
+
 
 <details>
   <summary>
     <b>Приклад - використання рутини <code>objectSetValue</code>.</b>
   </summary><br>
   Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.<br><br>
-  <code>
+  <pre><code>let objectSetValue = require( './0_Implementation.s' );
 
-    let objectSetValue = require( './0_Implementation.s' );
+  let obj = {};
 
-    let obj = {};
+  objectSetValue( obj, 'field1', 1 );
+  objectSetValue( obj, 'field2', 2 );
+  objectSetValue( obj, 'field3', null );
 
-    objectSetValue( obj, 'field1', 1 );
-    objectSetValue( obj, 'field2', 2 );
-    objectSetValue( obj, 'field3', null );
-
-    console.log( obj );
-    /* log : { field1: 1, field2: 2 } */
-
-  </code>
+  console.log( obj );
+  /* log : { field1: 1, field2: 2 } */</pre></code>
 </details>
+
 
 <details>
   <summary>
     <b>Приклад - створення рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
   Рутина присвоює значення <code>value</code> ( якщо <code>skip !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
-  <code>
-
-    function objectSetValueWith4Params( obj, field, value, skip )
-    {
-      if( skip === true )
-      return;
-      else
-      obj[ field ] = value;
-    }
-    module.exports = objectSetValueWith4Params;
-
-  </code>
+  <pre><code>function objectSetValueWith4Params( obj, field, value, skip )
+{
+  if( skip === true )
+  return;
+  else
+  obj[ field ] = value;
+}
+module.exports = objectSetValueWith4Params;</pre></code>
 </details>
+
 
 <details>
   <summary>
     <b>Приклад - використання рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
   Проблема : наявність додаткового 4 параметра<br><br>
-  <code>
 
-    let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
+  <pre><code>let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
 
-    let obj = {};
+let obj = {};
 
-    objectSetValueWith4Params( obj, 'field1', 1 );
-    objectSetValueWith4Params( obj, 'field2', 2 );
-    objectSetValueWith4Params( obj, 'field3', null );
-    objectSetValueWith4Params( obj, 'field4', null, true );
+objectSetValueWith4Params( obj, 'field1', 1 );
+objectSetValueWith4Params( obj, 'field2', 2 );
+objectSetValueWith4Params( obj, 'field3', null );
+objectSetValueWith4Params( obj, 'field4', null, true );
 
-    console.log( obj );
-    /* log : { field1: 1, field2: 2, field3: null } */
-
-  </code>
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */ </pre> </code>
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- 
