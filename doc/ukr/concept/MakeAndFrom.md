@@ -1,0 +1,76 @@
+# Конвенція <code>make</code> і <code>from</code>
+Конвенція іменування рутин <code>make</code> і <code>from</code>` забезпечує уніфікацію коду та впроваджує єдині правила для створення рутин-конструкторів.
+
+### Список рутин, що використовують дану конвенцію
+* `make`
+  * `_.arrayMake`
+  * `_.arrayMakeUndefined`
+  * `_.argumentsArrayMake`
+  * `_.unrollMake`
+  * `_.bufferMake`
+  * `_.longDescriptor.make`
+  * `_.longMake`
+  * `_.longMakeEmpty`
+  * `_.longMakeZeroed`
+  * `_.longMakeFilling`
+  * `_.longMakeUndefined`
+  * `_._longMakeOfLength`
+  * `_.bufferMakeUndefined`
+  * `_.containerAdapter.make`
+  * `_.entity.make`
+  * `_.entity.makeEmpty`
+  * `_.entity.makeUndefined`
+  * `_.escape.make`
+
+
+* `from`
+  * `_.locationFromStackFrame`
+  * `_.setFrom`
+  * `_.setsFrom`
+  * `_.arrayFrom`
+  * `_.arrayFromCoercing`
+  * `_.arrayFromStr`
+  * `_.event.nameValueFrom`
+  * `_.scalarFrom`
+  * `_.scalarFromOrNull`
+  * `_.cinterval.fromLeft`
+  * `_.cinterval.fromRight`
+  * `_.cinterval.fromSingle`
+  * `_.bigIntFrom`
+  * `_.bigIntsFrom`
+  * `_.property.mapperFromFilter`
+  * `_.property.mapperFrom`
+  * `_.property.filterFrom`
+  * `_.strFrom`
+  * `_.time.from`
+  * `_.unrollFrom`
+  * `_.unrollsFrom`
+  * `_.unrollFromMaybe`
+  * `_.containerAdapter.from`
+  * `_.entity.assign2FieldFromContainer`
+  * `_.boolFrom`
+  * `_.boolFromMaybe`
+  * `_.boolFromForce`
+  * `_.bufferFromArrayOfArray`
+  * `_.bufferFrom`
+  * `_.bufferRawFromTyped`
+  * `_.bufferRawFrom`
+  * `_.bufferBytesFrom`
+  * `_.bufferBytesFromNode`
+  * `_.bufferNodeFrom`
+  * `_.longFrom`
+  * `_.longFromCoercing`
+  * `_.longFromRange`
+  * `_.longFromProgressionArithmetic`
+  * `_.longFromRangeWithStep`
+  * `_.longFromRangeWithNumberOfSteps`
+  * `_.numberFrom`
+  * `_.numbersFrom`
+  * `_.numberFromStr`
+  * `_.numberFromStrMaybe`
+  * `_.numbersFromNumber`
+  * `_.numbersFromInt`
+  * `_.arrayFrom`
+  * `_.arrayFromLongDescriptor`
+  * `_.arrayFromCoercing`
+  * `_.arrayFromCoercingLongDescriptor`
