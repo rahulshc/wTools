@@ -3,36 +3,91 @@
 Ескейпінг - процес маскування певного значення. Реалізується рутинами і засобами, щоб вирішити проблему обмеженості значень.
 Неймспейс <code>_.escape</code> містить засоби для створення, перевірки та маніпулювання таких значень.
 
-### Приклад - створення рутини для додавання поля об'єкту.
-```js
-let _ = require( '../..' );
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetValue</code>.</b>
+  </summary><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+  <code>
 
-/*
-  The problem of limited values :
-  Set object field to a value.
-  If value === null, do nothing
+    function objectSetValue( obj, field, value )
+    {
+      if( value === null )
+      return;
+      else
+      obj[ field ] = value;
+    }
 
-  What if we want to add `null` as the value ?
-*/
+    module.exports = objectSetValue;
 
-function objectSetValue( obj, field, value )
-{
-  if( value === null )
-  return;
-  else
-  obj[ field ] = value;
-}
+  </code>
+</details>
 
-let obj = {};
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetValue</code>.</b>
+  </summary><br>
+  Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.<br><br>
+  <code>
 
-objectSetValue( obj, 'field1', 1 );
-objectSetValue( obj, 'field2', 2 );
-objectSetValue( obj, 'field3', null );
+    let objectSetValue = require( './0_Implementation.s' );
 
-console.log( obj );
-/* log : { field1: 1, field2: 2 } */
-```
+    let obj = {};
 
+    objectSetValue( obj, 'field1', 1 );
+    objectSetValue( obj, 'field2', 2 );
+    objectSetValue( obj, 'field3', null );
+
+    console.log( obj );
+    /* log : { field1: 1, field2: 2 } */
+
+  </code>
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetValueWith4Params</code>.</b>
+  </summary><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>skip !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+  <code>
+
+    function objectSetValueWith4Params( obj, field, value, skip )
+    {
+      if( skip === true )
+      return;
+      else
+      obj[ field ] = value;
+    }
+
+    module.exports = objectSetValueWith4Params;
+
+  </code>
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetValueWith4Params</code>.</b>
+  </summary><br>
+  Проблема : наявність додаткового 4 параметра<br><br>
+  <code>
+
+    let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
+
+    let obj = {};
+
+    objectSetValueWith4Params( obj, 'field1', 1 );
+    objectSetValueWith4Params( obj, 'field2', 2 );
+    objectSetValueWith4Params( obj, 'field3', null );
+    objectSetValueWith4Params( obj, 'field4', null, true );
+
+    console.log( obj );
+    /* log : { field1: 1, field2: 2, field3: null } */
+
+  </code>
+</details>
+
+
+<!-- 
 ### Приклад - створення рутини для додавання поля об'єкту з опціональним четвертим параметром.
 ```js
 let _ = require( '../..' );
@@ -341,4 +396,4 @@ src1 :
 }
 */
 
-```
+``` -->

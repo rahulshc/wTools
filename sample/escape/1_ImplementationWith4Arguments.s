@@ -2,7 +2,7 @@
   A fourth argument can be provided to use as identifier whether to assign value or not
 */
 
-function objectSetValue( obj, field, value, skip )
+function objectSetValueWith4Params( obj, field, value, skip )
 {
   if( skip === true )
   return;
@@ -10,4 +10,4 @@ function objectSetValue( obj, field, value, skip )
   obj[ field ] = value;
 }
 
-module.exports = objectSetValue;
+module.exports = objectSetValueWith4Params;
