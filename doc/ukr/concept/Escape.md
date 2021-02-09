@@ -237,7 +237,7 @@ module.exports = objectSetFieldConstant;</code></pre>
   <summary>
     <b>Приклад - використання рутини <code>objectSetFieldConstant</code>.</b>
   </summary><br>
-  ❌ Проблема : та ж що і у <code>objectSetField</code>.
+  ❌ Проблема : та ж що і у <code>objectSetField</code>.<br><br>
 
   <pre><code>let objectSetFieldConstant = require( './5_ImplementationAddConstantField.s' );
 
@@ -273,15 +273,131 @@ log :
     configurable: false
   }
 }
-*/
-</code></pre>
+*/</code></pre>
 </details>
 
 <br>
 
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetConstantFieldWithEscape</code>.</b>
+  </summary><br>
+  Рутина додає константне поле об'єкту <code>object</code>; якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.</br></br>
+  <pre><code>let _ = require( '../..' );
+
+function objectSetConstantFieldWithEscape( object, field, value )
+{
+  if( _.escape.is( value ) )
+  {
+    Object.defineProperty
+    (
+      object,
+      field,
+      {
+        enumerable : true,
+        configurable : false,
+        writable : false,
+        value : _.escape.right( value )
+      }
+    );
+  }
+  else if( value === null )
+  {
+    Object.defineProperty
+    (
+      object,
+      field,
+      {
+        enumerable : true,
+        configurable : false,
+        writable : false,
+        value : object[ field ]
+      }
+    );
+  }
+  else
+  {
+    Object.defineProperty
+    (
+      object,
+      field,
+      {
+        enumerable : true,
+        configurable : false,
+        writable : false,
+        value
+      }
+    );
+  }
+  return object;
+}
+
+module.exports = objectSetConstantFieldWithEscape;
+
+</code></pre>
+</details>
 
 
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetConstantFieldWithEscape</code>.</b>
+  </summary><br>
+  ✅  Переваги : інтерфейс не змінюється, уніфікація коду, вирішена проблема обмеженності значень.<br><br>
+  <pre><code>let _ = require( '../..' );
+let objectSetConstantFieldWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
+var src = { 'fieldToBeRemained' : 1 };
+objectSetConstantFieldWithEscape( src, 'fieldToBeRemained', null );
+console.log( 'src1 : ', Object.getOwnPropertyDescriptors( src ) );
+/*
+log :
 
+src1 :
+{
+  fieldToBeRemained:
+  {
+    value: 1,
+    writable: false,
+    enumerable: true,
+    configurable: false
+  }
+}
+*/
 
+var src2 = { 'fieldToBeChanged' : 1 };
+objectSetConstantFieldWithEscape( src2, 'fieldToBeChanged', 'changed' );
+console.log( 'src2 : ', Object.getOwnPropertyDescriptors( src2 ) );
+/*
+log :
+
+src1 :
+{
+  fieldToBeChanged:
+  {
+    value: 'changed',
+    writable: false,
+    enumerable: true,
+    configurable: false
+  }
+}
+*/
+
+var src3 = { 'fieldToBeChangedWithNull' : 1 };
+objectSetConstantFieldWithEscape( src3, 'fieldToBeChangedWithNull', _.escape.make( null ) );
+console.log( 'src3 : ', Object.getOwnPropertyDescriptors( src3 ) );
+/*
+log :
+
+src1 :
+{
+  fieldToBeChangedWithNull:
+  {
+    value: null,
+    writable: false,
+    enumerable: true,
+    configurable: false
+  }
+}
+*/</code></pre>
+</details>
 

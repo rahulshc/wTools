@@ -1,8 +1,8 @@
 let _ = require( '../..' );
-let objectSetField = require( './6_ImplementationAddConstantFieldWithEscape.s' )
+let objectSetConstantFieldWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
-objectSetField( src, 'fieldToBeRemained', null );
+objectSetConstantFieldWithEscape( src, 'fieldToBeRemained', null );
 console.log( 'src1 : ', Object.getOwnPropertyDescriptors( src ) );
 /*
 log :
@@ -20,7 +20,7 @@ src1 :
 */
 
 var src2 = { 'fieldToBeChanged' : 1 };
-objectSetField( src2, 'fieldToBeChanged', 'changed' );
+objectSetConstantFieldWithEscape( src2, 'fieldToBeChanged', 'changed' );
 console.log( 'src2 : ', Object.getOwnPropertyDescriptors( src2 ) );
 /*
 log :
@@ -38,7 +38,7 @@ src1 :
 */
 
 var src3 = { 'fieldToBeChangedWithNull' : 1 };
-objectSetField( src3, 'fieldToBeChangedWithNull', _.escape.make( null ) );
+objectSetConstantFieldWithEscape( src3, 'fieldToBeChangedWithNull', _.escape.make( null ) );
 console.log( 'src3 : ', Object.getOwnPropertyDescriptors( src3 ) );
 /*
 log :
