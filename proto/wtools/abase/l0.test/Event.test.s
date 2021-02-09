@@ -67,7 +67,8 @@ function Chain( test )
   test.true( _.event.chainIs( got ) );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 1 );
-  test.identical( got.chain[ 0 ], _.event.Name( 'begin' ) );
+  test.true( _.event.nameIs( got.chain[ 0 ] ) );
+  test.identical( got.chain[ 0 ].value, 'begin' );
 
   test.case = 'single Name';
   var name = _.event.Name( 'begin' );
@@ -85,7 +86,9 @@ function Chain( test )
   test.true( got === chain );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 2 );
-  test.equivalent( got.chain, [ name, _.event.Name( 'end' ) ] );
+  test.identical( got.chain[ 0 ], name );
+  test.true( _.event.nameIs( got.chain[ 1 ] ) );
+  test.identical( got.chain[ 1 ].value, 'end' );
 
   /* */
 
@@ -94,7 +97,12 @@ function Chain( test )
   test.true( _.event.chainIs( got ) );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 3 );
-  test.equivalent( got.chain, [ _.event.Name( 'begin' ), _.event.Name( 'end' ), _.event.Name( 'error' ) ] );
+  test.true( _.event.nameIs( got.chain[ 0 ] ) );
+  test.identical( got.chain[ 0 ].value, 'begin' );
+  test.true( _.event.nameIs( got.chain[ 1 ] ) );
+  test.identical( got.chain[ 1 ].value, 'end' );
+  test.true( _.event.nameIs( got.chain[ 2 ] ) );
+  test.identical( got.chain[ 2 ].value, 'error' );
 
   test.case = 'a few Names';
   var name1 = _.event.Name( 'begin' );
