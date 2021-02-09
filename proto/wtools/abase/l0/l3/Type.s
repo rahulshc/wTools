@@ -306,12 +306,11 @@ function instanceIs( src )
 
   let prototype = Object.getPrototypeOf( src );
 
-  if( prototype === null || prototype === undefined )
-  return false;
-
-  if( prototype === Object.prototype )
-  return false;
   if( prototype === null )
+  return false;
+  if( prototype === undefined )
+  return false;
+  if( prototype === Object.prototype )
   return false;
   if( _.routineIs( prototype ) )
   return false;
@@ -319,16 +318,16 @@ function instanceIs( src )
   return Object.hasOwnProperty.call( prototype, 'constructor' );
 }
 
+// // use _.workpiece.instanceLikeStandard()
 //
-
-function instanceLike( src )
-{
-  if( _.primitiveIs( src ) )
-  return false;
-  if( src.Composes )
-  return true;
-  return false;
-}
+// function instanceLike( src )
+// {
+//   if( _.primitiveIs( src ) )
+//   return false;
+//   if( src.Composes )
+//   return true;
+//   return false;
+// }
 
 //
 
@@ -549,7 +548,7 @@ let Routines =
   prototypeIs,
   constructorIs,
   instanceIs,
-  instanceLike,
+  // instanceLike,
 
   workerIs,
   streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
