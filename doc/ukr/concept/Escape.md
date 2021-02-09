@@ -39,6 +39,7 @@ module.exports = objectSetValue;</code></pre>
   /* log : { field1: 1, field2: 2 } */</code></pre>
 </details>
 
+<br>
 
 <details>
   <summary>
@@ -75,6 +76,7 @@ console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
 
+<br>
 
 <details>
   <summary>
@@ -112,6 +114,7 @@ console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
 
+<br>
 
 <details>
   <summary>
@@ -148,6 +151,46 @@ objectSetValueWithFieldDescriptor( obj, { name : 'field4', skip : true }, null )
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
+
+<br>
+
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetValueWithValueDescriptor</code>.</b>
+  </summary><br>
+  Рутина присвоює значення <code>valueDescriptor.value</code> ( якщо <code>valueDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+  <pre><code>function objectSetValueWithValueDescriptor( obj, field, valueDescriptor )
+{
+  if( valueDescriptor.skip === true )
+  return;
+  else
+  obj[ field ] = valueDescriptor.value;
+}
+
+module.exports = objectSetValueWithValueDescriptor;</code></pre>
+</details>
+
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetValueWithValueDescriptor</code>.</b>
+  </summary><br>
+  ❌ Проблема : необхідність змінювати інтерфейс, третій параметр - мапа з полями <code>skip</code> та <code>value</code><br><br>
+
+  <pre><code>let objectSetValueWithValueDescriptor = require( './4_ImplementationWithValueDescriptor.s' );
+
+let obj = {};
+
+objectSetValueWithValueDescriptor( obj, 'field1', { value : 1, skip : false } );
+objectSetValueWithValueDescriptor( obj, 'field2', { value : 2, skip : false } );
+objectSetValueWithValueDescriptor( obj, 'field3', { value : null, skip : false } );
+objectSetValueWithValueDescriptor( obj, 'field4', { value : null, skip : true } );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+</details>
+
+<br>
 
 
 
