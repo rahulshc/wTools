@@ -7,7 +7,7 @@
   <summary>
     <b>Приклад - створення рутини <code>objectSetValue</code>.</b>
   </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.
   <code>
 
     function objectSetValue( obj, field, value )
