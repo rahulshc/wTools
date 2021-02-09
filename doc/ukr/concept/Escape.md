@@ -7,19 +7,18 @@
   <summary>
     <b>Приклад - створення рутини <code>objectSetValue</code>.</b>
   </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.
-  <code>
+    <h4>Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.</h4>
+    <code>
 
-    function objectSetValue( obj, field, value )
-    {
-      if( value === null )
-      return;
-      else
-      obj[ field ] = value;
-    }
+      function objectSetValue( obj, field, value )
+      {
+        if( value === null )
+        return;
+        else
+        obj[ field ] = value;
+      }
 
-    module.exports = objectSetValue;
-
+      module.exports = objectSetValue;
   </code>
 </details>
 
