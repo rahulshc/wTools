@@ -1,16 +1,4 @@
-let _ = require( '../..' );
-
-/*
-  A fourth argument can be provided to use as identifier whether to assign value or not
-*/
-
-function objectSetValue( obj, field, value, skip )
-{
-  if( skip === true )
-  return;
-  else
-  obj[ field ] = value;
-}
+let objectSetValue = require( './1_ImplementationWith4Arguments.s' );
 
 let obj = {};
 

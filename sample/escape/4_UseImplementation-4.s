@@ -1,16 +1,4 @@
-let _ = require( '../..' );
-
-/*
-  A map can be provided as a third argument whether to assign value or not
-*/
-
-function objectSetValue( obj, field, valueDescriptor )
-{
-  if( valueDescriptor.skip === true )
-  return;
-  else
-  obj[ field ] = valueDescriptor.value;
-}
+let objectSetValue = require( './4_ImplementationWithValueDescriptor.s' );
 
 let obj = {};
 

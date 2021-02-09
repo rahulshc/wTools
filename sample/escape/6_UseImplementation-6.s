@@ -1,5 +1,5 @@
 let _ = require( '../..' );
-let objectSetValue = require( './EscapeImplementation.s' )
+let objectSetValue = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
 objectSetValue( src, 'fieldToBeRemained', null );
