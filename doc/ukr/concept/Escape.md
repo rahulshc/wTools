@@ -113,7 +113,41 @@ console.log( obj );
 </details>
 
 
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetValueWithFieldDescriptor</code>.</b>
+  </summary><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>fieldDescriptor.skip !== trueLike</code> ) полю <code>fieldDescriptor.name</code> об'єкта <code>obj</code>.<br><br>
+  <pre><code>function objectSetValueWithFieldDescriptor( obj, fieldDescriptor, value )
+{
+  if( fieldDescriptor.skip === true )
+  return;
+  else
+  obj[ fieldDescriptor.name ] = value;
+}
 
+module.exports = objectSetValueWithFieldDescriptor;</code></pre>
+</details>
+
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetValueWithFieldDescriptor</code>.</b>
+  </summary><br>
+  ❌ Проблема : необхідність змінювати інтерфейс, другий параметр - мапа з полями <code>skip</code> та <code>name</code><br><br>
+
+  <pre><code>let objectSetValueWithFieldDescriptor = require( './3_ImplementationWithFieldDescriptor.s' );
+
+let obj = {};
+
+objectSetValueWithFieldDescriptor( obj, { name : 'field1', skip : false }, 1 );
+objectSetValueWithFieldDescriptor( obj, { name : 'field2', skip : false }, 2 );
+objectSetValueWithFieldDescriptor( obj, { name : 'field3', skip : false }, null );
+objectSetValueWithFieldDescriptor( obj, { name : 'field4', skip : true }, null );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+</details>
 
 
 
