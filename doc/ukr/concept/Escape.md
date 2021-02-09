@@ -280,12 +280,12 @@ log :
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetConstantFieldWithEscape</code>.</b>
+    <b>Приклад - створення рутини <code>objectSetFieldConstantWithEscape</code>.</b>
   </summary><br>
   Рутина додає константне поле об'єкту <code>object</code>; якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.</br></br>
   <pre><code>let _ = require( '../..' );
 
-function objectSetConstantFieldWithEscape( object, field, value )
+function objectSetFieldConstantWithEscape( object, field, value )
 {
   if( _.escape.is( value ) )
   {
@@ -332,7 +332,7 @@ function objectSetConstantFieldWithEscape( object, field, value )
   return object;
 }
 
-module.exports = objectSetConstantFieldWithEscape;
+module.exports = objectSetFieldConstantWithEscape;
 
 </code></pre>
 </details>
@@ -340,14 +340,14 @@ module.exports = objectSetConstantFieldWithEscape;
 
 <details>
   <summary>
-    <b>Приклад - використання рутини <code>objectSetConstantFieldWithEscape</code>.</b>
+    <b>Приклад - використання рутини <code>objectSetFieldConstantWithEscape</code>.</b>
   </summary><br>
   ✅  Переваги : інтерфейс не змінюється, уніфікація коду, вирішена проблема обмеженності значень.<br><br>
   <pre><code>let _ = require( '../..' );
-let objectSetConstantFieldWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
+let objectSetFieldConstantWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
 var src = { 'fieldToBeRemained' : 1 };
-objectSetConstantFieldWithEscape( src, 'fieldToBeRemained', null );
+objectSetFieldConstantWithEscape( src, 'fieldToBeRemained', null );
 console.log( 'src1 : ', Object.getOwnPropertyDescriptors( src ) );
 /*
 log :
@@ -365,7 +365,7 @@ src1 :
 */
 
 var src2 = { 'fieldToBeChanged' : 1 };
-objectSetConstantFieldWithEscape( src2, 'fieldToBeChanged', 'changed' );
+objectSetFieldConstantWithEscape( src2, 'fieldToBeChanged', 'changed' );
 console.log( 'src2 : ', Object.getOwnPropertyDescriptors( src2 ) );
 /*
 log :
@@ -383,7 +383,7 @@ src1 :
 */
 
 var src3 = { 'fieldToBeChangedWithNull' : 1 };
-objectSetConstantFieldWithEscape( src3, 'fieldToBeChangedWithNull', _.escape.make( null ) );
+objectSetFieldConstantWithEscape( src3, 'fieldToBeChangedWithNull', _.escape.make( null ) );
 console.log( 'src3 : ', Object.getOwnPropertyDescriptors( src3 ) );
 /*
 log :
