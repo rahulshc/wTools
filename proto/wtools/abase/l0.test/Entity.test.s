@@ -3012,7 +3012,7 @@ function iterableIs( test )
   var expected = true;
   test.identical( got, expected );
 
-  // test.case = 'map from pure map'; /* xxx : resolve for complex object without constructors */
+  // test.case = 'map from pure map'; /* qqq for Dmytro : resolve for complex object without constructors */
   // var src = Object.create( Object.create( null ) );
   // var got = _.iterableIs( src );
   // var expected = true;
