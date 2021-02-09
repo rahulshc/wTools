@@ -87,6 +87,7 @@ function _primitiveIs_functor()
 }
 
 let _primitiveIs = _primitiveIs_functor();
+_primitiveIs.functor = _primitiveIs_functor;
 
 //
 
