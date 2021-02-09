@@ -2919,7 +2919,7 @@ function instanceIs( test )
 
 //
 
-function instanceLike( test )
+function instanceLike( test ) /* qqq : move to _.workpiece.* module::Proto */
 {
   test.case = 'check null';
   var got = _.instanceLike( null );
@@ -3057,6 +3057,7 @@ function instanceLike( test )
   var src = Promise;
   var got = _.instanceLike( src );
   test.identical( got, false );
+
 }
 
 //
