@@ -173,12 +173,7 @@ function mapExtendConditional( test )
 
 function mapExtend( test )
 {
-
-  /* */
-
   test.open( 'first argument is null' );
-
-  /* */
 
   test.case = 'trivial';
   var src1 = { a : 1, b : 2 };
@@ -220,11 +215,9 @@ function mapExtend( test )
 
   test.close( 'first argument is null' );
 
-  /* */
+  /* - */
 
   test.open( 'first argument is dst' );
-
-  /* */
 
   test.case = 'trivial';
   var dst = { a : 1, b : 2 };
@@ -260,7 +253,7 @@ function mapExtend( test )
 
   test.close( 'first argument is dst' );
 
-  /* */
+  /* - */
 
   test.case = 'trivial, first argument';
   var src1 = { a : 7, b : 13 };
@@ -369,7 +362,7 @@ function mapExtend( test )
   var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'extend complex map by complex map';
 
@@ -398,51 +391,29 @@ function mapExtend( test )
   expected.y4 = 14;
 
   var got = _.mapExtend( dst, src );
-  test.identical( got, expected );
+  test.identical( got.x1, '11' );
+  test.identical( got.x2, 2 );
+  test.identical( got.x3, 13 );
+  test.identical( got.x4, 4 );
+  test.identical( got.y2, 12 );
+  test.identical( got.y4, 14 );
+  test.identical( Object.getPrototypeOf( got ), { x1 : '1', x2 : 2 } );
   test.true( got === dst );
 
-  /**/
+  /* - */
 
-  return;
   if( !Config.debug )
   return;
 
   test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend();
-  });
+  test.shouldThrowErrorSync( () => _.mapExtend() );
 
-  test.case = 'few arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( {} );
-  });
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapExtend( {} ) );
 
   test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( [] );
-  });
-
-  test.case = 'wrong type of number';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( 13 );
-  });
-
-  test.case = 'wrong type of boolean';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( true );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( 'wrong argument' );
-  });
-
+  test.shouldThrowErrorSync( () => _.mapExtend( [], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.mapExtend( undefined, {} ) );
 }
 
 //
