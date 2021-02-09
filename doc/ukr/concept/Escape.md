@@ -282,7 +282,8 @@ log :
   <summary>
     <b>Приклад - створення рутини <code>objectSetFieldConstantWithEscape</code>.</b>
   </summary><br>
-  Рутина додає константне поле об'єкту <code>object</code>; якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.</br></br>
+  Рутина додає константне поле об'єкту <code>object</code>; якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.<br><br>
+
   <pre><code>let _ = require( '../..' );
 
 function objectSetFieldConstantWithEscape( object, field, value )
@@ -343,6 +344,7 @@ module.exports = objectSetFieldConstantWithEscape;
     <b>Приклад - використання рутини <code>objectSetFieldConstantWithEscape</code>.</b>
   </summary><br>
   ✅  Переваги : інтерфейс не змінюється, уніфікація коду, вирішена проблема обмеженності значень.<br><br>
+
   <pre><code>let _ = require( '../..' );
 let objectSetFieldConstantWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
