@@ -2104,7 +2104,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.mapLike_( dstMap ), 'Expects map like {-srcMap-}' );
-  _.assert( _.mapLike_( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.mapLike_( srcMap ) || _.objectLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
