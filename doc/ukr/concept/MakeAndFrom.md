@@ -75,29 +75,137 @@
   * `_.arrayFromCoercingLongDescriptor`
 
 
-### Приклад - використання `_.arrayMake` рутини
-```js
-var srcArray = [ 'a', 'b', 'c' ];
+## Приклади використання
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>_.arrayMake</code>.</b>
+  </summary></br>
+
+<pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayMake( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
-console.log( gotArray === srcArray ); /* log : false */
-```
+console.log( gotArray === srcArray ); /* log : false */</code></pre>
 
-### Приклад - використання `_.arrayFrom` рутини
-```js
-var srcArray = [ 'a', 'b', 'c' ];
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>_.arrayFrom</code>.</b>
+  </summary></br>
+
+<pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayFrom( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
-console.log( gotArray === srcArray ); /* log : true */
-```
+console.log( gotArray === srcArray ); /* log : true */</code></pre>
 
-### Приклад - використання `_.arrayMake` рутини
-```js
-var srcArray = [ 'a', 'b', 'c' ];
+</details>
 
-var gotArray = _.arrayMake( srcArray );
-console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
-console.log( gotArray === srcArray ); /* log : false */
-```
+<br>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>_.escape.make</code>.</b>
+  </summary></br>
+
+<pre><code>
+let src = _.escape.make( 1 );
+let got = _.escape.make( src );
+
+console.log( got === src ); /* log : false */</code></pre>
+
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>_.escape.from</code>.</b>
+  </summary></br>
+
+<pre><code>
+let src = _.escape.make( 1 );
+let got = _.escape.from( src );
+
+console.log( got === src ); /* log : true */</code></pre>
+
+</details>
+
+<br>
+
+## Приклади реалізації та використання
+
+<details>
+  <summary>
+    <b>Приклад - реалізація рутини <code>arrayMake</code>.</b>
+  </summary></br>
+
+<pre><code>function arrayMake( src )
+{
+  if( src === null || src === undefined )
+  return new Array();
+
+  if( _.numberIs( src ) )
+  return new Array( src );
+
+  if( src.length === 1 )
+  return [ src[ 0 ] ];
+  else
+  return Array.apply( Array, src );
+}</code></pre>
+
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>arrayMake</code>.</b>
+  </summary></br>
+
+<pre><code>let arrayMake = require( './4_implementArrayMake.s' );
+
+let src = [ 1, 2, 3 ];
+let got = arrayMake( src );
+
+console.log( got ); /* log : [ 1, 2, 3 ] */
+console.log( got === src ); /* log : false */
+</code></pre>
+
+</details>
+
+<br>
+
+<details>
+  <summary>
+    <b>Приклад - реалізація рутини <code>arrayFrom</code>.</b>
+  </summary></br>
+
+<pre><code>let arrayMake = require( './4_implementArrayMake.s' );
+
+function arrayFrom( src )
+{
+  if( _.arrayIs( src ) )
+  return src;
+  return arrayMake( src );
+}</code></pre>
+
+</details>
+
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>arrayFrom</code>.</b>
+  </summary></br>
+
+<pre><code>let arrayFrom = require( './5_implementArrayFrom.s' );
+
+let src = [ 1, 2, 3 ];
+let got = arrayFrom( src );
+
+console.log( got ); /* log : [ 1, 2, 3 ] */
+console.log( got === src ); /* log : true */
+</code></pre>
+
+</details>
+
+<br>
+
+[Повернутись до змісту](../README.md#Концепції)

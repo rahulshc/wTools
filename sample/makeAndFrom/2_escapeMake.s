@@ -2,9 +2,7 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 let _ = wTools;
 
-let src = _.null;
+let src = _.escape.make( 1 );
 let got = _.escape.make( src );
 
-console.log( got )
-console.log( got === src );
-console.log( got === _.escape.null );
+console.log( got === src ); /* log : false */
