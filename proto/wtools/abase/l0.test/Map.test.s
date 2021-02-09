@@ -4877,9 +4877,9 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected =Object.create( { bb : 2, cc : 3 } );
-  expected.aa = 1;
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
+  test.identical( got.aa, 1 );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
@@ -4888,9 +4888,9 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  expected.aa = 1;
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
+  test.identical( got.aa, 1 );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
 
@@ -4899,8 +4899,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
@@ -4909,8 +4909,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
@@ -4919,8 +4919,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
