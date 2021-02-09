@@ -50,6 +50,7 @@
   </summary><br>
   Рутина присвоює значення <code>value</code> ( якщо <code>skip !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
   <code>
+
     function objectSetValueWith4Params( obj, field, value, skip )
     {
       if( skip === true )
@@ -58,6 +59,7 @@
       obj[ field ] = value;
     }
     module.exports = objectSetValueWith4Params;
+
   </code>
 </details>
 
@@ -65,7 +67,7 @@
   <summary>
     <b>Приклад - використання рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
-  Проблема : наявність додаткового 4 параметра<br><br>
+  Проблема :triangular_flag_on_post: : наявність додаткового 4 параметра<br><br>
   <code>
 
     let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
