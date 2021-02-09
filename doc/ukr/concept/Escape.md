@@ -67,7 +67,7 @@
   <summary>
     <b>Приклад - використання рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
-  Проблема :triangular_flag_on_post: : наявність додаткового 4 параметра<br><br>
+  Проблема : наявність додаткового 4 параметра<br><br>
   <code>
 
     let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
