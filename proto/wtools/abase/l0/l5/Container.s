@@ -26,7 +26,7 @@ function extendReplacing( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.mapLike_( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -38,10 +38,10 @@ function extendReplacing( dst, src )
     dst = src;
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike_( src ) )
   {
 
-    if( _.mapLike( dst ) )
+    if( _.mapLike_( dst ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
@@ -66,7 +66,7 @@ function extendReplacing( dst, src )
   else if( _.hashMapLike( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.mapLike( dst ) )
+    if( _.hashMapLike( dst ) || _.mapLike_( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -101,7 +101,7 @@ function extendAppending( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.mapLike_( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -113,10 +113,10 @@ function extendAppending( dst, src )
     dst = src;
 
   }
-  else if( _.mapLike( dst ) )
+  else if( _.mapLike_( dst ) )
   {
 
-    if( _.mapLike( src ) )
+    if( _.mapLike_( src ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( src ) )
     dst = _.hashMapExtend( dst, src );
@@ -133,7 +133,7 @@ function extendAppending( dst, src )
   else if( _.hashMapLike( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.mapLike( src ) )
+    if( _.hashMapLike( src ) || _.mapLike_( src ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
@@ -221,7 +221,7 @@ function empty( dstContainer )
   dstContainer.clear();
   else if( _.hashMapLike( dstContainer ) )
   dstContainer.clear();
-  else if( _.mapLike( dstContainer ) )
+  else if( _.mapLike_( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );

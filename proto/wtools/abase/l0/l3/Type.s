@@ -71,7 +71,7 @@ function primitiveIs( src )
 
 function _primitiveIs_functor()
 {
-  let is = new Set();
+  const is = new Set();
   is.add( '[object Symbol]' );
   is.add( '[object Number]' );
   is.add( '[object BigInt]' );

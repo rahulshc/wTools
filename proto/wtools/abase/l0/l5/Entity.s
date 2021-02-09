@@ -37,7 +37,7 @@ function makeEmpty( src )
   {
     return new src.constructor();
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike_( src ) )
   {
     return Object.create( null );
   }
@@ -89,7 +89,7 @@ function makeUndefined( src, length )
   {
     return new src.constructor();
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike_( src ) )
   {
     return Object.create( null );
   }
@@ -130,7 +130,7 @@ function makeUndefined( src, length )
 //   {
 //     return new src.constructor( src );
 //   }
-//   else if( _.mapLike( src ) )
+//   else if( _.mapLike_( src ) )
 //   {
 //     return _.mapShallowClone( src )
 //   }
@@ -173,7 +173,7 @@ function cloneShallow( src )
   {
     return new src.constructor( src );
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike_( src ) )
   {
     return _.mapShallowClone( src )
   }
@@ -240,7 +240,7 @@ function cloneDeep( src )
   {
     return new src.constructor( src );
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike_( src ) )
   {
     return _.mapShallowClone( src );
   }

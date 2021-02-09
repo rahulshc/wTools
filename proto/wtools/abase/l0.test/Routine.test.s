@@ -268,23 +268,23 @@ function routineLike( test )
 
   test.case = 'Object';
   var got = _.routineLike( Object );
-  test.identical( got, true )
+  test.identical( got, true );
 
   test.case = 'arrow routine';
   var got = _.routineLike( () => {} );
-  test.identical( got, true )
+  test.identical( got, true );
 
   test.case = 'unnamed routine';
   var got = _.routineLike( function (){} );
-  test.identical( got, true )
+  test.identical( got, true );
 
   test.case = 'named routine';
   var got = _.routineLike( function a(){} );
-  test.identical( got, true )
+  test.identical( got, true );
 
   test.case = 'async arrow routine';
   var got = _.routineLike( async () => {} );
-  test.identical( got, true )
+  test.identical( got, true );
 
   test.case = 'async unnamed routine';
   var got = _.routineLike( async function (){} );
@@ -2633,7 +2633,7 @@ function routineExtend( test )
 
   var got = _.routineExtend( null, f1 );
   test.equivalent( got.map1, f1.map1 );
-  test.equivalent( got.map2, f1.map2 );
+  test.equivalent( got.map2, f1.map2 ); debugger;
   test.equivalent( got.str, f1.str );
   test.equivalent( got.number, f1.number );
   test.equivalent( got.routine, f1.routine );
@@ -3060,8 +3060,8 @@ function routineDefaults( test )
   let add2 = _.routineDefaults( null, add1, { b : 5 } );
   test.true( add1 !== add2 );
   test.true( add1.defaults !== add2.defaults );
-  test.true( _.mapLike( add1.defaults ) );
-  test.true( _.mapLike( add2.defaults ) );
+  test.true( _.mapLike_( add1.defaults ) );
+  test.true( _.mapLike_( add2.defaults ) );
   test.true( add1.defaults.b === 3 );
   test.true( add2.defaults.b === 5 );
 
@@ -3097,8 +3097,8 @@ function routineDefaults( test )
   let add4 = _.routineDefaults( add3, { b : 5 } );
   test.true( add3 === add4 );
   test.true( add3.defaults === add4.defaults );
-  test.true( _.mapLike( add3.defaults ) );
-  test.true( _.mapLike( add4.defaults ) );
+  test.true( _.mapLike_( add3.defaults ) );
+  test.true( _.mapLike_( add4.defaults ) );
   test.true( add3.defaults.b === 5 );
   test.true( add4.defaults.b === 5 );
 

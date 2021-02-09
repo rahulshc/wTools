@@ -174,31 +174,33 @@ function mapIsHeritated( src )
   return false;
 }
 
+// //
+//
+// function mapLike( src )
+// {
+//
+//   if( mapIs( src ) )
+//   return true;
+//
+//   if( !src )
+//   return false;
+//
+//   if( !_.objectLike( src ) )
+//   return false;
+//
+//   if( _.instanceIs( src ) )
+//   return false;
+//
+//   return true;
+// }
+
 //
 
-function mapLike( src )
+function mapLike_( src )
 {
-
-  // if( _.complex )
-  // if( _.complex.is( src ) )
-  // return false;
-
   if( mapIs( src ) )
   return true;
-
-  if( !src )
   return false;
-
-  // if( src.constructor === Object || src.constructor === null )
-  // return true;
-
-  if( !_.objectLike( src ) )
-  return false;
-
-  if( _.instanceIs( src ) )
-  return false;
-
-  return true;
 }
 
 //
@@ -1271,7 +1273,7 @@ let Extension =
   mapIsPure,
   mapIsPopulated,
   mapIsHeritated,
-  mapLike,
+  mapLike_,
 
   hashMapIs,
   hashMapLike,
