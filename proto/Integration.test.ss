@@ -287,6 +287,16 @@ function eslint( test )
   // if( _.process.insideTestContainer() && process.platform !== 'linux' )
   // return test.true( true );
 
+  if( _.process.insideTestContainer() )
+  {
+    let majorVersion = process.env.npm_config_node_version.match( '/^\d+/' );
+    it( _.numberFrom( majorVersion ) !== 14 )
+    {
+      test.true( true );
+      return;
+    }
+  }
+
   if( process.platform !== 'linux' )
   return test.true( true );
 
