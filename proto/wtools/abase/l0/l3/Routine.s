@@ -79,7 +79,7 @@ function routineIsTrivial_functor()
 }
 
 let routineIsTrivial = routineIsTrivial_functor();
-
+routineIsTrivial.functor = routineIsTrivial_functor;
 // function routineIsTrivial( src )
 // {
 //   if( !src )
