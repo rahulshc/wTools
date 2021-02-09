@@ -36,7 +36,7 @@ module.exports = objectSetValue;</code></pre>
   objectSetValue( obj, 'field3', null );
 
   console.log( obj );
-  /* log : { field1: 1, field2: 2 } */</pre></code>
+  /* log : { field1: 1, field2: 2 } */</code></pre>
 </details>
 
 
@@ -52,7 +52,7 @@ module.exports = objectSetValue;</code></pre>
   else
   obj[ field ] = value;
 }
-module.exports = objectSetValueWith4Params;</pre></code>
+module.exports = objectSetValueWith4Params;</code></pre>
 </details>
 
 
@@ -72,7 +72,7 @@ objectSetValueWith4Params( obj, 'field3', null );
 objectSetValueWith4Params( obj, 'field4', null, true );
 
 console.log( obj );
-/* log : { field1: 1, field2: 2, field3: null } */ </pre> </code>
+/* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
 
 
