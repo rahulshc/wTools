@@ -6137,11 +6137,12 @@ function vectorizeNone( test )
   isOdd.number = 13;
   isOdd.routine = function r(){};
   var got = _.vectorizeNone( isOdd );
-  test.equivalent( got.map1, isOdd.map1 );
-  test.equivalent( got.map2, isOdd.map2 );
-  test.equivalent( got.str, isOdd.str );
-  test.equivalent( got.number, isOdd.number );
-  test.equivalent( got.routine, isOdd.routine );
+  test.identical( got.map1, isOdd.map1 );
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, isOdd.map2.a );
+  test.identical( got.str, isOdd.str );
+  test.identical( got.number, isOdd.number );
+  test.identical( got.routine, isOdd.routine );
   test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), false );
   test.identical( got([ 0, 2 ]), true );
