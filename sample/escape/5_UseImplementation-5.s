@@ -1,10 +1,10 @@
-let objectSetValue = require( './5_ImplementationAddConstantField.s' );
+let objectSetFieldConstant = require( './5_ImplementationAddConstantField.s' );
 
 let obj = { fieldToBeRemained : 1, fieldToBeChanged : 2 };
 
-objectSetValue( obj, 'field1', 1 );
-objectSetValue( obj, 'fieldToBeChanged', 'changed' );
-objectSetValue( obj, 'fieldToBeRemained', null );
+objectSetFieldConstant( obj, 'field1', 1 );
+objectSetFieldConstant( obj, 'fieldToBeChanged', 'changed' );
+objectSetFieldConstant( obj, 'fieldToBeRemained', null );
 
 console.log( Object.getOwnPropertyDescriptors( obj ) );
 /*

@@ -3,7 +3,7 @@
   What if we want to add `null` as the value ?
 */
 
-function objectSetValue( object, field, value )
+function objectSetFieldConstant( object, field, value )
 {
   if( value === null )
   {
@@ -35,4 +35,4 @@ function objectSetValue( object, field, value )
   }
 }
 
-module.exports = objectSetValue;
+module.exports = objectSetFieldConstant;

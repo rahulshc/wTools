@@ -4,7 +4,7 @@ let _ = require( '../..' );
 null serves as an identifier, that we should not change object property's value, but make it constant.
 */
 
-function objectSetValue( object, field, value )
+function objectSetField( object, field, value )
 {
   if( _.escape.is( value ) )
   {
@@ -51,4 +51,4 @@ function objectSetValue( object, field, value )
   return object;
 }
 
-module.exports = objectSetValue;
+module.exports = objectSetField;

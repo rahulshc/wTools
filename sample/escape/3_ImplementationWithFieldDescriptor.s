@@ -2,7 +2,7 @@
   A map can be provided as a second argument whether to assign value or not
 */
 
-function objectSetValueWithFieldDescriptor( obj, fieldDescriptor, value )
+function objectSetFieldWithFieldDescriptor( obj, fieldDescriptor, value )
 {
   if( fieldDescriptor.skip === true )
   return;
@@ -10,4 +10,4 @@ function objectSetValueWithFieldDescriptor( obj, fieldDescriptor, value )
   obj[ fieldDescriptor.name ] = value;
 }
 
-module.exports = objectSetValueWithFieldDescriptor;
+module.exports = objectSetFieldWithFieldDescriptor;

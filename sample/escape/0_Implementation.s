@@ -6,7 +6,7 @@
   What if we want to add `null` as the value ?
 */
 
-function objectSetValue( obj, field, value )
+function objectSetField( obj, field, value )
 {
   if( value === null )
   return;
@@ -14,4 +14,4 @@ function objectSetValue( obj, field, value )
   obj[ field ] = value;
 }
 
-module.exports = objectSetValue;
+module.exports = objectSetField;
