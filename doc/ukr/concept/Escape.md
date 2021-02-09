@@ -50,7 +50,6 @@
   </summary><br>
   Рутина присвоює значення <code>value</code> ( якщо <code>skip !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
   <code>
-
     function objectSetValueWith4Params( obj, field, value, skip )
     {
       if( skip === true )
@@ -58,9 +57,7 @@
       else
       obj[ field ] = value;
     }
-
     module.exports = objectSetValueWith4Params;
-
   </code>
 </details>
 
