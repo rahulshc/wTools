@@ -26,7 +26,7 @@ module.exports = objectSetValue;</code></pre>
   <summary>
     <b>Приклад - використання рутини <code>objectSetValue</code>.</b>
   </summary><br>
-  Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.<br><br>
+  ❌ Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.<br><br>
   <pre><code>let objectSetValue = require( './0_Implementation.s' );
 
   let obj = {};
@@ -44,7 +44,7 @@ module.exports = objectSetValue;</code></pre>
   <summary>
     <b>Приклад - створення рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>skip !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
   <pre><code>function objectSetValueWith4Params( obj, field, value, skip )
 {
   if( skip === true )
@@ -60,7 +60,7 @@ module.exports = objectSetValueWith4Params;</code></pre>
   <summary>
     <b>Приклад - використання рутини <code>objectSetValueWith4Params</code>.</b>
   </summary><br>
-  Проблема : наявність додаткового 4 параметра<br><br>
+  ❌ Проблема : наявність додаткового 4 параметра<br><br>
 
   <pre><code>let objectSetValueWith4Params = require( './1_ImplementationWith4Arguments.s' );
 
@@ -76,10 +76,41 @@ console.log( obj );
 </details>
 
 
+<details>
+  <summary>
+    <b>Приклад - створення рутини <code>objectSetValueWithObjectDescriptor</code>.</b>
+  </summary><br>
+  Рутина присвоює значення <code>value</code> ( якщо <code>objectDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>objectDescriptor.src</code>.<br><br>
+  <pre><code>function objectSetValueWithObjectDescriptor( objectDescriptor, field, value )
+{
+  if( objectDescriptor.skip === true )
+  return;
+  else
+  objectDescriptor.src[ field ] = value;
+}
+
+module.exports = objectSetValueWithObjectDescriptor;</code></pre>
+</details>
 
 
+<details>
+  <summary>
+    <b>Приклад - використання рутини <code>objectSetValueWithObjectDescriptor</code>.</b>
+  </summary><br>
+  ❌ Проблема : необхідність змінювати інтерфейс, перший параметр - мапа з обє'ктом та полем <code>skip</code><br><br>
 
+  <pre><code>let objectSetValueWithObjectDescriptor = require( './2_ImplementationWithObjectDescriptor.s' );
 
+let obj = {};
+
+objectSetValueWithObjectDescriptor( { src : obj, skip : false }, 'field1', 1 );
+objectSetValueWithObjectDescriptor( { src : obj, skip : false }, 'field2', 2 );
+objectSetValueWithObjectDescriptor( { src : obj, skip : false }, 'field3', null );
+objectSetValueWithObjectDescriptor( { src : obj, skip : true }, 'field4', null );
+
+console.log( obj );
+/* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+</details>
 
 
 
