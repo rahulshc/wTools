@@ -2608,7 +2608,6 @@ function routinesChain( test )
 
 function routineExtend( test )
 {
-
   test.open( 'dst is null, src has head and body properties');
 
   test.case = 'dst is null, src is routine maked by routineUnite';
@@ -2633,7 +2632,8 @@ function routineExtend( test )
 
   var got = _.routineExtend( null, f1 );
   test.equivalent( got.map1, f1.map1 );
-  test.equivalent( got.map2, f1.map2 ); debugger;
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, f1.map2.a );
   test.equivalent( got.str, f1.str );
   test.equivalent( got.number, f1.number );
   test.equivalent( got.routine, f1.routine );
@@ -3026,7 +3026,6 @@ function routineExtend( test )
   {
     _.routineExtend( 'str', { a : 1 } );
   });
-
 }
 
 //
