@@ -22,7 +22,6 @@
   * `_.entity.makeUndefined`
   * `_.escape.make`
 
-
 * `from`
   * `_.locationFromStackFrame`
   * `_.setFrom`
@@ -74,3 +73,22 @@
   * `_.arrayFromLongDescriptor`
   * `_.arrayFromCoercing`
   * `_.arrayFromCoercingLongDescriptor`
+
+
+### Приклад - використання `make` рутини
+```js
+var srcArray = [ 'a', 'b', 'c' ];
+
+var gotArray = _.arrayMake( srcArray );
+console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
+console.log( gotArray === srcArray ); /* log : false */
+```
+
+### Приклад - використання `from` рутини
+```js
+var srcArray = [ 'a', 'b', 'c' ];
+
+var gotArray = _.arrayFrom( srcArray );
+console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
+console.log( gotArray === srcArray ); /* log : true */
+```
