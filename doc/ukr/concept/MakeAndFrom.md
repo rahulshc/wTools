@@ -75,7 +75,7 @@
   * `_.arrayFromCoercingLongDescriptor`
 
 
-### Приклад - використання `make` рутини
+### Приклад - використання `_.arrayMake` рутини
 ```js
 var srcArray = [ 'a', 'b', 'c' ];
 
@@ -84,11 +84,20 @@ console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : false */
 ```
 
-### Приклад - використання `from` рутини
+### Приклад - використання `_.arrayFrom` рутини
 ```js
 var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayFrom( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : true */
+```
+
+### Приклад - використання `_.arrayMake` рутини
+```js
+var srcArray = [ 'a', 'b', 'c' ];
+
+var gotArray = _.arrayMake( srcArray );
+console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
+console.log( gotArray === srcArray ); /* log : false */
 ```
