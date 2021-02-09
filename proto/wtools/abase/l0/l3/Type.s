@@ -49,13 +49,44 @@ function definedIs( src )
 
 //
 
+// function primitiveIs( src )
+// {
+//   if( !src )
+//   return true;
+//   let t = Object.prototype.toString.call( src );
+//   return t === '[object Symbol]' || t === '[object Number]' || t === '[object BigInt]' || t === '[object Boolean]' || t === '[object String]';
+// }
+
+//
+
 function primitiveIs( src )
 {
   if( !src )
   return true;
   let t = Object.prototype.toString.call( src );
-  return t === '[object Symbol]' || t === '[object Number]' || t === '[object BigInt]' || t === '[object Boolean]' || t === '[object String]';
+  return _._primitiveIs( src, t );
 }
+
+//
+
+function _primitiveIs_functor()
+{
+  const is = new Set();
+  is.add( '[object Symbol]' );
+  is.add( '[object Number]' );
+  is.add( '[object BigInt]' );
+  is.add( '[object Boolean]' );
+  is.add( '[object String]' );
+  return _primitiveIs;
+
+  function _primitiveIs( src, typeStr )
+  {
+    return is.has( typeStr );
+  }
+
+}
+
+let _primitiveIs = _primitiveIs_functor();
 
 //
 
@@ -72,16 +103,6 @@ function symbolIs( src )
 function vectorAdapterIs( src )
 {
   return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
-  // if( !_.objectIs( src ) )
-  // return false;
-  //
-  // if( !( '_vectorBuffer' in src ) )
-  // return false;
-  //
-  // if( Object.hasOwnProperty.call( src, 'constructor' ) )
-  // return false;
-  //
-  // return true;
 }
 
 //
@@ -504,6 +525,7 @@ let Routines =
   nothingIs,
   definedIs,
   primitiveIs,
+  _primitiveIs,
   symbolIs,
 
   //

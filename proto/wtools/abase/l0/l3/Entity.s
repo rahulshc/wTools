@@ -43,7 +43,7 @@ function iterableIs( src ) /* qqq xxx : check. good coverage is required */
 {
   if( !src )
   return false;
-  if( _.mapLike( src ) )
+  if( _.mapLike_( src ) )
   return true;
   if( _.routineIs( src[ Symbol.iterator ] ) )
   return true;
@@ -109,7 +109,7 @@ function lengthOf( src )
 {
   if( src === undefined )
   return 0;
-  if( _.mapLike( src ) )
+  if( _.mapLike_( src ) )
   return _.mapOnlyOwnKeys( src ).length;
   if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
   return [ ... src ].length;

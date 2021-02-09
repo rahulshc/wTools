@@ -11,18 +11,92 @@ let Self = _global_.wTools;
 // routine
 // --
 
+// function routineIs( src )
+// {
+//   let typeStr = Object.prototype.toString.call( src );
+//   return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
+// }
+//
+//
+// function routineLike( src )
+// {
+//   return _.routineIs( src );
+// }
+
 function routineIs( src )
 {
-  let result = Object.prototype.toString.call( src );
-  return result === '[object Function]' || result === '[object AsyncFunction]';
+  let typeStr = Object.prototype.toString.call( src );
+  return _routineIs( src, typeStr );
+}
+
+//
+
+function _routineIs( src, typeStr )
+{
+  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
 }
 
 //
 
 function routineLike( src )
 {
-  return _.routineIs( src );
+  let typeStr = Object.prototype.toString.call( src );
+  return _routineLike( src, typeStr );
 }
+
+//
+
+function _routineLike( src, typeStr )
+{
+  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
+}
+
+//
+
+function routineIsTrivial_functor()
+{
+
+  const syncPrototype = Object.getPrototypeOf( Function );
+  const asyncPrototype = Object.getPrototypeOf( _async );
+  return routineIsTrivial;
+
+  function routineIsTrivial( src )
+  {
+    if( !src )
+    return false;
+    let prototype = Object.getPrototypeOf( src );
+    if( prototype === syncPrototype )
+    return true;
+    if( prototype === asyncPrototype )
+    return true;
+    return false;
+  }
+
+  async function _async()
+  {
+  }
+
+}
+
+let routineIsTrivial = routineIsTrivial_functor();
+
+// function routineIsTrivial( src )
+// {
+//   if( !src )
+//   return false;
+//   let proto = Object.getPrototypeOf( src );
+//   if( proto === Object.getPrototypeOf( Function ) )
+//   debugger;
+//   if( proto === Object.getPrototypeOf( Function ) )
+//   return true;
+//   if( !proto )
+//   return false;
+//   if( !proto.constructor )
+//   return false;
+//   if( proto.constructor.name !== 'AsyncFunction' )
+//   return false;
+//   return true;
+// }
 
 //
 
@@ -53,24 +127,6 @@ function routinesAre( src )
   }
 
   return _.routineIs( src );
-}
-
-//
-
-function routineIsTrivial( src )
-{
-  if( !src )
-  return false;
-  let proto = Object.getPrototypeOf( src );
-  if( proto === Object.getPrototypeOf( Function ) )
-  return true;
-  if( !proto )
-  return false;
-  if( !proto.constructor )
-  return false;
-  if( proto.constructor.name !== 'AsyncFunction' )
-  return false;
-  return true;
 }
 
 //
@@ -839,7 +895,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+//   _.assert( src === null || src === undefined || _.mapLike_( src ) || _.routineIs( src ) );
 //
 //   /* generate dst routine */
 //
@@ -888,7 +944,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.mapLike( src ) || _.routineIs( src ) );
+//     _.assert( _.mapLike_( src ) || _.routineIs( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
@@ -966,7 +1022,7 @@ function routineExtend( dst, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+  _.assert( src === null || src === undefined || _.mapLike_( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -1012,7 +1068,7 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.mapLike( src ) || _.routineIs( src ) );
+    _.assert( _.mapLike_( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -1047,7 +1103,7 @@ function routineDefaults( dst, src, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( dst === null || src === null );
-  _.assert( _.mapLike( defaults ) );
+  _.assert( _.mapLike_( defaults ) );
 
   return _.routineExtend( dst, src, { defaults } );
 }
@@ -1674,7 +1730,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
+      else if( vectorizingMapVals && _.mapLike_( args[ d ] ) )
       {
         keys = _.mapOnlyOwnKeys( args[ d ] );
         break;
@@ -2507,11 +2563,13 @@ let Extension =
 {
 
   routineIs,
+  _routineIs,
   routineLike,
+  _routineLike,
+  routineIsTrivial,
   routineIsSync,
   routineIsAsync,
   routinesAre,
-  routineIsTrivial,
   routineWithName,
 
   _routineJoin,

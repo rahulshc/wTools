@@ -193,7 +193,7 @@
 //
 //   if( options )
 //   {
-//     _.assert( _.mapLike( options ) );
+//     _.assert( _.mapLike_( options ) );
 //     if( options.increment === undefined )
 //     options.increment = 1;
 //   }
