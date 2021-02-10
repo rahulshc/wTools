@@ -87,7 +87,7 @@ function objectLike( src )
 function mapIs( src )
 {
 
-  if( !_.objectIs( src ) )
+  if( !src )
   return false;
 
   let proto = Object.getPrototypeOf( src );
@@ -95,22 +95,39 @@ function mapIs( src )
   if( proto === null )
   return true;
 
-  if( !proto.constructor )
+  if( src[ Symbol.iterator ] )
   return false;
 
-  if( proto.constructor.name !== 'Object' )
-  return false;
-
-  // if( proto.constructor && proto.constructor.name !== 'Object' )
-  // return false;
-
-  if( Object.getPrototypeOf( proto ) === null )
+  if( proto === Object.prototype )
   return true;
-
-  _.assert( proto === null || !!proto, 'unexpected' );
 
   return false;
 }
+
+// function mapIs( src )
+// {
+//
+//   if( !_.objectIs( src ) )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( !proto.constructor )
+//   return false;
+//
+//   if( proto.constructor.name !== 'Object' )
+//   return false;
+//
+//   if( Object.getPrototypeOf( proto ) === null )
+//   return true;
+//
+//   _.assert( proto === null || !!proto, 'unexpected' );
+//
+//   return false;
+// }
 
 //
 
@@ -145,7 +162,7 @@ function mapIsPopulated( src )
 
 //
 
-function mapIsHeritated( src )
+function mapIsHeritated( src ) /* xxx */
 {
 
   if( !_.objectIs( src ) )
@@ -196,10 +213,38 @@ function mapIsHeritated( src )
 
 //
 
+// function mapLike_( src )
+// {
+//   if( mapIs( src ) )
+//   return true;
+//   return false;
+// }
+
 function mapLike_( src )
 {
-  if( mapIs( src ) )
+
+  if( !src )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
   return true;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  if( proto === Object.prototype )
+  return true;
+
+  debugger;
+  if( !_.primitiveIs( src ) )
+  if( !Reflect.has( src, 'constructor' ) || src.constructor === Object.prototype.constructor )
+  {
+    debugger;
+    return true;
+  }
+
   return false;
 }
 
