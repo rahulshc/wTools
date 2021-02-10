@@ -237,6 +237,32 @@ function mapLike_( src )
   if( proto === Object.prototype )
   return true;
 
+  if( !_.primitiveIs( src ) )
+  if( !Reflect.has( src, 'constructor' ) || src.constructor === Object.prototype.constructor )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapIsPrototyped( src )
+{
+
+  if( !src )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  if( proto === Object.prototype )
+  return false;
+
   debugger;
   if( !_.primitiveIs( src ) )
   if( !Reflect.has( src, 'constructor' ) || src.constructor === Object.prototype.constructor )
@@ -1319,6 +1345,7 @@ let Extension =
   mapIsPopulated,
   mapIsHeritated,
   mapLike_,
+  mapIsPrototyped,
 
   hashMapIs,
   hashMapLike,
