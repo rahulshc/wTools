@@ -284,21 +284,16 @@ function eslint( test )
   let sampleDir = path.join( rootPath, 'sample' );
   let ready = _.take( null );
 
-  // if( _.process.insideTestContainer() && process.platform !== 'linux' )
-  // return test.true( true );
-
   if( _.process.insideTestContainer() )
   {
-    let majorVersion = process.versions.node.split( '.' )[ 0 ];
-    it( _.numberFrom( majorVersion ) !== '14' )
+    let validPlatform = process.platform === 'linux';
+    let validVersion = process.versions.node.split( '.' )[ 0 ] === '14';
+    if( !validPlatform || !validVersion )
     {
       test.true( true );
       return;
     }
   }
-
-  if( process.platform !== 'linux' )
-  return test.true( true );
 
   let start = _.process.starter
   ({
