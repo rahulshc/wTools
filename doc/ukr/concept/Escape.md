@@ -117,18 +117,16 @@ console.log( obj );
 
 </details>
 
-
-<!-- <details>
-<br>
-
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldWithFieldDescriptor</code>.</b>
-  </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>fieldDescriptor.skip !== trueLike</code> ) полю <code>fieldDescriptor.name</code> об'єкта <code>obj</code>.<br><br>
-  <pre><code>function objectSetFieldWithFieldDescriptor( obj, fieldDescriptor, value )
+    <b>Вирішення проблеми обмеженості значень : другий аргумент - <code>fieldDescriptor</code></b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldWithFieldDescriptor</code>.</em><br><br>
+Рутина присвоює значення <code>value</code> ( якщо <code>fieldDescriptor.skip !== trueLike</code> ) полю <code>fieldDescriptor.name</code> об'єкта <code>obj</code>.<br><br>
+<pre><code>function objectSetFieldWithFieldDescriptor( obj, fieldDescriptor, value )
 {
   if( fieldDescriptor.skip === true )
   return;
@@ -137,15 +135,11 @@ console.log( obj );
 }
 
 module.exports = objectSetFieldWithFieldDescriptor;</code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldWithFieldDescriptor</code>.</b>
-  </summary><br>
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldWithFieldDescriptor</code>.</em><br><br>
   ❌ Проблема : необхідність змінювати інтерфейс, другий параметр - мапа з полями <code>skip</code> та <code>name</code><br><br>
-
   <pre><code>let objectSetFieldWithFieldDescriptor = require( './3_ImplementationWithFieldDescriptor.s' );
 
 let obj = {};
@@ -157,7 +151,13 @@ objectSetFieldWithFieldDescriptor( obj, { name : 'field4', skip : true }, null )
 
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+
 </details>
+
+
+
+<!-- <details>
+<br>
 
 <br>
 
