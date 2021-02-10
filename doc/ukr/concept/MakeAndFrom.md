@@ -153,6 +153,7 @@ function arrayFrom( src )
   <summary>
     <b>Використання кастомних рутин конструкторів</code></b>
   </summary></br>
+
 Приклад - використання рутини <code>arrayMake</code><br>
 <pre><code>let arrayMake = require( './4_implementArrayMake.s' );
 
