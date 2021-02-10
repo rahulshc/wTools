@@ -48,7 +48,7 @@ module.exports = objectSetField;</code></pre>
 
 <details>
   <summary>
-    <b>Вирішення проблеми обмеженості значень : додавання 4 параметра</b>
+    <b>Вирішення проблеми обмеженості значень : додавання 4 аргументу</b>
   </summary></br>
   
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldWith4Params</code>.</em><br><br>
@@ -154,19 +154,16 @@ console.log( obj );
 
 </details>
 
-
-
-<!-- <details>
-<br>
-
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldWithValueDescriptor</code>.</b>
-  </summary><br>
-  Рутина присвоює значення <code>valueDescriptor.value</code> ( якщо <code>valueDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
-  <pre><code>function objectSetFieldWithValueDescriptor( obj, field, valueDescriptor )
+    <b>Вирішення проблеми обмеженості значень : третій аргумент - <code>fieldDescriptor</code></b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldWithValueDescriptor</code>.</em><br><br>
+Рутина присвоює значення <code>valueDescriptor.value</code> ( якщо <code>valueDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+<pre><code>function objectSetFieldWithValueDescriptor( obj, field, valueDescriptor )
 {
   if( valueDescriptor.skip === true )
   return;
@@ -175,15 +172,11 @@ console.log( obj );
 }
 
 module.exports = objectSetFieldWithValueDescriptor;</code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldWithValueDescriptor</code>.</b>
-  </summary><br>
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldWithValueDescriptor</code>.</em><br><br>
   ❌ Проблема : необхідність змінювати інтерфейс, третій параметр - мапа з полями <code>skip</code> та <code>value</code><br><br>
-
   <pre><code>let objectSetFieldWithValueDescriptor = require( './4_ImplementationWithValueDescriptor.s' );
 
 let obj = {};
@@ -195,7 +188,11 @@ objectSetFieldWithValueDescriptor( obj, 'field4', { value : null, skip : true } 
 
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+
 </details>
+
+<!-- <details>
+<br>
 
 <br>
 
