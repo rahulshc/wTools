@@ -2939,10 +2939,10 @@ function strSplitInlinedStereo_( o )
 
   if( delimLeftPosition === -1 || delimRightPosition === -1 )
   {
-    if( !o.preservingOrdinary )
-    return [];
-    else
+    if( o.preservingOrdinary )
     return [ o.src ];
+    else
+    return [];
   }
 
   if( !o.preservingOrdinary && !o.preservingInlined )
@@ -2960,10 +2960,10 @@ function strSplitInlinedStereo_( o )
 
   if( splitted.length === 1 )
   {
-    if( !o.preservingOrdinary )
-    return [];
-    else
+    if( o.preservingOrdinary )
     return [ o.src ];
+    else
+    return [];
   }
 
   if( splitted[ 0 ] )
@@ -2975,22 +2975,22 @@ function strSplitInlinedStereo_( o )
 
     if( halfs[ 1 ] === undefined )
     {
-      if( result[ result.length - 1 ] !== undefined )
+      if( result[ result.length - 1 ] === undefined )
       {
-        let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
-
-        if( !_.arrayLike( result[ result.length - 1 ] ) )
-        {
-          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
-        }
-        else
-        {
-          result.push( o.prefix + tempStr );
-        }
+        result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
       }
       else
       {
-        result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
+        let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+
+        if( _.arrayLike( result[ result.length - 1 ] ) )
+        {
+          result.push( o.prefix + tempStr );
+        }
+        else
+        {
+          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+        }
       }
       continue;
     }
@@ -3000,7 +3000,14 @@ function strSplitInlinedStereo_( o )
 
     _.assert( halfs.length === 3 );
 
-    if( strip !== undefined )
+    if( strip === undefined )
+    {
+      if( result.length )
+      result[ result.length-1 ] += o.prefix + splitted[ i ];
+      else
+      result.push( o.prefix + splitted[ i ] );
+    }
+    else
     {
       if( o.preservingDelimeters )
       {
@@ -3035,7 +3042,7 @@ function strSplitInlinedStereo_( o )
           }
           else
           {
-            splitted[ i + 1 ] !== undefined ? result.push( ordinary.trimStart() ) : result.push( ordinary.trim() )
+            splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
           }
         }
         else
@@ -3043,13 +3050,6 @@ function strSplitInlinedStereo_( o )
           result.push( ordinary );
         }
       }
-    }
-    else
-    {
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
     }
   }
 
@@ -3100,17 +3100,17 @@ function strSplitInlinedStereo_( o )
   {
     result = result.map( ( el ) =>
     {
-      if( !_.arrayLike( el ) )
+      if( _.arrayLike( el ) )
       {
-        let res = o.onOrdinary( el );
-        if( res !== undefined )
-        return res;
-        else
         return el;
       }
       else
       {
+        let res = o.onOrdinary( el );
+        if( res === undefined )
         return el;
+        else
+        return res;
       }
     } )
   }
