@@ -6,8 +6,8 @@
 ## План презентації
 
 * Проблема обмеженості значень
-  * Приклад</b> - створення рутини <code>objectSetField</code>.
-  * Приклад</b> - використання рутини <code>objectSetField</code>
+  * Приклад - створення рутини <code>objectSetField</code>.
+  * Приклад - використання рутини <code>objectSetField</code>
 * Вирішення проблеми обмеженості значень : додавання 4 аргументу <code>skip</code>
   * Приклад - створення рутини <code>objectSetFieldWith4Params</code>.
   * Приклад - використання рутини <code>objectSetFieldWith4Params</code>.
@@ -86,8 +86,6 @@ console.log( obj );
 module.exports = objectSetFieldWith4Params;</code></pre>
 </details>
 
-<br>
-
 <em><b>Приклад</b> - використання рутини <code>objectSetFieldWith4Params</code>.</em><br>
 ❌ Проблема : наявність додаткового 4 параметра
 <details>
@@ -127,8 +125,6 @@ console.log( obj );
 
 module.exports = objectSetFieldWithValueDescriptor;</code></pre>
 </details>
-
-<br>
 
 <em><b>Приклад</b> - використання рутини <code>objectSetFieldWithValueDescriptor</code>.</em><br>
 ❌ Проблема : необхідність змінювати інтерфейс, третій параметр - мапа з полями <code>skip</code> та <code>value</code>
@@ -193,8 +189,6 @@ console.log( obj );
 
 module.exports = objectSetFieldConstant;</code></pre>
 </details>
-
-<br>
 
 <em><b>Приклад</b> - використання рутини <code>objectSetFieldConstant</code>.</em><br>
 ❌ Проблема : ідентична <code>objectSetField</code>.
@@ -301,8 +295,6 @@ function objectSetFieldConstantWithEscape( object, field, value )
 module.exports = objectSetFieldConstantWithEscape;
 </code></pre>
 </details>
-
-<br>
 
 <em><b>Приклад</b> - використання рутини <code>objectSetFieldConstantWithEscape</code>.</em><br>
 ✅  Переваги : інтерфейс не змінюється, уніфікація коду, вирішена проблема обмеженності значень.
