@@ -12,11 +12,12 @@
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetField</code>.</b>
+    <b>Проблема обмеженості значень</b>
   </summary></br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.</br></br>
-
-<pre><code>function objectSetField( obj, field, value )\n
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetField</code>.</em><br><br>
+Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.</br></br>
+<pre><code>function objectSetField( obj, field, value )
 {
   if( value === null )
   return;
@@ -26,13 +27,9 @@
 
 module.exports = objectSetField;</code></pre>
 
-</details>
+  <br>
 
-
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetField</code>.</b>
-  </summary><br>
+  <em><b>Приклад</b> - використання рутини <code>objectSetField</code>.</em><br><br>
   ❌ Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.<br><br>
   <pre><code>let objectSetField = require( './0_Implementation.s' );
 
@@ -44,16 +41,19 @@ module.exports = objectSetField;</code></pre>
 
   console.log( obj );
   /* log : { field1: 1, field2: 2 } */</code></pre>
+
 </details>
 
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldWith4Params</code>.</b>
-  </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
-  <pre><code>function objectSetFieldWith4Params( obj, field, value, skip )
+    <b>Вирішення проблеми обмеженості значень : додавання 4 параметра</b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldWith4Params</code>.</em><br><br>
+Рутина присвоює значення <code>value</code> ( якщо <code>skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.<br><br>
+<pre><code>function objectSetFieldWith4Params( obj, field, value, skip )
 {
   if( skip === true )
   return;
@@ -61,15 +61,11 @@ module.exports = objectSetField;</code></pre>
   obj[ field ] = value;
 }
 module.exports = objectSetFieldWith4Params;</code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldWith4Params</code>.</b>
-  </summary><br>
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldWith4Params</code>.</em><br><br>
   ❌ Проблема : наявність додаткового 4 параметра<br><br>
-
   <pre><code>let objectSetFieldWith4Params = require( './1_ImplementationWith4Arguments.s' );
 
 let obj = {};
@@ -81,16 +77,19 @@ objectSetFieldWith4Params( obj, 'field4', null, true );
 
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+
 </details>
 
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldWithObjectDescriptor</code>.</b>
-  </summary><br>
-  Рутина присвоює значення <code>value</code> ( якщо <code>objectDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>objectDescriptor.src</code>.<br><br>
-  <pre><code>function objectSetFieldWithObjectDescriptor( objectDescriptor, field, value )
+    <b>Вирішення проблеми обмеженості значень : перший аргумент - <code>objectDescriptor</code></b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldWithObjectDescriptor</code>.</em><br><br>
+Рутина присвоює значення <code>value</code> ( якщо <code>objectDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>objectDescriptor.src</code>.<br><br>
+<pre><code>function objectSetFieldWithObjectDescriptor( objectDescriptor, field, value )
 {
   if( objectDescriptor.skip === true )
   return;
@@ -99,15 +98,11 @@ console.log( obj );
 }
 
 module.exports = objectSetFieldWithObjectDescriptor;</code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldWithObjectDescriptor</code>.</b>
-  </summary><br>
-  ❌ Проблема : необхідність змінювати інтерфейс, перший параметр - мапа з обє'ктом та полем <code>skip</code><br><br>
-
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldWithObjectDescriptor</code>.</em><br><br>
+  ❌ Проблема : необхідність змінювати інтерфейс, перший параметр - мапа з об'єктом <code>src</code> та полем <code>skip</code><br><br>
   <pre><code>let objectSetFieldWithObjectDescriptor = require( './2_ImplementationWithObjectDescriptor.s' );
 
 let obj = {};
@@ -119,7 +114,12 @@ objectSetFieldWithObjectDescriptor( { src : obj, skip : true }, 'field4', null )
 
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
+
 </details>
+
+
+<!-- <details>
+<br>
 
 <br>
 
@@ -409,4 +409,4 @@ src1 :
 }
 */</code></pre>
 </details>
-
+ -->
