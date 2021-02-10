@@ -74,53 +74,68 @@
   * `_.arrayFromCoercing`
   * `_.arrayFromCoercingLongDescriptor`
 
-<br>
+## Використання існуючих рутин конструкторів
 
+Приклад - використання рутини <code>_.arrayMake</code>
 <details>
   <summary>
-    <b>Використання існуючих рутин конструкторів</code></b>
-  </summary></br>
+    <b>Код</b>
+  </summary>
 
-Приклад - використання рутини <code>_.arrayMake</code>.<br>
 <pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayMake( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : false */</code></pre>
-<br>
+</details>
 
-Приклад - використання рутини <code>_.arrayFrom</code>.<br>
+Приклад - використання рутини <code>_.arrayFrom</code>.
+<details>
+  <summary>
+    <b>Код</b>
+  </summary>
+
 <pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayFrom( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : true */</code></pre>
-<br>
+</details>
 
-Приклад - використання рутини <code>_.escape.make</code>.<br>
+Приклад - використання рутини <code>_.escape.make</code>.
+<details>
+  <summary>
+    <b>Код</b>
+  </summary>
+
 <pre><code>
 let src = _.escape.make( 1 );
 let got = _.escape.make( src );
 
 console.log( got === src ); /* log : false */</code></pre>
-<br>
+</details>
 
-Приклад - використання рутини <code>_.escape.from</code>.<br>
+Приклад - використання рутини <code>_.escape.from</code>.
+<details>
+  <summary>
+    <b>Код</b>
+  </summary>
+
 <pre><code>
 let src = _.escape.make( 1 );
 let got = _.escape.from( src );
 
 console.log( got === src ); /* log : true */</code></pre>
-
 </details>
 
-<br>
+## Створення кастомних рутин конструкторів
 
+Приклад - реалізація рутини <code>arrayMake</code>
 <details>
   <summary>
-    <b>Створення кастомних рутин конструкторів</code></b>
-  </summary></br>
-Приклад - реалізація рутини <code>arrayMake</code><br>
+    <b>Код</b>
+  </summary>
+
 <pre><code>function arrayMake( src )
 {
   if( src === null || src === undefined )
@@ -133,9 +148,15 @@ console.log( got === src ); /* log : true */</code></pre>
   return [ src[ 0 ] ];
   else
   return Array.apply( Array, src );
-}</code></pre><br>
+}</code></pre>
+</details>
 
-Приклад - реалізація рутини <code>arrayFrom</code><br>
+Приклад - реалізація рутини <code>arrayFrom</code>
+<details>
+  <summary>
+    <b>Код</b>
+  </summary>
+
 <pre><code>let arrayMake = require( './4_implementArrayMake.s' );
 
 function arrayFrom( src )
@@ -144,17 +165,17 @@ function arrayFrom( src )
   return src;
   return arrayMake( src );
 }</code></pre>
-
 </details>
 
-<br>
 
+## Використання кастомних рутин конструкторів
+
+Приклад - використання рутини <code>arrayMake</code>
 <details>
   <summary>
-    <b>Використання кастомних рутин конструкторів</code></b>
-  </summary></br>
+    <b>Код</b>
+  </summary>
 
-Приклад - використання рутини <code>arrayMake</code><br>
 <pre><code>let arrayMake = require( './4_implementArrayMake.s' );
 
 let src = [ 1, 2, 3 ];
@@ -162,9 +183,15 @@ let got = arrayMake( src );
 
 console.log( got ); /* log : [ 1, 2, 3 ] */
 console.log( got === src ); /* log : false */
-</code></pre><br>
+</code></pre>
+</details>
 
-Приклад - використання рутини <code>arrayFrom</code><br>
+Приклад - використання рутини <code>arrayFrom</code>
+<details>
+  <summary>
+    <b>Код</b>
+  </summary>
+
 <pre><code>let arrayFrom = require( './5_implementArrayFrom.s' );
 
 let src = [ 1, 2, 3 ];
@@ -173,7 +200,6 @@ let got = arrayFrom( src );
 console.log( got ); /* log : [ 1, 2, 3 ] */
 console.log( got === src ); /* log : true */
 </code></pre>
-
 </details>
 
 <br>
