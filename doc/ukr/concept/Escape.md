@@ -203,7 +203,7 @@ console.log( obj );
   <summary>
     <b>Приклад - створення рутини <code>objectSetFieldConstant</code>.</b>
   </summary><br>
-  Ускладнена версія <code>objectSetField</code>, яка додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.</br></br>
+  Ускладнена версія <code>objectSetField</code>, яка додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.</br></br>
   <pre><code>function objectSetFieldConstant( object, field, value )
 {
   if( value === null )
@@ -289,7 +289,7 @@ log :
   <summary>
     <b>Приклад - створення рутини <code>objectSetFieldConstantWithEscape</code>.</b>
   </summary><br>
-  Рутина додає константне поле об'єкту <code>object</code>; якщо <code>value === null</code>, перетворює поле <code>field</code> на константне.<br><br>
+  Рутина додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.<br><br>
 
   <pre><code>let _ = require( '../..' );
 
