@@ -2608,7 +2608,6 @@ function routinesChain( test )
 
 function routineExtend( test )
 {
-
   test.open( 'dst is null, src has head and body properties');
 
   test.case = 'dst is null, src is routine maked by routineUnite';
@@ -2633,7 +2632,8 @@ function routineExtend( test )
 
   var got = _.routineExtend( null, f1 );
   test.equivalent( got.map1, f1.map1 );
-  test.equivalent( got.map2, f1.map2 ); debugger;
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, f1.map2.a );
   test.equivalent( got.str, f1.str );
   test.equivalent( got.number, f1.number );
   test.equivalent( got.routine, f1.routine );
@@ -3026,7 +3026,6 @@ function routineExtend( test )
   {
     _.routineExtend( 'str', { a : 1 } );
   });
-
 }
 
 //
@@ -6077,23 +6076,22 @@ function vectorizeAll( test )
   isOdd.number = 13;
   isOdd.routine = function r(){};
   var got = _.vectorizeAll( isOdd );
-  test.equivalent( got.map1, isOdd.map1 );
-  test.equivalent( got.map2, isOdd.map2 );
-  test.equivalent( got.str, isOdd.str );
-  test.equivalent( got.number, isOdd.number );
-  test.equivalent( got.routine, isOdd.routine );
+  test.identical( got.map1, isOdd.map1 );
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, isOdd.map2.a );
+  test.identical( got.str, isOdd.str );
+  test.identical( got.number, isOdd.number );
+  test.identical( got.routine, isOdd.routine );
   test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 0 );
   test.identical( got([ 0, 2 ]), 0 );
   test.identical( got([ 1, 3 ]), true );
-
 }
 
 //
 
 function vectorizeAny( test )
 {
-
   test.case = 'trivial';
   function isOdd( a )
   {
@@ -6107,23 +6105,22 @@ function vectorizeAny( test )
   isOdd.number = 13;
   isOdd.routine = function r(){};
   var got = _.vectorizeAny( isOdd );
-  test.equivalent( got.map1, isOdd.map1 );
-  test.equivalent( got.map2, isOdd.map2 );
-  test.equivalent( got.str, isOdd.str );
-  test.equivalent( got.number, isOdd.number );
-  test.equivalent( got.routine, isOdd.routine );
+  test.identical( got.map1, isOdd.map1 );
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, isOdd.map2.a );
+  test.identical( got.str, isOdd.str );
+  test.identical( got.number, isOdd.number );
+  test.identical( got.routine, isOdd.routine );
   test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 1 );
   test.identical( got([ 0, 2 ]), false );
   test.identical( got([ 1, 3 ]), 1 );
-
 }
 
 //
 
 function vectorizeNone( test )
 {
-
   test.case = 'trivial';
   function isOdd( a )
   {
@@ -6137,16 +6134,16 @@ function vectorizeNone( test )
   isOdd.number = 13;
   isOdd.routine = function r(){};
   var got = _.vectorizeNone( isOdd );
-  test.equivalent( got.map1, isOdd.map1 );
-  test.equivalent( got.map2, isOdd.map2 );
-  test.equivalent( got.str, isOdd.str );
-  test.equivalent( got.number, isOdd.number );
-  test.equivalent( got.routine, isOdd.routine );
+  test.identical( got.map1, isOdd.map1 );
+  test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
+  test.identical( got.map2.a, isOdd.map2.a );
+  test.identical( got.str, isOdd.str );
+  test.identical( got.number, isOdd.number );
+  test.identical( got.routine, isOdd.routine );
   test.true( _.routineIs( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), false );
   test.identical( got([ 0, 2 ]), true );
   test.identical( got([ 1, 3 ]), false );
-
 }
 
 //
