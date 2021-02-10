@@ -21,9 +21,6 @@
   * Приклад - використання рутини <code>objectSetFieldConstantWithEscape</code>.
 * Висновки
 
-<br>
-<br>
-
 ## Проблема обмеженості значень
 Якщо значення зарезервоване в рутині для вибору алгоритму, воно не може бути використане, як звичайне.<br><br>
 <em><b>Приклад</b> - створення рутини <code>objectSetField</code>.</em><br>
@@ -65,13 +62,9 @@ console.log( obj );
 /* log : { field1: 1, field2: 2 } */</code></pre>
 </details>
 
-<br>
-
 ## Обмеження накладені на реалізацію
 * Не змінювати перший аргумент
 * Не змінювати другий аргумент
-
-<br>
 
 ## Вирішення проблеми обмеженості значень : додавання 4 аргументу <code>skip</code>
 
@@ -116,8 +109,6 @@ console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
 
-<br>
-
 ## Вирішення проблеми обмеженості значень : третій аргумент - <code>valueDescriptor</code>
 
 <br>
@@ -161,8 +152,6 @@ objectSetFieldWithValueDescriptor( obj, 'field4', { value : null, skip : true } 
 console.log( obj );
 /* log : { field1: 1, field2: 2, field3: null } */</code></pre>
 </details>
-
-<br>
 
 ## Модифікована версія оригінальної проблеми : додавання константного поля
 
@@ -255,8 +244,6 @@ log :
 }
 */</code></pre>
 </details>
-
-<br>
 
 ## Вирішення проблеми обмеженості значень : використання неймспейсу - <code>_.escape</code>
 
