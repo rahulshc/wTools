@@ -147,18 +147,13 @@ function arrayFrom( src )
 
 </details>
 
-
-<!-- ## Приклади використання
-
 <br>
-
-## Приклади реалізації та використання
 
 <details>
   <summary>
-    <b>Приклад - використання рутини <code>arrayMake</code>.</b>
+    <b>Використання кастомних рутин конструкторів</code></b>
   </summary></br>
-
+Приклад - використання рутини <code>arrayMake</code><br>
 <pre><code>let arrayMake = require( './4_implementArrayMake.s' );
 
 let src = [ 1, 2, 3 ];
@@ -166,17 +161,9 @@ let got = arrayMake( src );
 
 console.log( got ); /* log : [ 1, 2, 3 ] */
 console.log( got === src ); /* log : false */
-</code></pre>
+</code></pre><br>
 
-</details>
-
-<br>
-
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>arrayFrom</code>.</b>
-  </summary></br>
-
+Приклад - використання рутини <code>arrayFrom</code><br>
 <pre><code>let arrayFrom = require( './5_implementArrayFrom.s' );
 
 let src = [ 1, 2, 3 ];
@@ -186,7 +173,7 @@ console.log( got ); /* log : [ 1, 2, 3 ] */
 console.log( got === src ); /* log : true */
 </code></pre>
 
-</details> -->
+</details>
 
 <br>
 
