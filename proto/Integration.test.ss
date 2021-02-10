@@ -289,8 +289,8 @@ function eslint( test )
 
   if( _.process.insideTestContainer() )
   {
-    let majorVersion = process.env.npm_config_node_version.match( '/^\d+/' );
-    it( _.numberFrom( majorVersion ) !== 14 )
+    let majorVersion = process.versions.node.split( '.' )[ 0 ];
+    it( _.numberFrom( majorVersion ) !== '14' )
     {
       test.true( true );
       return;
