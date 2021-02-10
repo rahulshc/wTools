@@ -428,7 +428,7 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  else if( _.mapLike_( src ) )
+  else if( _.mapLike_( src ) || _.objectLike( src ) )
   {
 
     for( let k in src )
