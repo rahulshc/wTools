@@ -4,6 +4,7 @@
 Неймспейс <code>_.escape</code> містить засоби для створення, перевірки та маніпулювання таких значень.
 
 ## План презентації
+
 * Проблема обмеженості значень
   * Приклад</b> - створення рутини <code>objectSetField</code>.
   * Приклад</b> - використання рутини <code>objectSetField</code>
@@ -22,6 +23,7 @@
 * Висновки
 
 ## Проблема обмеженості значень
+
 Якщо значення зарезервоване в рутині для вибору алгоритму, воно не може бути використане, як звичайне.<br><br>
 <em><b>Приклад</b> - створення рутини <code>objectSetField</code>.</em><br>
 Рутина присвоює значення <code>value</code> ( якщо <code>value !== null</code> ) полю <code>field</code> об'єкта <code>obj</code>.
@@ -63,12 +65,11 @@ console.log( obj );
 </details>
 
 ## Обмеження накладені на реалізацію
+
 * Не змінювати перший аргумент
 * Не змінювати другий аргумент
 
 ## Вирішення проблеми обмеженості значень : додавання 4 аргументу <code>skip</code>
-
-<br>
 
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldWith4Params</code>.</em><br>
 Рутина присвоює значення <code>value</code> ( якщо <code>skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.
@@ -111,8 +112,6 @@ console.log( obj );
 
 ## Вирішення проблеми обмеженості значень : третій аргумент - <code>valueDescriptor</code>
 
-<br>
-
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldWithValueDescriptor</code>.</em><br>
 Рутина присвоює значення <code>valueDescriptor.value</code> ( якщо <code>valueDescriptor.skip !== trueLike</code> ) полю <code>field</code> об'єкта <code>obj</code>.
 <details>
@@ -154,8 +153,6 @@ console.log( obj );
 </details>
 
 ## Модифікована версія оригінальної проблеми : додавання константного поля
-
-<br>
 
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldConstant</code>.</em><br>
 Ускладнена версія <code>objectSetField</code>, яка додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.
@@ -246,8 +243,6 @@ log :
 </details>
 
 ## Вирішення проблеми обмеженості значень : використання неймспейсу - <code>_.escape</code>
-
-<br>
 
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldConstantWithEscape</code>.</em><br>
 Рутина додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.
