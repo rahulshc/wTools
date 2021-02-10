@@ -43,8 +43,6 @@
 module.exports = objectSetField;</code></pre>
 </details>
 
-<br>
-
 <em><b>Приклад</b> - використання рутини <code>objectSetField</code>.</em><br>
 ❌ Проблема : неможливо присвоїти значення <code>null</code>, так як воно використовується в рутині, як спеціальне.
 <details>
