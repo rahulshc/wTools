@@ -191,17 +191,16 @@ console.log( obj );
 
 </details>
 
-<!-- <details>
-<br>
-
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldConstant</code>.</b>
-  </summary><br>
-  Ускладнена версія <code>objectSetField</code>, яка додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.</br></br>
-  <pre><code>function objectSetFieldConstant( object, field, value )
+    <b>Модифікована версія оригінальної проблеми : додавання константного поля</b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldConstant</code>.</em><br><br>
+Ускладнена версія <code>objectSetField</code>, яка додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.</br></br>
+<pre><code>function objectSetFieldConstant( object, field, value )
 {
   if( value === null )
   {
@@ -234,15 +233,11 @@ console.log( obj );
 }
 
 module.exports = objectSetFieldConstant;</code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldConstant</code>.</b>
-  </summary><br>
-  ❌ Проблема : та ж що і у <code>objectSetField</code>.<br><br>
-
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldConstant</code>.</em><br><br>
+  ❌ Проблема : ідентична <code>objectSetField</code>.<br><br>
   <pre><code>let objectSetFieldConstant = require( './5_ImplementationAddConstantField.s' );
 
 let obj = { fieldToBeRemained : 1, fieldToBeChanged : 2 };
@@ -278,8 +273,10 @@ log :
   }
 }
 */</code></pre>
+
 </details>
 
+<!-- <details>
 <br>
 
 <details>
