@@ -74,55 +74,38 @@
   * `_.arrayFromCoercing`
   * `_.arrayFromCoercingLongDescriptor`
 
-
-## Приклади використання
+<br>
 
 <details>
   <summary>
-    <b>Приклад - використання рутини <code>_.arrayMake</code>.</b>
+    <b>Використання існуючих рутин конструкторів</code></b>
   </summary></br>
 
+Приклад - використання рутини <code>_.arrayMake</code>.<br>
 <pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayMake( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : false */</code></pre>
+<br>
 
-</details>
-
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>_.arrayFrom</code>.</b>
-  </summary></br>
-
+Приклад - використання рутини <code>_.arrayFrom</code>.<br>
 <pre><code>var srcArray = [ 'a', 'b', 'c' ];
 
 var gotArray = _.arrayFrom( srcArray );
 console.log( gotArray ); /* log : [ 'a', 'b', 'c' ] */
 console.log( gotArray === srcArray ); /* log : true */</code></pre>
-
-</details>
-
 <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>_.escape.make</code>.</b>
-  </summary></br>
-
+Приклад - використання рутини <code>_.escape.make</code>.<br>
 <pre><code>
 let src = _.escape.make( 1 );
 let got = _.escape.make( src );
 
 console.log( got === src ); /* log : false */</code></pre>
+<br>
 
-</details>
-
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>_.escape.from</code>.</b>
-  </summary></br>
-
+Приклад - використання рутини <code>_.escape.from</code>.<br>
 <pre><code>
 let src = _.escape.make( 1 );
 let got = _.escape.from( src );
@@ -133,13 +116,11 @@ console.log( got === src ); /* log : true */</code></pre>
 
 <br>
 
-## Приклади реалізації та використання
-
 <details>
   <summary>
-    <b>Приклад - реалізація рутини <code>arrayMake</code>.</b>
+    <b>Створення кастомних рутин конструкторів</code></b>
   </summary></br>
-
+Приклад - реалізація рутини <code>arrayMake</code><br>
 <pre><code>function arrayMake( src )
 {
   if( src === null || src === undefined )
@@ -152,9 +133,26 @@ console.log( got === src ); /* log : true */</code></pre>
   return [ src[ 0 ] ];
   else
   return Array.apply( Array, src );
+}</code></pre><br>
+
+Приклад - реалізація рутини <code>arrayFrom</code><br>
+<pre><code>let arrayMake = require( './4_implementArrayMake.s' );
+
+function arrayFrom( src )
+{
+  if( _.arrayIs( src ) )
+  return src;
+  return arrayMake( src );
 }</code></pre>
 
 </details>
+
+
+<!-- ## Приклади використання
+
+<br>
+
+## Приклади реалізації та використання
 
 <details>
   <summary>
@@ -176,22 +174,6 @@ console.log( got === src ); /* log : false */
 
 <details>
   <summary>
-    <b>Приклад - реалізація рутини <code>arrayFrom</code>.</b>
-  </summary></br>
-
-<pre><code>let arrayMake = require( './4_implementArrayMake.s' );
-
-function arrayFrom( src )
-{
-  if( _.arrayIs( src ) )
-  return src;
-  return arrayMake( src );
-}</code></pre>
-
-</details>
-
-<details>
-  <summary>
     <b>Приклад - використання рутини <code>arrayFrom</code>.</b>
   </summary></br>
 
@@ -204,7 +186,7 @@ console.log( got ); /* log : [ 1, 2, 3 ] */
 console.log( got === src ); /* log : true */
 </code></pre>
 
-</details>
+</details> -->
 
 <br>
 
