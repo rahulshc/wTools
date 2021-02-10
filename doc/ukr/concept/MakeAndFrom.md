@@ -202,6 +202,4 @@ console.log( got === src ); /* log : true */
 </code></pre>
 </details>
 
-<br>
-
 [Повернутись до змісту](../README.md#Концепції)
