@@ -158,7 +158,7 @@ console.log( obj );
 
 <details>
   <summary>
-    <b>Вирішення проблеми обмеженості значень : третій аргумент - <code>fieldDescriptor</code></b>
+    <b>Вирішення проблеми обмеженості значень : третій аргумент - <code>valueDescriptor</code></b>
   </summary></br>
   
 <em><b>Приклад</b> - створення рутини <code>objectSetFieldWithValueDescriptor</code>.</em><br><br>
@@ -276,16 +276,16 @@ log :
 
 </details>
 
-<!-- <details>
 <br>
 
 <details>
   <summary>
-    <b>Приклад - створення рутини <code>objectSetFieldConstantWithEscape</code>.</b>
-  </summary><br>
-  Рутина додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.<br><br>
-
-  <pre><code>let _ = require( '../..' );
+    <b>Вирішення проблеми обмеженості значень : використання неймспейсу - <code>_.escape</code></b>
+  </summary></br>
+  
+<em><b>Приклад</b> - створення рутини <code>objectSetFieldConstantWithEscape</code>.</em><br><br>
+Рутина додає константне поле об'єкту <code>object</code>, якщо <code>value === null</code> - перетворює поле <code>field</code> на константне.<br><br>
+<pre><code>let _ = require( '../..' );
 
 function objectSetFieldConstantWithEscape( object, field, value )
 {
@@ -335,17 +335,12 @@ function objectSetFieldConstantWithEscape( object, field, value )
 }
 
 module.exports = objectSetFieldConstantWithEscape;
-
 </code></pre>
-</details>
 
+  <br>
 
-<details>
-  <summary>
-    <b>Приклад - використання рутини <code>objectSetFieldConstantWithEscape</code>.</b>
-  </summary><br>
+  <em><b>Приклад</b> - використання рутини <code>objectSetFieldConstantWithEscape</code>.</em><br><br>
   ✅  Переваги : інтерфейс не змінюється, уніфікація коду, вирішена проблема обмеженності значень.<br><br>
-
   <pre><code>let _ = require( '../..' );
 let objectSetFieldConstantWithEscape = require( './6_ImplementationAddConstantFieldWithEscape.s' )
 
@@ -402,5 +397,9 @@ src1 :
   }
 }
 */</code></pre>
+
 </details>
- -->
+
+<br>
+
+[Повернутись до змісту](../README.md#Концепції)
