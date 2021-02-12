@@ -102,6 +102,48 @@ function like( test )
 
 //
 
+function lengthOf( test )
+{
+
+  test.case = 'not';
+  test.identical( _.container.lengthOf( null ), 1 );
+  test.identical( _.container.lengthOf( undefined ), 0 );
+  test.identical( _.container.lengthOf( 'str' ), 3 );
+  test.identical( _.container.lengthOf( 1 ), 1 );
+  test.identical( _.container.lengthOf( 0 ), 1 );
+  test.identical( _.container.lengthOf( true ), 1 );
+  test.identical( _.container.lengthOf( new Date() ), 1 );
+
+  test.case = 'map';
+  test.identical( _.container.lengthOf( {} ), 0 );
+  test.identical( _.container.lengthOf( { a : 1, b : 2, c : 3 } ), 3 );
+  test.identical( _.container.lengthOf( Object.create( null ) ), 0 );
+
+  test.case = 'instance';
+  let src = new function Con() { this.a = 1 };
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'hashmap';
+  test.identical( _.container.lengthOf( new HashMap ), 0 );
+  test.identical( _.container.lengthOf( new HashMap([ [ 'a', 'b' ] ]) ), 1 );
+
+  test.case = 'array';
+  test.identical( _.container.lengthOf( [] ), 0 );
+  test.identical( _.container.lengthOf( [ false ] ), 1 );
+  test.identical( _.container.lengthOf( [ 1, 2, 3, 4 ] ), 4 );
+
+  test.case = 'typed buffer';
+  test.identical( _.container.lengthOf( new F32x() ), 0 );
+  test.identical( _.container.lengthOf( new F32x([ 1, 2, 3 ]) ), 3 );
+
+  test.case = 'set';
+  test.identical( _.container.lengthOf( new Set ), 0 );
+  test.identical( _.container.lengthOf( new Set([ 'a', 'b' ]) ), 2 );
+
+}
+
+//
+
 function instanceOfContainer( test )
 {
 
@@ -2201,6 +2243,7 @@ let Self =
 
     is,
     like,
+    lengthOf,
     instanceOfContainer,
 
     extendReplacingDstNull,
