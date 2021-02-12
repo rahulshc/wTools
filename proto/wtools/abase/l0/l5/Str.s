@@ -2946,8 +2946,12 @@ function strSplitInlinedStereo_( o )
   for( let i = 1; i < splitted.length; i++ )
   {
     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+    //[ leftOfPostfix, postfix, rightOfPostfix ]
+    // console.log( 'splitted[ i ] : ', splitted[ i ] )
+    // console.log( 'halfs : ', halfs )
+    // console.log( '-----------------' )
 
-    if( halfs[ 1 ] === undefined )
+    if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
     {
       if( result[ result.length - 1 ] === undefined )
       {
@@ -3023,6 +3027,7 @@ function strSplitInlinedStereo_( o )
   if( o.preservingEmpty )
   handleEmptyLines();
 
+  console.log( '=================' )
   return result;
 
   /* - */
@@ -3047,15 +3052,15 @@ function strSplitInlinedStereo_( o )
     if( !o.preservingOrdinary && !o.preservingInlined )
     return [];
 
-    if( o.quoting )
-    {
-      src = src.replace( /"❮"/g, replacementForQuotes );
-      splitted = src.split( o.prefix );
-    }
-    else
-    {
-      splitted = src.split( o.prefix );
-    }
+    // if( o.quoting )
+    // {
+    //   src = src.replace( /"❮"/g, replacementForQuotes );
+    //   splitted = src.split( o.prefix );
+    // }
+    // else
+    // {
+    splitted = src.split( o.prefix );
+    // }
 
     if( splitted.length === 1 )
     {
@@ -3072,17 +3077,34 @@ function strSplitInlinedStereo_( o )
 
   function handleQuoting()
   {
-    let reg = new RegExp( replacementForQuotes, 'g' );
 
-    result = result.map( ( el ) =>
+    /*
+      [ 'this "', [ 'background:red], '"is', 'background:default', ' text and is not' ];
+      [ 'this "', [ 'background:red], '"is"', 'background:default', ' text and is not' ];
+      [ 'this "', [ 'background:red], '"is"', 'background:default', ' "text and is not' ];
+      preservingQuoting
+    */
+    // let reg = new RegExp( replacementForQuotes, 'g' );
+
+    // result = result.map( ( el ) =>
+    // {
+    //   if( !_.arrayLike( el ) )
+    //   {
+    //     if( el.indexOf( replacementForQuotes ) !== -1 )
+    //     return el.replace( reg, '"❮"' )
+    //   }
+    //   return el;
+    // })
+
+    for( let i = 0; i < result.length; i++ )
     {
-      if( !_.arrayLike( el ) )
+      if( _.arrayLike( result[ i ] ) )
       {
-        if( el.indexOf( replacementForQuotes ) !== -1 )
-        return el.replace( reg, '"❮"' )
+
       }
-      return el;
-    } )
+
+      continue;
+    }
   }
 
   /* */
@@ -3103,7 +3125,7 @@ function strSplitInlinedStereo_( o )
         else
         return res;
       }
-    } )
+    })
   }
 
   /* */
@@ -3179,6 +3201,7 @@ strSplitInlinedStereo_.defaults =
   stripping : 0,
   quoting : 0,
 
+  preservingQuoting : 1,
   preservingEmpty : 1,
   preservingDelimeters : 0,
   preservingOrdinary : 1,
