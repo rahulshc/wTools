@@ -1824,9 +1824,6 @@ mapInvert.defaults =
 
 function _mapInvert( o )
 {
-  if( _.objectLike( o ) )
-  o = { src : o }
-
   _.routineOptions( _mapInvert, o );
 
   o.dst = o.dst || Object.create( null );
