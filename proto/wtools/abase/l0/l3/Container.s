@@ -97,7 +97,7 @@ Self.original = Container;
 let ContainerExtension =
 {
 
-  is, /* qqq : cover please */
+  is, /* qqq : cover please | aaa : Done. Yevhen S. */
   like, /* qqq : cover please */
   lengthOf, /* qqq : cover please */
 
