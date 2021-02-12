@@ -37,7 +37,7 @@ function objectIs( src )
 
 //
 
-function objectLike( src )
+function objectLike( src ) /* xxx qqq : optimize */
 {
 
   if( _.objectIs( src ) )
@@ -45,13 +45,18 @@ function objectLike( src )
 
   if( _.primitiveIs( src ) )
   return false;
-  if( _.longIs( src ) )
+
+  // if( _.longIs( src ) ) /* yyy */
+  // return false;
+  if( _.vectorIs( src ) )
   return false;
+
   if( _.routineIsTrivial( src ) )
   return false;
 
-  for( let k in src )
-  return true;
+  // yyy
+  // for( let k in src )
+  // return true;
 
   return false;
 }
@@ -90,13 +95,13 @@ function mapIs( src )
   if( !src )
   return false;
 
+  if( src[ Symbol.iterator ] )
+  return false;
+
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
-
-  if( src[ Symbol.iterator ] )
-  return false;
 
   if( proto === Object.prototype )
   return true;
@@ -131,6 +136,103 @@ function mapIs( src )
 
 //
 
+// function mapLike_( src )
+// {
+//   if( mapIs( src ) )
+//   return true;
+//   return false;
+// }
+
+function mapLike_( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return true;
+
+  if( proto === Object.prototype )
+  return true;
+
+  if( !_.primitiveIs( proto ) )
+  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapIsPure( src )
+{
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  if( Object.getPrototypeOf( src ) === null )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapIsPolluted( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return false;
+
+  if( proto.constructor === Object )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapIsPrototyped( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return false;
+
+  if( proto === Object.prototype )
+  return false;
+
+  if( !_.primitiveIs( proto ) )
+  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+  return true;
+
+  return false;
+}
+
+//
+
 function mapIsEmpty( src )
 {
   if( !_.mapIs( src ) )
@@ -140,15 +242,11 @@ function mapIsEmpty( src )
 
 //
 
-function mapIsPure( src )
+function mapLikeEmpty( src )
 {
-  if( !src )
-  return;
-
-  if( Object.getPrototypeOf( src ) === null )
-  return true;
-
+  if( !_.mapLike_( src ) )
   return false;
+  return Object.keys( src ).length === 0;
 }
 
 //
@@ -162,34 +260,43 @@ function mapIsPopulated( src )
 
 //
 
-function mapIsHeritated( src ) /* xxx */
+function mapLikePopulated( src )
 {
-
-  if( !_.objectIs( src ) )
+  if( !_.mapLike_( src ) )
   return false;
-
-  let proto = src;
-
-  do
-  {
-
-    proto = Object.getPrototypeOf( proto );
-
-    if( proto === null )
-    return true;
-
-    if( proto.constructor && proto.constructor.name !== 'Object' )
-    return false;
-
-    src = proto;
-  }
-  while( proto );
-
-  if( proto === null )
-  return true;
-
-  return false;
+  return Object.keys( src ).length > 0;
 }
+
+// //
+//
+// function mapIsHeritated( src ) /* xxx */
+// {
+//
+//   if( !_.objectIs( src ) )
+//   return false;
+//
+//   let proto = src;
+//
+//   do
+//   {
+//
+//     proto = Object.getPrototypeOf( proto );
+//
+//     if( proto === null )
+//     return true;
+//
+//     if( proto.constructor && proto.constructor.name !== 'Object' )
+//     return false;
+//
+//     src = proto;
+//   }
+//   while( proto );
+//
+//   if( proto === null )
+//   return true;
+//
+//   return false;
+// }
 
 // //
 //
@@ -210,69 +317,6 @@ function mapIsHeritated( src ) /* xxx */
 //
 //   return true;
 // }
-
-//
-
-// function mapLike_( src )
-// {
-//   if( mapIs( src ) )
-//   return true;
-//   return false;
-// }
-
-function mapLike_( src )
-{
-
-  if( !src )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  if( proto === Object.prototype )
-  return true;
-
-  if( !_.primitiveIs( src ) )
-  if( !Reflect.has( src, 'constructor' ) || src.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
-
-//
-
-function mapIsPrototyped( src )
-{
-
-  if( !src )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  if( proto === Object.prototype )
-  return false;
-
-  debugger;
-  if( !_.primitiveIs( src ) )
-  if( !Reflect.has( src, 'constructor' ) || src.constructor === Object.prototype.constructor )
-  {
-    debugger;
-    return true;
-  }
-
-  return false;
-}
 
 //
 
@@ -1340,12 +1384,15 @@ let Extension =
   objectLike,
 
   mapIs,
-  mapIsEmpty,
-  mapIsPure,
-  mapIsPopulated,
-  mapIsHeritated,
   mapLike_,
+  mapIsPure,
+  mapIsPolluted,
   mapIsPrototyped,
+
+  mapIsEmpty,
+  mapLikeEmpty,
+  mapIsPopulated,
+  mapLikePopulated,
 
   hashMapIs,
   hashMapLike,

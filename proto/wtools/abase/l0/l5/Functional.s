@@ -3820,12 +3820,6 @@ function entityMap_( dst, src, onEach )
 
 //
 
-/*
-qqq : cover entityFilter and entityFilterDeep, take into account unroll cases
-aaa Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
-qqq : find good explanation and explain during call. make simple example if needed
-*/
-
 function entityFilter( src, onEach )
 {
   let result;
@@ -3833,9 +3827,7 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  // _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strType( src ) );
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -3904,7 +3896,6 @@ function entityFilter_( dst, src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); qqq2 : !
 
   /* */
 
@@ -4017,7 +4008,6 @@ function entityFirst( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -4141,166 +4131,6 @@ function entityLast( src, onEach )
  * @throws {Exception} If( onEvaluate ) function is not implemented.
  * @namespace Tools
  */
-
-/*
-qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and can use evaluator or comparator
-- make o-fication
-- make it accept evaluator or comparator( not in the same call )
-*/
-
-// function _entityMost_head( routine, args )
-// {
-//   _.assert( args.length === 1 || args.length === 2 );
-//
-//   let o = args[ 0 ];
-//   if( !_.mapIs( o ) )
-//   o = { src : args[ 0 ], onEach : args[ 1 ] };
-//
-//   _.routineOptions( _entityMost, o );
-//
-//   return o;
-// }
-//
-// function _entityMost_body( o )
-// {
-//   // _.assert( arguments.length === 1, 'Expects exactly one argument' );
-//   // _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
-//   // _.routineOptions( _entityMost, o );
-//
-//   if( !o.onEvaluate )
-//   {
-//     _.assert( o.returnMax !== null, 'o.returnMax should has value' );
-//
-//     if( o.returnMax )
-//     o.onEvaluate = ( a, b ) => a - b > 0;
-//     else
-//     o.onEvaluate = ( a, b ) => b - a > 0;
-//   }
-//
-//   _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
-//   _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
-//
-//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
-//
-//   if( _.longIs( o.src ) )
-//   {
-//     if( o.src.length === 0 )
-//     return result;
-//
-//     let s = 0;
-//     if( o.onEvaluate.length === 1 )
-//     for( ; s < o.src.length; s++ )
-//     {
-//       let value = o.onEach( o.src[ s ], s, o.src );
-//       if( o.onEvaluate( value ) )
-//       {
-//         result.value = value;
-//         result.key = s;
-//         break;
-//       }
-//     }
-//     else
-//     {
-//       result.key = s;
-//       result.value = o.onEach( o.src[ s ], s, o.src );
-//     }
-//
-//     for( ; s < o.src.length; s++ )
-//     resultValue( o.src[ s ], s, o.src );
-//     result.index = result.key;
-//     result.element = o.src[ result.key ];
-//   }
-//   else if( _.mapLike_( o.src ) )
-//   {
-//     let index = 0;
-//     if( o.onEvaluate.length === 1 )
-//     {
-//       for( let s in o.src )
-//       {
-//         if( result.value === undefined )
-//         {
-//           let value = o.onEach( o.src[ s ], s, o.src );
-//           if( o.onEvaluate( value ) )
-//           {
-//             result.value = value;
-//             result.index = index;
-//             result.key = s;
-//           }
-//         }
-//         else
-//         {
-//           if( resultValue( o.src[ s ], s, o.src ) )
-//           result.index = index;
-//         }
-//
-//         index++;
-//
-//       }
-//       result.element = o.src[ result.key ];
-//     }
-//     else
-//     {
-//       for( let s in o.src )
-//       {
-//         result.index = 0;
-//         result.key = s;
-//         result.value = o.onEach( o.src[ s ], s, o.src );
-//         break;
-//       }
-//
-//       for( let s in o.src )
-//       {
-//         if( resultValue( o.src[ s ], s, o.src ) )
-//         result.index = index;
-//
-//         index++;
-//       }
-//       result.element = o.src[ result.key ];
-//     }
-//
-//   }
-//   else
-//   _.assert( 0 );
-//
-//   return result;
-//
-//   /* */
-//
-//   function resultValue( e, k, s )
-//   {
-//     let value = o.onEach( e, k, s );
-//     if( o.onEvaluate.length === 1 )
-//     {
-//       if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
-//       {
-//         result.key = k;
-//         result.value = value;
-//         return true;
-//       }
-//     }
-//     else if( o.onEvaluate( value, result.value ) )
-//     {
-//       result.key = k;
-//       result.value = value;
-//       return true;
-//     }
-//
-//     return false;
-//   }
-//
-// }
-//
-// _entityMost_body.defaults =
-// {
-//   src : null,
-//   onEach : ( e ) => e,
-//   onEvaluate : null,
-//   returnMax : null
-// }
-//
-// //
-//
-// let _entityMost = _.routineUnite( _entityMost_head, _entityMost_body );
 
 //
 
@@ -4441,88 +4271,6 @@ _entityMost.defaults =
   returnMax : null
 }
 
-// function _entityMost( src, onEvaluate, returnMax )
-// {
-//
-//   if( onEvaluate === undefined )
-//   onEvaluate = function( element ){ return element; }
-//
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( onEvaluate.length === 1, 'not implemented' );
-//
-//   let onCompare = null;
-//
-//   if( returnMax )
-//   onCompare = function( a, b )
-//   {
-//     return a-b;
-//   }
-//   else
-//   onCompare = function( a, b )
-//   {
-//     return b-a;
-//   }
-//
-//   _.assert( onEvaluate.length === 1 );
-//   _.assert( onCompare.length === 2 );
-//
-//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
-//
-//   if( _.longIs( src ) )
-//   {
-//
-//     if( src.length === 0 )
-//     return result;
-//     result.key = 0;
-//     result.value = onEvaluate( src[ 0 ] );
-//     result.element = src[ 0 ];
-//
-//     for( let s = 0 ; s < src.length ; s++ )
-//     {
-//       let value = onEvaluate( src[ s ] );
-//       if( onCompare( value, result.value ) > 0 )
-//       {
-//         result.key = s;
-//         result.value = value;
-//         result.element = src[ s ];
-//       }
-//     }
-//     result.index = result.key;
-//
-//   }
-//   else if( _.mapLike_( src ) )
-//   {
-//
-//     debugger;
-//     for( let s in src )
-//     {
-//       result.index = 0;
-//       result.key = s;
-//       result.value = onEvaluate( src[ s ] );
-//       result.element = src[ s ]
-//       break;
-//     }
-//
-//     let index = 0;
-//     for( let s in src )
-//     {
-//       let value = onEvaluate( src[ s ] );
-//       if( onCompare( value, result.value ) > 0 )
-//       {
-//         result.index = index;
-//         result.key = s;
-//         result.value = value;
-//         result.element = src[ s ];
-//       }
-//       index += 1;
-//     }
-//
-//   }
-//   else _.assert( 0 );
-//
-//   return result;
-// }
-
 //
 
 /**
@@ -4545,13 +4293,9 @@ _entityMost.defaults =
  * @namespace Tools
  */
 
-// let entityMin = _.routineUnite( _entityMost_head, _entityMost_body );
-// entityMin.defaults.returnMax = 0;
-
 function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  // return _entityMost( src, onEvaluate, 0 );
   return _entityMost
   ({
     src,

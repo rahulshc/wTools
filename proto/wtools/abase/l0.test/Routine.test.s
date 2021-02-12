@@ -2478,8 +2478,8 @@ function routinesChain( test )
 //   test.equivalent( got.c, {} );
 //   test.identical
 //   (
-//     _.mapBut( _.property.all( got.c ), [ '__proto__' ] ),
-//     _.mapBut( _.property.all( {} ), [ '__proto__' ] )
+//     _.mapBut( _.property.visibleOnly( got.c ), [ '__proto__' ] ),
+//     _.mapBut( _.property.visibleOnly( {} ), [ '__proto__' ] )
 //   );
 //   test.identical( typeof got, 'function' );
 //
@@ -2903,8 +2903,8 @@ function routineExtend( test )
   test.equivalent( got.c, {} );
   test.identical
   (
-    _.mapBut( _.property.all( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.property.all( Object.create( null ) ), [ '__proto__' ] )
+    _.mapBut( _.property.visibleOnly( got.c ), [ '__proto__' ] ),
+    _.mapBut( _.property.visibleOnly( Object.create( null ) ), [ '__proto__' ] )
   );
   test.identical( typeof got, 'function' );
 

@@ -57,8 +57,8 @@ function uncountableSize( src )
   if( _.regexpIs( src ) )
   return _.uncountableSize( src.source ) + src.flags.length;
 
-  if( !_.iterableIs( src ) )
-  return 8;
+  // if( !_.iterableIs( src ) ) /* yyy */
+  // return 8;
 
   return NaN;
 }
@@ -103,11 +103,13 @@ function entitySize( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) )
+  // if( _.primitiveIs( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) ) /* yyy */
+  if( _.primitiveIs( src ) || _.bufferAnyIs( src ) )
   return _.uncountableSize( src );
 
   if( _.look )
-  if( _.containerIs( src ) || _.iterableIs( src ) )
+  // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
+  if( _.containerIs( src ) )
   {
     _.look( src, onEach );
   }
@@ -135,7 +137,8 @@ function entitySize( src )
       result += _.uncountableSize( k );
     }
 
-    if( _.primitiveIs( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) )
+    // if( _.primitiveIs( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
+    if( _.primitiveIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
     result += _.uncountableSize( e );
 
   }

@@ -16,89 +16,309 @@ let _ = _global_.wTools;
 // map checker
 //--
 
-function mapIsLikePrototyped( test )
+function mapChecks( test )
 {
 
   test.case = 'pure empty map';
   var src = Object.create( null );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.x = 1;
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
+
+  test.case = 'pure map with constructor';
+  var src = Object.create( null );
+  src.constructor = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
+
+  test.case = 'from pure with iterator';
+  var src = Object.create( null );
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'empty polluted map';
   var src = {};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
 
-  test.case = 'no argument';
+  test.case = 'polluted map with constructor';
+  var src = {};
+  src.constructor = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
+
+  test.case = 'from polluted with iterator';
+  var src = {};
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'new object';
+  var src = new Object();
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'empty array';
   var src = [];
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a string';
+  test.case = 'empty arguments array';
+  var src = _.argumentsArrayMake();
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'null';
+  var src = null;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'string';
   var src = 'str';
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a number';
+  test.case = 'number';
   var src = 13;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a boolean false';
+  test.case = 'symbol';
+  var src = Symbol.for( 'a' );
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'boolean false';
   var src = true;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a boolean false';
+  test.case = 'boolean true';
   var src = true;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a function';
+  test.case = 'routine';
   var src = function() {};
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'prototyped from pure map deep';
   var prototype1 = Object.create( null );
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'prototyped from pure map deep with props';
   var prototype1 = Object.create( null );
@@ -107,35 +327,83 @@ function mapIsLikePrototyped( test )
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), true );
 
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from polluted map with constructor';
+  var prototype = {};
+  prototype.constructor = function(){}
+  var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'prototyped from polluted map deep';
   var prototype1 = {};
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'prototyped from pure map deep with props';
-  var prototype1 = Object.create( null );
+  test.case = 'prototyped from polluted map deep with props';
+  var prototype1 = {};
   prototype1.a = 1;
   var prototype2 = Object.create( prototype1 );
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike_( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), true );
 
 }
 
@@ -1309,12 +1577,12 @@ function mapValWithIndex( test )
   var expected = [ 'a', 3 ];
   test.identical( got, expected );
 
-  test.case = 'a list of arrays';
+  test.case = 'list of arrays';
   var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
   var expected = [ 'c', 7 ];
   test.identical( got, expected );
 
-  test.case = 'a list of objects';
+  test.case = 'list of objects';
   var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
   var expected = { c : 7 };
   test.identical( got, expected );
@@ -1499,7 +1767,7 @@ function mapToStr( test )
 
   test.case = 'returns a string representing an object';
   var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = 'a : 1; b : 2; c : 3; d : 4';
+  var expected = ': 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array';
@@ -2069,13 +2337,13 @@ function mapPairs( test )
 
   /**/
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapPairs( { a : 7, b : 13 } );
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
-  test.case = 'a list of [ key, value ] pairs'
+  test.case = 'list of [ key, value ] pairs'
   var got = _.mapPairs( { a : 3, b : 13, c : 7 } );
   var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
   test.identical( got, expected );
@@ -2176,7 +2444,7 @@ function mapOnlyOwnPairs( test )
 
   /* */
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapOnlyOwnPairs( { a : 7, b : 13 } );
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
@@ -2249,7 +2517,7 @@ function mapAllPairs( test )
 
   /* */
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapAllPairs( { a : 7, b : 13 } );
   test.true( got.length > 2 );
@@ -11853,7 +12121,8 @@ let Self =
 
     // map checker l0/l3/Map.s
 
-    mapIsLikePrototyped, /* qqq : extend */
+    mapChecks, /* qqq : extend */
+    /* qqq : write an article with the list of all types of the module */
 
     // map move
 

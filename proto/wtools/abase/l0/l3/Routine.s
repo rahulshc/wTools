@@ -538,7 +538,10 @@ function routineOptions( routine, args, defaults )
       continue;
 
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      {
+        debugger;
+        throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      }
 
       dstMap[ s ] = srcMap[ s ];
     }

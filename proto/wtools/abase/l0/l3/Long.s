@@ -43,8 +43,10 @@ _.long_ = _.long_ || Object.create( null );
  */
 
 let notLongSymbol = Symbol.for( 'notLong' );
+/* xxx : optimize! */
 function longIs( src ) /* qqq : check coverage */
 {
+
   if( _.primitiveIs( src ) )
   return false;
   if( _.routineIs( src ) )
@@ -55,8 +57,6 @@ function longIs( src ) /* qqq : check coverage */
   return false;
   if( _.bufferNodeIs( src ) )
   return false;
-  // if( _.vectorAdapterIs( src ) )
-  // return false;
 
   if( notLongSymbol in src ) /* qqq : cover please */
   return false;
@@ -89,14 +89,14 @@ function longIsPopulated( src )
 
 //
 
-function longLike( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
+/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
+function longLike( src ) /* qqq : cover */
 {
   if( _.primitiveIs( src ) )
   return false;
-  if( _.entity.methodIteratorOf( src ) ) /* yyy */
-  if( !_.mapIs( src ) && _.objectIs( src ) )
-  return true;
-  // if( _.bufferNodeIs( src ) )
+  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // // if( !_.mapIs( src ) && _.objectIs( src ) )
+  // if( !_.mapIs( src ) )
   // return true;
   return _.longIs( src );
 }
