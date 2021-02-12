@@ -1822,6 +1822,64 @@ mapInvert.defaults =
 
 //
 
+function _mapInvert( o )
+{
+  if( _.objectLike( o ) )
+  o = { src : o }
+
+  _.routineOptions( _mapInvert, o );
+
+  o.dst = o.dst || Object.create( null );
+
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.objectLike( o.src ) );
+  _.assert( _.objectLike( o.dst ) );
+
+  let del;
+  if( o.duplicate === 'delete' )
+  del = Object.create( null );
+
+  /* */
+
+  for( let k in o.src )
+  {
+    let e = o.src[ k ];
+    if( o.duplicate === 'delete' )
+    if( o.dst[ e ] !== undefined )
+    {
+      del[ e ] = k;
+      continue;
+    }
+    if( o.duplicate === 'array' || o.duplicate === 'array-with-value' )
+    {
+      if( o.dst[ e ] === undefined )
+      o.dst[ e ] = o.duplicate === 'array-with-value' ? [ e ] : [];
+      o.dst[ e ].push( k );
+    }
+    else
+    {
+      _.assert( o.dst[ e ] === undefined, 'Cant invert the map, it has several keys with value', o.src[ k ] );
+      o.dst[ e ] = k;
+    }
+  }
+
+  /* */
+
+  if( o.duplicate === 'delete' )
+  _.mapDelete( o.dst, del );
+
+  return o.dst;
+}
+
+_mapInvert.defaults =
+{
+  src : null,
+  dst : null,
+  duplicate : 'error',
+}
+
+//
+
 function mapInvertDroppingDuplicates( src, dst )
 {
   dst = dst || Object.create( null );
@@ -4431,7 +4489,8 @@ let Extension =
 
   // map transformer
 
-  mapInvert, /* qqq : write _mapInvert accepting o-map */
+  mapInvert, /* qqq : write _mapInvert accepting o-map | aaa : Done. Yevhen S. */
+  _mapInvert,
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
