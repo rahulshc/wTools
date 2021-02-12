@@ -36,6 +36,10 @@ function is( test )
   test.identical( _.container.is( { a : 1 } ), true );
   test.identical( _.container.is( Object.create( null ) ), true );
 
+  test.case = 'instance';
+  let src = new function Con() { this.a = 1 };
+  test.identical( _.container.is( src ), false );
+
   test.case = 'hashmap';
   test.identical( _.container.is( new HashMap ), true );
   test.identical( _.container.is( new HashMap([ [ 'a', 'b' ] ]) ), true );
@@ -51,6 +55,48 @@ function is( test )
   test.case = 'set';
   test.identical( _.container.is( new Set ), true );
   test.identical( _.container.is( new Set([ 'a', 'b' ]) ), true );
+
+}
+
+//
+
+function like( test )
+{
+
+  test.case = 'not';
+  test.identical( _.container.like( null ), false );
+  test.identical( _.container.like( undefined ), false );
+  test.identical( _.container.like( 'str' ), false );
+  test.identical( _.container.like( 0 ), false );
+  test.identical( _.container.like( 1 ), false );
+  test.identical( _.container.like( false ), false );
+  test.identical( _.container.like( true ), false );
+  test.identical( _.container.like( new Date() ), false );
+
+  test.case = 'map';
+  test.identical( _.container.like( {} ), true );
+  test.identical( _.container.like( { a : 1 } ), true );
+  test.identical( _.container.like( Object.create( null ) ), true );
+
+  test.case = 'instance';
+  let src = new function Con() { this.a = 1 };
+  test.identical( _.container.like( src ), true );
+
+  test.case = 'hashmap';
+  test.identical( _.container.like( new HashMap ), true );
+  test.identical( _.container.like( new HashMap([ [ 'a', 'b' ] ]) ), true );
+
+  test.case = 'array';
+  test.identical( _.container.like( [] ), true );
+  test.identical( _.container.like( [ false ] ), true );
+
+  test.case = 'typed buffer';
+  test.identical( _.container.like( new F32x() ), true );
+  test.identical( _.container.like( new F32x([ 1, 2, 3 ]) ), true );
+
+  test.case = 'set';
+  test.identical( _.container.like( new Set ), true );
+  test.identical( _.container.like( new Set([ 'a', 'b' ]) ), true );
 
 }
 
@@ -2154,6 +2200,7 @@ let Self =
   {
 
     is,
+    like,
     instanceOfContainer,
 
     extendReplacingDstNull,
