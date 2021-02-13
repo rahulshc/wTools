@@ -3139,7 +3139,7 @@ function _bufferReusing( o )
     for( let i = rightBound ; i < resultLength ; i++ )
     dstTyped[ rightBound + i ] = o.ins;
 
-    return dst;
+    return dstTyped;
   }
 }
 
@@ -3237,6 +3237,7 @@ bufferReusingBut.defaults =
 function bufferReusingOnly( /* dst, src, cinterval, ins */ )
 {
   let o = _._bufferReusing_head.apply( this, arguments );
+  _.assert( o.ins === undefined, 'Expects no argument {-ins-}' );
 
   let bufferLength = 0;
   if( o.dst )
@@ -3260,7 +3261,6 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
   o.ins = [];
 
   _.routineOptions( bufferReusingOnly, o );
-  _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
 
   o.growFactor = 1;
   o.bufferFill = dstBufferFill;
@@ -3289,6 +3289,81 @@ bufferReusingOnly.defaults =
   reusing : 1,
   shrinkFactor : 0,
   minSize : 0,
+};
+
+//
+
+function bufferReusingGrow( /* dst, src, cinterval, ins */ )
+{
+  let o = _._bufferReusing_head.apply( this, arguments );
+
+  let bufferLength = 0;
+  if( o.dst )
+  bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+  else
+  bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
+
+  if( o.cinterval === undefined )
+  o.cinterval = [ 0, bufferLength - 1 ];
+  else if( _.numberIs( o.cinterval ) )
+  o.cinterval = [ 0, o.cinterval - 1 ];
+
+  let left = o.cinterval[ 0 ];
+  let right = o.cinterval[ 1 ];
+
+  if( o.cinterval[ 0 ] > 0 )
+  o.cinterval[ 0 ] = 0;
+  if( o.cinterval[ 0 ] < 0 )
+  {
+    o.cinterval[ 1 ] -= o.cinterval[ 0 ];
+    o.cinterval[ 0 ] -= o.cinterval[ 0 ];
+  }
+  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+  if( o.cinterval[ 1 ] < bufferLength - 1 )
+  o.cinterval[ 1 ] = bufferLength - 1;
+
+  if( o.ins === undefined )
+  o.ins = [];
+
+  _.routineOptions( bufferReusingGrow, o );
+
+  o.growFactor = 1;
+  o.bufferFill = dstBufferFill;
+
+  return _._bufferReusing( o );
+
+  /* */
+
+  function dstBufferFill( dstTyped, srcTyped, cinterval, ins )
+  {
+    let offset = Math.max( 0, -left );
+    for( let i = 0 ; i < offset ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    let rightBound = Math.min( dstTyped.length, srcTyped.length );
+    for( let i = offset ; i < rightBound + offset ; i++ )
+    dstTyped[ i ] = srcTyped[ i - offset ];
+
+    let length = dstTyped.length;
+    for( let i = offset + rightBound ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    return dstTyped;
+
+  }
+}
+
+bufferReusingGrow.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  ins : null,
+  offsetting : 1,
+  reusing : 1,
+  growFactor : 2,
+  minSize : 64,
 };
 
 //
@@ -4276,7 +4351,7 @@ let Routines =
   _bufferReusing,
   bufferReusingBut, /* qqq for Dmytro : implement */
   bufferReusingOnly, /* qqq for Dmytro : implement */
-  // bufferReusingGrow, /* qqq for Dmytro : implement */
+  bufferReusingGrow, /* qqq for Dmytro : implement */
   // bufferReusingRelength, /* qqq for Dmytro : implement */
   // bufferReusingResize, /* qqq for Dmytro : implement */
 
