@@ -2970,6 +2970,7 @@ function _bufferReusing( o )
   _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
   _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
   _.assert( _.intIs( o.minSize ) && o.minSize >= 0 );
+  _.assert( _.routineIs( o.bufferFill ) || o.bufferFill === null );
 
   o.growFactor = o.growFactor === 0 ? 1 : o.growFactor;
   o.shrinkFactor = o.shrinkFactor === 0 ? 1 : o.shrinkFactor;
@@ -2984,9 +2985,9 @@ function _bufferReusing( o )
 
   _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
 
-  let resultElementLength = resultElementLengthCount();
+  let resultElementSize = resultElementLengthCount();
   let resultSize = resultSizeCount();
-  let resultLength = resultSize / resultElementLength;
+  let resultLength = resultSize / resultElementSize;
   _.assert( _.intIs( resultLength ) );
 
   let resultBuffer = resultBufferMake();
@@ -2999,47 +3000,45 @@ function _bufferReusing( o )
   function resultElementLengthCount()
   {
     if( newBufferCreate )
-    {
-      if( o.src.BYTES_PER_ELEMENT )
-      return o.src.BYTES_PER_ELEMENT;
-      else if( o.src.byteLength )
-      return 1;
-      else
-      return 8;
-    }
+    return bufferElementSizeGet( o.src );
     else
-    {
-      if( o.dst.BYTES_PER_ELEMENT )
-      return o.dst.BYTES_PER_ELEMENT;
-      else if( o.dst.byteLength )
-      return 1;
-      else
-      return 8;
-    }
+    return bufferElementSizeGet( o.dst );
+  }
+
+  /* */
+
+  function bufferElementSizeGet( src )
+  {
+    if( src.BYTES_PER_ELEMENT )
+    return src.BYTES_PER_ELEMENT;
+    else if( src.byteLength )
+    return 1;
+    else
+    return 8;
   }
 
   /* */
 
   function resultSizeCount()
   {
-    let result;
+    let size;
     if( o.bufferLengthCount )
-    result = o.bufferLengthCount() * resultElementLength;
+    size = o.bufferLengthCount() * resultElementSize;
     else
-    result = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * resultElementLength;
+    size = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * resultElementSize;
 
     if( o.growFactor > 1 && o.resizing && !newBufferCreate )
     {
-      let dstSize = o.dst.length ? o.dst.length * resultElementLength : o.dst.byteLength;
-      if( dstSize < result )
+      let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
+      if( dstSize < size )
       {
         let growed = dstSize * o.growFactor;
-        result = growed > result ? growed : result;
+        size = growed > size ? growed : size;
       }
     }
 
-    result = o.minSize > result ? o.minSize : result;
-    return result;
+    size = o.minSize > size ? o.minSize : size;
+    return size;
   }
 
   /* */
@@ -3052,7 +3051,7 @@ function _bufferReusing( o )
     {
 
       let dstOffset = 0;
-      let dstSize = o.dst.length ? o.dst.length * resultElementLength : o.dst.byteLength;
+      let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
 
       if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
       {
@@ -3088,7 +3087,7 @@ function _bufferReusing( o )
       buffer = _.bufferMakeUndefined( o.src, resultLength );
       else if( o.dst.byteLength && o.dst.byteLength > resultSize )
       buffer = o.dst;
-      else if( o.dst.length && ( o.dst.length * resultElementLength ) > resultSize )
+      else if( o.dst.length && ( o.dst.length * resultElementSize ) > resultSize )
       buffer = o.dst;
       else
       buffer = _.bufferMakeUndefined( o.dst, resultLength );
@@ -3103,11 +3102,7 @@ function _bufferReusing( o )
   {
     let dstTyped = bufferTypedViewMake( dst );
     let srcTyped = bufferTypedViewMake( src );
-
-    if( o.bufferFill )
     o.bufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
-    else
-    bufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
     return dst;
   }
 
@@ -3122,24 +3117,6 @@ function _bufferReusing( o )
     srcTyped = new U8x( src.buffer );
 
     return srcTyped;
-  }
-
-  /* */
-
-  function bufferFill( dst, src, cinterval, ins )
-  {
-    let offset = Math.max( 0, -cinterval[ 0 ] );
-    for( let i = 0 ; i < offset ; i++ )
-    dstTyped[ i ] = o.ins;
-
-    let rightBound = Math.min( resultLength, srcTyped.length );
-    for( let i = offset ; i < rightBound ; i++ )
-    dstTyped[ offset + i ] = src[ i ];
-
-    for( let i = rightBound ; i < resultLength ; i++ )
-    dstTyped[ rightBound + i ] = o.ins;
-
-    return dstTyped;
   }
 }
 
