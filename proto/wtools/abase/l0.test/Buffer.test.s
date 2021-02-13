@@ -10225,6 +10225,316 @@ function bufferReusingButDstIsBufferTyped( test )
 
 //
 
+function bufferReusingOnlyDstIsBufferTyped( test )
+{
+  var bufferTyped = ( buf ) =>
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+  };
+
+  var bufferNode = ( src ) =>
+  {
+    if( _.numberIs( src ) )
+    return BufferNode.alloc( src );
+    else
+    return BufferNode.from( src );
+  };
+
+  /* - */
+
+  var list =
+  [
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+  ];
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    testRun( bufferTyped( list[ i ] ) );
+    test.close( list[ i ].name );
+  }
+
+  /* - */
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.open( 'bufferNode' );
+    testRun( bufferNode );
+    test.close( 'bufferNode' );
+  }
+
+  /* - */
+
+  function testRun( makeBuffer )
+  {
+    test.open( 'not inplace' );
+
+    test.case = 'only dst';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst );
+    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, -1 );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 0 );
+    var expected = makeBuffer( [ 1 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -3 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -1 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 0 ] );
+    var expected = makeBuffer( [ 1 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 2 ] );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 5 ] );
+    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 0 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 1 ] );
+    var expected = makeBuffer( [ 2 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 2 ] );
+    var expected = makeBuffer( [ 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 5 ] );
+    var expected = makeBuffer( [ 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 4 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 5 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 7 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.close( 'not inplace' );
+
+    /* - */
+
+    test.open( 'inplace' );
+
+    test.case = 'only dst';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst );
+    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, -1 );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 0 );
+    var expected = makeBuffer( [ 1 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -3 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -1 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 0 ] );
+    var expected = makeBuffer( [ 1 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 2 ] );
+    var expected = makeBuffer( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 5 ] );
+    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 0 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 1 ] );
+    var expected = makeBuffer( [ 2 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 2 ] );
+    var expected = makeBuffer( [ 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 5 ] );
+    var expected = makeBuffer( [ 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 4 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 5 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 7 ] );
+    var expected = makeBuffer( [] );
+    test.identical( got, expected );
+    test.true( got !== dst );
+
+    test.close( 'inplace' );
+  }
+}
+
+//
+
 function bufferRelen( test )
 {
 
@@ -15038,6 +15348,7 @@ let Self =
     bufferRelength_CheckReturnedContainer,
 
     bufferReusingButDstIsBufferTyped,
+    bufferReusingOnlyDstIsBufferTyped,
 
     bufferRelen,
     // bufferResize,
