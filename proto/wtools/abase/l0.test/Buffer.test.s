@@ -10884,6 +10884,295 @@ function bufferReusingGrowDstIsBufferTyped( test )
 
 //
 
+function bufferReusingRelengthDstIsBufferTyped( test )
+{
+  var bufferTyped = ( buf ) =>
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+  };
+
+  var bufferNode = ( src ) =>
+  {
+    if( _.numberIs( src ) )
+    return BufferNode.alloc( src );
+    else
+    return BufferNode.from( src );
+  };
+
+  function resultCopyData( dst, src )
+  {
+    for( let i = 0 ; i < src.length ; i++ )
+    dst[ i ] = src[ i ];
+    return dst;
+  }
+
+  /* - */
+
+  var list =
+  [
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+  ];
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( bufferTyped( list[ i ] ) );
+    test.close( list[ i ].name );
+  }
+
+  /* - */
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.open( 'bufferNode' );
+    run( bufferNode );
+    test.close( 'bufferNode' );
+  }
+
+  /* - */
+
+  function run( bufferMake )
+  {
+    test.open( 'not inplace' );
+
+    test.case = 'dst = undefined, range = undefined';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 0, 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'dst = undefined';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 1, 2 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'dst = undefined, range = 0';
+    var src = bufferMake( [ 1, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, 0 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'dst = undefined, range = negative number';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, -5 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] > 0, range[ 1 ] > src.length';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 1, 4 ], 0 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3, 0 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] < 0, range[ 1 ] > src.length';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ -1, 4 ], 0 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 0, 0, 1, 2, 3, 0 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] > 0, range[ 1 ] < src.length';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 1, 2 ], 0 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = 'src = bufferNode';
+      var src1 = bufferMake( [ 0, 1, 2, 3 ] );
+      var got1 = _.bufferReusingRelength( src1, [ 1, 3 ], 0 );
+      var expected1 = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+      expected1 = resultCopyData( expected1, [ 1, 2, 3 ] );
+      test.identical( got1, expected1 );
+      test.true( got1 !== src1 );
+    }
+
+    test.case = 'range = number, number > src.length';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, 5, [ 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 5 );
+    expected = resultCopyData( expected, [ 0, 1, 2, 3, 5 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range = negative number';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, -2, [ 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 5 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] === range[ 1 ], src = array';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 2, 2 ], [ 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 5 );
+    expected = resultCopyData( expected, [ 2 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 0, 3 ], [ 1 ] );
+    var expected = bufferMake( [ 0, 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 1 );
+    expected = resultCopyData( expected, [ 0, 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ -5, -2 ], [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 1 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] > range[ 1 ], src';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 4, 1 ], [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 1 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] > 0, range[ 1 ] > src.length, src = number';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, [ 1, 7 ], 1 );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 1 );
+    expected = resultCopyData( expected, [ 1, 2, 3, 1, 1, 1, 1 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'src = empty BufferTyped, src';
+    var src = bufferMake( [] );
+    var got = _.bufferReusingRelength( src, [ 0, -1 ], [ 2 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 2 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < 0, src';
+    var dst = new U8x([ 1, 2, 3 ]);
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( dst, src, [ -5, -2 ], 1 );
+    var expected = new U8x( 64 );
+    expected.fill( 1 );
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > range[ 1 ], src';
+    var dst = new BufferRaw( 10 );
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( dst, src, [ 4, 1 ], [ 1 ] );
+    var expected = new U8x( 64 ).fill( 1 ).buffer;
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length, src = number';
+    var dst = new BufferView( new U8x( [ 1, 1, 1, 1, 1, 1, 1 ] ).buffer );
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( dst, src, [ 1, 7 ], 1 );
+    var buffer = new U8x( 64 ).fill( 1 );
+    resultCopyData( buffer, [ 1, 2, 3, 1, 1, 1, 1 ] );
+    var expected = new BufferView( buffer.buffer );
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got !== dst );
+
+    test.close( 'not inplace' );
+
+    /* - */
+
+    test.open( 'inplace' );
+
+    test.case = 'src = undefined, range = undefined';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 0, 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'src = undefined, range = 0';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, src, 0, undefined );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'src = undefined, rang = negative number';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, src, -5, undefined );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range = negative number';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, src, -2, [ 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 5 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'range[ 0 ] = 0, range[ 1 ] = src.length, src';
+    var src = bufferMake( [ 0, 1, 2, 3 ] );
+    var got = _.bufferReusingRelength( src, src, [ 0, 3 ], [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 1 );
+    expected = resultCopyData( expected, [ 0, 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'src = empty BufferTyped, src';
+    var src = bufferMake( [] );
+    var got = _.bufferReusingRelength( src, src, [ 0, -1 ], [ 2 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected.fill( 2 );
+    test.identical( got, expected );
+    test.true( got !== src );
+
+    test.case = 'dst, src = empty BufferTyped, src';
+    var dst = [ 1, 2, 3 ];
+    var src = bufferMake( [] );
+    var got = _.bufferReusingRelength( dst, src, [ 0, -1 ], 2 );
+    var expected = [ 2, 2, 2, 2, 2, 2, 2, 2 ];
+    test.identical( got, expected );
+    test.true( got !== src );
+    test.true( got !== dst );
+
+    test.close( 'inplace' );
+  }
+}
+
+//
+
 function bufferRelen( test )
 {
 
@@ -15696,9 +15985,14 @@ let Self =
     bufferRelength_DstIsBufferRaw,
     bufferRelength_CheckReturnedContainer,
 
+    //
+
     bufferReusingButDstIsBufferTyped,
     bufferReusingOnlyDstIsBufferTyped,
     bufferReusingGrowDstIsBufferTyped,
+    bufferReusingRelengthDstIsBufferTyped,
+
+    //
 
     bufferRelen,
     // bufferResize,
