@@ -3101,28 +3101,33 @@ function _bufferReusing( o )
 
   function resultBufferFill( dst, src )
   {
+    let dstTyped = bufferTypedViewMake( dst );
+    let srcTyped = bufferTypedViewMake( src );
+
     if( o.bufferFill )
-    return o.bufferFill( dst, src, o.cinterval, o.ins );
+    o.bufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
     else
-    return bufferFill( dst, src, o.cinterval, o.ins );
+    bufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+    return dst;
+  }
+
+  /* */
+
+  function bufferTypedViewMake( src )
+  {
+    let srcTyped = src;
+    if( _.bufferRawIs( src ) )
+    srcTyped = new U8x( src );
+    if( _.bufferViewIs( src ) )
+    srcTyped = new U8x( src.buffer );
+
+    return srcTyped;
   }
 
   /* */
 
   function bufferFill( dst, src, cinterval, ins )
   {
-    let dstTyped = dst;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
-    let srcTyped = src;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
     let offset = Math.max( 0, -cinterval[ 0 ] );
     for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
@@ -3196,20 +3201,8 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
 
   /* */
 
-  function dstBufferFill( dst, src, cinterval, ins )
+  function dstBufferFill( dstTyped, srcTyped, cinterval, ins )
   {
-    let dstTyped = dst;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
-    let srcTyped = src;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
     let left = Math.max( 0, cinterval[ 0 ] );
     for( let i = 0 ; i < left ; i++ )
     dstTyped[ i ] = srcTyped[ i ];
@@ -3222,7 +3215,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
     for( let i = start ; i < srcTyped.length ; i++ )
     dstTyped[ right + i - start ] = srcTyped[ i ];
 
-    return dst;
+    return dstTyped;
   }
 }
 
@@ -3237,6 +3230,65 @@ bufferReusingBut.defaults =
   growFactor : 2,
   shrinkFactor : 0,
   minSize : 64,
+};
+
+//
+
+function bufferReusingOnly( /* dst, src, cinterval, ins */ )
+{
+  let o = _._bufferReusing_head.apply( this, arguments );
+
+  let bufferLength = 0;
+  if( o.dst )
+  bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+  else
+  bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
+
+  if( o.cinterval === undefined )
+  o.cinterval = [ 0, bufferLength - 1 ];
+  else if( _.numberIs( o.cinterval ) )
+  o.cinterval = [ 0, o.cinterval ];
+
+  if( o.cinterval[ 0 ] < 0 )
+  o.cinterval[ 0 ] = 0;
+  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+  if( o.cinterval[ 1 ] > bufferLength - 1 )
+  o.cinterval[ 1 ] = bufferLength - 1;
+
+  if( o.ins === undefined )
+  o.ins = [];
+
+  _.routineOptions( bufferReusingOnly, o );
+  _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
+
+  o.growFactor = 1;
+  o.bufferFill = dstBufferFill;
+
+  return _._bufferReusing( o );
+
+  /* */
+
+  function dstBufferFill( dstTyped, srcTyped, cinterval, ins )
+  {
+    let left = Math.max( 0, cinterval[ 0 ] );
+    let right = Math.min( cinterval[ 1 ], srcTyped.length - 1 );
+    for( let i = left ; i < right + 1 ; i++ )
+    dstTyped[ i - left ] = srcTyped[ i ];
+
+  }
+}
+
+bufferReusingOnly.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  ins : null,
+  offsetting : 1,
+  reusing : 1,
+  shrinkFactor : 0,
+  minSize : 0,
 };
 
 //
@@ -4223,7 +4275,7 @@ let Routines =
   _bufferReusing_head,
   _bufferReusing,
   bufferReusingBut, /* qqq for Dmytro : implement */
-  // bufferReusingOnly, /* qqq for Dmytro : implement */
+  bufferReusingOnly, /* qqq for Dmytro : implement */
   // bufferReusingGrow, /* qqq for Dmytro : implement */
   // bufferReusingRelength, /* qqq for Dmytro : implement */
   // bufferReusingResize, /* qqq for Dmytro : implement */
