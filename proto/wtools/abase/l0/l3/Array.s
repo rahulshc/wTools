@@ -78,15 +78,17 @@ function arrayLikeResizable( src )
 
 //
 
-function arrayLike( src )
+/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
+function arrayLike( src ) /* qqq : cover */
 {
   if( _.arrayIs( src ) )
   return true;
   if( _.argumentsArrayIs( src ) )
   return true;
-  if( _.entity.methodIteratorOf( src ) ) /* yyy */
-  if( !_.mapIs( src ) && _.objectIs( src ) )
-  return true;
+  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // // if( !_.mapIs( src ) && _.objectIs( src ) )
+  // if( !_.mapIs( src ) )
+  // return true;
   return false;
 }
 

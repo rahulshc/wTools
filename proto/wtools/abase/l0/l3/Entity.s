@@ -12,47 +12,47 @@ let Self = _.entity = _.entity || Object.create( null );
 // container
 // --
 
-/**
- * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
- * Returns "true" if provided argument is countable. Othervise "false" returned.
- *
- * @param { * } src - Argument of any type.
- *
- * @example
- * _.iterableIs( 10 );
- * // returns false
- *
- * @example
- * _.iterableIs( [ 1, 2, 3 ] );
- * // returns true
- *
- * @example
- * _.iterableIs( { a : 2, b : 'str' } );
- * // returns true
- *
- * @example
- * _.iterableIs( new Set( [ 1, 2, 3 ] ) );
- * // returns true
- *
- * @return { Boolean } - Returns the boolean value of whether the argument is countable.
- * @function iterableIs
- * @namespace Tools
- */
-
-function iterableIs( src ) /* qqq xxx : check. good coverage is required */
-{
-  if( !src )
-  return false;
-  if( _.mapLike_( src ) )
-  return true;
-  if( _.routineIs( src[ Symbol.iterator ] ) )
-  return true;
-  return false;
-}
+// /**
+//  * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
+//  * Returns "true" if provided argument is countable. Othervise "false" returned.
+//  *
+//  * @param { * } src - Argument of any type.
+//  *
+//  * @example
+//  * _.iterableIs( 10 );
+//  * // returns false
+//  *
+//  * @example
+//  * _.iterableIs( [ 1, 2, 3 ] );
+//  * // returns true
+//  *
+//  * @example
+//  * _.iterableIs( { a : 2, b : 'str' } );
+//  * // returns true
+//  *
+//  * @example
+//  * _.iterableIs( new Set( [ 1, 2, 3 ] ) );
+//  * // returns true
+//  *
+//  * @return { Boolean } - Returns the boolean value of whether the argument is countable.
+//  * @function iterableIs
+//  * @namespace Tools
+//  */
+//
+// function iterableIs( src )
+// {
+//   if( !src )
+//   return false;
+//   if( _.mapLike_( src ) )
+//   return true;
+//   if( _.routineIs( src[ Symbol.iterator ] ) )
+//   return true;
+//   return false;
+// }
 
 //
 
-function methodIteratorOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+function methodIteratorOf( src )
 {
   if( !src )
   return false;
@@ -63,7 +63,7 @@ function methodIteratorOf( src ) /* qqq xxx : check. good coverage is required |
 
 //
 
-function methodEqualOf( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+function methodEqualOf( src )
 {
   if( !src )
   return false;
@@ -131,7 +131,7 @@ let ToolsExtension =
 
   // container
 
-  iterableIs,
+  // iterableIs,
   // methodIteratorOf,
   // methodEqualOf, /* xxx : add other similar routines */
   lengthOf,
@@ -167,7 +167,7 @@ let EntityExtension =
 
   // container
 
-  iterableIs,
+  // iterableIs,
   methodIteratorOf,
   methodEqualOf, /* xxx : add other similar routines */
   lengthOf,

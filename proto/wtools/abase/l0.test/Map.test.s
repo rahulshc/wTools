@@ -16,66 +16,394 @@ let _ = _global_.wTools;
 // map checker
 //--
 
-function mapIs( test )
+function mapChecks( test )
 {
 
   test.case = 'pure empty map';
-  var got = _.mapIs( Object.create( null ) );
-  var expected = true;
-  test.identical( got, expected );
+  var src = Object.create( null );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.x = 1;
-  var got = _.mapIs( src );
-  var expected = true;
-  test.identical( got, expected );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
 
-  test.case = 'an empty object';
-  var got = _.mapIs( {} );
-  var expected = true;
-  test.identical( got, expected );
+  test.case = 'pure map with constructor';
+  var src = Object.create( null );
+  src.constructor = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
 
-  test.case = 'an object';
-  var got = _.mapIs( { a : 7, b : 13 } );
-  var expected = true;
-  test.identical( got, expected );
+  test.case = 'from pure with iterator';
+  var src = Object.create( null );
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'no argument';
-  var got = _.mapIs();
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'empty polluted map';
+  var src = {};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'an array';
-  var got = _.mapIs( [  ] );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'polluted map';
+  var src = { a : 7, b : 13 };
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
 
-  test.case = 'a string';
-  var got = _.mapIs( 'str' );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'polluted map with constructor';
+  var src = {};
+  src.constructor = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), true );
+  test.identical( _.mapLikePopulated( src ), true );
 
-  test.case = 'a number';
-  var got = _.mapIs( 13 );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'from polluted with iterator';
+  var src = {};
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a boolean';
-  var got = _.mapIs( true );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'new object';
+  var src = new Object();
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), true );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  test.case = 'a function';
-  var got = _.mapIs( function() {  } );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'empty array';
+  var src = [];
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
 
-  var sup = Object.create( null );
-  var sub = Object.create( sup );
-  var expected = false;
-  var got = _.mapIs( sub );
-  test.identical( got, expected );
+  test.case = 'empty arguments array';
+  var src = _.argumentsArrayMake();
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'null';
+  var src = null;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'string';
+  var src = 'str';
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'number';
+  var src = 13;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'symbol';
+  var src = Symbol.for( 'a' );
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'boolean false';
+  var src = true;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'boolean true';
+  var src = true;
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'routine';
+  var src = function() {};
+  test.identical( _.objectIs( src ), false );
+  test.identical( _.objectLike( src ), false );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from pure map deep';
+  var prototype1 = Object.create( null );
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from pure map deep with props';
+  var prototype1 = Object.create( null );
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), true );
+
+  test.case = 'prototyped from polluted map';
+  var prototype = {};
+  var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from polluted map with constructor';
+  var prototype = {};
+  prototype.constructor = function(){}
+  var src = Object.create( prototype );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from polluted map deep';
+  var prototype1 = {};
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), false );
+
+  test.case = 'prototyped from polluted map deep with props';
+  var prototype1 = {};
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  test.identical( _.objectIs( src ), true );
+  test.identical( _.objectLike( src ), true );
+  test.identical( _.mapIs( src ), false );
+  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsEmpty( src ), false );
+  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.mapIsPopulated( src ), false );
+  test.identical( _.mapLikePopulated( src ), true );
 
 }
 
@@ -173,12 +501,7 @@ function mapExtendConditional( test )
 
 function mapExtend( test )
 {
-
-  /* */
-
   test.open( 'first argument is null' );
-
-  /* */
 
   test.case = 'trivial';
   var src1 = { a : 1, b : 2 };
@@ -220,11 +543,9 @@ function mapExtend( test )
 
   test.close( 'first argument is null' );
 
-  /* */
+  /* - */
 
   test.open( 'first argument is dst' );
-
-  /* */
 
   test.case = 'trivial';
   var dst = { a : 1, b : 2 };
@@ -260,7 +581,7 @@ function mapExtend( test )
 
   test.close( 'first argument is dst' );
 
-  /* */
+  /* - */
 
   test.case = 'trivial, first argument';
   var src1 = { a : 7, b : 13 };
@@ -369,7 +690,7 @@ function mapExtend( test )
   var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'extend complex map by complex map';
 
@@ -398,51 +719,29 @@ function mapExtend( test )
   expected.y4 = 14;
 
   var got = _.mapExtend( dst, src );
-  test.identical( got, expected );
+  test.identical( got.x1, '11' );
+  test.identical( got.x2, 2 );
+  test.identical( got.x3, 13 );
+  test.identical( got.x4, 4 );
+  test.identical( got.y2, 12 );
+  test.identical( got.y4, 14 );
+  test.identical( Object.getPrototypeOf( got ), { x1 : '1', x2 : 2 } );
   test.true( got === dst );
 
-  /**/
+  /* - */
 
-  return;
   if( !Config.debug )
   return;
 
   test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend();
-  });
+  test.shouldThrowErrorSync( () => _.mapExtend() );
 
-  test.case = 'few arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( {} );
-  });
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapExtend( {} ) );
 
   test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( [] );
-  });
-
-  test.case = 'wrong type of number';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( 13 );
-  });
-
-  test.case = 'wrong type of boolean';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( true );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtend( 'wrong argument' );
-  });
-
+  test.shouldThrowErrorSync( () => _.mapExtend( [], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.mapExtend( undefined, {} ) );
 }
 
 //
@@ -1278,12 +1577,12 @@ function mapValWithIndex( test )
   var expected = [ 'a', 3 ];
   test.identical( got, expected );
 
-  test.case = 'a list of arrays';
+  test.case = 'list of arrays';
   var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
   var expected = [ 'c', 7 ];
   test.identical( got, expected );
 
-  test.case = 'a list of objects';
+  test.case = 'list of objects';
   var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
   var expected = { c : 7 };
   test.identical( got, expected );
@@ -1468,7 +1767,7 @@ function mapToStr( test )
 
   test.case = 'returns a string representing an object';
   var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = 'a : 1; b : 2; c : 3; d : 4';
+  var expected = ': 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array';
@@ -2038,13 +2337,13 @@ function mapPairs( test )
 
   /**/
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapPairs( { a : 7, b : 13 } );
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
-  test.case = 'a list of [ key, value ] pairs'
+  test.case = 'list of [ key, value ] pairs'
   var got = _.mapPairs( { a : 3, b : 13, c : 7 } );
   var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
   test.identical( got, expected );
@@ -2145,7 +2444,7 @@ function mapOnlyOwnPairs( test )
 
   /* */
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapOnlyOwnPairs( { a : 7, b : 13 } );
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
@@ -2218,7 +2517,7 @@ function mapAllPairs( test )
 
   /* */
 
-  test.case = 'a list of [ key, value ] pairs';
+  test.case = 'list of [ key, value ] pairs';
 
   var got = _.mapAllPairs( { a : 7, b : 13 } );
   test.true( got.length > 2 );
@@ -4906,9 +5205,9 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected =Object.create( { bb : 2, cc : 3 } );
-  expected.aa = 1;
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
+  test.identical( got.aa, 1 );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
@@ -4917,9 +5216,9 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  expected.aa = 1;
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
+  test.identical( got.aa, 1 );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
 
@@ -4928,8 +5227,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
@@ -4938,8 +5237,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
@@ -4948,8 +5247,8 @@ function mapOnlyOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = Object.create( { bb : 2, cc : 3 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
@@ -6603,10 +6902,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = {};
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -6614,10 +6913,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [] );
 
   test.case = 'only srcMap';
@@ -6627,18 +6926,19 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.contains( srcMap, { a : 'abc' } );
+  test.identical( srcMap.a, 'abc' );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
   var srcMap = Object.create( { d : 'name', c : 33 } );
   srcMap.a = 'abc';
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected.a = 'abc';
-  test.identical( got, expected );
+  test.identical( got.a, 'abc' );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.contains( srcMap, { a : 'abc' } );
+  test.identical( srcMap.a, 'abc' );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -6646,11 +6946,11 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected.a = 'abc';
-  test.identical( got, expected );
+  test.identical( got.a, 'abc' );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.contains( srcMap, { a : 'abc' } );
+  test.identical( srcMap.a, 'abc' );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -6658,10 +6958,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -6669,10 +6969,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -6680,11 +6980,12 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap[ 2 ] = 'abc';
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected[ 2 ] = 'abc';
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ '2', 'd', 'c' ] );
+  test.identical( got[ '2' ], 'abc' );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.contains( srcMap, { 2 : 'abc' } );
+  test.identical( srcMap[ '2' ], 'abc' );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );
@@ -6740,7 +7041,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -6750,7 +7053,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'only srcMap';
@@ -6759,7 +7064,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
@@ -6768,7 +7075,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -6778,7 +7087,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -6788,7 +7099,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -6798,7 +7111,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -6808,7 +7123,9 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -7014,7 +7331,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7024,7 +7343,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -7034,7 +7355,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7044,7 +7367,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7054,7 +7379,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7064,7 +7391,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7074,7 +7403,9 @@ function mapOnlyOwnDstMapNull_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -7272,7 +7603,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7283,7 +7616,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -7294,7 +7629,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 'abc', b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7305,7 +7642,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 'abc', b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7316,7 +7655,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7327,7 +7668,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7338,7 +7681,9 @@ function mapOnlyOwnDstMapMap_( test )
   var expected = { a : 'abc', b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc' } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -7432,10 +7777,9 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = {};
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7444,10 +7788,9 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -7456,14 +7799,13 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected.a = 'abc';
-  expected.b = undefined;
-  expected.c = 33;
-  expected.d = 'name';
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c'  ] );
+  test.identical( got.a, 'abc' );
+  test.identical( got.b, undefined );
   test.true( got === srcMap );
-  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.identical( srcMap.a, 'abc' );
+  test.identical( srcMap.b, undefined );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7472,14 +7814,13 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected.a = 'abc';
-  expected.b = undefined;
-  expected.c = 33;
-  expected.d = 'name';
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c'  ] );
+  test.identical( got.a, 'abc' );
+  test.identical( got.b, undefined );
   test.true( got === srcMap );
-  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.identical( srcMap.a, 'abc' );
+  test.identical( srcMap.b, undefined );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7488,10 +7829,10 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7500,10 +7841,10 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7512,14 +7853,14 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = Object.create( { d : 'name', c : 33 } );
-  expected[ 2 ] = 'abc';
-  expected.b = undefined;
-  expected.c = 33;
-  expected.d = 'name';
-  test.identical( got, expected );
+  test.identical( _.mapKeys( got ), [ '2', 'b', 'd', 'c' ] );
+  test.identical( got[ '2' ], 'abc' );
+  test.identical( got.b, undefined );
+  test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.equivalent( srcMap, { 2 : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.identical( srcMap[ '2' ], 'abc' );
+  test.identical( srcMap.b, undefined );
+  test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );
@@ -7575,7 +7916,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7585,7 +7928,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -7595,7 +7940,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7605,7 +7952,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7615,7 +7964,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7625,7 +7976,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7635,7 +7988,9 @@ function mapOnlyComplementingTwoArguments_( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -7848,7 +8203,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7858,7 +8215,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -7868,7 +8227,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7878,7 +8239,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7888,7 +8251,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7898,7 +8263,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7908,7 +8275,9 @@ function mapOnlyComplementingDstMapNull_( test )
   var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : undefined } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -8113,7 +8482,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -8124,7 +8495,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
@@ -8135,7 +8508,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -8146,7 +8521,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -8157,7 +8534,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -8168,7 +8547,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -8179,7 +8560,9 @@ function mapOnlyComplementingDstMapMap_( test )
   var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ] );
+  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : undefined } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
@@ -11738,7 +12121,8 @@ let Self =
 
     // map checker l0/l3/Map.s
 
-    mapIs,
+    mapChecks, /* qqq : extend */
+    /* qqq : write an article with the list of all types of the module */
 
     // map move
 
