@@ -3257,9 +3257,6 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
   if( o.cinterval[ 1 ] > bufferLength - 1 )
   o.cinterval[ 1 ] = bufferLength - 1;
 
-  if( o.ins === undefined )
-  o.ins = [];
-
   _.routineOptions( bufferReusingOnly, o );
 
   o.growFactor = 1;
@@ -3323,9 +3320,6 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
   if( o.cinterval[ 1 ] < bufferLength - 1 )
   o.cinterval[ 1 ] = bufferLength - 1;
 
-  if( o.ins === undefined )
-  o.ins = [];
-
   _.routineOptions( bufferReusingGrow, o );
 
   o.growFactor = 1;
@@ -3355,6 +3349,76 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 }
 
 bufferReusingGrow.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  ins : null,
+  offsetting : 1,
+  reusing : 1,
+  growFactor : 2,
+  minSize : 64,
+};
+
+//
+
+function bufferReusingRelength( /* dst, src, cinterval, ins */ )
+{
+  let o = _._bufferReusing_head.apply( this, arguments );
+
+  let bufferLength = 0;
+  if( o.dst )
+  bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+  else
+  bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
+
+  if( o.cinterval === undefined )
+  o.cinterval = [ 0, bufferLength - 1 ];
+  else if( _.numberIs( o.cinterval ) )
+  o.cinterval = [ 0, o.cinterval - 1 ];
+
+  let left = o.cinterval[ 0 ];
+  let right = o.cinterval[ 1 ];
+
+  if( o.cinterval[ 0 ] < 0 )
+  {
+    o.cinterval[ 1 ] -= o.cinterval[ 0 ];
+    o.cinterval[ 0 ] -= o.cinterval[ 0 ];
+  }
+  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+  _.routineOptions( bufferReusingRelength, o );
+
+  o.growFactor = 1;
+  o.bufferFill = dstBufferFill;
+
+  return _._bufferReusing( o );
+
+  /* */
+
+  function dstBufferFill( dstTyped, srcTyped, cinterval, ins )
+  {
+    let offset = left < 0 ? Math.max( 0, -left ) : 0;
+    left = left < 0 ? 0 : left;
+    for( let i = 0 ; i < offset ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    let rightBound = Math.min( srcTyped.length, right - left + 1 );
+    let i;
+    for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
+    dstTyped[ i ] = srcTyped[ i - offset + left ];
+
+    let length = dstTyped.length;
+    for( ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    return dstTyped;
+
+  }
+}
+
+bufferReusingRelength.defaults =
 {
   dst : null,
   src : null,
@@ -4352,7 +4416,7 @@ let Routines =
   bufferReusingBut, /* qqq for Dmytro : implement */
   bufferReusingOnly, /* qqq for Dmytro : implement */
   bufferReusingGrow, /* qqq for Dmytro : implement */
-  // bufferReusingRelength, /* qqq for Dmytro : implement */
+  bufferReusingRelength, /* qqq for Dmytro : implement */
   // bufferReusingResize, /* qqq for Dmytro : implement */
 
   bufferBytesGet,
