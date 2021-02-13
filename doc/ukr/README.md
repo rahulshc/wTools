@@ -164,6 +164,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/MakeAndFrom.md">
+    Конвенція <code>make</code> і <code>from</code>
+  </a></summary>
+    Конвенція іменування рутин <code>make</code> і <code>from</code>` забезпечує уніфікацію коду та впроваджує єдині правила для створення рутин-конструкторів.
+</details>
+
+<details>
   <summary><a href="./concept/Escape.md">
     Ескейпінг
   </a></summary>
