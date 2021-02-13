@@ -2920,6 +2920,47 @@ function bufferResize_( dst, srcBuffer, size )
 
 //
 
+function _bufferReusing_head()
+{
+  let o = Object.create( null );
+  if( arguments.length === 1 )
+  {
+    if( _.mapIs( arguments[ 0 ] ) )
+    {
+      o = arguments[ 0 ];
+    }
+    else
+    {
+      o.dst = null;
+      o.src = arguments[ 0 ];
+    }
+  }
+  else if( arguments.length === 2 )
+  {
+    o.dst = null;
+    o.src = arguments[ 0 ];
+    o.cinterval = arguments[ 1 ];
+  }
+  else if( arguments.length === 3 )
+  {
+    o.dst = null;
+    o.src = arguments[ 0 ];
+    o.cinterval = arguments[ 1 ];
+    o.ins = arguments[ 2 ];
+  }
+  else
+  {
+    o.dst = arguments[ 0 ];
+    o.src = arguments[ 1 ];
+    o.cinterval = arguments[ 2 ];
+    o.ins = arguments[ 3 ];
+  }
+
+  return o;
+}
+
+//
+
 function _bufferReusing( o )
 {
   _.assert( arguments.length === 1 );
@@ -2958,8 +2999,23 @@ function _bufferReusing( o )
   function resultElementLengthCount()
   {
     if( newBufferCreate )
-    return o.src.BYTES_PER_ELEMENT ? o.src.BYTES_PER_ELEMENT : 1;
-    return o.dst.BYTES_PER_ELEMENT ? o.dst.BYTES_PER_ELEMENT : 1;
+    {
+      if( o.src.BYTES_PER_ELEMENT )
+      return o.src.BYTES_PER_ELEMENT;
+      else if( o.src.byteLength )
+      return 1;
+      else
+      return 8;
+    }
+    else
+    {
+      if( o.dst.BYTES_PER_ELEMENT )
+      return o.dst.BYTES_PER_ELEMENT;
+      else if( o.dst.byteLength )
+      return 1;
+      else
+      return 8;
+    }
   }
 
   /* */
@@ -2998,7 +3054,7 @@ function _bufferReusing( o )
       let dstOffset = 0;
       let dstSize = o.dst.length ? o.dst.length * resultElementLength : o.dst.byteLength;
 
-      if( o.offsetting && _.bufferAnyIs( o.dst ) )
+      if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
       {
         dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
         dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
@@ -3016,7 +3072,9 @@ function _bufferReusing( o )
       if( insideLeftBound && insideRightBound && !shouldShrink )
       {
         buffer = o.dst;
-        if( buffer.buffer )
+        if( _.bufferNodeIs( buffer ) )
+        buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
+        else if( buffer.buffer )
         buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
       }
       else
@@ -3100,29 +3158,11 @@ _bufferReusing.defaults =
 
 function bufferReusingBut( /* dst, src, cinterval, ins */ )
 {
-  let o = Object.create( null );
-  if( arguments.length === 1 )
-  {
-    _.assert( _.mapIs( arguments[ 0 ] ) );
-   o = arguments[ 0 ];
-  }
-  else if( arguments.length === 2 )
-  {
-    o.dst = null;
-    o.src = arguments[ 0 ];
-    o.cinterval = arguments[ 1 ];
-  }
-  else
-  {
-    o.dst = arguments[ 0 ];
-    o.src = arguments[ 1 ];
-    o.cinterval = arguments[ 2 ];
-    o.ins = arguments[ 3 ];
-  }
+  let o = _._bufferReusing_head.apply( this, arguments );
 
   let bufferLength = 0;
   if( o.dst )
-  bufferLength = o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+  bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
   else
   bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
 
@@ -3140,7 +3180,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   o.ins = [];
 
   _.routineOptions( bufferReusingBut, o );
-  _.assert( _.longIs( o.ins ) );
+  _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
 
   o.bufferLengthCount = bufferLengthCount;
   o.bufferFill = dstBufferFill;
@@ -4178,6 +4218,9 @@ let Routines =
   // bufferResizeInplace, /* !!! : use instead of bufferResize, bufferResizeInplace */
   bufferResize_,
 
+  //
+
+  _bufferReusing_head,
   _bufferReusing,
   bufferReusingBut, /* qqq for Dmytro : implement */
   // bufferReusingOnly, /* qqq for Dmytro : implement */
