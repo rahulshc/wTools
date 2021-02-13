@@ -3148,15 +3148,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   else
   bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
 
-  if( o.cinterval === undefined )
-  o.cinterval = [ 0, -1 ];
-  else if( _.numberIs( o.cinterval ) )
-  o.cinterval = [ o.cinterval, o.cinterval ];
-
-  if( o.cinterval[ 0 ] < 0 )
-  o.cinterval[ 0 ] = 0;
-  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
-  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+  o.cinterval = cintervalClamp();
 
   if( o.ins === undefined )
   o.ins = [];
@@ -3170,6 +3162,21 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   return _._bufferReusing( o );
 
   /* */
+
+  function cintervalClamp()
+  {
+    if( o.cinterval === undefined )
+    o.cinterval = [ 0, -1 ];
+    else if( _.numberIs( o.cinterval ) )
+    o.cinterval = [ o.cinterval, o.cinterval ];
+
+    if( o.cinterval[ 0 ] < 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+    return o.cinterval;
+  }
 
   function bufferLengthCount()
   {
@@ -3222,24 +3229,32 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
   else
   bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
 
-  if( o.cinterval === undefined )
-  o.cinterval = [ 0, bufferLength - 1 ];
-  else if( _.numberIs( o.cinterval ) )
-  o.cinterval = [ 0, o.cinterval ];
-
-  if( o.cinterval[ 0 ] < 0 )
-  o.cinterval[ 0 ] = 0;
-  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
-  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
-  if( o.cinterval[ 1 ] > bufferLength - 1 )
-  o.cinterval[ 1 ] = bufferLength - 1;
+  o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingOnly, o );
-
   o.growFactor = 1;
   o.bufferFill = dstBufferFill;
 
   return _._bufferReusing( o );
+
+  /* */
+
+  function cintervalClamp()
+  {
+    if( o.cinterval === undefined )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.numberIs( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval ];
+
+    if( o.cinterval[ 0 ] < 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+    if( o.cinterval[ 1 ] > bufferLength - 1 )
+    o.cinterval[ 1 ] = bufferLength - 1;
+
+    return o.cinterval;
+  }
 
   /* */
 
@@ -3277,25 +3292,8 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
   else
   bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
 
-  if( o.cinterval === undefined )
-  o.cinterval = [ 0, bufferLength - 1 ];
-  else if( _.numberIs( o.cinterval ) )
-  o.cinterval = [ 0, o.cinterval - 1 ];
-
-  let left = o.cinterval[ 0 ];
-  let right = o.cinterval[ 1 ];
-
-  if( o.cinterval[ 0 ] > 0 )
-  o.cinterval[ 0 ] = 0;
-  if( o.cinterval[ 0 ] < 0 )
-  {
-    o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-    o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-  }
-  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
-  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
-  if( o.cinterval[ 1 ] < bufferLength - 1 )
-  o.cinterval[ 1 ] = bufferLength - 1;
+  let left, right;
+  o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingGrow, o );
 
@@ -3303,6 +3301,33 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
   o.bufferFill = dstBufferFill;
 
   return _._bufferReusing( o );
+
+  /* */
+
+  function cintervalClamp()
+  {
+    if( o.cinterval === undefined )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.numberIs( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval - 1 ];
+
+    left = o.cinterval[ 0 ];
+    right = o.cinterval[ 1 ];
+
+    if( o.cinterval[ 0 ] > 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 0 ] < 0 )
+    {
+      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
+      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
+    }
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+    if( o.cinterval[ 1 ] < bufferLength - 1 )
+    o.cinterval[ 1 ] = bufferLength - 1;
+
+    return o.cinterval;
+  }
 
   /* */
 
@@ -3349,21 +3374,8 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
   else
   bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
 
-  if( o.cinterval === undefined )
-  o.cinterval = [ 0, bufferLength - 1 ];
-  else if( _.numberIs( o.cinterval ) )
-  o.cinterval = [ 0, o.cinterval - 1 ];
-
-  let left = o.cinterval[ 0 ];
-  let right = o.cinterval[ 1 ];
-
-  if( o.cinterval[ 0 ] < 0 )
-  {
-    o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-    o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-  }
-  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
-  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+  let left, right;
+  o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingRelength, o );
 
@@ -3371,6 +3383,29 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
   o.bufferFill = dstBufferFill;
 
   return _._bufferReusing( o );
+
+  /* */
+
+  function cintervalClamp()
+  {
+    if( o.cinterval === undefined )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.numberIs( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval - 1 ];
+
+    left = o.cinterval[ 0 ];
+    right = o.cinterval[ 1 ];
+
+    if( o.cinterval[ 0 ] < 0 )
+    {
+      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
+      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
+    }
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+    return o.cinterval;
+  }
 
   /* */
 
