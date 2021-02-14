@@ -238,10 +238,10 @@ function typeOf( src, constructor )
   {
     return null;
   }
-  // else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
-  // {
-  //   return src.constructor;
-  // }
+  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
+  {
+    return src.constructor;
+  }
   else if( src.constructor )
   {
     _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
