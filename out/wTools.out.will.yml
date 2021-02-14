@@ -234,7 +234,6 @@ module:
           - ../proto/wtools/abase/l0/l5/Intervalc.s
           - ../proto/wtools/abase/l0/l5/Intervall.s
           - ../proto/wtools/abase/l0/l5/Intervalo.s
-          - ../proto/wtools/abase/l0/l5/IntervalOld.s
           - ../proto/wtools/abase/l0/l5/Introspector.s
           - ../proto/wtools/abase/l0/l5/Long.s
           - ../proto/wtools/abase/l0/l5/Map.s
