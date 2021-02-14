@@ -15524,7 +15524,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
 
   /* - */
 
-  test.open( 'not longLike, not mapLike_' );
+  test.open( 'not longLike, not mapLike' );
 
   test.case = 'number';
   var got = _.map_( null, 2, ( v, u, u2 ) => v + v );
@@ -15552,7 +15552,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
   test.identical( got, src );
   test.true( got === src );
 
-  test.close( 'not longLike, not mapLike_' );
+  test.close( 'not longLike, not mapLike' );
 
   /* - */
 
@@ -15603,7 +15603,7 @@ function entityMapDifferentCallbacks( test )
 
   /* - */
 
-  test.open( 'mapLike_' );
+  test.open( 'mapLike' );
 
   test.case = 'onEach returns element';
   var src = { 'a' : 1, 'b' : 'a', 'c' : -1 };
@@ -15629,7 +15629,7 @@ function entityMapDifferentCallbacks( test )
   test.identical( got, { 'a' : 1, 'b' : 'a', 'c' : -1 } );
   test.true( got !== src );
 
-  test.close( 'mapLike_' );
+  test.close( 'mapLike' );
 
   /* - */
 
@@ -16665,7 +16665,7 @@ function entityFilter( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike_';
+  test.case = 'mapLike';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.filter_( null, { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -17262,6 +17262,13 @@ function entityFilterWithoutDst_( test )
 
 //
 
+/* qqq for Dmytro : bad coverage
+
+for example :
+commands = _.filter_( null, 'string', ( command ) => xxx )
+
+*/
+
 function entityFilterDstNull_( test )
 {
   test.open( 'onEach returns element' );
@@ -17271,6 +17278,12 @@ function entityFilterDstNull_( test )
   var got = _.entityFilter_( null, src, ( e ) => e );
   test.identical( got, [] );
   test.true( got !== src );
+
+  test.case = 'string';
+  var src = 'abc';
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, 'abc' );
+  test.true( got === src );
 
   test.case = 'unroll';
   var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
@@ -18356,7 +18369,7 @@ function entityFilterDeep( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike_';
+  test.case = 'mapLike';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.entityFilterDeep( { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -18456,7 +18469,7 @@ function entityFilterDeep( test )
   test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( [ 1, 3 ], 'callback' ) );
 
-  test.case = 'src is not arrayLike or mapLike_';
+  test.case = 'src is not arrayLike or mapLike';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( undefined, ( e ) => e ) );
 }
 
@@ -23783,7 +23796,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike_, without onEvaluate';
+  test.case = 'src - mapLike, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23794,7 +23807,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike_, onEach';
+  test.case = 'src - mapLike, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23881,7 +23894,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike_, without onEvaluate';
+  test.case = 'src - mapLike, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23892,7 +23905,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike_, onEach';
+  test.case = 'src - mapLike, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23956,7 +23969,7 @@ function _entityMost( test )
 
   /* */
 
-  test.case = 'src - mapLike_, onEvaluate1.length - 1';
+  test.case = 'src - mapLike, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 2, c : 3, d : 4 },
@@ -23967,7 +23980,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike_, onEach, onEvaluate1.length - 1';
+  test.case = 'src - mapLike, onEach, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 6, c : 3, d : 4 },
@@ -24709,7 +24722,7 @@ function eachSample( test )
   test.shouldThrowErrorSync( () => _.eachSample() );
   test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
 
-  test.case = 'o.sets is not arraylike, not mapLike_';
+  test.case = 'o.sets is not arraylike, not mapLike';
   test.shouldThrowErrorSync( () => _.eachSample( {} ) );
   test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
   test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );

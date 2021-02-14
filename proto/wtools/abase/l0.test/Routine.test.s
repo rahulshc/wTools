@@ -2478,8 +2478,8 @@ function routinesChain( test )
 //   test.equivalent( got.c, {} );
 //   test.identical
 //   (
-//     _.mapBut( _.property.visibleOnly( got.c ), [ '__proto__' ] ),
-//     _.mapBut( _.property.visibleOnly( {} ), [ '__proto__' ] )
+//     _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+//     _.mapBut( _.property.onlyExplicit( {} ), [ '__proto__' ] )
 //   );
 //   test.identical( typeof got, 'function' );
 //
@@ -2903,8 +2903,8 @@ function routineExtend( test )
   test.equivalent( got.c, {} );
   test.identical
   (
-    _.mapBut( _.property.visibleOnly( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.property.visibleOnly( Object.create( null ) ), [ '__proto__' ] )
+    _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+    _.mapBut( _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
   );
   test.identical( typeof got, 'function' );
 
@@ -3059,8 +3059,8 @@ function routineDefaults( test )
   let add2 = _.routineDefaults( null, add1, { b : 5 } );
   test.true( add1 !== add2 );
   test.true( add1.defaults !== add2.defaults );
-  test.true( _.mapLike_( add1.defaults ) );
-  test.true( _.mapLike_( add2.defaults ) );
+  test.true( _.mapLike( add1.defaults ) );
+  test.true( _.mapLike( add2.defaults ) );
   test.true( add1.defaults.b === 3 );
   test.true( add2.defaults.b === 5 );
 
@@ -3096,8 +3096,8 @@ function routineDefaults( test )
   let add4 = _.routineDefaults( add3, { b : 5 } );
   test.true( add3 === add4 );
   test.true( add3.defaults === add4.defaults );
-  test.true( _.mapLike_( add3.defaults ) );
-  test.true( _.mapLike_( add4.defaults ) );
+  test.true( _.mapLike( add3.defaults ) );
+  test.true( _.mapLike( add4.defaults ) );
   test.true( add3.defaults.b === 5 );
   test.true( add4.defaults.b === 5 );
 

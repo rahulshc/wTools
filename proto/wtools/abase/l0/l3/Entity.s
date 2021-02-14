@@ -43,7 +43,7 @@ let Self = _.entity = _.entity || Object.create( null );
 // {
 //   if( !src )
 //   return false;
-//   if( _.mapLike_( src ) )
+//   if( _.mapLike( src ) )
 //   return true;
 //   if( _.routineIs( src[ Symbol.iterator ] ) )
 //   return true;
@@ -109,7 +109,7 @@ function lengthOf( src )
 {
   if( src === undefined )
   return 0;
-  if( _.mapLike_( src ) )
+  if( _.mapLike( src ) )
   return _.mapOnlyOwnKeys( src ).length;
   if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
   return [ ... src ].length;

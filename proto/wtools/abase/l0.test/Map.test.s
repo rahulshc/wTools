@@ -16,7 +16,8 @@ let _ = _global_.wTools;
 // map checker
 //--
 
-function mapChecks( test )
+/* qqq : use test.true() instead of test.identical() */
+function typingBasic( test ) /* qqq : extend with construbile* checks */
 {
 
   test.case = 'pure empty map';
@@ -24,10 +25,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), true );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -39,10 +41,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
@@ -54,10 +57,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
@@ -69,10 +73,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -83,10 +88,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), true );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -97,10 +103,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
@@ -112,10 +119,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
@@ -127,10 +135,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -141,10 +150,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), true );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -155,10 +165,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -169,10 +180,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -183,10 +195,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -197,10 +210,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
   test.identical( _.mapLikePopulated( src ), false );
@@ -210,10 +224,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -224,10 +239,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -238,10 +254,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -252,10 +269,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -266,10 +284,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -280,10 +299,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -295,10 +315,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -311,10 +332,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -330,10 +352,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -345,10 +368,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -361,10 +385,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), false );
+  test.identical( _.mapLike( src ), false );
   test.identical( _.mapIsPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -377,10 +402,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
@@ -396,10 +422,11 @@ function mapChecks( test )
   test.identical( _.objectIs( src ), true );
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike_( src ), true );
+  test.identical( _.mapLike( src ), true );
   test.identical( _.mapIsPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.mapIsPolluted( src ), false );
+  test.identical( _.mapLikePolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
   test.identical( _.mapLikeEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
@@ -407,7 +434,9 @@ function mapChecks( test )
 
 }
 
+// --
 //
+// --
 
 function mapCloneAssigning( test )
 {
@@ -1767,7 +1796,7 @@ function mapToStr( test )
 
   test.case = 'returns a string representing an object';
   var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = ': 1; b : 2; c : 3; d : 4';
+  var expected = 'a : 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array';
@@ -12121,7 +12150,8 @@ let Self =
 
     // map checker l0/l3/Map.s
 
-    mapChecks, /* qqq : extend */
+    typingBasic, /* qqq : extend */
+    // typingObject,
     /* qqq : write an article with the list of all types of the module */
 
     // map move
