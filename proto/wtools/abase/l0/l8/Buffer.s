@@ -2975,9 +2975,6 @@ function _bufferReusing( o )
   o.growFactor = o.growFactor === 0 ? 1 : o.growFactor;
   o.shrinkFactor = o.shrinkFactor === 0 ? 1 : o.shrinkFactor;
 
-  if( o.ins === undefined )
-  o.ins = 0;
-
   if( o.dst === _.self )
   o.dst = o.src;
 
@@ -3011,10 +3008,10 @@ function _bufferReusing( o )
   {
     if( src.BYTES_PER_ELEMENT )
     return src.BYTES_PER_ELEMENT;
-    else if( src.byteLength )
-    return 1;
-    else
+    else if( src.byteLength === undefined )
     return 8;
+    else
+    return 1;
   }
 
   /* */
@@ -3022,8 +3019,8 @@ function _bufferReusing( o )
   function resultSizeCount()
   {
     let size;
-    if( o.bufferLengthCount )
-    size = o.bufferLengthCount() * resultElementSize;
+    if( o.bufferSizeCount )
+    size = o.bufferSizeCount( o.cinterval, resultElementSize );
     else
     size = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * resultElementSize;
 
@@ -3125,14 +3122,14 @@ _bufferReusing.defaults =
   dst : null,
   src : null,
   cinterval : null,
-  ins : null,
+  ins : 0,
   offsetting : 1,
   reusing : 1,
   growFactor : 2,
   shrinkFactor : 0,
   minSize : 64,
 
-  bufferLengthCount : null,
+  bufferSizeCount : null,
   bufferFill : null,
 };
 
@@ -3156,7 +3153,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   _.routineOptions( bufferReusingBut, o );
   _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
 
-  o.bufferLengthCount = bufferLengthCount;
+  o.bufferSizeCount = bufferSizeCount;
   o.bufferFill = dstBufferFill;
 
   return _._bufferReusing( o );
@@ -3178,9 +3175,10 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
     return o.cinterval;
   }
 
-  function bufferLengthCount()
+  function bufferSizeCount( cinterval, elementSize )
   {
-    return bufferLength - ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) + o.ins.length;
+    let length = bufferLength - ( cinterval[ 1 ] - cinterval[ 0 ] + 1 ) + o.ins.length;
+    return length * elementSize;
   }
 
   /* */
@@ -3465,7 +3463,7 @@ function bufferReusingResize( /* dst, src, cinterval */ )
 
   _.routineOptions( bufferReusingResize, o );
 
-  o.growFactor = 1;
+  o.bufferSizeCount = bufferSizeCount;
   o.bufferFill = dstBufferFill;
 
   return _._bufferReusing( o );
@@ -3501,26 +3499,32 @@ function bufferReusingResize( /* dst, src, cinterval */ )
 
   /* */
 
+  function bufferSizeCount( cinterval, elementSize )
+  {
+    return cinterval[ 1 ] - cinterval[ 0 ] + 1;
+  }
+
+  /* */
+
   function dstBufferFill( dstTyped, srcTyped, cinterval, ins )
   {
-    if( !_.bufferBytesIs( dstTyped ) )
-    dstTyped = bufferBytesFrom( dstTyped );
-    if( !_.bufferBytesIs( srcTyped ) )
-    dstTyped = bufferBytesFrom( srcTyped );
+    if( srcTyped === dstTyped )
+    return dstTyped;
 
-    let offset = left < 0 ? Math.max( 0, -left ) : 0;
-    left = left < 0 ? 0 : left;
-    for( let i = 0 ; i < offset ; i++ )
-    dstTyped[ i ] = o.ins;
+    if( _.bufferAnyIs( dstTyped ) )
+    dstTyped = _.bufferBytesFrom( dstTyped.buffer ? dstTyped.buffer : dstTyped );
 
-    let rightBound = Math.min( srcTyped.length, right - left + 1 );
-    let i;
-    for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
-    dstTyped[ i ] = srcTyped[ i - offset + left ];
+    debugger;
+    let srcBytesView = srcTyped;
+    if( _.bufferAnyIs( srcTyped ) )
+    srcBytesView = _.bufferBytesFrom( srcTyped.buffer ? srcTyped.buffer : srcTyped );
 
-    let length = dstTyped.length;
-    for( ; i < length ; i++ )
-    dstTyped[ i ] = o.ins;
+    let offset = srcTyped.byteOffset ? srcTyped.byteOffset : 0;
+    offset += left;
+
+    let length = right - left + 1;
+    for( let i = 0; i < dstTyped.length && i < length ; i++ )
+    dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
 
     return dstTyped;
 
