@@ -16,7 +16,7 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( file Partible.tests.s ) | aaa : Done */
+function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( file Partible.tests.s ) */
 {
 
   /* */

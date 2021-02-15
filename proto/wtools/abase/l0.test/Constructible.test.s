@@ -16,7 +16,7 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function typingBasic( test ) /* qqq for Yevhen : extend | aaa : Done. */
+function typingBasic( test ) /* qqq for Yevhen : extend */
 {
 
   test.case = 'str';
