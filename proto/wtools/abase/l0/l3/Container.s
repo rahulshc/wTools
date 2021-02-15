@@ -14,7 +14,7 @@ function is( src )
 {
   if( _.longLike( src ) )
   return true;
-  if( _.mapLike_( src ) )
+  if( _.mapLike( src ) )
   return true;
   if( _.hashMapLike( src ) )
   return true;

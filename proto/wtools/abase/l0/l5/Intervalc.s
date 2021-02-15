@@ -333,7 +333,7 @@ function firstGet( cinterval, options )
 
   if( options )
   {
-    _.assert( _.mapLike_( options ) );
+    _.assert( _.mapLike( options ) );
     if( options.increment === undefined )
     options.increment = 1;
   }

@@ -811,7 +811,7 @@ diagnosticStructureGenerate_body.defaults =
  * @returns { Map } - Returns map with diagnostic data types of defined complexity.
  * @function diagnosticStructureGenerate
  * @throws { Error } If arguments.length is more then one.
- * @throws { Error } If options map {-o-} is not mapLike_.
+ * @throws { Error } If options map {-o-} is not mapLike.
  * @throws { Error } If options map {-o-} has unknown options.
  * @namespace Tools
  */

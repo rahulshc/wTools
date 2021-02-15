@@ -11,55 +11,90 @@ let Self = _global_.wTools;
 // map checker
 // --
 
-/**
- * Function objectIs checks incoming param whether it is object.
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example
- * let obj = { x : 100 };
- * _.objectIs(obj);
- * // returns true
- *
- * @example
- * _.objectIs( 10 );
- * // returns false
- *
- * @param { * } src.
- * @return { Boolean }.
- * @function objectIs
- * @namespace Tools
- */
-
-function objectIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Object]';
-}
-
+// /**
+//  * Function objectIs checks incoming param whether it is object.
+//  * Returns "true" if incoming param is object. Othervise "false" returned.
+//  *
+//  * @example
+//  * let obj = { x : 100 };
+//  * _.objectIs(obj);
+//  * // returns true
+//  *
+//  * @example
+//  * _.objectIs( 10 );
+//  * // returns false
+//  *
+//  * @param { * } src.
+//  * @return { Boolean }.
+//  * @function objectIs
+//  * @namespace Tools
+//  */
 //
-
-function objectLike( src ) /* xxx qqq : optimize */
-{
-
-  if( _.objectIs( src ) )
-  return true;
-
-  if( _.primitiveIs( src ) )
-  return false;
-
-  // if( _.longIs( src ) ) /* yyy */
-  // return false;
-  if( _.vectorIs( src ) )
-  return false;
-
-  if( _.routineIsTrivial( src ) )
-  return false;
-
-  // yyy
-  // for( let k in src )
-  // return true;
-
-  return false;
-}
+// function objectIs( src )
+// {
+//   return Object.prototype.toString.call( src ) === '[object Object]';
+// }
+//
+// //
+//
+// function objectLike( src ) /* xxx qqq : optimize */
+// {
+//
+//   if( _.objectIs( src ) )
+//   return true;
+//
+//   if( _.primitiveIs( src ) )
+//   return false;
+//
+//   // if( _.longIs( src ) ) /* yyy */
+//   // return false;
+//   if( _.vectorIs( src ) )
+//   return false;
+//
+//   if( _.routineIsTrivial( src ) )
+//   return false;
+//
+//   // yyy
+//   // for( let k in src )
+//   // return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function constructibleIs( src ) /* xxx qqq : optimize */
+// {
+//   if( _.primitiveIs( src ) )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//   if( proto === null )
+//   return false;
+//
+//   if( !Reflect.has( proto, 'constructor' ) )
+//   return false;
+//   if( proto.constructor === Object )
+//   return false;
+//
+//   if( _.mapLike( src ) ) /* xxx : remove? */
+//   return false;
+//   if( _.vectorIs( src ) )
+//   return false;
+//   if( _.setIs( src ) )
+//   return false;
+//   if( _.hashMapIs( src ) )
+//   return false;
+//
+//   return true;
+// }
+//
+// //
+//
+// function constructibleLike( src )
+// {
+//   return _.constructibleIs( src );
+// }
 
 //
 
@@ -136,14 +171,14 @@ function mapIs( src )
 
 //
 
-// function mapLike_( src )
+// function mapLike( src )
 // {
 //   if( mapIs( src ) )
 //   return true;
 //   return false;
 // }
 
-function mapLike_( src )
+function mapLike( src )
 {
 
   if( !src )
@@ -186,6 +221,28 @@ function mapIsPure( src )
 //
 
 function mapIsPolluted( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return false;
+
+  if( proto === Object.prototype )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapLikePolluted( src )
 {
 
   if( !src )
@@ -244,7 +301,7 @@ function mapIsEmpty( src )
 
 function mapLikeEmpty( src )
 {
-  if( !_.mapLike_( src ) )
+  if( !_.mapLike( src ) )
   return false;
   return Object.keys( src ).length === 0;
 }
@@ -262,7 +319,7 @@ function mapIsPopulated( src )
 
 function mapLikePopulated( src )
 {
-  if( !_.mapLike_( src ) )
+  if( !_.mapLike( src ) )
   return false;
   return Object.keys( src ).length > 0;
 }
@@ -1348,7 +1405,9 @@ function mapSupplementStructureless( dstMap, srcMap )
       if( dstMap[ s ] !== undefined )
       continue;
 
+      if( Config.debug )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
       throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
 
       dstMap[ s ] = srcMap[ s ];
@@ -1380,13 +1439,17 @@ let Extension =
 
   // map checker
 
-  objectIs,
-  objectLike,
+  // objectIs, /* qqq : optimize */
+  // objectLike, /* qqq : optimize */
+  //
+  // constructibleIs, /* qqq : cover and move */
+  // constructibleLike, /* qqq : cover and move */
 
   mapIs,
-  mapLike_,
+  mapLike,
   mapIsPure,
   mapIsPolluted,
+  mapLikePolluted,
   mapIsPrototyped,
 
   mapIsEmpty,
@@ -1435,6 +1498,8 @@ let Extension =
   mapSupplement,
   mapSupplementStructureless,
   mapOptionsApplyDefaults,
+
+  /* xxx : review and maybe move out routines */
 
 }
 

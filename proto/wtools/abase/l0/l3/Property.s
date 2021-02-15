@@ -69,7 +69,7 @@ _ofAct.defaults =
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.property.of.cvisibleOnly( { onlyOwn : 1 }, a )
+ * _.property.of.conlyExplicit( { onlyOwn : 1 }, a )
  * // returns { a : 1 }
  *
  * @returns { object } A new map with unique onlyEnumerable properties from source{-srcMap-}.
@@ -126,7 +126,7 @@ _of.defaults =
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : 2 } );
- * _.property.onlyOwn.cvisibleOnly( { onlyEnumerable : 0 }, a )
+ * _.property.onlyOwn.conlyExplicit( { onlyEnumerable : 0 }, a )
  * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with source {-srcMap-} onlyOwn onlyEnumerable properties.
@@ -158,40 +158,40 @@ onlyOwn.defaults =
 //
 
 /**
- * The visibleOnly() gets visibleOnly properties from provided object {-srcMap-} and returns them as new map.
+ * The onlyExplicit() gets onlyExplicit properties from provided object {-srcMap-} and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
- * If true, it copies visibleOnly unique object's properties to the new map using
+ * If true, it copies onlyExplicit unique object's properties to the new map using
  * their original name/value and returns the result,
  * otherwise it returns empty map.
  *
- * @param { objectLike } srcMap - Source to get a map of visibleOnly object`s properties.
+ * @param { objectLike } srcMap - Source to get a map of onlyExplicit object`s properties.
  *
  * @example
- * _.property.visibleOnly( { a : 7, b : 13 } );
+ * _.property.onlyExplicit( { a : 7, b : 13 } );
  * // returns { a : 7, b : 13, __defineGetter__ : function...}
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.property.visibleOnly( a );
+ * _.property.onlyExplicit( a );
  * // returns { a : 1, b : 2, __defineGetter__ : function...}
  *
- * @returns { object } A new map with visibleOnly unique properties from source {-srcMap-}.
- * @function visibleOnly
+ * @returns { object } A new map with onlyExplicit unique properties from source {-srcMap-}.
+ * @function onlyExplicit
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function visibleOnly( srcMap, o )
+function onlyExplicit( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( visibleOnly, o );
+  o = _.routineOptions( onlyExplicit, o );
 
   o.srcMap = srcMap;
   let result = _.property._ofAct( o );
@@ -199,7 +199,7 @@ function visibleOnly( srcMap, o )
   return result;
 }
 
-visibleOnly.defaults =
+onlyExplicit.defaults =
 {
   onlyOwn : 0,
   onlyEnumerable : 0,
@@ -235,7 +235,7 @@ visibleOnly.defaults =
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.property.routines.cvisibleOnly( { onlyOwn : 1 }, a )
+ * _.property.routines.conlyExplicit( { onlyOwn : 1 }, a )
  * // returns {}
  *
  * @returns { object } A new map with unique onlyEnumerable routine properties from source {-srcMap-}.
@@ -301,7 +301,7 @@ routines.defaults =
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : function(){} } );
- * _.property.onlyOwnRoutines.cvisibleOnly( { onlyEnumerable : 0 }, a )
+ * _.property.onlyOwnRoutines.conlyExplicit( { onlyEnumerable : 0 }, a )
  * // returns { b : function(){} }
  *
  * @returns { object } A new map with unique object`s onlyOwn onlyEnumerable routine properties from source {-srcMap-}.
@@ -341,39 +341,39 @@ onlyOwnRoutines.defaults =
 //
 
 /**
- * The visibleOnlyRoutines() gets visibleOnly properties of object {-srcMap-} that contains routines as value and returns them as new map.
+ * The onlyExplicitRoutines() gets onlyExplicit properties of object {-srcMap-} that contains routines as value and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
- * If true, it copies visibleOnly unique properties of source {-srcMap-} that holds routines to the new map using
+ * If true, it copies onlyExplicit unique properties of source {-srcMap-} that holds routines to the new map using
  * original name/value of the property and returns the result, otherwise it returns empty map.
  *
  * @param { objectLike } srcMap - Source to get a map of object`s properties.
  *
  * @example
- * _.property.visibleOnlyRoutines( { a : 7, b : 13, f : function(){} } );
+ * _.property.onlyExplicitRoutines( { a : 7, b : 13, f : function(){} } );
  * // returns { f : function, __defineGetter__ : function...}
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.property.visibleOnlyRoutines( a )
+ * _.property.onlyExplicitRoutines( a )
  * // returns { f : function, __defineGetter__ : function...}
  *
- * @returns { object } A new map with visibleOnly unique object`s {-srcMap-} properties that are routines.
- * @function visibleOnlyRoutines
+ * @returns { object } A new map with onlyExplicit unique object`s {-srcMap-} properties that are routines.
+ * @function onlyExplicitRoutines
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function visibleOnlyRoutines( srcMap, o )
+function onlyExplicitRoutines( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( visibleOnlyRoutines, o );
+  o = _.routineOptions( onlyExplicitRoutines, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -390,14 +390,14 @@ function visibleOnlyRoutines( srcMap, o )
   return result;
 }
 
-visibleOnlyRoutines.defaults =
+onlyExplicitRoutines.defaults =
 {
 }
 
 //
 
 /**
- * The fields() gets onlyEnumerable fields( visibleOnly properties except routines ) of the object {-srcMap-} and returns them as new map.
+ * The fields() gets onlyEnumerable fields( onlyExplicit properties except routines ) of the object {-srcMap-} and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -424,10 +424,10 @@ visibleOnlyRoutines.defaults =
  * let a = { a : 1, x : function(){} };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
- * _.property.fields.cvisibleOnly( { onlyOwn : 1 }, a )
+ * _.property.fields.conlyExplicit( { onlyOwn : 1 }, a )
  * // returns { a : 1 }
  *
- * @returns { object } A new map with unique onlyEnumerable fields( visibleOnly properties except routines ) from source {-srcMap-}.
+ * @returns { object } A new map with unique onlyEnumerable fields( onlyExplicit properties except routines ) from source {-srcMap-}.
  * @function fields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
@@ -461,7 +461,7 @@ fields.defaults =
 //
 
 /**
- * The onlyOwnFields() gets object`s {-srcMap-} onlyOwn onlyEnumerable fields( visibleOnly properties except routines ) and returns them as new map.
+ * The onlyOwnFields() gets object`s {-srcMap-} onlyOwn onlyEnumerable fields( onlyExplicit properties except routines ) and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -486,10 +486,10 @@ fields.defaults =
  * @example
  * let a = { a : 1, x : function(){} };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : 2 } )
- * _.property.fields.cvisibleOnly( { onlyEnumerable : 0 }, a )
+ * _.property.fields.conlyExplicit( { onlyEnumerable : 0 }, a )
  * // returns { a : 1, b : 2 }
  *
- * @returns { object } A new map with object`s {-srcMap-} onlyOwn onlyEnumerable fields( visibleOnly properties except routines ).
+ * @returns { object } A new map with object`s {-srcMap-} onlyOwn onlyEnumerable fields( onlyExplicit properties except routines ).
  * @function onlyOwnFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
@@ -523,45 +523,45 @@ onlyOwnFields.defaults =
 //
 
 /**
- * The visibleOnlyFields() gets visibleOnly object`s {-srcMap-} fields( properties except routines ) and returns them as new map.
+ * The onlyExplicitFields() gets onlyExplicit object`s {-srcMap-} fields( properties except routines ) and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
- * If true, it copies visibleOnly object`s properties that are not routines to the new map using
+ * If true, it copies onlyExplicit object`s properties that are not routines to the new map using
  * their original name/value and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } srcMap - Object to get a map of visibleOnly properties.
+ * @param { objectLike } srcMap - Object to get a map of onlyExplicit properties.
  *
  * @example
- * _.property.visibleOnlyFields( { a : 7, b : 13, c : function(){} } );
+ * _.property.onlyExplicitFields( { a : 7, b : 13, c : function(){} } );
  * // returns { a : 7, b : 13, __proto__ : Object }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.property.visibleOnlyFields( a );
+ * _.property.onlyExplicitFields( a );
  * // returns { a : 1, b : 2, __proto__ : Object }
  *
  * @example
  * let a = { a : 1, x : function(){} };
  * Object.defineProperty( a, 'b', { onlyEnumerable : 0, value : 2 } )
- * _.property.visibleOnlyFields( a );
+ * _.property.onlyExplicitFields( a );
  * // returns { a : 1, b : 2, __proto__ : Object }
  *
- * @returns { object } A new map with visibleOnly fields( properties except routines ) from source {-srcMap-}.
- * @function visibleOnlyFields
+ * @returns { object } A new map with onlyExplicit fields( properties except routines ) from source {-srcMap-}.
+ * @function onlyExplicitFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @namespace Tools
  */
 
-function visibleOnlyFields( srcMap, o )
+function onlyExplicitFields( srcMap, o )
 {
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( visibleOnlyFields, o );
+  o = _.routineOptions( onlyExplicitFields, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -575,7 +575,7 @@ function visibleOnlyFields( srcMap, o )
   if( _.routineIs( srcMap ) )
   o.selectFilter = function selectRoutine( srcMap, k )
   {
-    if( _.longHas( [ 'arguments', 'cvisibleOnlyer' ], k ) )
+    if( _.longHas( [ 'arguments', 'conlyExpliciter' ], k ) )
     return;
     if( !_.routineIs( srcMap[ k ] ) )
     return k;
@@ -585,13 +585,13 @@ function visibleOnlyFields( srcMap, o )
   return result;
 }
 
-visibleOnlyFields.defaults =
+onlyExplicitFields.defaults =
 {
 }
 
 //
 
-function invisibleOnly( src, o )
+function onlyImplicit( src, o )
 {
   let result = new HashMap();
 
@@ -618,17 +618,17 @@ let Extension =
   _ofAct,
   of : _of,
   onlyOwn,
-  visibleOnly,
+  onlyExplicit,
 
   routines,
   onlyOwnRoutines,
-  visibleOnlyRoutines,
+  onlyExplicitRoutines,
 
   fields,
   onlyOwnFields,
-  visibleOnlyFields,
+  onlyExplicitFields,
 
-  invisibleOnly,
+  onlyImplicit,
 
 }
 
