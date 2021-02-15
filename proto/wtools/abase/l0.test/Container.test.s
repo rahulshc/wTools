@@ -408,7 +408,7 @@ function extendReplacingDstNull( test )
 
 function extendReplacingDstMapAndHashMapLike( test )
 {
-  test.open( 'src - mapLike_' );
+  test.open( 'src - mapLike' );
 
   test.case = 'dst - empty map, src - empty';
   var dst = {};
@@ -552,7 +552,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   test.true( got !== dst );
   test.true( got !== src );
 
-  test.close( 'src - mapLike_' );
+  test.close( 'src - mapLike' );
 
   /* - */
 
@@ -1420,7 +1420,7 @@ function extendAppendingDstNull( test )
 
 function extendAppendingDstMapAndHashMapLike( test )
 {
-  test.open( 'src - mapLike_' );
+  test.open( 'src - mapLike' );
 
   test.case = 'dst - empty map, src - empty';
   var dst = {};
@@ -1564,7 +1564,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   test.true( got !== dst );
   test.true( got !== src );
 
-  test.close( 'src - mapLike_' );
+  test.close( 'src - mapLike' );
 
   /* - */
 

@@ -111,13 +111,23 @@ function vectorAdapterIs( src )
 function vectorIs( src )
 {
 
-  if( _.vectorAdapterIs( src ) )
+  if( _.arrayIs( src ) )
   return true;
+  if( _.primitiveIs( src ) )
+  return false;
 
-  if( _.longIs( src ) )
+  if( _.entity.methodIteratorOf( src ) )
+  if( _.numberIs( src.length ) ) /* yyy */
+  if( !_.mapIs( src ) )
   return true;
 
   return false;
+  // return _.longIs( src );
+  // if( _.vectorAdapterIs( src ) )
+  // return true;
+  // if( _.longIs( src ) )
+  // return true;
+  // return false;
 }
 
 //
@@ -125,6 +135,35 @@ function vectorIs( src )
 function vectorLike( src )
 {
   return _.vectorIs( src );
+  // // return _.vectorIs( src );
+  // if( _.arrayIs( src ) )
+  // return true;
+  // if( _.primitiveIs( src ) )
+  // return false;
+  //
+  // if( _.entity.methodIteratorOf( src ) )
+  // if( !_.mapIs( src ) )
+  // return true;
+  //
+  // return false;
+}
+
+//
+
+function partibleIs( src )
+{
+  // return _.vectorIs( src );
+  if( _.arrayIs( src ) )
+  return true;
+
+  if( _.primitiveIs( src ) )
+  return false;
+
+  if( _.entity.methodIteratorOf( src ) )
+  if( !_.mapIs( src ) )
+  return true;
+
+  return false;
 }
 
 //
@@ -199,7 +238,7 @@ function typeOf( src, constructor )
   {
     return null;
   }
-  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) )
+  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
   {
     return src.constructor;
   }
@@ -217,7 +256,7 @@ function typeOf( src, constructor )
 
 //
 
-function prototypeIsPrototypeOf( superPrototype, subPrototype )
+function prototypeIsPrototypeOf( superPrototype, subPrototype ) /* xxx : move */
 {
   _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
   if( superPrototype === subPrototype )
@@ -231,7 +270,7 @@ function prototypeIsPrototypeOf( superPrototype, subPrototype )
 
 //
 
-function prototypeHas( superPrototype, subPrototype )
+function prototypeHas( superPrototype, subPrototype ) /* xxx : move */
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
   // eslint-disable-next-line no-prototype-builtins
@@ -247,7 +286,7 @@ function prototypeHas( superPrototype, subPrototype )
  * @namespace Tools
  */
 
-function prototypeIs( src )
+function prototypeIs( src ) /* xxx : move */
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.primitiveIs( src ) )
@@ -304,31 +343,25 @@ function instanceIs( src )
 
   if( Object.hasOwnProperty.call( src, 'constructor' ) )
   return false;
+  if( !Reflect.has( src, 'constructor' ) )
+  return false;
 
   let prototype = Object.getPrototypeOf( src );
+  _.assert( prototype !== undefined );
 
   if( prototype === null )
   return false;
-  if( prototype === undefined )
-  return false;
+  // if( prototype === undefined )
+  // return false;
   if( prototype === Object.prototype )
   return false;
   if( _.routineIs( prototype ) )
   return false;
 
-  return Object.hasOwnProperty.call( prototype, 'constructor' );
-}
+  // return Object.hasOwnProperty.call( prototype, 'constructor' );
 
-// // use _.workpiece.instanceLikeStandard()
-//
-// function instanceLike( src )
-// {
-//   if( _.primitiveIs( src ) )
-//   return false;
-//   if( src.Composes )
-//   return true;
-//   return false;
-// }
+  return true;
+}
 
 //
 
@@ -530,13 +563,17 @@ let Routines =
 
   //
 
+  /* qqq for Yevhen : move */
   vectorAdapterIs,
   vadIs : vectorAdapterIs,
-  vectorIs, /* qqq for Dmytro : cover */
-  vectorLike,
-
+  vectorIs, /* qqq : cover here and in the module::MathVector */
+  vectorLike, /* qqq : cover here and in the module::MathVector */
+  partibleIs, /* qqq : cover here and in the module::MathVector */
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
+  /* qqq for Yevhen : move */
+
+  //
 
   consequenceIs,
   consequenceLike,
@@ -549,7 +586,6 @@ let Routines =
   prototypeIs,
   constructorIs,
   instanceIs,
-  // instanceLike,
 
   workerIs,
   streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
@@ -559,8 +595,10 @@ let Routines =
   loggerIs,
   processIs,
   procedureIs,
-  definitionIs,
-  traitIs,
+
+  definitionIs, /* xxx : move to namespace::property */
+  traitIs, /* xxx : move to namespace::property */
+
   blueprintIsDefinitive,
   blueprintIsRuntime,
 

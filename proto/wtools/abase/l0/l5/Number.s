@@ -14,7 +14,7 @@ let Self = _global_.wTools;
 function bigIntFrom( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  if( _.strIs( src ) ) /* qqq2 : cover pelase | aaa : Done. Yevhen S. */
+  if( _.strIs( src ) )
   return BigInt( src );
   if( _.numberIs( src ) )
   return BigInt( src );

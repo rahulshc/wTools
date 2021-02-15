@@ -103,13 +103,13 @@ function unwrap( src )
 
 var Extension =
 {
-  isEscapable, /* qqq : cover please | aaa : Done. Yevhen S. */
-  left, /* qqq : cover please | aaa : Done. Yevhen S. */
-  rightWithNothing, /* qqq : cover please | aaa : Done. Yevhen S. */
-  rightWithoutNothing, /* qqq : cover please | aaa : Done. Yevhen S. */
+  isEscapable,
+  left,
+  rightWithNothing,
+  rightWithoutNothing,
   right : rightWithNothing,
-  wrap, /* qqq : cover please | aaa : Done. Yevhen S. */
-  unwrap, /* qqq : cover please | aaa : Done. Yevhen S. */
+  wrap,
+  unwrap,
 }
 
 //
@@ -118,6 +118,7 @@ _.mapSupplement( _.escape, Extension );
 _.escape.nothing = _.escape.wrap( _.nothing );
 _.escape.null = _.escape.wrap( _.null );
 _.escape.undefined = _.escape.wrap( _.undefined );
+_.escape.prototype = _.escape.wrap( Symbol.for( 'prototype' ) );
 
 _.escape._EscapeMap = new HashMap();
 _.escape._EscapeMap.set( _.nothing, _.escape.nothing );

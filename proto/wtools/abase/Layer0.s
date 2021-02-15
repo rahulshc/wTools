@@ -14,6 +14,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Array.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
+  require( './l0/l3/Constructible.s' );
   require( './l0/l3/Container.s' );
   require( './l0/l3/Ct.s' );
   require( './l0/l3/Entity.s' );
@@ -30,6 +31,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Map.s' );
   require( './l0/l3/Module.s' );
   require( './l0/l3/Number.s' );
+  require( './l0/l3/Object.s' );
   require( './l0/l3/Process.s' );
   require( './l0/l3/Pair.s' );
   require( './l0/l3/Path.s' );
