@@ -16,7 +16,7 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
+function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( file Partible.tests.s ) */
 {
 
   /* */
@@ -152,6 +152,7 @@ var Self =
   {
 
     typing,
+    /* xxx qqq : write test routine typingObject and use _.objectForTesting() */
 
   }
 
