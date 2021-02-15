@@ -298,7 +298,7 @@ function strEntityShort( src )
     {
       result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
     }
-    else if( _.vectorIs( src ) )
+    else if( _.vector.is( src ) )
     {
       result += '{- ' + _.strType( src ) + ' with ' + src.length + ' elements -}';
     }
