@@ -65,8 +65,8 @@ let Extension =
 
   // typing
 
-  is : constructibleIs, /* qqq : cover and move */
-  like : constructibleLike, /* qqq : cover and move */
+  is : constructibleIs,
+  like : constructibleLike,
 
 }
 
