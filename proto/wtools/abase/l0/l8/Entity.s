@@ -57,8 +57,11 @@ function uncountableSize( src )
   if( _.regexpIs( src ) )
   return _.uncountableSize( src.source ) + src.flags.length;
 
-  // if( !_.iterableIs( src ) ) /* yyy */
+  // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine partibleIs has different behavior */
   // return 8;
+  if( !_.mapLike( src ) )
+  if( !_.entity.methodIteratorOf( src ) )
+  return 8;
 
   return NaN;
 }
