@@ -3491,6 +3491,8 @@ function loggerIs( test )
 
 //
 
+/* qqq : extend test processIs */
+/* qqq : make similar test processIs in module::Process, but wider */
 function processIs( test )
 {
   test.case = 'check null';
@@ -3621,8 +3623,10 @@ function processIs( test )
   test.identical( got, false );
 
   test.case = 'check process';
+  debugger;
   var src = process;
   var got = _.processIs( src );
+  debugger;
   test.identical( got, true );
 }
 

@@ -478,8 +478,9 @@ function processIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  let typeOf = _.strType( src );
-  if( typeOf === 'ChildProcess' || typeOf === 'process' )
+  // let type = _.strType( src );
+  let type = _.strTypeSecondary( src );
+  if( type === 'ChildProcess' || type === 'process' )
   return true;
 
   return false;

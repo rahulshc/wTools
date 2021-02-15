@@ -4,6 +4,8 @@ let _ = require( '../..' );
 null serves as an identifier, that we should not change object property's value, but make it constant.
 */
 
+console.log( '6_ImplementationAddConstantFieldWithEscape.s' );
+
 function objectSetFieldConstantWithEscape( object, field, value )
 {
   if( _.escape.is( value ) )
