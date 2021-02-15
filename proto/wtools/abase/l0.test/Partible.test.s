@@ -139,7 +139,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
   /* */
 
   test.case = `arguments array`;
-  var src = _.argumentsArrayMake();
+  var src = _.argumentsArray.make();
   test.true( _.partible.like( src ) );
   test.true( _.partible.is( src ) );
   test.true( _.vector.like( src ) );

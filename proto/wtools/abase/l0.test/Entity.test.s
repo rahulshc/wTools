@@ -98,22 +98,22 @@ let _ = _global_.wTools;
 //   test.identical( got, [ undefined, undefined ] );
 //
 //   test.case = 'empty arguments array';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [] ) );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [] ) );
 //   test.identical( got, [] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'empty arguments array, length';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [] ), 4 );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [] ), 4 );
 //   test.identical( got, [ undefined, undefined, undefined, undefined ] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'not empty argumentsArray';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
 //   test.identical( got, [ null, undefined, 1, 2 ] );
 //   test.true( _.arrayIs( got ) );
 //
 //   test.case = 'not empty argumentsArray, length';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [ null, undefined, 1, 2 ] ), 2 );
 //   test.identical( got, [ null, undefined ] );
 //   test.true( _.arrayIs( got ) );
 //
@@ -128,12 +128,12 @@ let _ = _global_.wTools;
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'not empty unroll';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
 //   test.identical( got, [ null, undefined, 1, 2 ] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
 //   test.case = 'not empty unroll, length';
-//   var got = _.entity.cloneShallow( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+//   var got = _.entity.cloneShallow( _.argumentsArray.make( [ null, undefined, 1, 2 ] ), 2 );
 //   test.identical( got, [ null, undefined ] );
 //   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 //
@@ -219,34 +219,34 @@ let _ = _global_.wTools;
 // function entityMakeConstructingArgumentsArray( test )
 // {
 //   test.case = 'src = empty long, not ins';
-//   var src = _.argumentsArrayMake( [] );
+//   var src = _.argumentsArray.make( [] );
 //   var got = _.entity.cloneShallow( src );
 //   var expected = _.longDescriptor.make( [] );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = long, not ins';
-//   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _.entity.cloneShallow( src );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = null';
-//   var src = _.argumentsArrayMake( [] );
+//   var src = _.argumentsArray.make( [] );
 //   var got = _.entity.cloneShallow( src, null );
 //   var expected = _.longDescriptor.make( 0 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = number';
-//   var src = _.argumentsArrayMake( [] );
+//   var src = _.argumentsArray.make( [] );
 //   var got = _.entity.cloneShallow( src, 2 );
 //   var expected = _.longDescriptor.make( 2 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = number, ins < src.length';
-//   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _.entity.cloneShallow( src, 2 );
 //   var expected = _.longDescriptor.make( [ 1, 2 ] );
 //   test.identical( got, expected );
@@ -260,14 +260,14 @@ let _ = _global_.wTools;
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = number, ins > src.length';
-//   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _.entity.cloneShallow( src, 4 );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = array, ins.length > src.length';
-//   var src = _.argumentsArrayMake( [ 0, 1 ] );
+//   var src = _.argumentsArray.make( [ 0, 1 ] );
 //   var ins = [ 1, 2, 3 ];
 //   var got = _.entity.cloneShallow( src, ins );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
@@ -276,7 +276,7 @@ let _ = _global_.wTools;
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = array, ins.length === src.length'
-//   var src = _.argumentsArrayMake( 5 );
+//   var src = _.argumentsArray.make( 5 );
 //   var ins = [ 1, 2, 3, 4, 5 ];
 //   var got = _.entity.cloneShallow( src, ins );
 //   var expected = _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] );
@@ -589,32 +589,32 @@ let _ = _global_.wTools;
 //   function testRun( descriptor )
 //   {
 //     test.case = 'src = empty long, not ins';
-//     var src = _.argumentsArrayMake( [] );
+//     var src = _.argumentsArray.make( [] );
 //     var got = descriptor.entityMakeConstructing( src );
 //     var expected = descriptor.longDescriptor.make( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
-//     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = descriptor.entityMakeConstructing( src );
 //     var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, ins = null';
-//     var src = _.argumentsArrayMake( [] );
+//     var src = _.argumentsArray.make( [] );
 //     var got = descriptor.entityMakeConstructing( src, null );
 //     var expected = descriptor.longDescriptor.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, ins = number';
-//     var src = _.argumentsArrayMake( [] );
+//     var src = _.argumentsArray.make( [] );
 //     var got = descriptor.entityMakeConstructing( src, 2 );
 //     var expected = descriptor.longDescriptor.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins < src.length';
-//     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = descriptor.entityMakeConstructing( src, 2 );
 //     var expected = descriptor.longDescriptor.make( [ 1, 2 ] );
 //     test.identical( got, expected );
@@ -628,14 +628,14 @@ let _ = _global_.wTools;
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins > src.length';
-//     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = descriptor.entityMakeConstructing( src, 4 );
 //     var expected = descriptor.longDescriptor.make( [ 1, 2, 3, undefined ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = array, ins.length > src.length';
-//     var src = _.argumentsArrayMake( [ 0, 1 ] );
+//     var src = _.argumentsArray.make( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
 //     var got = descriptor.entityMakeConstructing( src, ins );
 //     var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
@@ -644,7 +644,7 @@ let _ = _global_.wTools;
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = array, ins.length === src.length'
-//     var src = _.argumentsArrayMake( 5 );
+//     var src = _.argumentsArray.make( 5 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
 //     var got = descriptor.entityMakeConstructing( src, ins );
 //     var expected = descriptor.longDescriptor.make( [ 1, 2, 3, 4, 5 ] );
@@ -828,12 +828,12 @@ function entityMakeEmpty( test )
   test.identical( got, [] );
 
   test.case = 'empty argumentArray';
-  var got = _.entity.makeEmpty( _.argumentsArrayMake( [] ) );
+  var got = _.entity.makeEmpty( _.argumentsArray.make( [] ) );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'not empty argumentsArray';
-  var got = _.entity.makeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  var got = _.entity.makeEmpty( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
@@ -843,7 +843,7 @@ function entityMakeEmpty( test )
   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 
   test.case = 'not empty unroll';
-  var got = _.entity.makeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  var got = _.entity.makeEmpty( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
   test.identical( got, [] );
   test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 
@@ -1003,11 +1003,11 @@ function entityMakeEmptyLongDescriptor( test )
     test.identical( got, [] );
 
     test.case = 'empty argumentArray';
-    var got = descriptor.entityMakeEmpty( _.argumentsArrayMake( [] ) );
+    var got = descriptor.entityMakeEmpty( _.argumentsArray.make( [] ) );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
     test.case = 'not empty argumentsArray';
-    var got = descriptor.entityMakeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+    var got = descriptor.entityMakeEmpty( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
     test.case = 'empty unroll';
@@ -1016,7 +1016,7 @@ function entityMakeEmptyLongDescriptor( test )
     test.true( !_.unrollIs( got ) && _.arrayIs( got ) );
 
     test.case = 'not empty unroll';
-    var got = descriptor.entityMakeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+    var got = descriptor.entityMakeEmpty( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
     test.case = 'BufferTyped - U8x';
@@ -1173,22 +1173,22 @@ function entityMakeUndefined( test )
   test.identical( got, [ undefined, undefined ] );
 
   test.case = 'empty arguments array';
-  var got = _.entity.makeUndefined( _.argumentsArrayMake( [] ) );
+  var got = _.entity.makeUndefined( _.argumentsArray.make( [] ) );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'empty arguments array, length';
-  var got = _.entity.makeUndefined( _.argumentsArrayMake( [] ), 4 );
+  var got = _.entity.makeUndefined( _.argumentsArray.make( [] ), 4 );
   test.identical( got, [ undefined, undefined, undefined, undefined ] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'not empty argumentsArray';
-  var got = _.entity.makeUndefined( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  var got = _.entity.makeUndefined( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
   test.identical( got, [ undefined, undefined, undefined, undefined ] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'not empty argumentsArray, length';
-  var got = _.entity.makeUndefined( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+  var got = _.entity.makeUndefined( _.argumentsArray.make( [ null, undefined, 1, 2 ] ), 2 );
   test.identical( got, [ undefined, undefined ] );
   test.true( _.arrayIs( got ) );
 
@@ -1411,19 +1411,19 @@ function entityMakeUndefinedLongDescriptor( test )
     test.identical( got, [ undefined, undefined ] );
 
     test.case = 'empty arguments array';
-    var got = descriptor.entityMakeUndefined( _.argumentsArrayMake( [] ) );
+    var got = descriptor.entityMakeUndefined( _.argumentsArray.make( [] ) );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
     test.case = 'empty arguments array, length';
-    var got = descriptor.entityMakeUndefined( _.argumentsArrayMake( [] ), 4 );
+    var got = descriptor.entityMakeUndefined( _.argumentsArray.make( [] ), 4 );
     test.identical( got, descriptor.longDescriptor.make( 4 ) );
 
     test.case = 'not empty argumentsArray';
-    var got = descriptor.entityMakeUndefined( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+    var got = descriptor.entityMakeUndefined( _.argumentsArray.make( [ null, undefined, 1, 2 ] ) );
     test.identical( got, descriptor.longDescriptor.make( 4 ) );
 
     test.case = 'not empty argumentsArray, length';
-    var got = descriptor.entityMakeUndefined( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+    var got = descriptor.entityMakeUndefined( _.argumentsArray.make( [ null, undefined, 1, 2 ] ), 2 );
     test.identical( got, descriptor.longDescriptor.make( 2 ) );
 
     test.case = 'empty unroll';
@@ -1627,14 +1627,14 @@ function entityMake( test )
   test.true( got !== src );
 
   test.case = 'empty argumentArray';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.entity.make( src );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
   test.true( got !== src );
 
   test.case = 'not empty argumentsArray';
-  var src = _.argumentsArrayMake( [ null, undefined, 1, 2 ] );
+  var src = _.argumentsArray.make( [ null, undefined, 1, 2 ] );
   var got = _.entity.make( src );
   test.identical( got, [ null, undefined, 1, 2 ] );
   test.true( _.arrayIs( got ) );
@@ -1870,12 +1870,12 @@ function entityMakeLongDescriptor( test )
     test.true( got !== src );
 
     test.case = 'empty argumentArray';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.entityMake( src );
     test.identical( got, descriptor.longDescriptor.make( [] ) );
 
     test.case = 'not empty argumentsArray';
-    var src = _.argumentsArrayMake( [ null, undefined, 1, 2 ] );
+    var src = _.argumentsArray.make( [ null, undefined, 1, 2 ] );
     var got = descriptor.entityMake( src );
     test.identical( got, descriptor.longDescriptor.make( [ null, undefined, 1, 2 ] ) );
 
@@ -2468,11 +2468,11 @@ function entityLengthOf( test )
   test.identical( got, 3 );
 
   test.case = 'argumentsArray';
-  var got = _.entityLengthOf( _.argumentsArrayMake( [ 1, [ 2, 3 ], 4 ] ) );
+  var got = _.entityLengthOf( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
   test.identical( got, 3 );
 
   test.case = 'unroll';
-  var got = _.entityLengthOf( _.argumentsArrayMake( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = _.entityLengthOf( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
   test.identical( got, 3 );
 
   test.case = 'BufferTyped';
@@ -2660,11 +2660,11 @@ function uncountableSize( test )
   test.identical( got, NaN );
 
   test.case = 'argumentsArray';
-  var got = _.uncountableSize( _.argumentsArrayMake( [ 1, [ 2, 3 ], 4 ] ) );
+  var got = _.uncountableSize( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
   test.identical( got, NaN );
 
   test.case = 'unroll';
-  var got = _.uncountableSize( _.argumentsArrayMake( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = _.uncountableSize( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
   test.identical( got, NaN );
 
   test.case = 'BufferTyped';
@@ -2797,12 +2797,12 @@ function entitySize( test )
   test.identical( got, exp );
 
   test.case = 'argumentsArray';
-  var got = _.entitySize( _.argumentsArrayMake( [ 1, null, 4 ] ) );
+  var got = _.entitySize( _.argumentsArray.make( [ 1, null, 4 ] ) );
   var exp = _.look ? 24 : NaN;
   test.identical( got, exp );
 
   test.case = 'unroll';
-  var got = _.entitySize( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var got = _.entitySize( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var exp = _.look ? 19 : NaN;
   test.identical( got, exp );
 
@@ -2963,7 +2963,7 @@ function entitySize( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'an argumentsArray';
-//   var got = _.iterableIs( _.argumentsArrayMake( [ 1 ] ) );
+//   var got = _.iterableIs( _.argumentsArray.make( [ 1 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -3113,8 +3113,8 @@ function methodIteratorOf( test )
   test.identical( got, expected );
 
   test.case = 'an argumentsArray';
-  var src = _.argumentsArrayMake( 1 );
-  var got = _.entity.methodIteratorOf( _.argumentsArrayMake( [ 1 ] ) );
+  var src = _.argumentsArray.make( 1 );
+  var got = _.entity.methodIteratorOf( _.argumentsArray.make( [ 1 ] ) );
   var expected = src[ _.entity.iteratorSymbol ];
   test.identical( got, expected );
 
@@ -3265,7 +3265,7 @@ function methodEqualOf( test )
   test.identical( got, expected );
 
   test.case = 'an argumentsArray';
-  var got = _.entity.methodEqualOf( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.entity.methodEqualOf( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
