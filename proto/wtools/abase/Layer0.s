@@ -34,6 +34,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Object.s' );
   require( './l0/l3/Process.s' );
   require( './l0/l3/Pair.s' );
+  require( './l0/l3/Partible.s' );
   require( './l0/l3/Path.s' );
   require( './l0/l3/Property.s' );
   require( './l0/l3/PropertyTransformer.s' );
@@ -66,6 +67,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Module.s' );
   require( './l0/l5/Number.s' );
   require( './l0/l5/Pair.s' );
+  require( './l0/l5/Partible.s' );
   require( './l0/l5/Path.s' );
   require( './l0/l5/Process.s' );
   require( './l0/l5/Property.s' );
@@ -108,6 +110,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Module.s' );
   require( './l0/l8/Number.s' );
   require( './l0/l8/Pair.s' );
+  require( './l0/l8/Partible.s' );
   require( './l0/l8/Path.s' );
   require( './l0/l8/Process.s' );
   require( './l0/l8/Property.s' );

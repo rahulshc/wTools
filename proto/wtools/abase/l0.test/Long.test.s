@@ -486,7 +486,7 @@ function longLike( test )
   test.identical( _.longLike( src ), false );
   test.identical( _.vectorIs( src ), false );
   test.identical( _.vectorLike( src ), false );
-  test.identical( _.partibleIs( src ), true );
+  test.identical( _.partible.is( src ), true );
   test.identical( _.partibleLike( src ), true );
 
   /* qqq for Yevhen : write very good test "typing" testing routines which check 'partible', 'vector', 'long', 'array' */

@@ -23,7 +23,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `str`;
   var src = 'abc';
-  test.true( !_.partibleIs( src ) );
+  test.true( !_.partible.is( src ) );
   test.true( !_.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -32,7 +32,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `routine`;
   var src = function(){};
-  test.true( !_.partibleIs( src ) );
+  test.true( !_.partible.is( src ) );
   test.true( !_.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -41,7 +41,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `raw buffer`;
   var src = new BufferRaw( 13 );
-  test.true( !_.partibleIs( src ) );
+  test.true( !_.partible.is( src ) );
   test.true( !_.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -50,7 +50,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `array`;
   var src = [ 1, 3 ];
-  test.true( _.partibleIs( src ) );
+  test.true( _.partible.is( src ) );
   test.true( _.vectorIs( src ) );
   test.true( _.longIs( src ) );
   test.true( _.arrayIs( src ) );
@@ -59,7 +59,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `typed buffer`;
   var src = new F32x([ 0, 10 ]);
-  test.true( _.partibleIs( src ) );
+  test.true( _.partible.is( src ) );
   test.true( _.vectorIs( src ) );
   test.true( _.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -68,7 +68,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `vector`;
   var src = new partiableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  test.true( _.partibleIs( src ) );
+  test.true( _.partible.is( src ) );
   test.true( _.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -77,7 +77,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `partiable`;
   var src = new partiableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  test.true( _.partibleIs( src ) );
+  test.true( _.partible.is( src ) );
   test.true( !_.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
@@ -86,7 +86,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss */
 
   test.case = `partiable made`;
   var src = partiableMake( null, { elements : [ '1', '10' ], withIterator : 1 } );
-  test.true( _.partibleIs( src ) );
+  test.true( _.partible.is( src ) );
   test.true( !_.vectorIs( src ) );
   test.true( !_.longIs( src ) );
   test.true( !_.arrayIs( src ) );
