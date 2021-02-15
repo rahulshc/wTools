@@ -3,6 +3,8 @@
   What if we want to add `null` as the value ?
 */
 
+console.log( '5_ImplementationAddConstantField.s' );
+
 function objectSetFieldConstant( object, field, value )
 {
   if( value === null )
