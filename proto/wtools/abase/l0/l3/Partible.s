@@ -46,7 +46,16 @@ var Extension =
 
 //
 
+var ExtensionTools =
+{
+  partibleIs : is,
+  partibleLike : like
+}
+
+//
+
 Object.assign( _.partible, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

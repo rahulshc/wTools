@@ -56,6 +56,13 @@ function adapterIs( src )
   return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
 }
 
+function constructorIsVectorAdapter( src )
+{
+  if( !src )
+  return false;
+  return '_vectorBuffer' in src.prototype;
+}
+
 
 // --
 // extension
@@ -65,12 +72,26 @@ var Extension =
 {
   is,
   like,
-  adapterIs
+  adapterIs,
+  constructorIsVectorAdapter,
+}
+
+//
+
+var ExtensionTools =
+{
+  vectorAdapterIs : adapterIs,
+  vadIs : adapterIs,
+  vectorIs : is,
+  vectorLike : like,
+  constructorIsVectorAdapter,
+  constructorIsVad : constructorIsVectorAdapter,
 }
 
 //
 
 Object.assign( _.vector, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export
