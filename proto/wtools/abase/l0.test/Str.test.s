@@ -3392,11 +3392,12 @@ function strTypeGeneratedObject( test )
 
     if( !env.new )
     {
-
-      if( _.mapIsPure( src ) )
-      test.identical( _.strType( src ), 'map.pure' );
+      if( _.mapIsPure( src ) && src.constructor && src.constructor.name )
+      test.identical( _.strType( src ), src.constructor.name );
+      else if( _.mapIsPure( src ) )
+      test.identical( _.strType( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
-      test.identical( _.strType( src ), 'map.polluted' );
+      test.identical( _.strType( src ), 'Map.polluted' );
       else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
       test.identical( _.strType( src ), 'map.pure.prototyped' );
       else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
