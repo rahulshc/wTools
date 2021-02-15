@@ -3278,92 +3278,197 @@ function strPrimitive( test ) /* qqq for Yevhen : extend */
 //
 
 /* qqq for Yevhen : extend */
-function strType( test )
+function strTypeWithTraitsBasic( test )
 {
 
   test.case = 'undefined';
   var src = undefined;
   var expected = 'Undefined';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'Null';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number int';
   var src = 13;
   var expected = 'Number';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number NaN';
   var src = 13;
   var expected = 'Number';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number Infinity';
   var src = Infinity;
   var expected = 'Number';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'boolean';
   var src = false;
   var expected = 'Boolean';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'abc';
   var expected = 'String';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'array';
   var src = [ 1, 2, 3 ];
   var expected = 'Array';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'ArgumentsArray';
+  var src = _.argumentsArrayMake([ 1, 2, 3 ]);
+  var expected = 'ArgumentsArray';
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'routine';
   var src = () => {};
   var expected = 'Routine';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'symbol';
   var src = Symbol( 'id' );
   var expected = 'Symbol';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'map';
   var src = new Map();
   var expected = 'HashMap';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'set';
   var src = new Set();
   var expected = 'Set';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'polluted map';
   var src = { a : 1, b : 2, c : 3 };
   var expected = 'Map.polluted';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.a = 1;
   var expected = 'Map.pure';
-  var got = _.strType( src );
+  var got = _.strTypeWithTraits( src );
+  test.identical( got, expected );
+
+}
+
+//
+
+/* qqq for Yevhen : extend */
+function strTypeWithoutTraitsBasic( test )
+{
+
+  test.case = 'undefined';
+  var src = undefined;
+  var expected = 'Undefined';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var src = null;
+  var expected = 'Null';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'number int';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'number NaN';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'number Infinity';
+  var src = Infinity;
+  var expected = 'Number';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var src = false;
+  var expected = 'Boolean';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = 'abc';
+  var expected = 'String';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'array';
+  var src = [ 1, 2, 3 ];
+  var expected = 'Array';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'ArgumentsArray';
+  var src = _.argumentsArrayMake([ 1, 2, 3 ]);
+  var expected = 'ArgumentsArray';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'routine';
+  var src = () => {};
+  var expected = 'Routine';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'symbol';
+  var src = Symbol( 'id' );
+  var expected = 'Symbol';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'map';
+  var src = new Map();
+  var expected = 'HashMap';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'set';
+  var src = new Set();
+  var expected = 'Set';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'polluted map';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = 'Map';
+  var got = _.strTypeWithoutTraits( src );
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.a = 1;
+  var expected = 'Map';
+  var got = _.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
 }
@@ -19502,7 +19607,8 @@ var Self =
 
     strEntityShort,
     strPrimitive,
-    strType,
+    strTypeWithTraitsBasic,
+    strTypeWithoutTraitsBasic,
     strTypeWithTraitsGeneratedObject,
     strTypeWithoutTraitsGeneratedObject,
     strConcat,

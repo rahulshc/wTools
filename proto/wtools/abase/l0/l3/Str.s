@@ -596,7 +596,7 @@ function strTypeWithTraits( src )
   return end( _.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor.name )
+  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
   return end( proto.constructor.name );
 
   return end( _.strTypeSecondary( src ) );
@@ -607,7 +607,7 @@ function strTypeWithTraits( src )
     if( translated )
     result = translated;
 
-    if( !_.StandardType.has( result ) )
+    if( !_.StandardTypeSet.has( result ) )
     {
       if( _.partibleIs( src ) )
       result += '.partible';
@@ -642,7 +642,7 @@ function strTypeWithoutTraits( src )
   return end( _.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor.name )
+  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
   return end( proto.constructor.name );
 
   return end( _.strTypeSecondary( src ) );
@@ -1320,10 +1320,11 @@ let TranslatedType =
   'Map' : 'HashMap',
   'WeakMap' : 'HashMapWeak',
   'Function' : 'Routine',
+  'Arguments' : 'ArgumentsArray',
 
 }
 
-let StandardType = new Set
+let StandardTypeSet = new Set
 ([
 
   'U64x',
@@ -1402,7 +1403,7 @@ let Extension =
   // fields
 
   TranslatedType,
-  StandardType,
+  StandardTypeSet,
 
 }
 
