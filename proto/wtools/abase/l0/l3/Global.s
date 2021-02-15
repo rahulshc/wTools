@@ -13,18 +13,22 @@ _global_.wTools.global = _global_.wTools.global || Object.create( null );
 
 function is( src )
 {
+  if( src.__GLOBAL_NAME__ === 'real' )
+  return true;
 }
 
 //
 
 function isReal( src )
 {
+  return true;
 }
 
 //
 
 function isDerivative( src )
 {
+  return true;
 }
 
 // --

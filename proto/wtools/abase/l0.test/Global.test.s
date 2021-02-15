@@ -23,11 +23,13 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
 
   test.case = 'current global';
   test.true( true );
-  // test.true( _.global.is( _global_ ) );
-  // test.true( _.global.isReal( _global_ ) );
-  // test.true( !_.global.isDerivative( _global_ ) );
+  test.true( _.global.is( _global_ ) );
+  test.true( _.global.isReal( _global_ ) );
+  test.true( !_.global.isDerivative( _global_ ) );
 
   /* */
+
+  console.log( _globals_ )
 
 }
 
