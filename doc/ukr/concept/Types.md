@@ -39,9 +39,6 @@ GlobalDerived
 objectIs,
 objectLike,
 
-compositeIs,
-compositeLike,
-
 mapIs,
 mapLike_,
 mapIsPure,

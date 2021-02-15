@@ -324,7 +324,6 @@ module:
           - ../proto/wtools/abase/l0.test/Functional.test.s
           - ../proto/wtools/abase/l0.test/Global.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
-          - ../proto/wtools/abase/l0.test/IntervalOld.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
