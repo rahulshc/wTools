@@ -570,7 +570,7 @@ let Routines =
 
   //
 
-  /* qqq for Yevhen : move */
+  /* qqq for Yevhen : move | aaa : Done. */
   vectorAdapterIs,
   vadIs : vectorAdapterIs,
   vectorIs, /* qqq : cover here and in the module::MathVector */
@@ -579,7 +579,7 @@ let Routines =
   partibleLike, /* qqq : cover here and in the module::MathVector */
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
-  /* qqq for Yevhen : move */
+  /* qqq for Yevhen : move | aaa : Done. */
 
   //
 

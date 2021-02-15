@@ -53,8 +53,8 @@ let ToolsExtension =
 
   // typing
 
-  constructibleIs, /* qqq : cover and move */
-  constructibleLike, /* qqq : cover and move */
+  constructibleIs, /* qqq : cover and move | aaa : Done.  */
+  constructibleLike, /* qqq : cover and move | aaa : Done.  */
 
 }
 
@@ -65,8 +65,8 @@ let Extension =
 
   // typing
 
-  is : constructibleIs,
-  like : constructibleLike,
+  is : constructibleIs, /* qqq : cover and move | aaa : Done. */
+  like : constructibleLike, /* qqq : cover and move | aaa : Done.  */
 
 }
 
