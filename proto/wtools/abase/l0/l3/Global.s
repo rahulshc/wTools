@@ -1,4 +1,4 @@
-( function _l3_Partible_s_()
+( function _l3_Global_s_()
 {
 
 'use strict';
