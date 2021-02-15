@@ -51,7 +51,7 @@ function production( test )
   
   let mdlPath = a.abs( __dirname, '../package.json' );
   let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
-  let trigger = _.test.workflowTriggerGet( __dirname );
+  let trigger = _.test.workflowTriggerGet( a.abs( __dirname, '..' ) );
   
   if( mdl.private || trigger === 'pull_request' )
   {
