@@ -36,11 +36,11 @@ Global
 GlobalReal
 GlobalDerived
 
-objectIs, /* qqq : optimize */
-objectLike, /* qqq : optimize */
+objectIs,
+objectLike,
 
-compositeIs, /* qqq : cover */
-compositeLike, /* qqq : cover */
+compositeIs,
+compositeLike,
 
 mapIs,
 mapLike_,
