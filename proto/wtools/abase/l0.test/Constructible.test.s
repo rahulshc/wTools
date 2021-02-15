@@ -21,7 +21,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'str';
   var src = 'str';
-  test.true( !_.constructibleIs( src ) );
+  test.true( !_.constructible.is( src ) );
   test.true( !_.objectIs( src ) );
   test.true( !_.objectLike( src ) );
   test.true( !_.mapIs( src ) );
@@ -33,7 +33,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'number';
   var src = 13;
-  test.true( !_.constructibleIs( src ) );
+  test.true( !_.constructible.is( src ) );
   test.true( !_.objectIs( src ) );
   test.true( !_.objectLike( src ) );
   test.true( !_.mapIs( src ) );
@@ -45,7 +45,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'pure map';
   var src = Object.create( null );
-  test.true( !_.constructibleIs( src ) );
+  test.true( !_.constructible.is( src ) );
   test.true( _.objectIs( src ) );
   test.true( _.objectLike( src ) );
   test.true( _.mapIs( src ) );
@@ -57,7 +57,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'polluted map';
   var src = {};
-  test.true( !_.constructibleIs( src ) );
+  test.true( !_.constructible.is( src ) );
   test.true( _.objectIs( src ) );
   test.true( _.objectLike( src ) );
   test.true( _.mapIs( src ) );
@@ -69,7 +69,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'regexp';
   var src = /abc/;
-  test.true( _.constructibleIs( src ) );
+  test.true( _.constructible.is( src ) );
   test.true( !_.objectIs( src ) );
   test.true( _.objectLike( src ) );
   test.true( !_.mapIs( src ) );
@@ -81,7 +81,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'date';
   var src = new Date();
-  test.true( _.constructibleIs( src ) );
+  test.true( _.constructible.is( src ) );
   test.true( !_.objectIs( src ) );
   test.true( _.objectLike( src ) );
   test.true( !_.mapIs( src ) );
@@ -120,7 +120,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
     {
       test.case = `${toStr( env )}`;
       var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
-      test.true( !_.constructibleIs( src ) );
+      test.true( !_.constructible.is( src ) );
 
       test.identical( _.objectIs( src ), true );
       test.identical( _.objectLike( src ), true );
@@ -142,7 +142,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       // debugger;
       var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
 
-      test.true( !_.constructibleIs( src ) ^ !!env.withConstructor );
+      test.true( !_.constructible.is( src ) ^ !!env.withConstructor );
 
       test.identical( _.objectIs( src ), true );
       test.identical( _.objectLike( src ), true );

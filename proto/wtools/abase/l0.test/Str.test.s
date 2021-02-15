@@ -3240,7 +3240,7 @@ function strEntityShort( test )
 
 //
 
-function strPrimitive( test )
+function strPrimitive( test ) /* qqq for Yevhen : extend */
 {
 
   test.case = 'undefined';
@@ -3279,6 +3279,7 @@ function strPrimitive( test )
 
 function strType( test )
 {
+
   test.case = 'undefined';
   var src = undefined;
   var expected = 'Undefined';
@@ -3392,55 +3393,37 @@ function strTypeGeneratedObject( test )
 
     if( !env.new )
     {
-      if( _.mapIsPure( src ) && src.constructor && src.constructor.name )
-      test.identical( _.strType( src ), src.constructor.name );
-      else if( _.mapIsPure( src ) )
+      if( _.mapIsPure( src ) )
       test.identical( _.strType( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
       test.identical( _.strType( src ), 'Map.polluted' );
       else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'map.pure.prototyped' );
+      test.identical( _.strType( src ), 'Map.pure.prototyped' );
       else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'map.polluted.prototyped' );
-
-      // if( _.mapIsPolluted( src ) )
-      // test.identical( _.strType( src ), 'map.polluted' );
-      // if( _.mapLikePolluted( src ) )
-      // test.identical( _.strType( src ), 'map.polluted' );
-
-      // test.true( !_.constructibleIs( src ) );
-      // test.identical( _.objectIs( src ), true );
-      // test.identical( _.objectLike( src ), true );
-      // test.identical( _.mapIs( src ), !env.withIterator );
-      // test.identical( _.mapLike( src ), !env.withIterator );
-      // test.identical( _.mapLikePrototyped( src ), false );
-      // test.identical( _.mapIsPure( src ), !!env.pure && !env.withIterator );
-      // test.identical( _.mapIsPolluted( src ), !env.pure && !env.withIterator );
-      // test.identical( _.mapLikePolluted( src ), !env.pure && !env.withIterator );
+      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      else if( env.withIterator )
+      test.identical( _.strType( src ), 'Object.partible' );
+      else
+      test.identical( _.strType( src ), 'Object' );
 
     }
+    else
+    {
 
-    // /* - */
-    //
-    // if( env.new )
-    // {
-    //   test.case = `${toStr( env )}`;
-    //   // if( env.withIterator === 0 && env.pure === 0 && env.withOwnConstructor === 0 && env.withConstructor === 0 )
-    //   // debugger;
-    //   var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
-    //
-    //   test.true( !_.constructibleIs( src ) ^ !!env.withConstructor );
-    //
-    //   test.identical( _.objectIs( src ), true );
-    //   test.identical( _.objectLike( src ), true );
-    //   test.identical( _.mapIs( src ), false );
-    //   test.identical( _.mapLike( src ), !env.withIterator && !env.withConstructor );
-    //   test.identical( _.mapLikePrototyped( src ), !env.withIterator && !env.withConstructor );
-    //   test.identical( _.mapIsPure( src ), false );
-    //   test.identical( _.mapIsPolluted( src ), false );
-    //   test.identical( _.mapLikePolluted( src ), !env.pure && !env.withIterator && !env.withConstructor );
-    //
-    // }
+      if( _.mapIsPure( src ) )
+      test.identical( _.strType( src ), 'Map.pure' );
+      else if( _.mapIsPolluted( src ) )
+      test.identical( _.strType( src ), 'Map.polluted' );
+      else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.pure.prototyped' );
+      else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      else if( env.withIterator )
+      test.identical( _.strType( src ), 'Object.partible' );
+      else
+      test.identical( _.strType( src ), 'Object' );
+
+    }
 
     /* - */
 
