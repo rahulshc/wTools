@@ -18560,39 +18560,39 @@ function strSplitInlinedStereo_OptionQuoting( test )
   /* - */
 
   test.case = 'quote 1 full inlined';
-  var srcStr = 'this "❮background:red❯"is❮background:default❯ text and is not';
+  var srcStr = 'this "❮inlined1❯"is❮inlined2❯ text and is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮background:red❯"is', 'background:default', ' text and is not' ];
+  var expected = [ 'this "❮inlined1❯"is', [ 'inlined2' ], ' text and is not' ];
   test.identical( got, expected );
 
   test.case = 'quote 2 full inlined';
-  var srcStr = 'this "❮background:red❯"is"❮background:default❯" text and is not';
+  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯" text and is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮background:red❯"is"❮background:default❯" text and is not' ];
+  var expected = [ 'this "❮inlined1❯"is"❮inlined2❯" text and is not' ];
   test.identical( got, expected );
 
   test.case = 'quote 2 inlined with 2 quotes';
-  var srcStr = 'this "❮background:red❯is❮background:default❯" text and is not';
+  var srcStr = 'this "❮inlined1❯is❮inlined2❯" text and is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮background:red❯is❮background:default❯" text and is not' ];
+  var expected = [ 'this "❮inlined1❯is❮inlined2❯" text and is not' ];
   test.identical( got, expected );
 
   test.case = '1 quote';
-  var srcStr = 'this "❮background:red❯is❮background:default❯ text and is not';
+  var srcStr = 'this "❮inlined1❯is❮inlined2❯ text and is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "', 'background:red', 'is', 'background:default', ' text and is not' ];
+  var expected = [ 'this "', [ 'inlined1' ], 'is', [ 'inlined2' ], ' text and is not' ];
   test.identical( got, expected );
 
   test.case = '3 quotes';
-  var srcStr = 'this "❮background:red❯"is"❮background:default❯ text and is not';
+  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯ text and is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮background:red❯"is"', 'background:default', ' text and is not' ];
+  var expected = [ 'this "❮inlined1❯"is"', [ 'inlined2' ], ' text and is not' ];
   test.identical( got, expected );
 
   test.case = '6 quotes';
-  var srcStr = 'this "❮background:red❯"is"❮background:default❯" text" and" is not';
+  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯" text" and" is not';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮background:red❯"is"❮background:default❯" text" and" is not' ];
+  var expected = [ 'this "❮inlined1❯"is"❮inlined2❯" text" and" is not' ];
   test.identical( got, expected );
 
   test.close( 'quoting - 1' );
