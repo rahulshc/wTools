@@ -2,6 +2,8 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 let _ = wTools;
 
+console.log( '4_implementArrayMake.s' );
+
 function arrayMake( src )
 {
   if( src === null || src === undefined )

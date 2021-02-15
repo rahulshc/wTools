@@ -3393,7 +3393,6 @@ function strTypeGeneratedObject( test )
 
     if( !env.new )
     {
-
       if( _.mapIsPure( src ) )
       test.identical( _.strType( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
