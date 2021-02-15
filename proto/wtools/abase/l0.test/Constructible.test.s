@@ -16,7 +16,7 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function typingBasic( test ) /* qqq for Yevhen : extend */
+function typingBasic( test ) /* qqq for Yevhen : extend | aaa : Done. */
 {
 
   test.case = 'str';
@@ -116,6 +116,35 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   /* */
 
+  test.case = 'Object with iterator';
+  var src = { [ Symbol.iterator ] : 1 };
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Pure map with iterator';
+  var src = Object.create( null );
+  src[ Symbol.iterator ] = 1;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
   test.case = 'pure map';
   var src = Object.create( null );
   test.true( !_.constructible.like( src ) );
@@ -127,6 +156,20 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.mapIsPure( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object with custom prototype';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.mapLikePrototyped( src ) );
+  test.true( _.mapLikePolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'polluted map';
