@@ -46,7 +46,16 @@ var Extension =
 
 //
 
+var ExtensionTools =
+{
+  partibleIs : is, /* qqq : cover here and in the module::MathVector */
+  partibleLike : like /* qqq : cover here and in the module::MathVector */
+}
+
+//
+
 Object.assign( _.partible, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export
