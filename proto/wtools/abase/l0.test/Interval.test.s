@@ -236,6 +236,117 @@ function intervalIs( test )
 
 //
 
+function intervalIsValid( test )
+{
+  test.case = 'not a range, long with 1 element';
+  var got = _.intervalIsValid([ 1 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'not a range, long with 3 elements';
+  var got = _.intervalIsValid([ 1, 2, 3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, elements isValid undefined';
+  var got = _.intervalIsValid([ undefined, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid undefined';
+  var got = _.intervalIsValid([ undefined, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid undefined';
+  var got = _.intervalIsValid([ 2, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two NaN';
+  var got = _.intervalIsValid([ NaN, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid NaN';
+  var got = _.intervalIsValid([ NaN, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid NaN';
+  var got = _.intervalIsValid([ 2, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two not integer numbers';
+  var got = _.intervalIsValid([ 2.01, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid not an integer';
+  var got = _.intervalIsValid([ 2.01, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid not an integer';
+  var got = _.intervalIsValid([ 2, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two Infinity';
+  var got = _.intervalIsValid([ Infinity, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid Infinity';
+  var got = _.intervalIsValid([ Infinity, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid Infinity';
+  var got = _.intervalIsValid([ 2, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two positive integer';
+  var got = _.intervalIsValid([ 2, 10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, two negative integer';
+  var got = _.intervalIsValid([ -2, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, first element +0';
+  var got = _.intervalIsValid([ +0, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid( [ 1, 2 ], 'extra' ) );
+}
+
+// --
+// common
+// --
+
 function is( test )
 {
   let namespaces =
@@ -7677,6 +7788,7 @@ let Self =
     // l0/l3/Interval.s
 
     intervalIs,
+    intervalIsValid,
 
     // common
 
