@@ -24,8 +24,8 @@ function checks( test ) /* qqq for Yevhen : extend */
   test.case = 'array';
   test.true( _.vector.is( [] ) );
   test.true( _.vector.like( [] ) );
-  test.true( _.vectorIs( [] ) );
-  test.true( _.vectorLike( [] ) );
+  // test.true( _.vector.is( [] ) ); /* qqq : enable */
+  // test.true( _.vector.like( [] ) );
 
   /* */
 

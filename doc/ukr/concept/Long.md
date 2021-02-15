@@ -26,8 +26,8 @@ console.log( _.unrollIs( unroll ) );
 `ArgumentsArray` - незалежний масивоподібний тип даних, що позначає вхідні дані рутини, як і тип `Unroll` може розгортатись в інших масивах та анролах.
 
 ```js
-let argumentsArray = _.argumentsArrayMake([ 1, 2, 'str' ]);
-console.log( _.argumentsArrayIs( argumentsArray ) );
+let argumentsArray = _.argumentsArray.make([ 1, 2, 'str' ]);
+console.log( _.argumentsArray.is( argumentsArray ) );
 /* log : true */
 ```
 
@@ -36,7 +36,7 @@ console.log( _.argumentsArrayIs( argumentsArray ) );
 ```js
 let array = [ 1, 2, 'str' ];
 let unroll = _.unrollMake([ 1, 2, 'str' ]);
-let argumentsArray = _.argumentsArrayFrom([ 1, 2, 'str' ]);
+let argumentsArray = _.argumentsArray.from([ 1, 2, 'str' ]);
 let bufferTyped = new U8x( 10 );
 console.log( _.longIs( array ) );
 /* log : true */
@@ -168,10 +168,10 @@ _.arrayIs( long );
 Створений лонг контейнер `long` має тип `Array`. Це дефолтний тип лонгів.
 
 ```js
-var argumentsArray = _.argumentsArrayMake([ 1, 2, 3 ]);
+var argumentsArray = _.argumentsArray.make([ 1, 2, 3 ]);
 var newLong = _.longMake( argumentsArray, 2 );
 /* returns : [ 1, 2 ] */
-_.argumentsArrayIs( newLong );
+_.argumentsArray.is( newLong );
 /* returns : false */
 _.arrayIs( newLong );
 /* returns : true */
@@ -194,8 +194,8 @@ _.unrollIs( newLong );
 
 ```js
 var _ = _.withDefaultLong.U8x;
-var argumentsArray = _.argumentsArrayMake([ 1, 2, 3 ]);
-_.argumentsArrayIs( argumentsArray );
+var argumentsArray = _.argumentsArray.make([ 1, 2, 3 ]);
+_.argumentsArray.is( argumentsArray );
 /* returns : true */
 var newLong = _.longMake( argumentsArray, 2 );
 /* returns : Uint8Array [ 1, 2 ] */

@@ -19,23 +19,23 @@ function longMakeEmpty( test )
 {
   test.case = 'src - containerAdapter, empty array';
   var got = _.longMakeEmpty( _.containerAdapter.make( [] ) );
-  var expected = _.containerAdapter.make( [] );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.longMakeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
-  var expected = _.containerAdapter.make( [] );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, empty array';
   var got = _.longMakeEmpty( _.containerAdapter.make( new Set( [] ) ) );
-  var expected = _.containerAdapter.make( new Set( [] ) );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, new Set( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.longMakeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
-  var expected = _.containerAdapter.make( new Set( [] ) );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, new Set( [] ) );
 }
 
 //
@@ -235,6 +235,7 @@ let Self =
 
   name : 'Tools.LongLike',
   silencing : 1,
+  enabled : 0,
 
   tests :
   {

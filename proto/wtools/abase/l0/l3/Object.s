@@ -48,7 +48,7 @@ function objectLike( src ) /* xxx qqq : optimize */
 
   // if( _.longIs( src ) ) /* yyy */
   // return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
 
   if( _.routineIsTrivial( src ) )
@@ -78,7 +78,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
 
   if( _.primitiveIs( src ) )
   return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
   if( _.routineIsTrivial( src ) )
   return false;
@@ -102,18 +102,18 @@ function objectForTesting( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  partiableConstructorPure.prototype = Object.create( null );
+  partibleConstructorPure.prototype = Object.create( null );
   if( o.withConstructor )
-  partiableConstructorPure.prototype.constructor = partiableConstructorPure;
+  partibleConstructorPure.prototype.constructor = partibleConstructorPure;
 
-  /* xxx : replace partiableMake */
+  /* xxx : replace partibleMake */
 
   if( o.new )
   {
     if( o.pure )
-    result = new partiableConstructorPure( o );
+    result = new partibleConstructorPure( o );
     else
-    result = new partiableConstructorPolluted( o );
+    result = new partibleConstructorPolluted( o );
   }
   else
   {
@@ -151,14 +151,14 @@ function objectForTesting( o )
 
   /* */
 
-  function partiableConstructorPure( o )
+  function partibleConstructorPure( o )
   {
     return _objectMake( this, o );
   }
 
   /* */
 
-  function partiableConstructorPolluted( o )
+  function partibleConstructorPolluted( o )
   {
     let result = _objectMake( this, o );
     if( !o.withConstructor )

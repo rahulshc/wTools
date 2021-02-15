@@ -1295,7 +1295,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 
   if( dstLong === null )
   dstLong = _.arrayMake( srcLong );
-  if( _.argumentsArrayIs( dstLong ) ) // Dmytro : missed
+  if( _.argumentsArray.is( dstLong ) ) // Dmytro : missed
   dstLong = this.longDescriptor.from( dstLong );
 
   if( onEvaluate === undefined )
