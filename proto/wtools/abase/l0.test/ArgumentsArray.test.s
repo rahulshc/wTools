@@ -15,15 +15,6 @@ let _ = _global_.wTools;
 // tests
 //--
 
-function is( test )
-{
-
-}
-
-//--
-// arguments array
-//--
-
 function make( test )
 {
   test.case = 'without arguments';
