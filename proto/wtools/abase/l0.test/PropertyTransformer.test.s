@@ -70,22 +70,22 @@ function mapperIs( test )
 
   function plain()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function mapper()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function filter()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function mapperFilter()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
 }
@@ -146,22 +146,22 @@ function filterIs( test )
 
   function plain()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function mapper()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function filter()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
   function mapperFilter()
   {
-    return 1 + 2
+    return 1 + 2;
   }
 
 }
