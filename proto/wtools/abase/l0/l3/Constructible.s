@@ -60,7 +60,20 @@ let ToolsExtension =
 
 //
 
+let Extension =
+{
+
+  // typing
+
+  is : constructibleIs, /* qqq : cover and move */
+  like : constructibleLike, /* qqq : cover and move */
+
+}
+
+//
+
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export

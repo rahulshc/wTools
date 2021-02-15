@@ -52,6 +52,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Array.s' );
   require( './l0/l5/Bool.s' );
   require( './l0/l5/Buffer.s' );
+  require( './l0/l5/Constructible.s' );
   require( './l0/l5/Container.s' );
   require( './l0/l5/Ct.s' );
   require( './l0/l5/Entity.s' );
@@ -97,6 +98,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Array.s' );
   require( './l0/l8/Bool.s' );
   require( './l0/l8/Buffer.s' );
+  require( './l0/l8/Constructible.s' );
   require( './l0/l8/Container.s' );
   require( './l0/l8/Ct.s' );
   require( './l0/l8/Entity.s' );
