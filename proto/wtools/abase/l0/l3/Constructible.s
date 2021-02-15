@@ -27,7 +27,7 @@ function constructibleIs( src ) /* xxx qqq : optimize */
 
   if( _.mapLike( src ) ) /* xxx : remove? */
   return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
   if( _.setIs( src ) )
   return false;

@@ -46,6 +46,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
   require( './l0/l3/Unroll.s' );
+  require( './l0/l3/Vector.s' );
 
   require( './l0/l5/Array.s' );
   require( './l0/l5/Bool.s' );
@@ -80,6 +81,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Time.s' );
   require( './l0/l5/Type.s' );
   require( './l0/l5/Unroll.s' );
+  require( './l0/l5/Vector.s' );
 
   require( './l0/l6/ContainerAdapter.s' );
   require( './l0/l6/LongDescriptor.s' );
@@ -123,6 +125,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Time.s' );
   require( './l0/l8/Type.s' );
   require( './l0/l8/Unroll.s' );
+  require( './l0/l8/Vector.s' );
 
   require( './l0/l9/Setup.s' );
 

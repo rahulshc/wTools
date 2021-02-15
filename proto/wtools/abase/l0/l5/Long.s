@@ -461,7 +461,7 @@ function longMakeEmpty( src )
     return this.longDescriptor.make( 0 );
   }
   // else if( _.longLike( src ) )
-  else if( _.vectorLike( src ) )
+  else if( _.vector.like( src ) )
   {
     return new src.constructor();
   }
