@@ -20,7 +20,7 @@ function longMakeEmpty( test )
   test.case = 'src - containerAdapter, empty array';
   var got = _.longMakeEmpty( _.containerAdapter.make( [] ) );
   var expected = _.containerAdapter.make( [] );
-  test.identical( got, expected );
+  test.identical( got, expected ); debugger;
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.longMakeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
