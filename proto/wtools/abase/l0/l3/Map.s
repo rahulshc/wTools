@@ -242,29 +242,7 @@ function mapIsPolluted( src )
 
 //
 
-function mapLikePolluted( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto.constructor === Object )
-  return true;
-
-  return false;
-}
-
-//
-
-function mapIsPrototyped( src )
+function mapLikePrototyped( src )
 {
 
   if( !src )
@@ -283,6 +261,54 @@ function mapIsPrototyped( src )
 
   if( !_.primitiveIs( proto ) )
   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapLikePure( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return true;
+
+  if( proto.constructor === Object )
+  return false;
+
+  if( !_.primitiveIs( proto ) )
+  if( !Reflect.has( proto, 'constructor' ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapLikePolluted( src )
+{
+
+  if( !src )
+  return false;
+
+  if( src[ Symbol.iterator ] )
+  return false;
+
+  let proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return false;
+
+  if( proto.constructor === Object )
   return true;
 
   return false;
@@ -1449,8 +1475,9 @@ let Extension =
   mapLike,
   mapIsPure,
   mapIsPolluted,
+  mapLikePrototyped,
+  mapLikePure, /* xxx : cover */
   mapLikePolluted,
-  mapIsPrototyped,
 
   mapIsEmpty,
   mapLikeEmpty,

@@ -26,7 +26,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.objectLike( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
@@ -38,7 +38,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.objectLike( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
@@ -50,7 +50,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.objectLike( src ) );
   test.true( _.mapIs( src ) );
   test.true( _.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( _.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
@@ -62,7 +62,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.objectLike( src ) );
   test.true( _.mapIs( src ) );
   test.true( _.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( _.mapIsPolluted( src ) );
   test.true( _.mapLikePolluted( src ) );
@@ -74,7 +74,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.objectLike( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
@@ -86,7 +86,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.objectLike( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapLike( src ) );
-  test.true( !_.mapIsPrototyped( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
@@ -126,7 +126,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       test.identical( _.objectLike( src ), true );
       test.identical( _.mapIs( src ), !env.withIterator );
       test.identical( _.mapLike( src ), !env.withIterator );
-      test.identical( _.mapIsPrototyped( src ), false );
+      test.identical( _.mapLikePrototyped( src ), false );
       test.identical( _.mapIsPure( src ), !!env.pure && !env.withIterator );
       test.identical( _.mapIsPolluted( src ), !env.pure && !env.withIterator );
       test.identical( _.mapLikePolluted( src ), !env.pure && !env.withIterator );
@@ -148,7 +148,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       test.identical( _.objectLike( src ), true );
       test.identical( _.mapIs( src ), false );
       test.identical( _.mapLike( src ), !env.withIterator && !env.withConstructor );
-      test.identical( _.mapIsPrototyped( src ), !env.withIterator && !env.withConstructor );
+      test.identical( _.mapLikePrototyped( src ), !env.withIterator && !env.withConstructor );
       test.identical( _.mapIsPure( src ), false );
       test.identical( _.mapIsPolluted( src ), false );
       test.identical( _.mapLikePolluted( src ), !env.pure && !env.withIterator && !env.withConstructor );

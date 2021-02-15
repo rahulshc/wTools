@@ -268,7 +268,9 @@ function toStrSimple()
 
 //
 
-/* qqq : implement test routine in module MathVector and MathMatrix */
+/* qqq for Yevhen : write perfect test and maybe extend */
+/* qqq for Yevhen : use template strings in this file */
+/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix */
 function strEntityShort( src )
 {
   let result = '';
@@ -277,6 +279,7 @@ function strEntityShort( src )
 
   try
   {
+
     if( _.symbolIs( src ) )
     {
       let text = src.toString().slice( 7, -1 );
@@ -287,17 +290,36 @@ function strEntityShort( src )
     {
       return String( src );
     }
-    else if( _.vectorAdapterIs( src ) )
-    {
-      result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
-    }
+    // else if( _.vectorAdapterIs( src ) )
+    // {
+    //   result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
+    // }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
       result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
     }
-    else if( _.longLike( src ) )
+    else if( _.vectorIs( src ) )
     {
       result += '{- ' + _.strType( src ) + ' with ' + src.length + ' elements -}';
+    }
+    else if( _.dateIs( src ) )
+    {
+      result += src.toISOString();
+    }
+    else if( _.regexpIs( src ) )
+    {
+      debugger;
+      result += src.toString();
+      debugger;
+    }
+    else if( _.routineIs( src ) )
+    {
+      debugger;
+      if( src.name )
+      result += `{- routine ${src.name} -}`;
+      else
+      result += `{- routine.anonymous -}`;
+      debugger;
     }
     else if( _.objectLike( src ) )
     {
@@ -309,10 +331,6 @@ function strEntityShort( src )
         result = src.exportString({ verbosity : 1 });
         result = _.strStrShort( result );
       }
-    }
-    else if( _.dateIs( src ) )
-    {
-      result += src.toISOString();
     }
     else
     {
@@ -515,17 +533,17 @@ function strPrimitive( src )
  * Return primitive type of src.
  *
  * @example
- * let str = _.strPrimitiveType( 'testing' );
+ * let str = _.strTypeSecondary( 'testing' );
  *
  * @param {*} src
  *
  * @return {string}
  * string name of type src
- * @function strPrimitiveType
+ * @function strTypeSecondary
  * @namespace Tools
  */
 
-function strPrimitiveType( src )
+function strTypeSecondary( src )
 {
 
   let name = Object.prototype.toString.call( src );
@@ -557,15 +575,20 @@ function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 
   if( !_.primitiveIs( src ) )
   if( src.constructor && src.constructor.name )
-  return end( src.constructor.name );
+  {
+    if( _.mapIsPolluted( src ) )
+    return 'Map.polluted';
+    return end( src.constructor.name );
+  }
 
-  let result = _.strPrimitiveType( src );
+  let result = _.strTypeSecondary( src );
 
   if( result === 'Object' )
   {
     if( Object.getPrototypeOf( src ) === null )
     result = 'Map.pure';
-    else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
+    // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
+    else if( _.mapLikePrototyped( src ) )
     result = 'Map.prototyped';
   }
 
@@ -1235,7 +1258,7 @@ let Extension =
   strEntityShort,
   strStrShort,
   strPrimitive,
-  strPrimitiveType,
+  strTypeSecondary,
   strType,
   strConcat,
 

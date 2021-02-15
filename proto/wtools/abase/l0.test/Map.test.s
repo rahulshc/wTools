@@ -26,7 +26,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -42,7 +42,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -58,7 +58,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -74,7 +74,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -89,7 +89,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
   test.identical( _.mapLikePolluted( src ), true );
@@ -104,7 +104,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
   test.identical( _.mapLikePolluted( src ), true );
@@ -120,7 +120,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
   test.identical( _.mapLikePolluted( src ), true );
@@ -136,7 +136,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -151,7 +151,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
   test.identical( _.mapLikePolluted( src ), true );
@@ -166,7 +166,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -181,7 +181,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -196,7 +196,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -211,7 +211,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -225,7 +225,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -240,7 +240,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -255,7 +255,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -270,7 +270,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -285,7 +285,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -300,7 +300,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -316,7 +316,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -333,7 +333,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -353,7 +353,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -369,7 +369,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), true );
@@ -386,7 +386,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.mapLikePrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), false );
@@ -403,7 +403,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), true );
@@ -423,7 +423,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.objectLike( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.mapLikePrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.mapLikePolluted( src ), true );
