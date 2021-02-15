@@ -48,8 +48,8 @@ var Extension =
 
 var ExtensionTools =
 {
-  partibleIs : is,
-  partibleLike : like
+  partibleIs : is, /* qqq : cover here and in the module::MathVector */
+  partibleLike : like /* qqq : cover here and in the module::MathVector */
 }
 
 //

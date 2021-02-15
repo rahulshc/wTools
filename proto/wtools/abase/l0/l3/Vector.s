@@ -82,8 +82,8 @@ var ExtensionTools =
 {
   vectorAdapterIs : adapterIs,
   vadIs : adapterIs,
-  vectorIs : is,
-  vectorLike : like,
+  vectorIs : is, /* qqq : cover here and in the module::MathVector */
+  vectorLike : like, /* qqq : cover here and in the module::MathVector */
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
 }
