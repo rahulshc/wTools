@@ -12,8 +12,340 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/Interval.s
+// interval l0/l3/Interval.s
 //--
+
+function intervalIs( test )
+{
+  test.case = 'undefined';
+  var got = _.intervalIs( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.intervalIs( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.intervalIs( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.intervalIs( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.intervalIs( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.intervalIs( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.intervalIs( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.intervalIs( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.intervalIs( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  function Constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.intervalIs( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.intervalIs( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.intervalIs( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.intervalIs( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Set';
+  var got = _.intervalIs( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.intervalIs( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.intervalIs( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.intervalIs( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.intervalIs( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.intervalIs( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.intervalIs( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'array.length = 0';
+  var got = _.intervalIs( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 1';
+  var got = _.intervalIs( [ 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, numbers';
+  var got = _.intervalIs( [ 1, 2 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, number and undefined';
+  var got = _.intervalIs( [ 1, undefined ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length > 2';
+  var got = _.intervalIs( [ 1, 2, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 0';
+  var got = _.intervalIs( _.unrollMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 1';
+  var got = _.intervalIs( _.unrollMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, numbers';
+  var got = _.intervalIs( _.unrollMake( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, number and undefined';
+  var got = _.intervalIs( _.unrollMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length > 2';
+  var got = _.intervalIs( _.unrollMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 0';
+  var got = _.intervalIs( _.argumentsArrayMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 1';
+  var got = _.intervalIs( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, numbers';
+  var got = _.intervalIs( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, number and undefined';
+  var got = _.intervalIs( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length > 2';
+  var got = _.intervalIs( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 0';
+  var got = _.intervalIs( new U8x() );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 1';
+  var got = _.intervalIs( new I16x( 1 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2';
+  var got = _.intervalIs( new F32x( 2 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length > 2';
+  var got = _.intervalIs( new F32x( 4 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intervalIs() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intervalIs( [ 1, 2 ], 'extra' ) );
+}
+
+//
+
+function intervalIsValid( test )
+{
+  test.case = 'not a range, long with 1 element';
+  var got = _.intervalIsValid([ 1 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'not a range, long with 3 elements';
+  var got = _.intervalIsValid([ 1, 2, 3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, elements isValid undefined';
+  var got = _.intervalIsValid([ undefined, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid undefined';
+  var got = _.intervalIsValid([ undefined, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid undefined';
+  var got = _.intervalIsValid([ 2, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two NaN';
+  var got = _.intervalIsValid([ NaN, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid NaN';
+  var got = _.intervalIsValid([ NaN, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid NaN';
+  var got = _.intervalIsValid([ 2, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two not integer numbers';
+  var got = _.intervalIsValid([ 2.01, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid not an integer';
+  var got = _.intervalIsValid([ 2.01, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid not an integer';
+  var got = _.intervalIsValid([ 2, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two Infinity';
+  var got = _.intervalIsValid([ Infinity, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid Infinity';
+  var got = _.intervalIsValid([ Infinity, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid Infinity';
+  var got = _.intervalIsValid([ 2, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two positive integer';
+  var got = _.intervalIsValid([ 2, 10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, two negative integer';
+  var got = _.intervalIsValid([ -2, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, first element +0';
+  var got = _.intervalIsValid([ +0, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid( [ 1, 2 ], 'extra' ) );
+}
+
+// --
+// common
+// --
 
 function is( test )
 {
@@ -7452,6 +7784,11 @@ let Self =
 
   tests :
   {
+
+    // l0/l3/Interval.s
+
+    intervalIs,
+    intervalIsValid,
 
     // common
 

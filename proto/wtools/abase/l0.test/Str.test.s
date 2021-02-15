@@ -3394,7 +3394,6 @@ function strTypeWithTraitsGeneratedObject( test )
 
     if( env.new )
     {
-
       if( _.mapIsPure( src ) )
       test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )

@@ -6,6 +6,8 @@
   What if we want to add `null` as the value ?
 */
 
+console.log( '0_Imlementation.s' );
+
 function objectSetField( obj, field, value )
 {
   if( value === null )

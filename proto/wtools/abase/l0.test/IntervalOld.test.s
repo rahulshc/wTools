@@ -2789,7 +2789,7 @@ let Self =
 
   name : 'Tools.IntervalOld',
   silencing : 1,
-  enabled : 1,
+  enabled : 0,
 
   tests :
   {
