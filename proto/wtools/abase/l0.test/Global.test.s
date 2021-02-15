@@ -57,6 +57,8 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
   test.true( !_.global.isReal( src ) );
   test.true( !_.global.isDerivative( src ) );
 
+  /* */
+
   test.case = 'current global';
   var src = _global_;
   test.true( _.global.is( src ) );
