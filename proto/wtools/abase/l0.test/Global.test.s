@@ -21,15 +21,59 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
 
   /* */
 
+  test.case = 'primitive - string';
+  var src = 'str';
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
+  test.case = 'primitive - number';
+  var src = 1;
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
+  test.case = 'primitive - bool';
+  var src = true;
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
+  test.case = 'object';
+  var src = { global : true };
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
+  test.case = 'namespace';
+  var src = _.entity;
+  test.true( !_.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
+
   test.case = 'current global';
-  test.true( true );
-  test.true( _.global.is( _global_ ) );
-  test.true( _.global.isReal( _global_ ) );
-  test.true( !_.global.isDerivative( _global_ ) );
+  var src = _global_;
+  test.true( _.global.is( src ) );
+  test.true( _.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
 
-  /* */
+  test.case = 'global';
+  var src = global;
+  test.true( _.global.is( src ) );
+  test.true( _.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
 
-  console.log( _globals_ )
+  test.case = '_realGlobal_';
+  var src = _realGlobal_;
+  test.true( _.global.is( src ) );
+  test.true( _.global.isReal( src ) );
+  test.true( !_.global.isDerivative( src ) );
 
 }
 
@@ -46,7 +90,7 @@ var Self =
   tests :
   {
 
-    checks,
+    // checks,
 
   }
 
