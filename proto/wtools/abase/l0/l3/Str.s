@@ -296,7 +296,7 @@ function strEntityShort( src )
     // }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-      result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
+      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
     }
     else if( _.vector.is( src ) )
     {
@@ -324,7 +324,7 @@ function strEntityShort( src )
     else if( _.objectLike( src ) )
     {
       /* xxx : call exportString() if exists */
-      result += '{- ' + strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements' + ' -}';
+      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements' + ' -}';
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */
@@ -570,8 +570,9 @@ function strTypeSecondary( src )
 
 /* qqq : cover please | aaa : Done. Yevhen S. */
 /* qqq : write perfect coverage */
+/* qqq : jsdoc */
 /* xxx : optimize later */
-function strType( src )
+function strTypeWithTraits( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -584,9 +585,9 @@ function strType( src )
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
     else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
-    return 'Map.pure.prototyped';
+    return 'MapLike.pure.prototyped';
     else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
-    return 'Map.polluted.prototyped';
+    return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
   }
@@ -606,11 +607,51 @@ function strType( src )
     if( translated )
     result = translated;
 
-    // if( _.partibleIs( src ) )
-    // result += '.partible';
-    // if( _.constructibleIs( src ) )
-    // result += '.constructible';
+    if( !_.StandardType.has( result ) )
+    {
+      if( _.partibleIs( src ) )
+      result += '.partible';
+      if( _.constructibleIs( src ) )
+      result += '.constructible';
+    }
 
+    return result;
+  }
+
+}
+
+//
+
+/* qqq : jsdoc please */
+function strTypeWithoutTraits( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.mapLike( src ) )
+  {
+
+    if( _.mapIs( src ) )
+    return 'Map';
+    else
+    return 'MapLike';
+
+  }
+
+  if( _.primitiveIs( src ) )
+  return end( _.strTypeSecondary( src ) );
+
+  let proto = Object.getPrototypeOf( src );
+  if( proto && proto.constructor && proto.constructor.name )
+  return end( proto.constructor.name );
+
+  return end( _.strTypeSecondary( src ) );
+
+  function end( result )
+  {
+    let translated = _.TranslatedType[ result ];
+    if( translated )
+    result = translated;
     return result;
   }
 
@@ -1278,8 +1319,38 @@ let TranslatedType =
   'SharedArrayBuffer' : 'BufferRawShared',
   'Map' : 'HashMap',
   'WeakMap' : 'HashMapWeak',
+  'Function' : 'Routine',
 
 }
+
+let StandardType = new Set
+([
+
+  'U64x',
+  'U32x',
+  'U16x',
+  'U8x',
+  'U8ClampedX',
+  'I64x',
+  'I32x',
+  'I16x',
+  'I8x',
+  'F64x',
+  'F32x',
+
+  'BufferNode',
+  'BufferRaw',
+  'BufferRawShared',
+  'HashMap',
+  'HashMapWeak',
+
+  'ArgumentsArray',
+  'Array',
+  'Set',
+  'Routine',
+  'Global',
+
+]);
 
 let Extension =
 {
@@ -1308,7 +1379,9 @@ let Extension =
   strPrimitive,
   strTypeSecondary,
   strPrimitiveType : strTypeSecondary, /* xxx : remove */
-  strType,
+  strType : strTypeWithTraits,
+  strTypeWithTraits,
+  strTypeWithoutTraits,
   strConcat,
 
   //
@@ -1329,6 +1402,7 @@ let Extension =
   // fields
 
   TranslatedType,
+  StandardType,
 
 }
 

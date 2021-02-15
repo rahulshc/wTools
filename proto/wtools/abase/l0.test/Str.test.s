@@ -3277,6 +3277,7 @@ function strPrimitive( test ) /* qqq for Yevhen : extend */
 
 //
 
+/* qqq for Yevhen : extend */
 function strType( test )
 {
 
@@ -3328,9 +3329,9 @@ function strType( test )
   var got = _.strType( src );
   test.identical( got, expected );
 
-  test.case = 'function';
+  test.case = 'routine';
   var src = () => {};
-  var expected = 'Function';
+  var expected = 'Routine';
   var got = _.strType( src );
   test.identical( got, expected );
 
@@ -3369,7 +3370,7 @@ function strType( test )
 
 //
 
-function strTypeGeneratedObject( test )
+function strTypeWithTraitsGeneratedObject( test )
 {
 
   let sets =
@@ -3391,38 +3392,112 @@ function strTypeGeneratedObject( test )
     test.case = `${toStr( env )}`;
     var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
 
-    if( !env.new )
+    if( env.new )
     {
 
       if( _.mapIsPure( src ) )
-      test.identical( _.strType( src ), 'Map.pure' );
+      test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
-      test.identical( _.strType( src ), 'Map.polluted' );
+      test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
       else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'Map.pure.prototyped' );
+      test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
       else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
+      else if( env.withConstructor && env.withIterator && env.pure )
+      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPure.partible.constructible' );
+      else if( env.withConstructor && env.withIterator && !env.pure )
+      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPolluted.partible.constructible' );
+      else if( env.withConstructor && env.pure )
+      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPure.constructible' );
+      else if( env.withConstructor && !env.pure )
+      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPolluted.constructible' );
       else if( env.withIterator )
-      test.identical( _.strType( src ), 'Object.partible' );
+      test.identical( _.strTypeWithTraits( src ), 'Object.partible' );
       else
-      test.identical( _.strType( src ), 'Object' );
+      test.identical( _.strTypeWithTraits( src ), 'Object' );
 
     }
     else
     {
 
       if( _.mapIsPure( src ) )
-      test.identical( _.strType( src ), 'Map.pure' );
+      test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
-      test.identical( _.strType( src ), 'Map.polluted' );
+      test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
       else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'Map.pure.prototyped' );
+      test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
       else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
-      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withIterator )
-      test.identical( _.strType( src ), 'Object.partible' );
+      test.identical( _.strTypeWithTraits( src ), 'Object.partible' );
       else
-      test.identical( _.strType( src ), 'Object' );
+      test.identical( _.strTypeWithTraits( src ), 'Object' );
+
+    }
+
+    /* - */
+
+  }
+
+  function toStr( src )
+  {
+    return _globals_.testing.wTools.toStrSolo( src );
+  }
+
+}
+
+//
+
+function strTypeWithoutTraitsGeneratedObject( test )
+{
+
+  let sets =
+  {
+    withIterator : [ 0, 1 ],
+    pure : [ 0, 1 ],
+    withOwnConstructor : [ 0, 1 ],
+    withConstructor : [ 0, 1 ],
+    new : [ 0, 1 ],
+  };
+  let samples = _.eachSample({ sets });
+
+  for( let env of samples )
+  eachCase( env );
+
+  function eachCase( env )
+  {
+    var handled = false;
+    test.case = `${toStr( env )}`;
+    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+
+    if( env.new )
+    {
+
+      if( _.mapIs( src ) )
+      test.identical( _.strTypeWithoutTraits( src ), 'Map' );
+      else if( _.mapLike( src ) )
+      test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
+      else if( env.withConstructor && env.withIterator && env.pure )
+      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPure' );
+      else if( env.withConstructor && env.withIterator && !env.pure )
+      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPolluted' );
+      else if( env.withConstructor && env.pure )
+      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPure' );
+      else if( env.withConstructor && !env.pure )
+      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPolluted' );
+      else
+      test.identical( _.strTypeWithoutTraits( src ), 'Object' );
+
+    }
+    else
+    {
+
+      if( _.mapIs( src ) )
+      test.identical( _.strTypeWithoutTraits( src ), 'Map' );
+      else if( _.mapLike( src ) )
+      test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
+      else
+      test.identical( _.strTypeWithoutTraits( src ), 'Object' );
 
     }
 
@@ -19429,7 +19504,8 @@ var Self =
     strEntityShort,
     strPrimitive,
     strType,
-    strTypeGeneratedObject,
+    strTypeWithTraitsGeneratedObject,
+    strTypeWithoutTraitsGeneratedObject,
     strConcat,
 
     strQuote,

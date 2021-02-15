@@ -67,7 +67,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
   /* */
 
   test.case = `vector`;
-  var src = new partiableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   test.true( _.partible.is( src ) );
   test.true( _.vector.is( src ) );
   test.true( !_.longIs( src ) );
@@ -75,8 +75,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 
   /* */
 
-  test.case = `partiable`;
-  var src = new partiableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.case = `partible`;
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   test.true( _.partible.is( src ) );
   test.true( !_.vector.is( src ) );
   test.true( !_.longIs( src ) );
@@ -84,8 +84,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 
   /* */
 
-  test.case = `partiable made`;
-  var src = partiableMake( null, { elements : [ '1', '10' ], withIterator : 1 } );
+  test.case = `partible made`;
+  var src = partibleMake( null, { elements : [ '1', '10' ], withIterator : 1 } );
   test.true( _.partible.is( src ) );
   test.true( !_.vector.is( src ) );
   test.true( !_.longIs( src ) );
@@ -117,14 +117,14 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 
   /* */
 
-  function partiableConstructor( o )
+  function partibleConstructor( o )
   {
-    return partiableMake( this, o );
+    return partibleMake( this, o );
   }
 
   /* */
 
-  function partiableMake( dst, o )
+  function partibleMake( dst, o )
   {
     if( dst === null )
     dst = Object.create( null );
