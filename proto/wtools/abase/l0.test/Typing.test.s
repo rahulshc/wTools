@@ -556,95 +556,95 @@ function bigIntIs( test )
 function vectorAdapterIs( test )
 {
   test.case = 'without argument';
-  var got = _.vectorAdapterIs();
+  var got = _.vector.adapterIs();
   test.identical( got, false );
 
   test.case = 'check null';
-  var got = _.vectorAdapterIs( null );
+  var got = _.vector.adapterIs( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.vectorAdapterIs( undefined );
+  var got = _.vector.adapterIs( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.vectorAdapterIs( _.nothing );
+  var got = _.vector.adapterIs( _.nothing );
   test.identical( got, false );
 
   test.case = 'check zero';
-  var got = _.vectorAdapterIs( 0 );
+  var got = _.vector.adapterIs( 0 );
   test.identical( got, false );
 
   test.case = 'check empty string';
-  var got = _.vectorAdapterIs( '' );
+  var got = _.vector.adapterIs( '' );
   test.identical( got, false );
 
   test.case = 'check false';
-  var got = _.vectorAdapterIs( false );
+  var got = _.vector.adapterIs( false );
   test.identical( got, false );
 
   test.case = 'check NaN';
-  var got = _.vectorAdapterIs( NaN );
+  var got = _.vector.adapterIs( NaN );
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.vectorAdapterIs( Symbol( 'a' ) );
+  var got = _.vector.adapterIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
-  var got = _.vectorAdapterIs( [] );
+  var got = _.vector.adapterIs( [] );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.vectorAdapterIs( _.argumentsArrayMake( [] ) );
+  var got = _.vector.adapterIs( _.argumentsArrayMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
-  var got = _.vectorAdapterIs( _.unrollMake( [] ) );
+  var got = _.vector.adapterIs( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty map';
-  var got = _.vectorAdapterIs( {} );
+  var got = _.vector.adapterIs( {} );
   test.identical( got, false );
 
   test.case = 'check empty pure map';
-  var got = _.vectorAdapterIs( Object.create( null ) );
+  var got = _.vector.adapterIs( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'check empty Set';
-  var got = _.vectorAdapterIs( new Set( [] ) );
+  var got = _.vector.adapterIs( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.vectorAdapterIs( new Map( [] ) );
+  var got = _.vector.adapterIs( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
-  var got = _.vectorAdapterIs( new BufferRaw() );
+  var got = _.vector.adapterIs( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check empty BufferTyped';
-  var got = _.vectorAdapterIs( new U8x() );
+  var got = _.vector.adapterIs( new U8x() );
   test.identical( got, false );
 
   test.case = 'check number';
-  var got = _.vectorAdapterIs( 3 );
+  var got = _.vector.adapterIs( 3 );
   test.identical( got, false );
 
   test.case = 'check bigInt';
-  var got = _.vectorAdapterIs( 1n );
+  var got = _.vector.adapterIs( 1n );
   test.identical( got, false );
 
   test.case = 'check string';
-  var got = _.vectorAdapterIs( 'str' );
+  var got = _.vector.adapterIs( 'str' );
   test.identical( got, false );
 
   test.case = 'check not empty array';
-  var got = _.vectorAdapterIs( [ null ] );
+  var got = _.vector.adapterIs( [ null ] );
   test.identical( got, false );
 
   test.case = 'check not empty map';
-  var got = _.vectorAdapterIs( { '' : null } );
+  var got = _.vector.adapterIs( { '' : null } );
   test.identical( got, false );
 
   /* */
@@ -652,13 +652,13 @@ function vectorAdapterIs( test )
   test.case = 'check not empty map';
   var src = Object.create( null );
   src._vectorBuffer = true;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   test.case = 'check not empty map';
   var src = Object.create( null );
   src._vectorBuffer = false;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
@@ -669,7 +669,7 @@ function vectorAdapterIs( test )
   };
   var src = new Constr1();
   src._vectorBuffer = true;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor with own property "constructor"';
@@ -681,7 +681,7 @@ function vectorAdapterIs( test )
   var src = new Constr2();
   src.constructor = Constr2;
   src._vectorBuffer = true;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer property';
@@ -694,7 +694,7 @@ function vectorAdapterIs( test )
   proto._vectorBuffer = true;
   var src = new Constr3();
   src.prototype = proto;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer and own "constructor" properties';
@@ -708,7 +708,7 @@ function vectorAdapterIs( test )
   proto.constructor = Constr4;
   var src = new Constr4();
   src.prototype = proto;
-  var got = _.vectorAdapterIs( src );
+  var got = _.vector.adapterIs( src );
   test.identical( got, false );
 
   /* Dmytro : the second part of routine in module wMathVector */

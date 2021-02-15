@@ -3213,11 +3213,34 @@ function strEntityShort( test )
   var got = _.strEntityShort( src );
   test.identical( got, expected );
 
+  test.case = 'date';
+  var src = new Date( Date.UTC( 2016, 12, 8 ) );
+  var expected = '2017-01-08T00:00:00.000Z';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  test.case = 'regexp';
+  var src = /abc/i;
+  var expected = '/abc/i';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  test.case = 'routine';
+  var src = function abc(){};
+  var expected = '{- routine abc -}';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  test.case = 'anonymous routine';
+  var expected = '{- routine.anonymous -}';
+  var got = _.strEntityShort( function(){} );
+  test.identical( got, expected );
+
 }
 
 //
 
-function strPrimitive( test )
+function strPrimitive( test ) /* qqq for Yevhen : extend */
 {
 
   test.case = 'undefined';
@@ -3256,6 +3279,7 @@ function strPrimitive( test )
 
 function strType( test )
 {
+
   test.case = 'undefined';
   var src = undefined;
   var expected = 'Undefined';
@@ -3298,12 +3322,6 @@ function strType( test )
   var got = _.strType( src );
   test.identical( got, expected );
 
-  test.case = 'object';
-  var src = { a : 1, b : 2, c : 3 };
-  var expected = 'Object';
-  var got = _.strType( src );
-  test.identical( got, expected );
-
   test.case = 'array';
   var src = [ 1, 2, 3 ];
   var expected = 'Array';
@@ -3333,6 +3351,89 @@ function strType( test )
   var expected = 'Set';
   var got = _.strType( src );
   test.identical( got, expected );
+
+  test.case = 'polluted map';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = 'Map.polluted';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.a = 1;
+  var expected = 'Map.pure';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+}
+
+//
+
+function strTypeGeneratedObject( test )
+{
+
+  let sets =
+  {
+    withIterator : [ 0, 1 ],
+    pure : [ 0, 1 ],
+    withOwnConstructor : [ 0, 1 ],
+    withConstructor : [ 0, 1 ],
+    new : [ 0, 1 ],
+  };
+  let samples = _.eachSample({ sets });
+
+  for( let env of samples )
+  eachCase( env );
+
+  function eachCase( env )
+  {
+    var handled = false;
+    test.case = `${toStr( env )}`;
+    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+
+    if( !env.new )
+    {
+
+      if( _.mapIsPure( src ) )
+      test.identical( _.strType( src ), 'Map.pure' );
+      else if( _.mapIsPolluted( src ) )
+      test.identical( _.strType( src ), 'Map.polluted' );
+      else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.pure.prototyped' );
+      else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      else if( env.withIterator )
+      test.identical( _.strType( src ), 'Object.partible' );
+      else
+      test.identical( _.strType( src ), 'Object' );
+
+    }
+    else
+    {
+
+      if( _.mapIsPure( src ) )
+      test.identical( _.strType( src ), 'Map.pure' );
+      else if( _.mapIsPolluted( src ) )
+      test.identical( _.strType( src ), 'Map.polluted' );
+      else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.pure.prototyped' );
+      else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+      test.identical( _.strType( src ), 'Map.polluted.prototyped' );
+      else if( env.withIterator )
+      test.identical( _.strType( src ), 'Object.partible' );
+      else
+      test.identical( _.strType( src ), 'Object' );
+
+    }
+
+    /* - */
+
+  }
+
+  function toStr( src )
+  {
+    return _globals_.testing.wTools.toStrSolo( src );
+  }
 
 }
 
@@ -19328,6 +19429,7 @@ var Self =
     strEntityShort,
     strPrimitive,
     strType,
+    strTypeGeneratedObject,
     strConcat,
 
     strQuote,
@@ -19394,7 +19496,6 @@ var Self =
     strSplitInlinedStereo_OptionPreservingOrdinary,
     strSplitInlinedStereo_OptionPreservingInlined,
     strSplitInlinedStereo_OptionsCombined,
-    /* qqq for Yevhen : no "_" in names. "_" in names has special meaning */
 
   }
 

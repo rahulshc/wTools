@@ -27,7 +27,7 @@ function constructibleIs( src ) /* xxx qqq : optimize */
 
   if( _.mapLike( src ) ) /* xxx : remove? */
   return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
   if( _.setIs( src ) )
   return false;
@@ -60,7 +60,20 @@ let ToolsExtension =
 
 //
 
+let Extension =
+{
+
+  // typing
+
+  is : constructibleIs, /* qqq : cover and move */
+  like : constructibleLike, /* qqq : cover and move */
+
+}
+
+//
+
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export
