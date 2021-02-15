@@ -30,6 +30,8 @@ function isContainer( src )
   return true;
   if( _.longLike( src ) )
   return true;
+  if( _.containerAdapter.is( src ) )
+  return true;
   return false;
 }
 
