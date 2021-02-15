@@ -166,6 +166,82 @@ function filterIs( test )
 
 }
 
+//
+
+function filterFrom( test )
+{
+  test.case = 'primitive bool';
+  var got = _.property.filterFrom( true );
+  test.identical( got, false );
+
+  test.case = 'primitive str';
+  var got = _.property.filterFrom( 'hello' );
+  test.identical( got, false );
+
+  test.case = 'primitive number';
+  var got = _.property.filterFrom( 1 );
+  test.identical( got, false );
+
+  test.case = 'empty object';
+  var got = _.property.filterFrom({});
+  test.identical( got, false );
+
+  test.case = 'object with identity field';
+  var src = { identity : { propertyMapper : true, propertyTransformer : true } }
+  var got = _.property.filterFrom( src );
+  test.identical( got, false );
+
+  test.case = 'plain routine';
+  var got = _.property.filterFrom( plain );
+  test.identical( got, false );
+
+  test.case = 'routine - сustom mapper';
+  mapper.identity = { propertyMapper : true, propertyTransformer : true }
+  var got = _.property.filterFrom( mapper );
+  test.identical( got, false );
+
+  test.case = 'routine - сustom filter';
+  filter.identity = { propertyFilter : true, propertyTransformer : true }
+  var got = _.property.filterFrom( filter );
+  test.identical( got, true );
+
+  test.case = 'routine - сustom filter & mapper';
+  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
+  var got = _.property.filterFrom( mapperFilter );
+  test.identical( got, true );
+
+  test.case = 'existing mapper';
+  var got = _.property.filterFrom( _.property.mapper[ 'assigning' ] );
+  test.identical( got, false );
+
+  test.case = 'existing filter';
+  var got = _.property.filterFrom( _.property.filter[ 'dstAndSrcOwn' ] );
+  test.identical( got, true );
+
+  /* - */
+
+  function plain()
+  {
+    return 1 + 2;
+  }
+
+  function mapper()
+  {
+    return 1 + 2;
+  }
+
+  function filter()
+  {
+    return 1 + 2;
+  }
+
+  function mapperFilter()
+  {
+    return 1 + 2;
+  }
+
+}
+
 // --
 // define test suite
 // --
@@ -178,8 +254,15 @@ let Self =
 
   tests :
   {
+
+    // l5
+
     mapperIs,
     filterIs,
+
+    // mapperFromFilter,
+    // mapperFrom,
+    // filterFrom,
   }
 
 }

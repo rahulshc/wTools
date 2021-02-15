@@ -222,8 +222,8 @@ let Extension =
   transformerRegister, /* qqq : light coverage required */
   transformersRegister, /* qqq : light coverage required */
   transformerIs,
-  mapperIs, /* qqq : light coverage required */
-  filterIs, /* qqq : light coverage required */
+  mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
 
 }
 
