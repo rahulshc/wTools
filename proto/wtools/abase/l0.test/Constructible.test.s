@@ -62,6 +62,36 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   /* */
 
+  test.case = 'set';
+  var src = new Set();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
+  test.case = 'routine';
+  var src = routine;
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
   test.case = 'pure map';
   var src = Object.create( null );
   test.true( !_.constructible.like( src ) );
@@ -113,6 +143,10 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.mapIsPure( src ) );
   test.true( !_.mapLikePolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
+
+  /* - */
+
+  function routine() {}
 
 }
 
