@@ -568,41 +568,89 @@ function strTypeSecondary( src )
  * @namespace Tools
  */
 
-function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
+/* qqq : cover please | aaa : Done. Yevhen S. */
+/* qqq : write perfect coverage */
+/* xxx : optimize later */
+function strType( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !_.primitiveIs( src ) )
-  if( src.constructor && src.constructor.name )
+  if( _.mapLike( src ) )
   {
-    if( _.mapIsPolluted( src ) )
+
+    if( _.mapIsPure( src ) )
+    return 'Map.pure';
+    else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    return end( src.constructor.name );
+    else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+    return 'Map.pure.prototyped';
+    else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+    return 'Map.polluted.prototyped';
+    else _.assert( 0, 'undexpected' );
+
   }
 
-  let result = _.strTypeSecondary( src );
+  if( _.primitiveIs( src ) )
+  return end( _.strTypeSecondary( src ) );
 
-  if( result === 'Object' )
-  {
-    if( Object.getPrototypeOf( src ) === null )
-    result = 'Map.pure';
-    // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-    else if( _.mapLikePrototyped( src ) )
-    result = 'Map.prototyped';
-  }
+  let proto = Object.getPrototypeOf( src );
+  if( proto && proto.constructor && proto.constructor.name )
+  return end( proto.constructor.name );
 
-  return end( result );
+  return end( _.strTypeSecondary( src ) );
 
   function end( result )
   {
     let translated = _.TranslatedType[ result ];
     if( translated )
     result = translated;
+
+    // if( _.partibleIs( src ) )
+    // result += '.partible';
+    // if( _.constructibleIs( src ) )
+    // result += '.constructible';
+
     return result;
   }
 
 }
+
+// function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
+// {
+//
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( !_.primitiveIs( src ) )
+//   if( src.constructor && src.constructor.name )
+//   {
+//     if( _.mapIsPolluted( src ) )
+//     return 'Map.polluted';
+//     return end( src.constructor.name );
+//   }
+//
+//   let result = _.strTypeSecondary( src );
+//
+//   if( result === 'Object' )
+//   {
+//     if( Object.getPrototypeOf( src ) === null )
+//     result = 'Map.pure';
+//     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
+//     else if( _.mapLikePrototyped( src ) )
+//     result = 'Map.prototyped';
+//   }
+//
+//   return end( result );
+//
+//   function end( result )
+//   {
+//     let translated = _.TranslatedType[ result ];
+//     if( translated )
+//     result = translated;
+//     return result;
+//   }
+//
+// }
 
 //
 
@@ -1255,8 +1303,8 @@ let Extension =
   toStrShort,
   toStr : toStrShort,
   toStrSimple,
-  strEntityShort,
-  strStrShort,
+  strEntityShort, /* qqq for Yevhen : perfect coverage required! */
+  strStrShort, /* qqq for Yevhen : cover */
   strPrimitive,
   strTypeSecondary,
   strPrimitiveType : strTypeSecondary, /* xxx : remove */
