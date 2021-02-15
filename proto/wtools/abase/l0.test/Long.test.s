@@ -480,9 +480,16 @@ function longLike( test )
     }
   }
 
-  var got = _.longLike( src );
-  var expected  = true;
-  test.identical( got, expected );
+  test.identical( _.arrayIs( src ), false );
+  test.identical( _.arrayLike( src ), false );
+  test.identical( _.longIs( src ), false );
+  test.identical( _.longLike( src ), false );
+  test.identical( _.vectorIs( src ), false );
+  test.identical( _.vectorLike( src ), false );
+  test.identical( _.partibleIs( src ), true );
+  test.identical( _.partibleLike( src ), true );
+
+  /* qqq for Yevhen : write very good test "typing" testing routines which check 'partible', 'vector', 'long', 'array' */
 
   /* - */
 
@@ -491,11 +498,6 @@ function longLike( test )
 }
 
 //
-
-/* aaa : implement */
-/* Dmytro : implemented */
-/* aaa : no! */
-/* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default */
 
 function longMakeWithArrayAndUnroll( test )
 {

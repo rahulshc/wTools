@@ -16,15 +16,16 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function checks( test ) /* qqq for Yevhen : extend */
+function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test.s ) */
 {
 
   /* */
 
   test.case = 'current global';
-  test.true( _.global.is( _global_ ) );
-  test.true( _.global.isReal( _global_ ) );
-  test.true( !_.global.isDerivative( _global_ ) );
+  test.true( true );
+  // test.true( _.global.is( _global_ ) );
+  // test.true( _.global.isReal( _global_ ) );
+  // test.true( !_.global.isDerivative( _global_ ) );
 
   /* */
 

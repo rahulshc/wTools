@@ -460,8 +460,8 @@ function longMakeEmpty( src )
   {
     return this.longDescriptor.make( 0 );
   }
-  else if( _.longLike( src ) )
-  // else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
+  // else if( _.longLike( src ) )
+  else if( _.vectorLike( src ) )
   {
     return new src.constructor();
   }

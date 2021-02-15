@@ -168,6 +168,13 @@ function partibleIs( src )
 
 //
 
+function partibleLike( src )
+{
+  return _.partibleIs( src );
+}
+
+//
+
 function constructorIsVectorAdapter( src )
 {
   if( !src )
@@ -569,6 +576,7 @@ let Routines =
   vectorIs, /* qqq : cover here and in the module::MathVector */
   vectorLike, /* qqq : cover here and in the module::MathVector */
   partibleIs, /* qqq : cover here and in the module::MathVector */
+  partibleLike, /* qqq : cover here and in the module::MathVector */
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
   /* qqq for Yevhen : move */

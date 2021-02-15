@@ -12,6 +12,12 @@ if( typeof module !== 'undefined' )
 let _global = _global_;
 let _ = _global_.wTools;
 
+/* qqq xxx : implement test routine _.regexp.isEmpty()
+
+- among other values should check /(?:)/
+
+*/
+
 // --
 // routines
 // --
