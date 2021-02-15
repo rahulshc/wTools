@@ -82,7 +82,7 @@ function routineIs( test )
   test.identical( got, false );
 
   test.case = 'arguments array';
-  var got = _.routineIs( _.argumentsArrayMake( [] ) );
+  var got = _.routineIs( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'unroll';
@@ -207,7 +207,7 @@ function routineLike( test )
   test.identical( got, false );
 
   test.case = 'arguments array';
-  var got = _.routineLike( _.argumentsArrayMake( [] ) );
+  var got = _.routineLike( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'unroll';
@@ -3153,7 +3153,7 @@ function routineUnite( test )
   test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
-  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
@@ -3171,7 +3171,7 @@ function routineUnite( test )
   test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
-  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
@@ -3255,7 +3255,7 @@ function routineUnite( test )
   test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
-  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
@@ -3273,7 +3273,7 @@ function routineUnite( test )
   test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
-  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
@@ -3320,7 +3320,7 @@ function routineUnite( test )
   test.true( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
-  var o = { args : _.argumentsArrayMake([ 1, 2 ]) };
+  var o = { args : _.argumentsArray.make([ 1, 2 ]) };
   var got = routine( o );
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, o ] );
@@ -3391,7 +3391,7 @@ function routineUnite( test )
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2, { args : _.argumentsArrayMake([ 1, 2 ]) } ] );
+  test.identical( got, [ 2, 2, { args : _.argumentsArray.make([ 1, 2 ]) } ] );
 
   test.case = 'head - null, tail use options map';
   var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail : tailUseOptions });

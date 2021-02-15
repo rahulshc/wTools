@@ -6652,7 +6652,7 @@ function strJoinPath( test )
   /* - */
 
   test.case = 'srcs is argumentsArray';
-  var srcs = _.argumentsArrayMake( [ 'he', '.llo.', ',', 'world', '!' ] );
+  var srcs = _.argumentsArray.make( [ 'he', '.llo.', ',', 'world', '!' ] );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, 'he.llo.,.world.!' );
 

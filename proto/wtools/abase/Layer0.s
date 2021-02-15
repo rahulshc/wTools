@@ -11,6 +11,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l2/Setup.s' );
 
+  require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
@@ -49,6 +50,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Unroll.s' );
   require( './l0/l3/Vector.s' );
 
+  require( './l0/l5/ArgumentsArray.s' );
   require( './l0/l5/Array.s' );
   require( './l0/l5/Bool.s' );
   require( './l0/l5/Buffer.s' );
@@ -95,6 +97,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l7/PropertyTransformers.s' );
   require( './l0/l7/LongContext.s' );
 
+  require( './l0/l8/ArgumentsArray.s' );
   require( './l0/l8/Array.s' );
   require( './l0/l8/Bool.s' );
   require( './l0/l8/Buffer.s' );

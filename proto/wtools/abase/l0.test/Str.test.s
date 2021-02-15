@@ -3330,7 +3330,7 @@ function strTypeWithTraitsBasic( test )
   test.identical( got, expected );
 
   test.case = 'ArgumentsArray';
-  var src = _.argumentsArrayMake([ 1, 2, 3 ]);
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = 'ArgumentsArray';
   var got = _.strTypeWithTraits( src );
   test.identical( got, expected );
@@ -3429,7 +3429,7 @@ function strTypeWithoutTraitsBasic( test )
   test.identical( got, expected );
 
   test.case = 'ArgumentsArray';
-  var src = _.argumentsArrayMake([ 1, 2, 3 ]);
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = 'ArgumentsArray';
   var got = _.strTypeWithoutTraits( src );
   test.identical( got, expected );
@@ -11441,7 +11441,7 @@ function strSplitsDropEmpty( test )
   /* - */
 
   test.case = 'another arrayLike objects in splits';
-  var src = _.argumentsArrayMake( [ '0', 'str', false ] );
+  var src = _.argumentsArray.make( [ '0', 'str', false ] );
   var splits = _.arrayFrom( src );
   var got = _.strSplitsDropEmpty( { splits } );
   test.identical( got, [ '0', 'str' ] );
