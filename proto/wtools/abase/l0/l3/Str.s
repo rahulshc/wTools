@@ -1259,6 +1259,7 @@ let Extension =
   strStrShort,
   strPrimitive,
   strTypeSecondary,
+  strPrimitiveType : strTypeSecondary, /* xxx : remove */
   strType,
   strConcat,
 
