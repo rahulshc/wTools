@@ -174,48 +174,6 @@ function typeOf( src, constructor )
 
 }
 
-//
-
-function prototypeIsPrototypeOf( superPrototype, subPrototype ) /* xxx : move */
-{
-  _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
-  if( superPrototype === subPrototype )
-  return true;
-  if( !superPrototype )
-  return false;
-  if( !subPrototype )
-  return false;
-  return Object.isPrototypeOf.call( superPrototype, subPrototype );
-}
-
-//
-
-function prototypeHas( superPrototype, subPrototype ) /* xxx : move */
-{
-  _.assert( arguments.length === 2, 'Expects two arguments' );
-  // eslint-disable-next-line no-prototype-builtins
-  return _.prototypeIsPrototypeOf( subPrototype, superPrototype );
-}
-
-//
-
-/**
- * Is prototype.
- * @function prototypeIs
- * @param {object} src - entity to check
- * @namespace Tools
- */
-
-function prototypeIs( src ) /* xxx : move */
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( _.primitiveIs( src ) )
-  return false;
-  if( _.routineIs( src ) )
-  return false;
-  return Object.hasOwnProperty.call( src, 'constructor' );
-}
-
 // //
 //
 // function prototypeIsStandard( src )
@@ -490,9 +448,6 @@ let Routines =
   promiseLike,
 
   typeOf,
-  prototypeIsPrototypeOf,
-  prototypeHas,
-  prototypeIs,
   constructorIs,
   instanceIs,
 

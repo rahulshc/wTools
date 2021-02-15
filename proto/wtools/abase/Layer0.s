@@ -40,6 +40,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Path.s' );
   require( './l0/l3/Property.s' );
   require( './l0/l3/PropertyTransformer.s' );
+  require( './l0/l3/Prototype.s' );
   require( './l0/l3/Regexp.s' );
   require( './l0/l3/Routine.s' );
   require( './l0/l3/Set.s' );
@@ -78,6 +79,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Process.s' );
   require( './l0/l5/Property.s' );
   require( './l0/l5/PropertyTransformer.s' );
+  require( './l0/l5/Prototype.s' );
   require( './l0/l5/Regexp.s' );
   require( './l0/l5/Routine.s' );
   require( './l0/l5/Sorted.s' );
@@ -125,6 +127,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Process.s' );
   require( './l0/l8/Property.s' );
   require( './l0/l8/PropertyTransformer.s' );
+  require( './l0/l8/Prototype.s' );
   require( './l0/l8/Regexp.s' );
   require( './l0/l8/Routine.s' );
   require( './l0/l8/Set.s' );
