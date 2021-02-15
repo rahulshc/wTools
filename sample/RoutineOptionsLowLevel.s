@@ -6,7 +6,7 @@ require( '../proto/wtools/abase/l0/l2/Setup.s' );
 require( '../proto/wtools/abase/l0/l3/Array.s' );
 require( '../proto/wtools/abase/l0/l3/Entity.s' ); /* Array.s require */
 require( '../proto/wtools/abase/l0/l3/Err.s' );
-require( '../proto/wtools/abase/l0/l3/Map.s' );
+require( '../proto/wtools/abase/l0/l3/Object.s' );
 require( '../proto/wtools/abase/l0/l3/Routine.s' );
 require( '../proto/wtools/abase/l0/l3/Type.s' ); /* Map.s require */
 
