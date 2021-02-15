@@ -344,12 +344,19 @@ function toStrStandard( test )
 
   /* */
 
+  test.case = 'strTypeSecondary( Escape( null ) )';
+  var src = new _.Escape( null );
+  console.log( src );
+  var exp = `Escape`;
+  test.identical( _.strTypeSecondary( src ), exp );
+
+  /* */
+
   test.case = 'strType( Escape( null ) )';
   var src = new _.Escape( null );
   console.log( src );
-  var got = _.strType( src );
-  var exp = `Escape`;
-  test.identical( got, exp );
+  var exp = `Escape.partible.constructible`;
+  test.identical( _.strType( src ), exp );
 
   /* */
 
@@ -371,12 +378,19 @@ function toStrStandard( test )
 
   /* */
 
-  test.case = 'strType( Escape( null ) )';
+  test.case = 'strTypeSecondary( Escape( _.null ) )';
   var src = new _.Escape( _.null );
   console.log( src );
-  var got = _.strType( src );
   var exp = `Escape`;
-  test.identical( got, exp );
+  test.identical( _.strTypeSecondary( src ), exp );
+
+  /* */
+
+  test.case = 'strType( Escape( _.null ) )';
+  var src = new _.Escape( _.null );
+  console.log( src );
+  var exp = `Escape.partible.constructible`;
+  test.identical( _.strType( src ), exp );
 
   /* */
 
