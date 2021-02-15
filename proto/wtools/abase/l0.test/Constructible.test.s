@@ -21,75 +21,173 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
   test.case = 'str';
   var src = 'str';
+  test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
-  test.true( !_.objectIs( src ) );
   test.true( !_.objectLike( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( !_.objectIs( src ) );
   test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'number';
   var src = 13;
+  test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
-  test.true( !_.objectIs( src ) );
   test.true( !_.objectLike( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( !_.objectIs( src ) );
   test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  test.true( !_.constructible.is( src ) );
-  test.true( _.objectIs( src ) );
-  test.true( _.objectLike( src ) );
-  test.true( _.mapIs( src ) );
-  test.true( _.mapLike( src ) );
-  test.true( !_.mapLikePrototyped( src ) );
-  test.true( _.mapIsPure( src ) );
   test.true( !_.mapIsPolluted( src ) );
-  test.true( !_.mapLikePolluted( src ) );
 
-  test.case = 'polluted map';
-  var src = {};
+  test.case = `bool`;
+  var src = true;
+  test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
-  test.true( _.objectIs( src ) );
-  test.true( _.objectLike( src ) );
-  test.true( _.mapIs( src ) );
-  test.true( _.mapLike( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.mapIsPolluted( src ) );
-  test.true( _.mapLikePolluted( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'set';
+  var src = new Set();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
+  test.case = 'routine';
+  var src = routine;
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
 
   test.case = 'regexp';
   var src = /abc/;
+  test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
-  test.true( !_.objectIs( src ) );
   test.true( _.objectLike( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( !_.objectIs( src ) );
   test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'date';
   var src = new Date();
+  test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
-  test.true( !_.objectIs( src ) );
   test.true( _.objectLike( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( !_.objectIs( src ) );
   test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
   test.true( !_.mapLikePrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.mapIsPolluted( src ) );
   test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
+  test.case = 'Object with iterator';
+  var src = { [ Symbol.iterator ] : 1 };
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Pure map with iterator';
+  var src = Object.create( null );
+  src[ Symbol.iterator ] = 1;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* */
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.mapLike( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( _.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( !_.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object with custom prototype';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.mapLike( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.mapLikePrototyped( src ) );
+  test.true( _.mapLikePolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'polluted map';
+  var src = {};
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.mapLike( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.mapLikePrototyped( src ) );
+  test.true( _.mapLikePolluted( src ) );
+  test.true( _.mapIsPolluted( src ) );
+
+  /* - */
+
+  function routine() {}
 
 }
 
