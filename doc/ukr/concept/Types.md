@@ -61,12 +61,14 @@ BufferRaw
 BufferRawShared
 BufferTyped
 BufferView
+BufferBytes?
 
-constructibleIs
+constructible
 constructibleLike
 
-ContainerIs
+Container
 ContainerLike
+containerAdapter
 
 Entity?
 
@@ -81,11 +83,20 @@ errWary
 
 Escape
 
+Event?
+
 cinterval
 linterval
 ointerval
 
+LongDescriptors
+
 Pair
+Path
+
+propertyTransformer
+mapper
+filter
 
 Routine
 RoutineLike?
@@ -122,3 +133,9 @@ trait
 
 blueprintIsDefinitive,
 blueprintIsRuntime,
+
+chainer,
+supervisor
+
+ContainerAdapterArray
+ContainerAdapterSet
