@@ -4,8 +4,13 @@
 
 console.log( '1_ImplementationWith4Arguments.s' );
 
-function objectSetFieldWith4Params( obj, field, value, skip )
+function objectSetFieldWith4Params( /* obj, field, value, skip */ )
 {
+  let obj = arguments[ 0 ];
+  let field = arguments[ 1 ];
+  let value = arguments[ 2 ];
+  let skip = arguments[ 3 ];
+
   if( skip === true )
   return;
   else

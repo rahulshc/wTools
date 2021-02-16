@@ -1015,7 +1015,7 @@ function onlyImplicit( test )
   /* */
 
   test.case = 'arguments array';
-  var src = _.argumentsArrayMake();
+  var src = _.argumentsArray.make();
   src.a = '1';
   src[ Symbol.for( 'a' ) ] = '1';
   var exp = new HashMap();

@@ -252,17 +252,26 @@ function _strRemoved( srcStr, insStr )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
 
-  if( !_.longIs( insStr ) )
+  if( _.longIs( insStr ) )
   {
-    result = result.replace( insStr, '' );
+    for( let i = 0; i < insStr.length; i++ )
+    result = result.replace( insStr[ i ], '' );
   }
   else
   {
-    for( let i = 0; i < insStr.length; i++ )
-    {
-      result = result.replace( insStr[ i ], '' );
-    }
+    result = result.replace( insStr, '' );
   }
+  // if( !_.longIs( insStr ) )
+  // {
+  //   result = result.replace( insStr, '' );
+  // }
+  // else
+  // {
+  //   for( let i = 0; i < insStr.length; i++ )
+  //   {
+  //     result = result.replace( insStr[ i ], '' );
+  //   }
+  // }
 
   return result;
 }
@@ -387,10 +396,14 @@ function strPrependOnce( src, begin )
 function strAppendOnce( src, end )
 {
   _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
-  if( src.indexOf( end, src.length - end.length ) !== -1 )
-  return src;
-  else
+  if( src.indexOf( end, src.length - end.length ) === -1 )
   return src + end;
+  else
+  return src;
+  // if( src.indexOf( end, src.length - end.length ) !== -1 )
+  // return src;
+  // else
+  // return src + end;
 }
 
 // --
@@ -433,12 +446,14 @@ function strReplaceWords( src, ins, sub )
     let r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)', 'gm' );
     result = result.replace( r, function( original )
     {
-
-      if( original[ 0 ] !== sub[ i ][ 0 ] )
-      return original[ 0 ] + sub[ i ];
-      else
+      if( original[ 0 ] === sub[ i ][ 0 ] )
       return sub[ i ];
-
+      else
+      return original[ 0 ] + sub[ i ];
+      // if( original[ 0 ] !== sub[ i ][ 0 ] )
+      // return original[ 0 ] + sub[ i ];
+      // else
+      // return sub[ i ];
     });
   }
 
@@ -2936,7 +2951,11 @@ function strLinesSelect( o )
 
   if( !o.range )
   {
-    if( o.line !== null )
+    if( o.line === null )
+    {
+      o.range = [ 0, _.strCount( o.src, o.delimteter )+1 ];
+    }
+    else
     {
       if( o.selectMode === 'center' )
       o.range = [ o.line - Math.ceil( ( o.nearestLines + 1 ) / 2 ) + 1, o.line + Math.floor( ( o.nearestLines - 1 ) / 2 ) + 1 ];
@@ -2945,10 +2964,19 @@ function strLinesSelect( o )
       else if( o.selectMode === 'end' )
       o.range = [ o.line - o.nearestLines+1, o.line+1 ];
     }
-    else
-    {
-      o.range = [ 0, _.strCount( o.src, o.delimteter )+1 ];
-    }
+    // if( o.line !== null )
+    // {
+    //   if( o.selectMode === 'center' )
+    //   o.range = [ o.line - Math.ceil( ( o.nearestLines + 1 ) / 2 ) + 1, o.line + Math.floor( ( o.nearestLines - 1 ) / 2 ) + 1 ];
+    //   else if( o.selectMode === 'begin' )
+    //   o.range = [ o.line, o.line + o.nearestLines ];
+    //   else if( o.selectMode === 'end' )
+    //   o.range = [ o.line - o.nearestLines+1, o.line+1 ];
+    // }
+    // else
+    // {
+    //   o.range = [ 0, _.strCount( o.src, o.delimteter )+1 ];
+    // }
   }
 
   if( o.line === null )

@@ -176,7 +176,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.mapLikePopulated( src ), false );
 
   test.case = 'empty arguments array';
-  var src = _.argumentsArrayMake();
+  var src = _.argumentsArray.make();
   test.identical( _.objectIs( src ), false );
   test.identical( _.objectLike( src ), false );
   test.identical( _.mapIs( src ), false );

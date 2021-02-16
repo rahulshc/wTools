@@ -2132,7 +2132,7 @@ function empty( test )
   test.shouldThrowErrorSync( () => _.container.empty( new Constr() ) );
 
   test.case = 'not resizable longs';
-  test.shouldThrowErrorSync( () => _.container.empty( _.argumentsArrayMake( [] ) ) );
+  test.shouldThrowErrorSync( () => _.container.empty( _.argumentsArray.make( [] ) ) );
   test.shouldThrowErrorSync( () => _.container.empty( new U8x() ) );
   test.shouldThrowErrorSync( () => _.container.empty( new F64x() ) );
 
