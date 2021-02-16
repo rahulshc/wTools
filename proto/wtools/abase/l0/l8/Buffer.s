@@ -3101,7 +3101,7 @@ function _bufferReusing( o )
     else
     size = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * resultElementSize;
 
-    if( o.growFactor > 1 && o.resizing && !newBufferCreate )
+    if( o.growFactor > 1 && o.reusing && !newBufferCreate )
     {
       let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
       if( dstSize < size )
