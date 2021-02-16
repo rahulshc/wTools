@@ -216,9 +216,9 @@ let Extension =
   mapper : Object.create( null ),
   filter : Object.create( null ),
 
-  mapperFromFilter, /* qqq : light coverage required */
-  mapperFrom, /* qqq : light coverage required */
-  filterFrom, /* qqq : light coverage required */
+  mapperFromFilter, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   transformerRegister, /* qqq : light coverage required */
   transformersRegister, /* qqq : light coverage required */
   transformerIs,

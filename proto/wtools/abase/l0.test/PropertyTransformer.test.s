@@ -223,51 +223,51 @@ function filterIs( test )
 function mapperFromFilter( test )
 {
   test.case = 'routine - сustom mapper without propertyTransformer';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true }
-  var got = _.property.mapperFromFilter( mapper );
+  var src = mapper1;
+  src.identity = { propertyMapper : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter without propertyTransformer';
-  filter.identity = { propertyFilter : true }
-  var src = filter;
-  var got = _.property.mapperFromFilter( filter );
+  var src = filter1;
+  src.identity = { propertyFilter : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom mapper';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true, propertyTransformer : true }
-  var got = _.property.mapperFromFilter( mapper );
+  var src = mapper2;
+  src.identity = { propertyMapper : true, propertyTransformer : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter';
-  filter.identity = { propertyFilter : true, propertyTransformer : true }
-  var src = filter;
-  var got = _.property.mapperFromFilter( filter );
+  var src = filter2;
+  src.identity = { propertyFilter : true, propertyTransformer : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom mapper functor';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true, propertyTransformer : true, functor : true }
-  var got = _.property.mapperFromFilter( mapper );
+  var src = mapper3;
+  src.identity = { propertyMapper : true, propertyTransformer : true, functor : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter functor';
-  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
-  var src = filter;
-  var got = _.property.mapperFromFilter( filter );
+  var src = filter3;
+  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom filter & mapper';
-  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
   var src = mapperFilter;
-  var got = _.property.mapperFromFilter( mapperFilter );
+  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
+  var got = _.property.mapperFromFilter( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
@@ -299,12 +299,32 @@ function mapperFromFilter( test )
     return 1 + 2;
   }
 
-  function mapper()
+  function mapper1()
   {
     return 1 + 2;
   }
 
-  function filter()
+  function filter1()
+  {
+    return 1 + 2;
+  }
+
+  function mapper2()
+  {
+    return 1 + 2;
+  }
+
+  function filter2()
+  {
+    return 1 + 2;
+  }
+
+  function mapper3()
+  {
+    return 1 + 2;
+  }
+
+  function filter3()
   {
     return 1 + 2;
   }
@@ -327,50 +347,50 @@ function mapperFrom( test )
   test.true( got === src );
 
   test.case = 'routine - сustom mapper without propertyTransformer';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true }
+  var src = mapper1;
+  src.identity = { propertyMapper : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter without propertyTransformer';
-  filter.identity = { propertyFilter : true }
-  var src = filter;
+  var src = filter1;
+  src.identity = { propertyFilter : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom mapper';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true, propertyTransformer : true }
+  var src = mapper2;
+  src.identity = { propertyMapper : true, propertyTransformer : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter';
-  filter.identity = { propertyFilter : true, propertyTransformer : true }
-  var src = filter;
+  var src = filter2;
+  src.identity = { propertyFilter : true, propertyTransformer : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom mapper functor';
-  var src = mapper;
-  mapper.identity = { propertyMapper : true, propertyTransformer : true, functor : true }
+  var src = mapper3;
+  src.identity = { propertyMapper : true, propertyTransformer : true, functor : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter functor';
-  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
-  var src = filter;
+  var src = filter3;
+  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
   test.case = 'routine - сustom filter & mapper';
-  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
   var src = mapperFilter;
+  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
   var got = _.property.mapperFrom( src );
   test.true( _.property.mapperIs( got ) );
   test.true( got === src );
@@ -400,12 +420,32 @@ function mapperFrom( test )
     return 1 + 2;
   }
 
-  function mapper()
+  function mapper1()
   {
     return 1 + 2;
   }
 
-  function filter()
+  function filter1()
+  {
+    return 1 + 2;
+  }
+
+  function mapper2()
+  {
+    return 1 + 2;
+  }
+
+  function filter2()
+  {
+    return 1 + 2;
+  }
+
+  function mapper3()
+  {
+    return 1 + 2;
+  }
+
+  function filter3()
   {
     return 1 + 2;
   }
@@ -428,29 +468,29 @@ function filterFrom( test )
   test.true( got === src );
 
   test.case = 'routine - сustom filter without propertyTransformer';
-  filter.identity = { propertyFilter : true }
-  var src = filter;
+  var src = filter1;
+  src.identity = { propertyFilter : true }
   var got = _.property.filterFrom( src );
   test.true( _.property.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter';
-  filter.identity = { propertyFilter : true, propertyTransformer : true }
-  var src = filter;
+  var src = filter2;
+  src.identity = { propertyFilter : true, propertyTransformer : true }
   var got = _.property.filterFrom( src );
   test.true( _.property.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter functor';
-  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
-  var src = filter;
+  var src = filter3;
+  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
   var got = _.property.filterFrom( src );
   test.true( _.property.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter & mapper';
-  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
   var src = mapperFilter;
+  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
   var got = _.property.filterFrom( src );
   test.true( _.property.filterIs( got ) );
   test.true( got === src );
@@ -488,7 +528,16 @@ function filterFrom( test )
     return 1 + 2;
   }
 
-  function filter()
+  function filter1()
+  {
+    return 1 + 2;
+  }
+  function filter2()
+  {
+    return 1 + 2;
+  }
+
+  function filter3()
   {
     return 1 + 2;
   }
@@ -499,6 +548,146 @@ function filterFrom( test )
   }
 
 }
+
+//
+
+function transformerRegister( test )
+{
+  test.case = 'routine - сustom mapper without propertyTransformer';
+  var src = mapper1;
+  src.identity = { propertyMapper : true }
+  test.true( _.property.mapper[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.mapperIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom filter without propertyTransformer';
+  var src = filter1;
+  src.identity = { propertyFilter : true }
+  test.true( _.property.filter[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.filterIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom mapper';
+  var src = mapper2;
+  src.identity = { propertyMapper : true, propertyTransformer : true }
+  test.true( _.property.mapper[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.mapperIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom filter';
+  var src = filter2;
+  src.identity = { propertyFilter : true, propertyTransformer : true }
+  test.true( _.property.filter[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.filterIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom mapper functor';
+  var src = mapper3;
+  src.identity = { propertyMapper : true, propertyTransformer : true, functor : true }
+  test.true( _.property.mapper[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.mapperIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom filter functor';
+  var src = filter3;
+  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  test.true( _.property.filter[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.filterIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+
+  test.case = 'routine - сustom filter & mapper';
+  var src = mapperFilter;
+  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
+  test.true( _.property.mapper[ src.name ] === undefined );
+  test.true( _.property.filter[ src.name ] === undefined );
+  _.property.transformerRegister( src );
+  test.true( _.property.mapperIs( src ) );
+  test.true( _.property.filterIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ src.name ] ) );
+  test.true( _.property.filter[ src.name ] === undefined );
+
+  test.case = 'existing mapper with custom name';
+  var src = _.property.mapper[ 'assigning' ];
+  var srcName = 'existingMapper';
+  test.true( _.routineIs( _.property.mapper[ 'assigning' ] ) );
+  _.property.transformerRegister( src, srcName );
+  test.true( _.property.mapperIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ srcName ] ) );
+
+  test.case = 'existing filter with custom name';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  var srcName = 'existingFilter';
+  test.true( test.true( _.routineIs( _.property.mapper[ 'dstAndSrcOwn' ] ) ) );
+  _.property.transformerRegister( src, srcName );
+  test.true( _.property.filterIs( src ) );
+  test.true( _.routineIs( _.property.mapper[ srcName ] ) );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'primitive';
+  test.shouldThrowErrorSync( () => _.property.transformerRegister( plain ) )
+
+  test.case = 'plain routine';
+  test.shouldThrowErrorSync( () => _.property.transformerRegister( 'hello' ) )
+
+  test.case = 'existing mapper';
+  test.shouldThrowErrorSync( () => _.property.transformerRegister( _.property.mapper[ 'assigning' ] ) )
+
+  test.case = 'existing filter';
+  test.shouldThrowErrorSync( () => _.property.transformerRegister( _.property.filter[ 'dstAndSrcOwn' ] ) )
+
+  /* - */
+
+  function plain()
+  {
+    return 1 + 2;
+  }
+
+  function mapper1()
+  {
+    return 1 + 2;
+  }
+
+  function filter1()
+  {
+    return 1 + 2;
+  }
+
+  function mapper2()
+  {
+    return 1 + 2;
+  }
+
+  function filter2()
+  {
+    return 1 + 2;
+  }
+
+  function mapper3()
+  {
+    return 1 + 2;
+  }
+
+  function filter3()
+  {
+    return 1 + 2;
+  }
+
+  function mapperFilter()
+  {
+    return 1 + 2;
+  }
+
+}
+
+//
 
 // --
 // define test suite
@@ -520,7 +709,7 @@ let Self =
     mapperFromFilter,
     mapperFrom,
     filterFrom,
-    // transformerRegister,
+    transformerRegister,
     // transformersRegister,
   }
 
