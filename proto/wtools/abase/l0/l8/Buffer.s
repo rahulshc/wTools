@@ -2999,6 +2999,8 @@ function bufferResize_( dst, srcBuffer, size )
 
 function _bufferReusing_head()
 {
+  _.assert( arguments.length, 'Expects arguments' );
+
   let o = Object.create( null );
   if( arguments.length === 1 )
   {
@@ -3025,12 +3027,16 @@ function _bufferReusing_head()
     o.cinterval = arguments[ 1 ];
     o.ins = arguments[ 2 ];
   }
-  else
+  else if( arguments.length === 4 )
   {
     o.dst = arguments[ 0 ];
     o.src = arguments[ 1 ];
     o.cinterval = arguments[ 2 ];
     o.ins = arguments[ 3 ];
+  }
+  else
+  {
+    _.assert( 0, 'Expects less then 4 arguments' );
   }
 
   return o;
@@ -3159,7 +3165,15 @@ function _bufferReusing( o )
       }
       else
       {
-        buffer = _.bufferMakeUndefined( o.dst, resultLength );
+        if( _.arrayLikeResizable( o.dst ) )
+        {
+          buffer = o.dst;
+          buffer.length = resultLength;
+        }
+        else
+        {
+          buffer = _.bufferMakeUndefined( o.dst, resultLength );
+        }
       }
     }
     else
