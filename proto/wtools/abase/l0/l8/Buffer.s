@@ -3136,7 +3136,7 @@ function _bufferReusing( o )
       let leftOffset = dstOffset + o.cinterval[ 0 ];
       let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
       let rightBound = leftOffset + resultSize;
-      let insideRightBound = rightBound < dstSize;
+      let insideRightBound = rightBound <= dstSize;
 
       let shouldShrink = false;
       if( o.shrinkFactor > 1 )
@@ -3145,10 +3145,17 @@ function _bufferReusing( o )
       if( insideLeftBound && insideRightBound && !shouldShrink )
       {
         buffer = o.dst;
-        if( _.bufferNodeIs( buffer ) )
-        buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
-        else if( buffer.buffer )
-        buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
+        let bufferLength = buffer.buffer ? buffer.length : buffer.byteLength;
+        if( leftOffset !== dstOffset || resultSize !== bufferLength )
+        {
+          if( !o.offsetting )
+          leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
+
+          if( _.bufferNodeIs( buffer ) )
+          buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
+          else if( buffer.buffer )
+          buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
+        }
       }
       else
       {
@@ -3222,6 +3229,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   else
   bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
 
+  let _cinterval;
   o.cinterval = cintervalClamp();
 
   if( o.ins === undefined )
@@ -3249,12 +3257,13 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
 
-    return o.cinterval;
+    _cinterval = o.cinterval;
+    return [ 0, o.cinterval[ 1 ] ];
   }
 
   function bufferSizeCount( cinterval, elementSize )
   {
-    let length = bufferLength - ( cinterval[ 1 ] - cinterval[ 0 ] + 1 ) + o.ins.length;
+    let length = bufferLength - ( _cinterval[ 1 ] - _cinterval[ 0 ] + 1 ) + o.ins.length;
     return length * elementSize;
   }
 
@@ -3269,17 +3278,33 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
 
     /* */
 
+    cinterval = _cinterval;
+
     let left = Math.max( 0, cinterval[ 0 ] );
+    let right = left + ins.length
+    let start = cinterval[ 1 ] + 1;
+
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      let val = srcTyped[ srcTyped.length - 1 ];
+      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+      {
+        let temp = srcTyped[ i - 1 ];
+        dstTyped[ right + i - start ] = val;
+        val = temp;
+      }
+    }
+    else
+    {
+      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+      dstTyped[ right + i - start ] = srcTyped[ i ];
+    }
+
     for( let i = 0 ; i < left ; i++ )
     dstTyped[ i ] = srcTyped[ i ];
 
-    let right = left + ins.length
     for( let i = left ; i < right ; i++ )
     dstTyped[ i ] = ins[ i - left ];
-
-    let start = cinterval[ 1 ] + 1;
-    for( let i = start ; i < srcTyped.length ; i++ )
-    dstTyped[ right + i - start ] = srcTyped[ i ];
 
     return dstTyped;
   }
