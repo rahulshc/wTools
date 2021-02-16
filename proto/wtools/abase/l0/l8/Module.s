@@ -216,9 +216,15 @@ function _sourceFileIncludeSingle( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ), 'Expects string' );
 
-  if( typeof module !== 'undefined' )
+  if( typeof module === 'undefined' )
+  throw _.err( 'Cant include, routine "require" does not exist.' );
+  else
   return _.module.__nativeInclude( _.path.nativize( src ) );
-  else throw _.err( 'Cant include, routine "require" does not exist.' );
+
+  // if( typeof module !== 'undefined' )
+  // return _.module.__nativeInclude( _.path.nativize( src ) );
+  // else
+  // throw _.err( 'Cant include, routine "require" does not exist.' );
 
 }
 

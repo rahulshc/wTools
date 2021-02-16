@@ -1379,7 +1379,7 @@ let Extension =
   strStrShort, /* qqq for Yevhen : cover */
   strPrimitive,
   strTypeSecondary,
-  strPrimitiveType : strTypeSecondary, /* xxx : remove */
+  // strPrimitiveType : strTypeSecondary, /* xxx : remove */
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
