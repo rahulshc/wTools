@@ -18,8 +18,8 @@ NumberLike
 
 bool
 boolLike
-fuzzy
-fuzzyLike
+fuzzy?
+fuzzyLike?
 
 BigInt
 
@@ -36,6 +36,7 @@ Long
 LongLike?
 Vector
 Partiable
+partibleLike?
 
 Global
 GlobalReal
@@ -53,6 +54,7 @@ mapIsPrototyped,
 
 HashMap
 Set
+SetLike?
 
 BufferNode
 BufferRaw
@@ -83,3 +85,40 @@ cinterval
 linterval
 ointerval
 
+Pair
+
+Routine
+RoutineLike?
+
+timer,
+competitor,
+date,
+
+nothing
+defined
+primitive
+_primitive
+symbol
+
+consequence
+consequenceLike,
+promise
+promiseLike,
+
+constructor
+instance
+
+worker
+stream
+console
+printer
+printerLike,
+logger
+process
+procedure
+
+definition
+trait
+
+blueprintIsDefinitive,
+blueprintIsRuntime,
