@@ -109,7 +109,7 @@ function numberFromStrMaybe( src )
   // return parsed;
   // return src;
 
-  let parsed = Number( src );
+  let parsed = src ? Number( src ) : NaN;
   if( !isNaN( parsed ) )
   return parsed;
   return src;
