@@ -15,9 +15,10 @@
 
 Number
 NumberLike
-boolIs
+
+bool
 boolLike
-fuzzyIs
+fuzzy
 fuzzyLike
 
 BigInt
@@ -64,4 +65,21 @@ constructibleLike
 
 ContainerIs
 ContainerLike
+
+Entity?
+
+err
+errStandard
+errAttended
+errBrief
+errProcess
+errLogged
+errSuspended
+errWary
+
+Escape
+
+cinterval
+linterval
+ointerval
 
