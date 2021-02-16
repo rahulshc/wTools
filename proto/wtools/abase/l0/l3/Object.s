@@ -73,8 +73,8 @@ function objectLike( src ) /* xxx qqq : optimize */
 function objectLikeStandard( src ) /* xxx qqq : optimize */
 {
 
-  if( _.objectIs( src ) )
-  return true;
+  // if( _.objectIs( src ) )
+  // return true;
 
   if( _.primitiveIs( src ) )
   return false;
@@ -92,7 +92,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   if( _.regexpIs( src ) )
   return true
 
-  return true;
+  return false;
 }
 
 //
