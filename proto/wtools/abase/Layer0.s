@@ -7,8 +7,6 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( './Experiment1.s' );
-
   require( './l0/l1/Predefined.s' );
 
   require( './l0/l2/Setup.s' );
