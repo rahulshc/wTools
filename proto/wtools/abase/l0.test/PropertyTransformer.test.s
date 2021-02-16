@@ -553,7 +553,8 @@ function filterFrom( test )
 
 function transformerRegister( test )
 {
-  let context = this;
+  let mapperBefore = new Set( Object.getOwnPropertyNames( _.property.mapper ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.property.filter ) );
 
   test.case = 'routine - сustom mapper without propertyTransformer';
   var src = mapper1;
@@ -634,11 +635,36 @@ function transformerRegister( test )
   test.true( _.property.filterIs( _.property.filter[ srcName ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ srcName ] ) );
 
-  clean();
+  _.property.transformersUnregister
+  (
+    [
+      mapper1.name,
+      filter1.name,
+      mapper2.name,
+      filter2.name,
+      mapper3.name,
+      filter3.name,
+      mapperFilter.name,
+      'existingMapper',
+      'existingFilter',
+    ],
+    'mapper'
+  );
+
+  _.property.transformersUnregister
+  (
+    [
+      filter1.name,
+      filter2.name,
+      filter3.name,
+      'existingFilter',
+    ],
+    'filter'
+  );
 
   test.case = 'check no garbage left';
-  test.identical( context.mapperBefore, _.property.mapper );
-  test.identical( context.filterBefore, _.property.filter );
+  test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.property.mapper ) ) )
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.property.filter ) ) );
 
   if( !Config.debug )
   return;
@@ -697,33 +723,14 @@ function transformerRegister( test )
     return 1 + 2;
   }
 
-  function clean()
-  {
-    delete _.property.mapper[ mapper1.name ];
-    delete _.property.mapper[ filter1.name ];
-    delete _.property.filter[ filter1.name ];
-
-    delete _.property.mapper[ mapper2.name ];
-    delete _.property.mapper[ filter2.name ];
-    delete _.property.filter[ filter2.name ];
-
-    delete _.property.mapper[ mapper3.name ];
-    delete _.property.filter[ filter3.name ];
-    delete _.property.mapper[ filter3.name ];
-
-    delete _.property.mapper[ mapperFilter.name ];
-    delete _.property.mapper[ 'existingMapper' ];
-    delete _.property.filter[ 'existingFilter' ];
-    delete _.property.mapper[ 'existingFilter' ];
-  }
-
 }
 
 //
 
 function transformersRegister( test )
 {
-  let context = this;
+  let mapperBefore = new Set( Object.getOwnPropertyNames( _.property.mapper ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.property.filter ) );
 
   addIdentity();
 
@@ -776,11 +783,33 @@ function transformersRegister( test )
   test.true( _.property.filterIs( _.property.filter[ 'existingFilter' ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingFilter' ] ) );
 
-  clean();
+  _.property.transformersUnregister
+  (
+    [
+      mapper3.name,
+      filter3.name,
+      mapper4.name,
+      filter4.name,
+      mapperFilter.name,
+      'existingMapper',
+      'existingFilter',
+    ],
+    'mapper'
+  );
+
+  _.property.transformersUnregister
+  (
+    [
+      filter3.name,
+      filter4.name,
+      'existingFilter',
+    ],
+    'filter'
+  );
 
   test.case = 'check no garbage left';
-  test.identical( context.mapperBefore, _.property.mapper );
-  test.identical( context.filterBefore, _.property.filter );
+  test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.property.mapper ) ) )
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.property.filter ) ) );
 
   if( !Config.debug )
   return;
@@ -878,31 +907,6 @@ function transformersRegister( test )
     mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true, functor : true };
   }
 
-  function clean()
-  {
-    delete _.property.mapper[ mapper1.name ];
-    delete _.property.filter[ filter1.name ];
-    delete _.property.mapper[ filter1.name ];
-
-    delete _.property.mapper[ mapper2.name ];
-    delete _.property.filter[ filter2.name ];
-    delete _.property.mapper[ filter2.name ];
-
-    delete _.property.mapper[ mapper3.name ];
-    delete _.property.filter[ filter3.name ];
-    delete _.property.mapper[ filter3.name ];
-
-    delete _.property.mapper[ mapper4.name ];
-    delete _.property.filter[ filter4.name ];
-    delete _.property.mapper[ filter4.name ];
-
-    delete _.property.mapper[ mapperFilter.name ];
-    delete _.property.mapper[ 'existingMapper' ];
-    delete _.property.filter[ 'existingFilter' ];
-    delete _.property.mapper[ 'existingFilter' ];
-
-  }
-
 }
 
 // --
@@ -914,11 +918,6 @@ let Self =
 
   name : 'Tools.PropertyTransformer',
   silencing : 1,
-
-  context : {
-    mapperBefore : _.mapExtend( null, _.property.mapper ),
-    filterBefore : _.mapExtend( null, _.property.filter )
-  },
 
   tests :
   {
@@ -932,6 +931,8 @@ let Self =
     filterFrom,
     transformerRegister,
     transformersRegister,
+    transformerUnregister,
+    transformersUnregister,
   }
 
 }
