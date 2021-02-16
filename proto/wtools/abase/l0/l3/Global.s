@@ -18,11 +18,11 @@ function is( src )
   if( _.primitiveIs( src ) )
   return false;
 
-  for( let namespace in _globals_ )
-  {
-    if( _globals_[ namespace ] === src )
-    return true;
-  }
+  if( src === _global_ )
+  return true;
+
+  if( Object.getPrototypeOf( src ) === _global_ )
+  return true;
 
   return false;
 }
