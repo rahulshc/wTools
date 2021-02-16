@@ -21,13 +21,8 @@ function is( src )
   if( src === _global_ )
   return true;
 
-  let prototype = Object.getPrototypeOf( src );
-  while( prototype )
-  {
-    if( prototype === _global_ )
-    return true;
-    prototype = Object.getPrototypeOf( prototype );
-  }
+  if( _.prototype.has( _global_, src ) )
+  return true;
 
   return false;
 }
