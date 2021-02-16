@@ -338,7 +338,7 @@ function arrayFrom( src )
  * // log true
  *
  * @example
- * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let src = _.argumentsArray.make( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
  * let got = _.arrayFromCoercing( src );
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
  * console.log( got === src );

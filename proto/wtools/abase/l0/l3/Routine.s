@@ -537,8 +537,13 @@ function routineOptions( routine, args, defaults )
       if( dstMap[ s ] !== undefined )
       continue;
 
+      if( Config.debug )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
+      {
+        debugger;
+        throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      }
 
       dstMap[ s ] = srcMap[ s ];
     }
@@ -787,7 +792,7 @@ function _routinesCompose_body( o )
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArrayIs( r ) );
+      _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
       _.unrollAppend( result, r );
       // args = chainer( r, k, args, o );
@@ -895,7 +900,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.mapLike_( src ) || _.routineIs( src ) );
+//   _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
 //
 //   /* generate dst routine */
 //
@@ -944,7 +949,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.mapLike_( src ) || _.routineIs( src ) );
+//     _.assert( _.mapLike( src ) || _.routineIs( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
@@ -1022,7 +1027,7 @@ function routineExtend( dst, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.mapLike_( src ) || _.routineIs( src ) );
+  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -1068,7 +1073,7 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.mapLike_( src ) || _.routineIs( src ) );
+    _.assert( _.mapLike( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -1103,7 +1108,7 @@ function routineDefaults( dst, src, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( dst === null || src === null );
-  _.assert( _.mapLike_( defaults ) );
+  _.assert( _.mapLike( defaults ) );
 
   return _.routineExtend( dst, src, { defaults } );
 }
@@ -1226,7 +1231,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1267,7 +1272,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1730,7 +1735,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingMapVals && _.mapLike_( args[ d ] ) )
+      else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
       {
         keys = _.mapOnlyOwnKeys( args[ d ] );
         break;
@@ -1799,7 +1804,7 @@ function vectorize_body( o )
       // // let result = [];
       // let result;
       // result = _.longMakeEmpty( src ); /* qqq : use this code */
-      // // if( _.argumentsArrayIs( src ) )
+      // // if( _.argumentsArray.is( src ) )
       // // result = [];
       // // else
       // // result = new src.constructor();

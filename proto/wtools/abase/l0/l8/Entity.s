@@ -57,7 +57,10 @@ function uncountableSize( src )
   if( _.regexpIs( src ) )
   return _.uncountableSize( src.source ) + src.flags.length;
 
-  if( !_.iterableIs( src ) )
+  // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine partibleIs has different behavior */
+  // return 8;
+  if( !_.mapLike( src ) )
+  if( !_.entity.methodIteratorOf( src ) )
   return 8;
 
   return NaN;
@@ -103,13 +106,17 @@ function entitySize( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) )
+  // if( _.primitiveIs( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) ) /* yyy */
+  // if( _.primitiveIs( src ) || _.bufferAnyIs( src ) ) /* Dmytro : added branch for routine iterableIs, routine partibleIs has different behavior */
+  if( _.primitiveIs( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
   return _.uncountableSize( src );
 
   if( _.look )
-  if( _.containerIs( src ) || _.iterableIs( src ) )
+  // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
+  // if( _.containerIs( src ) )
+  if( _.containerIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
   {
-    _.look( src, onEach );
+    _.look({ src, onUp : onEach, withPartible : 1 });
   }
 
   if( _.look )
@@ -135,7 +142,8 @@ function entitySize( src )
       result += _.uncountableSize( k );
     }
 
-    if( _.primitiveIs( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) )
+    // if( _.primitiveIs( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
+    if( _.primitiveIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
     result += _.uncountableSize( e );
 
   }

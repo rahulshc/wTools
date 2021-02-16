@@ -1657,27 +1657,27 @@ function numbersFrom( test )
   /* */
 
   test.case = 'empty argumentsArray';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.numbersFrom( src );
   test.identical( got, [] );
 
   test.case = 'argumentsArray with numbers';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.numbersFrom( src );
   test.identical( got, [ 1, 2, 3 ] );
 
   test.case = 'argumentsArray with strings without digits';
-  var src = _.argumentsArrayMake( [ '', 'a', 'str' ] );
+  var src = _.argumentsArray.make( [ '', 'a', 'str' ] );
   var got = _.numbersFrom( src );
   test.identical( got, [ NaN, NaN, NaN ] );
 
   test.case = 'argumentsArray with strings with digits';
-  var src = _.argumentsArrayMake( [ '1', '1.2', '12.3' ] );
+  var src = _.argumentsArray.make( [ '1', '1.2', '12.3' ] );
   var got = _.numbersFrom( src );
   test.identical( got, [ 1, 1.2, 12.3 ] );
 
   test.case = 'argumentsArray with elements, which does not convert to number';
-  var src = _.argumentsArrayMake( [ new Set( [ 1, 2 ] ), [ 1, 2 ], { a : 2 } ] );
+  var src = _.argumentsArray.make( [ new Set( [ 1, 2 ] ), [ 1, 2 ], { a : 2 } ] );
   var got = _.numbersFrom( src );
   test.identical( got, [ NaN, NaN, NaN ] );
 

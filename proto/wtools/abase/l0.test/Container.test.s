@@ -496,7 +496,7 @@ function extendReplacingDstNull( test )
 
 function extendReplacingDstMapAndHashMapLike( test )
 {
-  test.open( 'src - mapLike_' );
+  test.open( 'src - mapLike' );
 
   test.case = 'dst - empty map, src - empty';
   var dst = {};
@@ -640,7 +640,7 @@ function extendReplacingDstMapAndHashMapLike( test )
   test.true( got !== dst );
   test.true( got !== src );
 
-  test.close( 'src - mapLike_' );
+  test.close( 'src - mapLike' );
 
   /* - */
 
@@ -1508,7 +1508,7 @@ function extendAppendingDstNull( test )
 
 function extendAppendingDstMapAndHashMapLike( test )
 {
-  test.open( 'src - mapLike_' );
+  test.open( 'src - mapLike' );
 
   test.case = 'dst - empty map, src - empty';
   var dst = {};
@@ -1652,7 +1652,7 @@ function extendAppendingDstMapAndHashMapLike( test )
   test.true( got !== dst );
   test.true( got !== src );
 
-  test.close( 'src - mapLike_' );
+  test.close( 'src - mapLike' );
 
   /* - */
 
@@ -2220,7 +2220,7 @@ function empty( test )
   test.shouldThrowErrorSync( () => _.container.empty( new Constr() ) );
 
   test.case = 'not resizable longs';
-  test.shouldThrowErrorSync( () => _.container.empty( _.argumentsArrayMake( [] ) ) );
+  test.shouldThrowErrorSync( () => _.container.empty( _.argumentsArray.make( [] ) ) );
   test.shouldThrowErrorSync( () => _.container.empty( new U8x() ) );
   test.shouldThrowErrorSync( () => _.container.empty( new F64x() ) );
 

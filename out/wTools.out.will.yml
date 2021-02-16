@@ -187,6 +187,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Array.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
+          - ../proto/wtools/abase/l0/l3/Constructible.s
           - ../proto/wtools/abase/l0/l3/Container.s
           - ../proto/wtools/abase/l0/l3/Ct.s
           - ../proto/wtools/abase/l0/l3/Entity.s
@@ -194,6 +195,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/Functional.s
+          - ../proto/wtools/abase/l0/l3/Global.s
           - ../proto/wtools/abase/l0/l3/Interval.s
           - ../proto/wtools/abase/l0/l3/Intervalc.s
           - ../proto/wtools/abase/l0/l3/Intervall.s
@@ -203,7 +205,9 @@ module:
           - ../proto/wtools/abase/l0/l3/Map.s
           - ../proto/wtools/abase/l0/l3/Module.s
           - ../proto/wtools/abase/l0/l3/Number.s
+          - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Pair.s
+          - ../proto/wtools/abase/l0/l3/Partible.s
           - ../proto/wtools/abase/l0/l3/Path.s
           - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Property.s
@@ -216,11 +220,13 @@ module:
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Type.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
+          - ../proto/wtools/abase/l0/l3/Vector.s
           - ../proto/wtools/abase/l0/l4
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/Array.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
+          - ../proto/wtools/abase/l0/l5/Constructible.s
           - ../proto/wtools/abase/l0/l5/Container.s
           - ../proto/wtools/abase/l0/l5/Ct.s
           - ../proto/wtools/abase/l0/l5/Entity.s
@@ -228,6 +234,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Escape.s
           - ../proto/wtools/abase/l0/l5/Event.s
           - ../proto/wtools/abase/l0/l5/Functional.s
+          - ../proto/wtools/abase/l0/l5/Global.s
           - ../proto/wtools/abase/l0/l5/Interval.s
           - ../proto/wtools/abase/l0/l5/Intervalc.s
           - ../proto/wtools/abase/l0/l5/Intervall.s
@@ -238,6 +245,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Module.s
           - ../proto/wtools/abase/l0/l5/Number.s
           - ../proto/wtools/abase/l0/l5/Pair.s
+          - ../proto/wtools/abase/l0/l5/Partible.s
           - ../proto/wtools/abase/l0/l5/Path.s
           - ../proto/wtools/abase/l0/l5/Process.s
           - ../proto/wtools/abase/l0/l5/Property.s
@@ -250,6 +258,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Time.s
           - ../proto/wtools/abase/l0/l5/Type.s
           - ../proto/wtools/abase/l0/l5/Unroll.s
+          - ../proto/wtools/abase/l0/l5/Vector.s
           - ../proto/wtools/abase/l0/l6
           - ../proto/wtools/abase/l0/l6/ContainerAdapter.s
           - ../proto/wtools/abase/l0/l6/LongDescriptor.s
@@ -263,6 +272,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Array.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
+          - ../proto/wtools/abase/l0/l8/Constructible.s
           - ../proto/wtools/abase/l0/l8/Container.s
           - ../proto/wtools/abase/l0/l8/Ct.s
           - ../proto/wtools/abase/l0/l8/Entity.s
@@ -270,6 +280,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Escape.s
           - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
+          - ../proto/wtools/abase/l0/l8/Global.s
           - ../proto/wtools/abase/l0/l8/Interval.s
           - ../proto/wtools/abase/l0/l8/Intervalc.s
           - ../proto/wtools/abase/l0/l8/Intervall.s
@@ -280,6 +291,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Module.s
           - ../proto/wtools/abase/l0/l8/Number.s
           - ../proto/wtools/abase/l0/l8/Pair.s
+          - ../proto/wtools/abase/l0/l8/Partible.s
           - ../proto/wtools/abase/l0/l8/Path.s
           - ../proto/wtools/abase/l0/l8/Process.s
           - ../proto/wtools/abase/l0/l8/Property.s
@@ -292,6 +304,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Time.s
           - ../proto/wtools/abase/l0/l8/Type.s
           - ../proto/wtools/abase/l0/l8/Unroll.s
+          - ../proto/wtools/abase/l0/l8/Vector.s
           - ../proto/wtools/abase/l0/l9
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
@@ -299,6 +312,7 @@ module:
           - ../proto/wtools/abase/l0.test/ArraySet.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
+          - ../proto/wtools/abase/l0.test/Constructible.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
@@ -308,6 +322,7 @@ module:
           - ../proto/wtools/abase/l0.test/Escape.test.s
           - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
+          - ../proto/wtools/abase/l0.test/Global.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
@@ -317,6 +332,7 @@ module:
           - ../proto/wtools/abase/l0.test/Module.test.s
           - ../proto/wtools/abase/l0.test/Number.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
+          - ../proto/wtools/abase/l0.test/Partible.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
@@ -327,6 +343,7 @@ module:
           - ../proto/wtools/abase/l0.test/Time.test.s
           - ../proto/wtools/abase/l0.test/Typing.test.s
           - ../proto/wtools/abase/l0.test/Unroll.test.s
+          - ../proto/wtools/abase/l0.test/Vector.test.s
           - ../proto/wtools/abase/l1
           - ../proto/wtools/abase/l1/ModulesRegistry.s
           - ../proto/wtools/abase/l1/NameTools.s

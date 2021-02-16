@@ -540,13 +540,13 @@ let wTemplateFileWriter =
 
 let wColor =
 {
-  sourcePath : sourcePath( 'amid/color/entry/ColorBasic.s', 'wColor' ),
+  sourcePath : sourcePath( 'amid/l1/color/entry/ColorBasic.s', 'wColor' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap },
 }
 
 let wColor256 =
 {
-  sourcePath : sourcePath( 'amid/color/Color256.s', 'wColor256' ),
+  sourcePath : sourcePath( 'amid/l1/color/entry/Color256.s', 'wColor256' ),
   isIncluded : function()
   {
     return !!_global.wTools && !!_global.wTools.color

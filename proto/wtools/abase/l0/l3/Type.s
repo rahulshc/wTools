@@ -97,47 +97,6 @@ function symbolIs( src )
   return result;
 }
 
-// --
-// math
-// --
-
-function vectorAdapterIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
-}
-
-//
-
-function vectorIs( src )
-{
-
-  if( _.vectorAdapterIs( src ) )
-  return true;
-
-  if( _.longIs( src ) )
-  return true;
-
-  return false;
-}
-
-//
-
-function vectorLike( src )
-{
-  return _.vectorIs( src );
-}
-
-//
-
-function constructorIsVectorAdapter( src )
-{
-  if( !src )
-  return false;
-  return '_vectorBuffer' in src.prototype;
-}
-
-//
-
 function consequenceIs( src )
 {
   if( !src )
@@ -199,7 +158,7 @@ function typeOf( src, constructor )
   {
     return null;
   }
-  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) )
+  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
   {
     return src.constructor;
   }
@@ -213,48 +172,6 @@ function typeOf( src, constructor )
     return null;
   }
 
-}
-
-//
-
-function prototypeIsPrototypeOf( superPrototype, subPrototype )
-{
-  _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
-  if( superPrototype === subPrototype )
-  return true;
-  if( !superPrototype )
-  return false;
-  if( !subPrototype )
-  return false;
-  return Object.isPrototypeOf.call( superPrototype, subPrototype );
-}
-
-//
-
-function prototypeHas( superPrototype, subPrototype )
-{
-  _.assert( arguments.length === 2, 'Expects two arguments' );
-  // eslint-disable-next-line no-prototype-builtins
-  return _.prototypeIsPrototypeOf( subPrototype, superPrototype );
-}
-
-//
-
-/**
- * Is prototype.
- * @function prototypeIs
- * @param {object} src - entity to check
- * @namespace Tools
- */
-
-function prototypeIs( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( _.primitiveIs( src ) )
-  return false;
-  if( _.routineIs( src ) )
-  return false;
-  return Object.hasOwnProperty.call( src, 'constructor' );
 }
 
 // //
@@ -304,31 +221,25 @@ function instanceIs( src )
 
   if( Object.hasOwnProperty.call( src, 'constructor' ) )
   return false;
+  if( !Reflect.has( src, 'constructor' ) )
+  return false;
 
   let prototype = Object.getPrototypeOf( src );
+  _.assert( prototype !== undefined );
 
   if( prototype === null )
   return false;
-  if( prototype === undefined )
-  return false;
+  // if( prototype === undefined )
+  // return false;
   if( prototype === Object.prototype )
   return false;
   if( _.routineIs( prototype ) )
   return false;
 
-  return Object.hasOwnProperty.call( prototype, 'constructor' );
-}
+  // return Object.hasOwnProperty.call( prototype, 'constructor' );
 
-// // use _.workpiece.instanceLikeStandard()
-//
-// function instanceLike( src )
-// {
-//   if( _.primitiveIs( src ) )
-//   return false;
-//   if( src.Composes )
-//   return true;
-//   return false;
-// }
+  return true;
+}
 
 //
 
@@ -438,8 +349,9 @@ function processIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  let typeOf = _.strType( src );
-  if( typeOf === 'ChildProcess' || typeOf === 'process' )
+  // let type = _.strType( src );
+  let type = _.strTypeSecondary( src );
+  if( type === 'ChildProcess' || type === 'process' )
   return true;
 
   return false;
@@ -530,26 +442,14 @@ let Routines =
 
   //
 
-  vectorAdapterIs,
-  vadIs : vectorAdapterIs,
-  vectorIs, /* qqq for Dmytro : cover */
-  vectorLike,
-
-  constructorIsVectorAdapter,
-  constructorIsVad : constructorIsVectorAdapter,
-
   consequenceIs,
   consequenceLike,
   promiseIs,
   promiseLike,
 
   typeOf,
-  prototypeIsPrototypeOf,
-  prototypeHas,
-  prototypeIs,
   constructorIs,
   instanceIs,
-  // instanceLike,
 
   workerIs,
   streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
@@ -559,8 +459,10 @@ let Routines =
   loggerIs,
   processIs,
   procedureIs,
-  definitionIs,
-  traitIs,
+
+  definitionIs, /* xxx : move to namespace::property */
+  traitIs, /* xxx : move to namespace::property */
+
   blueprintIsDefinitive,
   blueprintIsRuntime,
 

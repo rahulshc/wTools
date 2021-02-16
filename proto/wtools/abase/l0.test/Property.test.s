@@ -208,15 +208,15 @@ function own( test )
 
 //
 
-function all( test )
+function onlyExplicit( test )
 {
   test.case = 'empty';
 
-  var got = _.property.all( {} );
+  var got = _.property.onlyExplicit( {} );
   test.true( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Object' );
 
-  var got = _.property.all( [] );
+  var got = _.property.onlyExplicit( [] );
   test.true( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Array' );
 
@@ -224,18 +224,18 @@ function all( test )
 
   test.case = 'trivial';
 
-  var got = _.property.all( { a : 1 } );
+  var got = _.property.onlyExplicit( { a : 1 } );
   test.true( Object.keys( got ).length > 1 )
   test.identical( got.a, 1 );
 
   var a = [];
   a.a = 1;
-  var got = _.property.all( a );
+  var got = _.property.onlyExplicit( a );
   test.true( Object.keys( got ).length > 1 )
   var expected = { a : 1 };
   test.identical( got.a, 1 );
 
-  var got = _.property.all( new Date() );
+  var got = _.property.onlyExplicit( new Date() );
   test.true( _.routineIs( got.getDate ) );
   test.identical( got.constructor.name, 'Date' );
 
@@ -248,7 +248,7 @@ function all( test )
 
   /**/
 
-  var got = _.property.all( a );
+  var got = _.property.onlyExplicit( a );
   test.true( Object.keys( got ).length > 2 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -256,7 +256,7 @@ function all( test )
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.property.all( a );
+  var got = _.property.onlyExplicit( a );
   test.true( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -268,7 +268,7 @@ function all( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : undefined } );
-  var got = _.property.all( a );
+  var got = _.property.onlyExplicit( a );
   test.true( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -282,25 +282,25 @@ function all( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.all();
+    _.property.onlyExplicit();
   });
 
   test.case = 'primitive';
   test.shouldThrowErrorSync( function()
   {
-    _.property.all( 1 );
+    _.property.onlyExplicit( 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.all( 'wrong argument' );
+    _.property.onlyExplicit( 'wrong argument' );
   });
 
   test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.property.all( { x : 1 }, { 'wrong' : null } );
+    _.property.onlyExplicit( { x : 1 }, { 'wrong' : null } );
   });
 
 }
@@ -531,16 +531,16 @@ function ownRoutines( test )
 
 //
 
-function allRoutines( test )
+function onlyExplicitRoutines( test )
 {
   test.case = 'empty';
 
-  var got = _.property.allRoutines( {} );
+  var got = _.property.onlyExplicitRoutines( {} );
   test.true( Object.keys( got ).length !== 0 );
   test.true( _.routineIs( got.__defineGetter__ ) );
   test.true( _.routineIs( got.__defineSetter__ ) );
 
-  var got = _.property.allRoutines( [] );
+  var got = _.property.onlyExplicitRoutines( [] );
   test.true( Object.keys( got ).length !== 0 );
   test.true( _.routineIs( got.__defineGetter__ ) );
   test.true( _.routineIs( got.__defineSetter__ ) );
@@ -549,7 +549,7 @@ function allRoutines( test )
 
   test.case = 'trivial';
 
-  var got = _.property.allRoutines( { a : 1, b : function(){} } );
+  var got = _.property.onlyExplicitRoutines( { a : 1, b : function(){} } );
   test.true( Object.keys( got ).length !== 0 );
   test.true( _.routineIs( got.__defineGetter__ ) );
   test.true( _.routineIs( got.__defineSetter__ ) );
@@ -557,13 +557,13 @@ function allRoutines( test )
 
   var a = [];
   a.a = function(){};
-  var got = _.property.allRoutines( a );
+  var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length !== 0 );
   test.true( _.routineIs( got.__defineGetter__ ) );
   test.true( _.routineIs( got.__defineSetter__ ) );
   test.true( _.routineIs( got.a ) );
 
-  var got = _.property.allRoutines( new Date() );
+  var got = _.property.onlyExplicitRoutines( new Date() );
   test.true( Object.keys( got ).length !== 0 );
   test.identical( got.constructor.name, 'Date' );
   test.true( _.routineIs( got.getDate ) );
@@ -577,14 +577,14 @@ function allRoutines( test )
 
   /**/
 
-  var got = _.property.allRoutines( a );
+  var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 1 );
   test.true( _.routineIs( got.c ) );
 
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.property.allRoutines( a );
+  var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 1 );
   test.true( _.routineIs( got.c ) );
 
@@ -592,7 +592,7 @@ function allRoutines( test )
 
   Object.defineProperty( a, 'z', { enumerable : 0, value : function(){} } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : function(){} } );
-  var got = _.property.allRoutines( a );
+  var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 2 );
   test.true( _.routineIs( got.c ) );
   test.true( _.routineIs( got.y ) );
@@ -606,25 +606,25 @@ function allRoutines( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allRoutines();
+    _.property.onlyExplicitRoutines();
   });
 
   test.case = 'primitive';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allRoutines( 1 );
+    _.property.onlyExplicitRoutines( 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allRoutines( 'wrong argument' );
+    _.property.onlyExplicitRoutines( 'wrong argument' );
   });
 
   test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allRoutines( { x : 1 }, { 'wrong' : null } );
+    _.property.onlyExplicitRoutines( { x : 1 }, { 'wrong' : null } );
   });
 
 }
@@ -848,15 +848,15 @@ function ownFields( test )
 
 //
 
-function allFields( test )
+function onlyExplicitFields( test )
 {
   test.case = 'empty';
 
-  var got = _.property.allFields( {} );
+  var got = _.property.onlyExplicitFields( {} );
   test.true( Object.keys( got ).length === 1 )
   test.identical( got.__proto__, {}.__proto__ );
 
-  var got = _.property.allFields( [] );
+  var got = _.property.onlyExplicitFields( [] );
   test.true( Object.keys( got ).length === 2 )
   test.identical( got.__proto__, [].__proto__ );
   test.identical( got.length, 0 );
@@ -865,7 +865,7 @@ function allFields( test )
 
   test.case = 'trivial';
 
-  var got = _.property.allFields( { a : 1, b : function(){} } );
+  var got = _.property.onlyExplicitFields( { a : 1, b : function(){} } );
   test.true( Object.keys( got ).length === 2 )
   test.true( got.a === 1 );
   test.true( got.__proto__ === {}.__proto__ );
@@ -873,7 +873,7 @@ function allFields( test )
   var a = [ ];
   a.a = function(){};
   a.b = 1;
-  var got = _.property.allFields( a );
+  var got = _.property.onlyExplicitFields( a );
   console.log(got);
   test.true( Object.keys( got ).length === 3 )
   test.true( got.length === 0 );
@@ -881,7 +881,7 @@ function allFields( test )
   test.true( got.__proto__ === [].__proto__ );
 
   var str = new Date();
-  var got = _.property.allFields( str );
+  var got = _.property.onlyExplicitFields( str );
   test.identical( got.__proto__, str.__proto__);
 
   /* */
@@ -893,7 +893,7 @@ function allFields( test )
 
   /**/
 
-  var got = _.property.allFields( a );
+  var got = _.property.onlyExplicitFields( a );
   test.true( Object.keys( got ).length === 3 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -902,7 +902,7 @@ function allFields( test )
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.property.allFields( a );
+  var got = _.property.onlyExplicitFields( a );
   test.true( Object.keys( got ).length === 4 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -917,26 +917,113 @@ function allFields( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allFields();
+    _.property.onlyExplicitFields();
   });
 
   test.case = 'primitive';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allFields( 1 );
+    _.property.onlyExplicitFields( 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allFields( 'wrong argument' );
+    _.property.onlyExplicitFields( 'wrong argument' );
   });
 
   test.case = 'unknonlyOwn option';
   test.shouldThrowErrorSync( function()
   {
-    _.property.allFields( { x : 1 }, { 'wrong' : null } );
+    _.property.onlyExplicitFields( { x : 1 }, { 'wrong' : null } );
   });
+
+}
+
+//
+
+function onlyImplicit( test )
+{
+
+  /* */
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'polluted map';
+  var src = {};
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, Object.prototype );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'prototyped from pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, prototype );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'prototyped from pure map';
+  var prototype = {};
+  var src = Object.create( prototype );
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, prototype );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'function';
+  var src = function(){};
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, Object.getPrototypeOf( Function ) );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'array';
+  var src = [];
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, Array.prototype );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'arguments array';
+  var src = _.argumentsArray.make();
+  src.a = '1';
+  src[ Symbol.for( 'a' ) ] = '1';
+  var exp = new HashMap();
+  exp.set( _.escape.prototype, Object.prototype );
+  var got = _.property.onlyImplicit( src );
+  test.identical( got, exp );
+
+  /* */
 
 }
 
@@ -955,15 +1042,17 @@ let Self =
 
     _of,
     own,
-    all,
+    onlyExplicit,
 
     routines,
     ownRoutines,
-    allRoutines,
+    onlyExplicitRoutines,
 
     fields,
     ownFields,
-    allFields,
+    onlyExplicitFields,
+
+    onlyImplicit,
 
   }
 

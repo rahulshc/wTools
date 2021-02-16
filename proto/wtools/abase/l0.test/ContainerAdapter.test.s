@@ -55,7 +55,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'src - argumentsArray';
-  var got = _.containerAdapter.is( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.containerAdapter.is( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, false );
 
   test.case = 'src - BufferRaw';
@@ -197,7 +197,7 @@ function make( test )
   test.shouldThrowErrorSync( () => _.containerAdapter.make( [ 1, 2 ], [ 1, 2 ] ) );
 
   test.case = 'container is not an array or a set';
-  test.shouldThrowErrorSync( () => _.containerAdapter.make( _.argumentsArrayMake( 10 ) ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter.make( _.argumentsArray.make( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.make( new U8x( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.make( { a : 0 } ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.make( 'str' ) );
@@ -299,7 +299,7 @@ function makeByConstructor( test )
   test.shouldThrowErrorSync( () => new _.containerAdapter( [ 1, 2 ], [ 1, 2 ] ) );
 
   test.case = 'container is not an array or a set';
-  test.shouldThrowErrorSync( () => new _.containerAdapter( _.argumentsArrayMake( 10 ) ) );
+  test.shouldThrowErrorSync( () => new _.containerAdapter( _.argumentsArray.make( 10 ) ) );
   test.shouldThrowErrorSync( () => new _.containerAdapter( new U8x( 10 ) ) );
   test.shouldThrowErrorSync( () => new _.containerAdapter( { a : 0 } ) );
   test.shouldThrowErrorSync( () => new _.containerAdapter( 'str' ) );
@@ -401,7 +401,7 @@ function from( test )
   test.shouldThrowErrorSync( () => _.containerAdapter.from( [ 1, 2 ], [ 1, 2 ] ) );
 
   test.case = 'container is not an array or a set';
-  test.shouldThrowErrorSync( () => _.containerAdapter.from( _.argumentsArrayMake( 10 ) ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter.from( _.argumentsArray.make( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.from( new U8x( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.from( { a : 0 } ) );
   test.shouldThrowErrorSync( () => _.containerAdapter.from( 'str' ) );
@@ -469,8 +469,8 @@ function toOriginal( test )
   test.identical( got, exp );
 
   test.case = 'from argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
-  var exp = _.argumentsArrayMake( [ 1, 2, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 'str' ] );
+  var exp = _.argumentsArray.make( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
   test.true( got === src );
   test.identical( got, exp );
@@ -667,14 +667,14 @@ function toOriginals( test )
   test.identical( got, exp );
 
   test.case = 'from argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
-  var exp = _.argumentsArrayMake( [ 1, 2, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 'str' ] );
+  var exp = _.argumentsArray.make( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
   test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 'str' ] );
   var exp = [ 1, 2, 'str' ];
   var got = _.containerAdapter.toOriginals( null, src );
   test.true( got !== src );
@@ -878,7 +878,7 @@ function toOriginals( test )
 
   test.case = 'dsts - primitive, src - argumentsArray';
   var dst = 1;
-  var src = _.argumentsArrayMake( [ [ 2, 'str' ], [ 1 ] ] );
+  var src = _.argumentsArray.make( [ [ 2, 'str' ], [ 1 ] ] );
   var exp = [ 1, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.true( got !== dst );
@@ -904,7 +904,7 @@ function toOriginals( test )
   test.identical( got, exp );
 
   test.case = 'dsts - argumentsArray, src - array';
-  var dst = _.argumentsArrayMake( [ 1, { a : 0 } ] );
+  var dst = _.argumentsArray.make( [ 1, { a : 0 } ] );
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ [ 1, { a : 0 } ], [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
@@ -1201,7 +1201,7 @@ function isContainer( test )
 
   test.case = 'argumentsArray';
   var src = _.containerAdapter.make( [] );
-  var got = src.IsContainer( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = src.IsContainer( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, true );
 
   test.case = 'map';
@@ -1279,7 +1279,7 @@ function isContainer( test )
 
   test.case = 'argumentsArray';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.IsContainer( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = src.IsContainer( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, true );
 
   test.case = 'map';
@@ -1451,37 +1451,37 @@ function from_( test )
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( 10 ) );
+    container.From( _.argumentsArray.make( 10 ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( new U8x( 10 ) ) );
+    container.From( _.argumentsArray.make( new U8x( 10 ) ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( { a : 0 } ) );
+    container.From( _.argumentsArray.make( { a : 0 } ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( 'str' ) );
+    container.From( _.argumentsArray.make( 'str' ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( 0 ) );
+    container.From( _.argumentsArray.make( 0 ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( null ) );
+    container.From( _.argumentsArray.make( null ) );
   });
   test.shouldThrowErrorSync( () =>
   {
     var container = _.containerAdapter.from( [] );
-    container.From( _.argumentsArrayMake( undefined ) );
+    container.From( _.argumentsArray.make( undefined ) );
   });
 }
 
@@ -8135,7 +8135,7 @@ function setAdapterMake( test )
   test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from argumentsArray';
-  var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var container = _.argumentsArray.make( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( container );
   test.true( got !== container );
@@ -9428,7 +9428,7 @@ function setAdapterAppendContainer( test )
 
   test.case = 'src - container, append argumentsArray';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -9603,7 +9603,7 @@ function setAdapterAppendContainerOnce( test )
 
   test.case = 'append argumentsArray';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -9855,7 +9855,7 @@ function setAdapterAppendContainerOnceStrictly( test )
 
   test.case = 'append argumentsArray';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.argumentsArrayMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -14362,7 +14362,7 @@ function arrayAdapterMake( test )
   test.identical( got.original, [ 1, 2, 3 ] );
 
   test.case = 'from argumentsArray';
-  var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var container = _.argumentsArray.make( [ 1, 2, 3 ] );
   var src = _.containerAdapter.make( [] );
   var got = src.Make( container );
   test.true( got !== container );
@@ -15372,7 +15372,7 @@ function arrayAdapterAppendContainer( test )
 
   test.case = 'append argumentsArray';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -15547,7 +15547,7 @@ function arrayAdapterAppendContainerOnce( test )
 
   test.case = 'append argumentsArray';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.argumentsArrayMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -15800,7 +15800,7 @@ function arrayAdapterAppendContainerOnceStrictly( test )
 
   test.case = 'append argumentsArray';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.argumentsArrayMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.argumentsArray.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -20152,23 +20152,23 @@ function longMakeEmpty( test )
 {
   test.case = 'src - containerAdapter, empty array';
   var got = _.longMakeEmpty( _.containerAdapter.make( [] ) );
-  var expected = _.containerAdapter.make( [] );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.longMakeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
-  var expected = _.containerAdapter.make( [] );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, empty array';
   var got = _.longMakeEmpty( _.containerAdapter.make( new Set( [] ) ) );
-  var expected = _.containerAdapter.make( new Set( [] ) );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, new Set( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.longMakeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
-  var expected = _.containerAdapter.make( new Set( [] ) );
-  test.identical( got, expected );
+  test.true( _.containerAdapter.is( got ) );
+  test.identical( got.original, new Set( [] ) );
 }
 
 //

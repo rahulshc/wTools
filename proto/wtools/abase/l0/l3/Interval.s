@@ -11,6 +11,7 @@ let Self = _global_.wTools;
 // range
 // --
 
+/* aaa for Dmytro : where is tests for those routiens?? */ /* Dmytro : moved to test suite Interval.test.s, test suite IntervalOld.test.s may be deleted */
 function intervalIs( range )
 {
   _.assert( arguments.length === 1 );

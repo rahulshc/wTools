@@ -367,7 +367,7 @@ function numbersMake( src, length )
 {
   let result;
 
-  if( _.vectorAdapterIs( src ) )
+  if( _.vector.adapterIs( src ) )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -455,7 +455,7 @@ function numbersMake( src, length )
 function numbersFromNumber( src, length )
 {
 
-  if( _.vectorAdapterIs( src ) )
+  if( _.vector.adapterIs( src ) )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
