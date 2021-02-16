@@ -792,7 +792,7 @@ function _routinesCompose_body( o )
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArrayIs( r ) );
+      _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
       _.unrollAppend( result, r );
       // args = chainer( r, k, args, o );
@@ -1231,7 +1231,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1272,7 +1272,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1804,7 +1804,7 @@ function vectorize_body( o )
       // // let result = [];
       // let result;
       // result = _.longMakeEmpty( src ); /* qqq : use this code */
-      // // if( _.argumentsArrayIs( src ) )
+      // // if( _.argumentsArray.is( src ) )
       // // result = [];
       // // else
       // // result = new src.constructor();

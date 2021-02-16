@@ -48,11 +48,11 @@ function production( test )
   let context = this;
   let a = test.assetFor( 'production' );
   let runList = [];
-  
+
   let mdlPath = a.abs( __dirname, '../package.json' );
   let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
   let trigger = _.test.workflowTriggerGet( a.abs( __dirname, '..' ) );
-  
+
   if( mdl.private || trigger === 'pull_request' )
   {
     test.true( true );
@@ -401,16 +401,16 @@ function build( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  
+
   let mdlPath = a.abs( __dirname, '../package.json' );
   let mdl = a.fileProvider.fileRead({ filePath : mdlPath, encoding : 'json' });
-  
+
   if( !mdl.scripts.build )
   {
     test.true( true );
     return;
   }
-  
+
   let remotePath = _.git.remotePathFromLocal( a.abs( __dirname, '..' ) );
 
   let ready = _.git.repositoryClone

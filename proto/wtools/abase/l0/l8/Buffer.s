@@ -255,7 +255,7 @@ function _bufferMake_functor( onMake )
 
     /* */
 
-    if( _.argumentsArrayIs( src ) )
+    if( _.argumentsArray.is( src ) )
     src = this.longDescriptor.make;
 
     if( src === null )
@@ -387,7 +387,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 // {
 //   let result, length;
 //
-//   if( _.argumentsArrayIs( src ) )
+//   if( _.argumentsArray.is( src ) )
 //   src = _.arrayMake( src );
 //
 //   if( _.routineIs( src ) )
@@ -480,7 +480,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //   if( _.routineIs( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   if( src === undefined )
@@ -651,7 +651,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     else _.assert( 0 );
 //   }
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -698,7 +698,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     else _.assert( 0 );
 //   }
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1421,7 +1421,7 @@ function _returnDst( dst, src )
 
     if( _.arrayLikeResizable( dst ) )
     dst.length = srcLength;
-    else if( _.argumentsArrayIs( dst ) )
+    else if( _.argumentsArray.is( dst ) )
     dst = new Array( srcLength );
     else if( dstLength !== srcLength )
     dst = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( srcLength ) ) : new dst.constructor( srcLength );
@@ -1622,7 +1622,7 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
       ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
@@ -1919,7 +1919,7 @@ function bufferOnly_( dst, src, cinterval )
       dst.splice( 0, first2 );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
@@ -2233,7 +2233,7 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
       dst.splice( last2 + 1, 0, ... _.dup( ins, resultLength <= last2 ? 0 : resultLength - last2 - 1 ) );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
@@ -2319,7 +2319,7 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
 //     result = dst;
 //     result.length = newLength;
 //   }
-//   else if( _.argumentsArrayIs( dst ) )
+//   else if( _.argumentsArray.is( dst ) )
 //   result = new Array( newLength );
 //   else if( dstLength !== newLength )
 //   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
@@ -2631,7 +2631,7 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
       }
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }

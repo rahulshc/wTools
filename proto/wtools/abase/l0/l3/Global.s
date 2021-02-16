@@ -13,18 +13,30 @@ _global_.wTools.global = _global_.wTools.global || Object.create( null );
 
 function is( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.primitiveIs( src ) )
+  return false;
 }
 
 //
 
 function isReal( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.primitiveIs( src ) )
+  return false;
 }
 
 //
 
 function isDerivative( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.primitiveIs( src ) )
+  return false;
 }
 
 // --

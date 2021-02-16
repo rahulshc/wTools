@@ -97,93 +97,6 @@ function symbolIs( src )
   return result;
 }
 
-// --
-// math
-// --
-
-function vectorAdapterIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
-}
-
-//
-
-function vectorIs( src )
-{
-
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.primitiveIs( src ) )
-  return false;
-
-  if( _.entity.methodIteratorOf( src ) )
-  if( _.numberIs( src.length ) ) /* yyy */
-  if( !_.mapIs( src ) )
-  return true;
-
-  return false;
-  // return _.longIs( src );
-  // if( _.vectorAdapterIs( src ) )
-  // return true;
-  // if( _.longIs( src ) )
-  // return true;
-  // return false;
-}
-
-//
-
-function vectorLike( src )
-{
-  return _.vectorIs( src );
-  // // return _.vectorIs( src );
-  // if( _.arrayIs( src ) )
-  // return true;
-  // if( _.primitiveIs( src ) )
-  // return false;
-  //
-  // if( _.entity.methodIteratorOf( src ) )
-  // if( !_.mapIs( src ) )
-  // return true;
-  //
-  // return false;
-}
-
-//
-
-function partibleIs( src )
-{
-  // return _.vectorIs( src );
-  if( _.arrayIs( src ) )
-  return true;
-
-  if( _.primitiveIs( src ) )
-  return false;
-
-  if( _.entity.methodIteratorOf( src ) )
-  if( !_.mapIs( src ) )
-  return true;
-
-  return false;
-}
-
-//
-
-function partibleLike( src )
-{
-  return _.partibleIs( src );
-}
-
-//
-
-function constructorIsVectorAdapter( src )
-{
-  if( !src )
-  return false;
-  return '_vectorBuffer' in src.prototype;
-}
-
-//
-
 function consequenceIs( src )
 {
   if( !src )
@@ -259,48 +172,6 @@ function typeOf( src, constructor )
     return null;
   }
 
-}
-
-//
-
-function prototypeIsPrototypeOf( superPrototype, subPrototype ) /* xxx : move */
-{
-  _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
-  if( superPrototype === subPrototype )
-  return true;
-  if( !superPrototype )
-  return false;
-  if( !subPrototype )
-  return false;
-  return Object.isPrototypeOf.call( superPrototype, subPrototype );
-}
-
-//
-
-function prototypeHas( superPrototype, subPrototype ) /* xxx : move */
-{
-  _.assert( arguments.length === 2, 'Expects two arguments' );
-  // eslint-disable-next-line no-prototype-builtins
-  return _.prototypeIsPrototypeOf( subPrototype, superPrototype );
-}
-
-//
-
-/**
- * Is prototype.
- * @function prototypeIs
- * @param {object} src - entity to check
- * @namespace Tools
- */
-
-function prototypeIs( src ) /* xxx : move */
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( _.primitiveIs( src ) )
-  return false;
-  if( _.routineIs( src ) )
-  return false;
-  return Object.hasOwnProperty.call( src, 'constructor' );
 }
 
 // //
@@ -571,28 +442,12 @@ let Routines =
 
   //
 
-  /* qqq for Yevhen : move */
-  vectorAdapterIs,
-  vadIs : vectorAdapterIs,
-  vectorIs, /* qqq : cover here and in the module::MathVector */
-  vectorLike, /* qqq : cover here and in the module::MathVector */
-  partibleIs, /* qqq : cover here and in the module::MathVector */
-  partibleLike, /* qqq : cover here and in the module::MathVector */
-  constructorIsVectorAdapter,
-  constructorIsVad : constructorIsVectorAdapter,
-  /* qqq for Yevhen : move */
-
-  //
-
   consequenceIs,
   consequenceLike,
   promiseIs,
   promiseLike,
 
   typeOf,
-  prototypeIsPrototypeOf,
-  prototypeHas,
-  prototypeIs,
   constructorIs,
   instanceIs,
 

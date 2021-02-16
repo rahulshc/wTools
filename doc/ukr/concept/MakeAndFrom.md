@@ -5,7 +5,7 @@
 * `make`
   * `_.arrayMake`
   * `_.arrayMakeUndefined`
-  * `_.argumentsArrayMake`
+  * `_.argumentsArray.make`
   * `_.unrollMake`
   * `_.bufferMake`
   * `_.longDescriptor.make`
