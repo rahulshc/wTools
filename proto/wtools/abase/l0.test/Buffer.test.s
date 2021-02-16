@@ -11061,6 +11061,13 @@ function bufferReusingOnlyDstIsBufferTyped( test )
     return BufferNode.from( src );
   };
 
+  function resultCopyData( dst, src )
+  {
+    for( let i = 0 ; i < src.length ; i++ )
+    dst[ i ] = src[ i ];
+    return dst;
+  }
+
   /* - */
 
   var list =
@@ -11089,132 +11096,142 @@ function bufferReusingOnlyDstIsBufferTyped( test )
 
   /* - */
 
-  function testRun( makeBuffer )
+  function testRun( bufferMake )
   {
     test.open( 'not inplace' );
 
     test.case = 'only dst';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst );
-    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, -1 );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 0 );
-    var expected = makeBuffer( [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 2 );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 2 );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, -3 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, -1 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 0 ] );
-    var expected = makeBuffer( [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 2 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 5 ] );
-    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 0 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 1 ] );
-    var expected = makeBuffer( [ 2 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 2 ] );
-    var expected = makeBuffer( [ 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 5 ] );
-    var expected = makeBuffer( [ 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 4 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 5 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 7 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -11225,127 +11242,137 @@ function bufferReusingOnlyDstIsBufferTyped( test )
     test.open( 'inplace' );
 
     test.case = 'only dst';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst );
-    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, -1 );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 0 );
-    var expected = makeBuffer( [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 2 );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, 2 );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, -3 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, -1 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 0 ] );
-    var expected = makeBuffer( [ 1 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 2 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ -1, 5 ] );
-    var expected = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 0 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 1 ] );
-    var expected = makeBuffer( [ 2 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 2 ] );
-    var expected = makeBuffer( [ 2, 3 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2, 3 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 1, 5 ] );
-    var expected = makeBuffer( [ 2, 3, 4, 5 ] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
+    expected = resultCopyData( expected, [ 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     /* */
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 4 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 5 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
-    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var dst = bufferMake( [ 1, 2, 3, 4, 5 ] );
     var got = _.bufferReusingOnly( dst, [ 5, 7 ] );
-    var expected = makeBuffer( [] );
+    var expected = bufferMake( 64 / got.BYTES_PER_ELEMENT );
     test.identical( got, expected );
     test.true( got !== dst );
 
