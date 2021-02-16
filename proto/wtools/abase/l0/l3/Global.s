@@ -17,6 +17,14 @@ function is( src )
 
   if( _.primitiveIs( src ) )
   return false;
+
+  if( src === _global_ )
+  return true;
+
+  if( _.prototype.has( src, _global_ ) )
+  return true;
+
+  return false;
 }
 
 //
@@ -25,7 +33,11 @@ function isReal( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) )
+  // if( _.primitiveIs( src ) )
+  // return false;
+
+  if( src === _realGlobal_ )
+  return true;
   return false;
 }
 
@@ -35,7 +47,11 @@ function isDerivative( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) )
+  // if( _.primitiveIs( src ) )
+  // return false;
+
+  if( _.global.is( src ) && !_.global.isReal( src ) )
+  return true;
   return false;
 }
 
