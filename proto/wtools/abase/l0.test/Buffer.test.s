@@ -11045,7 +11045,7 @@ function bufferReusingButDstIsBufferTyped( test )
 
 //
 
-function bufferReusingButOptionOffsetting( test )
+function bufferReusingButWithOptionOffsetting( test )
 {
   test.case = 'cinterval inside buffer, not changed length - not new buffer, dst === src, offsetting - 1';
   var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
@@ -11149,6 +11149,83 @@ function bufferReusingButOptionOffsetting( test )
     minSize : 1,
   });
   var expected = new U8x([ 2, 0, 0, 4, 5 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer !== dst.buffer );
+}
+
+//
+
+function bufferReusingButWithOptionShrinkFactor( test )
+{
+  test.case = 'resulted ratio is less than shrinkFactor - 10 / 2 < 10';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 5 );
+  var got = _.bufferReusingBut
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 2, 4 ],
+    ins : [],
+    offsetting : 1,
+    minSize : 0,
+    shrinkFactor : 10,
+  });
+  var expected = new U8x([ 2, 3 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer === dst.buffer );
+
+  test.case = 'resulted ratio is equal to shrinkFactor - 10 / 1 === 10';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 5 );
+  var got = _.bufferReusingBut
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 4 ],
+    ins : [],
+    offsetting : 1,
+    minSize : 0,
+    shrinkFactor : 10,
+  });
+  var expected = new U8x([ 2 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer !== dst.buffer );
+
+  test.case = 'resulted ratio is greater than shrinkFactor - 10 / 1 > 9';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 5 );
+  var got = _.bufferReusingBut
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 4 ],
+    ins : [],
+    offsetting : 1,
+    minSize : 0,
+    shrinkFactor : 9,
+  });
+  var expected = new U8x([ 2 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer !== dst.buffer );
+
+  test.case = 'empty resulted container, shrinkFactor - 1000, should be new buffer';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 5 );
+  var got = _.bufferReusingBut
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 0, 4 ],
+    ins : [],
+    offsetting : 1,
+    minSize : 0,
+    shrinkFactor : 1000,
+  });
+  var expected = new U8x( [] );
   test.identical( got, expected );
   test.true( got !== dst );
   test.true( got.buffer !== dst.buffer );
@@ -16592,7 +16669,8 @@ let Self =
     //
 
     bufferReusingButDstIsBufferTyped,
-    bufferReusingButOptionOffsetting,
+    bufferReusingButWithOptionOffsetting,
+    bufferReusingButWithOptionShrinkFactor,
 
     bufferReusingOnlyDstIsBufferTyped,
     bufferReusingGrowDstIsBufferTyped,
