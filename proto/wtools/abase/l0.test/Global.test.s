@@ -61,6 +61,7 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
 
   test.case = 'current global';
   var src = _global_;
+  debugger;
   test.true( _.global.is( src ) );
   test.true( _.global.isReal( src ) );
   test.true( !_.global.isDerivative( src ) );
@@ -92,7 +93,7 @@ var Self =
   tests :
   {
 
-    // checks,
+    checks,
 
   }
 
