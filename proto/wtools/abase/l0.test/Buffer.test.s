@@ -11069,7 +11069,7 @@ function bufferReusingButDstIsBufferTyped( test )
     var expected = [ 0, 1, 2, 3, 1, undefined, undefined, undefined ];
     test.identical( got, expected );
     test.true( got !== dst );
-    test.true( got !== dst0 );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val';
     var dst0 = [ { a : 2 }, { b : 3 } ];
@@ -11078,7 +11078,7 @@ function bufferReusingButDstIsBufferTyped( test )
     var expected = [ 0, 1, undefined, undefined, undefined, undefined, undefined, undefined ];
     test.identical( got, expected );
     test.true( got !== dst );
-    test.true( got !== dst0 );
+    test.true( got === dst0 );
 
     test.case = 'dst0, dst = empty BufferTyped, val';
     var dst0 = new F32x( [ 5 ] );
@@ -11219,6 +11219,7 @@ function bufferReusingButWithOptionOffsetting( test )
     cinterval : [ 1, 1 ],
     ins : [ 0, 0 ],
     offsetting : 1,
+    growFactor : 1,
     minSize : 1,
   });
   var expected = new U8x([ 2, 0, 0, 4, 5 ]);
@@ -11236,6 +11237,7 @@ function bufferReusingButWithOptionOffsetting( test )
     cinterval : [ 1, 1 ],
     ins : [ 0, 0 ],
     offsetting : 0,
+    growFactor : 1,
     minSize : 1,
   });
   var expected = new U8x([ 2, 0, 0, 4, 5 ]);
@@ -12071,7 +12073,7 @@ function bufferReusingGrowDstIsBufferTyped( test )
     var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
     test.identical( got, expected );
     test.true( got !== dst );
-    test.true( got !== dst0 );
+    test.true( got === dst0 );
 
     test.case = 'dst0, range[ 0 ] > 0, range[ 1 ] > dst.length, val = number';
     var dst0 = [ 1, 2, 3 ];
@@ -12080,7 +12082,7 @@ function bufferReusingGrowDstIsBufferTyped( test )
     var expected = [ 0, 1, 2, 3, 1, 1, 1, 1 ];
     test.identical( got, expected );
     test.true( got !== dst );
-    test.true( got !== dst0 );
+    test.true( got === dst0 );
 
     test.close( 'inplace' );
   }
@@ -12369,7 +12371,7 @@ function bufferReusingRelengthDstIsBufferTyped( test )
     var expected = [ 2, 2, 2, 2, 2, 2, 2, 2 ];
     test.identical( got, expected );
     test.true( got !== src );
-    test.true( got !== dst );
+    test.true( got === dst );
 
     test.close( 'inplace' );
   }
