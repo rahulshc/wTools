@@ -98,11 +98,18 @@ function numberFromStrMaybe( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) || _.numberIs( src ) );
+
   if( _.numberIs( src ) )
   return src;
   if( !src ) /* qqq : cover */
   return src;
-  let parsed = !src ? NaN : Number( src );
+
+  // let parsed = !src ? NaN : Number( src ); /* Dmytro : it is strange code, the previous branch checks this condition */
+  // if( !isNaN( parsed ) )
+  // return parsed;
+  // return src;
+
+  let parsed = src ? Number( src ) : NaN;
   if( !isNaN( parsed ) )
   return parsed;
   return src;
