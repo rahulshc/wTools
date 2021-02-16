@@ -1074,6 +1074,196 @@ function transformerUnregister( test )
 
 }
 
+//
+
+function transformersUnregister( test )
+{
+  let mapperBefore = new Set( Object.getOwnPropertyNames( _.property.mapper ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.property.filter ) );
+
+  addIdentity();
+
+  test.case = 'check not registered';
+  test.true( _.property.mapper[ mapper1.name ] === undefined );
+  test.true( _.property.filter[ filter1.name ] === undefined );
+
+  test.true( _.property.mapper[ mapper2.name ] === undefined );
+  test.true( _.property.filter[ filter2.name ] === undefined );
+  test.true( _.property.mapper[ filter2.name ] === undefined );//
+
+  test.true( _.property.mapper[ mapper3.name ] === undefined );
+  test.true( _.property.filter[ filter3.name ] === undefined );
+  test.true( _.property.mapper[ filter3.name ] === undefined );
+
+  test.true( _.property.mapper[ mapper4.name ] === undefined );
+  test.true( _.property.filter[ filter4.name ] === undefined );
+  test.true( _.property.mapper[ filter4.name ] === undefined );
+
+  test.true( _.property.mapper[ mapperFilter.name ] === undefined );
+  test.true( _.property.filter[ mapperFilter.name ] === undefined );
+  test.true( _.property.mapper[ 'existingMapper' ] === undefined );
+  test.true( _.property.filter[ 'existingFilter' ] === undefined );
+  test.true( _.property.mapper[ 'existingFilter' ] === undefined );
+
+  var transformers =
+  {
+    [ mapper3.name ] : mapper3,
+    [ filter3.name ] : filter3,
+    [ mapper4.name ] : mapper4,
+    [ filter4.name ] : filter4,
+    [ mapperFilter.name ] : mapperFilter,
+    'existingMapper' : _.property.mapper[ 'assigning' ],
+    'existingFilter' : _.property.filter[ 'dstAndSrcOwn' ],
+  }
+
+  _.property.transformersRegister( transformers );
+
+  test.case = 'check registered';
+  test.true( _.property.mapperIs( _.property.mapper[ mapper3.name ] ) );
+  test.true( _.property.filterIs( _.property.filter[ filter3.name ] ) );
+  test.true( _.property.mapperIs( _.property.mapper[ filter3.name ] ) );
+
+  test.true( _.property.mapperIs( _.property.mapper[ mapper4.name ] ) );
+  test.true( _.property.filterIs( _.property.filter[ filter4.name ] ) );
+  test.true( _.property.mapperIs( _.property.mapper[ filter4.name ] ) );
+
+  test.true( _.property.mapperIs( _.property.mapper[ mapperFilter.name ] ) );
+  test.true( _.property.mapperIs( _.property.mapper[ 'existingMapper' ] ) );
+  test.true( _.property.filterIs( _.property.filter[ 'existingFilter' ] ) );
+  test.true( _.property.mapperIs( _.property.mapper[ 'existingFilter' ] ) );
+
+  _.property.transformersUnregister
+  (
+    [
+      mapper3.name,
+      filter3.name,
+      mapper4.name,
+      filter4.name,
+      mapperFilter.name,
+      'existingMapper',
+      'existingFilter',
+    ],
+    'mapper'
+  );
+
+  _.property.transformersUnregister
+  (
+    [
+      filter3.name,
+      filter4.name,
+      'existingFilter',
+    ],
+    'filter'
+  );
+
+  test.case = 'check unregistered';
+  test.true( _.property.mapper[ mapper1.name ] === undefined );
+  test.true( _.property.filter[ filter1.name ] === undefined );
+
+  test.true( _.property.mapper[ mapper2.name ] === undefined );
+  test.true( _.property.filter[ filter2.name ] === undefined );
+  test.true( _.property.mapper[ filter2.name ] === undefined );//
+
+  test.true( _.property.mapper[ mapper3.name ] === undefined );
+  test.true( _.property.filter[ filter3.name ] === undefined );
+  test.true( _.property.mapper[ filter3.name ] === undefined );
+
+  test.true( _.property.mapper[ mapper4.name ] === undefined );
+  test.true( _.property.filter[ filter4.name ] === undefined );
+  test.true( _.property.mapper[ filter4.name ] === undefined );
+
+  test.true( _.property.mapper[ mapperFilter.name ] === undefined );
+  test.true( _.property.filter[ mapperFilter.name ] === undefined );
+  test.true( _.property.mapper[ 'existingMapper' ] === undefined );
+  test.true( _.property.filter[ 'existingFilter' ] === undefined );
+  test.true( _.property.mapper[ 'existingFilter' ] === undefined );
+
+  test.case = 'check no garbage left';
+  test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.property.mapper ) ) )
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.property.filter ) ) );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'routine';
+  test.shouldThrowErrorSync( () => _.property.transformerRegisters({ [ plain.name ] : plain }) );
+
+  test.case = 'not existing mapper';
+  test.shouldThrowErrorSync( () => _.property.transformerRegisters( [ 'hello' ], 'mapper' ) );
+
+  test.case = 'not existing filter';
+  test.shouldThrowErrorSync( () => _.property.transformerRegisters( [ 'hello' ], 'filter' ) );
+
+  /* - */
+
+  function plain()
+  {
+    return 1 + 2;
+  }
+
+  function mapper1()
+  {
+    return 1 + 2;
+  }
+
+  function filter1()
+  {
+    return 1 + 2;
+  }
+
+  function mapper2()
+  {
+    return 1 + 2;
+  }
+
+  function filter2()
+  {
+    return 1 + 2;
+  }
+
+  function mapper3()
+  {
+    return 1 + 2;
+  }
+
+  function filter3()
+  {
+    return 1 + 2;
+  }
+
+  function mapper4()
+  {
+    return 1 + 2;
+  }
+
+  function filter4()
+  {
+    return 1 + 2;
+  }
+
+  function mapperFilter()
+  {
+    return 1 + 2;
+  }
+
+  function addIdentity()
+  {
+    mapper1.identity = { propertyMapper : true };
+    filter1.identity = { propertyFilter : true };
+
+    mapper2.identity = { propertyMapper : true, propertyTransformer : true };
+    filter2.identity = { propertyFilter : true, propertyTransformer : true };
+
+    mapper3.identity = { propertyMapper : true, functor : true };
+    filter3.identity = { propertyFilter : true, functor : true }
+
+    mapper4.identity = { propertyMapper : true, propertyTransformer : true, functor : true };
+    filter4.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+
+    mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true, functor : true };
+  }
+
+}
 
 // --
 // define test suite
@@ -1098,7 +1288,7 @@ let Self =
     transformerRegister,
     transformersRegister,
     transformerUnregister,
-    // transformersUnregister,
+    transformersUnregister,
   }
 
 }
