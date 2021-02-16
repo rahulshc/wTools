@@ -21,7 +21,10 @@ function is( src )
   if( src === _global_ )
   return true;
 
-  if( Object.getPrototypeOf( src ) === _global_ )
+  let prototype = Object.getPrototypeOf( src );
+  if( prototype === _global_ )
+  return true;
+  if( Object.getPrototypeOf( prototype ) === _global_ )
   return true;
 
   return false;
