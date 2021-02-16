@@ -10772,6 +10772,96 @@ function bufferResize_( test )
 
 //
 
+function bufferReusingButDstIsArrayUnroll( test )
+{
+  test.case = 'dst = array, range - number < 0, without ins';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingBut( dst, -5 );
+  test.identical( got, [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = array, range - number < 0, without ins';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingBut( dst, dst, -5, undefined );
+  test.identical( got, [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ] );
+  test.true( got === dst );
+
+  test.case = 'dst = empty array, range - number === 0, ins';
+  var dst = [];
+  var got = _.bufferReusingBut( dst, dst, 0, [ 1, 2 ] );
+  test.identical( got, [ 1, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  test.true( got === dst );
+
+  test.case = 'dst = array, range - number > 0, without ins';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingBut( dst, dst, 1, undefined );
+  test.identical( got, [ 1, 3, 4, undefined, undefined, undefined, undefined, undefined ] );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = unroll, range = number > src.length, ins';
+  var dst = _.unrollFrom([ 1, 2, 3, 4 ]);
+  var got = _.bufferReusingBut( null, dst, 4, [ 0, 2 ] );
+  test.identical( got, [ 1, 2, 3, 4, 0, 2, undefined, undefined ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ], without ins';
+  var dst = _.unrollFrom( [] );
+  var got = _.bufferReusingBut( null, dst, [ 1, 2 ], undefined );
+  test.identical( got, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ], ins';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingBut( null, dst, [ 1, 0 ], [ 0, 0 ] );
+  test.identical( got, [ 1, 0, 0, 2, 3, 4, undefined, undefined ] );
+  test.true( got !== dst );
+
+  /* */
+
+  test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0, without ins';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingBut( dst, [ 0, 0 ] );
+  test.identical( got, [ 2, 3, 4, undefined, undefined, undefined, undefined, undefined ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ], ins';
+  var dst = _.argumentsArray.from( [] );
+  var got = _.bufferReusingBut( dst, [ 0, -1 ], [ 1, 2 ] );
+  test.identical( got, [ 1, 2, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = argumentsArray, range - undefined, ins';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingBut( dst, undefined, [ 1, 2 ] );
+  test.identical( got, [ 1, 2, 1, 2, 3, 4, undefined, undefined ] );
+  test.true( got !== dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingBut() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2 ], 1, [ 4 ], 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( {}, [ 1, 3 ], [ 0, 0 ], [ 1 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), 'wrong', 1, [ 4 ] ) );
+
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], {}, [ 1 ] ) );
+}
+
+//
+
 function bufferReusingButDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -16747,6 +16837,7 @@ let Self =
 
     //
 
+    bufferReusingButDstIsArrayUnroll,
     bufferReusingButDstIsBufferTyped,
     bufferReusingButWithOptionOffsetting,
     bufferReusingButWithOptionShrinkFactor,
