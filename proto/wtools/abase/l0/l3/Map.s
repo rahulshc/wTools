@@ -1476,7 +1476,7 @@ let Extension =
   mapIsPure,
   mapIsPolluted,
   mapLikePrototyped,
-  mapIsPrototyped : mapLikePrototyped, /* xxx : remove later */
+  // mapIsPrototyped : mapLikePrototyped, /* xxx : remove later */
   mapLikePure, /* xxx : cover */
   mapLikePolluted,
 
