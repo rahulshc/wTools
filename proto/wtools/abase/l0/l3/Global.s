@@ -36,7 +36,7 @@ function isReal( src )
   // if( _.primitiveIs( src ) )
   // return false;
 
-  if( src === _realGlobal_ && src.__GLOBAL_NAME__ === 'real' )
+  if( src === _realGlobal_ )
   return true;
   return false;
 }
