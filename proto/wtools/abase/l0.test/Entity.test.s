@@ -2784,91 +2784,94 @@ function entitySize( test )
   var got = _.entitySize( Symbol.for( 'x' ) );
   test.identical( got, 8 );
 
-  /* zzz : temp fix */
+  /* zzz : temp fix */ /* Dmytro : the second part of test routine in module Looker */
 
-  test.case = 'empty array';
-  var got = _.entitySize( [] );
-  var exp = _.look ? 0 : NaN;
-  test.identical( got, exp );
-
-  test.case = 'array';
-  var got = _.entitySize( [ 3, undefined, 34 ] );
-  var exp = _.look ? 24 : NaN;
-  test.identical( got, exp );
-
-  test.case = 'argumentsArray';
-  var got = _.entitySize( _.argumentsArray.make( [ 1, null, 4 ] ) );
-  var exp = _.look ? 24 : NaN;
-  test.identical( got, exp );
-
-  test.case = 'unroll';
-  var got = _.entitySize( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
-  var exp = _.look ? 19 : NaN;
-  test.identical( got, exp );
-
-  test.case = 'BufferTyped';
-  var got = _.entitySize( new U8x( [ 1, 2, 3, 4 ] ) );
-  test.identical( got, 4 );
-
-  test.case = 'BufferRaw';
-  var got = _.entitySize( new BufferRaw( 10 ) );
-  test.identical( got, 10 );
-
-  test.case = 'BufferView';
-  var got = _.entitySize( new BufferView( new BufferRaw( 10 ) ) );
-  test.identical( got, 10 );
-
-  if( Config.interpreter === 'njs' )
+  if( !_.look ) /* prevents fails if Looker is included */
   {
-    test.case = 'BufferNode';
-    var got1 = _.entitySize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-    test.identical( got1, 4 );
-  }
+    test.case = 'empty array';
+    var got = _.entitySize( [] );
+    var exp = NaN;
+    test.identical( got, exp );
 
-  test.case = 'Set';
-  var got = _.entitySize( new Set( [ 1, 2, undefined, 4 ] ) );
-  var exp = _.look ? 32 : NaN;
-  test.identical( got, exp );
+    test.case = 'array';
+    var got = _.entitySize( [ 3, undefined, 34 ] );
+    var exp = NaN;
+    test.identical( got, exp );
 
-  test.case = 'map';
-  var got = _.entitySize( { a : 1, b : 2, c : 'str' } );
-  var exp = _.look ? 19 : NaN;
-  test.identical( got, exp );
+    test.case = 'argumentsArray';
+    var got = _.entitySize( _.argumentsArray.make( [ 1, null, 4 ] ) );
+    var exp = NaN;
+    test.identical( got, exp );
 
-  test.case = 'HashMap';
-  var got = _.entitySize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
-  var exp = _.look ? 19 : NaN;
-  test.identical( got, exp );
+    test.case = 'unroll';
+    var got = _.entitySize( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
+    var exp = NaN;
+    test.identical( got, exp );
 
-  test.case = 'function';
-  var got = _.entitySize( function(){} );
-  test.identical( got, 8 );
+    test.case = 'BufferTyped';
+    var got = _.entitySize( new U8x( [ 1, 2, 3, 4 ] ) );
+    test.identical( got, 4 );
 
-  test.case = 'instance of class';
-  function Constr1()
-  {
-    this.a = 34;
-    this.b = 's';
-    this[ 100 ] = 'sms';
-  };
-  var got = _.entitySize( new Constr1() );
-  test.identical( got, 8 );
+    test.case = 'BufferRaw';
+    var got = _.entitySize( new BufferRaw( 10 ) );
+    test.identical( got, 10 );
 
-  test.case = 'object, some properties are non enumerable';
-  var src = Object.create( null );
-  var o =
-  {
-    'property3' :
+    test.case = 'BufferView';
+    var got = _.entitySize( new BufferView( new BufferRaw( 10 ) ) );
+    test.identical( got, 10 );
+
+    if( Config.interpreter === 'njs' )
     {
-      enumerable : true,
-      value : 'World',
-      writable : true
+      test.case = 'BufferNode';
+      var got1 = _.entitySize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+      test.identical( got1, 4 );
     }
-  };
-  Object.defineProperties( src, o );
-  var got = _.entitySize( src );
-  var exp = _.look ? 5 : NaN;
-  test.identical( got, exp );
+
+    test.case = 'Set';
+    var got = _.entitySize( new Set( [ 1, 2, undefined, 4 ] ) );
+    var exp = NaN;
+    test.identical( got, exp );
+
+    test.case = 'map';
+    var got = _.entitySize( { a : 1, b : 2, c : 'str' } );
+    var exp = NaN;
+    test.identical( got, exp );
+
+    test.case = 'HashMap';
+    var got = _.entitySize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+    var exp = NaN;
+    test.identical( got, exp );
+
+    test.case = 'function';
+    var got = _.entitySize( function(){} );
+    test.identical( got, 8 );
+
+    test.case = 'instance of class';
+    function Constr1()
+    {
+      this.a = 34;
+      this.b = 's';
+      this[ 100 ] = 'sms';
+    };
+    var got = _.entitySize( new Constr1() );
+    test.identical( got, 8 );
+
+    test.case = 'object, some properties are non enumerable';
+    var src = Object.create( null );
+    var o =
+    {
+      'property3' :
+      {
+        enumerable : true,
+        value : 'World',
+        writable : true
+      }
+    };
+    Object.defineProperties( src, o );
+    var got = _.entitySize( src );
+    var exp = NaN;
+    test.identical( got, exp );
+  }
 
   /* - */
 
