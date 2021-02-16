@@ -15,6 +15,10 @@
 
 Number
 NumberLike
+boolIs
+boolLike
+fuzzyIs
+fuzzyLike
 
 BigInt
 
@@ -48,3 +52,16 @@ mapIsPrototyped,
 
 HashMap
 Set
+
+BufferNode
+BufferRaw
+BufferRawShared
+BufferTyped
+BufferView
+
+constructibleIs
+constructibleLike
+
+ContainerIs
+ContainerLike
+
