@@ -417,6 +417,88 @@ function mapperFrom( test )
 
 }
 
+//
+
+function filterFrom( test )
+{
+  test.case = 'plain routine';
+  var src = plain;
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  test.case = 'routine - сustom filter without propertyTransformer';
+  filter.identity = { propertyFilter : true }
+  var src = filter;
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  test.case = 'routine - сustom filter';
+  filter.identity = { propertyFilter : true, propertyTransformer : true }
+  var src = filter;
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  test.case = 'routine - сustom filter functor';
+  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  var src = filter;
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  test.case = 'routine - сustom filter & mapper';
+  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
+  var src = mapperFilter;
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  test.case = 'existing filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  var got = _.property.filterFrom( src );
+  test.true( _.property.filterIs( got ) );
+  test.true( got === src );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'primitive';
+  test.shouldThrowErrorSync( () => _.property.filterFrom( 'hello' ) );
+
+  test.case = 'custom mapper';
+  var src = mapper;
+  mapper.identity = { propertyMapper : true }
+  test.shouldThrowErrorSync( () => _.property.filterFrom( src ) );
+
+  test.case = 'existing mapper';
+  var src = _.property.mapper[ 'assigning' ]
+  test.shouldThrowErrorSync( () => _.property.filterFrom( src ) );
+
+  /* - */
+
+  function plain()
+  {
+    return 1 + 2;
+  }
+
+  function mapper()
+  {
+    return 1 + 2;
+  }
+
+  function filter()
+  {
+    return 1 + 2;
+  }
+
+  function mapperFilter()
+  {
+    return 1 + 2;
+  }
+
+}
 
 // --
 // define test suite
@@ -437,10 +519,9 @@ let Self =
     filterIs,
     mapperFromFilter,
     mapperFrom,
-    // filterFrom,
+    filterFrom,
     // transformerRegister,
     // transformersRegister,
-    // transformerIs,
   }
 
 }
