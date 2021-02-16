@@ -146,7 +146,7 @@ function transformerRegister( fi, name )
 
 function transformersRegister( transformers )
 {
-
+  debugger
   _.assert( _.mapIs( transformers ) );
 
   for( let f in transformers )
