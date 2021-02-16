@@ -553,7 +553,7 @@ function filterFrom( test )
 
 function transformerRegister( test )
 {
-  clean();
+  let context = this;
 
   test.case = 'routine - сustom mapper without propertyTransformer';
   var src = mapper1;
@@ -633,6 +633,12 @@ function transformerRegister( test )
   test.true( _.property.filterIs( src ) );
   test.true( _.property.filterIs( _.property.filter[ srcName ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ srcName ] ) );
+
+  clean();
+
+  test.case = 'check no garbage left';
+  test.identical( context.mapperBefore, _.property.mapper );
+  test.identical( context.filterBefore, _.property.filter );
 
   if( !Config.debug )
   return;
@@ -717,8 +723,8 @@ function transformerRegister( test )
 
 function transformersRegister( test )
 {
+  let context = this;
 
-  clean();
   addIdentity();
 
   test.case = 'check not registered';
@@ -769,6 +775,12 @@ function transformersRegister( test )
   test.true( _.property.mapperIs( _.property.mapper[ 'existingMapper' ] ) );
   test.true( _.property.filterIs( _.property.filter[ 'existingFilter' ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingFilter' ] ) );
+
+  clean();
+
+  test.case = 'check no garbage left';
+  test.identical( context.mapperBefore, _.property.mapper );
+  test.identical( context.filterBefore, _.property.filter );
 
   if( !Config.debug )
   return;
@@ -902,6 +914,11 @@ let Self =
 
   name : 'Tools.PropertyTransformer',
   silencing : 1,
+
+  context : {
+    mapperBefore : _.mapExtend( null, _.property.mapper ),
+    filterBefore : _.mapExtend( null, _.property.filter )
+  },
 
   tests :
   {
