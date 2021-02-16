@@ -1763,9 +1763,9 @@ function objectSetWithKeyStrictly( dstMap, key, val )
 function mapInvert( src, dst )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.src ) );
+  _.assert( _.objectLike( src ) );
 
-  _._mapInvert({ src, dst });
+  return _._mapInvert({ src, dst });
 
 }
 

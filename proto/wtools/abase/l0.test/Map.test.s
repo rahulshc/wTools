@@ -1418,6 +1418,200 @@ function mapEmpty( test )
   test.shouldThrowErrorSync( () => _.mapEmpty( undefined, { b : 2 } ) );
 }
 
+//
+
+function mapInvert( test )
+{
+  test.open( 'no dst' );
+
+  test.case = 'src - empty map';
+  var src = {};
+  var got = _.mapInvert( src );
+  test.identical( got, {} );
+
+  test.case = 'src - map with number';
+  var src = { a : 1 };
+  var expected =  { '1' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with null';
+  var src = { a : null };
+  var expected =  { 'null' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with undefined';
+  var src = { a : undefined };
+  var expected =  { 'undefined' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with string';
+  var src = { a : 'str' };
+  var expected =  { 'str' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with bool';
+  var src = { a : true };
+  var expected =  { 'true' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with object';
+  var src = { a : { b : 2 } };
+  var expected =  { '[object Object]' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with set';
+  var src = { a : new Set([ 1, 2 ]) };
+  var expected =  { '[object Set]' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with array';
+  var src = { a : [ 1, 2 ] };
+  var expected =  { '1,2' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with function';
+  var src = { a : function b() {} };
+  var expected =  { 'function b() {}' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    g : function b() {},
+    h : null,
+    i : undefined
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'function b() {}' : 'g',
+    'null' : 'h',
+    'undefined' : 'i'
+  }
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.close( 'no dst' );
+
+  /* - */
+
+  test.open( 'with dst' );
+
+  test.case = 'src and dst - empty map';
+  var src = {};
+  var dst = {};
+  var expected = {};
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 1 el';
+  var src = { a : 1 };
+  var dst = { b : 2 };
+  var expected =  { '1' : 'a', 'b' : 2 };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 2 el';
+  var dst = { b : 2, d : 4 };
+  var src = { a : 1, c : 3 };
+  var expected =
+  {
+    '1' : 'a',
+    '3' : 'c',
+    'b' : 2,
+    'd' : 4
+  };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst are the same';
+  var src = { a : 1 };
+  var dst = { a : 1 };
+  var expected =  { '1' : 'a', 'a' : 1 };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types, some same as dst';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    h : null,
+    i : undefined
+  };
+  var dst =
+  {
+    a : 1,
+    d : { b : 3 },
+    e : new Set([ 1, 2, 3 ]),
+    f : [ 1, 2 ],
+    h : null,
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'd' : { 'b' : 3 },
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'null' : 'h',
+    'undefined' : 'i',
+    'a' : 1,
+    'e' : new Set([ 1, 2, 3 ]),
+    'f' : [ 1, 2 ],
+    'h' : null
+  }
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.close( 'with dst' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapInvert() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapInvert( { a : 1 }, { b : 2 }, { c : 'extra' } ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.mapInvert( 'wrong' ) );
+
+  test.case = 'dst is inverse of src';
+  var src = { a : 1 };
+  var dst = { '1' : 'a' };
+  test.shouldThrowErrorSync( () => _.mapInvert( src, dst ) );
+}
+
 // --
 // map convert
 // --
@@ -12173,6 +12367,7 @@ let Self =
     objectSetWithKeyStrictly,
     mapDelete,
     mapEmpty,
+    mapInvert,
 
     // map convert
 
