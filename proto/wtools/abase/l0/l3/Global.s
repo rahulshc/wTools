@@ -21,7 +21,7 @@ function is( src )
   if( src === _global_ )
   return true;
 
-  if( _.prototype.has( _global_, src ) )
+  if( _.prototype.has( src, _global_ ) )
   return true;
 
   return false;

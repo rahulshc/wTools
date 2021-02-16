@@ -61,7 +61,6 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
 
   test.case = 'current global';
   var src = _global_;
-  debugger;
   test.true( _.global.is( src ) );
   test.true( _.global.isReal( src ) );
   test.true( !_.global.isDerivative( src ) );
@@ -78,6 +77,106 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
   test.true( _.global.isReal( src ) );
   test.true( !_.global.isDerivative( src ) );
 
+  /* */
+
+  test.case = 'current global in prototype';
+  var src = Object.create( _global_ );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = 'global in prototype';
+  var src = Object.create( global );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = '_realGlobal_ in prototype';
+  var src = Object.create( _realGlobal_ );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  /* */
+
+  test.case = 'current global in prototype, 2 level of nesting';
+  var src = Object.create( _global_ );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = 'global in prototype, 2 level of nesting';
+  var src = Object.create( global );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = '_realGlobal_ in prototype, 2 level of nesting';
+  var src = Object.create( _realGlobal_ );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  /* */
+
+  test.case = 'current global in prototype, 3 level of nesting';
+  var src = Object.create( _global_ );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = 'global in prototype, 3 level of nesting';
+  var src = Object.create( global );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = '_realGlobal_ in prototype, 3 level of nesting';
+  var src = Object.create( _realGlobal_ );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  /* */
+
+  test.case = 'current global in prototype, 5 level of nesting';
+  var src = Object.create( _global_ );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = 'global in prototype, 5 level of nesting';
+  var src = Object.create( global );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
+
+  test.case = '_realGlobal_ in prototype, 5 level of nesting';
+  var src = Object.create( _realGlobal_ );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  src = Object.create( src );
+  test.true( _.global.is( src ) );
+  test.true( !_.global.isReal( src ) );
+  test.true( _.global.isDerivative( src ) );
 }
 
 // --
