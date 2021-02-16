@@ -3070,7 +3070,12 @@ function _bufferReusing( o )
   let resultLength = resultSize / resultElementSize;
   _.assert( _.intIs( resultLength ) );
 
-  let resultBuffer = resultBufferMake();
+  let resultBuffer
+  if( o.reusing && !newBufferCreate )
+  resultBuffer = resultBufferReusedMaybe();
+  else
+  resultBuffer = resultBufferMake();
+
   let result = resultBufferFill( resultBuffer, o.src );
 
   return result;
@@ -3123,70 +3128,88 @@ function _bufferReusing( o )
 
   /* */
 
-  function resultBufferMake()
+  function resultBufferReusedMaybe()
   {
     let buffer;
 
-    if( o.reusing && !newBufferCreate )
+    let dstOffset = 0;
+    let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
+
+    if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
     {
+      dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
+      dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
+    }
 
-      let dstOffset = 0;
-      let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
+    let shouldReuse = insideBufferBounds( dstOffset, dstSize, resultSize );
+    let shouldShrink = shrinkFactorCheck( dstSize, resultSize );
 
-      if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
-      {
-        dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
-        dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
-      }
-
+    if( shouldReuse && !shouldShrink )
+    {
+      buffer = o.dst;
       let leftOffset = dstOffset + o.cinterval[ 0 ];
-      let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
-      let rightBound = leftOffset + resultSize;
-      let insideRightBound = rightBound <= dstSize;
+      let bufferLength = buffer.buffer ? buffer.length : buffer.byteLength;
 
-      let shouldShrink = false;
-      if( o.shrinkFactor > 1 )
-      shouldShrink = ( dstSize / resultSize ) >= o.shrinkFactor;
-
-      if( insideLeftBound && insideRightBound && !shouldShrink )
+      if( leftOffset !== dstOffset || resultSize !== bufferLength )
       {
-        buffer = o.dst;
-        let bufferLength = buffer.buffer ? buffer.length : buffer.byteLength;
-        if( leftOffset !== dstOffset || resultSize !== bufferLength )
-        {
-          if( !o.offsetting )
-          leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
+        if( !o.offsetting )
+        leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
 
-          if( _.bufferNodeIs( buffer ) )
-          buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
-          else if( buffer.buffer )
-          buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
-        }
-      }
-      else
-      {
-        if( _.arrayLikeResizable( o.dst ) )
-        {
-          buffer = o.dst;
-          buffer.length = resultLength;
-        }
-        else
-        {
-          buffer = _.bufferMakeUndefined( o.dst, resultLength );
-        }
+        if( _.bufferNodeIs( buffer ) )
+        buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
+        else if( buffer.buffer )
+        buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
       }
     }
     else
     {
-      if( newBufferCreate )
-      buffer = _.bufferMakeUndefined( o.src, resultLength );
-      else if( o.dst.byteLength && o.dst.byteLength > resultSize )
-      buffer = o.dst;
-      else if( o.dst.length && ( o.dst.length * resultElementSize ) > resultSize )
-      buffer = o.dst;
+      if( _.arrayLikeResizable( o.dst ) )
+      {
+        buffer = o.dst;
+        buffer.length = resultLength;
+      }
       else
-      buffer = _.bufferMakeUndefined( o.dst, resultLength );
+      {
+        buffer = _.bufferMakeUndefined( o.dst, resultLength );
+      }
     }
+
+    return buffer
+  }
+
+  /* */
+
+  function shrinkFactorCheck( dstSize, resultSize )
+  {
+    if( o.shrinkFactor > 1 )
+    return ( dstSize / resultSize ) >= o.shrinkFactor;
+    return false;
+  }
+
+  /* */
+
+  function insideBufferBounds( dstOffset, dstSize, resultSize )
+  {
+    let leftOffset = dstOffset + o.cinterval[ 0 ];
+    let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
+    let rightBound = leftOffset + resultSize;
+    let insideRightBound = rightBound <= dstSize;
+    return insideLeftBound && insideRightBound;
+  }
+
+  /* */
+
+  function resultBufferMake()
+  {
+    let buffer;
+    if( newBufferCreate )
+    buffer = _.bufferMakeUndefined( o.src, resultLength );
+    else if( o.dst.byteLength && o.dst.byteLength > resultSize )
+    buffer = o.dst;
+    else if( o.dst.length && ( o.dst.length * resultElementSize ) > resultSize )
+    buffer = o.dst;
+    else
+    buffer = _.bufferMakeUndefined( o.dst, resultLength );
 
     return buffer;
   }
