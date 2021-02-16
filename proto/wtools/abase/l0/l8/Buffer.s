@@ -3365,7 +3365,7 @@ bufferReusingOnly.defaults =
   offsetting : 1,
   reusing : 1,
   shrinkFactor : 0,
-  minSize : 0,
+  minSize : 64,
 };
 
 //
