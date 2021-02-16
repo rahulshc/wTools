@@ -913,7 +913,7 @@ function isPrototypeOf( test )
 var Self =
 {
 
-  name : 'Tools.Typing',
+  name : 'Tools.Prototype',
   silencing : 1,
 
   tests :
