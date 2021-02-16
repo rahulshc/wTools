@@ -1762,55 +1762,11 @@ function objectSetWithKeyStrictly( dstMap, key, val )
 
 function mapInvert( src, dst )
 {
-  let o = this === Self ? Object.create( null ) : this;
-
-  if( src )
-  o.src = src;
-
-  if( dst )
-  o.dst = dst;
-
-  _.routineOptions( mapInvert, o );
-
-  o.dst = o.dst || Object.create( null );
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( o.src ) );
 
-  let del
-  if( o.duplicate === 'delete' )
-  del = Object.create( null );
+  _._mapInvert({ src, dst });
 
-  /* */
-
-  for( let k in o.src )
-  {
-    let e = o.src[ k ];
-    if( o.duplicate === 'delete' )
-    if( o.dst[ e ] !== undefined )
-    {
-      del[ e ] = k;
-      continue;
-    }
-    if( o.duplicate === 'array' || o.duplicate === 'array-with-value' )
-    {
-      if( o.dst[ e ] === undefined )
-      o.dst[ e ] = o.duplicate === 'array-with-value' ? [ e ] : [];
-      o.dst[ e ].push( k );
-    }
-    else
-    {
-      _.assert( o.dst[ e ] === undefined, 'Cant invert the map, it has several keys with value', o.src[ k ] );
-      o.dst[ e ] = k;
-    }
-  }
-
-  /* */
-
-  if( o.duplicate === 'delete' )
-  _.mapDelete( o.dst, del );
-
-  return o.dst;
 }
 
 mapInvert.defaults =
