@@ -63,7 +63,7 @@ function is( test )
 function like( test )
 {
 
-  test.case = 'not';
+  test.case = 'primitive';
   test.identical( _.container.like( null ), false );
   test.identical( _.container.like( undefined ), false );
   test.identical( _.container.like( 'str' ), false );
@@ -105,7 +105,7 @@ function like( test )
 function lengthOf( test )
 {
 
-  test.case = 'not';
+  test.case = 'primitive';
   test.identical( _.container.lengthOf( null ), 1 );
   test.identical( _.container.lengthOf( undefined ), 0 );
   test.identical( _.container.lengthOf( 'str' ), 3 );
