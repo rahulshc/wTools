@@ -113,9 +113,10 @@ function entitySize( src )
 
   if( _.look )
   // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
-  if( _.containerIs( src ) )
+  // if( _.containerIs( src ) )
+  if( _.containerIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
   {
-    _.look( src, onEach );
+    _.look({ src, onUp : onEach, withPartible : 1 });
   }
 
   if( _.look )
