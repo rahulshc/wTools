@@ -22,10 +22,12 @@ function is( src )
   return true;
 
   let prototype = Object.getPrototypeOf( src );
-  if( prototype === _global_ )
-  return true;
-  if( Object.getPrototypeOf( prototype ) === _global_ )
-  return true;
+  while( prototype )
+  {
+    if( prototype === _global_ )
+    return true;
+    prototype = Object.getPrototypeOf( prototype );
+  }
 
   return false;
 }
