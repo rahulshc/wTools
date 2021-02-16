@@ -11981,6 +11981,77 @@ function bufferReusingOnlyDstIsBufferTyped( test )
 
 //
 
+function bufferReusingOnlyWithOptionOffsetting( test )
+{
+  test.case = 'cinterval gets all buffer, not changed length - not new buffer, dst === src, offsetting - 1';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingOnly
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 0, 3 ],
+    offsetting : 1,
+    minSize : 1,
+  });
+  var expected = new U8x([ 2, 3, 4, 5 ]);
+  test.identical( got, expected );
+  test.true( got === dst );
+  test.true( got.buffer === dst.buffer );
+
+  test.case = 'cinterval gets all buffer, not changed length - not new buffer, dst === src, offsetting - 0';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingOnly
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 0, 3 ],
+    offsetting : 0,
+    minSize : 1,
+  });
+  var expected = new U8x([ 2, 3, 4, 5 ]);
+  test.identical( got, expected );
+  test.true( got === dst );
+  test.true( got.buffer === dst.buffer );
+
+  /* */
+
+  test.case = 'cinterval gets part of buffer, decrease length - new buffer, dst === src, offsetting - 1';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingOnly
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 2 ],
+    offsetting : 1,
+    minSize : 1,
+  });
+  var expected = new U8x([ 3, 4 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer === dst.buffer );
+
+  test.case = 'cinterval gets part of buffer, decrease length - new buffer, dst === src, offsetting - 0';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingOnly
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 2 ],
+    offsetting : 0,
+    minSize : 1,
+  });
+  var expected = new U8x([ 3, 4 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer === dst.buffer );
+}
+
+//
+
 function bufferReusingGrowDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -17087,6 +17158,8 @@ let Self =
     bufferReusingButWithOptionGrowFactor,
 
     bufferReusingOnlyDstIsBufferTyped,
+    bufferReusingOnlyWithOptionOffsetting,
+
     bufferReusingGrowDstIsBufferTyped,
     bufferReusingRelengthDstIsBufferTyped,
     bufferReusingResize,
