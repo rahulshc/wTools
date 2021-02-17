@@ -756,9 +756,6 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
-
-
-
   /* - */
 
   function _iterate()
