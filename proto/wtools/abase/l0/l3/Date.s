@@ -11,30 +11,44 @@ let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 // typing
 // --
 
+function is( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Date]';
+}
+
+//
+
+function areIdentical( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( !_.date.is( src1 ) )
+  return false;
+  if( !_.date.is( src2 ) )
+  return false;
+
+  src1 = src1.getTime();
+  src2 = src2.getTime();
+
+  return src1 === src2;
+}
+
 // --
 // extension
 // --
 
 let ToolsExtension =
 {
-
-  // typing
-
-  constructibleIs, /* qqq : cover and move */
-  constructibleLike, /* qqq : cover and move */
-
+  dateIs : is,
+  datesAreIdentical : areIdentical,
 }
 
 //
 
 let Extension =
 {
-
-  // typing
-
-  is : constructibleIs, /* qqq : cover and move */
-  like : constructibleLike, /* qqq : cover and move */
-
+  is,
+  areIdentical
 }
 
 //

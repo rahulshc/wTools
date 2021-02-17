@@ -900,35 +900,6 @@ function spentFormat( spent )
   return result;
 }
 
-//
-
-/**
- * The routine dateToStr() converts Date object {-date-} to formatted string.
- * The format is : YYYY.MM.DD
- *
- * @example
- * let date = new Date();
- * console.log( _.time.dateToStr( date ) );
- * // log : '2020.10.20'
- *
- * @param { Date } date - The date to convert.
- * @returns { String } - Returns date in string format.
- * @function dateToStr
- * @namespace wTools.time
- * @extends Tools
- */
-
-function dateToStr( date )
-{
-  let y = date.getFullYear();
-  let m = date.getMonth() + 1;
-  let d = date.getDate();
-  if( m < 10 ) m = '0' + m;
-  if( d < 10 ) d = '0' + d;
-  let result = [ y, m, d ].join( '.' );
-  return result;
-}
-
 // --
 // extension
 // --
@@ -963,8 +934,6 @@ let Extension =
   from,
   spent,
   spentFormat,
-
-  dateToStr,
 
 }
 
