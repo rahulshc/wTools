@@ -12611,6 +12611,92 @@ function bufferReusingOnlyWithOptionMinSize( test )
 
 //
 
+function bufferReusingGrowDstIsArrayUnroll( test )
+{
+  test.case = 'dst = array, val = array, range = negative number';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingGrow( dst, dst, -5, 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = empty array, val = array, range[ 0 ] === range[ 1 ]';
+  var dst = [];
+  var got = _.bufferReusingGrow( dst, dst, [ 0, -1 ], 0 );
+  test.identical( got, [ 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = array, range[ 1 ] > dst.length, val = array';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingGrow( dst, dst, [ 1, 4 ], 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = unroll, val = array, range = negative number';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingGrow( dst, dst, -5, 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = empty unroll, val = array, range[ 0 ] === range[ 1 ]';
+  var dst = _.unrollFrom( [] );
+  var got = _.bufferReusingGrow( dst, dst, [ 0, -1 ], 0 );
+  test.identical( got, [ 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = unroll, val = array';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingGrow( dst, dst, [ 1, 4 ], 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = argumentsArray, val = array, range = negative number';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingGrow( dst, dst, -5, 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty argumentsArray, val = array, range[ 0 ] === range[ 1 ]';
+  var dst = _.argumentsArray.from( [] );
+  var got = _.bufferReusingGrow( dst, dst, [ 0, -1 ], 0 );
+  test.identical( got, [ 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = argumentsArray, val = array';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingGrow( dst, dst, [ 1, 4 ], 0 );
+  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.true( got !== dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow() );
+
+  test.case = 'extra arguments';
+  var dst = new I16x( 10 );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [ 1, 2 ], [ 1, 2 ], [ 4 ], 'extra' ) );
+
+  test.case = 'wrong value in range';
+  var dst = new I16x( 10 );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, true, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, null, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, 'str', [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [ 'str', 1 ], [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [], [ 2 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.bufferReusingGrow( 'str', [ 1, 3 ], [ 1 ] ) );
+}
+
+//
+
 function bufferReusingGrowDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -12664,8 +12750,6 @@ function bufferReusingGrowDstIsBufferTyped( test )
 
   function run( bufferMake )
   {
-    test.open( 'not inplace' );
-
     test.case = 'val = undefined';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
     var got = _.bufferReusingGrow( dst, [ 1, 2 ] );
@@ -12833,11 +12917,7 @@ function bufferReusingGrowDstIsBufferTyped( test )
     test.true( got !== dst );
     test.true( got !== dst0 );
 
-    test.close( 'not inplace' );
-
-    /* - */
-
-    test.open( 'inplace' );
+    /* */
 
     test.case = 'val = undefined';
     var dst = bufferMake( [ 0, 1, 2, 3 ] );
@@ -12953,8 +13033,6 @@ function bufferReusingGrowDstIsBufferTyped( test )
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got === dst0 );
-
-    test.close( 'inplace' );
   }
 }
 
@@ -17974,6 +18052,7 @@ let Self =
     bufferReusingOnlyWithOptionShrinkFactor,
     bufferReusingOnlyWithOptionMinSize,
 
+    bufferReusingGrowDstIsArrayUnroll,
     bufferReusingGrowDstIsBufferTyped,
     bufferReusingGrowWithOptionOffsetting,
     bufferReusingGrowWithOptionGrowFactor,
