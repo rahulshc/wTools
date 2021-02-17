@@ -13657,6 +13657,92 @@ function bufferReusingGrowWithOptionMinSize( test )
 
 //
 
+function bufferReusingRelengthDstIsArrayUnroll( test )
+{
+  test.case = 'dst - array, src - array, range - number';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingRelength( dst, dst, 2, 0 );
+  test.identical( got, [ 1, 2, 0, 0, 0, 0, 0, 0 ] );
+  test.true( got === dst );
+
+  test.case = 'dst - empty array, src - array, range[ 0 ] > range[ 1 ]';
+  var dst = [];
+  var got = _.bufferReusingRelength( dst, dst, [ 0, -1 ], 2 );
+  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.true( got === dst );
+
+  test.case = 'dst - array, range[ 1 ] > dst.length, src - array';
+  var dst = [ 1, 2, 3, 4, 5, 6 ];
+  var got = _.bufferReusingRelength( dst, dst, [ 1, 6 ], 2 );
+  test.identical( got, [ 2, 3, 4, 5, 6, 2, 2, 2 ] );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = unroll, src = array, range = negative number';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingRelength( dst, dst, -5, 2 );
+  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
+  var dst = _.unrollFrom( [] );
+  var got = _.bufferReusingRelength( dst, dst, [ 0, 0 ], 2 );
+  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.true( got === dst );
+
+  test.case = 'dst = unroll, src = array';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingRelength( dst, dst, [ 1, 4 ], 2 );
+  test.identical( got, [ 2, 3, 4, 2, 2, 2, 2, 2 ] );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = argumentsArray, src = array, range = negative number';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingRelength( dst, dst, -5, 2 );
+  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
+  var dst = _.argumentsArray.from( [] );
+  var got = _.bufferReusingRelength( dst, dst, [ 0, -1 ], 2 );
+  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.true( got !== dst );
+
+  test.case = 'dst = argumentsArray, src = array';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingRelength( dst, dst, [ 1, 4 ], 2 );
+  test.identical( got, [ 2, 3, 4, 2, 2, 2, 2, 2 ] );
+  test.true( got !== dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength() );
+
+  test.case = 'extra arguments';
+  var dst = new I16x( 10 );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [ 1, 2 ], [ 1, 2 ], [ 4 ], 'extra' ) );
+
+  test.case = 'wrong value in range';
+  var dst = new I16x( 10 );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, true, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, null, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, 'str', [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [ 'str', 1 ], [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [], [ 2 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.bufferReusingRelength( 'str', [ 1, 3 ], [ 1 ] ) );
+}
+
+//
+
 function bufferReusingRelengthDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -18790,6 +18876,7 @@ let Self =
     bufferReusingGrowWithOptionGrowFactor,
     bufferReusingGrowWithOptionMinSize,
 
+    bufferReusingRelengthDstIsArrayUnroll,
     bufferReusingRelengthDstIsBufferTyped,
     bufferReusingRelengthWithOptionOffsetting,
     bufferReusingRelengthWithOptionShrinkFactor,
