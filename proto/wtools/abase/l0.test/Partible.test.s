@@ -211,6 +211,258 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 
 }
 
+//
+
+function typingExtended( test )
+{
+  test.case = 'number';
+  var src = 1;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  /* ? */
+  // test.case = 'numberLike';
+  // var src = 1;
+  // test.true( !_.partible.like( src ) );
+  // test.true( !_.partible.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.arrayLike( src ) );
+  // test.true( !_.arrayIs( src ) );
+
+  test.case = 'bool & boolLike & fuzzy';
+  var src = true;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'boolLike & number & fuzzyLike';
+  var src = 1;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'fuzzy';
+  var src = _.maybe;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'bigint';
+  var src = 10n;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'str & regexpLike';
+  var src = 'str';
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'regexp & objectLike';
+  var src = /hello/g;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make();
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( _.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 2, 3, 4 ]);
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( _.arrayLike( src ) );
+  test.true( _.arrayIs( src ) );
+
+  test.case = 'array';
+  var src = [ 2, 3, 4 ];
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( _.arrayLike( src ) );
+  test.true( _.arrayIs( src ) );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2 ]);
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( _.arrayLike( src ) );
+  test.true( _.arrayIs( src ) );
+
+  test.case = 'vector & vectorLike';
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'partible & partibleLike';
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Global & GlobalReal';
+  var src = global;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Global & GlobalDerived';
+  var src = Object.create( global );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Object & ObjectLike';
+  var src = { [ Symbol.iterator ] : 1 };;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+
+
+  test.case = 'date & objectLike';
+  var src = new Date();
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function partibleConstructor( o )
+  {
+    return partibleMake( this, o );
+  }
+
+  /* */
+
+  function partibleMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  function routine () {}
+
+}
+
 // --
 // declaration
 // --
@@ -226,6 +478,7 @@ var Self =
 
     typing,
     /* xxx qqq : write test routine typingObject and use _.objectForTesting() */
+    typingExtended
 
   }
 
