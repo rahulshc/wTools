@@ -79,11 +79,6 @@ function mapperIs( test )
   var got = _.property.mapperIs( filter );
   test.identical( got, false );
 
-  test.case = 'routine - сustom filter & mapper';
-  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  var got = _.property.mapperIs( mapperFilter );
-  test.identical( got, true );
-
   test.case = 'existing mapper';
   var got = _.property.mapperIs( _.property.mapper[ 'assigning' ] );
   test.identical( got, true );
@@ -101,17 +96,21 @@ function mapperIs( test )
 
   function mapper()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter()
+  function filter( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
-  }
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    return true;
   }
 
 }
@@ -181,11 +180,6 @@ function filterIs( test )
   var got = _.property.filterIs( filter );
   test.identical( got, true );
 
-  test.case = 'routine - сustom filter & mapper';
-  mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  var got = _.property.filterIs( mapperFilter );
-  test.identical( got, true );
-
   test.case = 'existing mapper';
   var got = _.property.filterIs( _.property.mapper[ 'assigning' ] );
   test.identical( got, false );
@@ -203,17 +197,21 @@ function filterIs( test )
 
   function mapper()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter()
+  function filter( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
-  }
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    return true;
   }
 
 }
@@ -264,13 +262,6 @@ function mapperFromFilter( test )
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
-  test.case = 'routine - сustom filter & mapper';
-  var src = mapperFilter;
-  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  var got = _.property.mapperFromFilter( src );
-  test.true( _.property.mapperIs( got ) );
-  test.true( got !== src );
-
   test.case = 'existing mapper';
   var src = _.property.mapper[ 'assigning' ];
   var got = _.property.mapperFromFilter( src );
@@ -301,37 +292,71 @@ function mapperFromFilter( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
-  }
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
 }
@@ -388,13 +413,6 @@ function mapperFrom( test )
   test.true( _.property.mapperIs( got ) );
   test.true( got !== src );
 
-  test.case = 'routine - сustom filter & mapper';
-  var src = mapperFilter;
-  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  var got = _.property.mapperFrom( src );
-  test.true( _.property.mapperIs( got ) );
-  test.true( got === src );
-
   test.case = 'existing mapper';
   var src = _.property.mapper[ 'assigning' ];
   var got = _.property.mapperFrom( src );
@@ -422,37 +440,71 @@ function mapperFrom( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
-  }
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
 }
@@ -488,13 +540,6 @@ function filterFrom( test )
   test.true( _.property.filterIs( got ) );
   test.true( got === src );
 
-  test.case = 'routine - сustom filter & mapper';
-  var src = mapperFilter;
-  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  var got = _.property.filterFrom( src );
-  test.true( _.property.filterIs( got ) );
-  test.true( got === src );
-
   test.case = 'existing filter';
   var src = _.property.filter[ 'dstAndSrcOwn' ];
   var got = _.property.filterFrom( src );
@@ -525,28 +570,42 @@ function filterFrom( test )
 
   function mapper()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
-  function filter2()
+
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function filter3()
   {
-    return 1 + 2;
-  }
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
-  }
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
 
+      return true;
+    }
+  }
 }
 
 //
@@ -607,17 +666,6 @@ function transformerRegister( test )
   test.true( _.property.filterIs( _.property.filter[ src.name ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ src.name ] ) );
 
-  test.case = 'routine - сustom filter & mapper';
-  var src = mapperFilter;
-  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  test.true( _.property.mapper[ src.name ] === undefined );
-  test.true( _.property.filter[ src.name ] === undefined );
-  _.property.transformerRegister( src );
-  test.true( _.property.mapperIs( src ) );
-  test.true( _.property.filterIs( src ) );
-  test.true( _.property.mapperIs( _.property.mapper[ src.name ] ) );
-  test.true( _.property.filter[ src.name ] === undefined );
-
   test.case = 'existing mapper with custom name';
   var src = _.property.mapper[ 'assigning' ];
   var srcName = 'existingMapper';
@@ -644,7 +692,6 @@ function transformerRegister( test )
       filter2.name,
       mapper3.name,
       filter3.name,
-      mapperFilter.name,
       'existingMapper',
       'existingFilter',
     ],
@@ -690,37 +737,71 @@ function transformerRegister( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
-  }
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
 }
@@ -750,8 +831,6 @@ function transformersRegister( test )
   test.true( _.property.filter[ filter4.name ] === undefined );
   test.true( _.property.mapper[ filter4.name ] === undefined );
 
-  test.true( _.property.mapper[ mapperFilter.name ] === undefined );
-  test.true( _.property.filter[ mapperFilter.name ] === undefined );
   test.true( _.property.mapper[ 'existingMapper' ] === undefined );
   test.true( _.property.filter[ 'existingFilter' ] === undefined );
   test.true( _.property.mapper[ 'existingFilter' ] === undefined );
@@ -762,7 +841,6 @@ function transformersRegister( test )
     [ filter3.name ] : filter3,
     [ mapper4.name ] : mapper4,
     [ filter4.name ] : filter4,
-    [ mapperFilter.name ] : mapperFilter,
     'existingMapper' : _.property.mapper[ 'assigning' ],
     'existingFilter' : _.property.filter[ 'dstAndSrcOwn' ],
   }
@@ -778,7 +856,6 @@ function transformersRegister( test )
   test.true( _.property.filterIs( _.property.filter[ filter4.name ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ filter4.name ] ) );
 
-  test.true( _.property.mapperIs( _.property.mapper[ mapperFilter.name ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingMapper' ] ) );
   test.true( _.property.filterIs( _.property.filter[ 'existingFilter' ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingFilter' ] ) );
@@ -790,7 +867,6 @@ function transformersRegister( test )
       filter3.name,
       mapper4.name,
       filter4.name,
-      mapperFilter.name,
       'existingMapper',
       'existingFilter',
     ],
@@ -847,47 +923,104 @@ function transformersRegister( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
+
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
   function mapper4()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
+
   }
 
   function filter4()
   {
-    return 1 + 2;
-  }
-
-  function mapperFilter()
-  {
-    return 1 + 2;
+    let routine = notIdentical;
+    routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+    return routine;
+    function notIdentical( dstContainer, srcContainer, key )
+    {
+      if( dstContainer[ key ] === srcContainer[ key ] )
+      return false;
+      return true;
+    }
   }
 
   function addIdentity()
@@ -903,8 +1036,6 @@ function transformersRegister( test )
 
     mapper4.identity = { propertyMapper : true, propertyTransformer : true, functor : true };
     filter4.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
-
-    mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true, functor : true };
   }
 
 }
@@ -982,16 +1113,6 @@ function transformerUnregister( test )
   test.true( _.property.filter[ src.name ] === undefined );
   test.true( _.property.mapper[ src.name ] === undefined );
 
-  test.case = 'routine - сustom filter & mapper';
-  var src = mapperFilter;
-  src.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true }
-  test.true( _.property.filter[ src.name ] === undefined );
-  test.true( _.property.mapper[ src.name ] === undefined );
-  _.property.transformerRegister( src );
-  test.true( _.property.mapperIs( _.property.mapper[ src.name ] ) );
-  _.property.transformerUnregister( src.name, 'mapper' );
-  test.true( _.property.mapper[ src.name ] === undefined );
-
   test.case = 'existing mapper with custom name';
   var src = _.property.mapper[ 'assigning' ];
   var srcName = 'existingMapper';
@@ -1023,10 +1144,10 @@ function transformerUnregister( test )
   test.case = 'routine';
   test.shouldThrowErrorSync( () => _.property.transformerUnregister( plain ) )
 
-  test.case = 'not existed mapper';
+  test.case = 'existing mapper';
   test.shouldThrowErrorSync( () => _.property.transformerUnregister( 'hello', 'mapper' ) )
 
-  test.case = 'not existed filter';
+  test.case = 'existing filter';
   test.shouldThrowErrorSync( () => _.property.transformerUnregister( 'hello', 'filter' ) )
 
 
@@ -1039,37 +1160,71 @@ function transformerUnregister( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
-  }
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
 
-  function mapperFilter()
-  {
-    return 1 + 2;
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
 }
@@ -1099,8 +1254,6 @@ function transformersUnregister( test )
   test.true( _.property.filter[ filter4.name ] === undefined );
   test.true( _.property.mapper[ filter4.name ] === undefined );
 
-  test.true( _.property.mapper[ mapperFilter.name ] === undefined );
-  test.true( _.property.filter[ mapperFilter.name ] === undefined );
   test.true( _.property.mapper[ 'existingMapper' ] === undefined );
   test.true( _.property.filter[ 'existingFilter' ] === undefined );
   test.true( _.property.mapper[ 'existingFilter' ] === undefined );
@@ -1111,7 +1264,6 @@ function transformersUnregister( test )
     [ filter3.name ] : filter3,
     [ mapper4.name ] : mapper4,
     [ filter4.name ] : filter4,
-    [ mapperFilter.name ] : mapperFilter,
     'existingMapper' : _.property.mapper[ 'assigning' ],
     'existingFilter' : _.property.filter[ 'dstAndSrcOwn' ],
   }
@@ -1127,7 +1279,6 @@ function transformersUnregister( test )
   test.true( _.property.filterIs( _.property.filter[ filter4.name ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ filter4.name ] ) );
 
-  test.true( _.property.mapperIs( _.property.mapper[ mapperFilter.name ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingMapper' ] ) );
   test.true( _.property.filterIs( _.property.filter[ 'existingFilter' ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ 'existingFilter' ] ) );
@@ -1139,7 +1290,6 @@ function transformersUnregister( test )
       filter3.name,
       mapper4.name,
       filter4.name,
-      mapperFilter.name,
       'existingMapper',
       'existingFilter',
     ],
@@ -1172,8 +1322,6 @@ function transformersUnregister( test )
   test.true( _.property.filter[ filter4.name ] === undefined );
   test.true( _.property.mapper[ filter4.name ] === undefined );
 
-  test.true( _.property.mapper[ mapperFilter.name ] === undefined );
-  test.true( _.property.filter[ mapperFilter.name ] === undefined );
   test.true( _.property.mapper[ 'existingMapper' ] === undefined );
   test.true( _.property.filter[ 'existingFilter' ] === undefined );
   test.true( _.property.mapper[ 'existingFilter' ] === undefined );
@@ -1188,10 +1336,10 @@ function transformersUnregister( test )
   test.case = 'routine';
   test.shouldThrowErrorSync( () => _.property.transformerRegisters({ [ plain.name ] : plain }) );
 
-  test.case = 'not existing mapper';
+  test.case = 'existing mapper';
   test.shouldThrowErrorSync( () => _.property.transformerRegisters( [ 'hello' ], 'mapper' ) );
 
-  test.case = 'not existing filter';
+  test.case = 'existing filter';
   test.shouldThrowErrorSync( () => _.property.transformerRegisters( [ 'hello' ], 'filter' ) );
 
   /* - */
@@ -1203,47 +1351,104 @@ function transformersUnregister( test )
 
   function mapper1()
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : false,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter1()
+  function filter1( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    return true;
   }
 
-  function mapper2()
+  function mapper2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    let properties =
+    {
+      value : srcContainer[ key ],
+      enumerable : false,
+      configurable : true,
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
-  function filter2()
+  function filter2( dstContainer, srcContainer, key )
   {
-    return 1 + 2;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
   }
 
   function mapper3()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
   }
 
   function filter3()
   {
-    return 1 + 2;
+    let routine = primitive;
+    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    return routine;
+
+    function primitive( dstContainer, srcContainer, key )
+    {
+      if( !_.primitiveIs( srcContainer[ key ] ) )
+      return false;
+
+      return true;
+    }
   }
 
   function mapper4()
   {
-    return 1 + 2;
+    let routine = hiding;
+
+    routine.identity = { propertyMapper : true, propertyTransformer : true };
+    return routine;
+
+    function hiding( dstContainer, srcContainer, key )
+    {
+      let properties =
+      {
+        value : srcContainer[ key ],
+        enumerable : false,
+        configurable : true,
+      };
+      Object.defineProperty( dstContainer, key, properties );
+    }
+
   }
 
   function filter4()
   {
-    return 1 + 2;
-  }
-
-  function mapperFilter()
-  {
-    return 1 + 2;
+    let routine = notIdentical;
+    routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+    return routine;
+    function notIdentical( dstContainer, srcContainer, key )
+    {
+      if( dstContainer[ key ] === srcContainer[ key ] )
+      return false;
+      return true;
+    }
   }
 
   function addIdentity()
@@ -1259,8 +1464,6 @@ function transformersUnregister( test )
 
     mapper4.identity = { propertyMapper : true, propertyTransformer : true, functor : true };
     filter4.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
-
-    mapperFilter.identity = { propertyMapper : true, propertyFilter : true, propertyTransformer : true, functor : true };
   }
 
 }
