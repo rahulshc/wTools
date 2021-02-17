@@ -43,7 +43,7 @@ let Self = _.entity = _.entity || Object.create( null );
 // {
 //   if( !src )
 //   return false;
-//   if( _.mapLike( src ) )
+//   if( _.auxiliary.is( src ) )
 //   return true;
 //   if( _.routineIs( src[ Symbol.iterator ] ) )
 //   return true;
@@ -109,16 +109,26 @@ function lengthOf( src )
 {
   if( src === undefined )
   return 0;
-  if( _.mapLike( src ) )
-  return _.mapOnlyOwnKeys( src ).length;
-  if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
-  return [ ... src ].length;
-  if( _.longLike( src ) )
+  if( src === null )
+  return 1;
+
+  // if( _.routineIs( src[ Symbol.iterator ] ) )
+  // return [ ... src ].length;
+
+  if( _.vectorLike( src ) )
   return src.length;
   if( _.setLike( src ) )
   return src.size;
   if( _.hashMapLike( src ) )
   return src.size;
+  if( _.partibleIs( src ) )
+  return [ ... src ].length;
+
+  if( _.auxiliary.is( src ) )
+  return _.mapKeys( src ).length;
+  // if( _.auxiliary.is( src ) )
+  // return _.mapOnlyOwnKeys( src ).length;
+
   return 1;
 }
 

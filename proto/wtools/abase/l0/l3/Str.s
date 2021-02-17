@@ -577,16 +577,16 @@ function strTypeWithTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIsPure( src ) )
     return 'Map.pure';
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.pure.prototyped';
-    else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
@@ -628,7 +628,7 @@ function strTypeWithoutTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIs( src ) )
@@ -677,7 +677,7 @@ function strTypeWithoutTraits( src )
 //     if( Object.getPrototypeOf( src ) === null )
 //     result = 'Map.pure';
 //     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.mapLikePrototyped( src ) )
+//     else if( _.auxiliary.isPrototyped( src ) )
 //     result = 'Map.prototyped';
 //   }
 //

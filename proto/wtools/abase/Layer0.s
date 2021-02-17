@@ -13,6 +13,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
+  require( './l0/l3/Auxiliary.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
   require( './l0/l3/Constructible.s' );

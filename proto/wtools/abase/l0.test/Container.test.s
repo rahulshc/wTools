@@ -2140,6 +2140,30 @@ function empty( test )
   test.shouldThrowErrorSync( () => _.container.empty( new WeakMap() ) );
 }
 
+//
+
+function elementGet( test )
+{
+
+  /* */
+
+  test.case = 'prototype';
+  var src = new Obj1({});
+  debugger;
+  var got = _.container.elementGet( src, _.escape.prototype );
+  test.true( got === Obj1.prototype );
+  debugger;
+
+  /* */
+
+  function Obj1( o )
+  {
+    _.mapExtend( this, o );
+    return this;
+  }
+
+}
+
 // --
 // define test suite
 // --
@@ -2165,6 +2189,8 @@ let Self =
     extendAppendingDstLongAndSetLike,
 
     empty, /* qqq : implement test routine `empty` | Dmytro : implemented */
+
+    elementGet,
 
   }
 
