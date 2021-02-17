@@ -50,6 +50,7 @@ mapIsPure,
 mapIsPolluted,
 mapLikePolluted,
 mapIsPrototyped,
+mapLikePrototyped,
 
 HashMap
 Set
@@ -61,6 +62,8 @@ BufferRawShared
 BufferTyped
 BufferView
 BufferBytes
+
+-----
 
 constructible
 constructibleLike

@@ -403,6 +403,131 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
+  var src = {};
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'HashMap';
+  var src = new HashMap();
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Set & SetLike';
+  var src = new Set();
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferNode';
+  var src = new BufferNode( 'str' );
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 'str' );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferRawShared';
+  var src = new BufferRawShared( 'str' );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 20 ) )
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'BufferBytes & BufferTyped';
+  var src = new U8x( 20 );
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+
+
+
 
 
   test.case = 'date & objectLike';
