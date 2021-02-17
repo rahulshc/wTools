@@ -3182,6 +3182,67 @@ function strEnds( test )
 
 function strEntityShort( test )
 {
+  test.case = 'number';
+  var src = 13;
+  var expected = '13';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  /* ? */
+  // test.case = 'numberLike';
+  // var src = 13;
+  // var expected = '13';
+  // var got = _.strEntityShort( src );
+  // test.identical( got, expected );
+
+  test.case = 'bool';
+  var src = true;
+  var expected = 'true';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  /* ? */
+  test.case = 'boolLike';
+  var src = 1;
+  var expected = '1';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  /* ? */
+  test.case = 'fuzzy';
+  var src = _.maybe;
+  var expected = '{- Symbol maybe -}';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  /* ? */
+  // test.case = 'fuzzyLike';
+  // var src = 1;
+  // var expected = '1';
+  // var got = _.strEntityShort( src );
+  // test.identical( got, expected );
+
+  test.case = 'bigint';
+  var src = 13n;
+  var expected = '13';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = 'abc';
+  var expected = 'abc';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+  test.case = 'regexp';
+  var src = /abc/i;
+  var expected = '/abc/i';
+  var got = _.strEntityShort( src );
+  test.identical( got, expected );
+
+
+
+
 
   test.case = 'undefined';
   var src = undefined;
@@ -3195,38 +3256,14 @@ function strEntityShort( test )
   var got = _.strEntityShort( src );
   test.identical( got, expected );
 
-  test.case = 'number';
-  var src = 13;
-  var expected = '13';
-  var got = _.strEntityShort( src );
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var src = false;
-  var expected = 'false';
-  var got = _.strEntityShort( src );
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var src = 'abc';
-  var expected = 'abc';
-  var got = _.strEntityShort( src );
-  test.identical( got, expected );
-
   test.case = 'date';
   var src = new Date( Date.UTC( 2016, 12, 8 ) );
   var expected = '2017-01-08T00:00:00.000Z';
   var got = _.strEntityShort( src );
   test.identical( got, expected );
 
-  test.case = 'regexp';
-  var src = /abc/i;
-  var expected = '/abc/i';
-  var got = _.strEntityShort( src );
-  test.identical( got, expected );
-
   test.case = 'routine';
-  var src = function abc(){};
+  var src = abc;
   var expected = '{- routine abc -}';
   var got = _.strEntityShort( src );
   test.identical( got, expected );
@@ -3235,6 +3272,8 @@ function strEntityShort( test )
   var expected = '{- routine.anonymous -}';
   var got = _.strEntityShort( function(){} );
   test.identical( got, expected );
+
+  function abc(){}
 
 }
 
