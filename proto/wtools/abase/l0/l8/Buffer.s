@@ -3065,7 +3065,12 @@ function _bufferReusing( o )
 
   _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
 
-  let resultElementSize = resultElementLengthCount();
+  let resultElementSize;
+  if( newBufferCreate )
+  resultElementSize = bufferElementSizeGet( o.src );
+  else
+  resultElementSize = bufferElementSizeGet( o.dst );
+
   let resultSize = resultSizeCount();
   let resultLength = resultSize / resultElementSize;
   _.assert( _.intIs( resultLength ) );
@@ -3079,16 +3084,6 @@ function _bufferReusing( o )
   let result = resultBufferFill( resultBuffer, o.src );
 
   return result;
-
-  /* */
-
-  function resultElementLengthCount()
-  {
-    if( newBufferCreate )
-    return bufferElementSizeGet( o.src );
-    else
-    return bufferElementSizeGet( o.dst );
-  }
 
   /* */
 
@@ -3174,7 +3169,7 @@ function _bufferReusing( o )
       }
     }
 
-    return buffer
+    return buffer;
   }
 
   /* */
