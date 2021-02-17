@@ -3143,7 +3143,7 @@ function _bufferReusing( o )
     {
       buffer = o.dst;
       let leftOffset = dstOffset + o.cinterval[ 0 ];
-      let bufferLength = buffer.buffer ? buffer.length : buffer.byteLength;
+      let bufferLength = buffer.buffer && !_.bufferViewIs( buffer ) ? buffer.length : buffer.byteLength;
 
       if( leftOffset !== dstOffset || resultSize !== bufferLength )
       {
@@ -3601,7 +3601,9 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 {
   let o = _._bufferReusing_head.apply( this, arguments );
 
-  let srcLength = ( o.src.length !== undefined || o.src.buffer ) ? o.src.length : o.src.byteLength;
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
   o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingGrow, o );
