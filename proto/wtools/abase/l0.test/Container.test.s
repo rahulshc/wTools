@@ -71,7 +71,7 @@ function like( test )
   test.identical( _.container.like( 1 ), false );
   test.identical( _.container.like( false ), false );
   test.identical( _.container.like( true ), false );
-  test.identical( _.container.like( new Date() ), false );
+  test.identical( _.container.like( new Date() ), true );
 
   test.case = 'map';
   test.identical( _.container.like( {} ), true );
@@ -79,16 +79,44 @@ function like( test )
   test.identical( _.container.like( Object.create( null ) ), true );
 
   test.case = 'instance';
-  let src = new function Con() { this.a = 1 };
+  var src = new function Con() { this.a = 1 };
+  test.identical( _.container.like( src ), true );
+
+  test.case = 'instance with fields and iterator method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  test.identical( _.container.like( src ), true );
+
+  test.case = 'prototyped 2 levels constructor';
+  var prototype1 = {};
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype2 );
   test.identical( _.container.like( src ), true );
 
   test.case = 'hashmap';
   test.identical( _.container.like( new HashMap ), true );
   test.identical( _.container.like( new HashMap([ [ 'a', 'b' ] ]) ), true );
 
+  test.case = 'hashmapweak';
+  test.identical( _.container.like( new HashMapWeak ), true );
+  var src = new HashMapWeak().set( {}, 1 );
+  test.identical( _.container.like( src ), true );
+
+  test.case = 'a pseudo array';
+  test.identical( _.container.like( arguments ), true );
+
   test.case = 'array';
   test.identical( _.container.like( [] ), true );
   test.identical( _.container.like( [ false ] ), true );
+
+  test.case = 'raw array buffer';
+  test.identical( _.container.like( new BufferRaw() ), true );
+  test.identical( _.container.like( new BufferRaw( 10 ) ), true );
 
   test.case = 'typed buffer';
   test.identical( _.container.like( new F32x() ), true );
@@ -98,13 +126,16 @@ function like( test )
   test.identical( _.container.like( new Set ), true );
   test.identical( _.container.like( new Set([ 'a', 'b' ]) ), true );
 
+  test.case = 'weak set';
+  test.identical( _.container.like( new WeakSet ), true );
+  test.identical( _.container.like( new WeakSet([ { 'a' : 1 }, { 'b' : 2 } ]) ), true );
+
 }
 
 //
 
 function lengthOf( test )
 {
-
   test.case = 'primitive';
   test.identical( _.container.lengthOf( null ), 1 );
   test.identical( _.container.lengthOf( undefined ), 0 );
@@ -120,17 +151,70 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( Object.create( null ) ), 0 );
 
   test.case = 'instance';
-  let src = new function Con() { this.a = 1 };
+  var src = new function Con() { this.a = 1 };
   test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'instance with 2 fields';
+  var src = new function Con() { this.a = 1; this.b = 2 };
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'instance with fields and iterator method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'instance with fields and iterator method with length 5';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      let current = 0;
+      let last = 4;
+      return {
+        next()
+        {
+          if( current <= last )
+          {
+            return {
+              done : false,
+              value : current++
+            };
+          }
+          else
+          {
+            return {
+              done : true
+            };
+          }
+        }
+      }
+    }
+  }
+  test.identical( _.container.lengthOf( src ), 5 );
 
   test.case = 'hashmap';
   test.identical( _.container.lengthOf( new HashMap ), 0 );
   test.identical( _.container.lengthOf( new HashMap([ [ 'a', 'b' ] ]) ), 1 );
 
+  test.case = 'hashmap 2 elements';
+  test.identical( _.container.lengthOf( new HashMap([ [ 'a', 'b' ], [ 'c' ] ]) ), 2 );
+
   test.case = 'array';
   test.identical( _.container.lengthOf( [] ), 0 );
   test.identical( _.container.lengthOf( [ false ] ), 1 );
   test.identical( _.container.lengthOf( [ 1, 2, 3, 4 ] ), 4 );
+
+  test.case = 'a pseudo array';
+  test.identical( _.container.lengthOf( arguments ), 1 );
+
+  test.case = 'raw array buffer';
+  test.identical( _.container.lengthOf( new BufferRaw() ), 1 );
+  test.identical( _.container.lengthOf( new BufferRaw( 10 ) ), 1 );
 
   test.case = 'typed buffer';
   test.identical( _.container.lengthOf( new F32x() ), 0 );
