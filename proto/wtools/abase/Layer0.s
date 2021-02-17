@@ -54,6 +54,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l5/ArgumentsArray.s' );
   require( './l0/l5/Array.s' );
+  require( './l0/l5/Auxiliary.s' );
   require( './l0/l5/Bool.s' );
   require( './l0/l5/Buffer.s' );
   require( './l0/l5/Constructible.s' );
@@ -102,6 +103,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l8/ArgumentsArray.s' );
   require( './l0/l8/Array.s' );
+  require( './l0/l8/Auxiliary.s' );
   require( './l0/l8/Bool.s' );
   require( './l0/l8/Buffer.s' );
   require( './l0/l8/Constructible.s' );
