@@ -2190,7 +2190,7 @@ let Self =
 
     empty, /* qqq : implement test routine `empty` | Dmytro : implemented */
 
-    elementGet,
+    elementGet, /* qqq for Yevhen : cover */
 
   }
 
