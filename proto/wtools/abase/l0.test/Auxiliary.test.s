@@ -160,7 +160,7 @@ function is( test )
 var Self =
 {
 
-  name : 'Tools.Vector',
+  name : 'Tools.Auxiliary',
   silencing : 1,
 
   tests :
