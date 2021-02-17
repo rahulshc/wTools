@@ -3655,14 +3655,29 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
     /* */
 
     let offset = Math.max( 0, -left );
+    let rightBound = Math.min( dstTyped.length, srcTyped.length );
+    let length = dstTyped.length;
+
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      let val = srcTyped[ 0 ];
+      for( let i = offset ; i < rightBound + offset ; i++ )
+      {
+        let temp = srcTyped[ i - offset + 1 ];
+        dstTyped[ i ] = val;
+        val = temp;
+      }
+    }
+    else
+    {
+      for( let i = offset ; i < rightBound + offset ; i++ )
+      dstTyped[ i ] = srcTyped[ i - offset ];
+    }
+
+
     for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
 
-    let rightBound = Math.min( dstTyped.length, srcTyped.length );
-    for( let i = offset ; i < rightBound + offset ; i++ )
-    dstTyped[ i ] = srcTyped[ i - offset ];
-
-    let length = dstTyped.length;
     for( let i = offset + rightBound ; i < length ; i++ )
     dstTyped[ i ] = o.ins;
 
