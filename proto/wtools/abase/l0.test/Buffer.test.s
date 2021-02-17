@@ -12075,6 +12075,310 @@ function bufferReusingOnlyDstIsBufferTyped( test )
 
 //
 
+function bufferReusingOnlyDstIsBufferRaw( test )
+{
+  var bufferRaw = ( src ) => new U8x( src ).buffer;
+  var bufferView = ( src ) => new BufferView( new U8x( src ).buffer );
+
+  function resultCopyData( dst, src )
+  {
+    for( let i = 0 ; i < src.length ; i++ )
+    dst[ i ] = src[ i ];
+    return dst;
+  }
+
+  /* - */
+
+  test.open( 'bufferRaw' );
+  testRun( bufferRaw );
+  test.close( 'bufferRaw' );
+
+  /* - */
+
+  test.open( 'bufferView' );
+  testRun( bufferView );
+  test.close( 'bufferView' );
+
+  /* - */
+
+  function testRun( makeBuffer )
+  {
+    test.case = 'only dst';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, undefined );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, -1 );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, 0 );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 1;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, 2 );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, 2 );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ -1, -3 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ -1, -1 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ -1, 0 ] );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 1;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ -1, 2 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ -1, 5 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 1, 0 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 1, 1 ] );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 2;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 1, 2 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 1, 5 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 5, 4 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 5, 5 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( null, dst, [ 5, 7 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'only dst';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, -1 );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 0 );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 1;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range - number > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, 2 );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -3 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, -1 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 0 ] );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 1;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 2 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ -1, 5 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 0 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 1 ] );
+    var expected = new U8x( 64 );
+    expected[ 0 ] = 2;
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 2 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 2, 3 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 1, 5 ] );
+    var expected = new U8x( 64 );
+    expected = resultCopyData( expected, [ 2, 3, 4, 5 ] );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 4 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 5 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = makeBuffer( [ 1, 2, 3, 4, 5 ] );
+    var got = _.bufferReusingOnly( dst, [ 5, 7 ] );
+    var expected = new U8x( 64 );
+    test.identical( got, makeBuffer( expected ) );
+    test.true( got !== dst );
+  }
+}
+
+//
+
 function bufferReusingOnlyWithOptionOffsetting( test )
 {
   test.case = 'cinterval gets all buffer, not changed length - not new buffer, dst === src, offsetting - 1';
@@ -17414,6 +17718,7 @@ let Self =
 
     bufferReusingOnlyDstIsArrayUnroll,
     bufferReusingOnlyDstIsBufferTyped,
+    bufferReusingOnlyDstIsBufferRaw,
     bufferReusingOnlyWithOptionOffsetting,
     bufferReusingOnlyWithOptionShrinkFactor,
     bufferReusingOnlyWithOptionMinSize,
