@@ -18,6 +18,138 @@ let _ = _global_.wTools;
 
 function is( test )
 {
+  test.case = 'undefined';
+  var src = undefined;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'null';
+  var src = null;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'string';
+  var src = 'str';
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'number';
+  var src = 13;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'symbol';
+  var src = Symbol.for( 'a' );
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'boolean false';
+  var src = true;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'boolean true';
+  var src = true;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'empty array';
+  var src = [];
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'date';
+  var src = new Date();
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'empty arguments array';
+  var src = _.argumentsArray.make();
+  test.identical( _.auxiliary.is( false ), false );
+
+  test.case = 'pure empty map';
+  var src = Object.create( null );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'pure map with constructor';
+  var src = Object.create( null );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'from pure with iterator';
+  var src = Object.create( null );
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'empty polluted map';
+  var src = {};
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'polluted map';
+  var src = { a : 7, b : 13 };
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'polluted map with constructor';
+  var src = {};
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'from polluted with iterator';
+  var src = {};
+  src[ Symbol.iterator ] = function(){};
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'new object';
+  var src = new Object();
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'routine';
+  var src = routine;
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'prototyped from pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'prototyped from pure map deep';
+  var prototype1 = Object.create( null );
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'prototyped from pure map deep with props';
+  var prototype1 = Object.create( null );
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'prototyped from polluted map';
+  var prototype = {};
+  var src = Object.create( prototype );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'prototyped from polluted map with constructor';
+  var prototype = {};
+  prototype.constructor = function(){}
+  var src = Object.create( prototype );
+  test.identical( _.auxiliary.is( src ), false );
+
+  test.case = 'prototyped from polluted map deep';
+  var prototype1 = {};
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  test.identical( _.auxiliary.is( src ), true );
+
+  test.case = 'prototyped from polluted map deep with props';
+  var prototype1 = {};
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  test.identical( _.auxiliary.is( src ), true );
+
+  /* - */
+
+  function routine () {}
 
 }
 
