@@ -3759,6 +3759,9 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
   let o = _._bufferReusing_head.apply( this, arguments );
 
   let left, right;
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
   o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingRelength, o );
@@ -3786,11 +3789,6 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
     left = o.cinterval[ 0 ];
     right = o.cinterval[ 1 ];
 
-    if( o.cinterval[ 0 ] < 0 )
-    {
-      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-    }
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
 
@@ -3810,16 +3808,21 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
 
     let offset = left < 0 ? Math.max( 0, -left ) : 0;
     left = left < 0 ? 0 : left;
-    for( let i = 0 ; i < offset ; i++ )
-    dstTyped[ i ] = o.ins;
-
     let rightBound = Math.min( srcTyped.length, right - left + 1 );
+    rightBound = Math.min( rightBound, srcLength );
+    let length = dstTyped.length;
+
     let i;
     for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
     dstTyped[ i ] = srcTyped[ i - offset + left ];
 
-    let length = dstTyped.length;
+    if( i > srcLength + offset - left )
+    i = srcLength + offset - left;
+
     for( ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
 
     return dstTyped;
