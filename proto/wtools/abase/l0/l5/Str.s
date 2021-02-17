@@ -1741,8 +1741,8 @@ function strSplitsCoupledGroup( o )
   o.postfix = _.arrayAs( o.postfix );
 
   _.assert( arguments.length === 1 );
-  _.assert( _.regexpsLike( o.prefix ) );
-  _.assert( _.regexpsLike( o.postfix ) );
+  _.assert( _.regexpsLikeAll( o.prefix ) );
+  _.assert( _.regexpsLikeAll( o.postfix ) );
 
   let level = 0;
   let begins = [];
