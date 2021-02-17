@@ -167,6 +167,31 @@ function transformersRegister( transformers )
 
 //
 
+function transformerUnregister( transformerName, transformerType )
+{
+  transformerType = transformerType || 'mapper';
+
+  _.assert( _.strIs( transformerName ) );
+  _.assert( _.strIs( transformerType ) );
+  _.assert( _.property[ transformerType ][ transformerName ] !== undefined, 'Transformer must be registered' );
+
+  delete _.property[ transformerType ][ transformerName ];
+  return;
+}
+
+//
+
+function transformersUnregister( transformerNames, transformerType )
+{
+  _.assert( _.arrayIs( transformerNames ) );
+  _.assert( _.strIs( transformerType ) );
+
+  transformerNames.forEach( ( transformerName ) => _.property.transformerUnregister( transformerName, transformerType ) )
+  return;
+}
+
+//
+
 function transformerIs( transformer )
 {
   if( !_.routineIs( transformer ) )
@@ -216,14 +241,16 @@ let Extension =
   mapper : Object.create( null ),
   filter : Object.create( null ),
 
-  mapperFromFilter, /* qqq : light coverage required */
-  mapperFrom, /* qqq : light coverage required */
-  filterFrom, /* qqq : light coverage required */
-  transformerRegister, /* qqq : light coverage required */
-  transformersRegister, /* qqq : light coverage required */
+  mapperFromFilter, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  transformerRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  transformersRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  transformerUnregister,
+  transformersUnregister,
   transformerIs,
-  mapperIs, /* qqq : light coverage required */
-  filterIs, /* qqq : light coverage required */
+  mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
 
 }
 
