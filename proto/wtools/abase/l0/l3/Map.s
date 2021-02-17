@@ -1314,7 +1314,7 @@ function mapSupplementStructureless( dstMap, srcMap )
 
       if( Config.debug )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
 
       dstMap[ s ] = srcMap[ s ];

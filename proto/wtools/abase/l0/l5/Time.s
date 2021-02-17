@@ -805,7 +805,7 @@ function from( time )
   {
     return time;
   }
-  if( _.dateIs( time ) )
+  if( _.date.is( time ) )
   {
     return time.getTime();
   }
