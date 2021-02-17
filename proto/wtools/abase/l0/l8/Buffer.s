@@ -72,8 +72,6 @@ function buffersRawAreIdentical( src1, src2 )
   if( !_.bufferRawIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -97,8 +95,6 @@ function buffersViewAreIdentical( src1, src2 )
   if( !_.bufferViewIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -1064,8 +1060,6 @@ function bufferBytesFrom( buffer )
   else if( _.bufferViewIs( buffer ) )
   {
 
-    debugger;
-    // _.assert( 0, 'not tested' );
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
   }
@@ -1128,7 +1122,6 @@ function bufferNodeFrom( buffer )
   }
   else if( _.strIs( buffer ) )
   {
-    // debugger;
     result = _.bufferNodeFrom( _.bufferRawFrom( buffer ) );
   }
   else if( buffer.buffer )
@@ -1152,7 +1145,6 @@ function bufferNodeFrom( buffer )
   // }
   // catch( err )
   // {
-  //   debugger;
   //   buffer = toBuffer( buffer );
   // }
   // else
@@ -1283,9 +1275,6 @@ function bufferNodeFrom( buffer )
 //
 //     // if( first === last )
 //     // return dstArray;
-//
-//     // if( first === last )
-//     // debugger;
 //
 //     let newLength = length - last + first;
 //     let srcArrayLength = 0;
@@ -3734,7 +3723,6 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
     let rightBound = Math.min( dstTyped.length, srcLength );
     let length = dstTyped.length;
 
-    debugger;
     if( dstTyped !== srcTyped )
     {
       for( let i = offset ; i < rightBound + offset ; i++ )
@@ -3934,7 +3922,6 @@ function bufferReusingResize( /* dst, src, cinterval */ )
     if( _.bufferAnyIs( dstTyped ) )
     dstTyped = _.bufferBytesFrom( dstTyped.buffer ? dstTyped.buffer : dstTyped );
 
-    debugger;
     let srcBytesView = srcTyped;
     if( _.bufferAnyIs( srcTyped ) )
     srcBytesView = _.bufferBytesFrom( srcTyped.buffer ? srcTyped.buffer : srcTyped );
