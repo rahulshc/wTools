@@ -16,27 +16,26 @@
 Number
 NumberLike
 
-bool
-boolLike
-fuzzy?
-fuzzyLike?
+Bool
+BoolLike
+Fuzzy
+FuzzyLike
 
 BigInt
 
 Str
-StrLike?
 Regexp
-RegexpLike?
+RegexpLike
 
 ArgumentsArray
 Unroll
 Array
 ArrayLike
 Long
-LongLike?
+LongLike
 Vector
 Partiable
-partibleLike?
+PartibleLike
 
 Global
 GlobalReal
@@ -46,7 +45,7 @@ objectIs,
 objectLike,
 
 mapIs,
-mapLike_,
+mapLike,
 mapIsPure,
 mapIsPolluted,
 mapLikePolluted,
@@ -68,28 +67,17 @@ constructibleLike
 
 Container
 ContainerLike
-containerAdapter
 
-Entity?
+Entity
 
 err
 errStandard
-errAttended
-errBrief
-errProcess
-errLogged
-errSuspended
-errWary
 
 Escape
-
-Event?
 
 cinterval
 linterval
 ointerval
-
-LongDescriptors
 
 Pair
 Path
@@ -99,25 +87,24 @@ mapper
 filter
 
 Routine
-RoutineLike?
+RoutineLike
 
 timer,
-competitor,
 date,
 
-nothing
-defined
+Null
+Undefined
+Symbol null
+Symbol undefined
+Symbol Nothing
+
 primitive
-_primitive
 symbol
 
 consequence
 consequenceLike,
 promise
 promiseLike,
-
-constructor
-instance
 
 worker
 stream
@@ -128,14 +115,19 @@ logger
 process
 procedure
 
-definition
-trait
+// secondary
+
+Event?
+constructor
+instance
 
 blueprintIsDefinitive,
 blueprintIsRuntime,
-
+definition
+trait
 chainer,
 supervisor
-
-ContainerAdapterArray
-ContainerAdapterSet
+containerAdapter
+ContainerAdapterArray?
+ContainerAdapterSet?
+LongDescriptors?
