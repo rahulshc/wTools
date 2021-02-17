@@ -226,18 +226,6 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
-  /* ? */
-  // test.case = 'numberLike';
-  // var src = 1;
-  // test.true( !_.partible.like( src ) );
-  // test.true( !_.partible.is( src ) );
-  // test.true( !_.vector.like( src ) );
-  // test.true( !_.vector.is( src ) );
-  // test.true( !_.longLike( src ) );
-  // test.true( !_.longIs( src ) );
-  // test.true( !_.arrayLike( src ) );
-  // test.true( !_.arrayIs( src ) );
-
   test.case = 'bool & boolLike & fuzzy';
   var src = true;
   test.true( !_.partible.like( src ) );
@@ -293,7 +281,7 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'regexp & objectLike';
+  test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = /hello/g;
   test.true( !_.partible.like( src ) );
   test.true( !_.partible.is( src ) );
@@ -392,8 +380,8 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'Object & ObjectLike';
-  var src = { [ Symbol.iterator ] : 1 };;
+  test.case = 'Object & ObjectLike & Container & ContainerLike';
+  var src = { [ Symbol.iterator ] : 1 };
   test.true( !_.partible.like( src ) );
   test.true( !_.partible.is( src ) );
   test.true( !_.vector.like( src ) );
@@ -525,10 +513,105 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
+  test.case = 'err';
+  var src = _.err( 'error' );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
 
+  test.case = 'escape';
+  var src = _.escape.make( 1 );
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
 
+  test.case = 'interval & BufferTyped';
+  var src = _.escape.make( new F32x( 2 ) );
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
 
+  test.case = 'pair';
+  var src = _.pair.make();
+  test.true( _.partible.like( src ) );
+  test.true( _.partible.is( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
+  test.true( _.arrayLike( src ) );
+  test.true( _.arrayIs( src ) );
 
+  test.case = 'path & str';
+  var src = '/a/b/';
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'propertyTransformer & filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'propertyTransformer & mapper';
+  var src = _.property.mapper[ 'assigning' ];
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'routine & routineLike';
+  var src = routine;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+  _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date();
@@ -540,6 +623,141 @@ function typingExtended( test )
   test.true( !_.longIs( src ) );
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
+
+  test.case = 'null';
+  var src = null;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'primitive';
+  var src = 5;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'Symbol';
+  var src = Symbol( 'a' );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'ConsequenceLike & promiseLike & promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'stream';
+  var src = require( 'stream' ).Readable();
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'console';
+  var src = console;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'printerLike';
+  var src = _global.logger;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  test.case = 'process';
+  var src = process;
+  test.true( !_.partible.like( src ) );
+  test.true( !_.partible.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
+
+
 
   /* - */
 

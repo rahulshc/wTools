@@ -63,8 +63,6 @@ BufferTyped
 BufferView
 BufferBytes
 
------
-
 constructible
 constructibleLike
 
