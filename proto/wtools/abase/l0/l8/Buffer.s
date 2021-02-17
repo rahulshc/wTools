@@ -3439,7 +3439,79 @@ bufferReusingBut.defaults =
 
 //
 
-function bufferReusingOnly( /* dst, src, cinterval, ins */ )
+/**
+ * Routine bufferReusingOnly() gets the part of source buffer {-src-} and copies it to destination buffer {-dst-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly( buffer, [ 1, 1 ] );
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 1, 1 ],
+ *   minSize : 1,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Range|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If range[ 1 ] < range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ *
+ * Second parameter set :
+ * @param { MapLike } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Range|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingOnly
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+function bufferReusingOnly( /* dst, src, cinterval */ )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
@@ -3492,12 +3564,11 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
 
   /* */
 
-  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval */ )
   {
     let dstTyped = arguments[ 0 ];
     let srcTyped = arguments[ 1 ];
     let cinterval = arguments[ 2 ];
-    let ins = arguments[ 3 ];
 
     /* */
 
