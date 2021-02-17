@@ -12960,6 +12960,83 @@ function bufferReusingGrowDstIsBufferTyped( test )
 
 //
 
+function bufferReusingGrowWithOptionOffsetting( test )
+{
+  test.case = 'cinterval inside buffer, not changed length - not new buffer, dst === src, offsetting - 1';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingGrow
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 1 ],
+    ins : [ 0 ],
+    offsetting : 1,
+    minSize : 1,
+  });
+  var expected = new U8x([ 2, 3, 4, 5 ]);
+  test.identical( got, expected );
+  test.true( got === dst );
+  test.true( got.buffer === dst.buffer );
+
+  test.case = 'cinterval inside buffer, not changed length - not new buffer, dst === src, offsetting - 0';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingGrow
+  ({
+    dst,
+    src : dst,
+    cinterval : [ 1, 1 ],
+    ins : [ 0 ],
+    offsetting : 0,
+    minSize : 1,
+  });
+  var expected = new U8x([ 2, 3, 4, 5 ]);
+  test.identical( got, expected );
+  test.true( got === dst );
+  test.true( got.buffer === dst.buffer );
+
+  /* */
+
+  test.case = 'cinterval outside buffer, grow length - new buffer, dst === src, offsetting - 1';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingGrow
+  ({
+    dst,
+    src : dst,
+    cinterval : [ -1, 4 ],
+    ins : 9,
+    offsetting : 1,
+    growFactor : 1,
+    minSize : 1,
+  });
+  var expected = new U8x([ 9, 2, 3, 4, 5, 9 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer === dst.buffer );
+
+  test.case = 'cinterval outside buffer, grow length - new buffer, dst === src, offsetting - 0';
+  var buffer = new U8x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]).buffer;
+  var dst = new U8x( buffer, 2, 4 );
+  var got = _.bufferReusingGrow
+  ({
+    dst,
+    src : dst,
+    cinterval : [ -1, 4 ],
+    ins : 9,
+    offsetting : 0,
+    growFactor : 1,
+    minSize : 1,
+  });
+  var expected = new U8x([ 9, 2, 3, 4, 5, 9 ]);
+  test.identical( got, expected );
+  test.true( got !== dst );
+  test.true( got.buffer !== dst.buffer );
+}
+
+//
+
 function bufferReusingRelengthDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -17724,7 +17801,10 @@ let Self =
     bufferReusingOnlyWithOptionMinSize,
 
     bufferReusingGrowDstIsBufferTyped,
+    bufferReusingGrowWithOptionOffsetting,
+
     bufferReusingRelengthDstIsBufferTyped,
+
     bufferReusingResize,
     bufferReusingResizeDstIsBufferTyped,
 
