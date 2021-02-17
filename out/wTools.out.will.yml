@@ -344,6 +344,7 @@ module:
           - ../proto/wtools/abase/l0.test/Path.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
+          - ../proto/wtools/abase/l0.test/PropertyTransformer.test.s
           - ../proto/wtools/abase/l0.test/Prototype.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
           - ../proto/wtools/abase/l0.test/Routine.test.s
