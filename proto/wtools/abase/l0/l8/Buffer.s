@@ -4002,8 +4002,6 @@ function bufferReusingResize( /* dst, src, cinterval */ )
 
     /* */
 
-    debugger;
-
     if( srcTyped === dstTyped )
     return dstTyped;
 
@@ -4041,6 +4039,7 @@ bufferReusingResize.defaults =
   offsetting : 1,
   reusing : 1,
   growFactor : 2,
+  shrinkFactor : 0,
   minSize : 64,
 };
 
