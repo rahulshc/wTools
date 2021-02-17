@@ -162,6 +162,7 @@ var AuxiliaryExtension =
   is, /* qqq : cover */
   isPrototyped, /* qqq : cover */
   isPure, /* qqq : cover */
+  isPolluted, /* qqq : cover */
 
   // checking
 

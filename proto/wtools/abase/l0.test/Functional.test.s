@@ -24235,486 +24235,483 @@ function eachSample( test )
 
   /* */
 
-  // test.case = 'sets - array with single element';
-  // var src = [ 1 ];
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1 ] ];
-  // test.identical( got, expected );
-  // test.identical( src, [ 1 ] );
-  //
-  // test.case = 'sets - map with single element';
-  // var src = { a : 1 };
-  // var got = _.eachSample( src, null );
-  // var expected = [ { a : 1 } ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : 1 } );
-  //
-  // test.case = 'sets - array with several element';
-  // var src = [ 1, 2, null ];
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1, 2, null ] ];
-  // test.identical( got, expected );
-  // test.identical( src, [ 1, 2, null ] );
-  //
-  // test.case = 'sets - map with several element';
-  // var src = { a : 1, b : 2, c : null };
-  // var got = _.eachSample( src, null );
-  // var expected = [ { a : 1, b : 2, c : null } ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : 1, b : 2, c : null } );
-  //
-  // test.case = 'sets - unroll with single element';
-  // var src = _.unrollMake( [ 1 ] );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1 ] ];
-  // test.identical( got, expected );
-  // test.false( _.unrollIs( got ) );
-  // test.identical( src, _.unrollMake( [ 1 ] ) );
-  //
-  // test.case = 'sets - argumentsArray with single element';
-  // var src = _.argumentsArray.make( [ 1 ] );
-  // var got = _.eachSample( src, null );
-  // var expected = [ [ 1 ] ];
-  // test.identical( got, expected );
-  // test.true( _.arrayIs( got ) );
-  // test.identical( src, _.argumentsArray.make( [ 1 ] ) );
-  //
-  // /* */
-  //
-  // test.case = 'sets - array, result - 0';
-  // var src = [ 1, 2, 3 ];
-  // var got = _.eachSample( { sets : src, result : 0 } );
-  // var expected = 0;
-  // test.identical( got, expected );
-  // test.identical( src, [ 1, 2, 3 ] );
-  //
-  // test.case = 'sets - map, result - 0';
-  // var src = { a : 1, b : 2, c : null };
-  // var got = _.eachSample( { sets : src, result : 0 } );
-  // var expected = 0;
-  // test.identical( got, expected );
-  // test.identical( src, { a : 1, b : 2, c : null } );
-  //
-  // test.case = 'sets - unroll, result - 0';
-  // var src = _.unrollMake( [ 1, 2, 3 ] );
-  // var got = _.eachSample( { sets : src, result : 0 } );
-  // var expected = 0;
-  // test.identical( got, expected );
-  // test.true( _.primitiveIs( got ) );
-  // test.identical( src, _.unrollMake( [ 1, 2, 3 ] ) );
-  //
-  // test.case = 'sets - argumentsArray, result - 0';
-  // var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  // var got = _.eachSample( { sets : src, result : 0 } );
-  // var expected = 0;
-  // test.identical( got, expected );
-  // test.true( _.primitiveIs( got ) );
-  // test.identical( src, _.argumentsArray.make( [ 1, 2, 3 ] ) );
-  //
-  // /* */
-  //
-  // test.case = 'sets - array contains array';
-  // var src = [ [ 1, 2, null, 'str' ] ] ;
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 1, 2, null, 'str' ] ]  );
-  //
-  // test.case = 'sets - map, contains array';
-  // var src = { a : [ 1, 2, null, 'str' ] };
-  // var got = _.eachSample( src, null );
-  // var expected =
-  // [
-  //   { a : 1 },
-  //   { a : 2 },
-  //   { a : null },
-  //   { a : 'str' }
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 1, 2, null, 'str' ] } );
-  //
-  // test.case = 'sets - unroll, contains array';
-  // var src = _.unrollMake( [ [ 1, 2, null, 'str' ] ] );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
-  // test.identical( got, expected );
-  // test.false( _.unrollIs( got ) );
-  // test.identical( src, _.unrollMake( [ [ 1, 2, null, 'str' ] ] ) );
-  //
-  // test.case = 'sets - argumentsArray, contains array';
-  // var src = _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
-  // test.identical( got, expected );
-  // test.true( _.arrayIs( got ) );
-  // test.identical( src, _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] ) );
-  //
-  // /* */
-  //
-  // test.case = 'sets - two dimentional array, inner arrays has two elements';
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2 ], [ 1, 2 ],
-  //   [ 0, 3 ], [ 1, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  //
-  // test.case = 'sets - two elements map, elements have arrays with two elements';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   { a : 0, b : 2 }, { a : 1, b : 2 },
-  //   { a : 0, b : 3 }, { a : 1, b : 3 }
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
-  //
-  // test.case = 'sets - two dimentional array, with scalar element at the end of container';
-  // var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2, 6 ], [ 1, 2, 6 ],
-  //   [ 0, 3, 6 ], [ 1, 3, 6 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ], 6 ] );
-  //
-  // test.case = 'sets - three elements map, two element have arrays, one has scalar';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   { a : 0, b : 2, c : 6 },
-  //   { a : 1, b : 2, c : 6 },
-  //   { a : 0, b : 3, c : 6 },
-  //   { a : 1, b : 3, c : 6 }
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 } );
-  //
-  // test.case = 'sets - three elements, two dimentional array';
-  // var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2, 6 ], [ 1, 2, 6 ],
-  //   [ 0, 3, 6 ], [ 1, 3, 6 ],
-  //   [ 0, 2, null ], [ 1, 2, null ],
-  //   [ 0, 3, null ], [ 1, 3, null ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ] );
-  //
-  // test.case = 'sets - three elements map, elements have arrays';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   { a : 0, b : 2, c : 6 }, { a : 1, b : 2, c : 6 },
-  //   { a : 0, b : 3, c : 6 }, { a : 1, b : 3, c : 6 },
-  //   { a : 0, b : 2, c : null }, { a : 1, b : 2, c : null },
-  //   { a : 0, b : 3, c : null }, { a : 1, b : 3, c : null },
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] } );
-  //
-  // test.case = 'sets - two dimentional array, contains argumentsArray';
-  // var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2 ], [ 1, 2 ],
-  //   [ 0, 3 ], [ 1, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.true( _.arrayIs( got ) );
-  // test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
-  //
-  // /* */
-  //
-  // test.case = 'sets - two dimentional array, leftToRight - 0';
-  // var src = [ [ 0, 1 ], [ 5, 6 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   leftToRight : 0,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 5 ], [ 0, 6 ],
-  //   [ 1, 5 ], [ 1, 6 ]
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 5, 6 ] ] );
-  //
-  // test.case = 'sets - two elements map, leftToRight - 0';
-  // var src = { a : [ 0, 1 ], b : [ 5, 6 ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   leftToRight : 0,
-  // });
-  // var expected =
-  // [
-  //   { a : 0, b : 5 }, { a : 0, b : 6 },
-  //   { a : 1, b : 5 }, { a : 1, b : 6 }
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 5, 6 ] } );
-  //
-  // test.case = 'sets - three elements two dimentional array, leftToRight - 0';
-  // var src = [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   leftToRight : 0,
-  // });
-  // var expected =
-  // [
-  //   [ 0, 'str', true ], [ 0, 'str', 2 ],
-  //   [ 0, null, true ], [ 0, null, 2 ],
-  //   [ 1, 'str', true ], [ 1, 'str', 2 ],
-  //   [ 1, null, true ], [ 1, null, 2 ]
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ] );
-  //
-  // /* */
-  //
-  // test.case = 'sets - two dimentional array, leftToRight - 1, result - 0';
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  //
-  // test.case = 'sets - two elements map, leftToRight - 1, result - 0';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
-  //
-  // test.case = 'sets - two dimentional array with scalar, leftToRight - 1, result - 0';
-  // var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ], 6 ] );
-  //
-  // test.case = 'sets - three elements map with scalar, leftToRight - 1, result - 0';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 } );
-  //
-  // test.case = 'sets - two dimentional three elements array, leftToRight - 1, result - 0';
-  // var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 7;
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ] );
-  //
-  // test.case = 'sets - three elements map, elements have arrays, leftToRight - 1, result - 0';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 7;
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] } );
-  //
-  // test.case = 'sets - array with unrolls, leftToRight - 1, result - 0';
-  // var src = [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ] );
-  //
-  // test.case = 'sets - array with argumentsArray, leftToRight - 1, result - 0';
-  // var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   result : 0,
-  // });
-  // var expected = 3;
-  // test.identical( got, expected );
-  // test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
-  //
-  // test.case = 'sets - two dimentional array, sample - not default, equal length of vectors';
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   sample : [ 1, 2 ]
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2 ], [ 1, 2 ],
-  //   [ 0, 3 ], [ 1, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  //
-  // test.case = 'sets - two dimentional array, sample - not default, sample.length > vector.length';
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   sample : [ 1, 2, 3 ]
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2, 3 ], [ 1, 2, 3 ],
-  //   [ 0, 3, 3 ], [ 1, 3, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  //
-  // test.case = 'sets - two elements map, sample - not default';
-  // var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   sample : { ak : 'a', bk : 'b', ck : 'c' }
-  // });
-  // var expected =
-  // [
-  //   {
-  //     'ak' : 'a',
-  //     'bk' : 'b',
-  //     'ck' : 'c',
-  //     'a' : 0,
-  //     'b' : 2
-  //   },
-  //   {
-  //     'ak' : 'a',
-  //     'bk' : 'b',
-  //     'ck' : 'c',
-  //     'a' : 1,
-  //     'b' : 2
-  //   },
-  //   {
-  //     'ak' : 'a',
-  //     'bk' : 'b',
-  //     'ck' : 'c',
-  //     'a' : 0,
-  //     'b' : 3
-  //   },
-  //   {
-  //     'ak' : 'a',
-  //     'bk' : 'b',
-  //     'ck' : 'c',
-  //     'a' : 1,
-  //     'b' : 3
-  //   }
-  // ]
-  // test.identical( got, expected );
-  // test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
-  //
-  // test.case = 'sets - two dimentional array, sample - not default, onEach';
-  // var onEach = ( sample, i ) => sample[ i ] = sample[ i ] + 12;
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   onEach,
-  //   sample : [ 1, 2, 3 ]
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2, 3 ], [ 1, 2, 3 ],
-  //   [ 0, 3, 3 ], [ 1, 3, 15 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  //
-  // test.case = 'sets - two dimentional array, sample - not default, onEach';
-  // var result = [];
-  // var onEach = ( sample, i ) =>
-  // {
-  //   _.arrayAppend( result, sample[ i ] );
-  // };
-  // var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  // var got = _.eachSample
-  // ({
-  //   sets : src,
-  //   onEach,
-  //   sample : [ 1, 2, 3, 4 ]
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2, 3, 4 ], [ 1, 2, 3, 4 ],
-  //   [ 0, 3, 3, 4 ], [ 1, 3, 3, 4 ],
-  // ];
-  // test.identical( got, expected );
-  // test.identical( result, [ 0, 2, 3, 4 ] );
-  // test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
-  // xxx
+  test.case = 'sets - array with single element';
+  var src = [ 1 ];
+  var got = _.eachSample( src );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.identical( src, [ 1 ] );
+
+  test.case = 'sets - map with single element';
+  var src = { a : 1 };
+  var got = _.eachSample( src, null );
+  var expected = [ { a : 1 } ];
+  test.identical( got, expected );
+  test.identical( src, { a : 1 } );
+
+  test.case = 'sets - array with several element';
+  var src = [ 1, 2, null ];
+  var got = _.eachSample( src );
+  var expected = [ [ 1, 2, null ] ];
+  test.identical( got, expected );
+  test.identical( src, [ 1, 2, null ] );
+
+  test.case = 'sets - map with several element';
+  var src = { a : 1, b : 2, c : null };
+  var got = _.eachSample( src, null );
+  var expected = [ { a : 1, b : 2, c : null } ];
+  test.identical( got, expected );
+  test.identical( src, { a : 1, b : 2, c : null } );
+
+  test.case = 'sets - unroll with single element';
+  var src = _.unrollMake( [ 1 ] );
+  var got = _.eachSample( src );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.false( _.unrollIs( got ) );
+  test.identical( src, _.unrollMake( [ 1 ] ) );
+
+  test.case = 'sets - argumentsArray with single element';
+  var src = _.argumentsArray.make( [ 1 ] );
+  var got = _.eachSample( src, null );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.true( _.arrayIs( got ) );
+  test.identical( src, _.argumentsArray.make( [ 1 ] ) );
+
+  /* */
+
+  test.case = 'sets - array, result - 0';
+  var src = [ 1, 2, 3 ];
+  var got = _.eachSample( { sets : src, result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.identical( src, [ 1, 2, 3 ] );
+
+  test.case = 'sets - map, result - 0';
+  var src = { a : 1, b : 2, c : null };
+  var got = _.eachSample( { sets : src, result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.identical( src, { a : 1, b : 2, c : null } );
+
+  test.case = 'sets - unroll, result - 0';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.eachSample( { sets : src, result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.true( _.primitiveIs( got ) );
+  test.identical( src, _.unrollMake( [ 1, 2, 3 ] ) );
+
+  test.case = 'sets - argumentsArray, result - 0';
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+  var got = _.eachSample( { sets : src, result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.true( _.primitiveIs( got ) );
+  test.identical( src, _.argumentsArray.make( [ 1, 2, 3 ] ) );
+
+  /* */
+
+  test.case = 'sets - array contains array';
+  var src = [ [ 1, 2, null, 'str' ] ] ;
+  var got = _.eachSample( src );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 1, 2, null, 'str' ] ]  );
+
+  test.case = 'sets - map, contains array';
+  var src = { a : [ 1, 2, null, 'str' ] };
+  var got = _.eachSample( src, null );
+  var expected =
+  [
+    { a : 1 },
+    { a : 2 },
+    { a : null },
+    { a : 'str' }
+  ];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 1, 2, null, 'str' ] } );
+
+  test.case = 'sets - unroll, contains array';
+  var src = _.unrollMake( [ [ 1, 2, null, 'str' ] ] );
+  var got = _.eachSample( src );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.false( _.unrollIs( got ) );
+  test.identical( src, _.unrollMake( [ [ 1, 2, null, 'str' ] ] ) );
+
+  test.case = 'sets - argumentsArray, contains array';
+  var src = _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] );
+  var got = _.eachSample( src );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.true( _.arrayIs( got ) );
+  test.identical( src, _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] ) );
+
+  /* */
+
+  test.case = 'sets - two dimentional array, inner arrays has two elements';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two elements map, elements have arrays with two elements';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    { a : 0, b : 2 }, { a : 1, b : 2 },
+    { a : 0, b : 3 }, { a : 1, b : 3 }
+  ];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
+
+  test.case = 'sets - two dimentional array, with scalar element at the end of container';
+  var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    [ 0, 2, 6 ], [ 1, 2, 6 ],
+    [ 0, 3, 6 ], [ 1, 3, 6 ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ], 6 ] );
+
+  test.case = 'sets - three elements map, two element have arrays, one has scalar';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    { a : 0, b : 2, c : 6 },
+    { a : 1, b : 2, c : 6 },
+    { a : 0, b : 3, c : 6 },
+    { a : 1, b : 3, c : 6 }
+  ];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 } );
+
+  test.case = 'sets - three elements, two dimentional array';
+  var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    [ 0, 2, 6 ], [ 1, 2, 6 ],
+    [ 0, 3, 6 ], [ 1, 3, 6 ],
+    [ 0, 2, null ], [ 1, 2, null ],
+    [ 0, 3, null ], [ 1, 3, null ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ] );
+
+  test.case = 'sets - three elements map, elements have arrays';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    { a : 0, b : 2, c : 6 }, { a : 1, b : 2, c : 6 },
+    { a : 0, b : 3, c : 6 }, { a : 1, b : 3, c : 6 },
+    { a : 0, b : 2, c : null }, { a : 1, b : 2, c : null },
+    { a : 0, b : 3, c : null }, { a : 1, b : 3, c : null },
+  ];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] } );
+
+  test.case = 'sets - two dimentional array, contains argumentsArray';
+  var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.true( _.arrayIs( got ) );
+  test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
+
+  /* */
+
+  test.case = 'sets - two dimentional array, leftToRight - 0';
+  var src = [ [ 0, 1 ], [ 5, 6 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    leftToRight : 0,
+  });
+  var expected =
+  [
+    [ 0, 5 ], [ 0, 6 ],
+    [ 1, 5 ], [ 1, 6 ]
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 5, 6 ] ] );
+
+  test.case = 'sets - two elements map, leftToRight - 0';
+  var src = { a : [ 0, 1 ], b : [ 5, 6 ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+    leftToRight : 0,
+  });
+  var expected =
+  [
+    { a : 0, b : 5 }, { a : 0, b : 6 },
+    { a : 1, b : 5 }, { a : 1, b : 6 }
+  ];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 5, 6 ] } );
+
+  test.case = 'sets - three elements two dimentional array, leftToRight - 0';
+  var src = [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    leftToRight : 0,
+  });
+  var expected =
+  [
+    [ 0, 'str', true ], [ 0, 'str', 2 ],
+    [ 0, null, true ], [ 0, null, 2 ],
+    [ 1, 'str', true ], [ 1, 'str', 2 ],
+    [ 1, null, true ], [ 1, null, 2 ]
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ] );
+
+  /* */
+
+  test.case = 'sets - two dimentional array, leftToRight - 1, result - 0';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two elements map, leftToRight - 1, result - 0';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
+
+  test.case = 'sets - two dimentional array with scalar, leftToRight - 1, result - 0';
+  var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ], 6 ] );
+
+  test.case = 'sets - three elements map with scalar, leftToRight - 1, result - 0';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 } );
+
+  test.case = 'sets - two dimentional three elements array, leftToRight - 1, result - 0';
+  var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 7;
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ] );
+
+  test.case = 'sets - three elements map, elements have arrays, leftToRight - 1, result - 0';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 7;
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] } );
+
+  test.case = 'sets - array with unrolls, leftToRight - 1, result - 0';
+  var src = [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ] );
+
+  test.case = 'sets - array with argumentsArray, leftToRight - 1, result - 0';
+  var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    result : 0,
+  });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
+
+  test.case = 'sets - two dimentional array, sample - not default, equal length of vectors';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    sample : [ 1, 2 ]
+  });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two dimentional array, sample - not default, sample.length > vector.length';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    sample : [ 1, 2, 3 ]
+  });
+  var expected =
+  [
+    [ 0, 2, 3 ], [ 1, 2, 3 ],
+    [ 0, 3, 3 ], [ 1, 3, 3 ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two elements map, sample - not default';
+  var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
+  var got = _.eachSample
+  ({
+    sets : src,
+    sample : { ak : 'a', bk : 'b', ck : 'c' }
+  });
+  var expected =
+  [
+    {
+      'ak' : 'a',
+      'bk' : 'b',
+      'ck' : 'c',
+      'a' : 0,
+      'b' : 2
+    },
+    {
+      'ak' : 'a',
+      'bk' : 'b',
+      'ck' : 'c',
+      'a' : 1,
+      'b' : 2
+    },
+    {
+      'ak' : 'a',
+      'bk' : 'b',
+      'ck' : 'c',
+      'a' : 0,
+      'b' : 3
+    },
+    {
+      'ak' : 'a',
+      'bk' : 'b',
+      'ck' : 'c',
+      'a' : 1,
+      'b' : 3
+    }
+  ]
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
 
   test.case = 'sets - two dimentional array, sample - not default, onEach';
+  var onEach = ( sample, i ) => sample[ i ] = sample[ i ] + 12;
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    onEach,
+    sample : [ 1, 2, 3 ]
+  });
+  var expected =
+  [
+    [ 0, 2, 3 ], [ 1, 2, 3 ],
+    [ 0, 3, 3 ], [ 1, 3, 15 ],
+  ];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two dimentional array, sample - not default, onEach';
+  var result = [];
+  var onEach = ( sample, i ) =>
+  {
+    _.arrayAppend( result, sample[ i ] );
+  };
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+    onEach,
+    sample : [ 1, 2, 3, 4 ]
+  });
+  var expected =
+  [
+    [ 0, 2, 3, 4 ], [ 1, 2, 3, 4 ],
+    [ 0, 3, 3, 4 ], [ 1, 3, 3, 4 ],
+  ];
+  test.identical( got, expected );
+  test.identical( result, [ 0, 2, 3, 4 ] );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'string and number';
   var src = { str : 'abc', n : 3 };
   var options =
   {
     sets : src,
   }
-  debugger;
   var got = _.eachSample( options );
-  debugger;
   var expected =
   [
     { str : 'abc', n : 3 }
