@@ -60,7 +60,7 @@ BufferRaw
 BufferRawShared
 BufferTyped
 BufferView
-BufferBytes?
+BufferBytes
 
 constructible
 constructibleLike
