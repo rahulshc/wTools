@@ -192,6 +192,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Constructible.s
           - ../proto/wtools/abase/l0/l3/Container.s
           - ../proto/wtools/abase/l0/l3/Ct.s
+          - ../proto/wtools/abase/l0/l3/Date.s
           - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Err.s
           - ../proto/wtools/abase/l0/l3/Escape.s
@@ -228,11 +229,13 @@ module:
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
+          - ../proto/wtools/abase/l0/l5/Auxiliary.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
           - ../proto/wtools/abase/l0/l5/Constructible.s
           - ../proto/wtools/abase/l0/l5/Container.s
           - ../proto/wtools/abase/l0/l5/Ct.s
+          - ../proto/wtools/abase/l0/l5/Date.s
           - ../proto/wtools/abase/l0/l5/Entity.s
           - ../proto/wtools/abase/l0/l5/Err.s
           - ../proto/wtools/abase/l0/l5/Escape.s
@@ -276,11 +279,13 @@ module:
           - ../proto/wtools/abase/l0/l8
           - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l8/Array.s
+          - ../proto/wtools/abase/l0/l8/Auxiliary.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
           - ../proto/wtools/abase/l0/l8/Constructible.s
           - ../proto/wtools/abase/l0/l8/Container.s
           - ../proto/wtools/abase/l0/l8/Ct.s
+          - ../proto/wtools/abase/l0/l8/Date.s
           - ../proto/wtools/abase/l0/l8/Entity.s
           - ../proto/wtools/abase/l0/l8/Err.s
           - ../proto/wtools/abase/l0/l8/Escape.s
@@ -318,6 +323,7 @@ module:
           - ../proto/wtools/abase/l0.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0.test/Array.test.s
           - ../proto/wtools/abase/l0.test/ArraySet.test.s
+          - ../proto/wtools/abase/l0.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
@@ -325,6 +331,7 @@ module:
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
+          - ../proto/wtools/abase/l0.test/Date.test.s
           - ../proto/wtools/abase/l0.test/Entity.test.s
           - ../proto/wtools/abase/l0.test/Err.test.s
           - ../proto/wtools/abase/l0.test/Escape.test.s
