@@ -11644,6 +11644,100 @@ function bufferReusingButWithOptionGrowFactor( test )
 
 //
 
+function bufferReusingOnlyDstIsArrayUnroll( test )
+{
+  test.case = 'dst = array, range - number < 0';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingOnly( dst, dst, -5 );
+  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got === dst );
+
+  test.case = 'dst = empty array, range - number === 0';
+  var dst = [];
+  var got = _.bufferReusingOnly( dst, dst, 0 );
+  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got === dst );
+
+  test.case = 'dst = array, range - number > 0';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.bufferReusingOnly( dst, dst, 1 );
+  var exp = [ 1, 2, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst = unroll, range = number > src.length';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingOnly( null, dst, 5 );
+  var exp = [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ]';
+  var dst = _.unrollFrom( [] );
+  var got = _.bufferReusingOnly( null, dst, [ 1, 2 ] );
+  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+  var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingOnly( null, dst, [ 1, 0 ] );
+  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  /* */
+
+  test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingOnly( dst, [ 0, 0 ] );
+  var exp = [ 1, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ]';
+  var dst = _.argumentsArray.from( [] );
+  var got = _.bufferReusingOnly( dst, [ 0, -1 ] );
+  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  test.case = 'dst = argumentsArray';
+  var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
+  var got = _.bufferReusingOnly( dst );
+  var exp = [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ]
+  test.identical( got, exp );
+  test.true( got !== dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( new I16x( 10 ), [ 1 ], [ 0, 0 ], 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( 'str', [ 1, 3 ], [ 0, 1 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( new I16x( 10 ), null, [ 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( new I16x( 10 ), {}, [ 2, 2 ] ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( new I16x( 10 ), [ 1, 3 ], 'str' ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingOnly( new I16x( 10 ), [ 1, 3 ], { a : 1 } ) );
+}
+
+//
+
 function bufferReusingOnlyDstIsBufferTyped( test )
 {
   var bufferTyped = ( buf ) =>
@@ -17318,6 +17412,7 @@ let Self =
     bufferReusingButWithOptionShrinkFactor,
     bufferReusingButWithOptionGrowFactor,
 
+    bufferReusingOnlyDstIsArrayUnroll,
     bufferReusingOnlyDstIsBufferTyped,
     bufferReusingOnlyWithOptionOffsetting,
     bufferReusingOnlyWithOptionShrinkFactor,

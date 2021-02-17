@@ -3158,15 +3158,7 @@ function _bufferReusing( o )
     }
     else
     {
-      if( _.arrayLikeResizable( o.dst ) )
-      {
-        buffer = o.dst;
-        buffer.length = resultLength;
-      }
-      else
-      {
-        buffer = _.bufferMakeUndefined( o.dst, resultLength );
-      }
+      buffer = resultBufferMake();
     }
 
     return buffer;
@@ -3198,9 +3190,26 @@ function _bufferReusing( o )
   {
     let buffer;
     if( newBufferCreate )
-    buffer = _.bufferMakeUndefined( o.src, resultLength );
+    {
+      buffer = _.bufferMakeUndefined( o.src, resultLength );
+    }
+    else if( o.dst.length === resultLength )
+    {
+      buffer = o.dst;
+    }
+    else if( o.dst.byteLength === resultSize )
+    {
+      buffer = o.dst;
+    }
+    else if( _.arrayLikeResizable( o.dst ) )
+    {
+      buffer = o.dst;
+      buffer.length = resultLength;
+    }
     else
-    buffer = _.bufferMakeUndefined( o.dst, resultLength );
+    {
+      buffer = _.bufferMakeUndefined( o.dst, resultLength );
+    }
 
     return buffer;
   }
@@ -3432,7 +3441,20 @@ bufferReusingBut.defaults =
 
 function bufferReusingOnly( /* dst, src, cinterval, ins */ )
 {
-  let o = _._bufferReusing_head.apply( this, arguments );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  let o;
+  if( arguments.length === 3 )
+  {
+    o = Object.create( null );
+    o.dst = arguments[ 0 ];
+    o.src = arguments[ 1 ];
+    o.cinterval = arguments[ 2 ];
+  }
+  else
+  {
+    o = _._bufferReusing_head.apply( this, arguments );
+  }
   _.assert( o.ins === undefined, 'Expects no argument {-ins-}' );
 
   o.cinterval = cintervalClamp();
@@ -3481,9 +3503,13 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
 
     let left = Math.max( 0, cinterval[ 0 ] );
     let right = Math.min( cinterval[ 1 ], srcTyped.length - 1 );
-    for( let i = left ; i < right + 1 ; i++ )
+    let i;
+    for( i = left ; i < right + 1 ; i++ )
     dstTyped[ i - left ] = srcTyped[ i ];
 
+    if( _.arrayLikeResizable( dstTyped ) && i - left < dstTyped.length )
+    for( ; i - left < dstTyped.length; i++ )
+    dstTyped[ i - left ] = undefined;
   }
 }
 
