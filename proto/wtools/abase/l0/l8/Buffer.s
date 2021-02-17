@@ -3601,7 +3601,7 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 {
   let o = _._bufferReusing_head.apply( this, arguments );
 
-  let left, right;
+  let srcLength = ( o.src.length !== undefined || o.src.buffer ) ? o.src.length : o.src.byteLength;
   o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingGrow, o );
@@ -3625,16 +3625,8 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
     else if( _.numberIs( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
 
-    left = o.cinterval[ 0 ];
-    right = o.cinterval[ 1 ];
-
     if( o.cinterval[ 0 ] > 0 )
     o.cinterval[ 0 ] = 0;
-    if( o.cinterval[ 0 ] < 0 )
-    {
-      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-    }
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
     if( o.cinterval[ 1 ] < bufferLength - 1 )
@@ -3654,26 +3646,16 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 
     /* */
 
-    let offset = Math.max( 0, -left );
-    let rightBound = Math.min( dstTyped.length, srcTyped.length );
+    let offset = Math.max( 0, -cinterval[ 0 ] );
+    let rightBound = Math.min( dstTyped.length, srcLength );
     let length = dstTyped.length;
 
-    if( dstTyped.buffer === srcTyped.buffer )
-    {
-      let val = srcTyped[ 0 ];
-      for( let i = offset ; i < rightBound + offset ; i++ )
-      {
-        let temp = srcTyped[ i - offset + 1 ];
-        dstTyped[ i ] = val;
-        val = temp;
-      }
-    }
-    else
+    debugger;
+    if( dstTyped !== srcTyped )
     {
       for( let i = offset ; i < rightBound + offset ; i++ )
       dstTyped[ i ] = srcTyped[ i - offset ];
     }
-
 
     for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
