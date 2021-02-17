@@ -16,356 +16,6 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function has( test )
-{
-  test.open( 'subPrototype === superPrototype' );
-
-  test.case = 'check null';
-  var src = null;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check undefined';
-  var src = undefined;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check zero';
-  var src = 0;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check false';
-  var src = false;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check NaN';
-  var src = NaN;
-  var got = _.prototype.has( src, src );
-  test.identical( got, false );
-
-  test.case = 'check array';
-  var src = [ 1, 2 ];
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check empty arguments array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check empty unroll';
-  var src = _.unrollMake( [] );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check map';
-  var src = { a : 2 };
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check pure map';
-  var src = Object.create( null );
-  src.a = 2;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check Set';
-  var src = new Set( [] );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check BufferRaw';
-  var src = new BufferRaw( 10 );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check BufferTyped';
-  var src = new U8x( [ 1, 2 ] );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check BigIng';
-  var src = 1n;
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'check instance of constructor';
-  function Constr()
-  {
-    this.x = 1;
-    return this;
-  };
-  var src = new Constr();
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'instance of Promise';
-  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.case = 'function _Promise';
-  function _Promise(){}
-  var src = new _Promise();
-  var got = _.prototype.has( src, src );
-  test.identical( got, true );
-
-  test.close( 'subPrototype === superPrototype' );
-
-  /* - */
-
-  test.open( 'one argument is undefines' );
-
-  test.case = 'check null';
-  var src = null;
-  var got = _.prototype.has( src, undefined );
-  test.identical( got, false );
-
-  test.case = 'check undefined';
-  var src = undefined;
-  var got = _.prototype.has( src, null );
-  test.identical( got, false );
-
-  test.case = 'check zero';
-  var src = 0;
-  var got = _.prototype.has( false, src );
-  test.identical( got, false );
-
-  test.case = 'check false';
-  var src = false;
-  var got = _.prototype.has( undefined, src );
-  test.identical( got, false );
-
-  test.case = 'check NaN';
-  var src = NaN;
-  var got = _.prototype.has( src, src );
-  test.identical( got, false );
-
-  test.case = 'check array';
-  var src = [ 1, 2 ];
-  var got = _.prototype.has( false, src );
-  test.identical( got, false );
-
-  test.case = 'check empty arguments array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.prototype.has( src, null );
-  test.identical( got, false );
-
-  test.case = 'check empty unroll';
-  var src = _.unrollMake( [] );
-  var got = _.prototype.has( 0, src );
-  test.identical( got, false );
-
-  test.case = 'check map';
-  var src = { a : 2 };
-  var got = _.prototype.has( src, undefined );
-  test.identical( got, false );
-
-  test.case = 'check pure map';
-  var src = Object.create( null );
-  src.a = 2;
-  var got = _.prototype.has( null, src );
-  test.identical( got, false );
-
-  test.case = 'check Set';
-  var src = new Set( [] );
-  var got = _.prototype.has( src, false );
-  test.identical( got, false );
-
-  test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
-  var got = _.prototype.has( null, src );
-  test.identical( got, false );
-
-  test.case = 'check BufferRaw';
-  var src = new BufferRaw( 10 );
-  var got = _.prototype.has( src, undefined );
-  test.identical( got, false );
-
-  test.case = 'check BufferTyped';
-  var src = new U8x( [ 1, 2 ] );
-  var got = _.prototype.has( false, src );
-  test.identical( got, false );
-
-  test.case = 'check BigIng';
-  var src = 1n;
-  var got = _.prototype.has( null, src );
-  test.identical( got, false );
-
-  test.case = 'check instance of constructor';
-  function Constr()
-  {
-    this.x = 1;
-    return this;
-  };
-  var src = new Constr();
-  var got = _.prototype.has( src, undefined );
-  test.identical( got, false );
-
-  test.case = 'instance of Promise';
-  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.prototype.has( false, src );
-  test.identical( got, false );
-
-  test.case = 'function _Promise';
-  function _Promise(){}
-  var src = new _Promise();
-  var got = _.prototype.has( undefined, src );
-  test.identical( got, false );
-
-
-  test.close( 'one argument is undefines' );
-
-  /* - */
-
-  test.open( 'two objects' );
-
-  test.case = 'superPrototype - Object.prototype, subPrototype - simple map';
-  var src = {};
-  var got = _.prototype.has( Object.prototype, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - simple map, subPrototype - Object.prototype';
-  var src = {};
-  var got = _.prototype.has( src, Object.prototype );
-  test.identical( got, true );
-
-  test.case = 'superPrototype - simple map, subPrototype - simple map';
-  var src = {};
-  var got = _.prototype.has( src, {} );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - simple map, subPrototype - pure map';
-  var src = {};
-  var got = _.prototype.has( src, Object.create( null ) );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - simple map';
-  var src = {};
-  var got = _.prototype.has( Object.create( null ), src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - Object.prototype';
-  var src = Object.create( null );
-  var got = _.prototype.has( src, Object.prototype );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - Object.prototype, subPrototype - pure map';
-  var src = Object.create( null );
-  var got = _.prototype.has( Object.prototype, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - simple map';
-  var src = Object.create( null );
-  var got = _.prototype.has( src, {} );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - simple map';
-  var src = Object.create( null );
-  var got = _.prototype.has( {}, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - pure map';
-  var src = Object.create( null );
-  var got = _.prototype.has( src, Object.create( null ) );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - pure map from superPrototype';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( prototype, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map from subPrototype, subPrototype - pure map';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( src, prototype );
-  test.identical( got, true );
-
-  test.case = 'superPrototype - pure map from prototype, subPrototype - Object.prototype';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( src, Object.prototype );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - Object.prototype, subPrototype - pure map from prototype';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( Object.prototype, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map from prototype, subPrototype - simple map';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( src, {} );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - simple map, subPrototype - pure map from prototype';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( {}, src );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map from prototype, subPrototype - pure map';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( src, Object.create( null ) );
-  test.identical( got, false );
-
-  test.case = 'superPrototype - pure map, subPrototype - pure map from prototype';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.prototype.has( Object.create( null ), src );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'one constructor prototyped by another, has prototype';
-  function proto01(){ this.a = 0; return this };
-  function proto02(){ this.x = 1; return this };
-  proto02.prototype = new proto01();
-  function prototyped0(){ this.y = 1; return this };
-  prototyped0.prototype = new proto02();
-  var src = new prototyped0();
-  var got = _.prototype.has( src, proto02.prototype );
-  test.identical( got, true );
-
-  test.case = 'one constructor prototyped by another, has not prototype';
-  function proto11(){ this.a = 0; return this };
-  function proto12(){ this.x = 1; return this };
-  proto12.prototype = new proto11();
-  function prototyped1(){ this.y = 1; return this };
-  prototyped1.prototype = new proto12();
-  var src = new prototyped1();
-  var got = _.prototype.has( proto12.prototype, src );
-  test.identical( got, false  );
-
-  test.close( 'two objects' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.prototype.has() );
-
-  test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.prototype.has( {} ) );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.prototype.has( {}, {}, 'extra' ) );
-}
-
-//
-
 function is( test ) /* qqq : merge test wProto/prototypeIs in this one | Dmytro : routine extended by cases from wProto */
 {
   test.case = 'check null';
@@ -906,6 +556,431 @@ function isPrototypeOf( test )
   test.close( 'two objects' );
 }
 
+//
+
+function has2( test )
+{
+
+  test.case = 'map';
+  var src = {};
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, src );
+  test.identical( got, true );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.prototype );
+  test.identical( got, true );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, {} );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( {}, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.create( null ), src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( null, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, null );
+  test.identical( got, false );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, src );
+  test.identical( got, true );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.prototype );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, {} );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( {}, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.create( null ), src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( null, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, null );
+  test.identical( got, false );
+
+  test.case = 'map chain';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, src );
+  test.identical( got, true );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, prototype );
+  test.identical( got, true );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( prototype, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.prototype );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, {} );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( {}, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( Object.create( null ), src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( null, src );
+  test.identical( got, false );
+  var got = /*_.prototype.hasPrototype*/_.prototype.has( src, null );
+  test.identical( got, false );
+
+}
+
+//
+
+function has( test )
+{
+  test.open( 'subPrototype === superPrototype' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check zero';
+  var src = 0;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check false';
+  var src = false;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var got = _.prototype.has( src, src );
+  test.identical( got, false );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArray.make( [] );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BigIng';
+  var src = 1n;
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'check instance of constructor';
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.case = 'function _Promise';
+  function _Promise(){}
+  var src = new _Promise();
+  var got = _.prototype.has( src, src );
+  test.identical( got, true );
+
+  test.close( 'subPrototype === superPrototype' );
+
+  /* - */
+
+  test.open( 'one argument is undefines' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.prototype.has( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.prototype.has( src, null );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var src = 0;
+  var got = _.prototype.has( false, src );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var src = false;
+  var got = _.prototype.has( undefined, src );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var got = _.prototype.has( src, src );
+  test.identical( got, false );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var got = _.prototype.has( false, src );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArray.make( [] );
+  var got = _.prototype.has( src, null );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.prototype.has( 0, src );
+  test.identical( got, false );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var got = _.prototype.has( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.prototype.has( null, src );
+  test.identical( got, false );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var got = _.prototype.has( src, false );
+  test.identical( got, false );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var got = _.prototype.has( null, src );
+  test.identical( got, false );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.prototype.has( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.prototype.has( false, src );
+  test.identical( got, false );
+
+  test.case = 'check BigIng';
+  var src = 1n;
+  var got = _.prototype.has( null, src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.prototype.has( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.prototype.has( false, src );
+  test.identical( got, false );
+
+  test.case = 'function _Promise';
+  function _Promise(){}
+  var src = new _Promise();
+  var got = _.prototype.has( undefined, src );
+  test.identical( got, false );
+
+
+  test.close( 'one argument is undefines' );
+
+  /* - */
+
+  test.open( 'two objects' );
+
+  test.case = 'superPrototype - Object.prototype, subPrototype - simple map';
+  var src = {};
+  var got = _.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - simple map, subPrototype - Object.prototype';
+  var src = {};
+  var got = _.prototype.has( src, Object.prototype );
+  test.identical( got, true );
+
+  test.case = 'superPrototype - simple map, subPrototype - simple map';
+  var src = {};
+  var got = _.prototype.has( src, {} );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - simple map, subPrototype - pure map';
+  var src = {};
+  var got = _.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - simple map';
+  var src = {};
+  var got = _.prototype.has( Object.create( null ), src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - Object.prototype';
+  var src = Object.create( null );
+  var got = _.prototype.has( src, Object.prototype );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - Object.prototype, subPrototype - pure map';
+  var src = Object.create( null );
+  var got = _.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - simple map';
+  var src = Object.create( null );
+  var got = _.prototype.has( src, {} );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - simple map';
+  var src = Object.create( null );
+  var got = _.prototype.has( {}, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - pure map';
+  var src = Object.create( null );
+  var got = _.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - pure map from superPrototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( prototype, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map from subPrototype, subPrototype - pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( src, prototype );
+  test.identical( got, true );
+
+  test.case = 'superPrototype - pure map from prototype, subPrototype - Object.prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( src, Object.prototype );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - Object.prototype, subPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( Object.prototype, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map from prototype, subPrototype - simple map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( src, {} );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - simple map, subPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( {}, src );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map from prototype, subPrototype - pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'superPrototype - pure map, subPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.prototype.has( Object.create( null ), src );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'one constructor prototyped by another, has prototype';
+  function proto01(){ this.a = 0; return this };
+  function proto02(){ this.x = 1; return this };
+  proto02.prototype = new proto01();
+  function prototyped0(){ this.y = 1; return this };
+  prototyped0.prototype = new proto02();
+  var src = new prototyped0();
+  var got = _.prototype.has( src, proto02.prototype );
+  test.identical( got, true );
+
+  test.case = 'one constructor prototyped by another, has not prototype';
+  function proto11(){ this.a = 0; return this };
+  function proto12(){ this.x = 1; return this };
+  proto12.prototype = new proto11();
+  function prototyped1(){ this.y = 1; return this };
+  prototyped1.prototype = new proto12();
+  var src = new prototyped1();
+  var got = _.prototype.has( proto12.prototype, src );
+  test.identical( got, false  );
+
+  test.close( 'two objects' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.prototype.has() );
+
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.prototype.has( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.prototype.has( {}, {}, 'extra' ) );
+}
+
 // --
 // declaration
 // --
@@ -919,9 +994,12 @@ var Self =
   tests :
   {
 
-    has,
     is,
     isPrototypeOf,
+
+    has2,
+    has,
+
   }
 
 }

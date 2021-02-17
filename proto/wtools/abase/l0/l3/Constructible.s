@@ -25,7 +25,7 @@ function constructibleIs( src ) /* xxx qqq : optimize */
   if( proto.constructor === Object )
   return false;
 
-  if( _.mapLike( src ) ) /* xxx : remove? */
+  if( _.auxiliary.is( src ) ) /* xxx : remove? */
   return false;
   if( _.vector.is( src ) )
   return false;

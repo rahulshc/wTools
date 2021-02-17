@@ -96,7 +96,7 @@ function regexpsTestAll( regexps, strs )
   if( !_.arrayIs( regexps ) )
   return _.regexpTestAll( regexps, strs );
 
-  _.assert( _.regexpsLike( regexps ) );
+  _.assert( _.regexpsLikeAll( regexps ) );
 
   return regexps.every( ( regexp ) => _.regexpTestAll( regexp, strs ) );
 }
@@ -110,7 +110,7 @@ function regexpsTestAny( regexps, strs )
   if( !_.arrayIs( regexps ) )
   return _.regexpTestAny( regexps, strs );
 
-  _.assert( _.regexpsLike( regexps ) );
+  _.assert( _.regexpsLikeAll( regexps ) );
 
   return regexps.some( ( regexp ) => _.regexpTestAny( regexp, strs ) );
 }
@@ -124,7 +124,7 @@ function regexpsTestNone( regexps, strs )
   if( !_.arrayIs( regexps ) )
   return _.regexpTestNone( regexps, strs );
 
-  _.assert( _.regexpsLike( regexps ) );
+  _.assert( _.regexpsLikeAll( regexps ) );
 
   return regexps.every( ( regexp ) => _.regexpTestNone( regexp, strs ) );
 }

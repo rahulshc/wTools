@@ -7,14 +7,13 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( './Experiment1.s' );
-
   require( './l0/l1/Predefined.s' );
 
   require( './l0/l2/Setup.s' );
 
   require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
+  require( './l0/l3/Auxiliary.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
   require( './l0/l3/Constructible.s' );

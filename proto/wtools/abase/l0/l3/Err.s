@@ -2077,8 +2077,8 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    if( val )
-    debugger;
+    // if( val )
+    // debugger;
     return val;
   },
   get : function()

@@ -9,14 +9,6 @@ if( typeof module !== 'undefined' )
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
 
-  // try
-  // {
-  //   _.include( 'wLooker' );
-  // }
-  // catch( err )
-  // {
-  // }
-
 }
 
 let _global = _global_;
@@ -25,6 +17,7 @@ let _ = _global_.wTools;
 // --
 // tests
 // --
+
 //
 // function entityMakeConstructing( test )
 // {
@@ -2409,12 +2402,9 @@ function entityAssignFieldFromContainer( test )
 
 //
 
-/*
-  aaa : improve test entityLengthOf, normalize it, please | Dmytro : improved, normalized, extended
-*/
-
 function entityLengthOf( test )
 {
+
   test.case = 'undefined';
   var got = _.entityLengthOf( undefined );
   test.identical( got, 0 );
@@ -2495,7 +2485,7 @@ function entityLengthOf( test )
   {
     test.case = 'BufferNode';
     var got1 = _.entityLengthOf( BufferNode.from([ 1, 2, 3, 4 ]) );
-    test.identical( got1, 1 );
+    test.identical( got1, 4 );
   }
 
   test.case = 'Set';
@@ -2553,22 +2543,58 @@ function entityLengthOf( test )
     'property1' :
     {
       value : true,
-      writable : true
+      enumerable : false,
+      writable : true,
     },
     'property2' : {
       value : 'Hello',
-      writable : true
+      enumerable : false,
+      writable : true,
     },
     'property3' :
     {
       enumerable : true,
       value : 'World',
-      writable : true
+      writable : true,
     }
   };
   Object.defineProperties( src, o );
   var got = _.entityLengthOf( src );
   test.identical( got, 1 );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 1;
+  var got = _.entityLengthOf( src );
+  test.identical( got, 2 );
+
+  test.case = 'polluted map';
+  var src = {};
+  src.a = 1;
+  src.b = 1;
+  var got = _.entityLengthOf( src );
+  test.identical( got, 2 );
+
+  test.case = 'pure auxilary';
+  var prototype = Object.create( null );
+  prototype.a = 0;
+  prototype.b = 0;
+  var src = Object.create( prototype );
+  src.b = 1;
+  src.c = 1;
+  var got = _.entityLengthOf( src );
+  test.identical( got, 3 );
+
+  test.case = 'polluted auxilary';
+  var prototype = {};
+  prototype.a = 0;
+  prototype.b = 0;
+  var src = Object.create( prototype );
+  src.b = 1;
+  src.c = 1;
+  var got = _.entityLengthOf( src );
+  test.identical( got, 3 );
 
   /* */
 

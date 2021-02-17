@@ -33,7 +33,7 @@ function strIsolate_head( routine, args )
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strsLikeAll( o.delimeter ) )
+  _.assert( _.regexpsLikeAll( o.delimeter ) )
   _.assert( _.numberIs( o.times ) );
 
   return o;

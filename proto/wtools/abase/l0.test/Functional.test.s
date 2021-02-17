@@ -24232,6 +24232,7 @@ function entityMax( test )
 
 function eachSample( test )
 {
+
   /* */
 
   test.case = 'sets - array with single element';
@@ -24347,15 +24348,6 @@ function eachSample( test )
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
   test.identical( src, _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] ) );
-
-  /* aaa2 : strange? explain please */
-  /* Dmytro : it was strange because BufferTyped was not used properly */
-  // var src = _.arrayFrom( new F32x( [ 1, 2, 3 ] ) );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1, 2, 3 ] ];
-  // test.identical( got, expected );
-  // test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
-  // test.true( _.arrayIs( got ) );
 
   /* */
 
@@ -24712,6 +24704,19 @@ function eachSample( test )
   test.identical( got, expected );
   test.identical( result, [ 0, 2, 3, 4 ] );
   test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'string and number';
+  var src = { str : 'abc', n : 3 };
+  var options =
+  {
+    sets : src,
+  }
+  var got = _.eachSample( options );
+  var expected =
+  [
+    { str : 'abc', n : 3 }
+  ];
+  test.identical( got, expected );
 
   /* - */
 

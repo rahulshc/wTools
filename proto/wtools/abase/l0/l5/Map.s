@@ -1589,8 +1589,8 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 function hashMapExtend( dst, src )
 {
   _.assert( arguments.length === 2 );
-  _.assert( dst === null || _.hashMapLike( dst ) || _.mapLike( dst ) );
-  _.assert( _.hashMapLike( src ) || _.mapLike( src ) );
+  _.assert( dst === null || _.hashMapLike( dst ) || _.auxiliary.is( dst ) );
+  _.assert( _.hashMapLike( src ) || _.auxiliary.is( src ) );
 
   if( dst === null )
   dst = new HashMap;
@@ -1861,7 +1861,7 @@ function mapsFlatten( o )
   _.routineOptions( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
-  _.assert( _.arrayLike( o.src ) || _.mapLike( o.src ) )
+  _.assert( _.arrayLike( o.src ) || _.auxiliary.is( o.src ) )
 
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
@@ -1879,7 +1879,7 @@ function mapsFlatten( o )
       extend( src[ s ], prefix );
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.auxiliary.is( src ) )
     {
 
       for( let k in src )
@@ -2103,8 +2103,8 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.mapLike( dstMap ) || _.objectLike( dstMap ), 'Expects map like {-dstMap-}' );
-  _.assert( _.mapLike( srcMap ) || _.objectLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.auxiliary.is( dstMap ) || _.objectLike( dstMap ), 'Expects map like {-dstMap-}' );
+  _.assert( _.auxiliary.is( srcMap ) || _.objectLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2248,8 +2248,8 @@ function mapBut_( dstMap, srcMap, butMap )
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.mapLike( dstMap ), 'Expects map like destination map {-dstMap-}' );
-  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.auxiliary.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  _.assert( _.auxiliary.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
   _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2953,7 +2953,7 @@ function _mapOnly_( o )
           break;
           if( k === screenMap[ m ] )
           break;
-          if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
+          if( _.auxiliary.is( screenMap[ m ] ) && k in screenMap[ m ] )
           break;
         }
 

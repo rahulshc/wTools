@@ -11,93 +11,6 @@ let Self = _global_.wTools;
 // map checker
 // --
 
-// /**
-//  * Function objectIs checks incoming param whether it is object.
-//  * Returns "true" if incoming param is object. Othervise "false" returned.
-//  *
-//  * @example
-//  * let obj = { x : 100 };
-//  * _.objectIs(obj);
-//  * // returns true
-//  *
-//  * @example
-//  * _.objectIs( 10 );
-//  * // returns false
-//  *
-//  * @param { * } src.
-//  * @return { Boolean }.
-//  * @function objectIs
-//  * @namespace Tools
-//  */
-//
-// function objectIs( src )
-// {
-//   return Object.prototype.toString.call( src ) === '[object Object]';
-// }
-//
-// //
-//
-// function objectLike( src ) /* xxx qqq : optimize */
-// {
-//
-//   if( _.objectIs( src ) )
-//   return true;
-//
-//   if( _.primitiveIs( src ) )
-//   return false;
-//
-//   // if( _.longIs( src ) ) /* yyy */
-//   // return false;
-//   if( _.vectorIs( src ) )
-//   return false;
-//
-//   if( _.routineIsTrivial( src ) )
-//   return false;
-//
-//   // yyy
-//   // for( let k in src )
-//   // return true;
-//
-//   return false;
-// }
-//
-// //
-//
-// function constructibleIs( src ) /* xxx qqq : optimize */
-// {
-//   if( _.primitiveIs( src ) )
-//   return false;
-//
-//   let proto = Object.getPrototypeOf( src );
-//   if( proto === null )
-//   return false;
-//
-//   if( !Reflect.has( proto, 'constructor' ) )
-//   return false;
-//   if( proto.constructor === Object )
-//   return false;
-//
-//   if( _.mapLike( src ) ) /* xxx : remove? */
-//   return false;
-//   if( _.vectorIs( src ) )
-//   return false;
-//   if( _.setIs( src ) )
-//   return false;
-//   if( _.hashMapIs( src ) )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function constructibleLike( src )
-// {
-//   return _.constructibleIs( src );
-// }
-
-//
-
 /**
  * The mapIs() routine determines whether the passed value is an Object,
  * and not inherits through the prototype chain.
@@ -144,10 +57,15 @@ function mapIs( src )
   return false;
 }
 
-// function mapIs( src )
+// //
+//
+// function mapLike( src )
 // {
 //
-//   if( !_.objectIs( src ) )
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
 //   return false;
 //
 //   let proto = Object.getPrototypeOf( src );
@@ -155,52 +73,15 @@ function mapIs( src )
 //   if( proto === null )
 //   return true;
 //
-//   if( !proto.constructor )
-//   return false;
-//
-//   if( proto.constructor.name !== 'Object' )
-//   return false;
-//
-//   if( Object.getPrototypeOf( proto ) === null )
+//   if( proto === Object.prototype )
 //   return true;
 //
-//   _.assert( proto === null || !!proto, 'unexpected' );
+//   if( !_.primitiveIs( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
 //
 //   return false;
 // }
-
-//
-
-// function mapLike( src )
-// {
-//   if( mapIs( src ) )
-//   return true;
-//   return false;
-// }
-
-function mapLike( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( proto === Object.prototype )
-  return true;
-
-  if( !_.primitiveIs( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
 
 //
 
@@ -240,79 +121,79 @@ function mapIsPolluted( src )
   return false;
 }
 
+// //
 //
-
-function mapLikePrototyped( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto === Object.prototype )
-  return false;
-
-  if( !_.primitiveIs( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
-
+// function mapLikePrototyped( src )
+// {
 //
-
-function mapLikePure( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( proto.constructor === Object )
-  return false;
-
-  if( !_.primitiveIs( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) )
-  return true;
-
-  return false;
-}
-
+//   if( !src )
+//   return false;
 //
-
-function mapLikePolluted( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto.constructor === Object )
-  return true;
-
-  return false;
-}
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto === Object.prototype )
+//   return false;
+//
+//   if( !_.primitiveIs( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function mapLikePure( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto.constructor === Object )
+//   return false;
+//
+//   if( !_.primitiveIs( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function mapLikePolluted( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto.constructor === Object )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -325,12 +206,12 @@ function mapIsEmpty( src )
 
 //
 
-function mapLikeEmpty( src )
-{
-  if( !_.mapLike( src ) )
-  return false;
-  return Object.keys( src ).length === 0;
-}
+// function mapLikeEmpty( src )
+// {
+//   if( !_.auxiliary.is( src ) )
+//   return false;
+//   return Object.keys( src ).length === 0;
+// }
 
 //
 
@@ -343,12 +224,12 @@ function mapIsPopulated( src )
 
 //
 
-function mapLikePopulated( src )
-{
-  if( !_.mapLike( src ) )
-  return false;
-  return Object.keys( src ).length > 0;
-}
+// function mapLikePopulated( src )
+// {
+//   if( !_.auxiliary.is( src ) )
+//   return false;
+//   return Object.keys( src ).length > 0;
+// }
 
 // //
 //
@@ -841,7 +722,7 @@ mapOnlyOwnVals.defaults =
  *
  * @example
  * _.mapAllVals( { a : 7, b : 13 } );
- * // returns [ "7", "13", function __defineGetter__(), ... function prototypeIsPrototypeOf() ]
+ * // returns [ "7", "13", function __defineGetter__(), ... function prototype.isPrototypeOf() ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the onlyEnumerable property values found directly upon object.
@@ -1032,14 +913,14 @@ mapOnlyOwnPairs.defaults =
  *
  * @example
  * _.mapAllPairs( { a : 7, b : 13 } );
- * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ] ]
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototype.isPrototypeOf() ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ]  ]
+ * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototype.isPrototypeOf() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
@@ -1472,18 +1353,17 @@ let Extension =
   // constructibleLike, /* qqq : cover and move */
 
   mapIs,
-  mapLike,
+  // mapLike,
   mapIsPure,
   mapIsPolluted,
-  mapLikePrototyped,
-  mapIsPrototyped : mapLikePrototyped, /* xxx : remove later */
-  mapLikePure, /* xxx : cover */
-  mapLikePolluted,
+  // mapLikePrototyped,
+  // mapLikePure, /* xxx : cover */
+  // mapLikePolluted,
 
   mapIsEmpty,
-  mapLikeEmpty,
+  // mapLikeEmpty,
   mapIsPopulated,
-  mapLikePopulated,
+  // mapLikePopulated,
 
   hashMapIs,
   hashMapLike,

@@ -3,8 +3,8 @@ root:
   - wTools.out
 consistency:
   wTools.out.will.yml: &ref_0
-    hash: cd67f1973bd25808d089bccf7572d24d
-    size: 46995
+    hash: bbed02bdc33a3da3e4a80211c606aae9
+    size: 49933
   ../.ex.will.yml: &ref_1
     hash: 349ff2e8b6504ea27d65b18daa7694d7
     size: 2099
@@ -184,7 +184,9 @@ module:
           - ../proto/wtools/abase/l0/l2
           - ../proto/wtools/abase/l0/l2/Setup.s
           - ../proto/wtools/abase/l0/l3
+          - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
+          - ../proto/wtools/abase/l0/l3/Auxiliary.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
           - ../proto/wtools/abase/l0/l3/Constructible.s
@@ -212,6 +214,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Property.s
           - ../proto/wtools/abase/l0/l3/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l3/Prototype.s
           - ../proto/wtools/abase/l0/l3/Regexp.s
           - ../proto/wtools/abase/l0/l3/Routine.s
           - ../proto/wtools/abase/l0/l3/Set.s
@@ -223,6 +226,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Vector.s
           - ../proto/wtools/abase/l0/l4
           - ../proto/wtools/abase/l0/l5
+          - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
@@ -250,6 +254,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Process.s
           - ../proto/wtools/abase/l0/l5/Property.s
           - ../proto/wtools/abase/l0/l5/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l5/Prototype.s
           - ../proto/wtools/abase/l0/l5/Regexp.s
           - ../proto/wtools/abase/l0/l5/Routine.s
           - ../proto/wtools/abase/l0/l5/Set.s
@@ -269,6 +274,7 @@ module:
           - ../proto/wtools/abase/l0/l7/LongContext.s
           - ../proto/wtools/abase/l0/l7/PropertyTransformers.s
           - ../proto/wtools/abase/l0/l8
+          - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l8/Array.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
@@ -296,6 +302,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Process.s
           - ../proto/wtools/abase/l0/l8/Property.s
           - ../proto/wtools/abase/l0/l8/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l8/Prototype.s
           - ../proto/wtools/abase/l0/l8/Regexp.s
           - ../proto/wtools/abase/l0/l8/Routine.s
           - ../proto/wtools/abase/l0/l8/Set.s
@@ -308,6 +315,7 @@ module:
           - ../proto/wtools/abase/l0/l9
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
+          - ../proto/wtools/abase/l0.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0.test/Array.test.s
           - ../proto/wtools/abase/l0.test/ArraySet.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
@@ -336,6 +344,7 @@ module:
           - ../proto/wtools/abase/l0.test/Path.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
+          - ../proto/wtools/abase/l0.test/Prototype.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
           - ../proto/wtools/abase/l0.test/Routine.test.s
           - ../proto/wtools/abase/l0.test/Sorted.test.s

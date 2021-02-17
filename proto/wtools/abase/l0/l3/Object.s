@@ -91,6 +91,8 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   return true
   if( _.regexpIs( src ) )
   return true
+  if( _.bufferAnyIs( src ) )
+  return true
 
   return false;
 }

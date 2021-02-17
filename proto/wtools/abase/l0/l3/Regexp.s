@@ -34,16 +34,33 @@ function regexpLike( src )
   return false;
 }
 
+// //
+//
+// function regexpsLike( srcs )
+// {
+//   if( !_.arrayIs( srcs ) )
+//   return false;
+//   for( let s = 0 ; s < srcs.length ; s++ )
+//   if( !_.regexpLike( srcs[ s ] ) )
+//   return false;
+//   return true;
+// }
+
 //
 
-function regexpsLike( srcs )
+function regexpsLikeAll( src )
 {
-  if( !_.arrayIs( srcs ) )
-  return false;
-  for( let s = 0 ; s < srcs.length ; s++ )
-  if( !_.regexpLike( srcs[ s ] ) )
-  return false;
-  return true;
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( let s = 0 ; s < src.length ; s++ )
+    if( !_.regexpLike( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return _.regexpLike( src );
 }
 
 //
@@ -98,11 +115,12 @@ let ExtensionTools =
   regexpIs,
   regexpObjectIs,
   regexpLike,
-  regexpsLike,
+  regexpsLikeAll,
   regexpIdentical, /* qqq : cover please */
   regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
 
   regexpEscape,
+
 }
 
 //
@@ -125,9 +143,11 @@ let Extension =
 
 let ExtensionS =
 {
+
   // regexps
 
-  regexpsLike
+  likeAll : regexpsLikeAll,
+
 }
 
 

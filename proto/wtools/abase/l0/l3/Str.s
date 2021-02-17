@@ -54,31 +54,31 @@ function strsAreAll( src )
 
 //
 
-function strLike( src )
-{
-  if( _.strIs( src ) )
-  return true;
-  if( _.regexpIs( src ) )
-  return true;
-  return false
-}
-
+// function regexpLike( src )
+// {
+//   if( _.strIs( src ) )
+//   return true;
+//   if( _.regexpIs( src ) )
+//   return true;
+//   return false
+// }
 //
-
-function strsLikeAll( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( _.arrayLike( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( !_.strLike( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  return strLike( src );
-}
+// //
+//
+// function strsLikeAll( src )
+// {
+//   _.assert( arguments.length === 1 );
+//
+//   if( _.arrayLike( src ) )
+//   {
+//     for( let s = 0 ; s < src.length ; s++ )
+//     if( !_.regexpLike( src[ s ] ) )
+//     return false;
+//     return true;
+//   }
+//
+//   return regexpLike( src );
+// }
 
 //
 
@@ -110,7 +110,7 @@ function strHas( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), () => `Expects string, got ${_.strType( src )}` );
-  _.assert( _.strLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
+  _.assert( _.regexpLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
 
   if( _.strIs( ins ) )
   return src.indexOf( ins ) !== -1;
@@ -131,8 +131,8 @@ function strEquivalent( src1, src2 )
   if( !strIs1 && strIs2 )
   return _.strEquivalent( src2, src1 );
 
-  _.assert( _.strLike( src1 ), 'Expects string-like ( string or regexp )' );
-  _.assert( _.strLike( src1 ), 'Expects string-like ( string or regexp )' );
+  _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+  _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
 
   if( strIs1 && strIs2 )
   {
@@ -577,16 +577,16 @@ function strTypeWithTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIsPure( src ) )
     return 'Map.pure';
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.pure.prototyped';
-    else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
@@ -628,7 +628,7 @@ function strTypeWithoutTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIs( src ) )
@@ -677,7 +677,7 @@ function strTypeWithoutTraits( src )
 //     if( Object.getPrototypeOf( src ) === null )
 //     result = 'Map.pure';
 //     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.mapLikePrototyped( src ) )
+//     else if( _.auxiliary.isPrototyped( src ) )
 //     result = 'Map.prototyped';
 //   }
 //
@@ -1360,8 +1360,8 @@ let Extension =
 
   strIs,
   strsAreAll,
-  strLike,
-  strsLikeAll,
+  // regexpLike,
+  // strsLikeAll,
   strDefined,
   strsDefined,
 
@@ -1379,7 +1379,7 @@ let Extension =
   strStrShort, /* qqq for Yevhen : cover */
   strPrimitive,
   strTypeSecondary,
-  strPrimitiveType : strTypeSecondary, /* xxx : remove */
+  // strPrimitiveType : strTypeSecondary, /* xxx : remove */
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
