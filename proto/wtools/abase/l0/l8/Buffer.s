@@ -3199,10 +3199,6 @@ function _bufferReusing( o )
     let buffer;
     if( newBufferCreate )
     buffer = _.bufferMakeUndefined( o.src, resultLength );
-    else if( o.dst.byteLength && o.dst.byteLength > resultSize )
-    buffer = o.dst;
-    else if( o.dst.length && ( o.dst.length * resultElementSize ) > resultSize )
-    buffer = o.dst;
     else
     buffer = _.bufferMakeUndefined( o.dst, resultLength );
 
@@ -3259,8 +3255,7 @@ _bufferReusing.defaults =
  * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
  * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
  *
- * If buffer {-dst-} is not provided or {-dst-} and {-src-} are the same buffer, then routine tries to change
- * container {-src-} inplace.
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace.
  *
  * @example
  * let buffer = new F64x( [ 1, 2, 3, 4 ] );
