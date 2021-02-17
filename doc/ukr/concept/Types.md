@@ -45,7 +45,7 @@ objectIs,
 objectLike,
 
 mapIs,
-mapLike,
+mapLike ~ Auxialary,
 mapIsPure,
 mapIsPolluted,
 mapLikePolluted,
