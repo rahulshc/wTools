@@ -722,7 +722,7 @@ mapOnlyOwnVals.defaults =
  *
  * @example
  * _.mapAllVals( { a : 7, b : 13 } );
- * // returns [ "7", "13", function __defineGetter__(), ... function prototype.isPrototypeOf() ]
+ * // returns [ "7", "13", function __defineGetter__(), ... function prototype.isPrototypeFor() ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the onlyEnumerable property values found directly upon object.
@@ -913,14 +913,14 @@ mapOnlyOwnPairs.defaults =
  *
  * @example
  * _.mapAllPairs( { a : 7, b : 13 } );
- * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototype.isPrototypeOf() ] ]
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototype.isPrototypeFor() ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototype.isPrototypeOf() ]  ]
+ * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototype.isPrototypeFor() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
