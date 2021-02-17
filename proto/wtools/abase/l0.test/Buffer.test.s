@@ -14828,29 +14828,25 @@ function bufferReusingResize( test )
 
   /* - */
 
-  // if( !Config.debug )
-  // return;
-  //
-  // test.case = 'without arguments';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize() );
-  //
-  // test.case = 'not enough arguments';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( new BufferRaw( 2 ) ) );
-  //
-  // test.case = 'extra arguments';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( new BufferRaw( 5 ), new U8x( 3 ), 2, 'extra' ) );
-  //
-  // test.case = 'srcBuffer is not a buffer';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( [ 1, 2 ], 1 ) );
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( null, [ 1, 2 ], 1 ) );
-  //
-  // test.case = 'dst is not a buffer';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( [], [ 1, 2 ], 1 ) );
-  //
-  // test.case = 'not a range';
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( new Fx(), 'not a range' ) );
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( new U8x( 1 ), [ 1 ] ) );
-  // test.shouldThrowErrorSync( () => _.bufferReusingResize( new I16x( 2 ), undefined ) );
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingResize() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( new BufferRaw( 5 ), new U8x( 3 ), 2, 'extra' ) );
+
+  test.case = 'srcBuffer is not a buffer';
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( [ 1, 2 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( null, [ 1, 2 ], 1 ) );
+
+  test.case = 'dst is not a buffer';
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( [], [ 1, 2 ], 1 ) );
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( new Fx(), 'not a range' ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingResize( new U8x( 1 ), [ 1 ] ) );
 }
 
 //
