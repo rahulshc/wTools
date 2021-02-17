@@ -195,6 +195,16 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
 function typingExtended( test )
 {
+  /*
+    Not covered types :
+
+    printer
+    consequence
+    worker
+    logger
+    procedure
+  */
+
   test.case = 'number';
   var src = 1;
   test.true( !_.constructible.like( src ) );
