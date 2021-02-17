@@ -539,7 +539,7 @@ function routineOptions( routine, args, defaults )
 
       if( Config.debug )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       {
         debugger;
         throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );

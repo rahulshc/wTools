@@ -223,7 +223,7 @@ var entityClone = function( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
+      var good = _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -235,7 +235,7 @@ var entityClone = function( src,options )
     }
     else
     {
-      if( _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) )
+      if( _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) )
       result = src.constructor( src );
       else if( _.routineIs( src ) )
       result = src;

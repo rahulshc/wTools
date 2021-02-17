@@ -29,30 +29,6 @@ function competitorIs( src )
   return src.competitorRoutine !== undefined;
 }
 
-//
-
-function dateIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Date]';
-}
-
-//
-
-function datesAreIdentical( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( !_.dateIs( src1 ) )
-  return false;
-  if( !_.dateIs( src2 ) )
-  return false;
-
-  src1 = src1.getTime();
-  src2 = src2.getTime();
-
-  return src1 === src2;
-}
-
 // --
 // fields
 // --
@@ -70,9 +46,6 @@ let Routines =
 
   timerIs,
   competitorIs,
-
-  dateIs,
-  datesAreIdentical,
 
 }
 

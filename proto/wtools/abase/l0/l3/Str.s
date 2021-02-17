@@ -302,7 +302,7 @@ function strEntityShort( src )
     {
       result += `{- ${_.strType( src )} with ${src.length} elements -}`;
     }
-    else if( _.dateIs( src ) )
+    else if( _.date.is( src ) )
     {
       result += src.toISOString();
     }

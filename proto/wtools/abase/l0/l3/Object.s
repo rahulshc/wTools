@@ -87,7 +87,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   if( _.hashMapIs( src ) )
   return false;
 
-  if( _.dateIs( src ) )
+  if( _.date.is( src ) )
   return true
   if( _.regexpIs( src ) )
   return true
