@@ -4002,6 +4002,8 @@ function bufferReusingResize( /* dst, src, cinterval */ )
 
     /* */
 
+    debugger;
+
     if( srcTyped === dstTyped )
     return dstTyped;
 
@@ -4016,8 +4018,15 @@ function bufferReusingResize( /* dst, src, cinterval */ )
     offset += left;
 
     let length = right - left + 1;
-    for( let i = 0; i < dstTyped.length && i < length ; i++ )
-    dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      dstTyped = new dstTyped.constructor( dstTyped.buffer, offset, length );
+    }
+    else
+    {
+      for( let i = 0; i < dstTyped.length && i < length ; i++ )
+      dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+    }
 
     return dstTyped;
 
@@ -4029,7 +4038,6 @@ bufferReusingResize.defaults =
   dst : null,
   src : null,
   cinterval : null,
-  ins : null,
   offsetting : 1,
   reusing : 1,
   growFactor : 2,
