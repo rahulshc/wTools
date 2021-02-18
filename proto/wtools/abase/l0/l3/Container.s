@@ -98,8 +98,8 @@ let ContainerExtension =
 {
 
   is, /* qqq : cover please */
-  like, /* qqq : cover please */
-  lengthOf, /* qqq : cover please */
+  like, /* qqq : cover please | aaa : Done. Yevhen S. */
+  lengthOf, /* qqq : cover please | aaa : Done. Yevhen S. */
 
   //
 
