@@ -918,7 +918,7 @@ let ToolsExtension =
   diagnosticEachLongType,
   diagnosticEachElementComparator,
 
-  diagnosticStructureGenerate,
+  diagnosticStructureGenerate, /* xxx : move */
 
   // checker
 
