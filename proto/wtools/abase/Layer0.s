@@ -50,6 +50,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Str.s' );
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
+  require( './l0/l3/Units.s' );
   require( './l0/l3/Unroll.s' );
   require( './l0/l3/Vector.s' );
 
@@ -90,6 +91,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Str.s' );
   require( './l0/l5/Time.s' );
   require( './l0/l5/Type.s' );
+  require( './l0/l5/Units.s' );
   require( './l0/l5/Unroll.s' );
   require( './l0/l5/Vector.s' );
 
@@ -139,6 +141,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Str.s' );
   require( './l0/l8/Time.s' );
   require( './l0/l8/Type.s' );
+  require( './l0/l8/Units.s' );
   require( './l0/l8/Unroll.s' );
   require( './l0/l8/Vector.s' );
 
