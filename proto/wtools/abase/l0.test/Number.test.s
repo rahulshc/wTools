@@ -1430,7 +1430,7 @@ function numbersTotal( test )
 
   test.case = 'input 1.55, 2.55, 3.05';
   var got = _.numbersTotal([ 1.55, 2.55, 3.05 ]);
-  test.et( got, 7.15 );
+  test.eq( got, 7.15 );
 
   test.case = 'input 1.555, 2.555, 3.111';
   var got = _.numbersTotal([ 1.555, 2.555, 3.111 ]);
@@ -1438,11 +1438,11 @@ function numbersTotal( test )
 
   test.case = 'input 1.5555, 2.555, 3.11';
   var got = _.numbersTotal([ 1.5555, 2.555, 3.11 ]);
-  test.et( got, 7.2205 );
+  test.eq( got, 7.2205 );
 
   test.case = 'input 1, 1, 0.99999999999999999999999';
   var got = _.numbersTotal([ 1, 1, 0.99999999999999999999999 ]);
-  test.et( got, 2.99999999999999999999999 );
+  test.eq( got, 2.99999999999999999999999 );
 
   test.close( 'number input' )
 

@@ -26,7 +26,7 @@ function extendReplacing( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.auxiliary.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -38,10 +38,10 @@ function extendReplacing( dst, src )
     dst = src;
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.auxiliary.is( src ) )
   {
 
-    if( _.mapLike( dst ) )
+    if( _.auxiliary.is( dst ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
@@ -66,7 +66,7 @@ function extendReplacing( dst, src )
   else if( _.hashMapLike( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.mapLike( dst ) )
+    if( _.hashMapLike( dst ) || _.auxiliary.is( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -101,7 +101,7 @@ function extendAppending( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.auxiliary.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -113,10 +113,10 @@ function extendAppending( dst, src )
     dst = src;
 
   }
-  else if( _.mapLike( dst ) )
+  else if( _.auxiliary.is( dst ) )
   {
 
-    if( _.mapLike( src ) )
+    if( _.auxiliary.is( src ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( src ) )
     dst = _.hashMapExtend( dst, src );
@@ -133,7 +133,7 @@ function extendAppending( dst, src )
   else if( _.hashMapLike( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.mapLike( src ) )
+    if( _.hashMapLike( src ) || _.auxiliary.is( src ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
@@ -221,7 +221,7 @@ function empty( dstContainer )
   dstContainer.clear();
   else if( _.hashMapLike( dstContainer ) )
   dstContainer.clear();
-  else if( _.mapLike( dstContainer ) )
+  else if( _.auxiliary.is( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
@@ -282,12 +282,12 @@ function typeUndeclare( type )
 
 //
 
-function elementGet( container, key, type )
+function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( type !== false )
+  if( type !== false ) /* qqq : ignore for now */
   {
     type = _.container.typeOf( container );
     if( type && type._elementGet )
@@ -310,6 +310,13 @@ function elementGet( container, key, type )
     }
     else
     {
+      if( _.escape.is( key ) )
+      {
+        debugger;
+        if( key.val === prototypeSymbol )
+        return _.prototype.of( container );
+        else _.assert( 0 );
+      }
       return container[ key ];
     }
   }
@@ -372,7 +379,8 @@ let knownTypeFields =
 // extension
 // --
 
-let types = _realGlobal_.wTools.container.types;
+const types = _realGlobal_.wTools.container.types;
+const prototypeSymbol = Symbol.for( 'prototype' );
 
 let Extension =
 {

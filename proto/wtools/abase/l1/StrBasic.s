@@ -192,7 +192,7 @@ function strCount( src, ins )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ) );
-  _.assert( _.strLike( ins ) );
+  _.assert( _.regexpLike( ins ) );
 
   let i = 0;
   do
@@ -310,7 +310,7 @@ Dmytro : coverage is extended
 function strRemove( srcStr, insStr )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longIs( srcStr ) || _.strLike( srcStr ), () => 'Expects string or array of strings {-srcStr-}, but got ' + _.strType( srcStr ) );
+  _.assert( _.longIs( srcStr ) || _.regexpLike( srcStr ), () => 'Expects string or array of strings {-srcStr-}, but got ' + _.strType( srcStr ) );
 
   if( _.longIs( insStr ) )
   {
@@ -321,7 +321,7 @@ function strRemove( srcStr, insStr )
   {
     _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), () => 'Expects string/regexp or array of strings/regexps' );
   }
-  //_.assert( _.longIs( insStr ) || _.strLike( insStr ), () => 'Expects string/regexp or array of strings/regexps {-begin-}' );
+  //_.assert( _.longIs( insStr ) || _.regexpLike( insStr ), () => 'Expects string/regexp or array of strings/regexps {-begin-}' );
 
   let result = [];
 

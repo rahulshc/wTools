@@ -15524,7 +15524,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
 
   /* - */
 
-  test.open( 'not longLike, not mapLike' );
+  test.open( 'not longLike, not aixiliary' );
 
   test.case = 'number';
   var got = _.map_( null, 2, ( v, u, u2 ) => v + v );
@@ -15552,7 +15552,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
   test.identical( got, src );
   test.true( got === src );
 
-  test.close( 'not longLike, not mapLike' );
+  test.close( 'not longLike, not aixiliary' );
 
   /* - */
 
@@ -15603,7 +15603,7 @@ function entityMapDifferentCallbacks( test )
 
   /* - */
 
-  test.open( 'mapLike' );
+  test.open( 'aixiliary' );
 
   test.case = 'onEach returns element';
   var src = { 'a' : 1, 'b' : 'a', 'c' : -1 };
@@ -15629,7 +15629,7 @@ function entityMapDifferentCallbacks( test )
   test.identical( got, { 'a' : 1, 'b' : 'a', 'c' : -1 } );
   test.true( got !== src );
 
-  test.close( 'mapLike' );
+  test.close( 'aixiliary' );
 
   /* - */
 
@@ -16665,7 +16665,7 @@ function entityFilter( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike';
+  test.case = 'aixiliary';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.filter_( null, { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -18369,7 +18369,7 @@ function entityFilterDeep( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike';
+  test.case = 'aixiliary';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.entityFilterDeep( { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -18469,7 +18469,7 @@ function entityFilterDeep( test )
   test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( [ 1, 3 ], 'callback' ) );
 
-  test.case = 'src is not arrayLike or mapLike';
+  test.case = 'src is not arrayLike or aixiliary';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( undefined, ( e ) => e ) );
 }
 
@@ -23796,7 +23796,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, without onEvaluate';
+  test.case = 'src - aixiliary, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23807,7 +23807,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach';
+  test.case = 'src - aixiliary, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23894,7 +23894,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, without onEvaluate';
+  test.case = 'src - aixiliary, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23905,7 +23905,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach';
+  test.case = 'src - aixiliary, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23969,7 +23969,7 @@ function _entityMost( test )
 
   /* */
 
-  test.case = 'src - mapLike, onEvaluate1.length - 1';
+  test.case = 'src - aixiliary, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 2, c : 3, d : 4 },
@@ -23980,7 +23980,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach, onEvaluate1.length - 1';
+  test.case = 'src - aixiliary, onEach, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 6, c : 3, d : 4 },
@@ -24232,6 +24232,7 @@ function entityMax( test )
 
 function eachSample( test )
 {
+
   /* */
 
   test.case = 'sets - array with single element';
@@ -24347,15 +24348,6 @@ function eachSample( test )
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
   test.identical( src, _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] ) );
-
-  /* aaa2 : strange? explain please */
-  /* Dmytro : it was strange because BufferTyped was not used properly */
-  // var src = _.arrayFrom( new F32x( [ 1, 2, 3 ] ) );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1, 2, 3 ] ];
-  // test.identical( got, expected );
-  // test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
-  // test.true( _.arrayIs( got ) );
 
   /* */
 
@@ -24713,6 +24705,19 @@ function eachSample( test )
   test.identical( result, [ 0, 2, 3, 4 ] );
   test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
 
+  test.case = 'string and number';
+  var src = { str : 'abc', n : 3 };
+  var options =
+  {
+    sets : src,
+  }
+  var got = _.eachSample( options );
+  var expected =
+  [
+    { str : 'abc', n : 3 }
+  ];
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -24722,7 +24727,7 @@ function eachSample( test )
   test.shouldThrowErrorSync( () => _.eachSample() );
   test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
 
-  test.case = 'o.sets is not arraylike, not mapLike';
+  test.case = 'o.sets is not arraylike, not aixiliary';
   test.shouldThrowErrorSync( () => _.eachSample( {} ) );
   test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
   test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );

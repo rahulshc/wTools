@@ -1,28 +1,35 @@
-( function _l3_Buffer_s_()
+( function _l8_Date_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
-// implementation
+// typing
 // --
 
 // --
-// declaration
+// extension
 // --
 
-let Extension =
+let ToolsExtension =
 {
 
-  /* xxx qqq : move buffer checks here */
 }
 
 //
 
+let Extension =
+{
+
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 
 // --

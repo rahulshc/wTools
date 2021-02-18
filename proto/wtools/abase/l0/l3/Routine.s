@@ -539,7 +539,7 @@ function routineOptions( routine, args, defaults )
 
       if( Config.debug )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       {
         debugger;
         throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
@@ -900,7 +900,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+//   _.assert( src === null || src === undefined || _.auxiliary.is( src ) || _.routineIs( src ) );
 //
 //   /* generate dst routine */
 //
@@ -949,7 +949,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.mapLike( src ) || _.routineIs( src ) );
+//     _.assert( _.auxiliary.is( src ) || _.routineIs( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
@@ -1027,7 +1027,7 @@ function routineExtend( dst, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+  _.assert( src === null || src === undefined || _.auxiliary.is( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -1073,7 +1073,7 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.mapLike( src ) || _.routineIs( src ) );
+    _.assert( _.auxiliary.is( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -1108,7 +1108,7 @@ function routineDefaults( dst, src, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( dst === null || src === null );
-  _.assert( _.mapLike( defaults ) );
+  _.assert( _.auxiliary.is( defaults ) );
 
   return _.routineExtend( dst, src, { defaults } );
 }
@@ -1735,7 +1735,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
+      else if( vectorizingMapVals && _.auxiliary.is( args[ d ] ) )
       {
         keys = _.mapOnlyOwnKeys( args[ d ] );
         break;

@@ -411,8 +411,8 @@ function diagnosticStructureGenerate_body( o )
 
   /**/
 
-  o.structure = structureMake( 0 );
-  o.size = _.entitySize( o.structure );
+  o.result = structureMake( 0 );
+  o.size = _.entitySize( o.result );
 
   return o;
 
@@ -573,7 +573,7 @@ function diagnosticStructureGenerate_body( o )
       struct[ 'map' ][ 'element' + m ] = structureMake( level+1 );
     }
 
-    // if( o.map || o.structure )
+    // if( o.map || o.result )
     // if( o.mapComplexity )
     // {
     //   // let map = struct[ 'map' ] = { 0 : string, 1 : 1, 2 : true  };
@@ -673,12 +673,12 @@ function diagnosticStructureGenerate_body( o )
 diagnosticStructureGenerate_body.defaults =
 {
 
-  structure : null,
+  result : null,
 
   /*  */
 
-  depth : 1,
-  random : 1,
+  depth : 1, /* qqq : cover the option */
+  random : 1, /* qqq : cover the option */
   stringSize : null,
   bufferSize : null,
   regexpSize : null,
@@ -785,7 +785,7 @@ diagnosticStructureGenerate_body.defaults =
  * //returns
  * // [Object: null prototype]
  * // {
- * //   structure: [Object: null prototype]
+ * //   result: [Object: null prototype]
  * //   {
  * //     // generated structure
  * //   },
@@ -811,7 +811,7 @@ diagnosticStructureGenerate_body.defaults =
  * @returns { Map } - Returns map with diagnostic data types of defined complexity.
  * @function diagnosticStructureGenerate
  * @throws { Error } If arguments.length is more then one.
- * @throws { Error } If options map {-o-} is not mapLike.
+ * @throws { Error } If options map {-o-} is not aixiliary.
  * @throws { Error } If options map {-o-} has unknown options.
  * @namespace Tools
  */
@@ -918,7 +918,7 @@ let ToolsExtension =
   diagnosticEachLongType,
   diagnosticEachElementComparator,
 
-  diagnosticStructureGenerate,
+  diagnosticStructureGenerate, /* xxx : move */
 
   // checker
 

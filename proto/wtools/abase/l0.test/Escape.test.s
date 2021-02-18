@@ -277,10 +277,10 @@ function equal( test )
   var src2 = _.escape.left( _.escape.left( undefined ) );
   test.true( src1 === _.escape.null );
   test.true( src1 !== src2 );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
 
   /* */
 
@@ -291,10 +291,10 @@ function equal( test )
   test.true( src1 !== src2 );
   test.true( src1.val.val !== src2.val.val );
   test.true( src1.val.val === _.null );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
 
   /* */
 
@@ -305,10 +305,10 @@ function equal( test )
   test.true( src1 !== src2 );
   test.true( src1.val.val.val !== src2.val.val.val );
   test.true( src1.val.val.val === _.null );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
 
   /* */
 
@@ -319,10 +319,10 @@ function equal( test )
   test.true( src1 !== src2 );
   test.true( src1.val === _.null );
   test.true( src2.val.val.val === _.null );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
 
   /* */
 
@@ -355,7 +355,7 @@ function toStrStandard( test )
   test.case = 'strType( Escape( null ) )';
   var src = new _.Escape( null );
   console.log( src );
-  var exp = `Escape.partible.constructible`;
+  var exp = `Escape.countable.constructible`;
   test.identical( _.strType( src ), exp );
 
   /* */
@@ -389,7 +389,7 @@ function toStrStandard( test )
   test.case = 'strType( Escape( _.null ) )';
   var src = new _.Escape( _.null );
   console.log( src );
-  var exp = `Escape.partible.constructible`;
+  var exp = `Escape.countable.constructible`;
   test.identical( _.strType( src ), exp );
 
   /* */

@@ -54,31 +54,31 @@ function strsAreAll( src )
 
 //
 
-function strLike( src )
-{
-  if( _.strIs( src ) )
-  return true;
-  if( _.regexpIs( src ) )
-  return true;
-  return false
-}
-
+// function regexpLike( src )
+// {
+//   if( _.strIs( src ) )
+//   return true;
+//   if( _.regexpIs( src ) )
+//   return true;
+//   return false
+// }
 //
-
-function strsLikeAll( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( _.arrayLike( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( !_.strLike( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  return strLike( src );
-}
+// //
+//
+// function strsLikeAll( src )
+// {
+//   _.assert( arguments.length === 1 );
+//
+//   if( _.arrayLike( src ) )
+//   {
+//     for( let s = 0 ; s < src.length ; s++ )
+//     if( !_.regexpLike( src[ s ] ) )
+//     return false;
+//     return true;
+//   }
+//
+//   return regexpLike( src );
+// }
 
 //
 
@@ -110,7 +110,7 @@ function strHas( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), () => `Expects string, got ${_.strType( src )}` );
-  _.assert( _.strLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
+  _.assert( _.regexpLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
 
   if( _.strIs( ins ) )
   return src.indexOf( ins ) !== -1;
@@ -131,8 +131,8 @@ function strEquivalent( src1, src2 )
   if( !strIs1 && strIs2 )
   return _.strEquivalent( src2, src1 );
 
-  _.assert( _.strLike( src1 ), 'Expects string-like ( string or regexp )' );
-  _.assert( _.strLike( src1 ), 'Expects string-like ( string or regexp )' );
+  _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+  _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
 
   if( strIs1 && strIs2 )
   {
@@ -296,13 +296,13 @@ function strEntityShort( src )
     // }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
+      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
     }
     else if( _.vector.is( src ) )
     {
-      result += '{- ' + _.strType( src ) + ' with ' + src.length + ' elements -}';
+      result += `{- ${_.strType( src )} with ${src.length} elements -}`;
     }
-    else if( _.dateIs( src ) )
+    else if( _.date.is( src ) )
     {
       result += src.toISOString();
     }
@@ -324,7 +324,7 @@ function strEntityShort( src )
     else if( _.objectLike( src ) )
     {
       /* xxx : call exportString() if exists */
-      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements' + ' -}';
+      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */
@@ -572,21 +572,22 @@ function strTypeSecondary( src )
 /* qqq : write perfect coverage */
 /* qqq : jsdoc */
 /* xxx : optimize later */
+/* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIsPure( src ) )
     return 'Map.pure';
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    else if( _.mapLikePure( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.pure.prototyped';
-    else if( _.mapLikePolluted( src ) && _.mapLikePrototyped( src ) )
+    else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
     return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
@@ -609,8 +610,8 @@ function strTypeWithTraits( src )
 
     if( !_.StandardTypeSet.has( result ) )
     {
-      if( _.partibleIs( src ) )
-      result += '.partible';
+      if( _.countableIs( src ) )
+      result += '.countable';
       if( _.constructibleIs( src ) )
       result += '.constructible';
     }
@@ -628,7 +629,7 @@ function strTypeWithoutTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.mapLike( src ) )
+  if( _.auxiliary.is( src ) )
   {
 
     if( _.mapIs( src ) )
@@ -677,7 +678,7 @@ function strTypeWithoutTraits( src )
 //     if( Object.getPrototypeOf( src ) === null )
 //     result = 'Map.pure';
 //     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.mapLikePrototyped( src ) )
+//     else if( _.auxiliary.isPrototyped( src ) )
 //     result = 'Map.prototyped';
 //   }
 //
@@ -839,7 +840,7 @@ function strConcat( srcs, o )
     if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     result = concatenatePairWithLineDelimeter( result, src, o );
     else
-    result = result + ' ' + src.replace( /^\s+/, '' );
+    result = `${result} ${src.replace( /^\s+/, '' )}`;
   }
 
   // for( let a = 0 ; a < srcs.length ; a++ )
@@ -1360,8 +1361,8 @@ let Extension =
 
   strIs,
   strsAreAll,
-  strLike,
-  strsLikeAll,
+  // regexpLike,
+  // strsLikeAll,
   strDefined,
   strsDefined,
 

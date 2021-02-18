@@ -87,9 +87,11 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   if( _.hashMapIs( src ) )
   return false;
 
-  if( _.dateIs( src ) )
+  if( _.date.is( src ) )
   return true
   if( _.regexpIs( src ) )
+  return true
+  if( _.bufferAnyIs( src ) )
   return true
 
   return false;
@@ -102,18 +104,18 @@ function objectForTesting( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  partibleConstructorPure.prototype = Object.create( null );
+  countableConstructorPure.prototype = Object.create( null );
   if( o.withConstructor )
-  partibleConstructorPure.prototype.constructor = partibleConstructorPure;
+  countableConstructorPure.prototype.constructor = countableConstructorPure;
 
-  /* xxx : replace partibleMake */
+  /* xxx : replace countableMake */
 
   if( o.new )
   {
     if( o.pure )
-    result = new partibleConstructorPure( o );
+    result = new countableConstructorPure( o );
     else
-    result = new partibleConstructorPolluted( o );
+    result = new countableConstructorPolluted( o );
   }
   else
   {
@@ -151,14 +153,14 @@ function objectForTesting( o )
 
   /* */
 
-  function partibleConstructorPure( o )
+  function countableConstructorPure( o )
   {
     return _objectMake( this, o );
   }
 
   /* */
 
-  function partibleConstructorPolluted( o )
+  function countableConstructorPolluted( o )
   {
     let result = _objectMake( this, o );
     if( !o.withConstructor )

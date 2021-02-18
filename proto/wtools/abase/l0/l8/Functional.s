@@ -349,7 +349,7 @@ function multipleAll( dsts )
  * @throws {exception} If ( arguments.length ) is less then one or more then two.
  * @throws {exception} If( onEach ) is not a Routine or null.
  * @throws {exception} If( o.sets ) is not array or objectLike.
- * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If ( sets ) is aixiliary and ( onEach ) not passed.
  * @throws {exception} If( o.base ) or ( o.add) is undefined.
  * @namespace Tools
  */
@@ -367,7 +367,7 @@ function eachSample( o )
   _.routineOptions( eachSample, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( o.onEach ) || o.onEach === null );
-  _.assert( _.longLike( o.sets ) || _.mapLike( o.sets ) );
+  _.assert( _.longLike( o.sets ) || _.auxiliary.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
   /* sample */
@@ -448,7 +448,7 @@ function eachSample( o )
     });
 
     if( o.result )
-    if( _.mapLike( o.sample ) )
+    if( _.auxiliary.is( o.sample ) )
     o.result.push( _.mapExtend( null, o.sample ) );
     else
     o.result.push( o.sample.slice() );
@@ -475,7 +475,7 @@ function eachSample( o )
       index += 1;
 
       if( o.result )
-      if( _.mapLike( o.sample ) )
+      if( _.auxiliary.is( o.sample ) )
       o.result.push( _.mapExtend( null, o.sample ) );
       else
       o.result.push( o.sample.slice() );
@@ -1049,7 +1049,7 @@ function _entityIndex_functor( fop )
 
     /* */
 
-    if( _.mapLike( src ) )
+    if( _.auxiliary.is( src ) )
     {
 
       for( let k in src )
@@ -1099,7 +1099,7 @@ function _entityIndex_functor( fop )
       }
       else
       {
-        if( !_.mapLike( ext ) )
+        if( !_.auxiliary.is( ext ) )
         {
           _.assert( _.primitiveIs( ext ) );
           ext = { [ ext ] : val }
@@ -1458,7 +1458,7 @@ function _entityRemap_functor( fop )
 
     /* */
 
-    if( _.mapLike( src ) )
+    if( _.auxiliary.is( src ) )
     {
 
       for( let k in src )
@@ -1508,7 +1508,7 @@ function _entityRemap_functor( fop )
       }
       else
       {
-        if( _.mapLike( res ) )
+        if( _.auxiliary.is( res ) )
         extendRoutine( result, res );
         else if( key !== undefined )
         result[ key ] = res;
