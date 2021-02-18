@@ -349,7 +349,7 @@ function multipleAll( dsts )
  * @throws {exception} If ( arguments.length ) is less then one or more then two.
  * @throws {exception} If( onEach ) is not a Routine or null.
  * @throws {exception} If( o.sets ) is not array or objectLike.
- * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If ( sets ) is aixiliary and ( onEach ) not passed.
  * @throws {exception} If( o.base ) or ( o.add) is undefined.
  * @namespace Tools
  */

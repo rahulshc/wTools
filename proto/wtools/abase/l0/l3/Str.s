@@ -296,11 +296,11 @@ function strEntityShort( src )
     // }
     else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements -}';
+      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
     }
     else if( _.vector.is( src ) )
     {
-      result += '{- ' + _.strType( src ) + ' with ' + src.length + ' elements -}';
+      result += `{- ${_.strType( src )} with ${src.length} elements -}`;
     }
     else if( _.date.is( src ) )
     {
@@ -324,7 +324,7 @@ function strEntityShort( src )
     else if( _.objectLike( src ) )
     {
       /* xxx : call exportString() if exists */
-      result += '{- ' + _.strType( src ) + ' with ' + _.entityLengthOf( src ) + ' elements' + ' -}';
+      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */
@@ -572,6 +572,7 @@ function strTypeSecondary( src )
 /* qqq : write perfect coverage */
 /* qqq : jsdoc */
 /* xxx : optimize later */
+/* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
 {
 
@@ -609,8 +610,8 @@ function strTypeWithTraits( src )
 
     if( !_.StandardTypeSet.has( result ) )
     {
-      if( _.partibleIs( src ) )
-      result += '.partible';
+      if( _.countableIs( src ) )
+      result += '.countable';
       if( _.constructibleIs( src ) )
       result += '.constructible';
     }
@@ -839,7 +840,7 @@ function strConcat( srcs, o )
     if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     result = concatenatePairWithLineDelimeter( result, src, o );
     else
-    result = result + ' ' + src.replace( /^\s+/, '' );
+    result = `${result} ${src.replace( /^\s+/, '' )}`;
   }
 
   // for( let a = 0 ; a < srcs.length ; a++ )

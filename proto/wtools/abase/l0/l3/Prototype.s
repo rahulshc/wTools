@@ -51,15 +51,15 @@ function each( proto, onEach )
 
 //
 
-function isPrototypeOf( superPrototype, subPrototype ) /* xxx : move */
+function isPrototypeFor( superPrototype, subPrototype ) /* xxx : move */
 {
   _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
-  if( superPrototype === subPrototype )
-  return true;
   if( !superPrototype )
   return false;
   if( !subPrototype )
   return false;
+  if( superPrototype === subPrototype )
+  return true;
   return Object.isPrototypeOf.call( superPrototype, subPrototype );
 }
 
@@ -122,7 +122,7 @@ function has( superPrototype, subPrototype ) /* xxx : move */
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
   // eslint-disable-next-line no-prototype-builtins
-  return _.prototype.isPrototypeOf( subPrototype, superPrototype );
+  return _.prototype.isPrototypeFor( subPrototype, superPrototype );
 }
 
 //
@@ -153,7 +153,7 @@ var Extension =
 
   of : _of,
   each,
-  isPrototypeOf,
+  isPrototypeFor,
   havingProperty,
 
   // hasPrototype,

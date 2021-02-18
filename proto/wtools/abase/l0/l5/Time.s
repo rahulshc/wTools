@@ -845,6 +845,9 @@ function from( time )
  * @extends Tools
  */
 
+/* qqq : introduce namespace _.units */
+/* xxx : expose units formatter interface in wTools */
+/* qqq xxx : use units formatters */
 function spent( description, time )
 {
   let now = _.time.now();
@@ -858,9 +861,6 @@ function spent( description, time )
   _.assert( 1 <= arguments.length && arguments.length <= 2 );
   _.assert( _.numberIs( time ) );
   _.assert( _.strIs( description ) );
-
-  // if( description && description !== ' ' )
-  // description = description;
 
   let result = description + _.time.spentFormat( now-time );
 

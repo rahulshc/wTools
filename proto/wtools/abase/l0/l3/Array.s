@@ -10,15 +10,6 @@ let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 // --
-// arguments array
-// --
-
-function argumentsArrayIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Arguments]';
-}
-
-// --
 // array
 // --
 
@@ -113,10 +104,6 @@ let Fields =
 
 let Routines =
 {
-
-  // arguments array
-
-  argumentsArrayIs,
 
   //
 
