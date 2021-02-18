@@ -1,4 +1,4 @@
-( function _l3_Diagnostic_s_()
+( function _l8_Diagnostic_s_()
 {
 
 'use strict';
