@@ -50,6 +50,7 @@ mapIsPure,
 mapIsPolluted,
 mapLikePolluted,
 mapIsPrototyped,
+mapLikePrototyped,
 
 HashMap
 Set
