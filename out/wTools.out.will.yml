@@ -194,6 +194,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Countable.s
           - ../proto/wtools/abase/l0/l3/Ct.s
           - ../proto/wtools/abase/l0/l3/Date.s
+          - ../proto/wtools/abase/l0/l3/Diagnostic.s
           - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Err.s
           - ../proto/wtools/abase/l0/l3/Escape.s
@@ -223,6 +224,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Str.s
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Type.s
+          - ../proto/wtools/abase/l0/l3/Units.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
           - ../proto/wtools/abase/l0/l3/Vector.s
           - ../proto/wtools/abase/l0/l4
@@ -237,6 +239,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Countable.s
           - ../proto/wtools/abase/l0/l5/Ct.s
           - ../proto/wtools/abase/l0/l5/Date.s
+          - ../proto/wtools/abase/l0/l5/Diagnostic.s
           - ../proto/wtools/abase/l0/l5/Entity.s
           - ../proto/wtools/abase/l0/l5/Err.s
           - ../proto/wtools/abase/l0/l5/Escape.s
@@ -265,6 +268,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Str.s
           - ../proto/wtools/abase/l0/l5/Time.s
           - ../proto/wtools/abase/l0/l5/Type.s
+          - ../proto/wtools/abase/l0/l5/Units.s
           - ../proto/wtools/abase/l0/l5/Unroll.s
           - ../proto/wtools/abase/l0/l5/Vector.s
           - ../proto/wtools/abase/l0/l6
@@ -287,6 +291,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Countable.s
           - ../proto/wtools/abase/l0/l8/Ct.s
           - ../proto/wtools/abase/l0/l8/Date.s
+          - ../proto/wtools/abase/l0/l8/Diagnostic.s
           - ../proto/wtools/abase/l0/l8/Entity.s
           - ../proto/wtools/abase/l0/l8/Err.s
           - ../proto/wtools/abase/l0/l8/Escape.s
@@ -315,6 +320,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Str.s
           - ../proto/wtools/abase/l0/l8/Time.s
           - ../proto/wtools/abase/l0/l8/Type.s
+          - ../proto/wtools/abase/l0/l8/Units.s
           - ../proto/wtools/abase/l0/l8/Unroll.s
           - ../proto/wtools/abase/l0/l8/Vector.s
           - ../proto/wtools/abase/l0/l9
@@ -332,6 +338,7 @@ module:
           - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Date.test.s
+          - ../proto/wtools/abase/l0.test/Diagnostic.test.s
           - ../proto/wtools/abase/l0.test/Entity.test.s
           - ../proto/wtools/abase/l0.test/Err.test.s
           - ../proto/wtools/abase/l0.test/Escape.test.s
@@ -359,6 +366,7 @@ module:
           - ../proto/wtools/abase/l0.test/Str.test.s
           - ../proto/wtools/abase/l0.test/Time.test.s
           - ../proto/wtools/abase/l0.test/Typing.test.s
+          - ../proto/wtools/abase/l0.test/Units.test.s
           - ../proto/wtools/abase/l0.test/Unroll.test.s
           - ../proto/wtools/abase/l0.test/Vector.test.s
           - ../proto/wtools/abase/l1
