@@ -820,15 +820,15 @@ function typingExtended( test )
 
   test.case = 'console';
   var src = console;
-  test.true( !_.constructible.like( src ) );
-  test.true( !_.constructible.is( src ) );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
   test.true( _.objectLike( src ) );
   test.true( _.objectIs( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( !_.auxiliary.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'printerLike';
