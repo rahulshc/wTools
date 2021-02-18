@@ -182,7 +182,7 @@ let Self =
 
   tests :
   {
-    is,
+    structureGenerate,
   }
 
 }
