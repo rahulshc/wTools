@@ -349,7 +349,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'vector & vectorLike';
-  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.objectLike( src ) );
@@ -361,8 +361,8 @@ function typingExtended( test )
   test.true( !_.auxiliary.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
-  test.case = 'partible & partibleLike';
-  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.objectLike( src ) );
@@ -870,14 +870,14 @@ function typingExtended( test )
 
   /* */
 
-  function partibleConstructor( o )
+  function countableConstructor( o )
   {
-    return partibleMake( this, o );
+    return countableMake( this, o );
   }
 
   /* */
 
-  function partibleMake( dst, o )
+  function countableMake( dst, o )
   {
     if( dst === null )
     dst = Object.create( null );

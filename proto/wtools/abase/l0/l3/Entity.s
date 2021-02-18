@@ -121,7 +121,7 @@ function lengthOf( src )
   return src.size;
   if( _.hashMapLike( src ) )
   return src.size;
-  if( _.partibleIs( src ) )
+  if( _.countableIs( src ) )
   return [ ... src ].length;
 
   if( _.auxiliary.is( src ) )

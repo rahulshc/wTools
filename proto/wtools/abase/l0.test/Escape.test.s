@@ -355,7 +355,7 @@ function toStrStandard( test )
   test.case = 'strType( Escape( null ) )';
   var src = new _.Escape( null );
   console.log( src );
-  var exp = `Escape.partible.constructible`;
+  var exp = `Escape.countable.constructible`;
   test.identical( _.strType( src ), exp );
 
   /* */
@@ -389,7 +389,7 @@ function toStrStandard( test )
   test.case = 'strType( Escape( _.null ) )';
   var src = new _.Escape( _.null );
   console.log( src );
-  var exp = `Escape.partible.constructible`;
+  var exp = `Escape.countable.constructible`;
   test.identical( _.strType( src ), exp );
 
   /* */

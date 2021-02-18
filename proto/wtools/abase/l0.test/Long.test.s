@@ -179,10 +179,10 @@ function longLike( test )
   test.identical( _.longLike( src ), false );
   test.identical( _.vector.is( src ), false );
   test.identical( _.vector.like( src ), false );
-  test.identical( _.partible.is( src ), true );
-  test.identical( _.partible.like( src ), true );
+  test.identical( _.countable.is( src ), true );
+  test.identical( _.countable.like( src ), true );
 
-  /* qqq for Yevhen : write very good test "typing" testing routines which check 'partible', 'vector', 'long', 'array' */
+  /* qqq for Yevhen : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
 
   /* - */
 

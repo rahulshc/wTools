@@ -73,8 +73,8 @@ ArrayLike
 Long
 LongLike
 Vector
-Partiable
-PartibleLike
+Countable
+CountrableLike
 
 Global
 GlobalReal

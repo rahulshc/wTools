@@ -572,6 +572,7 @@ function strTypeSecondary( src )
 /* qqq : write perfect coverage */
 /* qqq : jsdoc */
 /* xxx : optimize later */
+/* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
 {
 
@@ -609,8 +610,8 @@ function strTypeWithTraits( src )
 
     if( !_.StandardTypeSet.has( result ) )
     {
-      if( _.partibleIs( src ) )
-      result += '.partible';
+      if( _.countableIs( src ) )
+      result += '.countable';
       if( _.constructibleIs( src ) )
       result += '.constructible';
     }
