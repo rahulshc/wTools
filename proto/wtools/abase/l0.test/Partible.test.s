@@ -612,6 +612,17 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
+  test.case = 'time';
+  var src = _.time.now();
+  test.true( !_.countable.like( src ) );
+  test.true( !_.countable.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.arrayLike( src ) );
+  test.true( !_.arrayIs( src ) );
+
   test.case = 'timer';
   var src = _.time._begin( Infinity );;
   test.true( !_.countable.like( src ) );
