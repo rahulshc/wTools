@@ -19,7 +19,7 @@ let _ = _global_.wTools;
 function placeholder( test )
 {
   test.case = 'true';
-  test.true( 1 )
+  test.true( true )
 
   /* */
 
