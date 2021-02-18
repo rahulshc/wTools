@@ -63,73 +63,6 @@ function is( test )
 function like( test )
 {
 
-  test.case = 'primitive';
-  test.identical( _.container.like( null ), false );
-  test.identical( _.container.like( undefined ), false );
-  test.identical( _.container.like( 'str' ), false );
-  test.identical( _.container.like( 0 ), false );
-  test.identical( _.container.like( 1 ), false );
-  test.identical( _.container.like( false ), false );
-  test.identical( _.container.like( true ), false );
-  test.identical( _.container.like( new Date() ), true );
-
-  test.case = 'map';
-  test.identical( _.container.like( {} ), true );
-  test.identical( _.container.like( { a : 1 } ), true );
-  test.identical( _.container.like( Object.create( null ) ), true );
-
-  test.case = 'instance';
-  var src = new function Con() { this.a = 1 };
-  test.identical( _.container.like( src ), true );
-
-  test.case = 'instance with fields and iterator method';
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
-  test.identical( _.container.like( src ), true );
-
-  test.case = 'prototyped 2 levels constructor';
-  var prototype1 = {};
-  var prototype2 = Object.create( prototype1 );
-  var src = Object.create( prototype2 );
-  test.identical( _.container.like( src ), true );
-
-  test.case = 'hashmap';
-  test.identical( _.container.like( new HashMap ), true );
-  test.identical( _.container.like( new HashMap([ [ 'a', 'b' ] ]) ), true );
-
-  test.case = 'hashmapweak';
-  test.identical( _.container.like( new HashMapWeak ), true );
-  var src = new HashMapWeak().set( {}, 1 );
-  test.identical( _.container.like( src ), true );
-
-  test.case = 'a pseudo array';
-  test.identical( _.container.like( arguments ), true );
-
-  test.case = 'array';
-  test.identical( _.container.like( [] ), true );
-  test.identical( _.container.like( [ false ] ), true );
-
-  test.case = 'raw array buffer';
-  test.identical( _.container.like( new BufferRaw() ), true );
-  test.identical( _.container.like( new BufferRaw( 10 ) ), true );
-
-  test.case = 'typed buffer';
-  test.identical( _.container.like( new F32x() ), true );
-  test.identical( _.container.like( new F32x([ 1, 2, 3 ]) ), true );
-
-  test.case = 'set';
-  test.identical( _.container.like( new Set ), true );
-  test.identical( _.container.like( new Set([ 'a', 'b' ]) ), true );
-
-  test.case = 'weak set';
-  test.identical( _.container.like( new WeakSet ), true );
-  test.identical( _.container.like( new WeakSet([ { 'a' : 1 }, { 'b' : 2 } ]) ), true );
-
   test.case = 'number';
   var src = 1;
   test.true( !_.container.like( src ) );
@@ -272,7 +205,7 @@ function like( test )
   test.true( !_.container.like( src ) );
 
   test.case = 'timer';
-  var src = _.time._begin( Infinity );;
+  var src = _.time._begin( Infinity );
   test.true( _.container.like( src ) );
   _.time.cancel( src );
 
@@ -379,37 +312,204 @@ function like( test )
 
 function lengthOf( test )
 {
-  test.case = 'primitive';
-  test.identical( _.container.lengthOf( null ), 1 );
-  test.identical( _.container.lengthOf( undefined ), 0 );
-  test.identical( _.container.lengthOf( 'str' ), 3 );
-  test.identical( _.container.lengthOf( 1 ), 1 );
-  test.identical( _.container.lengthOf( 0 ), 1 );
-  test.identical( _.container.lengthOf( true ), 1 );
-  test.identical( _.container.lengthOf( new Date() ), 1 );
 
-  test.case = 'map';
-  test.identical( _.container.lengthOf( {} ), 0 );
-  test.identical( _.container.lengthOf( { a : 1, b : 2, c : 3 } ), 3 );
-  test.identical( _.container.lengthOf( Object.create( null ) ), 0 );
-
-  test.case = 'instance';
-  var src = new function Con() { this.a = 1 };
+  test.case = 'number';
+  var src = 1;
   test.identical( _.container.lengthOf( src ), 1 );
 
-  test.case = 'instance with 2 fields';
-  var src = new function Con() { this.a = 1; this.b = 2 };
+  test.case = 'bool & boolLike & fuzzy';
+  var src = true;
   test.identical( _.container.lengthOf( src ), 1 );
 
-  test.case = 'instance with fields and iterator method';
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
+  test.case = 'boolLike & number & fuzzyLike';
+  var src = 1;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'fuzzy';
+  var src = _.maybe;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'bigint';
+  var src = 10n;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'str & regexpLike';
+  var src = 'str';
+  test.identical( _.container.lengthOf( src ), 3 );
+
+  test.case = 'regexp & objectLike & constructible & constructibleLike';
+  var src = /hello/g;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make();
   test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 2, 3, 4 ]);
+  test.identical( _.container.lengthOf( src ), 3 );
+
+  test.case = 'array';
+  var src = [ 2, 3, 4 ];
+  test.identical( _.container.lengthOf( src ), 3 );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2 ]);
+  test.identical( _.container.lengthOf( src ), 2 );
+
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  test.identical( _.container.lengthOf( src ), 2 );
+
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.identical( _.container.lengthOf( src ), 2 );
+
+  test.case = 'Global & GlobalReal';
+  var src = global;
+  test.identical( _.container.lengthOf( src ), 46 );
+
+  test.case = 'Global & GlobalDerived';
+  var src = Object.create( global );
+  test.identical( _.container.lengthOf( src ), 46 );
+
+  test.case = 'Object & ObjectLike & Container & ContainerLike';
+  var src = { [ Symbol.iterator ] : 1 };
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  test.identical( _.container.lengthOf( src ), 2 );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
+  var src = {};
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'HashMap';
+  var src = new HashMap();
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'Set & SetLike';
+  var src = new Set();
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'BufferNode';
+  var src = new BufferNode( 'str' );
+  test.identical( _.container.lengthOf( src ), 3 );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 'str' );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'BufferRawShared';
+  var src = new BufferRawShared( 'str' );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  test.identical( _.container.lengthOf( src ), 20 );
+
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 20 ) )
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'BufferBytes & BufferTyped';
+  var src = new U8x( 20 );
+  test.identical( _.container.lengthOf( src ), 20 );
+
+  test.case = 'err';
+  var src = _.err( 'error' );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'escape';
+  var src = _.escape.make( 1 );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'interval & BufferTyped';
+  var src = _.escape.make( new F32x( 2 ) );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'pair';
+  var src = _.pair.make();
+  test.identical( _.container.lengthOf( src ), 2 );
+
+  test.case = 'path & str';
+  var src = '/a/b/';
+  test.identical( _.container.lengthOf( src ), 5 );
+
+  test.case = 'propertyTransformer & filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'propertyTransformer & mapper';
+  var src = _.property.mapper[ 'assigning' ];
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'routine & routineLike';
+  var src = routine;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );
+  test.identical( _.container.lengthOf( src ), 9 );
+  _.time.cancel( src );
+
+  test.case = 'date & objectLike';
+  var src = new Date();
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'null';
+  var src = null;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.identical( _.container.lengthOf( src ), 0 );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'primitive';
+  var src = 5;
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'Symbol';
+  var src = Symbol( 'a' );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'ConsequenceLike & promiseLike & promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'stream';
+  var src = require( 'stream' ).Readable();
+  test.identical( _.container.lengthOf( src ), 1 );
+
+  test.case = 'console';
+  var src = console;
+  test.identical( _.container.lengthOf( src ), 24 );
+
+  test.case = 'printerLike';
+  var src = _global.logger;
+  test.identical( _.container.lengthOf( src ), 9 );
+
+  test.case = 'process';
+  var src = process;
+  test.identical( _.container.lengthOf( src ), 1 );
 
   test.case = 'instance with fields and iterator method with length 5';
   var src = new function()
@@ -440,32 +540,51 @@ function lengthOf( test )
   }
   test.identical( _.container.lengthOf( src ), 5 );
 
-  test.case = 'hashmap';
-  test.identical( _.container.lengthOf( new HashMap ), 0 );
-  test.identical( _.container.lengthOf( new HashMap([ [ 'a', 'b' ] ]) ), 1 );
+  /* - */
 
-  test.case = 'hashmap 2 elements';
-  test.identical( _.container.lengthOf( new HashMap([ [ 'a', 'b' ], [ 'c' ] ]) ), 2 );
+  function _iterate()
+  {
 
-  test.case = 'array';
-  test.identical( _.container.lengthOf( [] ), 0 );
-  test.identical( _.container.lengthOf( [ false ] ), 1 );
-  test.identical( _.container.lengthOf( [ 1, 2, 3, 4 ] ), 4 );
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
 
-  test.case = 'a pseudo array';
-  test.identical( _.container.lengthOf( arguments ), 1 );
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
 
-  test.case = 'raw array buffer';
-  test.identical( _.container.lengthOf( new BufferRaw() ), 1 );
-  test.identical( _.container.lengthOf( new BufferRaw( 10 ) ), 1 );
+  }
 
-  test.case = 'typed buffer';
-  test.identical( _.container.lengthOf( new F32x() ), 0 );
-  test.identical( _.container.lengthOf( new F32x([ 1, 2, 3 ]) ), 3 );
+  /* */
 
-  test.case = 'set';
-  test.identical( _.container.lengthOf( new Set ), 0 );
-  test.identical( _.container.lengthOf( new Set([ 'a', 'b' ]) ), 2 );
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  function routine () {}
+
 
 }
 
