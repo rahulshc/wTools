@@ -12138,9 +12138,9 @@ function longDuplicate( test )
 function longAreRepeatedProbe( test )
 {
 
-  _.diagnosticEachLongType( ( make, descriptor ) =>
+  _.diagnostic.eachLongType( ( make, descriptor ) =>
   {
-    _.diagnosticEachElementComparator( make, ( make, evaluate, description ) =>
+    _.diagnostic.eachElementComparator( make, ( make, evaluate, description ) =>
     {
       if( _.arrayIs( evaluate ) )
       return;
