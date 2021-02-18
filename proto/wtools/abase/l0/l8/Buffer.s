@@ -3033,6 +3033,7 @@ function _bufferReusing_head()
 
 //
 
+/* qqq for Dmytro : bad */
 function _bufferReusing( o )
 {
   _.assert( arguments.length === 1 );
@@ -3391,6 +3392,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
     if( dstTyped.buffer === srcTyped.buffer )
     {
       let val = srcTyped[ srcTyped.length - 1 ];
+      /* qqq for Dmytro : not optimal */
       for( let i = srcTyped.length - 1 ; i >= start ; i-- )
       {
         let temp = srcTyped[ i - 1 ];

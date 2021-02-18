@@ -677,8 +677,8 @@ diagnosticStructureGenerate_body.defaults =
 
   /*  */
 
-  depth : 1,
-  random : 1,
+  depth : 1, /* qqq : cover the option */
+  random : 1, /* qqq : cover the option */
   stringSize : null,
   bufferSize : null,
   regexpSize : null,
