@@ -212,7 +212,7 @@ function is( test )
   test.true( _.object.is( src ) );
 
   test.case = 'printerLike';
-  var src = _global.logger;
+  var src = _global_.logger;
   test.true( _.object.is( src ) );
 
   test.case = 'process';
