@@ -74,7 +74,7 @@ Long
 LongLike
 Vector
 Countable
-CountrableLike
+CountableLike
 
 Global
 GlobalReal
@@ -138,7 +138,7 @@ PromiseLike,
 Worker
 Stream
 Console
-Crinter
+Printer
 PrinterLike,
 Logger
 Process
