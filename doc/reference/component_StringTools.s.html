@@ -208,7 +208,7 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,options )
   {
 
-    if( options !== undefined &amp;&amp; !_.objectIs( options ) )
+    if( options !== undefined &amp;&amp; !_.object.is( options ) )
     throw _.err( '_.toStrFine :','options must be object' );
 
     var options = options || {};
@@ -257,7 +257,7 @@ var _toStrFine = function _toStrFine( src,options )
 
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
-  var isObject = !isArray &amp;&amp; _.objectLike( src );
+  var isObject = !isArray &amp;&amp; _.object.like( src );
 
   if( options.noAtomic )
   if( _.atomicIs( src ) )
@@ -276,7 +276,7 @@ var _toStrFine = function _toStrFine( src,options )
   if( !isAtomic &amp;&amp; _.routineIs( src.toStr ) &amp;&amp; !src.toStr.notMethod )
   {
     var r = src.toStr( options );
-    if( _.objectIs( r ) )
+    if( _.object.is( r ) )
     {
       _assert( r.simple !== undefined &amp;&amp; r.text !== undefined );
       simple = r.simple;
@@ -386,13 +386,13 @@ var _toStrShort = function( src,options )
     else
     result += '"' + src + '"';
   }
-  else if( src &amp;&amp; !_.objectIs( src ) &amp;&amp; _.numberIs( src.length ) )
+  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.numberIs( src.length ) )
   {
 
     result += '[ ' + strTypeOf( src ) + ' with ' + src.length + ' elements ]';
 
   }
-  else if( _.objectIs( src ) || _.objectLike( src ) )
+  else if( _.object.is( src ) || _.object.like( src ) )
   {
 
     result += '{ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' }';
@@ -544,7 +544,7 @@ var _toStrFromObject = function( src,options )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) );
+  _assert( _.object.is( src ) || _.object.like( src ) );
 
   if( options.level >= options.levels )
   {
@@ -721,9 +721,9 @@ var _toStrIsSimpleElement = function( element )
 {
   if( _.strIs( element ) )
   return element.length &lt; 40;
-  else if( element &amp;&amp; !_.objectIs( element ) &amp;&amp; _.numberIs( element.length ) )
+  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.numberIs( element.length ) )
   return !element.length;
-  else if( _.objectIs( element ) || _.objectLike( element ) )
+  else if( _.object.is( element ) || _.object.like( element ) )
   return !_.entityLength( element );
   else
   return _.atomicIs( element );
@@ -750,7 +750,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
   var result = nameOfRoutine + '( ';
   var first = true;
 
-  _assert( _.arrayIs( args ) || _.objectIs( args ) );
+  _assert( _.arrayIs( args ) || _.object.is( args ) );
   _assert( arguments.length &lt;= 4 );
 
   _.each( args,function( e,k )
@@ -759,7 +759,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
     if( first === false )
     result += ', ';
 
-    if( _.objectIs( e ) )
+    if( _.object.is( e ) )
     result += k + ' :' + _.toStr( e,options );
     else
     result += _.toStr( e,options );
@@ -1424,7 +1424,7 @@ var strIron = function()
 
     var argument = arguments[ a ];
 
-    if( !_.strIs( argument ) &amp;&amp; !_.objectIs( argument ) &amp;&amp; !_.arrayIs( argument ) )
+    if( !_.strIs( argument ) &amp;&amp; !_.object.is( argument ) &amp;&amp; !_.arrayIs( argument ) )
     throw _.err( '_.strIron :','argument could be string, array or object' );
 
     if( _.strIs( argument ) )

@@ -944,7 +944,7 @@ function longFromCoercing( src )
   if( _.longIs( src ) )
   return this.longDescriptor.from( src );
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return this.longFromCoercing( _.mapToArray( src ) );
 
   /* aaa : cover */

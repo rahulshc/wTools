@@ -3495,7 +3495,7 @@ function strTypeWithTraitsGeneratedObject( test )
   {
     var handled = false;
     test.case = `${toStr( env )}`;
-    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+    var src = _.object.forTesting( { elements : [ '1', '10' ], ... env } );
 
     if( env.new )
     {
@@ -3572,7 +3572,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
   {
     var handled = false;
     test.case = `${toStr( env )}`;
-    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+    var src = _.object.forTesting( { elements : [ '1', '10' ], ... env } );
 
     if( env.new )
     {

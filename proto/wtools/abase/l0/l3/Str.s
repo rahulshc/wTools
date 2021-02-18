@@ -321,7 +321,7 @@ function strEntityShort( src )
       result += `{- routine.anonymous -}`;
       debugger;
     }
-    else if( _.objectLike( src ) )
+    else if( _.object.like( src ) )
     {
       /* xxx : call exportString() if exists */
       result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;

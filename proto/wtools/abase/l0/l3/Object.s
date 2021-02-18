@@ -17,11 +17,11 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
  *
  * @example
  * let obj = { x : 100 };
- * _.objectIs(obj);
+ * _.object.is(obj);
  * // returns true
  *
  * @example
- * _.objectIs( 10 );
+ * _.object.is( 10 );
  * // returns false
  *
  * @param { * } src.
@@ -40,7 +40,7 @@ function objectIs( src )
 function objectLike( src ) /* xxx qqq : optimize */
 {
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return true;
 
   if( _.primitiveIs( src ) )
@@ -73,7 +73,7 @@ function objectLike( src ) /* xxx qqq : optimize */
 function objectLikeStandard( src ) /* xxx qqq : optimize */
 {
 
-  // if( _.objectIs( src ) )
+  // if( _.object.is( src ) )
   // return true;
 
   if( _.primitiveIs( src ) )

@@ -755,7 +755,7 @@ function strForCall()
   let result = nameOfRoutine + '( ';
   let first = true;
 
-  _.assert( _.arrayIs( args ) || _.objectIs( args ) );
+  _.assert( _.arrayIs( args ) || _.object.is( args ) );
   _.assert( arguments.length <= 4 );
 
   _.each( args, function( e, k )
@@ -764,7 +764,7 @@ function strForCall()
     if( first === false )
     result += ', ';
 
-    if( _.objectIs( e ) )
+    if( _.object.is( e ) )
     result += k + ' :' + _.toStr( e, o );
     else
     result += _.toStr( e, o );
@@ -2704,7 +2704,7 @@ function strLinesStrip( src )
 function strLinesNumber( o )
 {
 
-  if( !_.objectIs( o ) )
+  if( !_.object.is( o ) )
   o = { src : arguments[ 0 ], zeroLine : arguments[ 1 ] };
 
   _.routineOptions( strLinesNumber, o );
