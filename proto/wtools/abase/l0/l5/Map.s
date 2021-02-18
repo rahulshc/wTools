@@ -1762,22 +1762,33 @@ function objectSetWithKeyStrictly( dstMap, key, val )
 
 function mapInvert( src, dst )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
 
-  if( src )
-  o.src = src;
+  return _._mapInvert({ src, dst });
 
-  if( dst )
-  o.dst = dst;
+}
 
-  _.routineOptions( mapInvert, o );
+mapInvert.defaults =
+{
+  src : null,
+  dst : null,
+  duplicate : 'error',
+}
+
+//
+
+function _mapInvert( o )
+{
+  _.routineOptions( _mapInvert, o );
 
   o.dst = o.dst || Object.create( null );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.objectLike( o.src ) );
+  _.assert( _.objectLike( o.dst ) );
 
-  let del
+  let del;
   if( o.duplicate === 'delete' )
   del = Object.create( null );
 
@@ -1813,7 +1824,7 @@ function mapInvert( src, dst )
   return o.dst;
 }
 
-mapInvert.defaults =
+_mapInvert.defaults =
 {
   src : null,
   dst : null,
@@ -4431,7 +4442,8 @@ let Extension =
 
   // map transformer
 
-  mapInvert, /* qqq : write _mapInvert accepting o-map */
+  mapInvert, /* qqq : write _mapInvert accepting o-map | aaa : Done. Yevhen S. */
+  _mapInvert,
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
