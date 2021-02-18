@@ -216,9 +216,25 @@ let ToolsExtension =
 
 }
 
+let Extension =
+{
+
+  // typing
+
+  is : objectIs,
+  like : objectLike,
+  likeStandard : objectLikeStandard,
+
+  //
+
+  forTesting : objectForTesting,
+
+}
+
 //
 
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export
