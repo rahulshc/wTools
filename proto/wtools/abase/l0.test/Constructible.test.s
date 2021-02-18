@@ -193,6 +193,706 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
 
 //
 
+function typingExtended( test )
+{
+  /*
+    Not covered types :
+
+    printer
+    consequence
+    worker
+    logger
+    procedure
+  */
+
+  test.case = 'number';
+  var src = 1;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'bool & boolLike & fuzzy';
+  var src = true;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'boolLike & number & fuzzyLike';
+  var src = 1;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'fuzzy';
+  var src = _.maybe;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'bigint';
+  var src = 10n;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'str & regexpLike';
+  var src = 'str';
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'regexp & objectLike & constructible & constructibleLike';
+  var src = /hello/g;
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 2, 3, 4 ]);
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'array';
+  var src = [ 2, 3, 4 ];
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2 ]);
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'vector & vectorLike';
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'partible & partibleLike';
+  var src = new partibleConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Global & GlobalReal';
+  var src = global;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Global & GlobalDerived';
+  var src = Object.create( global );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object & ObjectLike & Container & ContainerLike';
+  var src = { [ Symbol.iterator ] : 1 };
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( _.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
+  var src = {};
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.mapIsPolluted( src ) );
+
+  test.case = 'HashMap';
+  var src = new HashMap();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Set & SetLike';
+  var src = new Set();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferNode';
+  var src = new BufferNode( 'str' );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 'str' );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferRawShared';
+  var src = new BufferRawShared( 'str' );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 20 ) )
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'BufferBytes & BufferTyped';
+  var src = new U8x( 20 );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'err';
+  var src = _.err( 'error' );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'escape';
+  var src = _.escape.make( 1 );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'interval & BufferTyped';
+  var src = _.escape.make( new F32x( 2 ) );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'pair';
+  var src = _.pair.make();
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'path & str';
+  var src = '/a/b/';
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'propertyTransformer & filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'propertyTransformer & mapper';
+  var src = _.property.mapper[ 'assigning' ];
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'routine & routineLike';
+  var src = routine;
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( _.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+  _.time.cancel( src );
+
+  test.case = 'date & objectLike';
+  var src = new Date();
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'null';
+  var src = null;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'primitive';
+  var src = 5;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'Symbol';
+  var src = Symbol( 'a' );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'ConsequenceLike & promiseLike & promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'stream';
+  var src = require( 'stream' ).Readable();
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'console';
+  var src = console;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  test.case = 'printerLike';
+  var src = _global.logger;
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( _.objectIs( src ) );
+  test.true( _.auxiliary.is( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.mapIsPolluted( src ) );
+
+  test.case = 'process';
+  var src = process;
+  test.true( _.constructible.like( src ) );
+  test.true( _.constructible.is( src ) );
+  test.true( _.objectLike( src ) );
+  test.true( !_.objectIs( src ) );
+  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.mapIs( src ) );
+  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.mapIsPure( src ) );
+  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.mapIsPolluted( src ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function partibleConstructor( o )
+  {
+    return partibleMake( this, o );
+  }
+
+  /* */
+
+  function partibleMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  function routine () {}
+
+}
+
+//
+
 function typingObject( test ) /* qqq for Yevhen : extend */
 {
 
@@ -300,6 +1000,7 @@ var Self =
   {
 
     typingBasic,
+    typingExtended,
     typingObject,
     objectLike,
 
