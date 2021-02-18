@@ -72,8 +72,6 @@ function buffersRawAreIdentical( src1, src2 )
   if( !_.bufferRawIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -97,8 +95,6 @@ function buffersViewAreIdentical( src1, src2 )
   if( !_.bufferViewIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -1064,8 +1060,6 @@ function bufferBytesFrom( buffer )
   else if( _.bufferViewIs( buffer ) )
   {
 
-    debugger;
-    // _.assert( 0, 'not tested' );
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
   }
@@ -1128,7 +1122,6 @@ function bufferNodeFrom( buffer )
   }
   else if( _.strIs( buffer ) )
   {
-    // debugger;
     result = _.bufferNodeFrom( _.bufferRawFrom( buffer ) );
   }
   else if( buffer.buffer )
@@ -1152,7 +1145,6 @@ function bufferNodeFrom( buffer )
   // }
   // catch( err )
   // {
-  //   debugger;
   //   buffer = toBuffer( buffer );
   // }
   // else
@@ -1283,9 +1275,6 @@ function bufferNodeFrom( buffer )
 //
 //     // if( first === last )
 //     // return dstArray;
-//
-//     // if( first === last )
-//     // debugger;
 //
 //     let newLength = length - last + first;
 //     let srcArrayLength = 0;
@@ -3065,25 +3054,25 @@ function _bufferReusing( o )
 
   _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
 
-  let resultElementSize = resultElementLengthCount();
+  let resultElementSize;
+  if( newBufferCreate )
+  resultElementSize = bufferElementSizeGet( o.src );
+  else
+  resultElementSize = bufferElementSizeGet( o.dst );
+
   let resultSize = resultSizeCount();
   let resultLength = resultSize / resultElementSize;
   _.assert( _.intIs( resultLength ) );
 
-  let resultBuffer = resultBufferMake();
+  let resultBuffer
+  if( o.reusing && !newBufferCreate )
+  resultBuffer = resultBufferReusedMaybe();
+  else
+  resultBuffer = resultBufferMake();
+
   let result = resultBufferFill( resultBuffer, o.src );
 
   return result;
-
-  /* */
-
-  function resultElementLengthCount()
-  {
-    if( newBufferCreate )
-    return bufferElementSizeGet( o.src );
-    else
-    return bufferElementSizeGet( o.dst );
-  }
 
   /* */
 
@@ -3123,68 +3112,91 @@ function _bufferReusing( o )
 
   /* */
 
-  function resultBufferMake()
+  function resultBufferReusedMaybe()
   {
     let buffer;
 
-    if( o.reusing && !newBufferCreate )
+    let dstOffset = 0;
+    let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
+
+    if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
     {
+      dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
+      dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
+    }
 
-      let dstOffset = 0;
-      let dstSize = o.dst.length ? o.dst.length * resultElementSize : o.dst.byteLength;
+    let shouldReuse = insideBufferBounds( dstOffset, dstSize, resultSize );
+    let shouldShrink = shrinkFactorCheck( dstSize, resultSize );
 
-      if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
-      {
-        dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
-        dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
-      }
-
+    if( shouldReuse && !shouldShrink )
+    {
+      buffer = o.dst;
       let leftOffset = dstOffset + o.cinterval[ 0 ];
-      let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
-      let rightBound = leftOffset + resultSize;
-      let insideRightBound = rightBound <= dstSize;
+      let bufferLength = buffer.buffer && !_.bufferViewIs( buffer ) ? buffer.length : buffer.byteLength;
 
-      let shouldShrink = false;
-      if( o.shrinkFactor > 1 )
-      shouldShrink = ( dstSize / resultSize ) >= o.shrinkFactor;
-
-      if( insideLeftBound && insideRightBound && !shouldShrink )
+      if( leftOffset !== dstOffset || resultSize !== bufferLength )
       {
-        buffer = o.dst;
-        let bufferLength = buffer.buffer ? buffer.length : buffer.byteLength;
-        if( leftOffset !== dstOffset || resultSize !== bufferLength )
-        {
-          if( !o.offsetting )
-          leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
+        if( !o.offsetting )
+        leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
 
-          if( _.bufferNodeIs( buffer ) )
-          buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
-          else if( buffer.buffer )
-          buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
-        }
-      }
-      else
-      {
-        if( _.arrayLikeResizable( o.dst ) )
-        {
-          buffer = o.dst;
-          buffer.length = resultLength;
-        }
-        else
-        {
-          buffer = _.bufferMakeUndefined( o.dst, resultLength );
-        }
+        if( _.bufferNodeIs( buffer ) )
+        buffer = BufferNode.from( buffer.buffer, leftOffset, resultSize );
+        else if( buffer.buffer )
+        buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
       }
     }
     else
     {
-      if( newBufferCreate )
+      buffer = resultBufferMake();
+    }
+
+    return buffer;
+  }
+
+  /* */
+
+  function shrinkFactorCheck( dstSize, resultSize )
+  {
+    if( o.shrinkFactor > 1 )
+    return ( dstSize / resultSize ) >= o.shrinkFactor;
+    return false;
+  }
+
+  /* */
+
+  function insideBufferBounds( dstOffset, dstSize, resultSize )
+  {
+    let leftOffset = dstOffset + o.cinterval[ 0 ];
+    let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
+    let rightBound = leftOffset + resultSize;
+    let insideRightBound = rightBound <= dstSize;
+    return insideLeftBound && insideRightBound;
+  }
+
+  /* */
+
+  function resultBufferMake()
+  {
+    let buffer;
+    if( newBufferCreate )
+    {
       buffer = _.bufferMakeUndefined( o.src, resultLength );
-      else if( o.dst.byteLength && o.dst.byteLength > resultSize )
+    }
+    else if( o.dst.length === resultLength )
+    {
       buffer = o.dst;
-      else if( o.dst.length && ( o.dst.length * resultElementSize ) > resultSize )
+    }
+    else if( o.dst.byteLength === resultSize )
+    {
       buffer = o.dst;
-      else
+    }
+    else if( _.arrayLikeResizable( o.dst ) )
+    {
+      buffer = o.dst;
+      buffer.length = resultLength;
+    }
+    else
+    {
       buffer = _.bufferMakeUndefined( o.dst, resultLength );
     }
 
@@ -3241,8 +3253,8 @@ _bufferReusing.defaults =
  * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
  * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
  *
- * If buffer {-dst-} is not provided or {-dst-} and {-src-} are the same buffer, then routine tries to change
- * container {-src-} inplace.
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
  *
  * @example
  * let buffer = new F64x( [ 1, 2, 3, 4 ] );
@@ -3270,18 +3282,18 @@ _bufferReusing.defaults =
  * First parameter set :
  * @param { BufferAny|Long|Null } dst - The destination container.
  * @param { BufferAny|Long } src - The container from which makes a shallow copy.
- * @param { Range|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
  * If {-cinterval-} is a Number, then it defines the index of removed element.
- * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > src.length, end index sets to ( src.length - 1 ).
- * If range[ 1 ] < range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * If cinterval[ 0 ] < 0, then start index sets to 0.
+ * If cinterval[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
  * @param { BufferAny|Long|Undefined } ins - The container with elements for insertion. Inserting begins at start index.
  *
  * Second parameter set :
  * @param { MapLike } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
- * @param { Range|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
  * The behavior same to first parameter set.
  * @param { BufferAny|Long|Undefined } o.ins - The container with elements for insertion. Inserting begins at start index.
  * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
@@ -3417,9 +3429,95 @@ bufferReusingBut.defaults =
 
 //
 
-function bufferReusingOnly( /* dst, src, cinterval, ins */ )
+/**
+ * Routine bufferReusingOnly() gets the part of source buffer {-src-} and copies it to destination buffer {-dst-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly( buffer, [ 1, 1 ] );
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 1, 1 ],
+ *   minSize : 1,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then start index sets to 0.
+ * If cinterval[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer of minimal size and fills by data.
+ *
+ * Second parameter set :
+ * @param { MapLike } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingOnly
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+function bufferReusingOnly( /* dst, src, cinterval */ )
 {
-  let o = _._bufferReusing_head.apply( this, arguments );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  let o;
+  if( arguments.length === 3 )
+  {
+    o = Object.create( null );
+    o.dst = arguments[ 0 ];
+    o.src = arguments[ 1 ];
+    o.cinterval = arguments[ 2 ];
+  }
+  else
+  {
+    o = _._bufferReusing_head.apply( this, arguments );
+  }
   _.assert( o.ins === undefined, 'Expects no argument {-ins-}' );
 
   o.cinterval = cintervalClamp();
@@ -3457,20 +3555,23 @@ function bufferReusingOnly( /* dst, src, cinterval, ins */ )
 
   /* */
 
-  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval */ )
   {
     let dstTyped = arguments[ 0 ];
     let srcTyped = arguments[ 1 ];
     let cinterval = arguments[ 2 ];
-    let ins = arguments[ 3 ];
 
     /* */
 
     let left = Math.max( 0, cinterval[ 0 ] );
     let right = Math.min( cinterval[ 1 ], srcTyped.length - 1 );
-    for( let i = left ; i < right + 1 ; i++ )
+    let i;
+    for( i = left ; i < right + 1 ; i++ )
     dstTyped[ i - left ] = srcTyped[ i ];
 
+    if( _.arrayLikeResizable( dstTyped ) && i - left < dstTyped.length )
+    for( ; i - left < dstTyped.length; i++ )
+    dstTyped[ i - left ] = undefined;
   }
 }
 
@@ -3487,11 +3588,93 @@ bufferReusingOnly.defaults =
 
 //
 
+/**
+ * Routine bufferReusingGrow() copies elements from source buffer {-src-} to grow destination buffer {-dst-}.
+ * All original source buffer will contains in destination buffer.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingGrow( buffer, [ -1, 3 ], 7 );
+ * console.log( got );
+ * // log Float64Array[ 7, 1, 2, 3, 4, 7, 7, 7 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingGrow
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 3 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then insertion element prepends to buffer.
+ * If cinterval[ 0 ] > 0, then cinterval[ 0 ] sets to 0.
+ * If cinterval[ 1 ] < src.length, then cinterval[ 1 ] sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] > src.length, then insertion element appends to buffer.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine change not source buffer.
+ * @param { * } ins - Insertion element with compatible type to destination buffer.
+ *
+ * Second parameter set :
+ * @param { MapLike } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { * } o.ins - Insertion element with compatible type to destination buffer.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingGrow
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If {-ins-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
 function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 {
   let o = _._bufferReusing_head.apply( this, arguments );
 
-  let left, right;
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
   o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingGrow, o );
@@ -3515,16 +3698,8 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
     else if( _.numberIs( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
 
-    left = o.cinterval[ 0 ];
-    right = o.cinterval[ 1 ];
-
     if( o.cinterval[ 0 ] > 0 )
     o.cinterval[ 0 ] = 0;
-    if( o.cinterval[ 0 ] < 0 )
-    {
-      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-    }
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
     if( o.cinterval[ 1 ] < bufferLength - 1 )
@@ -3544,15 +3719,19 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 
     /* */
 
-    let offset = Math.max( 0, -left );
+    let offset = Math.max( 0, -cinterval[ 0 ] );
+    let rightBound = Math.min( dstTyped.length, srcLength );
+    let length = dstTyped.length;
+
+    if( dstTyped !== srcTyped )
+    {
+      for( let i = offset ; i < rightBound + offset ; i++ )
+      dstTyped[ i ] = srcTyped[ i - offset ];
+    }
+
     for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
 
-    let rightBound = Math.min( dstTyped.length, srcTyped.length );
-    for( let i = offset ; i < rightBound + offset ; i++ )
-    dstTyped[ i ] = srcTyped[ i - offset ];
-
-    let length = dstTyped.length;
     for( let i = offset + rightBound ; i < length ; i++ )
     dstTyped[ i ] = o.ins;
 
@@ -3575,11 +3754,97 @@ bufferReusingGrow.defaults =
 
 //
 
+/**
+ * Routine bufferReusingRelength() copies elements from source buffer {-src-} to destination buffer {-dst-}.
+ * Routine applies any offsets from Interval {-cinterval-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingRelength( buffer, [ -1, 3 ], 7 );
+ * console.log( got );
+ * // log Float64Array[ 7, 1, 2, 3, 4, 7, 7, 7 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingRelength
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 3 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then insertion element prepends to buffer.
+ * If cinterval[ 0 ] > 0, then routine skips elements until index cinterval[ 0 ].
+ * If cinterval[ 1 ] < src.length, routine shrinks buffer on right side.
+ * If cinterval[ 1 ] > src.length, then insertion element appends to buffer.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer with minimal size.
+ * @param { * } ins - Insertion element with compatible type to destination buffer.
+ *
+ * Second parameter set :
+ * @param { MapLike } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { * } o.ins - Insertion element with compatible type to destination buffer.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingRelength
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If {-ins-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
 function bufferReusingRelength( /* dst, src, cinterval, ins */ )
 {
   let o = _._bufferReusing_head.apply( this, arguments );
 
   let left, right;
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
   o.cinterval = cintervalClamp();
 
   _.routineOptions( bufferReusingRelength, o );
@@ -3607,11 +3872,6 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
     left = o.cinterval[ 0 ];
     right = o.cinterval[ 1 ];
 
-    if( o.cinterval[ 0 ] < 0 )
-    {
-      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-    }
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
 
@@ -3631,16 +3891,21 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
 
     let offset = left < 0 ? Math.max( 0, -left ) : 0;
     left = left < 0 ? 0 : left;
-    for( let i = 0 ; i < offset ; i++ )
-    dstTyped[ i ] = o.ins;
-
     let rightBound = Math.min( srcTyped.length, right - left + 1 );
+    rightBound = Math.min( rightBound, srcLength );
+    let length = dstTyped.length;
+
     let i;
     for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
     dstTyped[ i ] = srcTyped[ i - offset + left ];
 
-    let length = dstTyped.length;
+    if( i > srcLength + offset - left )
+    i = srcLength + offset - left;
+
     for( ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    for( let i = 0 ; i < offset ; i++ )
     dstTyped[ i ] = o.ins;
 
     return dstTyped;
@@ -3663,6 +3928,86 @@ bufferReusingRelength.defaults =
 
 //
 
+/**
+ * Routine bufferReusingResize() resizes raw buffer of source buffer {-src-} in interval {-cinterval-}.
+ *
+ * If destination buffer {-dst-} is provided, then routine copies data to the buffer byte per byte. Data in
+ * buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination container
+ * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingResize( buffer, buffer, [ 8, 32 ] );
+ * console.log( got );
+ * // log Float64Array[ 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingResize
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 32 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then routine resizes buffer left.
+ * If cinterval[ 0 ] > 0, then routine skips bytes until index cinterval[ 0 ].
+ * If cinterval[ 1 ] < src size, routine shrinks buffer on right side.
+ * If cinterval[ 1 ] > src size, then routine resizes buffer right.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer with minimal size.
+ *
+ * Second parameter set :
+ * @param { MapLike } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingResize
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
 function bufferReusingResize( /* dst, src, cinterval */ )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -3679,6 +4024,8 @@ function bufferReusingResize( /* dst, src, cinterval */ )
   {
     o = _._bufferReusing_head.apply( this, arguments );
   }
+
+  _.assert( _.bufferAnyIs( o.src ), 'Expects buffer {-src-}' );
 
   let left, right;
   o.cinterval = cintervalClamp();
@@ -3708,11 +4055,6 @@ function bufferReusingResize( /* dst, src, cinterval */ )
     left = o.cinterval[ 0 ];
     right = o.cinterval[ 1 ];
 
-    if( o.cinterval[ 0 ] < 0 )
-    {
-      o.cinterval[ 1 ] -= o.cinterval[ 0 ];
-      o.cinterval[ 0 ] -= o.cinterval[ 0 ];
-    }
     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
 
@@ -3743,7 +4085,6 @@ function bufferReusingResize( /* dst, src, cinterval */ )
     if( _.bufferAnyIs( dstTyped ) )
     dstTyped = _.bufferBytesFrom( dstTyped.buffer ? dstTyped.buffer : dstTyped );
 
-    debugger;
     let srcBytesView = srcTyped;
     if( _.bufferAnyIs( srcTyped ) )
     srcBytesView = _.bufferBytesFrom( srcTyped.buffer ? srcTyped.buffer : srcTyped );
@@ -3752,8 +4093,15 @@ function bufferReusingResize( /* dst, src, cinterval */ )
     offset += left;
 
     let length = right - left + 1;
-    for( let i = 0; i < dstTyped.length && i < length ; i++ )
-    dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      dstTyped = new dstTyped.constructor( dstTyped.buffer, offset, length );
+    }
+    else
+    {
+      for( let i = 0; i < dstTyped.length && i < length ; i++ )
+      dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+    }
 
     return dstTyped;
 
@@ -3765,10 +4113,10 @@ bufferReusingResize.defaults =
   dst : null,
   src : null,
   cinterval : null,
-  ins : null,
   offsetting : 1,
   reusing : 1,
   growFactor : 2,
+  shrinkFactor : 0,
   minSize : 64,
 };
 
