@@ -10856,7 +10856,7 @@ function bufferReusingButDstIsArrayUnroll( test )
   test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), 'wrong', 1, [ 4 ] ) );
 
   test.case = 'wrong range';
-  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], 'wrong', [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], {}, [ 1 ] ) );
 }
 
