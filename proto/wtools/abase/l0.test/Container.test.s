@@ -254,7 +254,7 @@ function like( test )
   test.true( _.container.like( src ) );
 
   test.case = 'printerLike';
-  var src = _global_.logger;
+  var src = _global.logger;
   test.true( _.container.like( src ) );
 
   test.case = 'process';
