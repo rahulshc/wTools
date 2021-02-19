@@ -17,6 +17,8 @@ function identicalShallow( src1, src2 )
   _.assert( arguments.length === 2, 'Expects no arguments' );
 
   let containerType1 = _.container.typeOf( src1 );
+  console.log( containerType1 );
+
   if( containerType1 )
   {
     //
@@ -731,6 +733,8 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
 let ToolsExtension =
 {
+  entityIdenticalShallow : identicalShallow,
+  entityEquivalentShallow : equivalentShallow,
 
   makeEmpty,
   entityMakeEmpty : makeEmpty,

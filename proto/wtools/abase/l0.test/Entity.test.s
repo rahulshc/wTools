@@ -17,6 +17,1708 @@ let _ = _global_.wTools;
 // --
 // tests
 // --
+function entityIdenticalShallowBasic( test )
+{
+  /* */
+
+  test.case = 'null - undefined';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( null, null );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( undefined, undefined );
+  test.identical( got, expected );
+
+  var expected = false
+  var got = _.entity.identicalShallow( null, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( undefined, null );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'number - number';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( 1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 1, 1 + 1e-15 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( 0, 0 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( NaN, NaN );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( Infinity, Infinity );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'number - not number';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 0, '0' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 0, '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 0, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 0, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( NaN, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( Infinity, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, [ 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, { a : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 3, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'String - String';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( '', '' );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( 'abc', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'ab', 'c' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'String - not String';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', [ '' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', { a : '' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '', function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '0', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( '1', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', [ 'abc' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', { abc : 'abc' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( 'abc', function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'RegExp - RegExp';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( /(?:)/, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( /abc/, /abc/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( /abc/iy, /abc/yi );
+  test.identical( got, expected );
+
+  // var expected = true;
+  // var got = _.entity.identicalShallow( new RegExp( 'abc' ), /abc/ );
+  // test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( /abc/i, /abc/i );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/i, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/i, /abc/yi );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /ab/, /c/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'RegExp - not RegExp';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, [ /(?:)/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, { a : /(?:)/ } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /(?:)/, function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, [ /abc/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, { a : /abc/ } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( /abc/, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Routine - Routine';
+
+  function func1(){};
+  function func2(){};
+
+  var expected = true;
+  var got = _.entity.identicalShallow( func1, func1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, func2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Routine - not Routine';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, [ func1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, { a : func1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( func1, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Date - Date';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( new Date(), new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var src1 = new Date();
+  var src2 = new Date();
+  src2.setFullYear( 1987 );
+  var got = _.entity.identicalShallow( src1, src2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Date - not Date';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), [ new Date() ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), { a : new Date() } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( new Date(), function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Array - Array';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [], [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [ 0 ], [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [ 1 ], [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [ undefined ], [ undefined ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [ null ], [ null ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ [ 1, 3 ] ], [ 1, 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ null ], [ undefined ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Array - not Array';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ '1' ], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ undefined ], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ null ], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ NaN ], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ 0 ], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ 1 ], 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ {} ], {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ new Date() ], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ new F32x( 3 ) ], new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ /(?:)/ ], /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( [ function(){} ], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Map - Map';
+
+  var expected = true;
+  var got = _.entity.identicalShallow( {}, {} );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( { a : 0 }, { a : 0 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( { a : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : 1, b : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : 1 }, { a : 1, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : undefined, b : 1 }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : undefined }, { a : undefined, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( { a : undefined }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( { a : null }, { a : null } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : null }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : undefined }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, { a : undefined } );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Map - not Map';
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( {}, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : '1' }, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : undefined }, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : null }, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : NaN }, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : 0 }, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : 1 }, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : {} }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : new Date() }, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : new F32x( 3 ) }, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : /(?:)/ }, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.identicalShallow( { a : function(){} }, function(){} );
+  test.identical( got, expected );
+
+}
+
+//
+
+function entityEquivalentShallowBasic( test )
+{
+  /* */
+
+  test.case = 'null - undefined';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( null, null );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( undefined, undefined );
+  test.identical( got, expected );
+
+  var expected = false
+  var got = _.entity.equivalentShallow( null, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( undefined, null );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'number - number';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( 1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 1, 1 + 1e-15 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( 0, 0 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( NaN, NaN );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( Infinity, Infinity );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'number - not number';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 0, '0' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 0, '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 0, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 0, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( NaN, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( Infinity, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, [ 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, { a : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 3, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'String - String';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( '', '' );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( 'abc', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'ab', 'c' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'String - not String';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', [ '' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', { a : '' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '', function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '0', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( '1', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', [ 'abc' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', { abc : 'abc' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( 'abc', function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'RegExp - RegExp';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( /(?:)/, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( /abc/, /abc/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( /abc/iy, /abc/yi );
+  test.identical( got, expected );
+
+  // var expected = true;
+  // var got = _.entity.equivalentShallow( new RegExp( 'abc' ), /abc/ );
+  // test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( /abc/i, /abc/i );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/i, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/i, /abc/yi );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /ab/, /c/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'RegExp - not RegExp';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, [ /(?:)/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, { a : /(?:)/ } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /(?:)/, function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, [ /abc/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, { a : /abc/ } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( /abc/, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Routine - Routine';
+
+  function func1(){};
+  function func2(){};
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( func1, func1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, func2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Routine - not Routine';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, [ func1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, { a : func1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( func1, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Date - Date';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( new Date(), new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var src1 = new Date();
+  var src2 = new Date();
+  src2.setFullYear( 1987 );
+  var got = _.entity.equivalentShallow( src1, src2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Date - not Date';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), [ new Date() ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), { a : new Date() } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( new Date(), function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Array - Array';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [], [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [ 0 ], [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [ 1 ], [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [ undefined ], [ undefined ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [ null ], [ null ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ [ 1, 2 ] ], [ [ 1 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ [ 1, 3 ] ], [ 1, 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ null ], [ undefined ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Array - not Array';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ '1' ], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ undefined ], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ null ], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ NaN ], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ 0 ], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ 1 ], 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ {} ], {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ new Date() ], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ new F32x( 3 ) ], new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ /(?:)/ ], /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( [ function(){} ], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Map - Map';
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( {}, {} );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( { a : 0 }, { a : 0 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( { a : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : 1, b : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : 1 }, { a : 1, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : undefined, b : 1 }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : undefined }, { a : undefined, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( { a : undefined }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( { a : null }, { a : null } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : null }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : undefined }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, { a : undefined } );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'Map - not Map';
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( {}, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : '1' }, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : undefined }, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : null }, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : NaN }, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : 0 }, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : 1 }, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : {} }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : new Date() }, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : new F32x( 3 ) }, new F32x( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : /(?:)/ }, /(?:)/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entity.equivalentShallow( { a : function(){} }, function(){} );
+  test.identical( got, expected );
+
+}
+
 
 //
 // function entityMakeConstructing( test )
@@ -3391,6 +5093,8 @@ let Self =
 
   tests :
   {
+    entityIdenticalShallowBasic,
+    entityEquivalentShallowBasic,
 
     // entityMakeConstructing,
     // entityMakeConstructingArgumentsArray,
