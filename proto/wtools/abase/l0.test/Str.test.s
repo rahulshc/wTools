@@ -3205,7 +3205,7 @@ function strEntityShort( test )
 
   test.case = 'bigint';
   var src = 10n;
-  var expected = '10';
+  var expected = '10n';
   test.identical( _.strEntityShort( src ), expected );
 
   test.case = 'str & regexpLike';
@@ -3221,6 +3221,11 @@ function strEntityShort( test )
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
+  test.identical( _.strEntityShort( src ), expected );
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
+  var expected = '{- ArgumentsArray with 3 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
   test.case = 'unroll';
@@ -3274,9 +3279,21 @@ function strEntityShort( test )
   var expected = '{- Map.pure with 0 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var expected = '{- Map.pure with 2 elements -}';
+  test.identical( _.strEntityShort( src ), expected );
+
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
+  test.identical( _.strEntityShort( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = '{- Map.polluted with 3 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
   test.case = 'HashMap';
@@ -3284,9 +3301,19 @@ function strEntityShort( test )
   var expected = '{- HashMap with 0 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
+  test.case = 'HashMap with 2 elems';
+  var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
+  var expected = '{- HashMap with 2 elements -}';
+  test.identical( _.strEntityShort( src ), expected );
+
   test.case = 'Set & SetLike';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
+  test.identical( _.strEntityShort( src ), expected );
+
+  test.case = 'Set with 3 elems';
+  var src = new Set([ 1, 2, 3 ]);
+  var expected = '{- Set with 3 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
   test.case = 'BufferNode';

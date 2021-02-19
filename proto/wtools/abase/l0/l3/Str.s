@@ -288,6 +288,8 @@ function strEntityShort( src )
     }
     else if( _.primitiveIs( src ) )
     {
+      if( _.bigIntIs( src ) )
+      return `${String( src )}n`;
       return String( src );
     }
     // else if( _.vectorAdapterIs( src ) )
