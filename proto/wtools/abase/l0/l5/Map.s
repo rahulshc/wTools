@@ -46,8 +46,8 @@ function mapsAreIdentical( src1, src2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.objectLike( src1 ) );
-  _.assert( _.objectLike( src2 ) );
+  _.assert( _.object.like( src1 ) );
+  _.assert( _.object.like( src2 ) );
 
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
   return false;
@@ -152,7 +152,7 @@ function objectSatisfy( o )
   o = { template : arguments[ 0 ], src : arguments[ 1 ] };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
+  _.assert( _.object.is( o.template ) || _.routineIs( o.template ) );
   _.assert( o.src !== undefined );
   _.routineOptions( objectSatisfy, o );
 
@@ -178,8 +178,8 @@ function objectSatisfy( o )
     {
       if
       (
-        _.objectIs( template )
-        && _.objectIs( src )
+        _.object.is( template )
+        && _.object.is( src )
         && _.routineIs( template.identicalWith )
         && src.identicalWith === template.identicalWith
       )
@@ -195,10 +195,10 @@ function objectSatisfy( o )
     if( _.routineIs( template ) )
     return template( src );
 
-    if( !_.objectIs( src ) )
+    if( !_.object.is( src ) )
     return false;
 
-    if( _.objectIs( template ) )
+    if( _.object.is( template ) )
     {
       for( let t in template )
       {
@@ -345,8 +345,8 @@ function mapOnlyOwnVal( object, val )
 function mapHasAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
+  _.assert( _.object.like( src ) );
+  _.assert( _.object.like( screen ) );
 
   for( let k in screen )
   {
@@ -391,8 +391,8 @@ function mapHasAll( src, screen )
 function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
+  _.assert( _.object.like( src ) );
+  _.assert( _.object.like( screen ) );
 
   for( let k in screen )
   {
@@ -440,8 +440,8 @@ function mapHasAny( src, screen )
 function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
+  _.assert( _.object.like( src ) );
+  _.assert( _.object.like( screen ) );
 
   for( let k in screen )
   {
@@ -821,7 +821,7 @@ function mapCloneAssigning( o )
 
   _.assert( _.mapIs( o ) );
   _.assert( arguments.length === 1, 'mapCloneAssigning :', 'Expects {-srcMap-} as argument' );
-  _.assert( _.objectLike( o.srcMap ), 'mapCloneAssigning :', 'Expects {-srcMap-} as argument' );
+  _.assert( _.object.like( o.srcMap ), 'mapCloneAssigning :', 'Expects {-srcMap-} as argument' );
   _.routineOptions( mapCloneAssigning, o );
 
   if( !o.onField )
@@ -1268,11 +1268,11 @@ function mapDelete( dstMap, ins )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( dstMap ) );
+  _.assert( _.object.like( dstMap ) );
 
   if( ins !== undefined )
   {
-    _.assert( _.objectLike( ins ) );
+    _.assert( _.object.like( ins ) );
     for( let i in ins )
     {
       delete dstMap[ i ];
@@ -1295,7 +1295,7 @@ function mapEmpty( dstMap )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( dstMap ) );
+  _.assert( _.object.like( dstMap ) );
 
   for( let i in dstMap )
   {
@@ -1377,7 +1377,7 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 
       if( filters.onUpFilter( dstMap, srcMap, s ) === true )
       {
-        if( !_.objectIs( dstMap[ s ] ) )
+        if( !_.object.is( dstMap[ s ] ) )
         dstMap[ s ] = Object.create( null );
         _._mapExtendRecursiveConditional( filters, dstMap[ s ], srcMap[ s ] );
       }
@@ -1687,7 +1687,7 @@ function objectSetWithKeys( dstMap, key, val )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( _.objectIs( dstMap ) );
+  _.assert( _.object.is( dstMap ) );
   _.assert( _.arrayIs( key ) || _.strIs( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
@@ -1723,7 +1723,7 @@ function objectSetWithKeyStrictly( dstMap, key, val )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( _.objectIs( dstMap ) );
+  _.assert( _.object.is( dstMap ) );
   _.assert( _.arrayIs( key ) || _.strIs( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
@@ -1762,22 +1762,33 @@ function objectSetWithKeyStrictly( dstMap, key, val )
 
 function mapInvert( src, dst )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.object.like( src ) );
 
-  if( src )
-  o.src = src;
+  return _._mapInvert({ src, dst });
 
-  if( dst )
-  o.dst = dst;
+}
 
-  _.routineOptions( mapInvert, o );
+mapInvert.defaults =
+{
+  src : null,
+  dst : null,
+  duplicate : 'error',
+}
+
+//
+
+function _mapInvert( o )
+{
+  _.routineOptions( _mapInvert, o );
 
   o.dst = o.dst || Object.create( null );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.src ) );
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.object.like( o.src ) );
+  _.assert( _.object.like( o.dst ) );
 
-  let del
+  let del;
   if( o.duplicate === 'delete' )
   del = Object.create( null );
 
@@ -1813,7 +1824,7 @@ function mapInvert( src, dst )
   return o.dst;
 }
 
-mapInvert.defaults =
+_mapInvert.defaults =
 {
   src : null,
   dst : null,
@@ -1827,7 +1838,7 @@ function mapInvertDroppingDuplicates( src, dst )
   dst = dst || Object.create( null );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   let drop;
 
@@ -2103,9 +2114,9 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.auxiliary.is( dstMap ) || _.objectLike( dstMap ), 'Expects map like {-dstMap-}' );
-  _.assert( _.auxiliary.is( srcMap ) || _.objectLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  _.assert( _.auxiliary.is( dstMap ) || _.object.like( dstMap ), 'Expects map like {-dstMap-}' );
+  _.assert( _.auxiliary.is( srcMap ) || _.object.like( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
@@ -2214,7 +2225,7 @@ function mapBut( srcMap, butMap )
       result[ s ] = srcMap[ s ];
     }
   }
-  else if( _.objectLike( butMap ) || _.routineIs( butMap ) )
+  else if( _.object.like( butMap ) || _.routineIs( butMap ) )
   {
     for( let s in srcMap )
     {
@@ -2250,7 +2261,7 @@ function mapBut_( dstMap, srcMap, butMap )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.auxiliary.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
   _.assert( _.auxiliary.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
-  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
@@ -2825,7 +2836,7 @@ function _mapOnly( o )
     // _.assert( o.filter.functionFamily === 'PropertyMapper' );
     _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
     _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+    _.assert( _.object.like( dstMap ), 'Expects object-like {-dstMap-}' );
     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o, _mapOnly.defaults );
@@ -2909,7 +2920,7 @@ function _mapOnly_( o )
     // _.assert( o.filter.functionFamily === 'PropertyMapper' );
     _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
     _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+    _.assert( _.object.like( dstMap ), 'Expects object-like {-dstMap-}' );
     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o, _mapOnly_.defaults );
@@ -3845,7 +3856,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
         result.push( s );
       }
     }
-    else if( _.objectLike( butMap ) || _.routineIs( butMap ) )
+    else if( _.object.like( butMap ) || _.routineIs( butMap ) )
     {
       for( let s in srcMap )
       {
@@ -4431,7 +4442,8 @@ let Extension =
 
   // map transformer
 
-  mapInvert, /* qqq : write _mapInvert accepting o-map */
+  mapInvert, /* qqq : write _mapInvert accepting o-map | aaa : Done. Yevhen S. */
+  _mapInvert,
   mapInvertDroppingDuplicates,
   mapsFlatten,
 

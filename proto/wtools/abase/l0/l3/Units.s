@@ -1,11 +1,11 @@
-( function _l8_Partible_s_()
+( function _l3_Units_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-_global_.wTools.partible = _global_.wTools.partible || Object.create( null );
+_global_.wTools.units = _global_.wTools.units || Object.create( null );
 
 // --
 // implementation
@@ -22,7 +22,15 @@ var Extension =
 
 //
 
-Object.assign( _.partible, Extension );
+var ExtensionTools =
+{
+
+}
+
+//
+
+Object.assign( _.units, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

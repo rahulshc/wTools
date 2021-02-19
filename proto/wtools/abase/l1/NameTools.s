@@ -28,7 +28,7 @@ var _arraySlice = _.longSlice;
 function nameFielded( nameString )
 {
 
-  if( _.objectIs( nameString ) )
+  if( _.object.is( nameString ) )
   {
     return nameString;
   }
@@ -99,7 +99,7 @@ function namesCoded( namesMap )
   if( _.assert )
   _.assert( arguments.length === 1 );
   if( _.assert )
-  _.assert( _.objectIs( namesMap ) );
+  _.assert( _.object.is( namesMap ) );
 
   for( var n in namesMap )
   result[ n ] = n;

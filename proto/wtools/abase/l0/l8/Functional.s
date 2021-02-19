@@ -349,7 +349,7 @@ function multipleAll( dsts )
  * @throws {exception} If ( arguments.length ) is less then one or more then two.
  * @throws {exception} If( onEach ) is not a Routine or null.
  * @throws {exception} If( o.sets ) is not array or objectLike.
- * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If ( sets ) is aixiliary and ( onEach ) not passed.
  * @throws {exception} If( o.base ) or ( o.add) is undefined.
  * @namespace Tools
  */
@@ -930,7 +930,7 @@ function _entityFilterDeep( o )
   let onEach = _._filter_functor( o.onEach, o.conditionLevels );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
+  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */

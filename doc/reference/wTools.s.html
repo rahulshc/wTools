@@ -137,7 +137,7 @@ var enityExtend = function( dst,src )
     dst = src;
 
   }
-  else if( _.objectIs( src ) || _.hasLength( src ) )
+  else if( _.object.is( src ) || _.hasLength( src ) )
   {
 
     _.each( src,function( e,k,i ){
@@ -163,7 +163,7 @@ var entityClone = function( src,options )
 
   //throw 'not stable';
 
-  if( options !== undefined &amp;&amp; !_.objectIs( options ) )
+  if( options !== undefined &amp;&amp; !_.object.is( options ) )
   throw _.err( 'wTools.entityClone :','need options' );
 
   var options = options || {};
@@ -199,7 +199,7 @@ var entityClone = function( src,options )
     });
 
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
 
     result = {};
@@ -223,7 +223,7 @@ var entityClone = function( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
+      var good = _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -235,7 +235,7 @@ var entityClone = function( src,options )
     }
     else
     {
-      if( _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) )
+      if( _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) )
       result = src.constructor( src );
       else if( _.routineIs( src ) )
       result = src;
@@ -316,7 +316,7 @@ var _entityCloneAct = function( o )
 
   /* map */
 
-  if( _.objectIs( o.src ) )
+  if( _.object.is( o.src ) )
   {
 
     var mapIs = _.mapIs( o.src );
@@ -495,7 +495,7 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
   _.assertMapHasOnly( o,entityCloneObjectMergingBuffers.defaults );
   _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
 
-  _.assert( _.objectIs( o.src.descriptorsMap ) );
+  _.assert( _.object.is( o.src.descriptorsMap ) );
   _.assert( _.bufferRawIs( o.src.buffer ) );
   _.assert( o.src.data !== undefined );
 
@@ -707,7 +707,7 @@ var entityCopy = function( dst,src,onRecursive )
     dst.set( src );
 
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
 
     if( onRecursive )
@@ -793,7 +793,7 @@ var entityHasNan = function( src )
       return true;
     }
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     for( s in src )
     if( _.numberHasNan( src[s] ) )
@@ -823,7 +823,7 @@ var entityHasUndef = function( src )
       return true;
     }
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     for( s in src )
     if( _.hasUndef( src[s] ) )
@@ -898,7 +898,7 @@ var _entitySame = function _entitySame( src1,src2,o )
       o.path = path;
     }
   }
-  else if( _.objectLike( src1 ) )
+  else if( _.object.like( src1 ) )
   {
 
     if( _.routineIs( src1.isSame ) )
@@ -978,7 +978,7 @@ var entitySame = function entitySame()
   {
 
     _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+    _assert( o === undefined || _.object.is( o ), '_.toStrFine :','options must be object' );
     var o = o || {};
 
     _.assertMapHasOnly( o,def );
@@ -1168,7 +1168,7 @@ var entityLength = function( src )
   if( src === undefined ) return 0;
   if( _.arrayLike( src ) )
   return src.length;
-  else if( _.objectLike( src ) )
+  else if( _.object.like( src ) )
   return _.mapOwnKeys( src ).length;
   else return 1;
 }
@@ -1210,7 +1210,7 @@ var entityValueWithIndex = function( src,index )
   {
     return src[ index ];
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     var i = 0;
     for( var s in src )
@@ -1237,7 +1237,7 @@ var entityKeyWithValue = function( src,value )
   {
     result = src.indexOf( value );
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     var i = 0;
     for( var s in src )
@@ -1511,7 +1511,7 @@ var entityMap = function( src,onEach )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
+  _.assert( _.object.like( src ) || _.arrayLike( src ) );
   _.assert( _.routineIs( onEach ) );
 
   var result;
@@ -1568,12 +1568,12 @@ var entityFilter = function( src,onEach )
   var result;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
-  _.assert( _.routineIs( onEach ) || _.objectIs( onEach ) );
+  _.assert( _.object.like( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
+  _.assert( _.routineIs( onEach ) || _.object.is( onEach ) );
 
   /**/
 
-  if( _.objectIs( onEach ) )
+  if( _.object.is( onEach ) )
   {
     var template = onEach;
     onEach = function( e )
@@ -1662,7 +1662,7 @@ var entityGroup = function( o )
 
   _assert( arguments.length === 1 );
   _assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
-  _assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+  _assert( _.object.like( o.src ) || _.arrayLike( o.src ) );
   _assert( _.arrayIs( o.src ),'not tested' );
 
   /* */
@@ -2062,7 +2062,7 @@ var __eachAct = function( o )
     }
 
   }
-  else if( _.objectLike( src ) )
+  else if( _.object.like( src ) )
   {
 
     for( var k in src )
@@ -2208,7 +2208,7 @@ var until = function()
       }
 
     }
-    else if( _.objectIs( src ) )
+    else if( _.object.is( src ) )
     {
 
       for( var a in src )
@@ -2487,7 +2487,7 @@ var _err = function _err( o )
     }
     else str = String( argument );
 
-    if( _.objectLike( argument ) &amp;&amp; !fileName )
+    if( _.object.like( argument ) &amp;&amp; !fileName )
     {
 
       if( !fileName )
@@ -3059,19 +3059,19 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
 
 /*
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : _global_,`
   names : 'Uniforms',
 });
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : state,
   names : 'filterColor',
 });
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : _global_,
   names : 'Config',
@@ -3226,7 +3226,7 @@ var objectLike = function( src )
 var mapIs = function( src )
 {
 
-  if( !_.objectIs( src ) )
+  if( !_.object.is( src ) )
   return false;
 
   _.assert( Object.getPrototypeOf( src ) === null || Object.getPrototypeOf( src ),'unexpected' );
@@ -3306,7 +3306,7 @@ var arrayLike = function( src )
   if( atomicIs( src ) ) return false;
 
   if( _.routineIs( src ) ) return false;
-  if( _.objectIs( src ) ) return false;
+  if( _.object.is( src ) ) return false;
   if( _.strIs( src ) ) return false;
 
   if( !_.numberIs( src.length ) ) return false;
@@ -4198,7 +4198,7 @@ var regexpBut_ = function( options )
 {
   var args = arguments;
   var atLeastOnce = regexpBut_.defaults.atLeastOnce;
-  if( arguments.length === 1 &amp;&amp; _.objectIs( options ) )
+  if( arguments.length === 1 &amp;&amp; _.object.is( options ) )
   {
     _.assertMapHasOnly( options,regexpBut_.defaults );
     _.mapComplement( options,regexpBut_.defaults );
@@ -4777,8 +4777,8 @@ var routineOptions = function routineOptions( routine,options )
 
   _.assert( arguments.length === 2,'routineOptions : expects 2 arguments' );
   _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
-  _.assert( _.objectIs( options ),'routineOptions : expects object' );
+  _.assert( _.object.is( routine.defaults ),'routineOptions : expects routine with defined defaults' );
+  _.assert( _.object.is( options ),'routineOptions : expects object' );
 
   _.assertMapNoUndefine( options );
   _.assertMapHasOnly( options,routine.defaults );
@@ -4822,7 +4822,7 @@ var timeOnce = function( delay,onBegin,onEnd )
     onEnd : null,
   }
 
-  if( _.objectIs( delay ) )
+  if( _.object.is( delay ) )
   {
     options = delay;
     _assert( arguments.length === 1 );
@@ -4837,8 +4837,8 @@ var timeOnce = function( delay,onBegin,onEnd )
   }
 
   _assert( delay >= 0 );
-  _assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
-  _assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
+  _assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.object.is( onBegin ) );
+  _assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.object.is( onEnd ) );
 
   return function timeOnce()
   {
@@ -4853,7 +4853,7 @@ var timeOnce = function( delay,onBegin,onEnd )
     if( onBegin )
     {
       if( _.routineIs( onBegin ) ) onBegin.apply( this,arguments );
-      else if( _.objectIs( onBegin ) ) onBegin.give( arguments );
+      else if( _.object.is( onBegin ) ) onBegin.give( arguments );
       con.give();
     }
 
@@ -4863,7 +4863,7 @@ var timeOnce = function( delay,onBegin,onEnd )
       if( onEnd )
       {
         if( _.routineIs( onEnd ) ) onEnd.apply( this,arguments );
-        else if( _.objectIs( onEnd ) ) onEnd.give( arguments );
+        else if( _.object.is( onEnd ) ) onEnd.give( arguments );
         con.give();
       }
       taken = false;
@@ -5351,7 +5351,7 @@ var bufferLeftBufferIndex = function( src,ins )
 
 var bufferFromArrayOfArray = function( array,options ){
 
-  if( _.objectIs( array ) )
+  if( _.object.is( array ) )
   {
     options = array;
     array = options.buffer;
@@ -5401,7 +5401,7 @@ var bufferFrom = function( o )
   var result;
 
   _assert( arguments.length === 1 );
-  _assert( _.objectIs( o ) );
+  _assert( _.object.is( o ) );
   _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
 
@@ -5425,7 +5425,7 @@ var bufferFrom = function( o )
 
   /* midverification */
 
-  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
+  _.assert( _.object.like( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
 
   /* length */
 
@@ -5565,7 +5565,7 @@ var buffersSerialize = function buffersSerialize( o )
   _.assertMapNoUndefine( o );
   _.assertMapHasOnly( o,buffersSerialize.defaults );
   _.mapComplement( o,buffersSerialize.defaults );
-  _.assert( _.objectIs( o.store ) );
+  _.assert( _.object.is( o.store ) );
 
   var store = o.store;
   var storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || {};
@@ -5699,7 +5699,7 @@ var buffersDeserialize = function( o )
   _.assertMapNoUndefine( o );
   _.assertMapHasOnly( o,buffersDeserialize.defaults );
   _.mapComplement( o,buffersDeserialize.defaults );
-  _.assert( _.objectIs( o.store ) );
+  _.assert( _.object.is( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
   commonBuffer = _.bufferRawFromBuffer( commonBuffer );
@@ -5990,7 +5990,7 @@ var arrayShrink = function( srcArray,indicesArray )
 {
   var atomsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
+  if( _.object.is( indicesArray ) )
   {
     atomsPerElement = indicesArray.atomsPerElement || 1;
     indicesArray = indicesArray.indices;
@@ -6131,7 +6131,7 @@ var arrayFlattenToMapUnique = function()
 
     if( !_.arrayLike( src ) )
     {
-      _.assert( _.objectIs( src ) );
+      _.assert( _.object.is( src ) );
       if( src !== undefined )
       extend( result, src );
       continue;
@@ -6141,7 +6141,7 @@ var arrayFlattenToMapUnique = function()
     {
       if( _.arrayIs( src[ s ] ) )
       _.arrayFlattenToMapUnique.call( result,src[ s ] );
-      else if( _.objectIs( src[ s ] ) )
+      else if( _.object.is( src[ s ] ) )
       extend( result, src );
       else
       throw _.err( 'array should have only maps' );
@@ -6514,7 +6514,7 @@ var arrayFrom = function( src )
   if( _.arrayIs( src ) )
   return src;
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return _.mapToArray( src );
 
   if( _.strIs( src ) )
@@ -7690,7 +7690,7 @@ arrayUnmask.defaults =
 var arrayDuplicate = function arrayDuplicate( srcArray, options )
 {
 
-  if( _.objectIs( srcArray ) )
+  if( _.object.is( srcArray ) )
   {
     options = srcArray;
     srcArray = options.src;
@@ -7783,7 +7783,7 @@ var arrayFill = function arrayFill( o )
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  _assert( _.object.is( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   var result = o.result || [];
   var times = o.times !== undefined ? o.times : result.length;
@@ -9158,7 +9158,7 @@ var mapExtendFiltering = function( filter,dstObject )
 
   _assert( arguments.length >= 3 );
   _assert( _.routineIs( filter ) );
-  _assert( _.objectLike( result ),'mapExtendFiltering :','expects object as argument' );
+  _assert( _.object.like( result ),'mapExtendFiltering :','expects object as argument' );
 
   for( var a = 2 ; a &lt; arguments.length ; a++ )
   {
@@ -9268,7 +9268,7 @@ var mapSupplement = function( dst )
   if( result === null ) result = {};
 
   _assert( arguments.length >= 2 );
-  _assert( _.objectLike( result ),'mapSupplement :','expects object as argument' );
+  _assert( _.object.like( result ),'mapSupplement :','expects object as argument' );
 
   for( var a = 1 ; a &lt; arguments.length ; a++ )
   {
@@ -9359,7 +9359,7 @@ var mapSatisfy = function mapSatisfy( o )
   o = { template : arguments[ 0 ], src : arguments[ 1 ] };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
+  _.assert( _.object.is( o.template ) || _.routineIs( o.template ) );
   _.assert( o.src !== undefined );
 
   _.routineOptions( mapSatisfy,o );
@@ -9425,7 +9425,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( srcObject ) );
+  _.assert( _.object.like( srcObject ) );
 
   for( var s in srcObject )
   {
@@ -9461,7 +9461,7 @@ var mapToArray = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( src ) );
+  _.assert( _.object.is( src ) );
 
   for( var s in src )
   {
@@ -9502,7 +9502,7 @@ var mapValWithIndex = function( src,index )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
 
   if( index &lt; 0 ) return;
@@ -9543,7 +9543,7 @@ var mapKeyWithIndex = function( src,index )
 {
 
    _.assert( arguments.length === 2 );
-   _.assert( _.objectLike( src ) );
+   _.assert( _.object.like( src ) );
 
   if( index &lt; 0 ) return;
 
@@ -9634,10 +9634,10 @@ var mapOwnKeys = function mapOwnKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   if( arguments.length === 1 )
-  if( _.objectIs( src ) &amp;&amp; Object.keys )
+  if( _.object.is( src ) &amp;&amp; Object.keys )
   return Object.keys( src );
 
   for( var s in src )
@@ -9686,7 +9686,7 @@ var mapKeys = function mapKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push( s );
@@ -9694,7 +9694,7 @@ var mapKeys = function mapKeys( src )
   for( var a = 1 ; a &lt; arguments.length ; a++ )
   {
     var src = arguments[ a ];
-    _.assert( _.objectLike( src ) );
+    _.assert( _.object.like( src ) );
     for( var s in src )
     _.arrayAppendOnce( result,s );
   }
@@ -9709,7 +9709,7 @@ var mapOwnValues = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   {
@@ -9750,7 +9750,7 @@ var mapValues = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push( src[ s ] );
@@ -9784,7 +9784,7 @@ var mapPairs = function( src )
 {
   var result = [];
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push([ s, src[ s ] ]);
@@ -9798,7 +9798,7 @@ var mapInvertKeyValue = function( src )
 {
   var result = {};
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   {
@@ -9816,7 +9816,7 @@ var mapsPluck = function( srcMaps,filterName )
   var result = new srcMaps.constructor();
   var filterName = _.nameUnfielded( filterName ).coded;
 
-  _assert( _.arrayIs( srcMaps ) || _.objectIs( srcMaps ) );
+  _assert( _.arrayIs( srcMaps ) || _.object.is( srcMaps ) );
 
   _.each( srcMaps,function( e,k )
   {
@@ -10032,7 +10032,7 @@ var mapBut = function( srcMap )
   var result = {};
   var a,k;
 
-  _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _assert( _.object.like( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -10040,7 +10040,7 @@ var mapBut = function( srcMap )
     {
       var argument = arguments[ a ];
 
-      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _assert( _.object.like( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       break;
@@ -10212,8 +10212,8 @@ var mapScreens = function( srcObject,screenObject )
 {
 
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _assert( _.objectLike( srcObject ),'mapScreens :','expects object as argument' );
-  _assert( _.objectLike( screenObject ),'mapScreens :','expects object as screenObject' );
+  _assert( _.object.like( srcObject ),'mapScreens :','expects object as argument' );
+  _assert( _.object.like( screenObject ),'mapScreens :','expects object as screenObject' );
 
   if( arguments.length > 2 )
   {
@@ -10348,13 +10348,13 @@ var _mapScreen = function( options )
   options.filter = _.filter.makeMapper( options.filter );
 
   _.assert( arguments.length === 1 );
-  _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
-  _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
+  _assert( _.object.like( dstObject ),'_mapScreen :','expects object as argument' );
+  _assert( _.object.like( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLike( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
+  _assert( _.object.like( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
 
   for( var k in screenObject )
   {
@@ -10699,7 +10699,7 @@ var recursiveClonning = function()
 var drop = function( dropContainer )
 {
 
-  _.assert( _.objectIs( dropContainer ) );
+  _.assert( _.object.is( dropContainer ) );
 
   var routine = function drop( dstContainer,srcContainer,key )
   {

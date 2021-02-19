@@ -3534,7 +3534,7 @@ function strTypeWithTraitsGeneratedObject( test )
   {
     var handled = false;
     test.case = `${toStr( env )}`;
-    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+    var src = _.object.forTesting( { elements : [ '1', '10' ], ... env } );
 
     if( env.new )
     {
@@ -3547,15 +3547,15 @@ function strTypeWithTraitsGeneratedObject( test )
       else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withConstructor && env.withIterator && env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPure.partible.constructible' );
+      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPure.countable.constructible' );
       else if( env.withConstructor && env.withIterator && !env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPolluted.partible.constructible' );
+      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPolluted.countable.constructible' );
       else if( env.withConstructor && env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPure.constructible' );
+      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPure.constructible' );
       else if( env.withConstructor && !env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'partibleConstructorPolluted.constructible' );
+      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPolluted.constructible' );
       else if( env.withIterator )
-      test.identical( _.strTypeWithTraits( src ), 'Object.partible' );
+      test.identical( _.strTypeWithTraits( src ), 'Object.countable' );
       else
       test.identical( _.strTypeWithTraits( src ), 'Object' );
 
@@ -3572,7 +3572,7 @@ function strTypeWithTraitsGeneratedObject( test )
       else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withIterator )
-      test.identical( _.strTypeWithTraits( src ), 'Object.partible' );
+      test.identical( _.strTypeWithTraits( src ), 'Object.countable' );
       else
       test.identical( _.strTypeWithTraits( src ), 'Object' );
 
@@ -3611,7 +3611,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
   {
     var handled = false;
     test.case = `${toStr( env )}`;
-    var src = _.objectForTesting( { elements : [ '1', '10' ], ... env } );
+    var src = _.object.forTesting( { elements : [ '1', '10' ], ... env } );
 
     if( env.new )
     {
@@ -3621,13 +3621,13 @@ function strTypeWithoutTraitsGeneratedObject( test )
       else if( _.auxiliary.is( src ) )
       test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
       else if( env.withConstructor && env.withIterator && env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPure' );
+      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPure' );
       else if( env.withConstructor && env.withIterator && !env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPolluted' );
+      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
       else if( env.withConstructor && env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPure' );
+      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPure' );
       else if( env.withConstructor && !env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'partibleConstructorPolluted' );
+      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
       else
       test.identical( _.strTypeWithoutTraits( src ), 'Object' );
 

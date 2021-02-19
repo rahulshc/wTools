@@ -915,7 +915,7 @@ function stackFilter( stack, onEach )
       result.push( r );
       return;
     }
-    _.assert( _.objectIs( r ) );
+    _.assert( _.object.is( r ) );
     _.assert( _.strIs( r.original ) );
     result.push( r.original );
   });

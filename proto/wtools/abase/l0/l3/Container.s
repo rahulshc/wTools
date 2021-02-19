@@ -29,7 +29,7 @@ function like( src )
 {
   if( _.longLike( src ) )
   return true;
-  if( _.objectLike( src ) )
+  if( _.object.like( src ) )
   return true;
   if( _.hashMapLike( src ) )
   return true;
@@ -98,8 +98,8 @@ let ContainerExtension =
 {
 
   is, /* qqq : cover please */
-  like, /* qqq : cover please */
-  lengthOf, /* qqq : cover please */
+  like, /* qqq : cover please | aaa : Done. Yevhen S. */
+  lengthOf, /* qqq : cover please | aaa : Done. Yevhen S. */
 
   //
 

@@ -219,32 +219,31 @@ function is( test ) /* qqq : merge test wProto/prototypeIs in this one | Dmytro 
 
 //
 
-
-function isPrototypeOf( test )
+function prototypeOf( test )
 {
   test.open( 'subPrototype === superPrototype' );
 
-  var prototypeOf = _.prototype.isPrototypeOf;
+  var prototypeOf = _.prototype.isPrototypeFor;
 
   test.case = 'check null';
   var src = null;
   var got = prototypeOf( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check undefined';
   var src = undefined;
   var got = prototypeOf( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check zero';
   var src = 0;
   var got = prototypeOf( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check false';
   var src = false;
   var got = prototypeOf( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check NaN';
   var src = NaN;
@@ -640,22 +639,22 @@ function has( test )
   test.case = 'check null';
   var src = null;
   var got = _.prototype.has( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check undefined';
   var src = undefined;
   var got = _.prototype.has( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check zero';
   var src = 0;
   var got = _.prototype.has( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check false';
   var src = false;
   var got = _.prototype.has( src, src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check NaN';
   var src = NaN;
@@ -995,10 +994,10 @@ var Self =
   {
 
     is,
-    isPrototypeOf,
+    prototypeOf,
 
     has2,
-    has,
+    has, /* qqq : merge with has2 */
 
   }
 

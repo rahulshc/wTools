@@ -40,25 +40,6 @@ function onSuiteEnd()
 // tests
 // --
 
-function diagnosticStructureGenerate( test )
-{
-
-  test.case = 'implicity call';
-  var got = _.diagnosticStructureGenerate();
-  test.true( _.mapIs( got.structure ) );
-  test.identical( got.structure[ 'number.big' ], 1 << 30 );
-  test.true( _.numberIs( got.size ) );
-
-  test.case = 'defaultComplexity : 5, depth : 3';
-  var got = _.diagnosticStructureGenerate({ defaultComplexity : 5, depth : 3 });
-  test.true( _.mapIs( got.structure ) );
-  test.true( _.hashMapIs( got.structure.hashmap ) );
-  test.true( _.setIs( got.structure.set ) );
-
-}
-
-diagnosticStructureGenerate.timeOut = 50000;
-
 //
 
 function errArgumentObject( test )
@@ -3445,8 +3426,6 @@ let Self =
 
   tests :
   {
-
-    diagnosticStructureGenerate,
 
     errArgumentObject,
     errFromStringedError, /* qqq : extend the test routine. low priority problem */

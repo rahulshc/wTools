@@ -428,7 +428,7 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  else if( _.auxiliary.is( src ) || _.objectLike( src ) )
+  else if( _.auxiliary.is( src ) || _.object.like( src ) )
   {
 
     for( let k in src )
@@ -469,7 +469,7 @@ function entityEachOwn( src, onEach )
 //     }
 //
 //   }
-//   else if( _.objectLike( src ) )
+//   else if( _.object.like( src ) )
 //   {
 //
 //     let index = 0;
@@ -507,7 +507,7 @@ function entityEachOwn( src, onEach )
 //   //   }
 //   //
 //   // }
-//   // else if( _.objectLike( o.src ) )
+//   // else if( _.object.like( o.src ) )
 //   // {
 //   //
 //   //   let index = 0;
@@ -3230,7 +3230,7 @@ function entityAll( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.auxiliary.is( src ) )
     {
 
@@ -3270,7 +3270,7 @@ function entityAll( src, onEach )
       // }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.hashMapIs( src ) )
     {
 
@@ -3357,7 +3357,7 @@ function entityAny( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.auxiliary.is( src ) )
     {
 
@@ -3397,7 +3397,7 @@ function entityAny( src, onEach )
       // }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.hashMapIs( src ) )
     {
 
@@ -3481,7 +3481,7 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.auxiliary.is( src ) )
     {
 
@@ -3515,7 +3515,7 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
+    // else if( _.object.like( src ) )
     else if( _.hashMapIs( src ) )
     {
 
@@ -3585,9 +3585,9 @@ function _filter_functor( condition, levels )
   let result;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+  _.assert( _.routineIs( condition ) || _.object.is( condition ) );
 
-  if( _.objectIs( condition ) )
+  if( _.object.is( condition ) )
   {
     let template = condition;
     condition = function condition( e, k, src )
@@ -3595,7 +3595,7 @@ function _filter_functor( condition, levels )
       _.assert( arguments.length === 3 );
       if( e === template )
       return e;
-      if( !_.objectLike( e ) )
+      if( !_.object.like( e ) )
       return;
       let satisfied = _.objectSatisfy
       ({
@@ -3684,7 +3684,7 @@ function entityMap( src, onEach )
       // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
-  // else if( _.objectLike( src ) )
+  // else if( _.object.like( src ) )
   else if( _.auxiliary.is( src ) )
   {
     // result = _.entity.makeUndefined( src );
@@ -3854,7 +3854,7 @@ function entityFilter( src, onEach )
     result = _.arraySlice( result, 0, d );
 
   }
-  // else if( _.objectLike( src ) )
+  // else if( _.object.like( src ) )
   else if( _.auxiliary.is( src ) )
   {
 

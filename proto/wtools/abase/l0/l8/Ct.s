@@ -183,7 +183,7 @@ function _formatAffixes( styles )
   {
     let style = styles[ s ];
 
-    if( _.objectIs( style ) )
+    if( _.object.is( style ) )
     {
       // let obj = style[ s ];
       // _.assertMapHasOnly( obj, StyleObjectOptions );

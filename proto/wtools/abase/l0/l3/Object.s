@@ -17,11 +17,11 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
  *
  * @example
  * let obj = { x : 100 };
- * _.objectIs(obj);
+ * _.object.is(obj);
  * // returns true
  *
  * @example
- * _.objectIs( 10 );
+ * _.object.is( 10 );
  * // returns false
  *
  * @param { * } src.
@@ -40,7 +40,7 @@ function objectIs( src )
 function objectLike( src ) /* xxx qqq : optimize */
 {
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return true;
 
   if( _.primitiveIs( src ) )
@@ -73,7 +73,7 @@ function objectLike( src ) /* xxx qqq : optimize */
 function objectLikeStandard( src ) /* xxx qqq : optimize */
 {
 
-  // if( _.objectIs( src ) )
+  // if( _.object.is( src ) )
   // return true;
 
   if( _.primitiveIs( src ) )
@@ -87,7 +87,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   if( _.hashMapIs( src ) )
   return false;
 
-  if( _.dateIs( src ) )
+  if( _.date.is( src ) )
   return true
   if( _.regexpIs( src ) )
   return true
@@ -104,18 +104,18 @@ function objectForTesting( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  partibleConstructorPure.prototype = Object.create( null );
+  countableConstructorPure.prototype = Object.create( null );
   if( o.withConstructor )
-  partibleConstructorPure.prototype.constructor = partibleConstructorPure;
+  countableConstructorPure.prototype.constructor = countableConstructorPure;
 
-  /* xxx : replace partibleMake */
+  /* xxx : replace countableMake */
 
   if( o.new )
   {
     if( o.pure )
-    result = new partibleConstructorPure( o );
+    result = new countableConstructorPure( o );
     else
-    result = new partibleConstructorPolluted( o );
+    result = new countableConstructorPolluted( o );
   }
   else
   {
@@ -153,14 +153,14 @@ function objectForTesting( o )
 
   /* */
 
-  function partibleConstructorPure( o )
+  function countableConstructorPure( o )
   {
     return _objectMake( this, o );
   }
 
   /* */
 
-  function partibleConstructorPolluted( o )
+  function countableConstructorPolluted( o )
   {
     let result = _objectMake( this, o );
     if( !o.withConstructor )
@@ -216,9 +216,25 @@ let ToolsExtension =
 
 }
 
+let Extension =
+{
+
+  // typing
+
+  is : objectIs,
+  like : objectLike,
+  likeStandard : objectLikeStandard,
+
+  //
+
+  forTesting : objectForTesting,
+
+}
+
 //
 
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export

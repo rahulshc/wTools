@@ -302,7 +302,7 @@ function strEntityShort( src )
     {
       result += `{- ${_.strType( src )} with ${src.length} elements -}`;
     }
-    else if( _.dateIs( src ) )
+    else if( _.date.is( src ) )
     {
       result += src.toISOString();
     }
@@ -321,7 +321,7 @@ function strEntityShort( src )
       result += `{- routine.anonymous -}`;
       debugger;
     }
-    else if( _.objectLike( src ) )
+    else if( _.object.like( src ) )
     {
       /* xxx : call exportString() if exists */
       result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
@@ -572,6 +572,7 @@ function strTypeSecondary( src )
 /* qqq : write perfect coverage */
 /* qqq : jsdoc */
 /* xxx : optimize later */
+/* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
 {
 
@@ -609,8 +610,8 @@ function strTypeWithTraits( src )
 
     if( !_.StandardTypeSet.has( result ) )
     {
-      if( _.partibleIs( src ) )
-      result += '.partible';
+      if( _.countableIs( src ) )
+      result += '.countable';
       if( _.constructibleIs( src ) )
       result += '.constructible';
     }
