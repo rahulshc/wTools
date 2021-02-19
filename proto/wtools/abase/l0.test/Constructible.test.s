@@ -832,7 +832,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'printerLike';
-  var src = _global_.logger;
+  var src = _global.logger;
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
