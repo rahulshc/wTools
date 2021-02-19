@@ -367,7 +367,7 @@ function arrayFromCoercing( src )
   if( _.arrayIs( src ) && !_.unrollIs( src ) )
   return src;
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return _.mapToArray( src );
 
   if( _.longIs( src ) )
@@ -4597,7 +4597,7 @@ function arrayFlattened( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( this ) );
+  _.assert( _.object.is( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
   if( arguments.length === 1 )
@@ -5163,7 +5163,7 @@ function arrayFlattenedDefined( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( this ) );
+  _.assert( _.object.is( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
@@ -5282,7 +5282,7 @@ function arrayFlattenedDefined( dstArray, src )
 // {
 //
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.objectIs( this ) );
+//   _.assert( _.object.is( this ) );
 //   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )

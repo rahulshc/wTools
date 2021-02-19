@@ -918,7 +918,7 @@ function longOnlyWithIndices( srcArray, indicesArray )
 {
   let scalarsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
+  if( _.object.is( indicesArray ) )
   {
     scalarsPerElement = indicesArray.scalarsPerElement || 1;
     indicesArray = indicesArray.indices;

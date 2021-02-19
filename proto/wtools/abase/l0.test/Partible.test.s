@@ -839,7 +839,7 @@ var Self =
   {
 
     typing,
-    /* xxx qqq : write test routine typingObject and use _.objectForTesting() */
+    /* xxx qqq : write test routine typingObject and use _.object.forTesting() */
     typingExtended
 
   }

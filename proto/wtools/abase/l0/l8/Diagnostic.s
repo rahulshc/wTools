@@ -66,8 +66,8 @@ function watchFields( o )
   o.names = o.target;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.target ) );
-  _.assert( _.objectLike( o.names ) );
+  _.assert( _.object.like( o.target ) );
+  _.assert( _.object.like( o.names ) );
 
   for( let f in o.names ) ( function()
   {
@@ -162,8 +162,8 @@ function proxyFields( o )
   // o.names = _.nameFielded( o.names );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.target ) );
-  _.assert( _.objectLike( o.names ) || o.names === null );
+  _.assert( _.object.like( o.target ) );
+  _.assert( _.object.like( o.names ) || o.names === null );
 
   let handler =
   {

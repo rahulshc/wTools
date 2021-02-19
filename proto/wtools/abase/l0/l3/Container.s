@@ -29,7 +29,7 @@ function like( src )
 {
   if( _.longLike( src ) )
   return true;
-  if( _.objectLike( src ) )
+  if( _.object.like( src ) )
   return true;
   if( _.hashMapLike( src ) )
   return true;

@@ -103,7 +103,7 @@ function _handleUncaught2( o )
 
   function errLogFields()
   {
-    if( !o.err.originalMessage && _.objectLike && _.objectLike( o.err ) )
+    if( !o.err.originalMessage && _.object.like && _.object.like( o.err ) )
     try
     {
       let serr = _.toStr && _.property ? _.toStr.fields( o.err, { errorAsMap : 1 } ) : o.err;

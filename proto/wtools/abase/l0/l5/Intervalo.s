@@ -268,7 +268,7 @@ function lastGet( ointerval, options )
 
   if( options )
   {
-    _.assert( _.objectLike( options ) );
+    _.assert( _.object.like( options ) );
     if( options.increment === undefined )
     options.increment = 1;
   }
