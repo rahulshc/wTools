@@ -48,7 +48,8 @@ let ToolsExtension =
 let Extension =
 {
   is,
-  areIdentical
+  areIdentical,
+  areIdenticalShallow : areIdentical
 }
 
 //

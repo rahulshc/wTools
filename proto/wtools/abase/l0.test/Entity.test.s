@@ -590,7 +590,7 @@ function entityIdenticalShallowBasic( test )
   var got = _.entity.identicalShallow( [ null ], [ null ] );
   test.identical( got, expected );
 
-  var expected = true;
+  var expected = false;
   var got = _.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] );
   test.identical( got, expected );
 
@@ -5108,7 +5108,7 @@ let Self =
   {
     entityPlay,
     entityIdenticalShallowBasic,
-    entityEquivalentShallowBasic,
+    // entityEquivalentShallowBasic,
 
     // entityMakeConstructing,
     // entityMakeConstructingArgumentsArray,

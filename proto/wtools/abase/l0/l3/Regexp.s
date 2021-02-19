@@ -134,6 +134,7 @@ let Extension =
   objectIs : regexpObjectIs,
   like : regexpLike,
   identical : regexpIdentical,
+  areIdenticalShallow : regexpIdentical,
   equivalent : regexpEquivalent,
 
   escape : regexpEscape,

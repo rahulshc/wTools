@@ -20,7 +20,7 @@ function identicalShallow( src1, src2 )
 
   let result = false;
 
-  // let containerType1 = _.container.typeOf( src1 );
+  let containerType1 = _.container.typeOf( src1 );
   // console.log( 'type: ', containerType1 );
 
   if( containerType1 )
@@ -37,7 +37,7 @@ function identicalShallow( src1, src2 )
   }
   else if( _.entity.methodEqualOf( src1 ) && !_.auxiliary.is( src1 ) )
   {
-
+    //
   }
   else if( _.hashMapLike( src1 ) )
   {
@@ -45,11 +45,19 @@ function identicalShallow( src1, src2 )
   }
   else if( _.setLike( src1 ) )
   {
-
+    return _.setsAreIdenticalShallow( src1, src2 );
+  }
+  else if( _.date.is( src1 ) )
+  {
+    return _.date.areIdenticalShallow( src1, src2 );
+  }
+  else if( _.regexp.is( src1 ) )
+  {
+    return _.regexp.areIdenticalShallow( src1, src2 );
   }
   // else if( it.isCountable( src1 ) )
   // {
-
+  // // ?
   // }
   else if( _.primitiveIs( src1 ) )
   {
