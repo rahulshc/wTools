@@ -823,7 +823,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( !_.object.is( src ) );
   test.true( _.auxiliary.is( src ) );
   test.true( !_.mapIs( src ) );
   test.true( _.auxiliary.isPrototyped( src ) );
