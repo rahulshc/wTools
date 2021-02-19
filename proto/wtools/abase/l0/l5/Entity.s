@@ -19,25 +19,19 @@ function identicalShallow( src1, src2 )
   return false;
 
   let result = false;
+  const methodEqual = _.entity.methodEqualOf( src1 );
 
-  let containerType1 = _.container.typeOf( src1 );
-  // console.log( 'type: ', containerType1 );
-
-  if( containerType1 )
-  {
-    //
-  }
-  else if( _.mapIs( src1 ) )
+  if( _.mapIs( src1 ) )
   {
     return _.mapsAreIdenticalShallow( src1, src2 );
   }
-  else if( _.longLike( src1 ) )
+  else if( _.longLike( src1 ) ) // investigate whether nedeed ( entity with iterator and length )
   {
     return _.longAreIdenticalShallow( src1, src2 );
   }
-  else if( _.entity.methodEqualOf( src1 ) && !_.auxiliary.is( src1 ) )
+  else if( methodEqual && !_.auxiliary.is( src1 ) )
   {
-    //
+    return methodEqual( src1, src2 );
   }
   else if( _.hashMapLike( src1 ) )
   {
@@ -47,18 +41,18 @@ function identicalShallow( src1, src2 )
   {
     return _.setsAreIdenticalShallow( src1, src2 );
   }
-  else if( _.date.is( src1 ) )
+  else if( _.date.is( src1 ) ) // investigate whether nedeed
   {
     return _.date.areIdenticalShallow( src1, src2 );
   }
-  else if( _.regexp.is( src1 ) )
+  else if( _.regexp.is( src1 ) ) // investigate whether nedeed
   {
     return _.regexp.areIdenticalShallow( src1, src2 );
   }
-  // else if( it.isCountable( src1 ) )
-  // {
-  // // ?
-  // }
+  else if( _.countable.is( src1 ) )
+  {
+    // implement ( entity with iterator )
+  }
   else if( _.primitiveIs( src1 ) )
   {
     return Object.is( src1, src2 );
