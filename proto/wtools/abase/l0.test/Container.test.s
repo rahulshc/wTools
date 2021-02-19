@@ -181,7 +181,7 @@ function like( test )
   test.true( _.container.like( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
+  var src = new F32x( 2 );
   test.true( _.container.like( src ) );
 
   test.case = 'pair';
@@ -432,8 +432,8 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 1 );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
-  test.identical( _.container.lengthOf( src ), 1 );
+  var src = new F32x( 2 );
+  test.identical( _.container.lengthOf( src ), 2 );
 
   test.case = 'pair';
   var src = _.pair.make();

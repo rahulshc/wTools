@@ -135,7 +135,7 @@ function is( test )
   test.true( !_.object.is( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
+  var src = new F32x( 2 );
   test.true( !_.object.is( src ) );
 
   test.case = 'pair';
