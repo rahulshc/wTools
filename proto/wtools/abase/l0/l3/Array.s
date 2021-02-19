@@ -77,7 +77,7 @@ function arrayLike( src ) /* qqq : cover */
   if( _.argumentsArray.is( src ) )
   return true;
   // if( _.entity.methodIteratorOf( src ) ) /* yyy */
-  // // if( !_.mapIs( src ) && _.objectIs( src ) )
+  // // if( !_.mapIs( src ) && _.object.is( src ) )
   // if( !_.mapIs( src ) )
   // return true;
   return false;

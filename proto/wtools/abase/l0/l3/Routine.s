@@ -468,8 +468,8 @@ function routineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   if( Config.debug )
@@ -538,7 +538,7 @@ function routineOptions( routine, args, defaults )
       continue;
 
       if( Config.debug )
-      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
       if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       {
         debugger;
@@ -564,8 +564,8 @@ function assertRoutineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   if( Config.debug )
@@ -630,8 +630,8 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( routine.defaults ), 'Expects routine with defined defaults' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( routine.defaults ), 'Expects routine with defined defaults' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
 
   defaults = defaults || routine.defaults;
@@ -656,8 +656,8 @@ function routineOptionsReplacingUndefines( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
   _.assertMapHasOnly( options, defaults );
@@ -678,8 +678,8 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
   _.assertMapHasOnly( options, defaults );
@@ -720,7 +720,7 @@ function _routinesCompose_head( routine, args )
   _.assert( _.routinesAre( o.elements ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
+  _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
   _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
   _.assert( o.chainer === null || _.routineIs( o.chainer ) );
@@ -956,7 +956,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //       let d = Object.getOwnPropertyDescriptor( dst, s );
 //       if( d && !d.writable )
 //       continue;
-//       if( _.objectIs( property ) )
+//       if( _.object.is( property ) )
 //       {
 //         _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
 //         property = Object.create( property );
@@ -1080,7 +1080,7 @@ function routineExtend( dst, src )
       let d = Object.getOwnPropertyDescriptor( dst, s );
       if( d && !d.writable )
       continue;
-      if( _.objectIs( property ) )
+      if( _.object.is( property ) )
       {
         _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
         // property = Object.create( property );
@@ -1153,7 +1153,7 @@ function routineUnite_body( o )
 
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
-      _.assert( _.objectIs( result ) );
+      _.assert( _.object.is( result ) );
       return _.unrollAppend([ unitedRoutine, [ result ] ]);
     });
     _.assert( _.routineIs( _head ) );
@@ -1467,7 +1467,7 @@ function routineErFor( routine, erhead )
   _.assert( _.routineIs( erhead ) );
   _.assert( _.routineIs( head ) );
   _.assert( _.routineIs( body ) );
-  _.assert( _.objectIs( defaults ) );
+  _.assert( _.object.is( defaults ) );
 
   return er_functor;
 
@@ -1512,7 +1512,7 @@ function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
   _.assert( _.routineIs( erhead ) );
   _.assert( _.routineIs( head ) );
   _.assert( _.routineIs( body ) );
-  _.assert( _.objectIs( defaults ) );
+  _.assert( _.object.is( defaults ) );
 
   let op = erhead.call( self, routine, arguments );
 

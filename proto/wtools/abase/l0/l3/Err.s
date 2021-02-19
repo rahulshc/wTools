@@ -733,7 +733,7 @@ function _err( o )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let arg = o.args[ a ];
-      if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
+      if( !_.primitiveIs( arg ) && _.object.like( arg ) )
       try
       {
         o.throwLocation = _.introspector.location

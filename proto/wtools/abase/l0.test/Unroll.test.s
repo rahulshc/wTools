@@ -1958,7 +1958,7 @@ function unrollFromMaybe( test )
   var src = new Constr();
   var got = _.unrollFromMaybe( src );
   test.identical( got, src );
-  test.true( _.objectIs( got ) );
+  test.true( _.object.is( got ) );
 
   test.case = 'src - null';
   var got = _.unrollFromMaybe( null );
@@ -2152,7 +2152,7 @@ function unrollFromMaybeLongDescriptor( test )
     var src = new Constr1();
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, src );
-    test.true( _.objectIs( got ) );
+    test.true( _.object.is( got ) );
 
     test.case = 'src - null';
     var got = descriptor.unrollFromMaybe( null );
