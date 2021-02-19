@@ -1558,7 +1558,7 @@ function entityEach( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.objectIs( src ) )
+    if( _.object.is( src ) )
     got = src;
     else
     got += 10;
@@ -2098,7 +2098,7 @@ function entityEachOwn( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.objectIs( src ) )
+    if( _.object.is( src ) )
     got = src;
     else
     got += 10;

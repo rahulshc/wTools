@@ -80,6 +80,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Map.s' );
   require( './l0/l5/Module.s' );
   require( './l0/l5/Number.s' );
+  require( './l0/l5/Object.s' );
   require( './l0/l5/Pair.s' );
   require( './l0/l5/Countable.s' );
   require( './l0/l5/Path.s' );
@@ -132,6 +133,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Map.s' );
   require( './l0/l8/Module.s' );
   require( './l0/l8/Number.s' );
+  require( './l0/l8/Object.s' );
   require( './l0/l8/Pair.s' );
   require( './l0/l8/Countable.s' );
   require( './l0/l8/Path.s' );

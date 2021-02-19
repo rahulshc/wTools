@@ -158,7 +158,7 @@ function _mapKeys( o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( o ) );
+  _.assert( _.object.like( o ) );
   _.assert( !( srcMap instanceof Map ), 'not implemented' );
   _.assert( selectFilter === null || _.routineIs( selectFilter ) );
 
@@ -810,7 +810,7 @@ function mapFirstPair( srcMap )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( srcMap ) );
+  _.assert( _.object.like( srcMap ) );
 
   for( let s in srcMap )
   {
@@ -1144,7 +1144,7 @@ function mapSupplementStructureless( dstMap, srcMap )
       continue;
 
       if( Config.debug )
-      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
       if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
 

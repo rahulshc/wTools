@@ -930,7 +930,7 @@ function _entityFilterDeep( o )
   let onEach = _._filter_functor( o.onEach, o.conditionLevels );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
+  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */
