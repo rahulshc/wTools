@@ -735,7 +735,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 function bufferFromArrayOfArray( array, options )
 {
 
-  if( _.objectIs( array ) )
+  if( _.object.is( array ) )
   {
     options = array;
     array = options.buffer;
@@ -839,7 +839,7 @@ function bufferFrom( o )
 //   let result;
 //
 //   _.assert( arguments.length === 1 );
-//   _.assert( _.objectIs( o ) );
+//   _.assert( _.object.is( o ) );
 //   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
 //   _.assertMapHasOnly( o, bufferFrom.defaults );
 //
@@ -878,7 +878,7 @@ function bufferFrom( o )
 //
 //   /* verification */
 //
-//   _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
+//   _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
 //
 //   /* length */
 //

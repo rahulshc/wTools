@@ -72,7 +72,7 @@ _.assert( !_.withDefaultLong );
 _.longDescriptorProducer.applyTo( _, 'Array' );
 
 _.assert( !_.Array );
-_.assert( _.objectIs( _.withDefaultLong ) );
+_.assert( _.object.is( _.withDefaultLong ) );
 _.assert( !_.defaultLong );
 
 _.assert( _.longDescriptorProducer );
