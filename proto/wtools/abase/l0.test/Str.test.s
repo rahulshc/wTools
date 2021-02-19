@@ -3223,7 +3223,7 @@ function strEntityShort( test )
   var expected = '{- ArgumentsArray with 0 elements -}';
   test.identical( _.strEntityShort( src ), expected );
 
-  test.case = 'ArgumentsArray & arrayLike';
+  test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = '{- ArgumentsArray with 3 elements -}';
   test.identical( _.strEntityShort( src ), expected );
