@@ -368,11 +368,13 @@ function lengthOf( test )
   /* length is dynamic */
   // test.case = 'Global & GlobalReal';
   // var src = global;
-  // test.identical( _.container.lengthOf( src ), 46 );
-
+  // // test.identical( _.container.lengthOf( src ), 46 ); /* Dmytro : utility Testing uses garbage collector, direct call of nodejs uses not */
+  // test.identical( _.container.lengthOf( src ), 46 + ( global.gc ? 1 : 0 ) );
+  //
   // test.case = 'Global & GlobalDerived';
   // var src = Object.create( global );
-  // test.identical( _.container.lengthOf( src ), 46 );
+  // // test.identical( _.container.lengthOf( src ), 46 ); /* Dmytro : utility Testing uses garbage collector, direct call of nodejs uses not */
+  // test.identical( _.container.lengthOf( src ), 46 + ( global.gc ? 1 : 0 ) );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
