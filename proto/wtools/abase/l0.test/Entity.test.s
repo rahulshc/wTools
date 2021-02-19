@@ -17,6 +17,19 @@ let _ = _global_.wTools;
 // --
 // tests
 // --
+
+function entityPlay( test )
+{
+  // console.log( _realGlobal_.wTools.container.types )
+
+  test.case = 'null - undefined';
+  var expected = true;
+  var got = _.entity.identicalShallow( null, null );
+  test.identical( got, expected );
+}
+
+//
+
 function entityIdenticalShallowBasic( test )
 {
   /* */
@@ -735,7 +748,7 @@ function entityIdenticalShallowBasic( test )
   var got = _.entity.identicalShallow( { a : null }, { a : null } );
   test.identical( got, expected );
 
-  var expected = true;
+  var expected = false;
   var got = _.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1 } } );
   test.identical( got, expected );
 
@@ -5093,6 +5106,7 @@ let Self =
 
   tests :
   {
+    entityPlay,
     entityIdenticalShallowBasic,
     entityEquivalentShallowBasic,
 

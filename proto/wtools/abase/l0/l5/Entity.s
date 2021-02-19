@@ -13,11 +13,15 @@ let Self = _.entity = _.entity || Object.create( null );
 
 function identicalShallow( src1, src2 )
 {
-
   _.assert( arguments.length === 2, 'Expects no arguments' );
 
-  let containerType1 = _.container.typeOf( src1 );
-  console.log( containerType1 );
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  let result = false;
+
+  // let containerType1 = _.container.typeOf( src1 );
+  // console.log( 'type: ', containerType1 );
 
   if( containerType1 )
   {
@@ -25,7 +29,11 @@ function identicalShallow( src1, src2 )
   }
   else if( _.mapIs( src1 ) )
   {
-
+    return _.mapsAreIdenticalShallow( src1, src2 );
+  }
+  else if( _.longLike( src1 ) )
+  {
+    return _.longAreIdenticalShallow( src1, src2 );
   }
   else if( _.entity.methodEqualOf( src1 ) && !_.auxiliary.is( src1 ) )
   {
@@ -33,19 +41,19 @@ function identicalShallow( src1, src2 )
   }
   else if( _.hashMapLike( src1 ) )
   {
-
+    return _.hashMapsAreIdenticalShallow( src1, src2 )
   }
   else if( _.setLike( src1 ) )
   {
 
   }
-  else if( it.isCountable( src1 ) )
-  {
+  // else if( it.isCountable( src1 ) )
+  // {
 
-  }
+  // }
   else if( _.primitiveIs( src1 ) )
   {
-
+    return Object.is( src1, src2 );
   }
   else if( _.auxiliary.is( src1 ) )
   {
@@ -55,6 +63,8 @@ function identicalShallow( src1, src2 )
   {
 
   }
+
+  return result;
 
   // let containerType2 = _.container.typeOf( src2 );
   // if( containerType2 )
