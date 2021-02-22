@@ -547,13 +547,13 @@ function typingExtended( test )
   test.true( !_.arrayIs( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
+  var src = new F32x( 2 );
   test.true( _.countable.like( src ) );
   test.true( _.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
+  test.true( _.vector.like( src ) );
+  test.true( _.vector.is( src ) );
+  test.true( _.longLike( src ) );
+  test.true( _.longIs( src ) );
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
@@ -745,16 +745,16 @@ function typingExtended( test )
   test.true( !_.arrayLike( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'console';
-  var src = console;
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.arrayLike( src ) );
-  test.true( !_.arrayIs( src ) );
+  // test.case = 'console';
+  // var src = console;
+  // test.true( !_.countable.like( src ) );
+  // test.true( !_.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.arrayLike( src ) );
+  // test.true( !_.arrayIs( src ) );
 
   test.case = 'printerLike';
   var src = _global.logger;
