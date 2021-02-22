@@ -5,7 +5,8 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.number = _.number || Object.create( null );
+_.number.s = _.number.s || Object.create( null );
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -584,18 +585,10 @@ function numbersFrom_functor( length )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ExtensionTools =
 {
 
   numbersTotal,
@@ -622,8 +615,43 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+
+  from : numberFrom,
+  fromStr : numberFromStr,
+  fromStrMaybe : numberFromStrMaybe, /* qqq : cover */
+
+  random : numberRandom,
+  intRandom,
+  intRandomBut, /* dubious */
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  total : numbersTotal,
+  from : numbersFrom,
+  slice : numbersSlice,
+
+  make : numbersMake,
+  fromNumber : numbersFromNumber,
+  fromInt : numbersFromInt,
+
+  make_functor : numbersMake_functor,
+  from_functor : numbersFrom_functor,
+
+}
+
+//
+
+Object.assign( Self, Extension );
+Object.assign( _.number.s, ExtensionS );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

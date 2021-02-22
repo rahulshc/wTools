@@ -5,7 +5,8 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.number = _.number || Object.create( null );
+_.number.s = _.number.s || Object.create( null );
 
 // --
 // number
@@ -71,14 +72,6 @@ function intIs( src )
   return false;
 
   return Math.floor( src ) === src;
-}
-
-//
-
-function bigIntIs( src )
-{
-  let result = Object.prototype.toString.call( src ) === '[object BigInt]';
-  return result;
 }
 
 //
@@ -300,18 +293,10 @@ function numbersAreInt( src )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ExtensionTools =
 {
 
   numberIs,
@@ -321,7 +306,6 @@ let Routines =
   numberIsInfinite,
 
   intIs,
-  bigIntIs,
 
   numbersAreAll,
   numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
@@ -336,8 +320,38 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+  is : numberIs,
+  isNotNan : numberIsNotNan,
+  isFinite : numberIsFinite,
+  defined : numberIsFinite,
+  isInfinite : numberIsInfinite,
+
+  intIs,
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  areAll : numbersAreAll,
+  areIdentical : numbersAreIdentical,
+  areIdenticalNotStrictly : numbersAreIdenticalNotStrictly,
+  areEquivalent : numbersAreEquivalent,
+
+  areFinite : numbersAreFinite,
+  arePositive : numbersArePositive,
+  areInt : numbersAreInt,
+
+}
+
+Object.assign( Self, Extension );
+Object.assign( _.number.s, ExtensionS );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

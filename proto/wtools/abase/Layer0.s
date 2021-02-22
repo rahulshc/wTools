@@ -15,6 +15,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Array.s' );
   require( './l0/l3/ArraySet.s' );
   require( './l0/l3/Auxiliary.s' );
+  require( './l0/l3/BigInt.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
   require( './l0/l3/Constructible.s' );
@@ -51,6 +52,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Set.s' );
   require( './l0/l3/Sorted.s' );
   require( './l0/l3/Str.s' );
+  require( './l0/l3/Symbol.s' );
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
   require( './l0/l3/Units.s' );
@@ -61,6 +63,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Array.s' );
   require( './l0/l5/ArraySet.s' );
   require( './l0/l5/Auxiliary.s' );
+  require( './l0/l5/BigInt.s' );
   require( './l0/l5/Bool.s' );
   require( './l0/l5/Buffer.s' );
   require( './l0/l5/Constructible.s' );
@@ -97,6 +100,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Sorted.s' );
   require( './l0/l5/Set.s' );
   require( './l0/l5/Str.s' );
+  require( './l0/l5/Symbol.s' );
   require( './l0/l5/Time.s' );
   require( './l0/l5/Type.s' );
   require( './l0/l5/Units.s' );
@@ -116,6 +120,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Array.s' );
   require( './l0/l8/ArraySet.s' );
   require( './l0/l8/Auxiliary.s' );
+  require( './l0/l8/BigInt.s' );
   require( './l0/l8/Bool.s' );
   require( './l0/l8/Buffer.s' );
   require( './l0/l8/Constructible.s' );
@@ -152,6 +157,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Set.s' );
   require( './l0/l8/Sorted.s' );
   require( './l0/l8/Str.s' );
+  require( './l0/l8/Symbol.s' );
   require( './l0/l8/Time.s' );
   require( './l0/l8/Type.s' );
   require( './l0/l8/Units.s' );

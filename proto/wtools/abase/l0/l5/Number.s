@@ -5,46 +5,11 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.number = _.number || Object.create( null );
 
 // --
 // number
 // --
-
-function bigIntFrom( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  if( _.strIs( src ) )
-  return BigInt( src );
-  if( _.numberIs( src ) )
-  return BigInt( src );
-  _.assert( _.bigIntIs( src ), 'Cant convert' )
-  return src;
-}
-
-//
-
-function bigIntsFrom( src )
-{
-  if( _.numberIs( src ) )
-  {
-    return BigInt( src );
-  }
-  else if( _.bigIntIs( src ) )
-  {
-    return src;
-  }
-  else if( _.longIs( src ) )
-  {
-    let result = [];
-    for( let i = 0 ; i < src.length ; i++ )
-    result[ i ] = _.bigIntFrom( src[ i ] );
-    return result
-  }
-  else _.assert( 0, 'Cant convert' );
-}
-
-//
 
 function numberClamp( src, low, high )
 {
@@ -83,12 +48,8 @@ function numberMix( ins1, ins2, progress )
 zzz : review and merge with similar routines _.range.*
 */
 
-let Extension =
+let ExtensionTools =
 {
-
-  bigIntFrom,
-  bigIntsFrom,
-
   numberClamp, /* teach it to accept cintervals */
   numberMix,
 
@@ -96,7 +57,15 @@ let Extension =
 
 //
 
-_.mapSupplement( _, Extension );
+let Extension =
+{
+  clamp : numberClamp,
+  mix : numberMix,
+
+}
+
+Object.assign( Self, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export
