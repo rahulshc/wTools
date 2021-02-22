@@ -27,8 +27,8 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Extension );
-_.mapSupplement( _, ExtensionTools );
+Object.assign( Self, Extension );
+Object.assign( _, ExtensionTools );
 
 // --
 // export
