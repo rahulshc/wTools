@@ -18,8 +18,8 @@ function identicalShallow( src1, src2 )
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
 
-  let result = false;
-  const methodEqual = _.entity.methodEqualOf( src1 );
+  // false if not present
+  const methodEqual = _.entity.methodEqualOf( src1 ) || _.entity.methodEqualOf( src2 );
 
   if( methodEqual && !_.auxiliary.is( src1 ) )
   {
@@ -90,32 +90,28 @@ function identicalShallow( src1, src2 )
       return _.regexp.areIdenticalShallow( src1, src2 );
     }
 
-    // rest is object
+    /* rest */
     return _.mapsAreIdenticalShallow( src1, src2 );
+  }
+  else if( _.routineIs( src1 ) )
+  {
+    return src1 === src2;
   }
   else if( _.primitiveIs( src1 ) )
   {
     /*
-      [object Symbol]
-      [object Number]
-      [object BigInt]
-      [object Boolean]
-      [object String]
+      - Symbol
+      - Number
+      - BigInt
+      - Boolean
+      - String
     */
     return Object.is( src1, src2 );
   }
-  // else if( _.auxiliary.is( src1 ) )
-  // {
-  //   /*
-  //     Same as map, but can be any non-primitive prototype without a constructor
-  //   */
-  // }
   else
   {
-
+    return false;
   }
-
-  return result;
 
   // let containerType2 = _.container.typeOf( src2 );
   // if( containerType2 )
