@@ -183,7 +183,7 @@ function locationFromStackFrame( o )
   /* */
 
   if( !( _.strIs( o.stackFrame ) ) )
-  throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( o.stackFrame )}` );
+  throw Error( `Expects string {- stackFrame -}, but fot ${_.entity.strType( o.stackFrame )}` );
 
   if( o.location && !_.mapIs( o.location ) )
   throw Error( 'Expects map option::location' );
@@ -695,7 +695,7 @@ function stack( stack, range )
   if( !_.intervalIs( range ) )
   {
     debugger;
-    throw Error( 'stack : expects range but, got ' + _.strType( range ) );
+    throw Error( 'stack : expects range but, got ' + _.entity.strType( range ) );
   }
 
   let first = range[ 0 ];
@@ -704,13 +704,13 @@ function stack( stack, range )
   // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.intervalIs checks number value in passed array
   // {
   //   debugger;
-  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.entity.strType( first ) );
   // }
   //
   // if( !_.numberIs( last ) )
   // {
   //   debugger;
-  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.entity.strType( last ) );
   // }
 
   let errIs = 0;

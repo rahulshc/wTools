@@ -84,7 +84,7 @@ function watchFields( o )
       //let result = o.target[ fieldSymbol ];
       let result = val;
       if( o.verbosity > 1 )
-      console.log( 'reading ' + propName + ' ' + _.toStr( result ) );
+      console.log( 'reading ' + propName + ' ' + _.entity.exportString( result ) );
       else
       console.log( 'reading ' + propName );
       if( o.debugging > 1 )
@@ -97,7 +97,7 @@ function watchFields( o )
     function write( src )
     {
       if( o.verbosity > 1 )
-      console.log( 'writing ' + propName + ' ' + _.toStr( o.target[ propName ] ) + ' -> ' + _.toStr( src ) );
+      console.log( 'writing ' + propName + ' ' + _.entity.exportString( o.target[ propName ] ) + ' -> ' + _.entity.exportString( src ) );
       else
       console.log( 'writing ' + propName );
       if( o.debugging )
@@ -172,7 +172,7 @@ function proxyFields( o )
       if( o.names && !( k in o.names ) )
       return;
       if( o.verbosity > 1 )
-      console.log( 'writing ' + k + ' ' + _.toStr( o.target[ k ] ) + ' -> ' + _.toStr( e ) );
+      console.log( 'writing ' + k + ' ' + _.entity.exportString( o.target[ k ] ) + ' -> ' + _.entity.exportString( e ) );
       else
       console.log( 'writing ' + k );
       if( o.debug )

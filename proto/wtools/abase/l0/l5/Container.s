@@ -224,7 +224,7 @@ function empty( dstContainer )
   else if( _.aux.is( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
-  _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+  _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
   return dstContainer;
 }
 

@@ -3180,282 +3180,282 @@ function strEnds( test )
 // converter
 // --
 
-function strEntityShort( test )
+function exportStringShortFine( test )
 {
 
   test.case = 'number';
   var src = 1;
   var expected = '1';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'bool & boolLike & fuzzy';
   var src = true;
   var expected = 'true';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src = 0;
   var expected = '0';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = '{- Symbol maybe -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'bigint';
   var src = 10n;
   var expected = '10n';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'str & regexpLike';
   var src = 'str';
   var expected = 'str';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = /hello/g;
   var expected = '/hello/g';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = '{- ArgumentsArray with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'unroll';
   var src = _.unrollMake([ 2, 3, 4 ]);
   var expected = '{- Array with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'array';
   var src = [ 2, 3, 4 ];
   var expected = '{- Array with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'long & longLike';
   var src = _.longMake([ 1, 2 ]);
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = global;
   var expected = '{- MapLike.polluted.prototyped with ';
-  test.true( _.strHas( _.strEntityShort( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringShortFine( src ), expected ) );
 
   test.case = 'Global & GlobalDerived';
   var src = Object.create( global );
   var expected = '{- MapLike.polluted.prototyped with ';
-  test.true( _.strHas( _.strEntityShort( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringShortFine( src ), expected ) );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Object with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var expected = '{- MapLike.polluted.prototyped with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src = Object.create( null );
   src.a = 1;
   src.b = 2;
   var expected = '{- Map.pure with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src = { a : 1, b : 2, c : 3 };
   var expected = '{- Map.polluted with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'HashMap';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'HashMap with 2 elems';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferNode';
   var src = new BufferNode( 'str' );
   var expected = '{- BufferNode with 3 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferRaw';
   var src = new BufferRaw( 'str' );
   var expected = '{- BufferRaw with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferRawShared';
   var src = new BufferRawShared( 'str' );
   var expected = '{- BufferRawShared with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferTyped';
   var src = new I8x( 20 );
   var expected = '{- I8x with 20 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferView';
   var src = new BufferView( new BufferRaw( 20 ) );
   var expected = '{- DataView.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = new U8x( 20 );
   var expected = '{- U8x with 20 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'err';
   var src = _.err( 'error' );
   var expected = '{- Error.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var expected = 'Escape( 1 )';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
   var expected = '{- F32x with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'pair';
   var src = _.pair.make();
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = '/a/b/';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'propertyTransformer & filter';
   var src = _.property.filter[ 'dstAndSrcOwn' ];
   var expected = '{- routine dstAndSrcOwn -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'propertyTransformer & mapper';
   var src = _.property.mapper[ 'assigning' ];
   var expected = '{- routine assigning -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'routine & routineLike';
   var src = routine;
   var expected = '{- routine routine -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'timer';
   var src = _.time._begin( Infinity );
   var expected = '{- Map.pure with 9 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
   _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date( '2021-02-19T11:26:42.840Z' );
   var expected = '2021-02-19T11:26:42.840Z';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'null';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = '{- Symbol null -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = '{- Symbol undefined -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = '{- Symbol nothing -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'primitive';
   var src = 5;
   var expected = '5';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'Symbol';
   var src = Symbol( 'a' );
   var expected = '{- Symbol a -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var expected = '{- Promise.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'stream';
   var src = require( 'stream' ).Readable();
   var expected = '{- Readable.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'console';
   var src = console;
   var expected = '{- Console.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'printerLike';
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'process';
   var src = process;
   var expected = '{- process.constructible with 1 elements -}';
-  test.identical( _.strEntityShort( src ), expected );
+  test.identical( _.entity.exportStringShortFine( src ), expected );
 
   /* - */
 
@@ -3512,31 +3512,31 @@ function strPrimitive( test ) /* qqq for Yevhen : extend */
   test.case = 'undefined';
   var src = undefined;
   var expected = undefined;
-  var got = _.strPrimitive( src );
+  var got = _.entity.strPrimitive( src );
   test.identical( got, expected );
 
   test.case = 'null';
   var src = null;
   var expected = undefined;
-  var got = _.strPrimitive( src );
+  var got = _.entity.strPrimitive( src );
   test.identical( got, expected );
 
   test.case = 'number';
   var src = 13;
   var expected = '13';
-  var got = _.strPrimitive( src );
+  var got = _.entity.strPrimitive( src );
   test.identical( got, expected );
 
   test.case = 'boolean';
   var src = false;
   var expected = 'false';
-  var got = _.strPrimitive( src );
+  var got = _.entity.strPrimitive( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'abc';
   var expected = 'abc';
-  var got = _.strPrimitive( src );
+  var got = _.entity.strPrimitive( src );
   test.identical( got, expected );
 
 }
@@ -3550,92 +3550,92 @@ function strTypeWithTraitsBasic( test )
   test.case = 'undefined';
   var src = undefined;
   var expected = 'Undefined';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'Null';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number int';
   var src = 13;
   var expected = 'Number';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number NaN';
   var src = 13;
   var expected = 'Number';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'number Infinity';
   var src = Infinity;
   var expected = 'Number';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'boolean';
   var src = false;
   var expected = 'Boolean';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'abc';
   var expected = 'String';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'array';
   var src = [ 1, 2, 3 ];
   var expected = 'Array';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'ArgumentsArray';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = 'ArgumentsArray';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'routine';
   var src = () => {};
   var expected = 'Routine';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'symbol';
   var src = Symbol( 'id' );
   var expected = 'Symbol';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'map';
   var src = new Map();
   var expected = 'HashMap';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'set';
   var src = new Set();
   var expected = 'Set';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'polluted map';
   var src = { a : 1, b : 2, c : 3 };
   var expected = 'Map.polluted';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.a = 1;
   var expected = 'Map.pure';
-  var got = _.strTypeWithTraits( src );
+  var got = _.entity.strTypeWithTraits( src );
   test.identical( got, expected );
 
 }
@@ -3649,92 +3649,92 @@ function strTypeWithoutTraitsBasic( test )
   test.case = 'undefined';
   var src = undefined;
   var expected = 'Undefined';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'Null';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'number int';
   var src = 13;
   var expected = 'Number';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'number NaN';
   var src = 13;
   var expected = 'Number';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'number Infinity';
   var src = Infinity;
   var expected = 'Number';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'boolean';
   var src = false;
   var expected = 'Boolean';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'abc';
   var expected = 'String';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'array';
   var src = [ 1, 2, 3 ];
   var expected = 'Array';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'ArgumentsArray';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = 'ArgumentsArray';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'routine';
   var src = () => {};
   var expected = 'Routine';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'symbol';
   var src = Symbol( 'id' );
   var expected = 'Symbol';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'map';
   var src = new Map();
   var expected = 'HashMap';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'set';
   var src = new Set();
   var expected = 'Set';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'polluted map';
   var src = { a : 1, b : 2, c : 3 };
   var expected = 'Map';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.a = 1;
   var expected = 'Map';
-  var got = _.strTypeWithoutTraits( src );
+  var got = _.entity.strTypeWithoutTraits( src );
   test.identical( got, expected );
 
 }
@@ -3766,42 +3766,42 @@ function strTypeWithTraitsGeneratedObject( test )
     if( env.new )
     {
       if( _.mapIsPure( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Map.polluted' );
       else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
       else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withConstructor && env.withIterator && env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPure.countable.constructible' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'countableConstructorPure.countable.constructible' );
       else if( env.withConstructor && env.withIterator && !env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPolluted.countable.constructible' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'countableConstructorPolluted.countable.constructible' );
       else if( env.withConstructor && env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPure.constructible' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'countableConstructorPure.constructible' );
       else if( env.withConstructor && !env.pure )
-      test.identical( _.strTypeWithTraits( src ), 'countableConstructorPolluted.constructible' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'countableConstructorPolluted.constructible' );
       else if( env.withIterator )
-      test.identical( _.strTypeWithTraits( src ), 'Object.countable' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Object.countable' );
       else
-      test.identical( _.strTypeWithTraits( src ), 'Object' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Object' );
 
     }
     else
     {
 
       if( _.mapIsPure( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Map.polluted' );
       else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
       else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-      test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withIterator )
-      test.identical( _.strTypeWithTraits( src ), 'Object.countable' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Object.countable' );
       else
-      test.identical( _.strTypeWithTraits( src ), 'Object' );
+      test.identical( _.entity.strTypeWithTraits( src ), 'Object' );
 
     }
 
@@ -3844,30 +3844,30 @@ function strTypeWithoutTraitsGeneratedObject( test )
     {
 
       if( _.mapIs( src ) )
-      test.identical( _.strTypeWithoutTraits( src ), 'Map' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'Map' );
       else if( _.aux.is( src ) )
-      test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'MapLike' );
       else if( env.withConstructor && env.withIterator && env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPure' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'countableConstructorPure' );
       else if( env.withConstructor && env.withIterator && !env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
       else if( env.withConstructor && env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPure' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'countableConstructorPure' );
       else if( env.withConstructor && !env.pure )
-      test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'countableConstructorPolluted' );
       else
-      test.identical( _.strTypeWithoutTraits( src ), 'Object' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'Object' );
 
     }
     else
     {
 
       if( _.mapIs( src ) )
-      test.identical( _.strTypeWithoutTraits( src ), 'Map' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'Map' );
       else if( _.aux.is( src ) )
-      test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'MapLike' );
       else
-      test.identical( _.strTypeWithoutTraits( src ), 'Object' );
+      test.identical( _.entity.strTypeWithoutTraits( src ), 'Object' );
 
     }
 
@@ -3918,7 +3918,7 @@ function strConcat( test )
   test.case = 'srcs - map';
   var srcs = { a : 2 };
   var got = _.strConcat( srcs );
-  if( _.toStrFine )
+  if( _.entity.exportStringFine )
   test.identical( got, '{ a : 2 }' );
   else
   test.identical( got, '[object Object]' );
@@ -3926,7 +3926,7 @@ function strConcat( test )
   test.case = 'srcs - BufferRaw';
   var srcs = new BufferRaw( 3 );
   var got = _.strConcat( srcs );
-  if( _.toStrFine )
+  if( _.entity.exportStringFine )
   test.identical( got, '( new U8x([ 0x0, 0x0, 0x0 ]) ).buffer' );
   else
   test.identical( got, '[object ArrayBuffer]' );
@@ -3934,7 +3934,7 @@ function strConcat( test )
   test.case = 'srcs - BufferTyped';
   var srcs = new U8x( [ 1, 2, 3 ] );
   var got = _.strConcat( srcs );
-  if( _.toStrFine )
+  if( _.entity.exportStringFine )
   test.identical( got, '( new Uint8Array([ 1, 2, 3 ]) )' );
   else
   test.identical( got, '1,2,3' );
@@ -3942,7 +3942,7 @@ function strConcat( test )
   test.case = 'srcs - array';
   var srcs = [ 1, 2, 'str', 3, [ 2 ] ];
   var got = _.strConcat( srcs );
-  if( _.toStrFine )
+  if( _.entity.exportStringFine )
   test.identical( got, '1 2 str 3 [ 2 ]' );
   else
   test.identical( got, '1 2 str 3 2' );
@@ -3950,7 +3950,7 @@ function strConcat( test )
   test.case = 'srcs - unroll';
   var srcs = _.unrollMake( [ 1, 2, 'str', 3, [ 2 ] ] );
   var got = _.strConcat( srcs );
-  if( _.toStrFine )
+  if( _.entity.exportStringFine )
   test.identical( got, '1 2 str 3 [ 2 ]' );
   else
   test.identical( got, '1 2 str 3 2' );
@@ -19871,7 +19871,7 @@ var Self =
 
     // converter
 
-    strEntityShort,
+    exportStringShortFine,
     strPrimitive,
     strTypeWithTraitsBasic,
     strTypeWithoutTraitsBasic,

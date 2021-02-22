@@ -788,7 +788,7 @@ function _routinesCompose_body( o )
     let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
@@ -1129,7 +1129,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -1680,7 +1680,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.toStrShort( this ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -1690,7 +1690,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.toStrShort( c ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }

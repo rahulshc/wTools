@@ -32,7 +32,7 @@ function strQuote( o )
   let src = o.src;
 
   if( !_.primitiveIs( src ) )
-  src = _.toStr( src );
+  src = _.entity.exportString( src );
 
   _.assert( _.primitiveIs( src ) );
 
@@ -1526,7 +1526,7 @@ function strStrip( o )
     o.stripper = strStrip.defaults.stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )

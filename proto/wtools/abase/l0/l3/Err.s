@@ -149,7 +149,7 @@ function errOriginalMessage( err )
   {
     let fields = _.property.fields( err );
     if( Object.keys( fields ).length )
-    message += '\n' + _.toStr( fields, { wrap : 0, multiline : 1, levels : 2 } );
+    message += '\n' + _.entity.exportString( fields, { wrap : 0, multiline : 1, levels : 2 } );
   }
 
   return message;
@@ -303,12 +303,12 @@ function _errMake( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
+        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}` );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
+        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}` );
         delete o.sections[ s ];
       }
     }
@@ -985,11 +985,11 @@ function _err( o )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
-          str = _.toStr( arg );
+          str = _.entity.exportString( arg );
         }
         else
         {
-          str = _.toStr( arg, { levels : 2 } );
+          str = _.entity.exportString( arg, { levels : 2 } );
         }
       }
       else if( arg === undefined )

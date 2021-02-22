@@ -115,7 +115,7 @@ function _longMake_functor( onMake )
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.numberIsFinite( length ) );
-    _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
+    _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
 
@@ -336,7 +336,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
+//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
 //   if( _.routineIs( src ) )
 //   {
@@ -440,7 +440,7 @@ function longMakeEmpty( src )
     _.assert( _.long_.lengthOf( result ) === 0, 'Constructor should return empty long' );
     return result;
   }
-  _.assert( 0, `Unknown long subtype ${_.strType( src )}` );
+  _.assert( 0, `Unknown long subtype ${_.entity.strType( src )}` );
 }
 
 // function longMakeEmpty( src )
@@ -552,7 +552,7 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( len ) );
-//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
+//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
 //   if( _.routineIs( src ) )
 //   {
@@ -738,7 +738,7 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.strType( ins ) );
+//   _.assert( _.routineIs( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
 //   result = new ins( length );
@@ -803,7 +803,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //     length = src.length;
 //     else if( _.numberIs( src ) )
 //     length = src;
-//     else _.assert( 0, 'Expects long or number as the second argument, got', _.strType( src ) );
+//     else _.assert( 0, 'Expects long or number as the second argument, got', _.entity.strType( src ) );
 //   }
 //
 //   if( _.argumentsArray.is( ins ) )
@@ -811,7 +811,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
+//   _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
 //   result = new ins( length );
@@ -952,7 +952,7 @@ function longFromCoercing( src )
   if( _.strIs( src ) )
   return this.longFromCoercing( this.arrayFromStr( src ) );
 
-  _.assert( 0, `Unknown data type : ${ _.strType( src ) }` );
+  _.assert( 0, `Unknown data type : ${ _.entity.strType( src ) }` );
 }
 
 //
@@ -1243,7 +1243,7 @@ function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyp
   else if( _.bufferViewIs( src ) )
   return new src.constructor( src.buffer, src.byteOffset, src.byteLength );
 
-  _.assert( 0, 'unknown kind of buffer', _.strType( src ) );
+  _.assert( 0, 'unknown kind of buffer', _.entity.strType( src ) );
 }
 
 //
@@ -1603,7 +1603,7 @@ function longEmpty( dstLong )
     dstLong.splice( 0, dstLong.length );
     return dstLong;
   }
-  _.assert( 0, () => `Cant change length of fixed-length container ${_.strType( dstLong )}` );
+  _.assert( 0, () => `Cant change length of fixed-length container ${_.entity.strType( dstLong )}` );
 }
 
 // //
@@ -3258,7 +3258,7 @@ function longHasAny( /* src, ins, evaluator1, evaluator2 */ )
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3347,7 +3347,7 @@ function longHasAll( /* src, ins, evaluator1, evaluator2 */ )
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3437,7 +3437,7 @@ function longHasNone( /* src, ins, evaluator1, evaluator2 */ )
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
