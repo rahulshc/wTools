@@ -261,7 +261,7 @@ function exportStringShort( src, opts )
 {
   let result = '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.entity.exportStringShortFine( src );
+  result = _.entity.exportStringShortDiagnostic( src );
   // result = _.entity.exportStringSimple( src );
   // result = _.entity.exportStringShort( src ); xxx
   return result;
@@ -272,14 +272,13 @@ function exportStringShort( src, opts )
 
 //
 
-/* qqq for Yevhen : write perfect test and maybe extend | aaa : Done.  */
-/* qqq for Yevhen : use template strings in this file | aaa : Done. */
-/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix | aaa : Done.  */
-function exportStringShortFine( src )
+/* qqq for Yevhen : make head and body */
+function exportStringShortDiagnostic( src )
 {
   let result = '';
 
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  /* qqq : don't produce options-map when possible that here */
 
   try
   {
@@ -293,7 +292,7 @@ function exportStringShortFine( src )
     else if( _.primitiveIs( src ) )
     {
       if( _.bigIntIs( src ) )
-      return `${String( src )}n`;
+      return `${String( src )}n`; /* qqq for Yevhen : no! */
       return String( src );
     }
     // else if( _.vectorAdapterIs( src ) )
@@ -310,12 +309,12 @@ function exportStringShortFine( src )
     }
     else if( _.date.is( src ) )
     {
-      result += src.toISOString();
+      result += src.toISOString(); /* qqq for Yevhen : no! */
     }
     else if( _.regexpIs( src ) )
     {
       debugger;
-      result += src.toString();
+      result += src.toString(); /* qqq for Yevhen : no! */
       debugger;
     }
     else if( _.routineIs( src ) )
@@ -329,19 +328,18 @@ function exportStringShortFine( src )
     }
     else if( _.object.like( src ) )
     {
-      /* xxx : call exportString() if exists */
       result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */
         result = src.exportString({ verbosity : 1 });
-        result = _.strStrShort( result );
+        result = _.strShort( result );
       }
     }
     else
     {
       result += String( src );
-      result = _.strStrShort( result );
+      result = _.strShort( result );
     }
 
   }
@@ -352,6 +350,13 @@ function exportStringShortFine( src )
   }
 
   return result;
+}
+
+exportStringShortDiagnostic.defaults =
+{
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
 //
@@ -373,38 +378,38 @@ function exportStringShortFine( src )
  * @returns {string} Returns simplified source string.
  *
  * @example
- * _.strStrShort( 'string', 4 );
+ * _.strShort( 'string', 4 );
  * // returns 'stng'
  *
  * @example
- * _.strStrShort( 'a\nb', 3 );
+ * _.strShort( 'a\nb', 3 );
  * // returns 'a\nb'
  *
  * @example
- * _.strStrShort( 'string', 0 );
+ * _.strShort( 'string', 0 );
  * // returns ''
  *
  * @example
- * _.strStrShort({ src : 'string', limit : 4 });g
+ * _.strShort({ src : 'string', limit : 4 });g
  * // returns 'stng'
  *
  * @example
- *  _.strStrShort({ src : 'simple', limit : 4, prefix : '<' });
+ *  _.strShort({ src : 'simple', limit : 4, prefix : '<' });
  * // returns '<ile'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 5, infix : '.' });
+ *  _.strShort({ src : 'string', limit : 5, infix : '.' });
  * // returns 'st.ng'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
+ *  _.strShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
  * // returns '<s.g>'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 3, cutting : 'right' });
+ *  _.strShort({ src : 'string', limit : 3, cutting : 'right' });
  * // returns 'str'
  *
- * @method strStrShort
+ * @method strShort
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -418,7 +423,7 @@ function exportStringShortFine( src )
  *
  */
 
-function strStrShort( o )
+function strShort( o )
 {
 
   if( arguments.length === 2 )
@@ -427,7 +432,7 @@ function strStrShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strStrShort, o );
+  _.routineOptions( strShort, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
@@ -474,7 +479,7 @@ function strStrShort( o )
 
   if( o.cutting === 'left' )
   {
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.limit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
       src = src.slice( 1 );
     }
@@ -505,7 +510,7 @@ function strStrShort( o )
 
 }
 
-strStrShort.defaults =
+strShort.defaults =
 {
   src : null,
   limit : 40,
@@ -574,9 +579,7 @@ function strTypeSecondary( src )
  * @namespace Tools
  */
 
-/* qqq : cover please | aaa : Done. Yevhen S. */
-/* qqq : write perfect coverage */
-/* qqq : jsdoc */
+/* qqq for Yevhen : jsdoc */
 /* xxx : optimize later */
 /* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
@@ -629,7 +632,7 @@ function strTypeWithTraits( src )
 
 //
 
-/* qqq : jsdoc please */
+/* qqq for Yevhen : jsdoc */
 function strTypeWithoutTraits( src )
 {
 
@@ -663,42 +666,6 @@ function strTypeWithoutTraits( src )
   }
 
 }
-
-// function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
-// {
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( !_.primitiveIs( src ) )
-//   if( src.constructor && src.constructor.name )
-//   {
-//     if( _.mapIsPolluted( src ) )
-//     return 'Map.polluted';
-//     return end( src.constructor.name );
-//   }
-//
-//   let result = _.entity.strTypeSecondary( src );
-//
-//   if( result === 'Object' )
-//   {
-//     if( Object.getPrototypeOf( src ) === null )
-//     result = 'Map.pure';
-//     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.aux.isPrototyped( src ) )
-//     result = 'Map.prototyped';
-//   }
-//
-//   return end( result );
-//
-//   function end( result )
-//   {
-//     let translated = _.TranslatedTypeMap[ result ];
-//     if( translated )
-//     result = translated;
-//     return result;
-//   }
-//
-// }
 
 //
 
@@ -1366,11 +1333,12 @@ let ExtensionEntity =
   exportStringSimple,
   exportStringShort,
   exportString : exportStringShort,
-  exportStringShortFine, /* qqq for Yevhen : perfect coverage required! */
+  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
+  exportStringShortDiagnostic,
+  // exportStringShortCode, /* qqq xxx : introduce */
 
   strPrimitive,
   strTypeSecondary,
-  // strPrimitiveType : strTypeSecondary, /* xxx : remove */
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
@@ -1404,8 +1372,9 @@ let ExtensionTools =
   // exportStringShort,
   // exportString : exportStringShort,
   // exportStringSimple,
-  // exportStringShortFine, /* qqq for Yevhen : perfect coverage required! */
-  strStrShort, /* qqq for Yevhen : cover */ /* xxx : rename */
+  // exportStringShortDiagnostic, /* qqq for Yevhen : perfect coverage required! */
+  strStrShort : strShort, /* xxx : remove */
+  strShort, /* qqq for Yevhen : cover */
   // strPrimitive,
   // strTypeSecondary,
   // strPrimitiveType : strTypeSecondary, /* xxx : remove */
