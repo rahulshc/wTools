@@ -201,6 +201,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/Functional.s
+          - ../proto/wtools/abase/l0/l3/Fuzzy.s
           - ../proto/wtools/abase/l0/l3/Global.s
           - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Interval.s
@@ -248,6 +249,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Escape.s
           - ../proto/wtools/abase/l0/l5/Event.s
           - ../proto/wtools/abase/l0/l5/Functional.s
+          - ../proto/wtools/abase/l0/l5/Fuzzy.s
           - ../proto/wtools/abase/l0/l5/Global.s
           - ../proto/wtools/abase/l0/l5/HashMap.s
           - ../proto/wtools/abase/l0/l5/Interval.s
@@ -303,6 +305,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Escape.s
           - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
+          - ../proto/wtools/abase/l0/l8/Fuzzy.s
           - ../proto/wtools/abase/l0/l8/Global.s
           - ../proto/wtools/abase/l0/l8/HashMap.s
           - ../proto/wtools/abase/l0/l8/Interval.s
@@ -344,6 +347,7 @@ module:
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
+          - ../proto/wtools/abase/l0.test/Countable.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Date.test.s
           - ../proto/wtools/abase/l0.test/Diagnostic.test.s
@@ -363,7 +367,6 @@ module:
           - ../proto/wtools/abase/l0.test/Number.test.s
           - ../proto/wtools/abase/l0.test/Object.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
-          - ../proto/wtools/abase/l0.test/Partible.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
