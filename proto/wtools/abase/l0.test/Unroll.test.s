@@ -1933,13 +1933,13 @@ function unrollFromMaybe( test )
   var src = new Map();
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Map() );
-  test.true( _.hashMapIs( got ) );
+  test.true( _.hashMap.is( got ) );
 
   test.case = 'src - filled HashMap';
   var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
-  test.true( _.hashMapIs( got ) );
+  test.true( _.hashMap.is( got ) );
 
   test.case = 'src - empty Set';
   var src = new Set( [] );
@@ -2127,13 +2127,13 @@ function unrollFromMaybeLongDescriptor( test )
     var src = new Map();
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Map() );
-    test.true( _.hashMapIs( got ) );
+    test.true( _.hashMap.is( got ) );
 
     test.case = 'src - filled HashMap';
     var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
-    test.true( _.hashMapIs( got ) );
+    test.true( _.hashMap.is( got ) );
 
     test.case = 'src - empty Set';
     var src = new Set( [] );

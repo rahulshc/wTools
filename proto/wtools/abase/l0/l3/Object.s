@@ -57,7 +57,7 @@ function objectLike( src ) /* xxx qqq : optimize */
   if( _.setIs( src ) )
   return false;
 
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
   // yyy
@@ -84,7 +84,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   return false;
   if( _.setIs( src ) )
   return false;
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
   if( _.date.is( src ) )

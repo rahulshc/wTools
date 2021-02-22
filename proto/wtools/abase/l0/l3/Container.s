@@ -16,7 +16,7 @@ function is( src )
   return true;
   if( _.auxiliary.is( src ) )
   return true;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return true;
   if( _.setLike( src ) )
   return true;
@@ -31,7 +31,7 @@ function like( src )
   return true;
   if( _.object.like( src ) )
   return true;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return true;
   if( _.setLike( src ) )
   return true;

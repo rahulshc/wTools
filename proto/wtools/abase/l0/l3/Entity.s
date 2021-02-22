@@ -119,7 +119,7 @@ function lengthOf( src )
   return src.length;
   if( _.setLike( src ) )
   return src.size;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return src.size;
   if( _.countableIs( src ) )
   return [ ... src ].length;

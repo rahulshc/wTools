@@ -1089,7 +1089,7 @@ function entityOnly( dst, src, onEach )
     type = 'map';
     else if( _.setIs( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -1629,7 +1629,7 @@ function entityBut( dst, src, onEach )
     type = 'map';
     else if( _.setIs( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2170,7 +2170,7 @@ function entityAnd( dst, src, onEach )
     type = 'map';
     else if( _.setIs( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2661,7 +2661,7 @@ function entityOr( dst, src, onEach )
     type = 'map';
     else if( _.setIs( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -3173,7 +3173,7 @@ function entityXor( dst, src, onEach )
     type = 'map';
     else if( _.setIs( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -3208,7 +3208,7 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3271,7 +3271,7 @@ function entityAll( src, onEach )
 
     }
     // else if( _.object.like( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3334,7 +3334,7 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3398,7 +3398,7 @@ function entityAny( src, onEach )
 
     }
     // else if( _.object.like( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3459,7 +3459,7 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3516,7 +3516,7 @@ function entityNone( src, onEach )
 
     }
     // else if( _.object.like( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )

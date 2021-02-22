@@ -294,7 +294,7 @@ function strEntityShort( src )
     // {
     //   result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
     // }
-    else if( _.setLike( src ) || _.hashMapLike( src ) )
+    else if( _.setLike( src ) || _.hashMap.like( src ) )
     {
       result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
     }

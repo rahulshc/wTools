@@ -115,34 +115,6 @@ function mapIsPopulated( src )
 
 //
 
-function hashMapIs( src )
-{
-  if( !src )
-  return false;
-  return src instanceof HashMap || src instanceof HashMapWeak;
-}
-
-//
-
-function hashMapLike( src )
-{
-  return _.hashMapIs( src );
-}
-
-//
-
-function hashMapIsEmpty()
-{
-  return !src.size;
-}
-
-//
-
-function hashMapIsPopulated()
-{
-  return !!src.size;
-}
-
 // --
 // map selector
 // --
@@ -1183,11 +1155,6 @@ let Extension =
 
   mapIsEmpty,
   mapIsPopulated,
-
-  hashMapIs,
-  hashMapLike,
-  hashMapIsEmpty,
-  hashMapIsPopulated,
 
   // map selector
 

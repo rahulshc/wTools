@@ -1583,59 +1583,6 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 }
 
 // --
-// hash map
-// --
-
-function hashMapExtend( dst, src )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( dst === null || _.hashMapLike( dst ) || _.auxiliary.is( dst ) );
-  _.assert( _.hashMapLike( src ) || _.auxiliary.is( src ) );
-
-  if( dst === null )
-  dst = new HashMap;
-
-  if( dst === src  )
-  return dst;
-
-  if( _.hashMapLike( dst ) )
-  {
-    if( _.hashMapLike( src ) )
-    {
-      for( let [ k, e ] of src )
-      dst.set( k, e );
-    }
-    else
-    {
-      for( let k in src )
-      {
-        dst.set( k, src[ k ] );
-      }
-    }
-  }
-  else
-  {
-    if( _.hashMapLike( src ) )
-    {
-      for( let [ k, e ] of src )
-      {
-        _.assert( _.strIs( k ) );
-        dst[ k ] = e;
-      }
-    }
-    else
-    {
-      for( let k in src )
-      {
-        dst[ k ] = src[ k ];
-      }
-    }
-  }
-
-  return dst;
-}
-
-// --
 // map selector
 // --
 
@@ -4423,10 +4370,6 @@ let Extension =
   mapsSupplementOwnRecursive,
   mapSupplementRemovingRecursive,
   mapSupplementByMapsRemovingRecursive,
-
-  // hash map
-
-  hashMapExtend,
 
   // map selector
 

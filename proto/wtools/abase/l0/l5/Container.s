@@ -30,8 +30,8 @@ function extendReplacing( dst, src )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
     else if( _.setLike( src ) )
     dst = _.arraySetUnion_( null, src );
     else
@@ -43,8 +43,8 @@ function extendReplacing( dst, src )
 
     if( _.auxiliary.is( dst ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -63,11 +63,11 @@ function extendReplacing( dst, src )
     }
 
   }
-  else if( _.hashMapLike( src ) )
+  else if( _.hashMap.like( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.auxiliary.is( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( dst ) || _.auxiliary.is( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -105,8 +105,8 @@ function extendAppending( dst, src )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
     else if( _.setLike( src ) )
     dst = _.arraySetUnion_( null, src );
     else
@@ -118,8 +118,8 @@ function extendAppending( dst, src )
 
     if( _.auxiliary.is( src ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -130,11 +130,11 @@ function extendAppending( dst, src )
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.hashMapLike( dst ) )
+  else if( _.hashMap.like( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.auxiliary.is( src ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( src ) || _.auxiliary.is( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -219,7 +219,7 @@ function empty( dstContainer )
   _.longEmpty( dstContainer );
   else if( _.setLike( dstContainer ) )
   dstContainer.clear();
-  else if( _.hashMapLike( dstContainer ) )
+  else if( _.hashMap.like( dstContainer ) )
   dstContainer.clear();
   else if( _.auxiliary.is( dstContainer ) )
   _.mapEmpty( dstContainer );
@@ -296,7 +296,7 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
 
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       return container.get( key );
     }
@@ -340,7 +340,7 @@ function elementSet( container, key, value )
 
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       container.set( key, value );
       return value;
