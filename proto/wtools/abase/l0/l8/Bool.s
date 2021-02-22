@@ -1,11 +1,11 @@
-( function _Bool_s_()
+( function _l8_Bool_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.bool = _.bool || Object.create( null );
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
@@ -98,18 +98,10 @@ function boolFromForce( src )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let ExtensionTools =
 {
 
   boolFrom, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
@@ -120,8 +112,19 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+  from : boolFrom,
+  fromMaybe : boolFromMaybe,
+  fromForce : boolFromForce,
+
+}
+
+//
+
+Object.assign( _, ExtensionTools );
+Object.assign( Self, Extension );
 
 // --
 // export

@@ -1,11 +1,12 @@
-( function _fBool_s_()
+( function _l5_Bool_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.bool = _.bool || Object.create( null );
+_.bool.s = _.bool.s || Object.create( null );
 
 // --
 // bool
@@ -93,7 +94,7 @@ function boolsNoneAre( src )
 // extension
 // --
 
-let Extension =
+let ExtensionTools =
 {
 
   boolsAre,
@@ -103,7 +104,20 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Extension );
+//
+
+let ExtensionS =
+{
+
+  are : boolsAre,
+  allAre : boolsAllAre,
+  anyAre : boolsAnyAre,
+  noneAre : boolsNoneAre,
+
+}
+
+Object.assign( _, ExtensionTools );
+Object.assign( _.bool.s, ExtensionS );
 
 // --
 // export
