@@ -43,7 +43,7 @@ let Self = _.entity = _.entity || Object.create( null );
 // {
 //   if( !src )
 //   return false;
-//   if( _.auxiliary.is( src ) )
+//   if( _.aux.is( src ) )
 //   return true;
 //   if( _.routineIs( src[ Symbol.iterator ] ) )
 //   return true;
@@ -124,9 +124,9 @@ function lengthOf( src )
   if( _.countableIs( src ) )
   return [ ... src ].length;
 
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   return _.mapKeys( src ).length;
-  // if( _.auxiliary.is( src ) )
+  // if( _.aux.is( src ) )
   // return _.mapOnlyOwnKeys( src ).length;
 
   return 1;

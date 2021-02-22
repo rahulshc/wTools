@@ -15,18 +15,18 @@ let Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( n
 function extend( dst, src )
 {
   _.assert( arguments.length === 2 );
-  _.assert( dst === null || _.hashMap.like( dst ) || _.auxiliary.is( dst ) );
-  _.assert( _.hashMap.like( src ) || _.auxiliary.is( src ) );
+  _.assert( dst === null || _.hashMap.like( dst ) || _.aux.is( dst ) );
+  _.assert( _.hashMapLike( src ) || _.aux.is( src ) );
 
   if( dst === null )
   dst = new HashMap;
 
-  if( dst === src  )
+  if( dst === src )
   return dst;
 
   if( _.hashMap.like( dst ) )
   {
-    if( _.hashMap.like( src ) )
+    if( _.hashMapLike( src ) )
     {
       for( let [ k, e ] of src )
       dst.set( k, e );

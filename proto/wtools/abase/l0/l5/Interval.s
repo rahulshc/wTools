@@ -193,7 +193,7 @@
 //
 //   if( options )
 //   {
-//     _.assert( _.auxiliary.is( options ) );
+//     _.assert( _.aux.is( options ) );
 //     if( options.increment === undefined )
 //     options.increment = 1;
 //   }
