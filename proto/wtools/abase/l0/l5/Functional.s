@@ -1087,7 +1087,7 @@ function entityOnly( dst, src, onEach )
     type = 'long';
     else if( _.auxiliary.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
     else if( _.hashMap.is( e ) )
     type = 'hashMap';
@@ -1627,7 +1627,7 @@ function entityBut( dst, src, onEach )
     type = 'long';
     else if( _.auxiliary.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
     else if( _.hashMap.is( e ) )
     type = 'hashMap';
@@ -2168,7 +2168,7 @@ function entityAnd( dst, src, onEach )
     type = 'long';
     else if( _.auxiliary.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
     else if( _.hashMap.is( e ) )
     type = 'hashMap';
@@ -2659,7 +2659,7 @@ function entityOr( dst, src, onEach )
     type = 'long';
     else if( _.auxiliary.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
     else if( _.hashMap.is( e ) )
     type = 'hashMap';
@@ -3171,7 +3171,7 @@ function entityXor( dst, src, onEach )
     type = 'long';
     else if( _.auxiliary.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
     else if( _.hashMap.is( e ) )
     type = 'hashMap';
@@ -3197,7 +3197,7 @@ function entityAll( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3253,7 +3253,7 @@ function entityAll( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3322,7 +3322,7 @@ function entityAny( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3380,7 +3380,7 @@ function entityAny( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3448,7 +3448,7 @@ function entityNone( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3504,7 +3504,7 @@ function entityNone( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )

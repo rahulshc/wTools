@@ -29,7 +29,7 @@ function constructibleIs( src ) /* xxx qqq : optimize */
   return false;
   if( _.vector.is( src ) )
   return false;
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
   if( _.hashMap.is( src ) )
   return false;

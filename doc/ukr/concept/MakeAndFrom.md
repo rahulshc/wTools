@@ -24,8 +24,8 @@
 
 * `from`
   * `_.locationFromStackFrame`
-  * `_.setFrom`
-  * `_.setsFrom`
+  * `_.set.from`
+  * `_.set.s.from`
   * `_.arrayFrom`
   * `_.arrayFromCoercing`
   * `_.arrayFromStr`

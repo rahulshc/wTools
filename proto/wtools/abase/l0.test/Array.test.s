@@ -1326,7 +1326,7 @@ function arrayMakeUndefined( test )
   var expected = new Array();
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = empty Set, length = null';
@@ -1335,7 +1335,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = empty Set, length = 2';
@@ -1344,7 +1344,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = Set, src.size = 1';
@@ -1353,7 +1353,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = Set, src.length = 1, length = null';
@@ -1362,7 +1362,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = Set, src.length = 1, length > src.length';
@@ -1371,7 +1371,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = unroll, src.length > 1';
@@ -1380,7 +1380,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = unroll, src.length > 1, length = null';
@@ -1389,7 +1389,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = unroll, src.length > 1, length < src.length';
@@ -1398,7 +1398,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   test.case = 'src = unroll, src.length > 1, length - long';
@@ -1407,7 +1407,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 6 );
   test.equivalent( got, expected );
   test.true( _.arrayIs( got ) );
-  test.true( !_.setIs( got ) );
+  test.true( !_.set.is( got ) );
   test.true( src !== got );
 
   /* - */
@@ -1824,7 +1824,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array();
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
 
     test.case = 'src = empty Set, length = 2';
@@ -1833,7 +1833,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array( 2 );
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
 
     test.case = 'src = Set, src.size = 1';
@@ -1842,7 +1842,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array( 1 );
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
 
     test.case = 'src = Set, src.length = 1, length > src.length';
@@ -1851,7 +1851,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array( 2 );
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
 
     test.case = 'src = unroll, src.length > 1';
@@ -1860,7 +1860,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array( 3 );
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
 
     test.case = 'src = unroll, src.length > 1, length < src.length';
@@ -1869,7 +1869,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
     var expected = new Array( 1 );
     test.equivalent( got, expected );
     test.true( _.arrayIs( got ) );
-    test.true( !_.setIs( got ) );
+    test.true( !_.set.is( got ) );
     test.true( src !== got );
   }
 }

@@ -54,7 +54,7 @@ function objectLike( src ) /* xxx qqq : optimize */
   if( _.routineIsTrivial( src ) )
   return false;
 
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
 
   if( _.hashMap.is( src ) )
@@ -82,7 +82,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   return false;
   if( _.routineIsTrivial( src ) )
   return false;
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
   if( _.hashMap.is( src ) )
   return false;

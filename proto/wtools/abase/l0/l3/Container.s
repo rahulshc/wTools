@@ -18,7 +18,7 @@ function is( src )
   return true;
   if( _.hashMap.like( src ) )
   return true;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   return false;
 }
@@ -33,7 +33,7 @@ function like( src )
   return true;
   if( _.hashMap.like( src ) )
   return true;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   return false;
 }

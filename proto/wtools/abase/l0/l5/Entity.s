@@ -29,7 +29,7 @@ function makeEmpty( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeEmpty( src );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
@@ -81,7 +81,7 @@ function makeUndefined( src, length )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeUndefined( src, length );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
@@ -126,7 +126,7 @@ function makeUndefined( src, length )
 //   {
 //     return this.tools.longMake( src );
 //   }
-//   else if( _.hashMap.like( src ) || _.setLike( src ) )
+//   else if( _.hashMap.like( src ) || _.set.like( src ) )
 //   {
 //     return new src.constructor( src );
 //   }
@@ -169,7 +169,7 @@ function cloneShallow( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMap.like( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }
@@ -236,7 +236,7 @@ function cloneDeep( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMap.like( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }

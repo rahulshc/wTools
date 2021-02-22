@@ -127,7 +127,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     {
       _.arrayAppendArray( this.original, container );
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       {
@@ -145,7 +145,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnce( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
@@ -155,7 +155,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;

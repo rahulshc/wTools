@@ -117,7 +117,7 @@ function lengthOf( src )
 
   if( _.vectorLike( src ) )
   return src.length;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return src.size;
   if( _.hashMap.like( src ) )
   return src.size;

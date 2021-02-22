@@ -1945,13 +1945,13 @@ function unrollFromMaybe( test )
   var src = new Set( [] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Set() );
-  test.true( _.setIs( got ) );
+  test.true( _.set.is( got ) );
 
   test.case = 'src - filled Set';
   var src = new Set( [ 1, 'abc' ] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Set( [ 1, 'abc' ] ) );
-  test.true( _.setIs( got ) );
+  test.true( _.set.is( got ) );
 
   test.case = 'src - instance of constructor';
   function Constr(){ this.x = 1; return this };
@@ -2139,13 +2139,13 @@ function unrollFromMaybeLongDescriptor( test )
     var src = new Set( [] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Set() );
-    test.true( _.setIs( got ) );
+    test.true( _.set.is( got ) );
 
     test.case = 'src - filled Set';
     var src = new Set( [ 1, 'abc' ] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Set( [ 1, 'abc' ] ) );
-    test.true( _.setIs( got ) );
+    test.true( _.set.is( got ) );
 
     test.case = 'src - instance of constructor';
     function Constr1(){ this.x = 1; return this };

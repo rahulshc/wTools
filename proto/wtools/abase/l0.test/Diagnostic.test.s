@@ -29,7 +29,7 @@ function structureGenerate( test )
   var got = _.diagnostic.structureGenerate({ defaultComplexity : 5, depth : 3 });
   test.true( _.mapIs( got.result ) );
   test.true( _.hashMap.is( got.result.hashmap ) );
-  test.true( _.setIs( got.result.set ) );
+  test.true( _.set.is( got.result.set ) );
 
 }
 
