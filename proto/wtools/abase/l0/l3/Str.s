@@ -300,7 +300,7 @@ function exportStringShortFine( src )
     // {
     //   result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
     // }
-    else if( _.setLike( src ) || _.hashMapLike( src ) )
+    else if( _.set.like( src ) || _.hashMap.like( src ) )
     {
       result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
     }

@@ -28,8 +28,8 @@ function structureGenerate( test )
   test.case = 'defaultComplexity : 5, depth : 3';
   var got = _.diagnostic.structureGenerate({ defaultComplexity : 5, depth : 3 });
   test.true( _.mapIs( got.result ) );
-  test.true( _.hashMapIs( got.result.hashmap ) );
-  test.true( _.setIs( got.result.set ) );
+  test.true( _.hashMap.is( got.result.hashmap ) );
+  test.true( _.set.is( got.result.set ) );
 
 }
 

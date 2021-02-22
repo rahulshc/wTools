@@ -1725,7 +1725,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingArray && _.setLike( args[ d ] ) )
+      else if( vectorizingArray && _.set.like( args[ d ] ) )
       {
         length = args[ d ].size;
         break;
@@ -1759,7 +1759,7 @@ function vectorize_body( o )
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
       {
-        _.assert( _.arraySetIdentical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+        _.assert( _.arraySet.identical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
       }
       else
       {
@@ -1854,7 +1854,7 @@ function vectorize_body( o )
       //
       // return result;
     }
-    else if( _.setLike( src ) ) /* qqq : cover please */
+    else if( _.set.like( src ) ) /* qqq : cover please */
     {
       let args2 = [ ... args ];
       let result = new Set;
@@ -1965,7 +1965,7 @@ function vectorize_body( o )
       // return result;
 
     }
-    else if( _.setLike( src ) ) /* qqq : cover */
+    else if( _.set.like( src ) ) /* qqq : cover */
     {
       debugger;
       if( head )
