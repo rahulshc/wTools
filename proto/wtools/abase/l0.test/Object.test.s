@@ -207,9 +207,9 @@ function is( test )
   var src = require( 'stream' ).Readable();
   test.true( _.object.is( src ) );
 
-  test.case = 'console';
-  var src = console;
-  test.true( !_.object.is( src ) );
+  // test.case = 'console';
+  // var src = console;
+  // test.true( !_.object.is( src ) );
 
   test.case = 'printerLike';
   var src = _global_.logger;
