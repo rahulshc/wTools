@@ -31,6 +31,13 @@ function identicalShallow( src1, src2 )
   }
   else if( methodEqual && !_.auxiliary.is( src1 ) )
   {
+    /*
+      object with method iterator
+      and equalAre method
+    */
+    if( _.escape.is( src1 ) )
+    return methodEqual({ srcEffective : src1, srcEffective2 : src2 });
+
     return methodEqual( src1, src2 );
   }
   else if( _.hashMapLike( src1 ) )
@@ -55,6 +62,13 @@ function identicalShallow( src1, src2 )
   }
   else if( _.primitiveIs( src1 ) )
   {
+    /*
+      [object Symbol]
+      [object Number]
+      [object BigInt]
+      [object Boolean]
+      [object String]
+    */
     return Object.is( src1, src2 );
   }
   else if( _.auxiliary.is( src1 ) )
