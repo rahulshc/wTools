@@ -1592,7 +1592,7 @@ function vectorize_body( o )
 
   let resultRoutine = vectorizeArray;
 
-  if( _.numberIs( select ) )
+  if( _.number.is( select ) )
   {
 
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )

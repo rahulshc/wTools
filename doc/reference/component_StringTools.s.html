@@ -308,7 +308,7 @@ var _toStrFine = function _toStrFine( src,options )
     return;
     result += '{ routine ' + ( src.name || 'noname' ) + ' }';
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( options.noNumber )
     return;
@@ -370,7 +370,7 @@ var _toStrShort = function( src,options )
   {
     result += _ObjectToString.call( src );
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     result += _toStrFromNumber( src,options );
   }
@@ -386,7 +386,7 @@ var _toStrShort = function( src,options )
     else
     result += '"' + src + '"';
   }
-  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.numberIs( src.length ) )
+  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.number.is( src.length ) )
   {
 
     result += '[ ' + strTypeOf( src ) + ' with ' + src.length + ' elements ]';
@@ -435,9 +435,9 @@ var _toStrFromNumber = function( src,options )
 {
   var result = '';
 
-  if( _.numberIs( options.precision ) )
+  if( _.number.is( options.precision ) )
   result += src.toPrecision( options.precision );
-  else if( _.numberIs( options.fixed ) )
+  else if( _.number.is( options.fixed ) )
   result += src.toFixed( options.fixed );
   else
   result += String( src );
@@ -490,7 +490,7 @@ var _toStrFromArray = function( src,options )
 {
   var result = '';
 
-  _assert( src &amp;&amp; _.numberIs( src.length ) );
+  _assert( src &amp;&amp; _.number.is( src.length ) );
 
   if( options.level >= options.levels )
   {
@@ -721,7 +721,7 @@ var _toStrIsSimpleElement = function( element )
 {
   if( _.strIs( element ) )
   return element.length &lt; 40;
-  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.numberIs( element.length ) )
+  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.number.is( element.length ) )
   return !element.length;
   else if( _.object.is( element ) || _.object.like( element ) )
   return !_.entityLength( element );
@@ -844,7 +844,7 @@ var strTimes = function( s,times )
   var result = '';
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( times ) );
+  _.assert( _.number.is( times ) );
 
   for( var t = 0 ; t &lt; times ; t++ )
   result += s;
@@ -920,7 +920,7 @@ var strSplitStrNumber = function( src )
   {
     var mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
-    result.number = _.numberFrom( mnumber[0] );
+    result.number = _.number.from( mnumber[0] );
   }
   else
   {
@@ -1526,7 +1526,7 @@ var strJoin = function()
   {
     var src = arguments[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.number.is( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -2082,7 +2082,7 @@ var strMetricFormat = function( number,options )
   var options = options || {};
 
   if( _.strIs( number ) ) number = parseFloat( number );
-  if( !_.numberIs( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
+  if( !_.number.is( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
 
   if( options.divisor === undefined ) options.divisor = 3;
   if( options.thousand === undefined ) options.thousand = 1000;

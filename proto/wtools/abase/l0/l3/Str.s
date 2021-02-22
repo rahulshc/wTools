@@ -292,7 +292,7 @@ function exportStringShortFine( src )
     }
     else if( _.primitiveIs( src ) )
     {
-      if( _.bigIntIs( src ) )
+      if( _.bigInt.is( src ) )
       return `${String( src )}n`;
       return String( src );
     }
@@ -430,7 +430,7 @@ function strStrShort( o )
   _.routineOptions( strStrShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
+  _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );

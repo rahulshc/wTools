@@ -644,7 +644,7 @@ function strRandom( o )
 
   o = _.routineOptions( strRandom, o );
 
-  if( _.numberIs( o.length ) )
+  if( _.number.is( o.length ) )
   o.length = [ o.length, o.length+1 ];
   if( o.alphabet === null )
   o.alphabet = _.strAlphabetFromRange([ 'a', 'z' ]);
@@ -717,8 +717,8 @@ strRandom.defaults =
 function strAlphabetFromRange( range )
 {
   _.assert( _.arrayIs( range ) && range.length === 2 )
-  _.assert( _.strIs( range[ 0 ] ) || _.numberIs( range[ 0 ] ) );
-  _.assert( _.strIs( range[ 1 ] ) || _.numberIs( range[ 1 ] ) );
+  _.assert( _.strIs( range[ 0 ] ) || _.number.is( range[ 0 ] ) );
+  _.assert( _.strIs( range[ 1 ] ) || _.number.is( range[ 1 ] ) );
   if( _.strIs( range[ 0 ] ) )
   range[ 0 ] = range[ 0 ].charCodeAt( 0 );
   if( _.strIs( range[ 1 ] ) )
@@ -1155,7 +1155,7 @@ function strCodeUnicodeEscape( code )
 {
   let result = '';
 
-  _.assert( _.numberIs( code ) );
+  _.assert( _.number.is( code ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let h = code.toString( 16 );
@@ -1261,7 +1261,7 @@ function strSplitStrNumber( src )
   {
     let mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
-    result.number = _.numberFrom( mnumber[ 0 ] );
+    result.number = _.number.from( mnumber[ 0 ] );
   }
   else
   {
@@ -1503,7 +1503,7 @@ function _strOnly( srcStr, cinterval )
     3-1 = 2
   */
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   {
     if( cinterval < 0 )
     cinterval = srcStr.length + cinterval;
@@ -1653,7 +1653,7 @@ function _strBut( srcStr, cinterval, ins )
   Dmytro : implemented a time ago
   */
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   {
     if( cinterval < 0 )
     cinterval = srcStr.length + cinterval;
@@ -1936,7 +1936,7 @@ function _strDup( s, times )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( s ) );
-  _.assert( _.numberIs( times ) );
+  _.assert( _.number.is( times ) );
 
   for( let t = 0 ; t < times ; t++ )
   result += s;
@@ -2070,7 +2070,7 @@ function strJoin_body( o )
       let src = o.srcs[ a ];
 
       // _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects primitive or array, but got ' + _.entity.strType( src ) );
-      // _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+      // _.assert( _.strIs( src ) || _.number.is( src ) || _.arrayIs( src ) );
 
       if( _.arrayIs( src ) )
       {
@@ -2191,7 +2191,7 @@ function strJoinPath( srcs, joiner )
   {
     let src = srcs[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.number.is( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -2229,7 +2229,7 @@ function strJoinPath( srcs, joiner )
 
   function join( src, s, a )
   {
-    if( _.numberIs( src ) )
+    if( _.number.is( src ) )
     src = src.toString();
 
     if( a > 0 && joiner )
@@ -2307,9 +2307,9 @@ function strLinesIndentation( src, tab )
 
   _.assert( arguments.length === 2, 'Expects two arguments' );
   _.assert( _.strIs( src ) || _.arrayIs( src ), 'Expects src as string or array' );
-  _.assert( _.strIs( tab ) || _.numberIs( tab ), 'Expects tab as string or number' ); /* aaa2 : cover please */ /*Dmytro : covered */
+  _.assert( _.strIs( tab ) || _.number.is( tab ), 'Expects tab as string or number' ); /* aaa2 : cover please */ /*Dmytro : covered */
 
-  if( _.numberIs( tab ) )
+  if( _.number.is( tab ) )
   tab = _.strDup( ' ', tab );
 
   if( _.strIs( src ) )
@@ -2444,7 +2444,7 @@ function strLinesBut( src, range, ins )
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
   // _.assert( !_.longIs( ins ), 'not implemented' );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   {
     if( range < 0 )
     range = src.length + range;
@@ -2557,7 +2557,7 @@ function strLinesOnly( src, range )
   _.assert( arguments.length === 2 );
   _.assert( _.longIs( src ) );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, range + 1 ];
   if( range[ 0 ] < 0 )
   range[ 0 ] = src.length >= -range[ 0 ] ? src.length + range[ 0 ] : 0
@@ -2719,7 +2719,7 @@ function strLinesNumber( o )
     {
       o.zeroLine = 1;
     }
-    else if( _.numberIs( o.zeroChar ) )
+    else if( _.number.is( o.zeroChar ) )
     {
       let src = _.arrayIs( o.src ) ? o.src.join( '\n' ) : o.src;
       o.zeroLine = _.strLinesCount( src.substring( 0, o.zeroChar+1 ) );
@@ -2759,7 +2759,7 @@ function strLinesNumber( o )
   {
     let results;
 
-    _.assert( o.highlighting === null || _.numberIs( o.highlighting ) || _.longIs( o.highlighting ), 'Expects number or array of numbers {-o.highlighting-}' );
+    _.assert( o.highlighting === null || _.number.is( o.highlighting ) || _.longIs( o.highlighting ), 'Expects number or array of numbers {-o.highlighting-}' );
 
     if( !_.arrayIs( o.highlighting ) )
     {
@@ -2829,7 +2829,7 @@ _.strLinesNumber({ src, highlighting : [ 865, 867 ] });
 // {
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strIs( code ) || _.arrayIs( code ) );
-//   _.assert( _.numberIs( line ) );
+//   _.assert( _.number.is( line ) );
 //
 //   if( radius === undefined )
 //   radius = 2;
@@ -2929,7 +2929,7 @@ function strLinesSelect( o )
 
     if( _.arrayIs( arguments[ 1 ] ) )
     o = { src : arguments[ 0 ], range : arguments[ 1 ] };
-    else if( _.numberIs( arguments[ 1 ] ) )
+    else if( _.number.is( arguments[ 1 ] ) )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ], arguments[ 1 ]+1 ] };
     else _.assert( 0, 'unexpected argument', _.entity.strType( range ) );
 
@@ -3147,7 +3147,7 @@ function strLinesNearest_head( routine, args )
 
   _.routineOptions( routine, o );
 
-  if( _.numberIs( o.charsRangeLeft ) )
+  if( _.number.is( o.charsRangeLeft ) )
   o.charsRangeLeft = [ o.charsRangeLeft, o.charsRangeLeft+1 ];
 
   _.assert( _.intervalIs( o.charsRangeLeft ) );

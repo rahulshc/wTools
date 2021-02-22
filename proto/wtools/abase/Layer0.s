@@ -52,7 +52,6 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Set.s' );
   require( './l0/l3/Sorted.s' );
   require( './l0/l3/Str.s' );
-  require( './l0/l3/Symbol.s' );
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
   require( './l0/l3/Units.s' );
@@ -100,7 +99,6 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Sorted.s' );
   require( './l0/l5/Set.s' );
   require( './l0/l5/Str.s' );
-  require( './l0/l5/Symbol.s' );
   require( './l0/l5/Time.s' );
   require( './l0/l5/Type.s' );
   require( './l0/l5/Units.s' );
@@ -157,7 +155,6 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Set.s' );
   require( './l0/l8/Sorted.s' );
   require( './l0/l8/Str.s' );
-  require( './l0/l8/Symbol.s' );
   require( './l0/l8/Time.s' );
   require( './l0/l8/Type.s' );
   require( './l0/l8/Units.s' );

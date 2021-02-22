@@ -14,7 +14,7 @@ let Self = _.number = _.number || Object.create( null );
 function numberClamp( src, low, high )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.numberIs( src ) );
+  _.assert( _.number.is( src ) );
 
   if( arguments.length === 2 )
   {

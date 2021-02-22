@@ -208,7 +208,7 @@ function _bufferMake_functor( onMake )
         ins = new U8x( src.buffer );
         // src = null;
       }
-      else if( _.numberIs( src ) )
+      else if( _.number.is( src ) )
       {
         length = src;
         src = null;
@@ -219,7 +219,7 @@ function _bufferMake_functor( onMake )
       }
       else _.assert( 0 );
     }
-    else if( !_.numberIs( length ) )
+    else if( !_.number.is( length ) )
     {
       _.assert( 0, 'Unknown length of buffer' );
     }
@@ -229,7 +229,7 @@ function _bufferMake_functor( onMake )
 
     /* */
 
-    if( _.numberIs( ins ) )
+    if( _.number.is( ins ) )
     {
       if( _.bufferRawIs( src ) )
       ins = new U8x( src );
@@ -258,7 +258,7 @@ function _bufferMake_functor( onMake )
     src = this.longDescriptor.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.numberIsFinite( length ) );
+    _.assert( _.number.isFinite( length ) );
     _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
@@ -402,13 +402,13 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //       length = ins.byteLength;
 //       ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
 //     }
-//     else if( _.numberIs( ins ) )
+//     else if( _.number.is( ins ) )
 //     length = ins;
 //     else _.assert( 0 );
 //   }
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 //
 //   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
@@ -489,13 +489,13 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
@@ -642,7 +642,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
@@ -651,7 +651,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
@@ -689,7 +689,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
@@ -698,7 +698,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
@@ -754,9 +754,9 @@ function bufferFromArrayOfArray( array, options )
   if( !array.length )
   return new options.BufferType();
 
-  let scalarsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+  let scalarsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( scalarsPerElement ) )
+  if( !_.number.is( scalarsPerElement ) )
   throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
 
   let length = array.length * scalarsPerElement;
@@ -787,7 +787,7 @@ function bufferFrom( o )
   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
   _.assertMapHasOnly( o, bufferFrom.defaults );
 
-  if( o.src === null || _.numberIs( o.src ) )
+  if( o.src === null || _.number.is( o.src ) )
   {
     if( o.bufferConstructor.name === 'Buffer' )
     return o.bufferConstructor.alloc( o.src ? o.src : 0 );
@@ -851,7 +851,7 @@ function bufferFrom( o )
 //
 //   /* number */
 //
-//   if( _.numberIs( o.src ) )
+//   if( _.number.is( o.src ) )
 //   o.src = [ o.src ];
 //
 //   if( o.bufferConstructor.name === 'BufferRaw' )
@@ -883,7 +883,7 @@ function bufferFrom( o )
 //   /* length */
 //
 //   let length = o.src.length;
-//   if( !_.numberIs( length ) )
+//   if( !_.number.is( length ) )
 //   {
 //
 //     let length = 0;
@@ -1139,7 +1139,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
   _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ), '{-dst-} should be Long or buffer' );
   else
   {
-    if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
+    if( arguments.length > 1 && !_.intervalIs( src ) && !_.number.is( src ) )
     _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ) );
     else
     {
@@ -1233,7 +1233,7 @@ function bufferRelen( src, len )
 
   _.assert( _.bufferTypedIs( src ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( len ) );
+  _.assert( _.number.is( len ) );
 
   if( len > src.length )
   {
@@ -1379,7 +1379,7 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
     cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( cinterval ) )
+  else if( _.number.is( cinterval ) )
   {
     cinterval = [ cinterval, cinterval ];
   }
@@ -1582,7 +1582,7 @@ function bufferOnly_( dst, src, cinterval )
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
@@ -1782,7 +1782,7 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
@@ -1993,7 +1993,7 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval-1 ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
@@ -2555,7 +2555,7 @@ function bufferReusingBut( /* dst, src, cinterval, ins */ )
   {
     if( o.cinterval === undefined )
     o.cinterval = [ 0, -1 ];
-    else if( _.numberIs( o.cinterval ) )
+    else if( _.number.is( o.cinterval ) )
     o.cinterval = [ o.cinterval, o.cinterval ];
 
     if( o.cinterval[ 0 ] < 0 )
@@ -2743,7 +2743,7 @@ function bufferReusingOnly( /* dst, src, cinterval */ )
 
     if( o.cinterval === undefined )
     o.cinterval = [ 0, bufferLength - 1 ];
-    else if( _.numberIs( o.cinterval ) )
+    else if( _.number.is( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval ];
 
     if( o.cinterval[ 0 ] < 0 )
@@ -2898,7 +2898,7 @@ function bufferReusingGrow( /* dst, src, cinterval, ins */ )
 
     if( o.cinterval === undefined )
     o.cinterval = [ 0, bufferLength - 1 ];
-    else if( _.numberIs( o.cinterval ) )
+    else if( _.number.is( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
 
     if( o.cinterval[ 0 ] > 0 )
@@ -3069,7 +3069,7 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
 
     if( o.cinterval === undefined )
     o.cinterval = [ 0, bufferLength - 1 ];
-    else if( _.numberIs( o.cinterval ) )
+    else if( _.number.is( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
 
     left = o.cinterval[ 0 ];
@@ -3252,7 +3252,7 @@ function bufferReusingResize( /* dst, src, cinterval */ )
 
     if( o.cinterval === undefined )
     o.cinterval = [ 0, bufferLength - 1 ];
-    else if( _.numberIs( o.cinterval ) )
+    else if( _.number.is( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
 
     left = o.cinterval[ 0 ];
@@ -3520,7 +3520,7 @@ function bufferMove( dst, src )
     }
     else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
     {
-      dst.set( _.bigIntsFrom( src ) );
+      dst.set( _.bigInt.s.from( src ) );
     }
     else if( dst.set )
     {
@@ -3561,7 +3561,7 @@ function bufferMove( dst, src )
     }
     else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
     {
-      dst.set( _.bigIntsFrom( src ), options.dstOffset );
+      dst.set( _.bigInt.s.from( src ), options.dstOffset );
     }
     else if( dst.set )
     {
@@ -3824,7 +3824,7 @@ function bufferIsolate_head( routine, args )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.bufferAnyIs( o.src ) || _.strIs( o.src ) );
   _.assert( _.bufferAnyIs( o.delimeter ) || _.strIs( o.delimeter ) );
-  _.assert( _.numberIs( o.times ) );
+  _.assert( _.number.is( o.times ) );
 
   return o;
 }

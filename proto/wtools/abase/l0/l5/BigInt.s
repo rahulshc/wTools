@@ -18,9 +18,9 @@ function bigIntFrom( src )
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   if( _.strIs( src ) )
   return BigInt( src );
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return BigInt( src );
-  _.assert( _.bigIntIs( src ), 'Cant convert' )
+  _.assert( _.bigInt.is( src ), 'Cant convert' )
   return src;
 }
 
@@ -28,11 +28,11 @@ function bigIntFrom( src )
 
 function bigIntsFrom( src )
 {
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   {
     return BigInt( src );
   }
-  else if( _.bigIntIs( src ) )
+  else if( _.bigInt.is( src ) )
   {
     return src;
   }
@@ -40,7 +40,7 @@ function bigIntsFrom( src )
   {
     let result = [];
     for( let i = 0 ; i < src.length ; i++ )
-    result[ i ] = _.bigIntFrom( src[ i ] );
+    result[ i ] = _.bigInt.from( src[ i ] );
     return result
   }
   else _.assert( 0, 'Cant convert' );

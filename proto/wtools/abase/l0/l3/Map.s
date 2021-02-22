@@ -818,7 +818,7 @@ function mapSelect( srcMap, keys )
   for( let k = 0 ; k < keys.length ; k++ )
   {
     let key = keys[ k ];
-    _.assert( _.strIs( key ) || _.numberIs( key ) );
+    _.assert( _.strIs( key ) || _.number.is( key ) );
     result[ key ] = srcMap[ key ];
   }
 

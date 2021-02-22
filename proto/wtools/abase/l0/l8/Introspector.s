@@ -33,7 +33,7 @@ function code( o )
       o.location = _.introspector.location({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
     }
 
-    if( !_.numberIs( o.location.line ) )
+    if( !_.number.is( o.location.line ) )
     return end();
 
     /* */

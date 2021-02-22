@@ -34,7 +34,7 @@ function strIsolate_head( routine, args )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
   _.assert( _.regexpsLikeAll( o.delimeter ) )
-  _.assert( _.numberIs( o.times ) );
+  _.assert( _.number.is( o.times ) );
 
   return o;
 }
@@ -88,7 +88,7 @@ function strIsolate_head( routine, args )
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.entity.strType( o.src ) );
 //   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
-//   _.assert( _.numberIs( o.times ) );
+//   _.assert( _.number.is( o.times ) );
 //
 //   /* */
 //
@@ -663,7 +663,7 @@ function strIsolateInsideSignle( src, begin, end )
       if( b.entry === undefined )
       return notFound();
 
-      _.assert( _.numberIs( b.instanceIndex ) );
+      _.assert( _.number.is( b.instanceIndex ) );
       let end = pairs[ b.instanceIndex ][ 1 ];
 
       // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );

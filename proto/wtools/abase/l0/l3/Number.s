@@ -40,14 +40,14 @@ function numberIs( src )
 
 function numberIsNotNan( src )
 {
-  return _.numberIs( src ) && !isNaN( src );
+  return _.number.is( src ) && !isNaN( src );
 }
 
 //
 
 function numberIsFinite( src )
 {
-  if( !_.numberIs( src ) )
+  if( !_.number.is( src ) )
   return false;
   return isFinite( src );
 }
@@ -57,7 +57,7 @@ function numberIsFinite( src )
 function numberIsInfinite( src )
 {
 
-  if( !_.numberIs( src ) )
+  if( !_.number.is( src ) )
   return false;
 
   return src === +Infinity || src === -Infinity;
@@ -68,7 +68,7 @@ function numberIsInfinite( src )
 function intIs( src )
 {
 
-  if( !_.numberIs( src ) || !_.numberIsFinite( src ) )
+  if( !_.number.is( src ) || !_.number.isFinite( src ) )
   return false;
 
   return Math.floor( src ) === src;
@@ -86,7 +86,7 @@ function numbersAreAll( src )
   if( _.arrayLike( src ) && !_.arrayIsEmpty( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !_.numberIs( src[ s ] ) )
+    if( !_.number.is( src[ s ] ) )
     return false;
 
     return true;
@@ -119,7 +119,7 @@ function numbersAreIdentical( a, b )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( _.numbersAreAll( [ a, b ] ) )
+  if( _.number.s.areAll( [ a, b ] ) )
   return Object.is( a, b );
 
   return false;
@@ -135,7 +135,7 @@ function numbersAreIdenticalNotStrictly( a, b )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( _.numbersAreAll( [ a, b ] ) )
+  if( _.number.s.areAll( [ a, b ] ) )
   return Object.is( a, b ) || a === b;
 
   return false;
@@ -148,20 +148,20 @@ function numbersAreEquivalent( a, b, accuracy )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
-  _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+  _.assert( _.number.is( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
 
   /* qqq for Yevhen : bad! */
 
-  if( _.numberIs( a ) && _.numberIs( b ) )
+  if( _.number.is( a ) && _.number.is( b ) )
   {
     if( Object.is( a, b ) )
     return true;
   }
 
-  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
+  if( !_.number.is( a ) && !_.bigInt.is( a ) )
   return false;
 
-  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  if( !_.number.is( b ) && !_.bigInt.is( b ) )
   return false;
 
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
@@ -172,9 +172,9 @@ function numbersAreEquivalent( a, b, accuracy )
   // }
 
   if( accuracy === undefined )
-  accuracy = this.accuracy;
+  accuracy = _.accuracy;
 
-  if( _.bigIntIs( a ) )
+  if( _.bigInt.is( a ) )
   {
     if( _.intIs( b ) )
     {
@@ -188,7 +188,7 @@ function numbersAreEquivalent( a, b, accuracy )
     // }
   }
 
-  if( _.bigIntIs( b ) )
+  if( _.bigInt.is( b ) )
   {
     if( _.intIs( a ) )
     {
@@ -205,7 +205,7 @@ function numbersAreEquivalent( a, b, accuracy )
   if( Object.is( a, b ) )
   return true;
 
-  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  if( _.bigInt.is( a ) && _.bigInt.is( b ) )
   {
     if( _.intIs( accuracy ) )
     {
@@ -225,10 +225,10 @@ function numbersAreEquivalent( a, b, accuracy )
     }
   }
 
-  // if( !_.numberIs( a ) )
+  // if( !_.number.is( a ) )
   // return false;
   //
-  // if( !_.numberIs( b ) )
+  // if( !_.number.is( b ) )
   // return false;
 
   return Math.abs( a - b ) <= accuracy;
@@ -241,13 +241,13 @@ function numbersAreFinite( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
-  if( !_.numbersAreAll( src ) )
+  if( !_.number.s.areAll( src ) )
   return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !_.numberIsFinite( src[ s ] ) )
+    if( !_.number.isFinite( src[ s ] ) )
     return false;
   }
 
@@ -260,13 +260,13 @@ function numbersArePositive( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
-  if( !_.numbersAreAll( src ) )
+  if( !_.number.s.areAll( src ) )
   return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( src[ s ] < 0 || !_.numberIsNotNan( src[ s ] ) )
+    if( src[ s ] < 0 || !_.number.isNotNan( src[ s ] ) )
     return false;
   }
 
@@ -279,7 +279,7 @@ function numbersAreInt( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
-  if( !_.numbersAreAll( src ) )
+  if( !_.number.s.areAll( src ) )
   return false;
 
   if( _.longIs( src ) )

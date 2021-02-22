@@ -25153,7 +25153,7 @@ function eachPermutationBasic( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.numberIs( o.container ) )
+    if( _.number.is( o.container ) )
     {
       if( o.container < 0 )
       o.container = 0;
@@ -25307,7 +25307,7 @@ function eachPermutationOptions( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.numberIs( o.container ) )
+    if( _.number.is( o.container ) )
     {
       if( o.container < 0 )
       o.container = 0;

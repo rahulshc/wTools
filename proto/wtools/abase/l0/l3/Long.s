@@ -63,7 +63,7 @@ function longIs( src ) /* qqq : check coverage */
 
   if( Object.propertyIsEnumerable.call( src, 'length' ) )
   return false;
-  if( !_.numberIs( src.length ) )
+  if( !_.number.is( src.length ) )
   return false;
 
   return true;
@@ -128,7 +128,7 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   let fromIndex = 0;
 
-  if( _.numberIs( arguments[ 2 ] ) )
+  if( _.number.is( arguments[ 2 ] ) )
   {
     fromIndex = arguments[ 2 ];
     evaluator1 = arguments[ 3 ];
@@ -137,7 +137,7 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.longLike( arr ), 'Expect a Long' );
-  _.assert( _.numberIs( fromIndex ) );
+  _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -194,7 +194,7 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   let fromIndex = arr.length-1;
 
-  if( _.numberIs( arguments[ 2 ] ) )
+  if( _.number.is( arguments[ 2 ] ) )
   {
     fromIndex = arguments[ 2 ];
     evaluator1 = arguments[ 3 ];
@@ -202,7 +202,7 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
   }
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.numberIs( fromIndex ) );
+  _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );

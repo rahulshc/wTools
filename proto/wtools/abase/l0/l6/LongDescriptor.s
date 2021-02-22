@@ -49,7 +49,7 @@ function make_functor( name, cls )
   //     if( src === undefined || src === null )
   //     src = 0;
   //
-  //     _.assert( _.numberIs( src ) || _.longIs( src ) );
+  //     _.assert( _.number.is( src ) || _.longIs( src ) );
   //     return new cls( src );
   //   }
   // }
@@ -75,7 +75,7 @@ function from_functor( name, cls )
     [ name ] : function( src )
     {
       // _.assert( arguments.length === 1 ); /* Dmytro : assertion for single argument is better for from routine */
-      // _.assert( _.longIs( src ) || _.numberIs( src ) || src === undefined || src === null ); /* Dmytro : maybe, it is missed, if src is any map, then returns empty buffer */
+      // _.assert( _.longIs( src ) || _.number.is( src ) || src === undefined || src === null ); /* Dmytro : maybe, it is missed, if src is any map, then returns empty buffer */
       _.assert( arguments.length === 0 || arguments.length === 1 );
       if( src === undefined )
       return new cls()
