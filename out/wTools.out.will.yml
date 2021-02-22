@@ -186,6 +186,7 @@ module:
           - ../proto/wtools/abase/l0/l3
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
+          - ../proto/wtools/abase/l0/l3/ArraySet.s
           - ../proto/wtools/abase/l0/l3/Auxiliary.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
@@ -201,6 +202,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/Functional.s
           - ../proto/wtools/abase/l0/l3/Global.s
+          - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Interval.s
           - ../proto/wtools/abase/l0/l3/Intervalc.s
           - ../proto/wtools/abase/l0/l3/Intervall.s
@@ -231,6 +233,7 @@ module:
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
+          - ../proto/wtools/abase/l0/l5/ArraySet.s
           - ../proto/wtools/abase/l0/l5/Auxiliary.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
@@ -246,6 +249,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Event.s
           - ../proto/wtools/abase/l0/l5/Functional.s
           - ../proto/wtools/abase/l0/l5/Global.s
+          - ../proto/wtools/abase/l0/l5/HashMap.s
           - ../proto/wtools/abase/l0/l5/Interval.s
           - ../proto/wtools/abase/l0/l5/Intervalc.s
           - ../proto/wtools/abase/l0/l5/Intervall.s
@@ -284,6 +288,7 @@ module:
           - ../proto/wtools/abase/l0/l8
           - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l8/Array.s
+          - ../proto/wtools/abase/l0/l8/ArraySet.s
           - ../proto/wtools/abase/l0/l8/Auxiliary.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
@@ -299,6 +304,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
           - ../proto/wtools/abase/l0/l8/Global.s
+          - ../proto/wtools/abase/l0/l8/HashMap.s
           - ../proto/wtools/abase/l0/l8/Interval.s
           - ../proto/wtools/abase/l0/l8/Intervalc.s
           - ../proto/wtools/abase/l0/l8/Intervall.s
