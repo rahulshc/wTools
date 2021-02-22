@@ -23,10 +23,10 @@ let _ObjectToString = Object.prototype.toString;
  * @throws Exception if cannot convert.
  */
 
-function boolFrom( src )
+function from( src )
 {
-  let result = _.boolFromMaybe( src );
-  _.assert( _.boolIs( result ), `Cant convert ${_.strType( src )} to boolean` );
+  let result = _.bool.fromMaybe( src );
+  _.assert( _.bool.is( result ), `Cant convert ${_.strType( src )} to boolean` );
   return result;
 }
 
@@ -39,9 +39,9 @@ function boolFrom( src )
  * @namespace Tools
  */
 
-function boolFromMaybe( src )
+function fromMaybe( src )
 {
-  if( _.boolIs( src ) )
+  if( _.bool.is( src ) )
   {
     return src;
   }
@@ -77,7 +77,7 @@ function boolFromMaybe( src )
  * @namespace Tools
  */
 
-function boolFromForce( src )
+function fromForce( src )
 {
   if( _.strIs( src ) )
   {
@@ -104,9 +104,9 @@ function boolFromForce( src )
 let ExtensionTools =
 {
 
-  boolFrom, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFrom : from, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromMaybe : fromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromForce : fromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
 
 }
 
@@ -115,9 +115,9 @@ let ExtensionTools =
 let Extension =
 {
 
-  from : boolFrom,
-  fromMaybe : boolFromMaybe,
-  fromForce : boolFromForce,
+  from,
+  fromMaybe,
+  fromForce,
 
 }
 

@@ -18,28 +18,28 @@ let Self = _.fuzzy = _.fuzzy || Object.create( null );
  * @namespace Tools
  *
  * @example
- * var got = _.fuzzyIs( true );
+ * var got = _.fuzzy.is( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyIs( false );
+ * var got = _.fuzzy.is( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyIs( _.maybe );
+ * var got = _.fuzzy.is( _.maybe );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyIs( '1' );
+ * var got = _.fuzzy.is( '1' );
  * console.log( got )
  * // log false
  *
  */
 
-function fuzzyIs( src )
+function is( src )
 {
   return src === true || src === false || src === _.maybe;
 }
@@ -53,32 +53,32 @@ function fuzzyIs( src )
  * @namespace Tools
  *
  * @example
- * var got = _.fuzzyLike( true );
+ * var got = _.fuzzy.like( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLike( false );
+ * var got = _.fuzzy.like( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLike( _.maybe );
+ * var got = _.fuzzy.like( _.maybe );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLike( 1 );
+ * var got = _.fuzzy.like( 1 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLike( '1' );
+ * var got = _.fuzzy.like( '1' );
  * console.log( got )
  * // log false
  */
 
-function fuzzyLike( src )
+function like( src )
 {
   if( src === _.maybe )
   return true;
@@ -96,35 +96,35 @@ function fuzzyLike( src )
  * @namespace Tools
  *
  * @example
- * var got = _.fuzzyLikeFalse( true );
+ * var got = _.fuzzy.likeFalse( true );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.fuzzyLikeFalse( false );
+ * var got = _.fuzzy.likeFalse( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLikeFalse( _.maybe );
+ * var got = _.fuzzy.likeFalse( _.maybe );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.fuzzyLikeFalse( 0 );
+ * var got = _.fuzzy.likeFalse( 0 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLikeFalse( '1' );
+ * var got = _.fuzzy.likeFalse( '1' );
  * console.log( got )
  * // log false
  *
  */
 
-function fuzzyLikeFalse( src )
+function likeFalse( src )
 {
-  if( !_.fuzzyLike( src ) )
+  if( !_.fuzzy.like( src ) )
   return false;
   return !src;
 }
@@ -138,35 +138,35 @@ function fuzzyLikeFalse( src )
  * @namespace Tools
  *
  *  @example
- * var got = _.fuzzyLikeTrue( true );
+ * var got = _.fuzzy.likeTrue( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLikeTrue( false );
+ * var got = _.fuzzy.likeTrue( false );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.fuzzyLikeTrue( _.maybe );
+ * var got = _.fuzzy.likeTrue( _.maybe );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.fuzzyLikeTrue( 0 );
+ * var got = _.fuzzy.likeTrue( 0 );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.fuzzyLikeTrue( 10 );
+ * var got = _.fuzzy.likeTrue( 10 );
  * console.log( got )
  * // log true
  *
  */
 
-function fuzzyLikeTrue( src )
+function likeTrue( src )
 {
-  if( !_.fuzzyLike( src ) )
+  if( !_.fuzzy.like( src ) )
   return false;
   if( src === _.maybe )
   return false;
@@ -182,10 +182,10 @@ let ExtensionTools =
 
   /* qqq : cover and document all that ( not Dmytro ) | Done. Yevhen S.  */
 
-  fuzzyIs,
-  fuzzyLike,
-  fuzzyLikeFalse,
-  fuzzyLikeTrue,
+  fuzzyIs : is,
+  fuzzyLike : like,
+  fuzzyLikeFalse : likeFalse,
+  fuzzyLikeTrue : likeTrue,
 
 }
 
@@ -194,10 +194,10 @@ let ExtensionTools =
 let Extension =
 {
 
-  is : fuzzyIs,
-  like : fuzzyLike,
-  likeFalse : fuzzyLikeFalse,
-  likeTrue : fuzzyLikeTrue,
+  is,
+  like,
+  likeFalse,
+  likeTrue,
 
 }
 

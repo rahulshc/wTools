@@ -22,12 +22,12 @@ _.bool.s = _.bool.s || Object.create( null );
  * @namespace Tools
  */
 
-function boolsAre( src )
+function are( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayLike( src ) )
   return false;
-  return src.filter( ( e ) => _.boolIs( e ) );
+  return src.filter( ( e ) => _.bool.is( e ) );
 }
 
 //
@@ -42,12 +42,12 @@ function boolsAre( src )
  * @namespace Tools
  */
 
-function boolsAllAre( src )
+function allAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.all( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.all( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //
@@ -62,12 +62,12 @@ function boolsAllAre( src )
  * @namespace Tools
  */
 
-function boolsAnyAre( src )
+function anyAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.any( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.any( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //
@@ -82,12 +82,12 @@ function boolsAnyAre( src )
  * @namespace Tools
  */
 
-function boolsNoneAre( src )
+function noneAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.none( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.none( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 // --
@@ -97,10 +97,10 @@ function boolsNoneAre( src )
 let ExtensionTools =
 {
 
-  boolsAre,
-  boolsAllAre,
-  boolsAnyAre,
-  boolsNoneAre,
+  boolsAre : are,
+  boolsAllAre : allAre,
+  boolsAnyAre : anyAre,
+  boolsNoneAre : noneAre,
 
 }
 
@@ -109,10 +109,10 @@ let ExtensionTools =
 let ExtensionS =
 {
 
-  are : boolsAre,
-  allAre : boolsAllAre,
-  anyAre : boolsAnyAre,
-  noneAre : boolsNoneAre,
+  are,
+  allAre,
+  anyAre,
+  noneAre,
 
 }
 

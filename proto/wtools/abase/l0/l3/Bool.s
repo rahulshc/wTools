@@ -18,28 +18,28 @@ let Self = _.bool = _.bool || Object.create( null );
  * @namespace Tools
  *
  * @example
- * var got = _.boolIs( '' );
+ * var got = _.bool.is( '' );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.boolIs( 1 );
+ * var got = _.bool.is( 1 );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.boolIs( true );
+ * var got = _.bool.is( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolIs( false );
+ * var got = _.bool.is( false );
  * console.log( got )
  * // log true
  *
  */
 
-function boolIs( src )
+function is( src )
 {
   return src === true || src === false;
 }
@@ -53,33 +53,33 @@ function boolIs( src )
  * @namespace Tools
  *
  * @example
- * var got = _.boolLike( false );
+ * var got = _.bool.like( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLike( true );
+ * var got = _.bool.like( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLike( 1 );
+ * var got = _.bool.like( 1 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLike( 0 );
+ * var got = _.bool.like( 0 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLike( '0' );
+ * var got = _.bool.like( '0' );
  * console.log( got )
  * // log false
  *
  */
 
-function boolLike( src )
+function like( src )
 {
   return src === true || src === false || src === 0 || src === 1;
   // let type = Object.prototype.toString.call( src );
@@ -95,30 +95,30 @@ function boolLike( src )
  * @namespace Tools
  *
  * @example
- * var got = _.boolLikeFalse( 0 );
+ * var got = _.bool.likeFalse( 0 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLikeFalse( 1 );
+ * var got = _.bool.likeFalse( 1 );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.boolLikeFalse( false );
+ * var got = _.bool.likeFalse( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLikeFalse( true );
+ * var got = _.bool.likeFalse( true );
  * console.log( got )
  * // log false
  *
  */
 
-function boolLikeFalse( src )
+function likeFalse( src )
 {
-  if( !_.boolLike( src ) )
+  if( !_.bool.like( src ) )
   return false;
   return !src;
 }
@@ -132,30 +132,30 @@ function boolLikeFalse( src )
  * @namespace Tools
  *
  * @example
- * var got = _.boolLikeTrue( 0 );
+ * var got = _.bool.likeTrue( 0 );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.boolLikeTrue( 1 );
+ * var got = _.bool.likeTrue( 1 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.boolLikeTrue( false );
+ * var got = _.bool.likeTrue( false );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.boolLikeTrue( true );
+ * var got = _.bool.likeTrue( true );
  * console.log( got )
  * // log true
  *
  */
 
-function boolLikeTrue( src )
+function likeTrue( src )
 {
-  if( !_.boolLike( src ) )
+  if( !_.bool.like( src ) )
   return false;
   return !!src;
 }
@@ -169,10 +169,10 @@ let ExtensionTools =
 
   /* qqq : cover and document all that ( not Dmytro ) | Done. Yevhen S.  */
 
-  boolIs,
-  boolLike,
-  boolLikeFalse,
-  boolLikeTrue,
+  boolIs : is,
+  boolLike : like,
+  boolLikeFalse : likeFalse,
+  boolLikeTrue : likeTrue,
 
 }
 
@@ -181,10 +181,10 @@ let ExtensionTools =
 let Extension =
 {
 
-  is : boolIs,
-  like : boolLike,
-  likeFalse : boolLikeFalse,
-  likeTrue : boolLikeTrue,
+  is,
+  like,
+  likeFalse,
+  likeTrue,
 
 }
 
