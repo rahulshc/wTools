@@ -32,8 +32,11 @@ function identicalShallow( src1, src2 )
       and equalAre method
     */
     if( _.escape.is( src1 ) )
-    return methodEqual({ srcEffective : src1, srcEffective2 : src2 });
-
+    {
+      let it = { srcEffective : src1, srcEffective2 : src2 }
+      methodEqual( it );
+      return it.result;
+    }
     return methodEqual( src1, src2 );
   }
   else if( _.hashMapLike( src1 ) )
