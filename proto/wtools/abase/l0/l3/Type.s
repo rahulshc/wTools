@@ -158,7 +158,7 @@ function typeOf( src, constructor )
   {
     return null;
   }
-  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
+  else if( _.numberIs( src ) || _.bool.is( src ) || _.strIs( src ) ) /* yyy */
   {
     return src.constructor;
   }

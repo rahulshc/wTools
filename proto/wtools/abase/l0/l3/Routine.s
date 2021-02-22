@@ -154,8 +154,8 @@ function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.boolIs( o.sealing ) );
-  _.assert( _.boolIs( o.extending ) );
+  _.assert( _.bool.is( o.sealing ) );
+  _.assert( _.bool.is( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
 

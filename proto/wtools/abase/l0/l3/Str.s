@@ -434,7 +434,7 @@ function strStrShort( o )
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( !o.infix )
@@ -451,7 +451,7 @@ function strStrShort( o )
     o.prefix = '';
     o.postfix = '';
   }
-  if( _.boolLikeTrue( o.infix ) )
+  if( _.bool.likeTrue( o.infix ) )
   o.infix = '...';
 
   if( !o.onLength )

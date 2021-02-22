@@ -1158,7 +1158,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
 function _returnDst( dst, src )
 {
   let dstLength;
-  if( !_.boolIs( dst ) )
+  if( !_.bool.is( dst ) )
   dstLength = dst.length === undefined ? dst.byteLength : dst.length;
 
   if( dstLength !== undefined )

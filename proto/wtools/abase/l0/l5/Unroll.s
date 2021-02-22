@@ -327,7 +327,7 @@ function unrollsFrom( srcs )
 function unrollFromMaybe( src )
 {
   _.assert( arguments.length === 1 );
-  // if( _.unrollIs( src ) || _.strIs( src ) || _.boolIs( src ) || _.mapIs( src ) || src === undefined )
+  // if( _.unrollIs( src ) || _.strIs( src ) || _.bool.is( src ) || _.mapIs( src ) || src === undefined )
   // return src;
   // return _.unrollMake( src );
   if( _.unrollIs( src ) ) /* previous implementation is wrong */ /* Condition of routine can be combined by another order */
