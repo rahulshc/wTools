@@ -22,13 +22,99 @@ function entityPlay( test )
 {
   // console.log( _realGlobal_.wTools.container.types )
 
-  test.case = 'null - undefined';
-  var expected = true;
-  var got = _.entity.identicalShallow( null, null );
-  test.identical( got, expected );
+  // test.case = 'vector & vectorLike';
+  // var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  // var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
+
+  // test.case = 'countable & countableLike';
+  // var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  // var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
+
+  test.case = 'escape';
+  var src1 = _.escape.make( 1 );
+  var src2 = _.escape.make( 1 );
+  test.identical( _.entity.identicalShallow( src1, src2 ), true );
+
+  // test.case = 'timer';
+  // var src1 = _.time._begin( Infinity );
+  // var src2 = _.time._begin( Infinity );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  // _.time.cancel( src1 );
+  // _.time.cancel( src2 );
+
+  // /* ? compare symbols or not */
+  // test.case = 'Object & ObjectLike & Container & ContainerLike';
+  // var src1 = { [ Symbol.iterator ] : 1 };
+  // var src2 = { [ Symbol.iterator ] : 2 };
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  // test.case = 'BufferRaw';
+  // var src1 = new BufferRaw( 'str' );
+  // var src2 = new BufferRaw( 'str2' );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  // test.case = 'BufferRawShared';
+  // var src1 = new BufferRawShared( 'str' );
+  // var src2 = new BufferRawShared( 'str2' );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  // test.case = 'err';
+  // var src1 = _.err( 'error' );
+  // var src2 = _.err( 'error2' );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  // test.case = 'ConsequenceLike & promiseLike & promise';
+  // var src1 = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  // var src2 = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  /* - */
+  
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 
   
-  console.log( Object.prototype.toString.call( _.err( 'error' ) ) );
+  // console.log( Object.prototype.toString.call( _.err( 'error' ) ) );
 }
 
 //

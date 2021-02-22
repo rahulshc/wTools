@@ -13,6 +13,7 @@ let Self = _.entity = _.entity || Object.create( null );
 
 function identicalShallow( src1, src2 )
 {
+  debugger;
   _.assert( arguments.length === 2, 'Expects no arguments' );
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
@@ -24,7 +25,7 @@ function identicalShallow( src1, src2 )
   // false if not present
   const methodEqual = _.entity.methodEqualOf( src1 ) || _.entity.methodEqualOf( src2 );
 
-  if( methodEqual && !_.auxiliary.is( src1 ) )
+  if( methodEqual && !_.aux.is( src1 ) )
   {
     /*
       object with method iterator
