@@ -18,6 +18,9 @@ function identicalShallow( src1, src2 )
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
 
+  if( src1 === src2 )
+  return true;
+
   // false if not present
   const methodEqual = _.entity.methodEqualOf( src1 ) || _.entity.methodEqualOf( src2 );
 
