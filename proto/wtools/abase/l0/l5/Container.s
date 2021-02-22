@@ -26,7 +26,7 @@ function extendReplacing( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.auxiliary.is( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -38,10 +38,10 @@ function extendReplacing( dst, src )
     dst = src;
 
   }
-  else if( _.auxiliary.is( src ) )
+  else if( _.aux.is( src ) )
   {
 
-    if( _.auxiliary.is( dst ) )
+    if( _.aux.is( dst ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
@@ -66,7 +66,7 @@ function extendReplacing( dst, src )
   else if( _.hashMapLike( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.auxiliary.is( dst ) )
+    if( _.hashMapLike( dst ) || _.aux.is( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -101,7 +101,7 @@ function extendAppending( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.auxiliary.is( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
@@ -113,10 +113,10 @@ function extendAppending( dst, src )
     dst = src;
 
   }
-  else if( _.auxiliary.is( dst ) )
+  else if( _.aux.is( dst ) )
   {
 
-    if( _.auxiliary.is( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( dst, src );
     else if( _.hashMapLike( src ) )
     dst = _.hashMapExtend( dst, src );
@@ -133,7 +133,7 @@ function extendAppending( dst, src )
   else if( _.hashMapLike( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.auxiliary.is( src ) )
+    if( _.hashMapLike( src ) || _.aux.is( src ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
@@ -221,64 +221,64 @@ function empty( dstContainer )
   dstContainer.clear();
   else if( _.hashMapLike( dstContainer ) )
   dstContainer.clear();
-  else if( _.auxiliary.is( dstContainer ) )
+  else if( _.aux.is( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
   return dstContainer;
 }
 
+// //
 //
-
-function typeOf( src )
-{
-  _.assert( arguments.length === 1 );
-  for( let t in this.types )
-  {
-    let type = this.types[ t ];
-    if( type._is( src ) )
-    {
-      return type;
-    }
-  }
-}
-
+// function typeOf( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   for( let t in this.types )
+//   {
+//     let type = this.types[ t ];
+//     if( type._is( src ) )
+//     {
+//       return type;
+//     }
+//   }
+// }
 //
-
-function typeDeclare( type )
-{
-
-  _.assertMapHasOnly( type, this.knownTypeFields );
-  _.assert( arguments.length === 1 );
-  _.assert( _.strDefined( type.name ) );
-  _.assert( _.routineIs( type._is ) );
-  _.assert( this.types[ type.name ] === undefined || this.types[ type.name ] === type );
-
-  this.types[ type.name ] = type;
-
-  return type;
-}
-
+// //
 //
-
-function typeUndeclare( type )
-{
-
-  if( !_.strIs( type ) )
-  {
-    _.assert( _.longHas( _.mapVals( this.types ), type ), () => `Container type::${type.name} is not registered` );
-    type = type.name;
-  }
-
-  let result = this.types[ type ];
-
-  _.assert( arguments.length === 1 );
-  _.assert( result !== undefined );
-
-  delete this.types[ type ];
-
-  return result;
-}
+// function typeDeclare( type )
+// {
+//
+//   _.assertMapHasOnly( type, this.knownTypeFields );
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.strDefined( type.name ) );
+//   _.assert( _.routineIs( type._is ) );
+//   _.assert( this.types[ type.name ] === undefined || this.types[ type.name ] === type );
+//
+//   this.types[ type.name ] = type;
+//
+//   return type;
+// }
+//
+// //
+//
+// function typeUndeclare( type )
+// {
+//
+//   if( !_.strIs( type ) )
+//   {
+//     _.assert( _.longHas( _.mapVals( this.types ), type ), () => `Container type::${type.name} is not registered` );
+//     type = type.name;
+//   }
+//
+//   let result = this.types[ type ];
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( result !== undefined );
+//
+//   delete this.types[ type ];
+//
+//   return result;
+// }
 
 //
 
@@ -287,12 +287,13 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( type !== false ) /* qqq : ignore for now */
-  {
-    type = _.container.typeOf( container );
-    if( type && type._elementGet )
-    return type._elementGet( container, key );
-  }
+  _.assert( !type );
+  // if( type !== false ) /* yyy */
+  // {
+  //   type = _.container.typeOf( container );
+  //   if( type && type._elementGet )
+  //   return type._elementGet( container, key );
+  // }
 
   if( container )
   {
@@ -334,9 +335,9 @@ function elementSet( container, key, value )
 
   _.assert( arguments.length === 3 ); debugger;
 
-  let type = _.container.typeOf( container );
-  if( type && type._elementSet )
-  return type._elementSet( container, key, value );
+  // let type = _.container.typeOf( container );
+  // if( type && type._elementSet )
+  // return type._elementSet( container, key, value );
 
   if( container )
   {
@@ -379,7 +380,7 @@ let knownTypeFields =
 // extension
 // --
 
-const types = _realGlobal_.wTools.container.types;
+// const types = _realGlobal_.wTools.container.types;
 const prototypeSymbol = Symbol.for( 'prototype' );
 
 let Extension =
@@ -392,9 +393,9 @@ let Extension =
 
   empty,
 
-  typeOf,
-  typeDeclare, /* qqq : cover please */
-  typeUndeclare,
+  // typeOf, /* yyy */
+  // typeDeclare, /* yyy */
+  // typeUndeclare, /* yyy */
   elementGet, /* qqq : cover please */
   elementSet,
 
@@ -405,7 +406,7 @@ let Extension =
 }
 
 _.mapSupplement( Self, Extension );
-_.container.types = types;
+// _.container.types = types;
 
 // --
 // export

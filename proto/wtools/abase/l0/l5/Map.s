@@ -1615,8 +1615,8 @@ function hashMapsAreIdenticalShallow( src1, src2 )
 function hashMapExtend( dst, src )
 {
   _.assert( arguments.length === 2 );
-  _.assert( dst === null || _.hashMapLike( dst ) || _.auxiliary.is( dst ) );
-  _.assert( _.hashMapLike( src ) || _.auxiliary.is( src ) );
+  _.assert( dst === null || _.hashMapLike( dst ) || _.aux.is( dst ) );
+  _.assert( _.hashMapLike( src ) || _.aux.is( src ) );
 
   if( dst === null )
   dst = new HashMap;
@@ -1898,7 +1898,7 @@ function mapsFlatten( o )
   _.routineOptions( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
-  _.assert( _.arrayLike( o.src ) || _.auxiliary.is( o.src ) )
+  _.assert( _.arrayLike( o.src ) || _.aux.is( o.src ) )
 
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
@@ -1916,7 +1916,7 @@ function mapsFlatten( o )
       extend( src[ s ], prefix );
 
     }
-    else if( _.auxiliary.is( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -2140,8 +2140,8 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.auxiliary.is( dstMap ) || _.object.like( dstMap ), 'Expects map like {-dstMap-}' );
-  _.assert( _.auxiliary.is( srcMap ) || _.object.like( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.aux.is( dstMap ) || _.object.like( dstMap ), 'Expects map like {-dstMap-}' );
+  _.assert( _.aux.is( srcMap ) || _.object.like( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2285,8 +2285,8 @@ function mapBut_( dstMap, srcMap, butMap )
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.auxiliary.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
-  _.assert( _.auxiliary.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.aux.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  _.assert( _.aux.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
   _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2990,7 +2990,7 @@ function _mapOnly_( o )
           break;
           if( k === screenMap[ m ] )
           break;
-          if( _.auxiliary.is( screenMap[ m ] ) && k in screenMap[ m ] )
+          if( _.aux.is( screenMap[ m ] ) && k in screenMap[ m ] )
           break;
         }
 
@@ -3848,11 +3848,14 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
+    let err;
     let msgKeys = _.strQuote( but ).join( ', ' );
     if( arguments.length === 2 )
-    throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
+    err = errFromArgs([ `${ _.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
     else
-    throw errFromArgs([ msgMake( arguments ), msgKeys ]);
+    err = errFromArgs([ msgMake( arguments ), msgKeys ]);
+    debugger;
+    throw err;
   }
 
   return true;
