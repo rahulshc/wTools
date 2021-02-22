@@ -155,7 +155,7 @@ let ExtensionS =
   // set
 
   from : setsFrom,
-  toArray : setsToArrays,
+  toArrays : setsToArrays,
 }
 
 //
