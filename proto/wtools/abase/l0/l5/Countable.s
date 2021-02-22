@@ -11,12 +11,36 @@ _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 // implementation
 // --
 
+function areIdenticalShallow( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.countable.is( src1 ) );
+  _.assert( _.countable.is( src2 ) );
+
+  let length1 = src1.length || 0;
+  let length2 = src2.length || 0;
+
+  if( src1.length !== src2.length )
+  return false;
+
+  if( _.longLike( src1 ) && _.longLike( src2 ) )
+  {
+    return _.longAreIdenticalShallow( src1, src2 );
+  }
+
+  /*
+    object with method iterator
+    vector included
+  */
+  return _.mapsAreIdentical( src1, src2 )
+}
+
 // --
 // extension
 // --
 var Extension =
 {
-
+  areIdenticalShallow
 }
 
 //

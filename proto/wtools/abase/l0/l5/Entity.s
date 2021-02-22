@@ -21,15 +21,7 @@ function identicalShallow( src1, src2 )
   let result = false;
   const methodEqual = _.entity.methodEqualOf( src1 );
 
-  if( _.mapIs( src1 ) )
-  {
-    return _.mapsAreIdenticalShallow( src1, src2 );
-  }
-  else if( _.longLike( src1 ) ) // investigate whether nedeed ( entity with iterator and length )
-  {
-    return _.longAreIdenticalShallow( src1, src2 );
-  }
-  else if( methodEqual && !_.auxiliary.is( src1 ) )
+  if( methodEqual && !_.auxiliary.is( src1 ) )
   {
     /*
       object with method iterator
@@ -42,23 +34,64 @@ function identicalShallow( src1, src2 )
   }
   else if( _.hashMapLike( src1 ) )
   {
+    /*
+      - hashmap
+    */
     return _.hashMapsAreIdenticalShallow( src1, src2 )
   }
   else if( _.setLike( src1 ) )
   {
+    /*
+      - set
+    */
     return _.setsAreIdenticalShallow( src1, src2 );
   }
-  else if( _.date.is( src1 ) ) // investigate whether nedeed
+  else if( _.bufferAnyIs( src1 ) )
   {
-    return _.date.areIdenticalShallow( src1, src2 );
-  }
-  else if( _.regexp.is( src1 ) ) // investigate whether nedeed
-  {
-    return _.regexp.areIdenticalShallow( src1, src2 );
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersAreIdenticalShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {
-    // implement ( entity with iterator )
+    /*
+      - countable
+      - vector
+      - long
+    */
+    return _.countable.areIdenticalShallow( src1, src2 );
+  }
+  else if( _.object.like( src1 ) )
+  {
+    /*
+      - objectLike
+      - object
+
+      - Map
+      - Auxiliary
+      - MapPure
+      - MapPolluted
+      - AuxiliaryPolluted
+      - MapPrototyped
+      - AuxiliaryPrototyped
+    */
+    if( _.date.is( src1 ) )
+    {
+      return _.date.areIdenticalShallow( src1, src2 );
+    }
+    else if( _.regexp.is( src1 ) ) // investigate whether nedeed
+    {
+      return _.regexp.areIdenticalShallow( src1, src2 );
+    }
+
+    // rest is object
+    return _.mapsAreIdenticalShallow( src1, src2 );
   }
   else if( _.primitiveIs( src1 ) )
   {
@@ -71,10 +104,12 @@ function identicalShallow( src1, src2 )
     */
     return Object.is( src1, src2 );
   }
-  else if( _.auxiliary.is( src1 ) )
-  {
-
-  }
+  // else if( _.auxiliary.is( src1 ) )
+  // {
+  //   /*
+  //     Same as map, but can be any non-primitive prototype without a constructor
+  //   */
+  // }
   else
   {
 

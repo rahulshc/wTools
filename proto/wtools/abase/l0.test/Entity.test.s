@@ -962,18 +962,6 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  /* ? */
-  // test.case = 'Global & GlobalReal';
-  // var src1 = global;
-  // var src2 = global;
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // /* ? */
-  // test.case = 'Global & GlobalDerived';
-  // var src1 = Object.create( global );
-  // var src2 = Object.create( global );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src1 = { [ Symbol.iterator ] : 1 };
   var src2 = { [ Symbol.iterator ] : 1 };
@@ -1143,12 +1131,6 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = 5;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  /* ? */
-  // test.case = 'Symbol';
-  // var src1 = Symbol( 'a' );
-  // var src2 = Symbol( 'a' );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src1 = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var src2 = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
@@ -1159,25 +1141,10 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = src1;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  // test.case = 'stream';
-  // var src1 = require( 'stream' ).Readable();
-  // var src2 = require( 'stream' ).Readable();
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // test.case = 'console';
-  // var src1 = console;
-  // var src2 = console;
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
   test.case = 'printerLike';
   var src1 = _global.logger;
   var src2 = _global.logger;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // test.case = 'process';
-  // var src1 = process;
-  // var src2 = process;
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.close( 'same type, identical' );
 
@@ -1255,17 +1222,15 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  /* ? */
-  // test.case = 'Global & GlobalReal';
-  // var src1 = global;
-  // var src2 = global;
-  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.case = 'Global & GlobalReal';
+  var src1 = global;
+  var src2 = global;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  // /* ? */
-  // test.case = 'Global & GlobalDerived';
-  // var src1 = Object.create( global );
-  // var src2 = Object.create( global );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.case = 'Global & GlobalDerived';
+  var src1 = Object.create( global );
+  var src2 = Object.create( global );
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src1 = { [ Symbol.iterator ] : 1 };

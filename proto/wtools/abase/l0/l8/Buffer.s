@@ -4080,6 +4080,7 @@ let Routines =
   buffersNodeAreIdentical,
   buffersAreEquivalent,
   buffersAreIdentical,
+  buffersAreIdenticalShallow : buffersAreIdentical,
 
   _bufferMake_functor,
   bufferMake,
