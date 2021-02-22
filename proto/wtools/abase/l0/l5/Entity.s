@@ -57,7 +57,7 @@ function makeEmpty( src )
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeEmpty()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
 
 }
 
@@ -109,7 +109,7 @@ function makeUndefined( src, length )
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
 }
 
 // //
@@ -146,7 +146,7 @@ function makeUndefined( src, length )
 //   {
 //     return src;
 //   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.make()\`` );
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
 //
 // }
 
@@ -201,7 +201,7 @@ function cloneShallow( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneShallow()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
 
 }
 
@@ -260,7 +260,7 @@ function cloneDeep( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneDeep()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneDeep()\`` );
 
 }
 

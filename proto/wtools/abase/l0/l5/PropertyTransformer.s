@@ -15,7 +15,7 @@ function mapperFromFilter( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
   _.assert( !!routine.identity );
 
   if( routine.identity.propertyFilter )
@@ -70,7 +70,7 @@ function mapperFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {
@@ -95,7 +95,7 @@ function filterFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {

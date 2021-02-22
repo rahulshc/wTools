@@ -121,7 +121,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:47'
   }
-  /* xxx2 : problem in _.toStr( 'some\\path' )! */
+  /* xxx2 : problem in _.entity.exportString( 'some\\path' )! */
   var got = _.introspector.locationFromStackFrame( stackFrame );
   test.identical( got, exp );
 

@@ -385,7 +385,7 @@ function longMask( srcArray, mask )
   (
     _.intIs( length ),
     'longMask :', 'Expects mask that has component for each atom of srcArray',
-    _.toStr
+    _.entity.exportString
     ({
       scalarsPerElement,
       'srcArray.length' : srcArray.length,
@@ -445,7 +445,7 @@ function longUnmask( o )
   (
     'longMask :',
     'Expects mask that has component for each atom of o.src',
-    _.toStr({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
+    _.entity.exportString({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
   );
 
   let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );

@@ -584,10 +584,10 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
-  test.true( _.constructible.like( src ) );
-  test.true( _.constructible.is( src ) );
-  test.true( _.object.like( src ) );
+  var src = new F32x( 2 );
+  test.true( !_.constructible.like( src ) );
+  test.true( !_.constructible.is( src ) );
+  test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -818,18 +818,18 @@ function typingExtended( test )
   test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
-  test.case = 'console';
-  var src = console;
-  test.true( !_.constructible.like( src ) );
-  test.true( !_.constructible.is( src ) );
-  test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
-  test.true( _.aux.is( src ) );
-  test.true( !_.mapIs( src ) );
-  test.true( _.aux.isPrototyped( src ) );
-  test.true( !_.mapIsPure( src ) );
-  test.true( _.aux.isPolluted( src ) );
-  test.true( !_.mapIsPolluted( src ) );
+  // test.case = 'console';
+  // var src = console;
+  // test.true( !_.constructible.like( src ) );
+  // test.true( !_.constructible.is( src ) );
+  // test.true( _.object.like( src ) );
+  // test.true( !_.object.is( src ) );
+  // test.true( _.aux.is( src ) );
+  // test.true( !_.mapIs( src ) );
+  // test.true( _.aux.isPrototyped( src ) );
+  // test.true( !_.mapIsPure( src ) );
+  // test.true( _.aux.isPolluted( src ) );
+  // test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'printerLike';
   var src = _global.logger;

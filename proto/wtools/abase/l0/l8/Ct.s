@@ -85,7 +85,7 @@ function _strEscape( srcStr )
   if( _.numberIs( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
   return '❮inputRaw:1❯' + srcStr + '❮inputRaw:0❯'
 }
 
@@ -99,7 +99,7 @@ function _strUnescape( srcStr )
   if( _.numberIs( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
   return '❮inputRaw:0❯' + srcStr + '❮inputRaw:1❯'
 }
 
@@ -110,7 +110,7 @@ let unescape = _.routineVectorize_functor( _strUnescape );
 function styleObjectFor( style )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( style ), 'Expects string got', _.strType( style ) );
+  _.assert( _.strIs( style ), 'Expects string got', _.entity.strType( style ) );
 
   let result = _.ct.Style[ style ];
 
@@ -239,7 +239,7 @@ function _format( srcStr, style )
   if( _.numberIs( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
 
   let r = _.ct._formatAffixes( style );
 

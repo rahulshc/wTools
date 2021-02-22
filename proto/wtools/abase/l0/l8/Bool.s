@@ -26,7 +26,7 @@ let _ObjectToString = Object.prototype.toString;
 function from( src )
 {
   let result = _.bool.fromMaybe( src );
-  _.assert( _.bool.is( result ), `Cant convert ${_.strType( src )} to boolean` );
+  _.assert( _.boolIs( result ), `Cant convert ${_.entity.strType( src )} to boolean` );
   return result;
 }
 

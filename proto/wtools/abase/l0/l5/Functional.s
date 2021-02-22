@@ -4137,7 +4137,7 @@ function entityLast( src, onEach )
 function _entityMost( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
+  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.entity.strType( o ) );
   _.routineOptions( _entityMost, o );
 
   if( !o.onEvaluate )

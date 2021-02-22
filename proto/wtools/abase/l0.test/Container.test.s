@@ -181,7 +181,7 @@ function like( test )
   test.true( _.container.like( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
+  var src = new F32x( 2 );
   test.true( _.container.like( src ) );
 
   test.case = 'pair';
@@ -249,9 +249,9 @@ function like( test )
   var src = require( 'stream' ).Readable();
   test.true( _.container.like( src ) );
 
-  test.case = 'console';
-  var src = console;
-  test.true( _.container.like( src ) );
+  // test.case = 'console';
+  // var src = console;
+  // test.true( _.container.like( src ) );
 
   test.case = 'printerLike';
   var src = _global.logger;
@@ -433,8 +433,8 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 1 );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
-  test.identical( _.container.lengthOf( src ), 1 );
+  var src = new F32x( 2 );
+  test.identical( _.container.lengthOf( src ), 2 );
 
   test.case = 'pair';
   var src = _.pair.make();
@@ -501,9 +501,9 @@ function lengthOf( test )
   var src = require( 'stream' ).Readable();
   test.identical( _.container.lengthOf( src ), 1 );
 
-  test.case = 'console';
-  var src = console;
-  test.identical( _.container.lengthOf( src ), 24 );
+  // test.case = 'console';
+  // var src = console;
+  // test.identical( _.container.lengthOf( src ), 24 );
 
   test.case = 'printerLike';
   var src = _global.logger;

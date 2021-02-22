@@ -2837,7 +2837,7 @@ function arraySetUnion_( test )
 //   for( var i = 0; i < cases.length; i++ )
 //   {
 //     var _case = cases[ i ];
-//     console.log( _.toStr( _case, { levels : 3 } ) );
+//     console.log( _.entity.exportString( _case, { levels : 3 } ) );
 //     if( _case.error )
 //     test.shouldThrowErrorSync( () => _.arraySetContainAll.apply( _, _case.args ) );
 //     else
