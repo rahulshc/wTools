@@ -268,9 +268,9 @@ function toStrSimple()
 
 //
 
-/* qqq for Yevhen : write perfect test and maybe extend */
-/* qqq for Yevhen : use template strings in this file */
-/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix */
+/* qqq for Yevhen : write perfect test and maybe extend | aaa : Done.  */
+/* qqq for Yevhen : use template strings in this file | aaa : Done. */
+/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix | aaa : Done.  */
 function strEntityShort( src )
 {
   let result = '';
@@ -288,6 +288,8 @@ function strEntityShort( src )
     }
     else if( _.primitiveIs( src ) )
     {
+      if( _.bigIntIs( src ) )
+      return `${String( src )}n`;
       return String( src );
     }
     // else if( _.vectorAdapterIs( src ) )
