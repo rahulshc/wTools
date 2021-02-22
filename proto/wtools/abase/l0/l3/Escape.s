@@ -71,8 +71,6 @@ function equalAre( it )
   if( !it.srcEffective2 instanceof _.Escape )
   return end( false );
 
-  debugger;
-
   if( it.srcEffective.val === it.srcEffective2.val )
   return end( true );
 

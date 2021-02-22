@@ -5,7 +5,7 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools.auxiliary = _global_.wTools.auxiliary || Object.create( null );
+let Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 // --
 // typing
@@ -115,7 +115,7 @@ function isPolluted( src )
 
 function isEmpty( src )
 {
-  if( !_.auxiliary.is( src ) )
+  if( !_.aux.is( src ) )
   return false;
   return Object.keys( src ).length === 0;
 }
@@ -124,7 +124,7 @@ function isEmpty( src )
 
 function isPopulated( src )
 {
-  if( !_.auxiliary.is( src ) )
+  if( !_.aux.is( src ) )
   return false;
   return Object.keys( src ).length > 0;
 }
@@ -174,7 +174,7 @@ var AuxiliaryExtension =
 
 }
 
-Object.assign( _.auxiliary, AuxiliaryExtension );
+Object.assign( _.aux, AuxiliaryExtension );
 
 // --
 // export

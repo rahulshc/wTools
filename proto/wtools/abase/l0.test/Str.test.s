@@ -3503,9 +3503,9 @@ function strTypeWithTraitsGeneratedObject( test )
       test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
       test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
-      else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
+      else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
-      else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
+      else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withConstructor && env.withIterator && env.pure )
       test.identical( _.strTypeWithTraits( src ), 'countableConstructorPure.countable.constructible' );
@@ -3528,9 +3528,9 @@ function strTypeWithTraitsGeneratedObject( test )
       test.identical( _.strTypeWithTraits( src ), 'Map.pure' );
       else if( _.mapIsPolluted( src ) )
       test.identical( _.strTypeWithTraits( src ), 'Map.polluted' );
-      else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
+      else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.pure.prototyped' );
-      else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
+      else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
       test.identical( _.strTypeWithTraits( src ), 'MapLike.polluted.prototyped' );
       else if( env.withIterator )
       test.identical( _.strTypeWithTraits( src ), 'Object.countable' );
@@ -3579,7 +3579,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
 
       if( _.mapIs( src ) )
       test.identical( _.strTypeWithoutTraits( src ), 'Map' );
-      else if( _.auxiliary.is( src ) )
+      else if( _.aux.is( src ) )
       test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
       else if( env.withConstructor && env.withIterator && env.pure )
       test.identical( _.strTypeWithoutTraits( src ), 'countableConstructorPure' );
@@ -3598,7 +3598,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
 
       if( _.mapIs( src ) )
       test.identical( _.strTypeWithoutTraits( src ), 'Map' );
-      else if( _.auxiliary.is( src ) )
+      else if( _.aux.is( src ) )
       test.identical( _.strTypeWithoutTraits( src ), 'MapLike' );
       else
       test.identical( _.strTypeWithoutTraits( src ), 'Object' );

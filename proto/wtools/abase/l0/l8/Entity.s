@@ -59,7 +59,7 @@ function uncountableSize( src )
 
   // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine countableIs has different behavior */
   // return 8;
-  if( !_.auxiliary.is( src ) )
+  if( !_.aux.is( src ) )
   if( !_.entity.methodIteratorOf( src ) )
   return 8;
 
