@@ -25,11 +25,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'number';
@@ -38,11 +38,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = `bool`;
@@ -51,11 +51,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'set';
@@ -64,11 +64,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   /* */
@@ -79,11 +79,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   /* */
@@ -94,11 +94,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'date';
@@ -107,11 +107,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   /* */
@@ -122,11 +122,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Pure map with iterator';
@@ -136,11 +136,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   /* */
@@ -151,11 +151,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
   test.true( _.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Object with custom prototype';
@@ -165,11 +165,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPrototyped( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPrototyped( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'polluted map';
@@ -178,11 +178,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( _.mapIsPolluted( src ) );
 
   /* - */
@@ -211,11 +211,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'bool & boolLike & fuzzy';
@@ -224,11 +224,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'boolLike & number & fuzzyLike';
@@ -237,11 +237,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'fuzzy';
@@ -250,11 +250,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'bigint';
@@ -263,11 +263,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'str & regexpLike';
@@ -276,11 +276,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
@@ -289,11 +289,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'ArgumentsArray & arrayLike';
@@ -302,11 +302,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'unroll';
@@ -315,11 +315,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'array';
@@ -328,11 +328,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'long & longLike';
@@ -341,11 +341,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'vector & vectorLike';
@@ -354,11 +354,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'countable & countableLike';
@@ -367,11 +367,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Global & GlobalReal';
@@ -380,11 +380,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( _.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Global & GlobalDerived';
@@ -393,11 +393,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( _.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
@@ -406,11 +406,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
@@ -420,11 +420,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( _.auxiliary.isPrototyped( src ) );
+  test.true( _.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
@@ -433,11 +433,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( _.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
@@ -446,11 +446,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( _.mapIsPolluted( src ) );
 
   test.case = 'HashMap';
@@ -459,11 +459,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Set & SetLike';
@@ -472,11 +472,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferNode';
@@ -485,11 +485,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferRaw';
@@ -498,11 +498,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferRawShared';
@@ -511,11 +511,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferTyped';
@@ -524,11 +524,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferView';
@@ -537,11 +537,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferBytes & BufferTyped';
@@ -550,11 +550,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'err';
@@ -563,11 +563,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'escape';
@@ -576,11 +576,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'interval & BufferTyped';
@@ -589,11 +589,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'pair';
@@ -602,11 +602,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'path & str';
@@ -615,11 +615,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'propertyTransformer & filter';
@@ -628,11 +628,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'propertyTransformer & mapper';
@@ -641,11 +641,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'routine & routineLike';
@@ -654,11 +654,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'time';
@@ -667,11 +667,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'timer';
@@ -680,11 +680,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( _.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
   _.time.cancel( src );
 
@@ -694,11 +694,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'null';
@@ -707,11 +707,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'undefined';
@@ -720,11 +720,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Symbol null';
@@ -733,11 +733,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Symbol undefined';
@@ -746,11 +746,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Symbol Nothing';
@@ -759,11 +759,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'primitive';
@@ -772,11 +772,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'Symbol';
@@ -785,11 +785,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
@@ -798,11 +798,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'stream';
@@ -811,11 +811,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   // test.case = 'console';
@@ -824,11 +824,11 @@ function typingExtended( test )
   // test.true( !_.constructible.is( src ) );
   // test.true( _.object.like( src ) );
   // test.true( !_.object.is( src ) );
-  // test.true( _.auxiliary.is( src ) );
+  // test.true( _.aux.is( src ) );
   // test.true( !_.mapIs( src ) );
-  // test.true( _.auxiliary.isPrototyped( src ) );
+  // test.true( _.aux.isPrototyped( src ) );
   // test.true( !_.mapIsPure( src ) );
-  // test.true( _.auxiliary.isPolluted( src ) );
+  // test.true( _.aux.isPolluted( src ) );
   // test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'printerLike';
@@ -837,11 +837,11 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.is( src ) );
-  test.true( _.auxiliary.is( src ) );
+  test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( _.auxiliary.isPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
   test.true( _.mapIsPolluted( src ) );
 
   test.case = 'process';
@@ -850,11 +850,11 @@ function typingExtended( test )
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.is( src ) );
-  test.true( !_.auxiliary.is( src ) );
+  test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
-  test.true( !_.auxiliary.isPrototyped( src ) );
+  test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.auxiliary.isPolluted( src ) );
+  test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
 
   /* - */
@@ -936,11 +936,11 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       test.identical( _.object.is( src ), true );
       test.identical( _.object.like( src ), true );
       test.identical( _.mapIs( src ), !env.withIterator );
-      test.identical( _.auxiliary.is( src ), !env.withIterator );
-      test.identical( _.auxiliary.isPrototyped( src ), false );
+      test.identical( _.aux.is( src ), !env.withIterator );
+      test.identical( _.aux.isPrototyped( src ), false );
       test.identical( _.mapIsPure( src ), !!env.pure && !env.withIterator );
       test.identical( _.mapIsPolluted( src ), !env.pure && !env.withIterator );
-      test.identical( _.auxiliary.isPolluted( src ), !env.pure && !env.withIterator );
+      test.identical( _.aux.isPolluted( src ), !env.pure && !env.withIterator );
 
     }
 
@@ -958,11 +958,11 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       test.identical( _.object.is( src ), true );
       test.identical( _.object.like( src ), true );
       test.identical( _.mapIs( src ), false );
-      test.identical( _.auxiliary.is( src ), !env.withIterator && !env.withConstructor );
-      test.identical( _.auxiliary.isPrototyped( src ), !env.withIterator && !env.withConstructor );
+      test.identical( _.aux.is( src ), !env.withIterator && !env.withConstructor );
+      test.identical( _.aux.isPrototyped( src ), !env.withIterator && !env.withConstructor );
       test.identical( _.mapIsPure( src ), false );
       test.identical( _.mapIsPolluted( src ), false );
-      test.identical( _.auxiliary.isPolluted( src ), !env.pure && !env.withIterator && !env.withConstructor );
+      test.identical( _.aux.isPolluted( src ), !env.pure && !env.withIterator && !env.withConstructor );
 
     }
 

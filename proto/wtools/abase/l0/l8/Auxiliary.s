@@ -5,7 +5,7 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools.auxiliary = _global_.wTools.auxiliary || Object.create( null );
+let Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 // --
 // typing
@@ -20,7 +20,7 @@ var AuxiliaryExtension =
 
 }
 
-Object.assign( _.auxiliary, AuxiliaryExtension );
+Object.assign( _.aux, AuxiliaryExtension );
 
 // --
 // export

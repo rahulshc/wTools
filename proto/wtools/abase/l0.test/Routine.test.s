@@ -3059,8 +3059,8 @@ function routineDefaults( test )
   let add2 = _.routineDefaults( null, add1, { b : 5 } );
   test.true( add1 !== add2 );
   test.true( add1.defaults !== add2.defaults );
-  test.true( _.auxiliary.is( add1.defaults ) );
-  test.true( _.auxiliary.is( add2.defaults ) );
+  test.true( _.aux.is( add1.defaults ) );
+  test.true( _.aux.is( add2.defaults ) );
   test.true( add1.defaults.b === 3 );
   test.true( add2.defaults.b === 5 );
 
@@ -3096,8 +3096,8 @@ function routineDefaults( test )
   let add4 = _.routineDefaults( add3, { b : 5 } );
   test.true( add3 === add4 );
   test.true( add3.defaults === add4.defaults );
-  test.true( _.auxiliary.is( add3.defaults ) );
-  test.true( _.auxiliary.is( add4.defaults ) );
+  test.true( _.aux.is( add3.defaults ) );
+  test.true( _.aux.is( add4.defaults ) );
   test.true( add3.defaults.b === 5 );
   test.true( add4.defaults.b === 5 );
 

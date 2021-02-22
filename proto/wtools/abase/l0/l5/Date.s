@@ -29,6 +29,7 @@ let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 function toStr( date )
 {
+  debugger;
   let y = date.getFullYear();
   let m = date.getMonth() + 1;
   let d = date.getDate();

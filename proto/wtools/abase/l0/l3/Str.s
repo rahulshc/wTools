@@ -268,9 +268,9 @@ function toStrSimple()
 
 //
 
-/* qqq for Yevhen : write perfect test and maybe extend */
-/* qqq for Yevhen : use template strings in this file */
-/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix */
+/* qqq for Yevhen : write perfect test and maybe extend | aaa : Done.  */
+/* qqq for Yevhen : use template strings in this file | aaa : Done. */
+/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix | aaa : Done.  */
 function strEntityShort( src )
 {
   let result = '';
@@ -288,6 +288,8 @@ function strEntityShort( src )
     }
     else if( _.primitiveIs( src ) )
     {
+      if( _.bigIntIs( src ) )
+      return `${String( src )}n`;
       return String( src );
     }
     // else if( _.vectorAdapterIs( src ) )
@@ -578,16 +580,16 @@ function strTypeWithTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   {
 
     if( _.mapIsPure( src ) )
     return 'Map.pure';
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
+    else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
     return 'MapLike.pure.prototyped';
-    else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
+    else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
     return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
@@ -629,7 +631,7 @@ function strTypeWithoutTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   {
 
     if( _.mapIs( src ) )
@@ -678,7 +680,7 @@ function strTypeWithoutTraits( src )
 //     if( Object.getPrototypeOf( src ) === null )
 //     result = 'Map.pure';
 //     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.auxiliary.isPrototyped( src ) )
+//     else if( _.aux.isPrototyped( src ) )
 //     result = 'Map.prototyped';
 //   }
 //
