@@ -255,6 +255,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Map.s
           - ../proto/wtools/abase/l0/l5/Module.s
           - ../proto/wtools/abase/l0/l5/Number.s
+          - ../proto/wtools/abase/l0/l5/Object.s
           - ../proto/wtools/abase/l0/l5/Pair.s
           - ../proto/wtools/abase/l0/l5/Path.s
           - ../proto/wtools/abase/l0/l5/Process.s
@@ -307,6 +308,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Map.s
           - ../proto/wtools/abase/l0/l8/Module.s
           - ../proto/wtools/abase/l0/l8/Number.s
+          - ../proto/wtools/abase/l0/l8/Object.s
           - ../proto/wtools/abase/l0/l8/Pair.s
           - ../proto/wtools/abase/l0/l8/Path.s
           - ../proto/wtools/abase/l0/l8/Process.s
@@ -353,6 +355,7 @@ module:
           - ../proto/wtools/abase/l0.test/Minimal.test.s
           - ../proto/wtools/abase/l0.test/Module.test.s
           - ../proto/wtools/abase/l0.test/Number.test.s
+          - ../proto/wtools/abase/l0.test/Object.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
           - ../proto/wtools/abase/l0.test/Partible.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
