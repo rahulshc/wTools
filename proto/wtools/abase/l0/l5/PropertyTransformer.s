@@ -40,7 +40,7 @@ function mapperFromFilter( routine )
   function mapper( dstContainer, srcContainer, key )
   {
     let result = routine( dstContainer, srcContainer, key );
-    _.assert( _.boolIs( result ) );
+    _.assert( _.bool.is( result ) );
     if( result === false )
     return;
     dstContainer[ key ] = srcContainer[ key ];
@@ -55,7 +55,7 @@ function mapperFromFilter( routine )
     function mapper( dstContainer, srcContainer, key )
     {
       let result = routine2( dstContainer, srcContainer, key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return;
       dstContainer[ key ] = srcContainer[ key ];

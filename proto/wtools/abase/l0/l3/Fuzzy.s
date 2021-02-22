@@ -1,116 +1,122 @@
-( function _l3_Bool_s_()
+( function _l3_Fuzzy_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _.bool = _.bool || Object.create( null );
+let Self = _.fuzzy = _.fuzzy || Object.create( null );
 
 // --
-// bool
+// fuzzy
 // --
 
 /**
- * Returns true if entity ( src ) is a Boolean values - true and false.
- * @function boolIs
+ * Returns true if entity ( src ) is a Boolean values - true and false or Symbol(maybe).
+ * @function fuzzyIs
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
  * @example
- * var got = _.bool.is( '' );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.is( 1 );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.is( true );
+ * var got = _.fuzzy.is( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.is( false );
+ * var got = _.fuzzy.is( false );
  * console.log( got )
  * // log true
+ *
+ * @example
+ * var got = _.fuzzy.is( _.maybe );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzy.is( '1' );
+ * console.log( got )
+ * // log false
  *
  */
 
 function is( src )
 {
-  return src === true || src === false;
+  return src === true || src === false || src === _.maybe;
 }
 
 //
 
 /**
- * Routine boolLike() returns true if entity ( src ) is a Boolean values - true and false or Numbers 1 and 0.
- * @function boolLike
+ * Returns true if entity ( src ) is a Boolean or a Number or Symbol(maybe).
+ * @function fuzzyLike
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
  * @example
- * var got = _.bool.like( false );
+ * var got = _.fuzzy.like( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.like( true );
+ * var got = _.fuzzy.like( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.like( 1 );
+ * var got = _.fuzzy.like( _.maybe );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.like( 0 );
+ * var got = _.fuzzy.like( 1 );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.like( '0' );
+ * var got = _.fuzzy.like( '1' );
  * console.log( got )
  * // log false
- *
  */
 
 function like( src )
 {
+  if( src === _.maybe )
+  return true;
   return src === true || src === false || src === 0 || src === 1;
   // let type = Object.prototype.toString.call( src );
-  // return type === '[object Boolean]' || src === 0 || src === 1;
+  // return type === '[object Boolean]' || type === '[object Number]';
 }
 
 //
 
 /**
- * Returns true if entity ( src ) is Boolean value - false or Number - 0.
- * @function boolLikeFalse
+ * Returns true if entity ( src ) is false or 0.
+ * @function fuzzyLikeFalse
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
  * @example
- * var got = _.bool.likeFalse( 0 );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.likeFalse( 1 );
+ * var got = _.fuzzy.likeFalse( true );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.bool.likeFalse( false );
+ * var got = _.fuzzy.likeFalse( false );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.likeFalse( true );
+ * var got = _.fuzzy.likeFalse( _.maybe );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzy.likeFalse( 0 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzy.likeFalse( '1' );
  * console.log( got )
  * // log false
  *
@@ -118,7 +124,7 @@ function like( src )
 
 function likeFalse( src )
 {
-  if( !_.bool.like( src ) )
+  if( !_.fuzzy.like( src ) )
   return false;
   return !src;
 }
@@ -126,28 +132,33 @@ function likeFalse( src )
 //
 
 /**
- * Returns true if entity ( src ) is Boolean value - true or Number - 1.
- * @function boolLikeTrue
+ * Returns true if entity ( src ) is true or a Number which is not 0.
+ * @function fuzzyLikeTrue
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
- * @example
- * var got = _.bool.likeTrue( 0 );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.likeTrue( 1 );
+ *  @example
+ * var got = _.fuzzy.likeTrue( true );
  * console.log( got )
  * // log true
  *
  * @example
- * var got = _.bool.likeTrue( false );
+ * var got = _.fuzzy.likeTrue( false );
  * console.log( got )
  * // log false
  *
  * @example
- * var got = _.bool.likeTrue( true );
+ * var got = _.fuzzy.likeTrue( _.maybe );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzy.likeTrue( 0 );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzy.likeTrue( 10 );
  * console.log( got )
  * // log true
  *
@@ -155,7 +166,9 @@ function likeFalse( src )
 
 function likeTrue( src )
 {
-  if( !_.bool.like( src ) )
+  if( !_.fuzzy.like( src ) )
+  return false;
+  if( src === _.maybe )
   return false;
   return !!src;
 }
@@ -169,10 +182,10 @@ let ExtensionTools =
 
   /* qqq : cover and document all that ( not Dmytro ) | Done. Yevhen S.  */
 
-  boolIs : is,
-  boolLike : like,
-  boolLikeFalse : likeFalse,
-  boolLikeTrue : likeTrue,
+  fuzzyIs : is,
+  fuzzyLike : like,
+  fuzzyLikeFalse : likeFalse,
+  fuzzyLikeTrue : likeTrue,
 
 }
 

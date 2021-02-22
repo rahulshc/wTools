@@ -3442,10 +3442,10 @@ function exportStringShortFine( test )
   var expected = '{- Readable.constructible with 1 elements -}';
   test.identical( _.entity.exportStringShortFine( src ), expected );
 
-  test.case = 'console';
-  var src = console;
-  var expected = '{- Console.constructible with 1 elements -}';
-  test.identical( _.entity.exportStringShortFine( src ), expected );
+  // test.case = 'console';
+  // var src = console;
+  // var expected = '{- Console.constructible with 1 elements -}';
+  // test.identical( _.entity.exportStringShortFine( src ), expected );
 
   test.case = 'printerLike';
   var src = _global.logger;
@@ -3811,7 +3811,7 @@ function strTypeWithTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.toStrSolo( src );
+    return _globals_.testing.wTools.entity.exportStringSolo( src );
   }
 
 }
@@ -3877,7 +3877,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.toStrSolo( src );
+    return _globals_.testing.wTools.entity.exportStringSolo( src );
   }
 
 }

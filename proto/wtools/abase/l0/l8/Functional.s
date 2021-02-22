@@ -378,7 +378,7 @@ function eachSample( o )
   /* */
 
   let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
-  if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   if( keys.length === 0 )
   return o.result ? o.result : 0;

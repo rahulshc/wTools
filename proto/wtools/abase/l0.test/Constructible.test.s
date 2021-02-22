@@ -972,7 +972,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.toStrSolo( src );
+    return _globals_.testing.wTools.entity.exportStringSolo( src );
   }
 
 }

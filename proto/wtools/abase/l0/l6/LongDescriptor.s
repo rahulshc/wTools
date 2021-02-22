@@ -106,7 +106,7 @@ function _longDeclare( o )
   _.assert( _.routineIs( o.make ) || o.make === null );
   _.assert( _.routineIs( o.from ) || o.from === null );
   _.assert( _.routineIs( o.is ) || o.make === null );
-  _.assert( _.boolIs( o.isTyped ) );
+  _.assert( _.bool.is( o.isTyped ) );
   _.assert( LongDescriptors[ o.name ] === undefined );
 
   if( !o.is )

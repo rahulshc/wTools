@@ -1999,7 +1999,7 @@ function assertWithoutBreakpoint( condition )
   if( Config.debug === false )
   return true;
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !_.bool.like( condition ) )
   {
     if( arguments.length === 1 )
     throw _err
@@ -2060,7 +2060,7 @@ function assertWarn( condition )
   if( Config.debug )
   return;
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !_.bool.like( condition ) )
   {
     console.warn.apply( console, [].slice.call( arguments, 1 ) );
   }

@@ -2942,9 +2942,9 @@ function strLinesSelect( o )
   _.routineOptions( strLinesSelect, o );
   _.assert( arguments.length <= 3 );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.boolLike( o.highlighting ) || _.longHas( [ '*' ], o.highlighting ) );
+  _.assert( _.bool.like( o.highlighting ) || _.longHas( [ '*' ], o.highlighting ) );
 
-  if( _.boolLike( o.highlighting ) && o.highlighting )
+  if( _.bool.like( o.highlighting ) && o.highlighting )
   o.highlighting = '*';
 
   /* range */

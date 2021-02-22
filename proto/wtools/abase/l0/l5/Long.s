@@ -3641,7 +3641,7 @@ function longCountTotal( srcArray )
 
   for( let i = 0 ; i < srcArray.length ; i++ )
   {
-    _.assert( _.boolIs( srcArray[ i ] ) || _.number.is( srcArray[ i ] ) || srcArray[ i ] === null );
+    _.assert( _.bool.is( srcArray[ i ] ) || _.number.is( srcArray[ i ] ) || srcArray[ i ] === null );
     result += srcArray[ i ];
   }
 

@@ -793,7 +793,7 @@ function stack( stack, range )
 function stackRelative( stack, delta )
 {
   _.assert( delta === undefined || _.number.is( delta ) );
-  _.assert( stack === undefined || stack === null || _.boolIs( stack ) || _.number.is( stack ) || _.strIs( stack ) );
+  _.assert( stack === undefined || stack === null || _.bool.is( stack ) || _.number.is( stack ) || _.strIs( stack ) );
   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
 
   if( _.strIs( stack ) )
