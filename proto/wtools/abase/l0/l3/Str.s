@@ -712,6 +712,7 @@ function strParseType( src )
     let splitted = src.split( ' ' );
     let type = splitted[ 1 ];
     let length = src.match( /\d+/g );
+
     if( length !== null )
     length = length[ length.length - 1 ];
 
