@@ -31,10 +31,10 @@ function strQuote( o )
 
   let src = o.src;
 
-  if( !_.primitiveIs( src ) )
+  if( !_.primitive.is( src ) )
   src = _.entity.exportString( src );
 
-  _.assert( _.primitiveIs( src ) );
+  _.assert( _.primitive.is( src ) );
 
   let result = o.quote + String( src ) + o.quote;
 
@@ -3253,7 +3253,7 @@ function strFrom( src )
   if( src === undefined )
   return src;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   if( _.bufferAnyIs( src ) )

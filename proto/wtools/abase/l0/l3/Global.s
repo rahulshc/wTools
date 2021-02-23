@@ -15,7 +15,7 @@ function is( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( src === _global_ )
@@ -33,7 +33,7 @@ function isReal( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  // if( _.primitiveIs( src ) )
+  // if( _.primitive.is( src ) )
   // return false;
 
   if( src === _realGlobal_ )
@@ -47,7 +47,7 @@ function isDerivative( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  // if( _.primitiveIs( src ) )
+  // if( _.primitive.is( src ) )
   // return false;
 
   if( _.global.is( src ) && !_.global.isReal( src ) )

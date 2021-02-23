@@ -9975,7 +9975,7 @@ var mapOwn = function( object,name )
   return _ObjectHasOwnProperty.call( object, name );
   else if( _.mapIs( name ) )
   return _ObjectHasOwnProperty.call( object, _.nameUnfielded( name ).coded );
-  else if( _.symbolIs( name ) )
+  else if( _.symbol.is( name ) )
   return _ObjectHasOwnProperty.call( object, name );
 
   _.assert( 0,'mapOwn :','unknown type of name :',_.strTypeOf( name ) );

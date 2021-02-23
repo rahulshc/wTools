@@ -47,7 +47,7 @@ let notLongSymbol = Symbol.for( 'notLong' );
 function longIs( src ) /* qqq : check coverage */
 {
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
   if( _.routineIs( src ) )
   return false;
@@ -92,7 +92,7 @@ function longIsPopulated( src )
 /* xxx : introduce vectorIs. remove check methodIteratorOf from here */
 function longLike( src ) /* qqq : cover */
 {
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
   // if( _.entity.methodIteratorOf( src ) ) /* yyy */
   // // if( !_.mapIs( src ) && _.object.is( src ) )

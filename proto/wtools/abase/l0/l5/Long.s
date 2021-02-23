@@ -3259,9 +3259,9 @@ function longHasAny( /* src, ins, evaluator1, evaluator2 */ )
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
-  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( ins ) || _.primitive.is( ins ) );
 
-  if( _.primitiveIs( ins ) )
+  if( _.primitive.is( ins ) )
   ins = [ ins ];
 
   let i = 0;
@@ -3348,9 +3348,9 @@ function longHasAll( /* src, ins, evaluator1, evaluator2 */ )
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
-  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( ins ) || _.primitive.is( ins ) );
 
-  if( _.primitiveIs( ins ) )
+  if( _.primitive.is( ins ) )
   ins = [ ins ];
 
   if( ins.length === 0 )
@@ -3438,9 +3438,9 @@ function longHasNone( /* src, ins, evaluator1, evaluator2 */ )
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.entity.strType( src ) }` );
-  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( ins ) || _.primitive.is( ins ) );
 
-  if( _.primitiveIs( ins ) )
+  if( _.primitive.is( ins ) )
   ins = [ ins ];
 
   let i = 0;

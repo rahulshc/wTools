@@ -1889,22 +1889,22 @@ function unrollFromMaybe( test )
   test.case = 'src - empty string';
   var got = _.unrollFromMaybe( '' );
   test.identical( got, '' );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - string';
   var got = _.unrollFromMaybe( 'str' );
   test.identical( got, 'str' );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - booleant - true';
   var got = _.unrollFromMaybe( true );
   test.identical( got, true );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - booleant - false';
   var got = _.unrollFromMaybe( false );
   test.identical( got, false );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - empty map';
   var got = _.unrollFromMaybe( {} );
@@ -2083,22 +2083,22 @@ function unrollFromMaybeLongDescriptor( test )
     test.case = 'src - empty string';
     var got = descriptor.unrollFromMaybe( '' );
     test.identical( got, '' );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - string';
     var got = descriptor.unrollFromMaybe( 'str' );
     test.identical( got, 'str' );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - booleant - true';
     var got = descriptor.unrollFromMaybe( true );
     test.identical( got, true );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - booleant - false';
     var got = descriptor.unrollFromMaybe( false );
     test.identical( got, false );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - empty map';
     var got = descriptor.unrollFromMaybe( {} );
