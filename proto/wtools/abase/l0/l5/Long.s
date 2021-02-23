@@ -53,7 +53,7 @@ function _longMake_functor( onMake )
       {
         length = src.length;
       }
-      else if( _.numberIs( src ) )
+      else if( _.number.is( src ) )
       {
         length = src;
         src = null;
@@ -114,7 +114,7 @@ function _longMake_functor( onMake )
     src = this.longDescriptor.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.numberIsFinite( length ) );
+    _.assert( _.number.isFinite( length ) );
     _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
@@ -296,7 +296,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //     {
 //       length = src.length;
 //     }
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     {
 //       length = src;
 //       src = null;
@@ -335,7 +335,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //   src = this.longDescriptor.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
 //   if( _.routineIs( src ) )
@@ -533,7 +533,7 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
 //     {
 //       len = src.length;
 //     }
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     {
 //       len = src;
 //       src = null;
@@ -551,7 +551,7 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
 //   src = this.longDescriptor.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( len ) );
+//   _.assert( _.number.isFinite( len ) );
 //   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
 //   if( _.routineIs( src ) )
@@ -714,7 +714,7 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //     {
 //       length = 0;
 //     }
-//     else if( _.numberIs( ins ) )
+//     else if( _.number.is( ins ) )
 //     {
 //       length = ins;
 //       ins = null;
@@ -728,7 +728,7 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //   {
 //     if( _.longLike( len ) )
 //     length = len.length;
-//     else if( _.numberIs( len ) )
+//     else if( _.number.is( len ) )
 //     length = len;
 //     else _.assert( 0 );
 //   }
@@ -737,7 +737,7 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //   ins = null;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
@@ -801,7 +801,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //   {
 //     if( _.longLike( src ) )
 //     length = src.length;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0, 'Expects long or number as the second argument, got', _.entity.strType( src ) );
 //   }
@@ -810,7 +810,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.number.isFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
@@ -859,7 +859,7 @@ function longMakeFilling( type, value, length )
   length = length.length;
 
   _.assert( value !== undefined );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.number.is( length ) );
   _.assert( type === null || _.routineIs( type ) || _.longIs( type ) );
 
   result = this.longMake( type, length );
@@ -1008,7 +1008,7 @@ function longFill( src, value, range )
 
   if( range === undefined )
   range = [ 0, src.length ];
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -1049,7 +1049,7 @@ function longFill_( src, ins, cinterval )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -1149,7 +1149,7 @@ function longDuplicate( o ) /* xxx : review interface */
   o.nScalarsPerElement = o.src.length;
 
   _.routineOptions( longDuplicate, o );
-  _.assert( _.numberIs( o.nDupsPerElement ) );
+  _.assert( _.number.is( o.nDupsPerElement ) );
   _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
   _.assert( _.intIs( o.src.length / o.nScalarsPerElement ) );
 
@@ -1291,8 +1291,8 @@ function _longShallow( src, f, l )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.longIs( src ), 'Expects long {-src-}' );
-  _.assert( f === undefined || _.numberIs( f ) );
-  _.assert( l === undefined || _.numberIs( l ) );
+  _.assert( f === undefined || _.number.is( f ) );
+  _.assert( l === undefined || _.number.is( l ) );
 
   /* xxx qqq for Dmytro : check and cover */
 
@@ -1397,8 +1397,8 @@ function longRepresent( src, begin, end )
 //
 //   if( _.arrayLikeResizable( array ) )
 //   {
-//     _.assert( f === undefined || _.numberIs( f ) );
-//     _.assert( l === undefined || _.numberIs( l ) );
+//     _.assert( f === undefined || _.number.is( f ) );
+//     _.assert( l === undefined || _.number.is( l ) );
 //     result = array.slice( f, l );
 //     return result;
 //   }
@@ -1406,8 +1406,8 @@ function longRepresent( src, begin, end )
 //   f = f !== undefined ? f : 0;
 //   l = l !== undefined ? l : array.length;
 //
-//   _.assert( _.numberIs( f ) );
-//   _.assert( _.numberIs( l ) );
+//   _.assert( _.number.is( f ) );
+//   _.assert( _.number.is( l ) );
 //
 //   if( f < 0 )
 //   f = array.length + f;
@@ -1693,7 +1693,7 @@ function longEmpty( dstLong )
 //   if( _.arrayIs( array ) )
 //   return _.arrayBut( array, range, val );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, range + 1 ];
 //
 //   _.assert( _.longLike( array ) );
@@ -1702,7 +1702,7 @@ function longEmpty( dstLong )
 //   // _.assert( _.longLike( range ), 'not tested' );
 //   // _.assert( !_.longLike( range ), 'not tested' );
 //
-//   // if( _.numberIs( range ) )
+//   // if( _.number.is( range ) )
 //   // range = [ range, range + 1 ];
 //
 //   _.ointerval.clamp/*rangeClamp*/( range, [ 0, array.length ] );
@@ -1824,7 +1824,7 @@ function longEmpty( dstLong )
 //
 //   if( range === undefined )
 //   return array;
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, range + 1 ];
 //
 //   _.assert( _.longLike( array ) );
@@ -1849,7 +1849,7 @@ function longEmpty( dstLong )
 //   // _.assert( 0, 'not implemented' )
 //
 //   //
-//   // if( _.numberIs( range ) )
+//   // if( _.number.is( range ) )
 //   // range = [ range, range + 1 ];
 //   //
 //   // _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
@@ -1897,7 +1897,7 @@ function longEmpty( dstLong )
 // //   {
 // //     /* aaa2 : wrong. src could pass check intervalIs if length is 2 */
 // //     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
-// //     // if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
+// //     // if( arguments.length > 1 && !_.intervalIs( src ) && !_.number.is( src ) )
 // //     // {
 // //     //   _.assert( _.longLike( dst ) );
 // //     // }
@@ -1946,7 +1946,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
     cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( cinterval ) )
+  else if( _.number.is( cinterval ) )
   {
     cinterval = [ cinterval, cinterval ];
   }
@@ -2099,7 +2099,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   // return _.longMake( array, array.length ? array.length : 0 );
 //   return _.longJoin( array );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, array.length ];
 //
 //   // let f = range ? range[ 0 ] : undefined;
@@ -2240,7 +2240,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //
 //   if( range === undefined )
 //   return array;
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, array.length ];
 //
 //   _.assert( _.longLike( array ) );
@@ -2259,7 +2259,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   // if( range === undefined )
 //   // return array;
 //   //
-//   // if( _.numberIs( range ) )
+//   // if( _.number.is( range ) )
 //   // range = [ range, array.length ];
 //   //
 //   // // let f = range ? range[ 0 ] : undefined;
@@ -2270,8 +2270,8 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   //
 //   // _.assert( _.longLike( array ) );
 //   // _.assert( _.intervalIs( range ) )
-//   // // _.assert( _.numberIs( f ) );
-//   // // _.assert( _.numberIs( l ) );
+//   // // _.assert( _.number.is( f ) );
+//   // // _.assert( _.number.is( l ) );
 //   // _.assert( 1 <= arguments.length && arguments.length <= 3 );
 //   // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 //   //
@@ -2339,7 +2339,7 @@ function longOnly_( dst, src, cinterval )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
@@ -2484,7 +2484,7 @@ function longOnly_( dst, src, cinterval )
 //   if( range === undefined )
 //   return _.longJoin( array );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ 0, range ];
 //
 //   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
@@ -2615,7 +2615,7 @@ function longOnly_( dst, src, cinterval )
 //
 //   if( range === undefined )
 //   return array;
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ 0, range ];
 //
 //   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
@@ -2663,7 +2663,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
@@ -2815,7 +2815,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //   return _.longJoin( array );
 //   // return _.longMake( array );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, array.length ];
 //
 //   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
@@ -2937,7 +2937,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //
 //   if( range === undefined )
 //   return array;
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, array.length ];
 //
 //   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
@@ -2981,7 +2981,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
@@ -3641,7 +3641,7 @@ function longCountTotal( srcArray )
 
   for( let i = 0 ; i < srcArray.length ; i++ )
   {
-    _.assert( _.bool.is( srcArray[ i ] ) || _.numberIs( srcArray[ i ] ) || srcArray[ i ] === null );
+    _.assert( _.bool.is( srcArray[ i ] ) || _.number.is( srcArray[ i ] ) || srcArray[ i ] === null );
     result += srcArray[ i ];
   }
 

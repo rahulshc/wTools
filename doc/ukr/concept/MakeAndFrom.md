@@ -35,8 +35,8 @@
   * `_.cinterval.fromLeft`
   * `_.cinterval.fromRight`
   * `_.cinterval.fromSingle`
-  * `_.bigIntFrom`
-  * `_.bigIntsFrom`
+  * `_.bigInt.from`
+  * `_.bigInt.s.from`
   * `_.property.mapperFromFilter`
   * `_.property.mapperFrom`
   * `_.property.filterFrom`
@@ -63,12 +63,12 @@
   * `_.longFromProgressionArithmetic`
   * `_.longFromRangeWithStep`
   * `_.longFromRangeWithNumberOfSteps`
-  * `_.numberFrom`
-  * `_.numbersFrom`
-  * `_.numberFromStr`
-  * `_.numberFromStrMaybe`
-  * `_.numbersFromNumber`
-  * `_.numbersFromInt`
+  * `_.number.from`
+  * `_.number.s.from`
+  * `_.number.fromStr`
+  * `_.number.fromStrMaybe`
+  * `_.number.s.fromNumber`
+  * `_.number.s.fromInt`
   * `_.arrayFrom`
   * `_.arrayFromLongDescriptor`
   * `_.arrayFromCoercing`
@@ -141,7 +141,7 @@ console.log( got === src ); /* log : true */</code></pre>
   if( src === null || src === undefined )
   return new Array();
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return new Array( src );
 
   if( src.length === 1 )

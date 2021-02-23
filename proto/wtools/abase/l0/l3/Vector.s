@@ -20,7 +20,7 @@ function is( src )
   return false;
 
   if( _.entity.methodIteratorOf( src ) )
-  if( _.numberIs( src.length ) ) /* yyy */
+  if( _.number.is( src.length ) ) /* yyy */
   if( !_.mapIs( src ) )
   return true;
 

@@ -45,7 +45,7 @@ function fromMaybe( src )
   {
     return src;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     return !!src;
   }
