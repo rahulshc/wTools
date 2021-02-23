@@ -149,7 +149,7 @@ function like( test )
   test.true( _.container.like( src ) );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.true( !_.container.like( src ) );
 
   test.case = 'BufferRaw';
@@ -401,7 +401,7 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 0 );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.identical( _.container.lengthOf( src ), 3 );
 
   test.case = 'BufferRaw';
