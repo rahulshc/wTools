@@ -398,9 +398,6 @@ let Routines =
   nullIs,
   nothingIs,
   definedIs,
-  primitiveIs,
-  _primitiveIs,
-  symbolIs,
 
   //
 
