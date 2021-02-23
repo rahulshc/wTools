@@ -704,16 +704,32 @@ function strParseType( src )
   if( !( /^{- .+ -}$/g.test( src ) ) )
   return Object.create( null );
 
+  src = src.slice( 3, -3 );
+
+  return _.entity._strParseType( src );
+
+}
+
+//
+
+function _strParseType( src )
+{
+  let o =
+  {
+    type : '',
+    traits : [],
+  }
+
   let splitted = src.split( ' ' );
-  let type = splitted[ 1 ];
-  let length = isNaN( +splitted[ 3 ] ) ? null : +splitted[ 3 ];
+  let type = splitted[ 0 ];
+  let length = isNaN( +splitted[ 2 ] ) ? null : +splitted[ 2 ];
 
   if( type.indexOf( '.' ) === -1 )
   {
     o.type = type;
 
     if( o.type === 'Symbol' || o.type === 'routine' )
-    o.name = splitted[ 2 ];
+    o.name = splitted[ 1 ];
   }
   else
   {
@@ -1350,6 +1366,7 @@ let ExtensionEntity =
   strTypeWithTraits,
   strTypeWithoutTraits,
   strParseType,
+  _strParseType,
 
   // fields
 
