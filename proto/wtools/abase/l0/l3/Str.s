@@ -677,8 +677,23 @@ function strTypeWithoutTraits( src )
 
 function strParseType( src )
 {
+  /*
+  - 'string'                  => '{- String -}'
+  - '5'                       => '{- Number -}'
+  - '5n'                      => '{- BigInt -}'
+  - 'null'                    => '{- Null -}'
+  - 'undefined'               => '{- Undefined -}'
+  - '{- Symbol undefined -}'  => '{- Symbol.undefined -}'
+  - '{- routine name -}'      => '{- routine.name -}'
+  - '{- routine.anonymous -}'
+  - '{- Map -}'
+  - '{- Map with 9 elements -}'
+  - '{- Map.polluted with 9 elements -}'
+
+  */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ), 'Expects string' );
 
   let o =
   {
@@ -687,21 +702,15 @@ function strParseType( src )
     // length if any
   }
 
-  if( _.primitiveIs( src ) )
-  return end( _.entity.strTypeSecondary( src ) );
+  let isPrimitive = src.indeOf( '{-' ) === -1;
 
-  let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
-  return end( proto.constructor.name );
-
-  return end( _.entity.strTypeSecondary( src ) );
-
-  function end( result )
+  if( isPrimitive )
   {
-    let translated = _.entity.TranslatedTypeMap[ result ];
-    if( translated )
-    result = translated;
-    return result;
+
+  }
+  else
+  {
+
   }
 
 }
