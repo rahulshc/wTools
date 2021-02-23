@@ -170,6 +170,7 @@ let ExtensionS =
 
   from : setsFrom,
   toArrays : setsToArrays,
+  areIdenticalShallow
 }
 
 //

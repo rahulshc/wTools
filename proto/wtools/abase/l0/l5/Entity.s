@@ -39,19 +39,19 @@ function identicalShallow( src1, src2 )
     }
     return methodEqual( src1, src2 );
   }
-  else if( _.hashMapLike( src1 ) )
+  else if( _.hashMap.like( src1 ) )
   {
     /*
       - hashmap
     */
-    return _.hashMapsAreIdenticalShallow( src1, src2 )
+    return _.hashMap.s.areIdenticalShallow( src1, src2 )
   }
-  else if( _.setLike( src1 ) )
+  else if( _.set.like( src1 ) )
   {
     /*
       - set
     */
-    return _.setsAreIdenticalShallow( src1, src2 );
+    return _.set.s.areIdenticalShallow( src1, src2 );
   }
   else if( _.bufferAnyIs( src1 ) )
   {
