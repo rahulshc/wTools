@@ -252,46 +252,6 @@ function consoleIs( src )
 
 //
 
-function printerIs( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( !src )
-  return false;
-
-  if( _.routineIs( src ) )
-  return false;
-
-  let prototype = Object.getPrototypeOf( src );
-  if( !prototype )
-  return false;
-
-  if( src.MetaType === 'Printer' )
-  return true;
-
-  return false;
-}
-
-//
-
-function printerLike( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( printerIs( src ) )
-  return true;
-
-  if( consoleIs( src ) )
-  return true;
-
-  if( src === _global_.logger )
-  return true;
-
-  return false;
-}
-
-//
-
 function loggerIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -413,8 +373,6 @@ let Routines =
   workerIs,
   streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
   consoleIs,
-  printerIs,
-  printerLike,
   loggerIs,
   processIs,
   procedureIs,

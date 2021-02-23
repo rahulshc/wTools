@@ -3485,7 +3485,7 @@ function exportStringShortDiagnostic( test )
   // var expected = '{- Console.constructible with 1 elements -}';
   // test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
-  /* qqq : for Yevhen : introduce namespace::printer */
+  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
   test.case = 'printerLike'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
