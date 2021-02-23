@@ -699,19 +699,38 @@ function strParseType( src )
   {
     type : '',
     traits : [],
-    // length if any
   }
 
-  let isPrimitive = src.indeOf( '{-' ) === -1;
+  let isPrimitive = src.indexOf( '{-' ) === -1;
 
   if( isPrimitive )
   {
-
+    // implement
   }
   else
   {
+    let splitted = src.split( ' ' );
+    let type = splitted[ 1 ];
+    let length = src.match( /\d+/g );
+    if( length !== null )
+    length = length[ length.length - 1 ];
 
+    if( type.indexOf( '.' ) === -1 )
+    {
+      o.type = type;
+    }
+    else
+    {
+      let typeAndTraits = type.split( '.' );
+      o.type = typeAndTraits[ 0 ];
+      o.traits = typeAndTraits.slice( 1 );
+    }
+
+    if( length )
+    o.length = +length;
   }
+
+  return o;
 
 }
 

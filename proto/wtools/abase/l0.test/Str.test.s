@@ -4152,7 +4152,7 @@ function strParseType( test )
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'Set with 3 elems';
-  var expected = '{- Set with 3 elements -}';
+  var src = '{- Set with 3 elements -}';
   var expected =
   {
     type : 'Set',
@@ -4303,7 +4303,6 @@ function strParseType( test )
     length : 9
   };
   test.identical( _.entity.strParseType( src ), expected );
-  _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = '2021-02-19T11:26:42.840Z';
