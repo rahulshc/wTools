@@ -37,7 +37,7 @@ function _formatAffixesBackground( color )
 function formatBackground( srcStr, color )
 {
 
-  if( _.numberIs( color ) )
+  if( _.number.is( color ) )
   color = _.color.colorNameNearest( color );
 
   _.assert( arguments.length === 2, 'Expects 2 arguments' );
@@ -67,7 +67,7 @@ function _formatAffixesForeground( color )
 function formatForeground( srcStr, color )
 {
 
-  if( _.numberIs( color ) )
+  if( _.number.is( color ) )
   color = _.color.colorNameNearest( color );
 
   _.assert( arguments.length === 2, 'Expects 2 arguments' );
@@ -82,7 +82,7 @@ function formatForeground( srcStr, color )
 function _strEscape( srcStr )
 {
   let result = srcStr;
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
@@ -96,7 +96,7 @@ let escape = _.routineVectorize_functor( _strEscape );
 function _strUnescape( srcStr )
 {
   let result = srcStr;
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
@@ -236,7 +236,7 @@ function _format( srcStr, style )
 {
   let result = srcStr;
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );

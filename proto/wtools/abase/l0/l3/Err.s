@@ -908,7 +908,7 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.catchLocation.abstraction ) );
+    _.assert( _.number.is( o.catchLocation.abstraction ) );
     if( !o.catchLocation.abstraction || o.catchLocation.abstraction === 1 )
     {
       if( o.throwsStack )
@@ -1462,7 +1462,7 @@ function errRestack( err, level )
   if( level === undefined )
   level = 1;
 
-  if( !_.numberDefined( level ) )
+  if( !_.number.defined( level ) )
   throw Error( 'Expects defined number' );
 
   let err2 = _._err

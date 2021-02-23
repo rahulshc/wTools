@@ -38,7 +38,7 @@ function isPopulated( ointerval )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < ointerval[ 0 ] )
 //   return false;
@@ -57,7 +57,7 @@ function isPopulated( ointerval )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber <= ointerval[ 0 ] )
 //   return false;
@@ -76,7 +76,7 @@ function isPopulated( ointerval )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < ointerval[ 0 ] )
 //   return false;
@@ -95,7 +95,7 @@ function isPopulated( ointerval )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < ointerval[ 0 ] )
 //   return false;
@@ -119,7 +119,7 @@ function has( ointerval, src )
     if( src[ 1 ] > ointerval[ 1 ] )
     return false;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( src < ointerval[ 0 ] )
     return false;
@@ -166,7 +166,7 @@ function fromSingle( ointerval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( ointerval ) )
+  if( _.number.is( ointerval ) )
   return [ ointerval, ointerval + 1 ];
 
   _.assert( _.longIs( ointerval ) );
@@ -177,16 +177,16 @@ function fromSingle( ointerval )
     if( ointerval[ 1 ] === undefined )
     return [ 0, 1 ];
 
-    _.assert( _.numberIs( ointerval[ 1 ] ) );
+    _.assert( _.number.is( ointerval[ 1 ] ) );
     return [ ointerval[ 1 ] - 1, ointerval[ 1 ] ];
   }
 
-  _.assert( _.numberIs( ointerval[ 0 ] ) );
+  _.assert( _.number.is( ointerval[ 0 ] ) );
 
   if( ointerval[ 1 ] === undefined )
   return [ ointerval[ 0 ], ointerval[ 0 ] + 1 ];
 
-  _.assert( _.numberIs( ointerval[ 1 ] ) );
+  _.assert( _.number.is( ointerval[ 1 ] ) );
 
   return ointerval;
 }
@@ -199,7 +199,7 @@ function clamp( dstRange, clampRange )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.intervalIs( dstRange ) );
 
-  if( _.numberIs( clampRange ) )
+  if( _.number.is( clampRange ) )
   {
     dstRange[ 0 ] = clampRange;
     dstRange[ 1 ] = clampRange;
@@ -233,7 +233,7 @@ function countElements( ointerval, increment )
   if( increment === undefined )
   increment = 1;
 
-  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+  _.assert( _.number.is( increment ), 'Increment should has a number value' );
 
   if( increment )
   {

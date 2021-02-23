@@ -305,7 +305,7 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.entity.methodIteratorOf( container ) )
+    else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
     {
       return [ ... container ][ key ];
     }

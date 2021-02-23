@@ -36,7 +36,7 @@ function Make( src )
 {
   if( src === undefined || src === null )
   return this.MakeEmpty();
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   return new ContainerAdapterSet( new Set );
   else if( this.IsContainer( src ) )
   return new ContainerAdapterSet( new Set( src ) );
@@ -74,7 +74,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
 
     let fromIndex = 0;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       fromIndex = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -142,7 +142,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       let from = 0;
       let result = 0;
-      if( _.numberIs( onEvaluate1 ) )
+      if( _.number.is( onEvaluate1 ) )
       {
         from = onEvaluate1;
         onEvaluate1 = onEvaluate2;
@@ -378,7 +378,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       let from = 0;
       let result = 0;
-      if( _.numberIs( onEvaluate1 ) )
+      if( _.number.is( onEvaluate1 ) )
       {
         from = onEvaluate1;
         onEvaluate1 = onEvaluate2;
@@ -413,7 +413,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let from = 0;
     let index = -1;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       from = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -446,7 +446,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let temp = [ ... this.original ];
     let to = this.length;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       to = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -469,7 +469,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let index = -1;
     let result;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       from = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -513,7 +513,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let temp = [ ... this.original ];
     let result;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       to = onEvaluate1;
       onEvaluate1 = onEvaluate2;

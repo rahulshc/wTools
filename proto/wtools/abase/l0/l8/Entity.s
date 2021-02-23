@@ -51,7 +51,7 @@ function uncountableSize( src )
   if( _.primitive.is( src ) )
   return 8;
 
-  if( _.numberIs( src.byteLength ) )
+  if( _.number.is( src.byteLength ) )
   return src.byteLength;
 
   if( _.regexpIs( src ) )
@@ -127,7 +127,7 @@ function entitySize( src )
   function onEach( e, k, it )
   {
 
-    if( !_.numberDefined( result ) )
+    if( !_.number.defined( result ) )
     {
       it.iterator.continue = false;
       return;
