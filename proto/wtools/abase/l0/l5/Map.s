@@ -4375,14 +4375,6 @@ let Extension =
   mapSupplementRemovingRecursive,
   mapSupplementByMapsRemovingRecursive,
 
-<<<<<<< HEAD
-  // hash map
-
-  hashMapsAreIdenticalShallow,
-  hashMapExtend,
-
-=======
->>>>>>> b7c2d0b0b6eb3abb25d956799683fc2d42f5ecd5
   // map selector
 
   mapOnlyPrimitives,
