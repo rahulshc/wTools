@@ -283,28 +283,27 @@ function exportStringShortDiagnostic( src )
   try
   {
 
-    if( _.symbolIs( src ) )
+    if( _.symbol.is( src ) )
     {
       let text = src.toString().slice( 7, -1 );
       let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
       return result;
     }
-    else if( _.primitiveIs( src ) )
+    else if( _.primitive.is( src ) )
     {
-      if( _.bigIntIs( src ) )
+      if( _.bigInt.is( src ) )
       return `${String( src )}n`; /* qqq for Yevhen : no! */
       return String( src );
     }
-    // else if( _.vectorAdapterIs( src ) )
-    // {
-    //   result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
-    // }
     else if( _.set.like( src ) || _.hashMap.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
+      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
     }
-    else if( _.vector.is( src ) )
+    else if( _.vector.like( src ) )
     {
+      if( _.unrollIs( src ) )
+      result += `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
+      else
       result += `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
     }
     else if( _.date.is( src ) )
@@ -313,27 +312,34 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.regexpIs( src ) )
     {
-      debugger;
       result += src.toString(); /* qqq for Yevhen : no! */
-      debugger;
     }
     else if( _.routineIs( src ) )
     {
-      debugger;
       if( src.name )
       result += `{- routine ${src.name} -}`;
       else
-      result += `{- routine.anonymous -}`;
-      debugger;
+      result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+    }
+    else if( _.aux.like( src ) )
+    {
+      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
     }
     else if( _.object.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
       if( _.routineIs( src.exportString ) )
       {
-        // _.assert( 0, 'not tesed' ); /* qqq : test please */
-        result = src.exportString({ verbosity : 1 });
+        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please | aaa : Added. */
+        // debugger;
+        result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
+      }
+      else
+      {
+        if( _.countable.is( src ) )
+        result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+        else
+        result += `{- ${_.entity.strType( src )} -}`;
       }
     }
     else
@@ -435,7 +441,7 @@ function strShort( o )
   _.routineOptions( strShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
+  _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
@@ -532,7 +538,7 @@ function strPrimitive( src )
   if( src === null || src === undefined )
   return;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   return;
@@ -595,14 +601,14 @@ function strTypeWithTraits( src )
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
     else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-    return 'MapLike.pure.prototyped';
+    return 'Aux.pure.prototyped';
     else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-    return 'MapLike.polluted.prototyped';
+    return 'Aux.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
@@ -644,11 +650,11 @@ function strTypeWithoutTraits( src )
     if( _.mapIs( src ) )
     return 'Map';
     else
-    return 'MapLike';
+    return 'Aux';
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
@@ -738,7 +744,7 @@ function strTypeWithoutTraits( src )
  * @function strConcat
  * @throws { Error } If arguments.length is less then one or greater than two.
  * @throws { Error } If options map {-o-} has unknown property.
- * @throws { Error } If property {-o.optionsForToStr-} is not a MapLike.
+ * @throws { Error } If property {-o.optionsForToStr-} is not a Aux.
  * @throws { Error } If routine strConcat does not belong module Tools.
  * @namespace Tools
  */
@@ -816,61 +822,6 @@ function strConcat( srcs, o )
     result = `${result} ${src.replace( /^\s+/, '' )}`;
   }
 
-  // for( let a = 0 ; a < srcs.length ; a++ )
-  // {
-  //   let src = srcs[ a ];
-  //
-  //   src = o.onToStr( src, o );
-  //
-  //   result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
-  //   // result = result.replace( /\s*$/m, '' );
-  //
-  //   if( !result )
-  //   {
-  //     result = src;
-  //   }
-  //   // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-  //   // {
-  //   //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
-  //   // }
-  //   else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-  //   {
-  //     result = result + src;
-  //   }
-  //   else
-  //   {
-  //     result = result + ' ' + src.replace( /^\s+/, '' );
-  //     // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
-  //   }
-  //
-  // }
-
-  // let nl = 1;
-  // for( let a = 0 ; a < srcs.length ; a++ )
-  // {
-  //   let src = srcs[ a ];
-  //   src = _.entity.exportString( src, o.optionsForToStr );
-  //   if( !nl )
-  //   {
-  //     let i = src.trim().lastIndexOf( o.lineDelimter );
-  //     if( i === -1 )
-  //     {
-  //       if( result[ result.length-1 ] !== ' ' && src[ 0 ] !== ' ' )
-  //       result += o.delimeter;
-  //     }
-  //     else
-  //     {
-  //       if( i !== 0 )
-  //       result += o.lineDelimter;
-  //     }
-  //   }
-  //   if( src.length )
-  //   nl = src[ src.length-1 ] === o.lineDelimter;
-  //   // if( _.errIs( src ) )
-  //   // debugger;
-  //   result += src;
-  // }
-
   /* */
 
   if( o.linePrefix || o.linePostfix )
@@ -887,6 +838,7 @@ function strConcat( srcs, o )
 
   function onToStr( src, op )
   {
+    debugger;
     return _.entity.exportString( src, op.optionsForToStr );
   }
 
@@ -1260,7 +1212,6 @@ function strRemove( srcStr, insStr )
   _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), 'Expects string/regexp {-begin-}' );
 
   let result = srcStr;
-  debugger;
 
   result = result.replace( insStr, '' );
 
@@ -1330,7 +1281,7 @@ let StandardTypeSet = new Set
 let ExtensionEntity =
 {
 
-  exportStringSimple,
+  exportStringSimple, /* xxx : deprecate? */
   exportStringShort,
   exportString : exportStringShort,
   exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */

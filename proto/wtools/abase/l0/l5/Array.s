@@ -54,7 +54,7 @@ function constructorLikeArray( src )
   if( src === String )
   return false;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( !( 'length' in src.prototype ) )
@@ -107,7 +107,7 @@ function hasLength( src )
 {
   if( src === undefined || src === null )
   return false;
-  if( _.numberIs( src.length ) )
+  if( _.number.is( src.length ) )
   return true;
   return false;
 }
@@ -177,7 +177,7 @@ function arrayMake( src )
   if( src === null || src === undefined )
   return new Array();
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return Array( src );
 
   if( _.set.is( src ) )
@@ -281,7 +281,7 @@ function arrayMakeUndefined( src, length )
   return Array( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( src ) || _.longLike( src ) || _.set.like( src ) || src === null );
+  _.assert( _.number.is( src ) || _.longLike( src ) || _.set.like( src ) || src === null );
 
   if( _.longIs( length ) )
   {
@@ -291,7 +291,7 @@ function arrayMakeUndefined( src, length )
   {
     if( src === null )
     length = 0;
-    else if( _.numberIs( src ) )
+    else if( _.number.is( src ) )
     length = src;
     else if( _.set.like( src ) )
     length = src.size;
@@ -300,12 +300,12 @@ function arrayMakeUndefined( src, length )
     else
     _.assert( 0 );
   }
-  else if( !_.numberIs( length ) )
+  else if( !_.number.is( length ) )
   {
     _.assert( 0, 'Unknown length' )
   }
 
-  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.number.isFinite( length ) );
 
   return Array( length );
 }
@@ -652,7 +652,7 @@ function arrayBut( src, range, ins )
   if( range === undefined )
   return _.arrayMake( src );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, range + 1 ];
 
   _.assert( _.arrayIs( src ) );
@@ -749,7 +749,7 @@ function arrayButInplace( src, range, ins )
   if( range === undefined )
   return src;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, range + 1 ];
 
   _.assert( _.arrayLikeResizable( src ) );
@@ -804,7 +804,7 @@ function arrayBut_( /* dst, src, cinterval, ins */ )
     cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( cinterval ) )
+  else if( _.number.is( cinterval ) )
   {
     cinterval = [ cinterval, cinterval ];
   }
@@ -938,7 +938,7 @@ function arrayShrink( src, range, ins )
   if( range === undefined )
   return src.slice();
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, src.length ];
 
   _.assert( _.arrayIs( src ) );
@@ -1032,7 +1032,7 @@ function arrayShrinkInplace( src, range, ins )
   if( range === undefined )
   return src;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, src.length ];
 
   _.assert( _.arrayIs( src ) );
@@ -1071,7 +1071,7 @@ function arrayShrink_( dst, src, cinterval )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
@@ -1191,7 +1191,7 @@ function arrayGrow( src, range, ins )
   if( range === undefined )
   return src.slice();
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   let f = range ? range[ 0 ] : undefined;
@@ -1310,7 +1310,7 @@ function arrayGrowInplace( src, range, ins )
   if( range === undefined )
   return src;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   let f = range ? range[ 0 ] : undefined;
@@ -1373,7 +1373,7 @@ function arrayGrow_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
@@ -1446,9 +1446,9 @@ function arrayGrow_( /* dst, src, cinterval, ins */ )
 //   if( range === undefined )
 //   return returnDst();
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ 0, range ];
-//   _.assert( _.intervalIs( range ) || _.numberIs( range ) || range === undefined );
+//   _.assert( _.intervalIs( range ) || _.number.is( range ) || range === undefined );
 //
 //   let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
 //   let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
@@ -1589,7 +1589,7 @@ function arrayRelength( src, range, ins )
   if( range === undefined )
   return src.slice();
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, src.length ];
 
   let f = range ? range[ 0 ] : undefined;
@@ -1695,7 +1695,7 @@ function arrayRelengthInplace( src, range, ins )
   if( range === undefined )
   return src;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, src.length ];
 
   let f = range ? range[ 0 ] : undefined;
@@ -1757,7 +1757,7 @@ function arrayRelength_( /* dst, src, cinterval, ins */ )
 
   if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
@@ -3845,7 +3845,7 @@ function arrayRemovedElement( /* dstArray, ins, evaluator1, evaluator2 */ )
 
   // let removedElements = 0;
   // let index = _.longLeftIndex.apply( this, arguments );
-  // evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+  // evaluator1 = _.number.is( evaluator1 ) ? undefined : evaluator1;
   //
   // while( index !== -1 )
   // {
@@ -3869,7 +3869,7 @@ function arrayRemovedElement_( /* dstArray, ins, evaluator1, evaluator2 */ )
   let removedElement;
 
   let index = _.longLeftIndex.apply( this, arguments );
-  evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+  evaluator1 = _.number.is( evaluator1 ) ? undefined : evaluator1;
 
   if( index !== -1 )
   removedElement = dstArray[ index ];

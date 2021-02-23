@@ -163,7 +163,7 @@ function extendAppending( dst, src )
 /**
  * The routine empty() clears provided container {-dstContainer-}.
  *
- * @param { Long|Set|HashMap|MapLike } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
  *
  * @example
  * let dst = [];
@@ -205,10 +205,10 @@ function extendAppending( dst, src )
  * console.log( got === dst );
  * // log true
  *
- * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
+ * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
  * @function empty
  * @throws { Error } If arguments.length is less than one.
- * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
  * @namespace Tools
  */
@@ -305,7 +305,7 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.entity.methodIteratorOf( container ) )
+    else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
     {
       return [ ... container ][ key ];
     }

@@ -161,7 +161,7 @@ function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  // _.assert( _.number.is( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( dst !== undefined, 'Expects array or scalar' );
   _.assert( length >= 0 );
 
@@ -207,9 +207,9 @@ function scalarFromOrNull( src )
 function dup( ins, times, result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ), 'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.longIs( times ), 'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -394,11 +394,11 @@ function eachSample( o )
 
   o.sets = _.filter_( null, o.sets, function( set, k )
   {
-    _.assert( _.longIs( set ) || _.primitiveIs( set ) );
+    _.assert( _.longIs( set ) || _.primitive.is( set ) );
 
     if( breaking === 0 )
     {
-      if( _.primitiveIs( set ) )
+      if( _.primitive.is( set ) )
       set = [ set ];
 
       if( set.length === 0 )
@@ -547,7 +547,7 @@ function eachPermutation( o )
 
   _.routineOptions( eachPermutation, arguments );
 
-  if( _.numberIs( o.container ) )
+  if( _.number.is( o.container ) )
   {
     if( o.container < 0 )
     o.container = 0;
@@ -1101,7 +1101,7 @@ function _entityIndex_functor( fop )
       {
         if( !_.aux.is( ext ) )
         {
-          _.assert( _.primitiveIs( ext ) );
+          _.assert( _.primitive.is( ext ) );
           ext = { [ ext ] : val }
         }
         extendRoutine( result, ext );

@@ -223,7 +223,7 @@ var entityClone = function( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
+      var good = _.strIs( src ) || _.number.is( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -235,7 +235,7 @@ var entityClone = function( src,options )
     }
     else
     {
-      if( _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) )
+      if( _.strIs( src ) || _.number.is( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) )
       result = src.constructor( src );
       else if( _.routineIs( src ) )
       result = src;
@@ -781,7 +781,7 @@ var entityHasNan = function( src )
   {
     return true;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     return isNaN( src );
   }
@@ -923,7 +923,7 @@ var _entitySame = function _entitySame( src1,src2,o )
 
     }
   }
-  else if( _.numberIs( src1 ) )
+  else if( _.number.is( src1 ) )
   {
     return o.onSameNumbers( src1,src2 );
   }
@@ -1895,10 +1895,10 @@ var entityCoerceTo = function( src,ins )
 
   _.assert( arguments.length === 2 );
 
-  if( _.numberIs( ins ) )
+  if( _.number.is( ins ) )
   {
 
-    return _.numberFrom( src );
+    return _.number.from( src );
 
   }
   else if( _.strIs( ins ) )
@@ -2398,9 +2398,9 @@ eachSample.defaults =
 var dup = function( times,ins,result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.arrayLike( times ),'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -2449,7 +2449,7 @@ var _err = function _err( o )
   if( !_.arrayLike( o.args ) )
   throw '_err : o.args should be array like';
 
-  if( !_.numberIs( o.level ) )
+  if( !_.number.is( o.level ) )
   o.level = _err.defaults.level;
 
   if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
@@ -3309,7 +3309,7 @@ var arrayLike = function( src )
   if( _.object.is( src ) ) return false;
   if( _.strIs( src ) ) return false;
 
-  if( !_.numberIs( src.length ) ) return false;
+  if( !_.number.is( src.length ) ) return false;
 
   return true;
 }
@@ -3355,7 +3355,7 @@ var arrayLike = function( src )
 var hasLength = function( src )
 {
   if( src === undefined || src === null ) return false;
-  if( _.numberIs( src.length ) ) return true;
+  if( _.number.is( src.length ) ) return true;
   return false;
 }
 
@@ -3437,7 +3437,7 @@ var boolIs = function( src )
 
 var numberIsRegular = function( src )
 {
-  return _.numberIs( src ) &amp;&amp; !isNaN( src ) &amp;&amp; src !== +Infinity &amp;&amp; src !== -Infinity;
+  return _.number.is( src ) &amp;&amp; !isNaN( src ) &amp;&amp; src !== +Infinity &amp;&amp; src !== -Infinity;
 }
 
 //
@@ -3453,7 +3453,7 @@ var numbersAreInt = function numbersAreInt( src )
     return true;
   }
 
-  if( !_.numberIs( src ) )
+  if( !_.number.is( src ) )
   return false;
 
   return Math.floor( src ) === src;
@@ -3663,7 +3663,7 @@ var typeOf = function( src )
 var typeIsBuffer = function( src )
 {
   if( !src ) return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) ) return false;
+  if( !_.number.is( src.BYTES_PER_ELEMENT ) ) return false;
   if( !_.strIs( src.name ) ) return false;
   return src.name.indexOf( 'Array' ) !== -1;
 
@@ -3769,10 +3769,10 @@ var numberRandomInRange = function( range )
 var numberRandomInt = function( range )
 {
 
-  _assert( _.arrayIs( range ) || _.numberIs( range ) );
+  _assert( _.arrayIs( range ) || _.number.is( range ) );
   _assert( range.length === 2 );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = range >= 0 ? [ 0,range ] : [ range,0 ];
   else if( _.arrayIs( range ) )
   range = range;
@@ -3790,7 +3790,7 @@ var numberRandomIntBut = function( range )
   var result;
   var attempts = 10;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0,range ];
   else if( _.arrayIs( range ) )
   range = range;
@@ -3798,7 +3798,7 @@ var numberRandomIntBut = function( range )
 
   for( var attempt = 0 ; attempt &lt; attempts ; attempt++ )
   {
-    /*result = _.numberRandomInt( range ); */
+    /*result = _.number.randomInt( range ); */
     var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
     var bad = false;
@@ -4676,7 +4676,7 @@ var routineDelayed = function routineDelayed( delay,routine )
 {
 
   _.assert( arguments.length >= 2 );
-  _.assert( _.numberIs( delay ) );
+  _.assert( _.number.is( delay ) );
   _.assert( _.routineIs( routine ) );
 
   if( arguments.length > 2 )
@@ -4885,7 +4885,7 @@ var timeOut = function( delay,onReady )
   if( !_.routineIs( arguments[ 2 ] ) )
   debugger;
 
-  _assert( _.numberIs( delay ) );
+  _assert( _.number.is( delay ) );
 
   if( arguments.length === 2 )
   _assert( _.routineIs( onReady ) || onReady instanceof wConsequence );
@@ -4948,7 +4948,7 @@ var timePeriodic = function( delay,onReady )
     onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   }
 
-  _assert( _.numberIs( delay ) );
+  _assert( _.number.is( delay ) );
 
   var handlePeriodicCon = function( err )
   {
@@ -5019,7 +5019,7 @@ var timeSpent = function( description,time )
   }
 
   _assert( 1 &lt;= arguments.length &amp;&amp; arguments.length &lt;= 2 );
-  _assert( _.numberIs( time ) );
+  _assert( _.number.is( time ) );
   _assert( _.strIs( description ) );
 
   if( description &amp;&amp; description !== ' ' )
@@ -5086,7 +5086,7 @@ var bufferRelen = function( src,len )
 
   _.assert( _.bufferTypedIs( src ) );
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( len ) );
+  _.assert( _.number.is( len ) );
 
   var result = src;
 
@@ -5368,9 +5368,9 @@ var bufferFromArrayOfArray = function( array,options ){
 
   if( !array.length ) return new options.BufferType();
 
-  var atomsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+  var atomsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
+  if( !_.number.is( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
 
   var length = array.length * atomsPerElement;
   var result = new options.BufferType( length );
@@ -5420,7 +5420,7 @@ var bufferFrom = function( o )
 
   /* number */
 
-  if( _.numberIs( o.src ) )
+  if( _.number.is( o.src ) )
   o.src = [ o.src ];
 
   /* midverification */
@@ -5430,7 +5430,7 @@ var bufferFrom = function( o )
   /* length */
 
   var length = o.src.length;
-  if( !_.numberIs( length ) )
+  if( !_.number.is( length ) )
   {
 
     var length = 0;
@@ -5715,9 +5715,9 @@ var buffersDeserialize = function( o )
     var fields = attribute[ 'fields' ];
 
     _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
-    _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
-    _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
-    _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
+    _.assert( _.number.is( offset ),'unknown attribute\' offset in common buffer :',offset )
+    _.assert( _.number.is( size ),'unknown attribute\' size of buffer :',size )
+    _.assert( _.number.is( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
 
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
@@ -5860,7 +5860,7 @@ var arraySub = function( src,begin,end )
  * @throws { Error } If the passed arguments is less than two.
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If the (length === undefined) and (_.number.is(ins.length)) is not a number.
  * @memberof wTools
  */
 
@@ -5869,11 +5869,11 @@ var arrayNew = function( ins,length )
   var result;
 
   _.assert( arguments.length &lt;= 2); // _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.number.is( length ) );
 
   if( length === undefined )
   {
-    _assert( _.numberIs( ins.length ) );
+    _assert( _.number.is( ins.length ) );
     length = ins.length;
   }
 
@@ -5951,10 +5951,10 @@ var arrayNewOfSameLength = function( ins )
 var arrayOrNumber = function( dst,length )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+  _.assert( _.number.is( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
-  if( _.numberIs( dst ) )
+  if( _.number.is( dst ) )
   dst = arrayFill({ times : length , value : dst });
   else if( dst.length !== length )
   throw _.err( 'expects array of length',length,'but got',dst );
@@ -7167,8 +7167,8 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
   _.assert( arguments.length === 4 );
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayIs( srcArray ) );
-  _.assert( _.numberIs( first ) );
-  _.assert( _.numberIs( replace ) );
+  _.assert( _.number.is( first ) );
+  _.assert( _.number.is( replace ) );
 
   var args = [ first,replace ];
   args.push.apply( args,srcArray );
@@ -7213,8 +7213,8 @@ var arraySlice = function arraySlice( array,a,b )
   var a = a !== undefined ? a : 0;
   var b = b !== undefined ? b : array.length;
 
-  _.assert( _.numberIs( a ) );
-  _.assert( _.numberIs( b ) );
+  _.assert( _.number.is( a ) );
+  _.assert( _.number.is( b ) );
 
   if( b &lt; a )
   b = a;
@@ -7474,7 +7474,7 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
 {
   _.assert( arguments.length >= 1 );
   _.assert( _.arrayLike( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
+  _.assert( _.number.is( dstOffset ) );
 
   dstOffset = dstOffset || 0;
 
@@ -7771,7 +7771,7 @@ var arrayFill = function arrayFill( o )
 
   if( arguments.length === 1 )
   {
-    if( _.numberIs( o ) )
+    if( _.number.is( o ) )
     o = { times : o };
     else if( _.arrayIs( o ) )
     o = { result : o };
@@ -7783,7 +7783,7 @@ var arrayFill = function arrayFill( o )
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.object.is( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  _assert( _.object.is( o ) || _.number.is( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   var result = o.result || [];
   var times = o.times !== undefined ? o.times : result.length;
@@ -8317,7 +8317,7 @@ var arraySupplement = function arraySupplement( dstArray )
   result = [];
 
   var length = result.length;
-  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
+  _assert( _.arrayLike( result ) || _.number.is( result ),'expects object as argument' );
 
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -8325,7 +8325,7 @@ var arraySupplement = function arraySupplement( dstArray )
     length = Math.max( length,arguments[ a ].length );
   }
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = arrayFill
   ({
     value : result,
@@ -8445,7 +8445,7 @@ var arrayRandom = function( options )
 {
   var result = [];
 
-  if( _.numberIs( options ) )
+  if( _.number.is( options ) )
   {
     options = { length : options };
   }
@@ -8497,7 +8497,7 @@ var arrayRandom = function( options )
 var arrayRange = function( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0,range ];
 
   _.assert( arguments.length === 1 );
@@ -9975,7 +9975,7 @@ var mapOwn = function( object,name )
   return _ObjectHasOwnProperty.call( object, name );
   else if( _.mapIs( name ) )
   return _ObjectHasOwnProperty.call( object, _.nameUnfielded( name ).coded );
-  else if( _.symbolIs( name ) )
+  else if( _.symbol.is( name ) )
   return _ObjectHasOwnProperty.call( object, name );
 
   _.assert( 0,'mapOwn :','unknown type of name :',_.strTypeOf( name ) );

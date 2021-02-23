@@ -9,7 +9,7 @@ function arrayMake( src )
   if( src === null || src === undefined )
   return new Array();
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return new Array( src );
 
   if( src.length === 1 )

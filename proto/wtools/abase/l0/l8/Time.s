@@ -16,7 +16,7 @@ function rarely_functor( perTime, routine )
   let lastTime = _.time.now() - perTime;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( perTime ) );
+  _.assert( _.number.is( perTime ) );
   _.assert( _.routineIs( routine ) );
 
   return function fewer()
@@ -61,8 +61,8 @@ function once( delay, onBegin, onEnd )
 
   // _.assert( 0, 'not tested' );
   _.assert( delay >= 0 );
-  _.assert( _.primitiveIs( onBegin ) || _.routineIs( onBegin ) || _.object.is( onBegin ) );
-  _.assert( _.primitiveIs( onEnd ) || _.routineIs( onEnd ) || _.object.is( onEnd ) );
+  _.assert( _.primitive.is( onBegin ) || _.routineIs( onBegin ) || _.object.is( onBegin ) );
+  _.assert( _.primitive.is( onEnd ) || _.routineIs( onEnd ) || _.object.is( onEnd ) );
 
   return function once()
   {
@@ -120,7 +120,7 @@ function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? 
   _.routineOptions( debounce, o  );
 
   _.assert( _.routineIs( o.routine ) );
-  _.assert( _.numberIs( o.delay ) );
+  _.assert( _.number.is( o.delay ) );
 
   let timer, lastCallTime, routine, result;
 

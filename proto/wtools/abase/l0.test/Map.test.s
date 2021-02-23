@@ -3207,7 +3207,7 @@ function mapButConditionalThreeArguments_( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;
@@ -3464,7 +3464,7 @@ function mapButConditionalDstMapNull_( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;
@@ -3655,7 +3655,7 @@ function mapButConditionalDstMapMap_( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;

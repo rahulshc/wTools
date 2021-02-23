@@ -17,7 +17,7 @@ function is( src )
   if( _.arrayIs( src ) )
   return true;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( _.entity.methodIteratorOf( src ) )

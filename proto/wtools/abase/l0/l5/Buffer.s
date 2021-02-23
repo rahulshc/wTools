@@ -84,7 +84,7 @@ function constructorIsBuffer( src )
 {
   if( !src )
   return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) )
+  if( !_.number.is( src.BYTES_PER_ELEMENT ) )
   return false;
   if( !_.strIs( src.name ) )
   return false;

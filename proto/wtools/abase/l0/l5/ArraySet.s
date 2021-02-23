@@ -67,7 +67,7 @@ function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
   _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
 
   let fromIndex = 0;
-  if( _.numberIs( onEvaluate1 ) )
+  if( _.number.is( onEvaluate1 ) )
   {
     fromIndex = onEvaluate1;
     onEvaluate1 = onEvaluate2;
@@ -746,7 +746,7 @@ function arraySetContainAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   else if( _.set.is( src1 ) )
   {
     let startFrom = 0;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       startFrom = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -883,7 +883,7 @@ function arraySetContainAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   else if( _.set.is( src1 ) )
   {
     let startFrom = 0;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       startFrom = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -962,7 +962,7 @@ function arraySetContainNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   else if( _.set.is( src1 ) )
   {
     let startFrom = 0;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       startFrom = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -1116,7 +1116,7 @@ function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = fromIndex;
     }
-    else if( _.numberIs( fromIndex ) )
+    else if( _.number.is( fromIndex ) )
     {
       from = fromIndex;
     }
@@ -1174,7 +1174,7 @@ function arraySetRight( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = fromIndex;
     }
-    else if( _.numberIs( fromIndex ) )
+    else if( _.number.is( fromIndex ) )
     {
       to = fromIndex;
     }

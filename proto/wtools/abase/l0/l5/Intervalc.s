@@ -38,7 +38,7 @@ function has( cinterval, src )
 
   _.assert( arguments.length === 2 );
   _.assert( _.intervalIs( cinterval ) );
-  // _.assert( _.numberIs( src ) || _.intervalIs( src ) );
+  // _.assert( _.number.is( src ) || _.intervalIs( src ) );
 
   if( _.intervalIs( src ) )
   {
@@ -47,7 +47,7 @@ function has( cinterval, src )
     if( src[ 1 ] > cinterval[ 1 ] )
     return false;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( src < cinterval[ 0 ] )
     return false;
@@ -72,7 +72,7 @@ function has( cinterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( cinterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < cinterval[ 0 ] )
 //   return false;
@@ -91,7 +91,7 @@ function has( cinterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( cinterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber <= cinterval[ 0 ] )
 //   return false;
@@ -110,7 +110,7 @@ function has( cinterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( cinterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < cinterval[ 0 ] )
 //   return false;
@@ -129,7 +129,7 @@ function has( cinterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( cinterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < cinterval[ 0 ] )
 //   return false;
@@ -171,7 +171,7 @@ function fromLeft( cinterval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   return [ cinterval, Infinity ];
 
   _.assert( _.longIs( cinterval ) );
@@ -181,12 +181,12 @@ function fromLeft( cinterval )
   else
   _.assert( cinterval.length === 2 );
 
-  if( !_.numberIs( cinterval[ 0 ] ) )
+  if( !_.number.is( cinterval[ 0 ] ) )
   {
     _.assert( cinterval[ 0 ] === undefined );
     cinterval[ 0 ] = 0;
   }
-  if( !_.numberIs( cinterval[ 1 ] ) )
+  if( !_.number.is( cinterval[ 1 ] ) )
   {
     _.assert( cinterval[ 1 ] === undefined );
     cinterval[ 1 ] = Infinity;
@@ -201,7 +201,7 @@ function fromRight( cinterval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   return [ 0, cinterval ];
 
   _.assert( _.longIs( cinterval ) );
@@ -211,12 +211,12 @@ function fromRight( cinterval )
   else
   _.assert( cinterval.length === 2 );
 
-  if( !_.numberIs( cinterval[ 0 ] ) )
+  if( !_.number.is( cinterval[ 0 ] ) )
   {
     _.assert( cinterval[ 0 ] === undefined );
     cinterval[ 0 ] = 0;
   }
-  if( !_.numberIs( cinterval[ 1 ] ) )
+  if( !_.number.is( cinterval[ 1 ] ) )
   {
     _.assert( cinterval[ 1 ] === undefined );
     cinterval[ 1 ] = Infinity;
@@ -231,7 +231,7 @@ function fromSingle( cinterval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   return [ cinterval, cinterval ];
 
   _.assert( _.longIs( cinterval ) );
@@ -242,16 +242,16 @@ function fromSingle( cinterval )
     if( cinterval[ 1 ] === undefined )
     return [ 0, 0 ];
 
-    _.assert( _.numberIs( cinterval[ 1 ] ) );
+    _.assert( _.number.is( cinterval[ 1 ] ) );
     return [ cinterval[ 1 ], cinterval[ 1 ] ];
   }
 
-  _.assert( _.numberIs( cinterval[ 0 ] ) );
+  _.assert( _.number.is( cinterval[ 0 ] ) );
 
   if( cinterval[ 1 ] === undefined )
   return [ cinterval[ 0 ], cinterval[ 0 ] ];
 
-  _.assert( _.numberIs( cinterval[ 1 ] ) );
+  _.assert( _.number.is( cinterval[ 1 ] ) );
 
   return cinterval;
 }
@@ -264,7 +264,7 @@ function clamp( dstRange, clampRange )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.intervalIs( dstRange ) );
 
-  if( _.numberIs( clampRange ) )
+  if( _.number.is( clampRange ) )
   {
     dstRange[ 0 ] = clampRange;
     dstRange[ 1 ] = clampRange;
@@ -298,7 +298,7 @@ function countElements( cinterval, increment )
   if( increment === undefined )
   increment = 1;
 
-  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+  _.assert( _.number.is( increment ), 'Increment should has a number value' );
 
   if( increment )
   {

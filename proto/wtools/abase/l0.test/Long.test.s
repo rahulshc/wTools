@@ -12308,7 +12308,7 @@ function longAllAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = [ 1, 2, 2 ];
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = true;
@@ -12366,7 +12366,7 @@ function longAllAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'unroll, some numbers are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = _.unrollMake( [ 1, 2, 2 ] );
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = true;
@@ -12645,7 +12645,7 @@ function longAnyAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = [ 1, 2, 2 ];
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
@@ -12703,7 +12703,7 @@ function longAnyAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'unroll, some numbers are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = _.unrollMake( [ 1, 2, 2 ] );
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
@@ -12982,7 +12982,7 @@ function longNoneAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = [ 1, 2, 2 ];
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
@@ -13040,7 +13040,7 @@ function longNoneAreRepeated( test )
   test.identical( got, expected );
 
   test.case = 'unroll, some numbers are identical with evaluator';
-  var evaluator = ( e ) => _.numberIs( e );
+  var evaluator = ( e ) => _.number.is( e );
   var src = _.unrollMake( [ 1, 2, 2 ] );
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
@@ -17380,6 +17380,7 @@ function loggerProblemExperiment( test )
 
   */
 
+  /* qqq : move to wTesting and to wLogger */
   test.case = 'ins as BufferNode';
   var expected = BufferNode.alloc( 5 );
   var expected = new BufferNode( 5 );

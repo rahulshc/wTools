@@ -564,8 +564,8 @@ function assertRoutineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   if( Config.debug )
@@ -619,6 +619,10 @@ function assertRoutineOptions( routine, args, defaults )
 
 //
 
+/* qqq for Dmytro : forbid 3rd argument */
+/* qqq for Dmytro : inline implementation */
+/* qqq for Dmytro : make possible pass defaults-map instead of routine */
+/* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -629,13 +633,13 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   options = Object.create( null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.object.is( routine.defaults ), 'Expects routine with defined defaults' );
-  _.assert( _.object.is( options ), 'Expects object' );
+  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
 
   defaults = defaults || routine.defaults;
 
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
   _.assertMapHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
 
@@ -1592,7 +1596,7 @@ function vectorize_body( o )
 
   let resultRoutine = vectorizeArray;
 
-  if( _.numberIs( select ) )
+  if( _.number.is( select ) )
   {
 
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )

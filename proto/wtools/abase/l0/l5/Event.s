@@ -433,12 +433,12 @@ on.defaults =
  * // log : []
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Array with callbacks.
  * @param { Boolean|BoolLike } o.first - If it has value `true`, then callback prepends to callback queue.
  * Otherwise, callback appends to callback queue.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function once
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.
@@ -577,10 +577,10 @@ once.defaults =
  * // log : 0
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Null. If null is provided, routine removes all callbacks.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function off
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.

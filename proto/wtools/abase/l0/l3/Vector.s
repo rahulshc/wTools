@@ -16,11 +16,11 @@ function is( src )
 
   if( _.arrayIs( src ) )
   return true;
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( _.entity.methodIteratorOf( src ) )
-  if( _.numberIs( src.length ) ) /* yyy */
+  if( _.number.is( src.length ) ) /* yyy */
   if( !_.mapIs( src ) )
   return true;
 
@@ -41,7 +41,7 @@ function like( src )
   // // return _.vectorIs( src );
   // if( _.arrayIs( src ) )
   // return true;
-  // if( _.primitiveIs( src ) )
+  // if( _.primitive.is( src ) )
   // return false;
   //
   // if( _.entity.methodIteratorOf( src ) )
