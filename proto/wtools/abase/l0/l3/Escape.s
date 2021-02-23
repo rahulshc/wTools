@@ -128,7 +128,7 @@ function exportStringIgnoringArgs()
 
 function exportString()
 {
-  if( _.symbolIs( this.val ) )
+  if( _.symbol.is( this.val ) )
   return `Escape( Symbol( ${Symbol.keyFor( this.val )} ) )`;
   else
   return `Escape( ${String( this.val )} )`;

@@ -59,44 +59,6 @@ function definedIs( src )
 
 //
 
-function primitiveIs( src )
-{
-  if( !src )
-  return true;
-  let t = Object.prototype.toString.call( src );
-  return _._primitiveIs( src, t );
-}
-
-//
-
-function _primitiveIs_functor()
-{
-  const is = new Set();
-  is.add( '[object Symbol]' );
-  is.add( '[object Number]' );
-  is.add( '[object BigInt]' );
-  is.add( '[object Boolean]' );
-  is.add( '[object String]' );
-  return _primitiveIs;
-
-  function _primitiveIs( src, typeStr )
-  {
-    return is.has( typeStr );
-  }
-
-}
-
-let _primitiveIs = _primitiveIs_functor();
-_primitiveIs.functor = _primitiveIs_functor;
-
-//
-
-function symbolIs( src )
-{
-  let result = Object.prototype.toString.call( src ) === '[object Symbol]';
-  return result;
-}
-
 function consequenceIs( src )
 {
   if( !src )
@@ -216,7 +178,7 @@ function instanceIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( Object.hasOwnProperty.call( src, 'constructor' ) )
@@ -396,9 +358,6 @@ let Routines =
   nullIs,
   nothingIs,
   definedIs,
-  primitiveIs,
-  _primitiveIs,
-  symbolIs,
 
   //
 

@@ -3807,7 +3807,7 @@ function entityMap_( dst, src, onEach )
       result = _.arrayAppendElement( dst, r );
       else if( _.aux.is( dst ) )
       result = _.mapExtend( dst, r );
-      else if( _.primitiveIs( dst ) )
+      else if( _.primitive.is( dst ) )
       result = r;
       else
       _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
@@ -3986,7 +3986,7 @@ function entityFilter_( dst, src, onEach )
         result = _.arrayAppendElement( dst, r );
         else if( _.aux.is( dst ) )
         result = _.mapExtend( dst, r );
-        else if( _.primitiveIs( dst ) )
+        else if( _.primitive.is( dst ) )
         result = r;
         else
         _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );

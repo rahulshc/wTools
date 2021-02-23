@@ -394,11 +394,11 @@ function eachSample( o )
 
   o.sets = _.filter_( null, o.sets, function( set, k )
   {
-    _.assert( _.longIs( set ) || _.primitiveIs( set ) );
+    _.assert( _.longIs( set ) || _.primitive.is( set ) );
 
     if( breaking === 0 )
     {
-      if( _.primitiveIs( set ) )
+      if( _.primitive.is( set ) )
       set = [ set ];
 
       if( set.length === 0 )
@@ -1101,7 +1101,7 @@ function _entityIndex_functor( fop )
       {
         if( !_.aux.is( ext ) )
         {
-          _.assert( _.primitiveIs( ext ) );
+          _.assert( _.primitive.is( ext ) );
           ext = { [ ext ] : val }
         }
         extendRoutine( result, ext );

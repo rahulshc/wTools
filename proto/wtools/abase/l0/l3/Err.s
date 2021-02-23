@@ -733,7 +733,7 @@ function _err( o )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let arg = o.args[ a ];
-      if( !_.primitiveIs( arg ) && _.object.like( arg ) )
+      if( !_.primitive.is( arg ) && _.object.like( arg ) )
       try
       {
         o.throwLocation = _.introspector.location
@@ -961,10 +961,10 @@ function _err( o )
       let arg = o.args[ a ];
       let str;
 
-      if( arg && !_.primitiveIs( arg ) )
+      if( arg && !_.primitive.is( arg ) )
       {
 
-        // if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
+        // if( _.primitive.is( arg ) ) // Dmytro : unnecessary condition, see above
         // {
         //   str = String( arg );
         // }
@@ -1307,7 +1307,7 @@ function _errFields( args, fields )
 
   let err = args[ 0 ];
 
-  if( _.symbolIs( err ) )
+  if( _.symbol.is( err ) )
   {
     _.assert( args.length === 1 );
     return err;
