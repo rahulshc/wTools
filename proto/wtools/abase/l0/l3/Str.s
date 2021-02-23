@@ -678,13 +678,14 @@ function strTypeWithoutTraits( src )
 function strParseType( src )
 {
   /*
-  - 'string'                  => '{- String -}'
-  - '5'                       => '{- Number -}'
-  - '5n'                      => '{- BigInt -}'
-  - 'null'                    => '{- Null -}'
-  - 'undefined'               => '{- Undefined -}'
-  - '{- Symbol undefined -}'  => '{- Symbol.undefined -}'
-  - '{- routine name -}'      => '{- routine.name -}'
+  - 'string'
+  - '5'
+  - '5n'
+  - 'null'
+  - 'undefined'
+  - 'Escape( 1 )'
+  - '{- Symbol undefined -}'
+  - '{- routine name -}'
   - '{- routine.anonymous -}'
   - '{- Map -}'
   - '{- Map with 9 elements -}'
@@ -701,35 +702,32 @@ function strParseType( src )
     traits : [],
   }
 
-  let isPrimitive = src.indexOf( '{-' ) === -1;
+  if( !( /^{- .+ -}$/g.test( src ) ) )
+  return Object.create( null );
 
-  if( isPrimitive )
+  let splitted = src.split( ' ' );
+  let type = splitted[ 1 ];
+  let length = src.match( /\d+/g );
+
+  if( length !== null )
+  length = length[ length.length - 1 ];
+
+  if( type.indexOf( '.' ) === -1 )
   {
-    // implement
+    o.type = type;
+
+    if( o.type === 'Symbol' || o.type === 'routine' )
+    o.name = splitted[ 2 ];
   }
   else
   {
-    let splitted = src.split( ' ' );
-    let type = splitted[ 1 ];
-    let length = src.match( /\d+/g );
-
-    if( length !== null )
-    length = length[ length.length - 1 ];
-
-    if( type.indexOf( '.' ) === -1 )
-    {
-      o.type = type;
-    }
-    else
-    {
-      let typeAndTraits = type.split( '.' );
-      o.type = typeAndTraits[ 0 ];
-      o.traits = typeAndTraits.slice( 1 );
-    }
-
-    if( length )
-    o.length = +length;
+    let typeAndTraits = type.split( '.' );
+    o.type = typeAndTraits[ 0 ];
+    o.traits = typeAndTraits.slice( 1 );
   }
+
+  if( length )
+  o.length = +length;
 
   return o;
 

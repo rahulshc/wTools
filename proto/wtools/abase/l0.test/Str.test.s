@@ -3927,29 +3927,17 @@ function strParseType( test )
 {
   test.case = 'number';
   var src = '1';
-  var expected =
-  {
-    type : 'Number',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'bool & boolLike & fuzzy';
   var src = 'true';
-  var expected =
-  {
-    type : 'Bool',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src = '0';
-  var expected =
-  {
-    type : 'Number',
-    traits : [],
-  };
+  var expected = {}
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'fuzzy';
@@ -3957,35 +3945,24 @@ function strParseType( test )
   var expected =
   {
     type : 'Symbol',
+    name : 'maybe',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'bigint';
   var src = '10n';
-  var expected =
-  {
-    type : 'BigInt',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'str & regexpLike';
   var src = 'str';
-  var expected =
-  {
-    type : 'String',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = '/hello/g';
-  var expected =
-  {
-    type : 'RegExp',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
@@ -4079,7 +4056,7 @@ function strParseType( test )
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'Global & GlobalReal';
-  var src = '{- Aux.polluted.prototyped with 20 elements';
+  var src = '{- Aux.polluted.prototyped with 20 elements -}';
   var expected =
   {
     type : 'Aux',
@@ -4089,7 +4066,7 @@ function strParseType( test )
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'Global & GlobalDerived';
-  var src = '{- Aux.polluted.prototyped with 21 elements';
+  var src = '{- Aux.polluted.prototyped with 21 elements -}';
   var expected =
   {
     type : 'Aux',
@@ -4263,14 +4240,9 @@ function strParseType( test )
   };
   test.identical( _.entity.strParseType( src ), expected );
 
-  /* ?? */
   test.case = 'escape';
   var src = 'Escape( 1 )';
-  var expected =
-  {
-    type : 'Escape',
-    traits : []
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'interval & BufferTyped';
@@ -4295,19 +4267,15 @@ function strParseType( test )
 
   test.case = 'path & str';
   var src = '/a/b/';
-  var expected =
-  {
-    type : 'String',
-    traits : [],
-  };
+  var expected = {};
   test.identical( _.entity.strParseType( src ), expected );
 
-  /* {- routine dstAndSrcOwn -} => {- routine.dstAndSrcOwn -} ? */
   test.case = 'propertyTransformer & filter';
   var src = '{- routine dstAndSrcOwn -}';
   var expected =
   {
     type : 'routine',
+    name : 'dstAndSrcOwn',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
@@ -4317,6 +4285,7 @@ function strParseType( test )
   var expected =
   {
     type : 'routine',
+    name : 'assigning',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
@@ -4326,6 +4295,7 @@ function strParseType( test )
   var expected =
   {
     type : 'routine',
+    name : 'routine',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
@@ -4342,70 +4312,63 @@ function strParseType( test )
 
   test.case = 'date & objectLike';
   var src = '2021-02-19T11:26:42.840Z';
+  var expected = {};
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'null';
+  var src = 'null';
+  var expected = {};
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'undefined';
+  var src = 'undefined';
+  var expected = {};
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'Symbol null';
+  var src = '{- Symbol null -}';
   var expected =
   {
-    type : 'String',
+    type : 'Symbol',
+    name : 'null',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
 
-  /* ?? */
-  // test.case = 'null';
-  // var src = 'null';
-  // test.identical( _.entity.strParseType( src ), expected );
+  test.case = 'Symbol undefined';
+  var src = '{- Symbol undefined -}';
+  var expected =
+  {
+    type : 'Symbol',
+    name : 'undefined',
+    traits : [],
+  };
+  test.identical( _.entity.strParseType( src ), expected );
 
-  // test.case = 'undefined';
-  // var src = 'undefined';
-  // test.identical( _.entity.strParseType( src ), expected );
-
-  /* {- Symbol null -} => {- Symbol.null -}*/
-  // test.case = 'Symbol null';
-  // var src = '{- Symbol null -}';
-  // var expected =
-  // {
-  //   type : 'Symbol',
-  //   traits : [],
-  //   length : 9
-  // };
-  // test.identical( _.entity.strParseType( src ), expected );
-
-  // test.case = 'Symbol undefined';
-  // var src = '{- Symbol undefined -}';
-  // var expected =
-  // {
-  //   type : 'Symbol',
-  //   traits : [],
-  //   length : 9
-  // };
-  // test.identical( _.entity.strParseType( src ), expected );
-
-  // test.case = 'Symbol Nothing';
-  // var src = '{- Symbol nothing -}';
-  // var expected =
-  // {
-  //   type : 'Symbol',
-  //   traits : [],
-  //   length : 9
-  // };
-  // test.identical( _.entity.strParseType( src ), expected );
+  test.case = 'Symbol Nothing';
+  var src = '{- Symbol nothing -}';
+  var expected =
+  {
+    type : 'Symbol',
+    traits : [],
+    name : 'nothing',
+  };
+  test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'primitive';
   var src = '5';
+  var expected = {}
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'Symbol';
+  var src = '{- Symbol a -}';
   var expected =
   {
-    type : 'Number',
+    type : 'Symbol',
+    name : 'a',
     traits : [],
   };
   test.identical( _.entity.strParseType( src ), expected );
-
-  // test.case = 'Symbol';
-  // var src = '{- Symbol a -}';
-  // var expected =
-  // {
-  //   type : 'Symbol',
-  //   traits : [],
-  // };
-  // test.identical( _.entity.strParseType( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = '{- Promise.constructible -}';
@@ -4425,10 +4388,6 @@ function strParseType( test )
   };
   test.identical( _.entity.strParseType( src ), expected );
 
-  // test.case = 'console';
-  // var src = '{- Console.constructible with 1 elements -}';
-  // test.identical( _.entity.strParseType( src ), expected );
-
   test.case = 'printerLike';
   var src = '{- Map.polluted with 9 elements -}';
   var expected =
@@ -4447,51 +4406,6 @@ function strParseType( test )
     traits : [ 'constructible' ],
   };
   test.identical( _.entity.strParseType( src ), expected );
-
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
-
-  function routine () {}
 
 }
 
