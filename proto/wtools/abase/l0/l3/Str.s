@@ -329,7 +329,7 @@ function exportStringShortDiagnostic( src )
     {
       if( _.routineIs( src.exportString ) )
       {
-        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please */
+        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please | aaa : Added. */
         // debugger;
         result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
