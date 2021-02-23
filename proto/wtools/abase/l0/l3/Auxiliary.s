@@ -28,7 +28,7 @@ function is( src )
   if( proto === Object.prototype )
   return true;
 
-  if( !_.primitiveIs( proto ) )
+  if( !_.primitive.is( proto ) )
   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
   return true;
 
@@ -54,7 +54,7 @@ function isPrototyped( src )
   if( proto === Object.prototype )
   return false;
 
-  if( !_.primitiveIs( proto ) )
+  if( !_.primitive.is( proto ) )
   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
   return true;
 
@@ -80,7 +80,7 @@ function isPure( src )
   if( proto.constructor === Object )
   return false;
 
-  if( !_.primitiveIs( proto ) )
+  if( !_.primitive.is( proto ) )
   if( !Reflect.has( proto, 'constructor' ) )
   return true;
 

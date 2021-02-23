@@ -24300,7 +24300,7 @@ function eachSample( test )
   var got = _.eachSample( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
   test.identical( src, _.unrollMake( [ 1, 2, 3 ] ) );
 
   test.case = 'sets - argumentsArray, result - 0';
@@ -24308,7 +24308,7 @@ function eachSample( test )
   var got = _.eachSample( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
   test.identical( src, _.argumentsArray.make( [ 1, 2, 3 ] ) );
 
   /* */

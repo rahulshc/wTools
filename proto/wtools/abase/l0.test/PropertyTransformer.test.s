@@ -107,7 +107,7 @@ function mapperIs( test )
 
   function filter( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -208,7 +208,7 @@ function filterIs( test )
 
   function filter( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -319,7 +319,7 @@ function mapperFromFilter( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -352,7 +352,7 @@ function mapperFromFilter( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -467,7 +467,7 @@ function mapperFrom( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -500,7 +500,7 @@ function mapperFrom( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -586,7 +586,7 @@ function filterFrom( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -600,7 +600,7 @@ function filterFrom( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -764,7 +764,7 @@ function transformerRegister( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -797,7 +797,7 @@ function transformerRegister( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -950,7 +950,7 @@ function transformersRegister( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -983,7 +983,7 @@ function transformersRegister( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -1187,7 +1187,7 @@ function transformerUnregister( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -1220,7 +1220,7 @@ function transformerUnregister( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;
@@ -1378,7 +1378,7 @@ function transformersUnregister( test )
 
   function filter2( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -1411,7 +1411,7 @@ function transformersUnregister( test )
 
     function primitive( dstContainer, srcContainer, key )
     {
-      if( !_.primitiveIs( srcContainer[ key ] ) )
+      if( !_.primitive.is( srcContainer[ key ] ) )
       return false;
 
       return true;

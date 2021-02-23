@@ -13,7 +13,7 @@ let Self = _global_.wTools.constructible = _global_.wTools.constructible || Obje
 
 function constructibleIs( src ) /* xxx qqq : optimize */
 {
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   let proto = Object.getPrototypeOf( src );

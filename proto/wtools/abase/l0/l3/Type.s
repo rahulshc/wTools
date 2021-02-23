@@ -178,7 +178,7 @@ function instanceIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( Object.hasOwnProperty.call( src, 'constructor' ) )

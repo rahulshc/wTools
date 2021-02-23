@@ -283,13 +283,13 @@ function exportStringShortDiagnostic( src )
   try
   {
 
-    if( _.symbolIs( src ) )
+    if( _.symbol.is( src ) )
     {
       let text = src.toString().slice( 7, -1 );
       let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
       return result;
     }
-    else if( _.primitiveIs( src ) )
+    else if( _.primitive.is( src ) )
     {
       if( _.bigIntIs( src ) )
       return `${String( src )}n`; /* qqq for Yevhen : no! */
@@ -532,7 +532,7 @@ function strPrimitive( src )
   if( src === null || src === undefined )
   return;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   return;
@@ -602,7 +602,7 @@ function strTypeWithTraits( src )
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
@@ -648,7 +648,7 @@ function strTypeWithoutTraits( src )
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );

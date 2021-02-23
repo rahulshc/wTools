@@ -233,95 +233,95 @@ function definedIs( test )
 function primitiveIs( test )
 {
   test.case = 'without argument';
-  var got = _.primitiveIs();
+  var got = _.primitive.is();
   test.identical( got, true );
 
   test.case = 'check null';
-  var got = _.primitiveIs( null );
+  var got = _.primitive.is( null );
   test.identical( got, true );
 
   test.case = 'check undefined';
-  var got = _.primitiveIs( undefined );
+  var got = _.primitive.is( undefined );
   test.identical( got, true );
 
   test.case = 'check _.nothing';
-  var got = _.primitiveIs( _.nothing );
+  var got = _.primitive.is( _.nothing );
   test.identical( got, true );
 
   test.case = 'check zero';
-  var got = _.primitiveIs( 0 );
+  var got = _.primitive.is( 0 );
   test.identical( got, true );
 
   test.case = 'check empty string';
-  var got = _.primitiveIs( '' );
+  var got = _.primitive.is( '' );
   test.identical( got, true );
 
   test.case = 'check false';
-  var got = _.primitiveIs( false );
+  var got = _.primitive.is( false );
   test.identical( got, true );
 
   test.case = 'check NaN';
-  var got = _.primitiveIs( NaN );
+  var got = _.primitive.is( NaN );
   test.identical( got, true );
 
   test.case = 'check Symbol';
-  var got = _.primitiveIs( Symbol( 'a' ) );
+  var got = _.primitive.is( Symbol( 'a' ) );
   test.identical( got, true );
 
   test.case = 'check empty array';
-  var got = _.primitiveIs( [] );
+  var got = _.primitive.is( [] );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.primitiveIs( _.argumentsArray.make( [] ) );
+  var got = _.primitive.is( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
-  var got = _.primitiveIs( _.unrollMake( [] ) );
+  var got = _.primitive.is( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty map';
-  var got = _.primitiveIs( {} );
+  var got = _.primitive.is( {} );
   test.identical( got, false );
 
   test.case = 'check empty pure map';
-  var got = _.primitiveIs( Object.create( null ) );
+  var got = _.primitive.is( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'check empty Set';
-  var got = _.primitiveIs( new Set( [] ) );
+  var got = _.primitive.is( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.primitiveIs( new Map( [] ) );
+  var got = _.primitive.is( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
-  var got = _.primitiveIs( new BufferRaw() );
+  var got = _.primitive.is( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check empty BufferTyped';
-  var got = _.primitiveIs( new U8x() );
+  var got = _.primitive.is( new U8x() );
   test.identical( got, false );
 
   test.case = 'check number';
-  var got = _.primitiveIs( 3 );
+  var got = _.primitive.is( 3 );
   test.identical( got, true );
 
   test.case = 'check bigInt';
-  var got = _.primitiveIs( 1n );
+  var got = _.primitive.is( 1n );
   test.identical( got, true );
 
   test.case = 'check string';
-  var got = _.primitiveIs( 'str' );
+  var got = _.primitive.is( 'str' );
   test.identical( got, true );
 
   test.case = 'check not empty array';
-  var got = _.primitiveIs( [ null ] );
+  var got = _.primitive.is( [ null ] );
   test.identical( got, false );
 
   test.case = 'check not empty map';
-  var got = _.primitiveIs( { '' : null } );
+  var got = _.primitive.is( { '' : null } );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
@@ -331,7 +331,7 @@ function primitiveIs( test )
     return this;
   };
   var src = new Constr();
-  var got = _.primitiveIs( src );
+  var got = _.primitive.is( src );
   test.identical( got, false );
 }
 
@@ -340,95 +340,95 @@ function primitiveIs( test )
 function symbolIs( test )
 {
   test.case = 'without argument';
-  var got = _.symbolIs();
+  var got = _.symbol.is();
   test.identical( got, false );
 
   test.case = 'check null';
-  var got = _.symbolIs( null );
+  var got = _.symbol.is( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.symbolIs( undefined );
+  var got = _.symbol.is( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.symbolIs( _.nothing );
+  var got = _.symbol.is( _.nothing );
   test.identical( got, true );
 
   test.case = 'check zero';
-  var got = _.symbolIs( 0 );
+  var got = _.symbol.is( 0 );
   test.identical( got, false );
 
   test.case = 'check empty string';
-  var got = _.symbolIs( '' );
+  var got = _.symbol.is( '' );
   test.identical( got, false );
 
   test.case = 'check false';
-  var got = _.symbolIs( false );
+  var got = _.symbol.is( false );
   test.identical( got, false );
 
   test.case = 'check NaN';
-  var got = _.symbolIs( NaN );
+  var got = _.symbol.is( NaN );
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.symbolIs( Symbol( 'a' ) );
+  var got = _.symbol.is( Symbol( 'a' ) );
   test.identical( got, true );
 
   test.case = 'check empty array';
-  var got = _.symbolIs( [] );
+  var got = _.symbol.is( [] );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.symbolIs( _.argumentsArray.make( [] ) );
+  var got = _.symbol.is( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
-  var got = _.symbolIs( _.unrollMake( [] ) );
+  var got = _.symbol.is( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty map';
-  var got = _.symbolIs( {} );
+  var got = _.symbol.is( {} );
   test.identical( got, false );
 
   test.case = 'check empty pure map';
-  var got = _.symbolIs( Object.create( null ) );
+  var got = _.symbol.is( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'check empty Set';
-  var got = _.symbolIs( new Set( [] ) );
+  var got = _.symbol.is( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.symbolIs( new Map( [] ) );
+  var got = _.symbol.is( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
-  var got = _.symbolIs( new BufferRaw() );
+  var got = _.symbol.is( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check empty BufferTyped';
-  var got = _.symbolIs( new U8x() );
+  var got = _.symbol.is( new U8x() );
   test.identical( got, false );
 
   test.case = 'check number';
-  var got = _.symbolIs( 3 );
+  var got = _.symbol.is( 3 );
   test.identical( got, false );
 
   test.case = 'check bigInt';
-  var got = _.symbolIs( 1n );
+  var got = _.symbol.is( 1n );
   test.identical( got, false );
 
   test.case = 'check string';
-  var got = _.symbolIs( 'str' );
+  var got = _.symbol.is( 'str' );
   test.identical( got, false );
 
   test.case = 'check not empty array';
-  var got = _.symbolIs( [ null ] );
+  var got = _.symbol.is( [ null ] );
   test.identical( got, false );
 
   test.case = 'check not empty map';
-  var got = _.symbolIs( { '' : null } );
+  var got = _.symbol.is( { '' : null } );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
@@ -438,7 +438,7 @@ function symbolIs( test )
     return this;
   };
   var src = new Constr();
-  var got = _.symbolIs( src );
+  var got = _.symbol.is( src );
   test.identical( got, false );
 }
 

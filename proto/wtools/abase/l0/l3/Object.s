@@ -43,7 +43,7 @@ function objectLike( src ) /* xxx qqq : optimize */
   if( _.object.is( src ) )
   return true;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   // if( _.longIs( src ) ) /* yyy */
@@ -76,7 +76,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   // if( _.object.is( src ) )
   // return true;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
   if( _.vector.is( src ) )
   return false;

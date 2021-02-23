@@ -54,7 +54,7 @@ function constructorLikeArray( src )
   if( src === String )
   return false;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   if( !( 'length' in src.prototype ) )
