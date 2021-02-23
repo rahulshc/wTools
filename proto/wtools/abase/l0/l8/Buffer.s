@@ -3604,9 +3604,99 @@ let bufferReusingGrow = _.routineUnite( bufferReusing_head, bufferReusingGrow_bo
  * @namespace Tools
  */
 
-function bufferReusingRelength( /* dst, src, cinterval, ins */ )
+// function bufferReusingRelength( /* dst, src, cinterval, ins */ )
+// {
+//   let o = _._bufferReusing_head.apply( this, arguments );
+//
+//   let left, right;
+//   let srcLength = o.src.byteLength;
+//   if( o.src.length !== undefined )
+//   srcLength = o.src.length;
+//   o.cinterval = cintervalClamp();
+//
+//   _.routineOptions( bufferReusingRelength, o );
+//
+//   o.bufferFill = dstBufferFill;
+//
+//   return _._bufferReusing( o );
+//
+//   /* */
+//
+//   function cintervalClamp()
+//   {
+//
+//     let bufferLength = 0;
+//     if( o.dst )
+//     bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+//     else
+//     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+//
+//     if( o.cinterval === undefined )
+//     o.cinterval = [ 0, bufferLength - 1 ];
+//     else if( _.numberIs( o.cinterval ) )
+//     o.cinterval = [ 0, o.cinterval - 1 ];
+//
+//     left = o.cinterval[ 0 ];
+//     right = o.cinterval[ 1 ];
+//
+//     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+//     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+//
+//     return o.cinterval;
+//   }
+//
+//   /* */
+//
+//   function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+//   {
+//     let dstTyped = arguments[ 0 ];
+//     let srcTyped = arguments[ 1 ];
+//     let cinterval = arguments[ 2 ];
+//     let ins = arguments[ 3 ];
+//
+//     /* */
+//
+//     let offset = left < 0 ? Math.max( 0, -left ) : 0;
+//     left = left < 0 ? 0 : left;
+//     let rightBound = Math.min( srcTyped.length, right - left + 1 );
+//     rightBound = Math.min( rightBound, srcLength );
+//     let length = dstTyped.length;
+//
+//     let i;
+//     for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
+//     dstTyped[ i ] = srcTyped[ i - offset + left ];
+//
+//     if( i > srcLength + offset - left )
+//     i = srcLength + offset - left;
+//
+//     for( ; i < length ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     for( let i = 0 ; i < offset ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     return dstTyped;
+//
+//   }
+// }
+//
+// bufferReusingRelength.defaults =
+// {
+//   dst : null,
+//   src : null,
+//   cinterval : null,
+//   ins : null,
+//   offsetting : 1,
+//   reusing : 1,
+//   growFactor : 2,
+//   shrinkFactor : 0,
+//   minSize : 64,
+// };
+
+function bufferReusingRelength_body( o )
 {
-  let o = _._bufferReusing_head.apply( this, arguments );
+  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
+  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
 
   let left, right;
   let srcLength = o.src.byteLength;
@@ -3614,11 +3704,29 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
   srcLength = o.src.length;
   o.cinterval = cintervalClamp();
 
-  _.routineOptions( bufferReusingRelength, o );
+  let newBufferCreate = o.dst === null;
 
-  o.bufferFill = dstBufferFill;
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
 
-  return _._bufferReusing( o );
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
 
   /* */
 
@@ -3631,7 +3739,7 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
     else
     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
 
-    if( o.cinterval === undefined )
+    if( o.cinterval === null )
     o.cinterval = [ 0, bufferLength - 1 ];
     else if( _.numberIs( o.cinterval ) )
     o.cinterval = [ 0, o.cinterval - 1 ];
@@ -3680,7 +3788,7 @@ function bufferReusingRelength( /* dst, src, cinterval, ins */ )
   }
 }
 
-bufferReusingRelength.defaults =
+bufferReusingRelength_body.defaults =
 {
   dst : null,
   src : null,
@@ -3692,6 +3800,10 @@ bufferReusingRelength.defaults =
   shrinkFactor : 0,
   minSize : 64,
 };
+
+//
+
+let bufferReusingRelength = _.routineUnite( bufferReusing_head, bufferReusingRelength_body );
 
 //
 

@@ -13731,7 +13731,6 @@ function bufferReusingRelengthDstIsArrayUnroll( test )
   test.case = 'wrong value in range';
   var dst = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, true, [ 2 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, null, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, 'str', [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [ 'str', 1 ], [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [], [ 2 ] ) );
