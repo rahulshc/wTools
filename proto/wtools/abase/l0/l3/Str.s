@@ -695,12 +695,6 @@ function strParseType( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ), 'Expects string' );
 
-  let o =
-  {
-    type : '',
-    traits : [],
-  }
-
   if( !( /^{- .+ -}$/g.test( src ) ) )
   return Object.create( null );
 
@@ -714,6 +708,8 @@ function strParseType( src )
 
 function _strParseType( src )
 {
+  _.assert( _.strIs( src ), 'Expects string' );
+
   let o =
   {
     type : '',
