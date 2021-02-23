@@ -42,7 +42,7 @@ function has( linterval, src )
     if( src[ 1 ] > linterval[ 1 ] )
     return false;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( src < linterval[ 0 ] )
     return false;
@@ -67,7 +67,7 @@ function has( linterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < linterval[ 0 ] )
 //   return false;
@@ -86,7 +86,7 @@ function has( linterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber <= linterval[ 0 ] )
 //   return false;
@@ -105,7 +105,7 @@ function has( linterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < linterval[ 0 ] )
 //   return false;
@@ -124,7 +124,7 @@ function has( linterval, src )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < linterval[ 0 ] )
 //   return false;
@@ -166,7 +166,7 @@ function fromSingle( linterval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( linterval ) )
+  if( _.number.is( linterval ) )
   return [ linterval, 1 ];
 
   _.assert( _.longIs( linterval ) );
@@ -181,12 +181,12 @@ function fromSingle( linterval )
     return [ 0, 1 ];
   }
 
-  _.assert( _.numberIs( linterval[ 0 ] ) );
+  _.assert( _.number.is( linterval[ 0 ] ) );
 
   if( linterval[ 1 ] === undefined )
   return [ linterval[ 0 ], 1 ];
 
-  _.assert( _.numberIs( linterval[ 1 ] ) );
+  _.assert( _.number.is( linterval[ 1 ] ) );
 
   return linterval;
 }
@@ -199,7 +199,7 @@ function clamp( dstRange, clampRange )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.intervalIs( dstRange ) );
 
-  if( _.numberIs( clampRange ) )
+  if( _.number.is( clampRange ) )
   {
     dstRange[ 0 ] = clampRange;
     dstRange[ 1 ] = 0;
@@ -233,7 +233,7 @@ function countElements( linterval, increment )
   if( increment === undefined )
   increment = 1;
 
-  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+  _.assert( _.number.is( increment ), 'Increment should has a number value' );
 
   if( increment )
   {

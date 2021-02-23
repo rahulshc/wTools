@@ -291,7 +291,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.primitiveIs( src ) )
     {
-      if( _.bigIntIs( src ) )
+      if( _.bigInt.is( src ) )
       return `${String( src )}n`; /* qqq for Yevhen : no! */
       return String( src );
     }
@@ -329,7 +329,7 @@ function exportStringShortDiagnostic( src )
     {
       if( _.routineIs( src.exportString ) )
       {
-        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please */
+        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please | aaa : Added. */
         // debugger;
         result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
@@ -441,7 +441,7 @@ function strShort( o )
   _.routineOptions( strShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
+  _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );

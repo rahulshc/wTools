@@ -388,7 +388,7 @@ function diagnosticStructureGenerate_head( routine, args )
   if( o.hashMapComplexity === null )
   o.hashMapComplexity = from( o.containerComplexity );
 
-  _.assert( _.numberIs( o.depth ) );
+  _.assert( _.number.is( o.depth ) );
 
   function from( complexity, min )
   {

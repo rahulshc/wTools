@@ -43,7 +43,7 @@ function Make( src )
 {
   if( src === undefined || src === null )
   return this.MakeEmpty();
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   return new ContainerAdapterArray( new Array( src ) );
   else if( this.IsContainer( src ) )
   return new ContainerAdapterArray( [ ... src ] );
@@ -207,7 +207,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
     _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
     container.splice( index, 1 );
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
     _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
     return index;

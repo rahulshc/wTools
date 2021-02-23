@@ -15,7 +15,7 @@ let Self = _global_.wTools;
 function intervalIs( range )
 {
   _.assert( arguments.length === 1 );
-  if( !_.numbersAreAll( range ) )
+  if( !_.number.s.areAll( range ) )
   return false;
   if( range.length !== 2 )
   return false;
@@ -66,7 +66,7 @@ function intervalIsValid( range )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( range ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < range[ 0 ] )
 //   return false;
@@ -85,7 +85,7 @@ function intervalIsValid( range )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( range ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber <= range[ 0 ] )
 //   return false;
@@ -104,7 +104,7 @@ function intervalIsValid( range )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( range ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < range[ 0 ] )
 //   return false;
@@ -123,7 +123,7 @@ function intervalIsValid( range )
 //
 //   _.assert( arguments.length === 2 );
 //   _.assert( _.intervalIs( range ) );
-//   _.assert( _.numberIs( srcNumber ) );
+//   _.assert( _.number.is( srcNumber ) );
 //
 //   if( srcNumber < range[ 0 ] )
 //   return false;
