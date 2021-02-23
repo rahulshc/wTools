@@ -2181,98 +2181,98 @@ function consoleIs( test )
 function printerIs( test )
 {
   test.case = 'check null';
-  var got = _.printerIs( null );
+  var got = _.printer.is( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.printerIs( undefined );
+  var got = _.printer.is( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.printerIs( _.nothing );
+  var got = _.printer.is( _.nothing );
   test.identical( got, false );
 
   test.case = 'check zero';
-  var got = _.printerIs( 0 );
+  var got = _.printer.is( 0 );
   test.identical( got, false );
 
   test.case = 'check empty string';
-  var got = _.printerIs( '' );
+  var got = _.printer.is( '' );
   test.identical( got, false );
 
   test.case = 'check false';
-  var got = _.printerIs( false );
+  var got = _.printer.is( false );
   test.identical( got, false );
 
   test.case = 'check NaN';
-  var got = _.printerIs( NaN );
+  var got = _.printer.is( NaN );
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.printerIs( Symbol( 'a' ) );
+  var got = _.printer.is( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
-  var got = _.printerIs( [] );
+  var got = _.printer.is( [] );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.printerIs( _.argumentsArray.make( [] ) );
+  var got = _.printer.is( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
-  var got = _.printerIs( _.unrollMake( [] ) );
+  var got = _.printer.is( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty map';
-  var got = _.printerIs( {} );
+  var got = _.printer.is( {} );
   test.identical( got, false );
 
   test.case = 'check empty pure map';
-  var got = _.printerIs( Object.create( null ) );
+  var got = _.printer.is( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'check empty Set';
-  var got = _.printerIs( new Set( [] ) );
+  var got = _.printer.is( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.printerIs( new Map( [] ) );
+  var got = _.printer.is( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
-  var got = _.printerIs( new BufferRaw() );
+  var got = _.printer.is( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check empty BufferTyped';
-  var got = _.printerIs( new U8x() );
+  var got = _.printer.is( new U8x() );
   test.identical( got, false );
 
   test.case = 'check number';
-  var got = _.printerIs( 3 );
+  var got = _.printer.is( 3 );
   test.identical( got, false );
 
   test.case = 'check bigInt';
-  var got = _.printerIs( 1n );
+  var got = _.printer.is( 1n );
   test.identical( got, false );
 
   test.case = 'check string';
-  var got = _.printerIs( 'str' );
+  var got = _.printer.is( 'str' );
   test.identical( got, false );
 
   test.case = 'check not empty array';
-  var got = _.printerIs( [ null ] );
+  var got = _.printer.is( [ null ] );
   test.identical( got, false );
 
   test.case = 'check map with properties constructor and Composes';
-  var got = _.printerIs( { 'constructor' : 1, 'Composes' : 1 } );
+  var got = _.printer.is( { 'constructor' : 1, 'Composes' : 1 } );
   test.identical( got, false );
 
   test.case = 'check pure map with properties constructor and Composes';
   var src = Object.create( null );
   src.constructor = false;
   src.Composes = 1;
-  var got = _.printerIs( src );
+  var got = _.printer.is( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
@@ -2284,7 +2284,7 @@ function printerIs( test )
   var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
-  var got = _.printerIs( src );
+  var got = _.printer.is( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
@@ -2293,23 +2293,23 @@ function printerIs( test )
     this.x = 1;
     return this;
   };
-  var got = _.printerIs( Constr2 );
+  var got = _.printer.is( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.printerIs( src );
+  var got = _.printer.is( src );
   test.identical( got, false );
 
   test.case = 'function _Promise';
   function Promise(){}
   var src = Promise;
-  var got = _.printerIs( src );
+  var got = _.printer.is( src );
   test.identical( got, false );
 
   test.case = 'check console';
   var src = console;
-  var got = _.printerIs( src );
+  var got = _.printer.is( src );
   test.identical( got, false );
 
   // instance of _.Logger tested in module wLogger
@@ -2320,98 +2320,98 @@ function printerIs( test )
 function printerLike( test )
 {
   test.case = 'check null';
-  var got = _.printerLike( null );
+  var got = _.printer.like( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.printerLike( undefined );
+  var got = _.printer.like( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.printerLike( _.nothing );
+  var got = _.printer.like( _.nothing );
   test.identical( got, false );
 
   test.case = 'check zero';
-  var got = _.printerLike( 0 );
+  var got = _.printer.like( 0 );
   test.identical( got, false );
 
   test.case = 'check empty string';
-  var got = _.printerLike( '' );
+  var got = _.printer.like( '' );
   test.identical( got, false );
 
   test.case = 'check false';
-  var got = _.printerLike( false );
+  var got = _.printer.like( false );
   test.identical( got, false );
 
   test.case = 'check NaN';
-  var got = _.printerLike( NaN );
+  var got = _.printer.like( NaN );
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.printerLike( Symbol( 'a' ) );
+  var got = _.printer.like( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
-  var got = _.printerLike( [] );
+  var got = _.printer.like( [] );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.printerLike( _.argumentsArray.make( [] ) );
+  var got = _.printer.like( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
-  var got = _.printerLike( _.unrollMake( [] ) );
+  var got = _.printer.like( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty map';
-  var got = _.printerLike( {} );
+  var got = _.printer.like( {} );
   test.identical( got, false );
 
   test.case = 'check empty pure map';
-  var got = _.printerLike( Object.create( null ) );
+  var got = _.printer.like( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'check empty Set';
-  var got = _.printerLike( new Set( [] ) );
+  var got = _.printer.like( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.printerLike( new Map( [] ) );
+  var got = _.printer.like( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
-  var got = _.printerLike( new BufferRaw() );
+  var got = _.printer.like( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check empty BufferTyped';
-  var got = _.printerLike( new U8x() );
+  var got = _.printer.like( new U8x() );
   test.identical( got, false );
 
   test.case = 'check number';
-  var got = _.printerLike( 3 );
+  var got = _.printer.like( 3 );
   test.identical( got, false );
 
   test.case = 'check bigInt';
-  var got = _.printerLike( 1n );
+  var got = _.printer.like( 1n );
   test.identical( got, false );
 
   test.case = 'check string';
-  var got = _.printerLike( 'str' );
+  var got = _.printer.like( 'str' );
   test.identical( got, false );
 
   test.case = 'check not empty array';
-  var got = _.printerLike( [ null ] );
+  var got = _.printer.like( [ null ] );
   test.identical( got, false );
 
   test.case = 'check map with properties constructor and Composes';
-  var got = _.printerLike( { 'constructor' : 1, 'Composes' : 1 } );
+  var got = _.printer.like( { 'constructor' : 1, 'Composes' : 1 } );
   test.identical( got, false );
 
   test.case = 'check pure map with properties constructor and Composes';
   var src = Object.create( null );
   src.constructor = false;
   src.Composes = 1;
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
@@ -2423,7 +2423,7 @@ function printerLike( test )
   var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
@@ -2432,28 +2432,28 @@ function printerLike( test )
     this.x = 1;
     return this;
   };
-  var got = _.printerLike( Constr2 );
+  var got = _.printer.like( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, false );
 
   test.case = 'function _Promise';
   function Promise(){}
   var src = Promise;
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, false );
 
   test.case = 'check console';
   var src = console;
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, true );
 
   test.case = 'check global logger';
   var src = _global.logger;
-  var got = _.printerLike( src );
+  var got = _.printer.like( src );
   test.identical( got, true );
 
   // instance of _.Logger tested in module wLogger
