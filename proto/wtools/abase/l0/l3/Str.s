@@ -678,19 +678,18 @@ function strTypeWithoutTraits( src )
 function strParseType( src )
 {
   /*
-  - 'string'
-  - '5'
-  - '5n'
-  - 'null'
-  - 'undefined'
-  - 'Escape( 1 )'
-  - '{- Symbol undefined -}'
-  - '{- routine name -}'
-  - '{- routine.anonymous -}'
-  - '{- Map -}'
-  - '{- Map with 9 elements -}'
-  - '{- Map.polluted with 9 elements -}'
-
+    - 'string'
+    - '5'
+    - '5n'
+    - 'null'
+    - 'undefined'
+    - 'Escape( 1 )'
+    - '{- Symbol undefined -}'
+    - '{- routine name -}'
+    - '{- routine.anonymous -}'
+    - '{- Map -}'
+    - '{- Map with 9 elements -}'
+    - '{- Map.polluted with 9 elements -}'
   */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -707,10 +706,7 @@ function strParseType( src )
 
   let splitted = src.split( ' ' );
   let type = splitted[ 1 ];
-  let length = src.match( /\d+/g );
-
-  if( length !== null )
-  length = length[ length.length - 1 ];
+  let length = isNaN( +splitted[ 3 ] ) ? null : +splitted[ 3 ];
 
   if( type.indexOf( '.' ) === -1 )
   {
@@ -721,13 +717,13 @@ function strParseType( src )
   }
   else
   {
-    let typeAndTraits = type.split( '.' );
-    o.type = typeAndTraits[ 0 ];
-    o.traits = typeAndTraits.slice( 1 );
+    let [ t, ... traits ] = type.split( '.' );
+    o.type = t;
+    o.traits = traits;
   }
 
-  if( length )
-  o.length = +length;
+  if( length !== null )
+  o.length = length;
 
   return o;
 
