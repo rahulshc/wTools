@@ -37,6 +37,13 @@ function is( src )
 
 //
 
+function like( src )
+{
+  return _.aux.is( src );
+}
+
+//
+
 function isPrototyped( src )
 {
 
@@ -138,15 +145,18 @@ let ToolsExtension =
 
   // typing
 
-  mapLike : is,
-  mapLikePrototyped : isPrototyped,
-  mapLikePure : isPure,
-  mapLikePolluted : isPolluted,
+  auxIs : is,
+  auxLike : like,
+
+  // mapLike : is,
+  // mapLikePrototyped : isPrototyped,
+  // mapLikePure : isPure,
+  // mapLikePolluted : isPolluted,
 
   // checking
 
-  mapLikeEmpty : isEmpty,
-  mapLikePopulated : isPopulated,
+  // mapLikeEmpty : isEmpty,
+  // mapLikePopulated : isPopulated,
 
 }
 
@@ -160,6 +170,7 @@ var AuxiliaryExtension =
   // typing
 
   is, /* qqq : cover */
+  like, /* qqq : cover */
   isPrototyped, /* qqq : cover */
   isPure, /* qqq : cover */
   isPolluted, /* qqq : cover */

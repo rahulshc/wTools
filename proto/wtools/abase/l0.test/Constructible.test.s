@@ -480,7 +480,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );

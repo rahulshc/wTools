@@ -103,7 +103,7 @@ function is( test )
   test.true( !_.object.is( src ) );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.true( !_.object.is( src ) );
 
   test.case = 'BufferRaw';

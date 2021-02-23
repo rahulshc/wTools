@@ -14423,7 +14423,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAll( { '1' : 2, 'c' : 4, 'a' : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -14451,7 +14451,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityAll( undefined, ( src, u ) => src !== u );
   test.identical( got, false );
@@ -14576,7 +14576,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAll( { '1' : 2, 'c' : 4, 'a' : undefined } );
   test.identical( got, undefined );
@@ -14595,7 +14595,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityAll( undefined );
   test.identical( got, undefined );
@@ -14780,7 +14780,7 @@ function entityAny( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAny( { '1' : 2, 'c' : 4, 'a' : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -15284,7 +15284,7 @@ function entityNone( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityNone( { '1' : 2, 'c' : 4, 'a' : undefined } );
   test.identical( got, false );
@@ -15303,7 +15303,7 @@ function entityNone( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityNone( undefined );
   test.identical( got, true );

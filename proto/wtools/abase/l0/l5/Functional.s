@@ -534,7 +534,7 @@ function entityEachOwn( src, onEach )
 
 /*
 
-LongLike / MapLike / HashMapLike / SetLike
+LongLike / Aux / HashMapLike / SetLike
 
 
 _.only( Array::dst, Map::src );

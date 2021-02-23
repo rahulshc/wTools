@@ -2492,7 +2492,7 @@ _bufferReusing.defaults =
  * @param { BufferAny|Long|Undefined } ins - The container with elements for insertion. Inserting begins at start index.
  *
  * Second parameter set :
- * @param { MapLike } o - Options map.
+ * @param { Aux } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
  * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
@@ -2677,7 +2677,7 @@ bufferReusingBut.defaults =
  * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer of minimal size and fills by data.
  *
  * Second parameter set :
- * @param { MapLike } o - Options map.
+ * @param { Aux } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
  * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
@@ -2841,7 +2841,7 @@ bufferReusingOnly.defaults =
  * @param { * } ins - Insertion element with compatible type to destination buffer.
  *
  * Second parameter set :
- * @param { MapLike } o - Options map.
+ * @param { Aux } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
  * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
@@ -3007,7 +3007,7 @@ bufferReusingGrow.defaults =
  * @param { * } ins - Insertion element with compatible type to destination buffer.
  *
  * Second parameter set :
- * @param { MapLike } o - Options map.
+ * @param { Aux } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
  * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
@@ -3180,7 +3180,7 @@ bufferReusingRelength.defaults =
  * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer with minimal size.
  *
  * Second parameter set :
- * @param { MapLike } o - Options map.
+ * @param { Aux } o - Options map.
  * @param { BufferAny|Long|Null } o.dst - The destination container.
  * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
  * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.

@@ -459,7 +459,7 @@ function typingExtended( test )
   test.true( !_.arrayIs( src ) );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.true( _.countable.like( src ) );
   test.true( _.countable.is( src ) );
   test.true( _.vector.like( src ) );

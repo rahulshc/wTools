@@ -3121,12 +3121,12 @@ Dmytro : covered
  * // returns o.splits = [ 'a\n', 'b', 'c' ];
  * // returns o.spans = [ 1, 3, 4, 5 ];
  *
- * @returns { MapLike } - Returns object with next fields:
+ * @returns { Aux } - Returns object with next fields:
  * splits - Array with three entries:
  * splits[ 0 ] and splits[ 2 ] contains a string with the nearest lines,
  * and splits[ 1 ] contains the substring corresponding to the range.
  * spans - Array with indexes of begin and end of nearest lines.
- * @param { MapLike } o - Options.
+ * @param { Aux } o - Options.
  * @param { String } o.src - Source string.
  * @param { Array|Number } o.range - Sets range of lines to select from {-o.src-} or single line number.
  * @param { Number } o.numberOfLines - Sets number of lines to select.
@@ -3263,10 +3263,10 @@ let strLinesNearest = _.routineUnite( strLinesNearest_head, strLinesNearest_body
  * //           report : '1 : function add( x,y ) { return x + y }'
  * //         }
  *
- * @returns { MapLike } - Returns object with next fileds:
+ * @returns { Aux } - Returns object with next fileds:
  *    nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft if {-numberOfLines-} allows, 2 - chars in range {-o.charsRangeLeft-}, 3 - lines to the right of {-o.charsRangeLeft-} if {-numberOfLines-} allows.
  *    report { String } - report about found string along with surrounding lines {-numberOfLines-}
- * @param { MapLike } o - Options.
+ * @param { Aux } o - Options.
  * @param { String } o.src - Source string.
  * @param { Array|Number } o.charsRangeLeft - Sets range of lines to select from {-o.src-} or single line number.
  * @param { Number } o.numberOfLines - Sets number of lines to select.

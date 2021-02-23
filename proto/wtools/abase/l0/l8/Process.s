@@ -44,7 +44,7 @@ eventGive.defaults =
  * @param { Number } timeOut - The time delay.
  * @param { Function } onReady - Callback to execute.
  * Second parameter set :
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Number } o.timeOut - The time delay.
  * @param { Function } o.onReady - Callback to execute.
  * @returns { Undefined } - Returns not a value, executes code when a web-page is ready.
