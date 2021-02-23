@@ -63,7 +63,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     container = new Set;
     super( container );
     _.assert( arguments.length === 0 || arguments.length === 1 );
-    _.assert( _.setLike( container ) );
+    _.assert( _.set.like( container ) );
   }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
@@ -273,7 +273,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       this.original.add( container[ k ] );
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       this.original.add( e );
@@ -296,7 +296,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         if( !this.has( container[ i ], onEvaluate1, onEvaluate2 ) )
         this.append( container[ i ] );
       }
-      else if( _.setIs( container ) )
+      else if( _.set.is( container ) )
       {
         for( let e of container )
         if( !this.has( e, onEvaluate1, onEvaluate2 ) )
@@ -322,7 +322,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         this.append( container[ i ] );
       }
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       {
@@ -489,7 +489,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
           }
           else
           {
-            _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+            _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
           }
         }
       }
@@ -531,7 +531,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         }
         else
         {
-          _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' )
+          _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' )
         }
       }
     }
@@ -1076,7 +1076,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let onEvaluate2 = arguments[ 3 ];
 
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
-    return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+    return _.arraySet.left( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   right( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
@@ -1086,7 +1086,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let onEvaluate2 = arguments[ 3 ];
 
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
-    return _.arraySetRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+    return _.arraySet.right( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {

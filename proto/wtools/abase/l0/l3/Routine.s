@@ -154,8 +154,8 @@ function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.boolIs( o.sealing ) );
-  _.assert( _.boolIs( o.extending ) );
+  _.assert( _.bool.is( o.sealing ) );
+  _.assert( _.bool.is( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
 
@@ -564,8 +564,8 @@ function assertRoutineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 
   if( Config.debug )
@@ -619,6 +619,10 @@ function assertRoutineOptions( routine, args, defaults )
 
 //
 
+/* qqq for Dmytro : forbid 3rd argument */
+/* qqq for Dmytro : inline implementation */
+/* qqq for Dmytro : make possible pass defaults-map instead of routine */
+/* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -629,13 +633,13 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   options = Object.create( null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.object.is( routine.defaults ), 'Expects routine with defined defaults' );
-  _.assert( _.object.is( options ), 'Expects object' );
+  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
 
   defaults = defaults || routine.defaults;
 
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
   _.assertMapHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
 
@@ -788,7 +792,7 @@ function _routinesCompose_body( o )
     let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
@@ -1129,7 +1133,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -1680,7 +1684,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.toStrShort( this ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -1690,7 +1694,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.toStrShort( c ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
@@ -1725,7 +1729,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingArray && _.setLike( args[ d ] ) )
+      else if( vectorizingArray && _.set.like( args[ d ] ) )
       {
         length = args[ d ].size;
         break;
@@ -1759,7 +1763,7 @@ function vectorize_body( o )
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
       {
-        _.assert( _.arraySetIdentical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+        _.assert( _.arraySet.identical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
       }
       else
       {
@@ -1854,7 +1858,7 @@ function vectorize_body( o )
       //
       // return result;
     }
-    else if( _.setLike( src ) ) /* qqq : cover please */
+    else if( _.set.like( src ) ) /* qqq : cover please */
     {
       let args2 = [ ... args ];
       let result = new Set;
@@ -1965,7 +1969,7 @@ function vectorize_body( o )
       // return result;
 
     }
-    else if( _.setLike( src ) ) /* qqq : cover */
+    else if( _.set.like( src ) ) /* qqq : cover */
     {
       debugger;
       if( head )

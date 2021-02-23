@@ -817,7 +817,7 @@ function from( time )
     else
     _.assert( 0, 'Wrong time format' );
   }
-  _.assert( 0, 'Not clear how to coerce to time', _.strType( time ) );
+  _.assert( 0, 'Not clear how to coerce to time', _.entity.strType( time ) );
 }
 
 //

@@ -238,11 +238,11 @@ function makeEmpty( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeEmpty( src );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.hashMapIs( src ) )
+  else if( _.hashMap.is( src ) )
   {
     return new src.constructor();
   }
@@ -266,7 +266,7 @@ function makeEmpty( src )
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeEmpty()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
 
 }
 
@@ -290,11 +290,11 @@ function makeUndefined( src, length )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeUndefined( src, length );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.hashMapIs( src ) )
+  else if( _.hashMap.is( src ) )
   {
     return new src.constructor();
   }
@@ -318,7 +318,7 @@ function makeUndefined( src, length )
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
 }
 
 // //
@@ -335,7 +335,7 @@ function makeUndefined( src, length )
 //   {
 //     return this.tools.longMake( src );
 //   }
-//   else if( _.hashMapLike( src ) || _.setLike( src ) )
+//   else if( _.hashMap.like( src ) || _.set.like( src ) )
 //   {
 //     return new src.constructor( src );
 //   }
@@ -355,7 +355,7 @@ function makeUndefined( src, length )
 //   {
 //     return src;
 //   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.make()\`` );
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
 //
 // }
 
@@ -378,7 +378,7 @@ function cloneShallow( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }
@@ -410,7 +410,7 @@ function cloneShallow( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneShallow()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
 
 }
 
@@ -445,7 +445,7 @@ function cloneDeep( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }
@@ -469,7 +469,7 @@ function cloneDeep( src )
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneDeep()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneDeep()\`` );
 
 }
 

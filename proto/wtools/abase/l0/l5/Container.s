@@ -30,10 +30,10 @@ function extendReplacing( dst, src )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
-    else if( _.setLike( src ) )
-    dst = _.arraySetUnion_( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
+    else if( _.set.like( src ) )
+    dst = _.arraySet.union_( null, src );
     else
     dst = src;
 
@@ -43,8 +43,8 @@ function extendReplacing( dst, src )
 
     if( _.aux.is( dst ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -63,20 +63,20 @@ function extendReplacing( dst, src )
     }
 
   }
-  else if( _.hashMapLike( src ) )
+  else if( _.hashMap.like( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.aux.is( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( dst ) || _.aux.is( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
   }
-  else if( _.setLike( src ) )
+  else if( _.set.like( src ) )
   {
 
-    if( _.setLike( dst ) || _.longLike( dst ) )
-    dst = _.arraySetUnion_( dst, src );
+    if( _.set.like( dst ) || _.longLike( dst ) )
+    dst = _.arraySet.union_( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -105,10 +105,10 @@ function extendAppending( dst, src )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
-    else if( _.setLike( src ) )
-    dst = _.arraySetUnion_( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
+    else if( _.set.like( src ) )
+    dst = _.arraySet.union_( null, src );
     else
     dst = src;
 
@@ -118,8 +118,8 @@ function extendAppending( dst, src )
 
     if( _.aux.is( src ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -130,20 +130,20 @@ function extendAppending( dst, src )
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.hashMapLike( dst ) )
+  else if( _.hashMap.like( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.aux.is( src ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( src ) || _.aux.is( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.setLike( dst ) )
+  else if( _.set.like( dst ) )
   {
 
-    if( _.setLike( src ) || _.longLike( src ) )
-    dst = _.arraySetUnion_( dst, src );
+    if( _.set.like( src ) || _.longLike( src ) )
+    dst = _.arraySet.union_( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -163,7 +163,7 @@ function extendAppending( dst, src )
 /**
  * The routine empty() clears provided container {-dstContainer-}.
  *
- * @param { Long|Set|HashMap|MapLike } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
  *
  * @example
  * let dst = [];
@@ -205,10 +205,10 @@ function extendAppending( dst, src )
  * console.log( got === dst );
  * // log true
  *
- * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
+ * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
  * @function empty
  * @throws { Error } If arguments.length is less than one.
- * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
  * @namespace Tools
  */
@@ -217,14 +217,14 @@ function empty( dstContainer )
 {
   if( _.longLike( dstContainer ) )
   _.longEmpty( dstContainer );
-  else if( _.setLike( dstContainer ) )
+  else if( _.set.like( dstContainer ) )
   dstContainer.clear();
-  else if( _.hashMapLike( dstContainer ) )
+  else if( _.hashMap.like( dstContainer ) )
   dstContainer.clear();
   else if( _.aux.is( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
-  _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+  _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
   return dstContainer;
 }
 
@@ -297,11 +297,11 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
 
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       return container.get( key );
     }
-    else if( _.setLike( container ) )
+    else if( _.set.like( container ) )
     {
       return [ ... container ][ key ];
     }
@@ -341,14 +341,14 @@ function elementSet( container, key, value )
 
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       container.set( key, value );
       return value;
     }
     else
     {
-      _.assert( !_.setLike( container ), 'not implemented' );
+      _.assert( !_.set.like( container ), 'not implemented' );
       container[ key ] = value;
       return container[ key ];
     }

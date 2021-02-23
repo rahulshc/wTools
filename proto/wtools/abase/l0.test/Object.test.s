@@ -103,7 +103,7 @@ function is( test )
   test.true( !_.object.is( src ) );
 
   test.case = 'BufferNode';
-  var src = new BufferNode( 'str' );
+  var src = BufferNode.from( 'str' );
   test.true( !_.object.is( src ) );
 
   test.case = 'BufferRaw';
@@ -135,7 +135,7 @@ function is( test )
   test.true( !_.object.is( src ) );
 
   test.case = 'interval & BufferTyped';
-  var src = _.escape.make( new F32x( 2 ) );
+  var src = new F32x( 2 );
   test.true( !_.object.is( src ) );
 
   test.case = 'pair';
@@ -207,9 +207,9 @@ function is( test )
   var src = require( 'stream' ).Readable();
   test.true( _.object.is( src ) );
 
-  test.case = 'console';
-  var src = console;
-  test.true( !_.object.is( src ) );
+  // test.case = 'console';
+  // var src = console;
+  // test.true( !_.object.is( src ) );
 
   test.case = 'printerLike';
   var src = _global_.logger;

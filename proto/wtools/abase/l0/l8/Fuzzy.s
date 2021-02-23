@@ -1,15 +1,14 @@
-( function _l5_Set_s_()
+( function _l8_Fuzzy_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _.set = _.set || Object.create( null );
-_.set.s = _.set.s || Object.create( null );
+let Self = _.fuzzy = _.fuzzy || Object.create( null );
 
 // --
-// implementation
+// fuzzy
 // --
 
 // --
@@ -28,18 +27,8 @@ let Extension =
 
 }
 
-//
-
-let ExtensionS =
-{
-
-}
-
-//
-
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-Object.assign( _.set.s, ExtensionS );
 
 // --
 // export

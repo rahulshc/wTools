@@ -378,7 +378,7 @@ function eachSample( o )
   /* */
 
   let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
-  if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   if( keys.length === 0 )
   return o.result ? o.result : 0;
@@ -930,7 +930,7 @@ function _entityFilterDeep( o )
   let onEach = _._filter_functor( o.onEach, o.conditionLevels );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
+  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.entity.strType( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */

@@ -106,7 +106,7 @@ function _handleUncaught2( o )
     if( !o.err.originalMessage && _.object.like && _.object.like( o.err ) )
     try
     {
-      let serr = _.toStr && _.property ? _.toStr.fields( o.err, { errorAsMap : 1 } ) : o.err;
+      let serr = _.entity.exportString && _.property ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
       o.logger.error( serr );
     }
     catch( err2 )

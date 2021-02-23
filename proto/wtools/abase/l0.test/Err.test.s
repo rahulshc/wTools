@@ -1026,7 +1026,10 @@ function _errOriginalMessageForm( test )
   test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
+  test.identical( _.strCount( err.originalMessage, "{- routine.anonymous -}" ), 1 );
+  console.log( err.originalMessage );
+  // Dmytro : affects in group testing but has no reason for it
+  // qqq : for Dmytro : ?
 
   test.case = 'args - different, routine returns map with toStr';
   var a = () =>

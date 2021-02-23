@@ -207,7 +207,7 @@
 //   {
 //     return range.first;
 //   }
-//   _.assert( 0, 'unexpected type of range', _.strType( range ) );
+//   _.assert( 0, 'unexpected type of range', _.entity.strType( range ) );
 // }
 //
 // // //
@@ -230,7 +230,7 @@
 // //   {
 // //     return range.last
 // //   }
-// //   _.assert( 0, 'unexpected type of range', _.strType( range ) );
+// //   _.assert( 0, 'unexpected type of range', _.entity.strType( range ) );
 // //
 // // }
 //

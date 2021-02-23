@@ -17380,6 +17380,7 @@ function loggerProblemExperiment( test )
 
   */
 
+  /* qqq : move to wTesting and to wLogger */
   test.case = 'ins as BufferNode';
   var expected = BufferNode.alloc( 5 );
   var expected = new BufferNode( 5 );
