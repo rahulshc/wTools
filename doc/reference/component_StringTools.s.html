@@ -51,7 +51,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-var strTypeOf = _.strTypeOf;
+var strTypeOf = _.entity.strTypeOf;
 
 //
 
@@ -1290,7 +1290,7 @@ var strStrip = function( o )
   _.mapSupplement( o,strStrip.defaults );
   _.assertMapHasOnly( o,strStrip.defaults );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.entity.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
 
   //logger.log( 'strStrip.src :',o.src ); debugger;

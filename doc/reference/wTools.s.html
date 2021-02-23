@@ -329,7 +329,7 @@ var _entityCloneAct = function( o )
       (
         'Complex objets should have ' +
         ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
-        ', but object ' + _.strTypeOf( o.src ) + ' \n' +
+        ', but object ' + _.entity.strTypeOf( o.src ) + ' \n' +
         'at ' + ( o.path || '.' ) + '\ndoes not have ',o.src
       );
     }
@@ -413,7 +413,7 @@ var _entityCloneAct = function( o )
     return result;
   }
 
-  throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
+  throw _.err( 'unexpected type of src : ' + _.entity.strTypeOf( o.src ) );
 }
 
 //
@@ -1398,7 +1398,7 @@ var __entitySelectAct = function __entitySelectAct( o )
     if( o.undefinedForNone )
     return undefined;
     else
-    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
+    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.entity.strTypeOf( container ) );
   }
 
   var o = _.mapExtend( {},o );
@@ -1568,7 +1568,7 @@ var entityFilter = function( src,onEach )
   var result;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.object.like( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
+  _.assert( _.object.like( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.entity.strTypeOf( src ) );
   _.assert( _.routineIs( onEach ) || _.object.is( onEach ) );
 
   /**/
@@ -1913,7 +1913,7 @@ var entityCoerceTo = function( src,ins )
     return _.bool.from( src );
 
   }
-  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+  else throw _.err( 'unknown type to coerce to : ' + _.entity.strTypeOf( ins ) );
 
 }
 
@@ -3831,7 +3831,7 @@ var numberRandomIntBut = function( range )
 /**
   * Return type of src.
   * @example
-      var str = _.strTypeOf( 'testing' );
+      var str = _.entity.strTypeOf( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
@@ -4250,7 +4250,7 @@ regexpBut_.defaults =
 var regexpArrayMake = function( src )
 {
 
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
+  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.entity.strTypeOf( src ) );
 
   src = _.arrayFlatten( src );
 
@@ -5581,7 +5581,7 @@ var buffersSerialize = function buffersSerialize( o )
     var attribute = attributes[ a ][ 1 ];
     var buffer = o.onBufferGet.call( o.context,attribute );
 
-    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.entity.strTypeOf( buffer ) );
 
     var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
@@ -6526,7 +6526,7 @@ var arrayFrom = function( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+  throw _.err( 'arrayFrom : unknown source : ' + _.entity.strTypeOf( src ) ); //???
 }
 
 //
@@ -9165,7 +9165,7 @@ var mapExtendFiltering = function( filter,dstObject )
 
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
+    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.entity.strTypeOf( argument ) );
 
     for( var k in argument )
     {
@@ -9978,7 +9978,7 @@ var mapOwn = function( object,name )
   else if( _.symbol.is( name ) )
   return _ObjectHasOwnProperty.call( object, name );
 
-  _.assert( 0,'mapOwn :','unknown type of name :',_.strTypeOf( name ) );
+  _.assert( 0,'mapOwn :','unknown type of name :',_.entity.strTypeOf( name ) );
 }
 
 //
