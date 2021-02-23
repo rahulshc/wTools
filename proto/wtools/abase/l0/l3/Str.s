@@ -675,6 +675,39 @@ function strTypeWithoutTraits( src )
 
 //
 
+function strParseType( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  let o =
+  {
+    type : '',
+    traits : [],
+    // length if any
+  }
+
+  if( _.primitiveIs( src ) )
+  return end( _.entity.strTypeSecondary( src ) );
+
+  let proto = Object.getPrototypeOf( src );
+  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
+  return end( proto.constructor.name );
+
+  return end( _.entity.strTypeSecondary( src ) );
+
+  function end( result )
+  {
+    let translated = _.entity.TranslatedTypeMap[ result ];
+    if( translated )
+    result = translated;
+    return result;
+  }
+
+}
+
+//
+
 /**
  * The routine strConcat() provides the concatenation of array of elements ( or single element )
  * into a String. Returned string can be formatted by using options in options map {-o-}.
@@ -1293,6 +1326,7 @@ let ExtensionEntity =
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
+  strParseType,
 
   // fields
 
