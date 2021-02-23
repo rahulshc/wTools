@@ -53,7 +53,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Set.s' );
   require( './l0/l3/Sorted.s' );
   require( './l0/l3/Str.s' );
-  require( './l0/l5/Symbol.s' );
+  require( './l0/l3/Symbol.s' );
   require( './l0/l3/Time.s' );
   require( './l0/l3/Type.s' );
   require( './l0/l3/Units.s' );
