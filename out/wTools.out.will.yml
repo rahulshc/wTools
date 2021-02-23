@@ -217,6 +217,8 @@ module:
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Pair.s
           - ../proto/wtools/abase/l0/l3/Path.s
+          - ../proto/wtools/abase/l0/l3/Primitive.s
+          - ../proto/wtools/abase/l0/l3/Printer.s
           - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Property.s
           - ../proto/wtools/abase/l0/l3/PropertyTransformer.s
@@ -226,6 +228,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Set.s
           - ../proto/wtools/abase/l0/l3/Sorted.s
           - ../proto/wtools/abase/l0/l3/Str.s
+          - ../proto/wtools/abase/l0/l3/Symbol.s
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Type.s
           - ../proto/wtools/abase/l0/l3/Units.s
@@ -266,6 +269,8 @@ module:
           - ../proto/wtools/abase/l0/l5/Object.s
           - ../proto/wtools/abase/l0/l5/Pair.s
           - ../proto/wtools/abase/l0/l5/Path.s
+          - ../proto/wtools/abase/l0/l5/Primitive.s
+          - ../proto/wtools/abase/l0/l5/Printer.s
           - ../proto/wtools/abase/l0/l5/Process.s
           - ../proto/wtools/abase/l0/l5/Property.s
           - ../proto/wtools/abase/l0/l5/PropertyTransformer.s
@@ -275,6 +280,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Set.s
           - ../proto/wtools/abase/l0/l5/Sorted.s
           - ../proto/wtools/abase/l0/l5/Str.s
+          - ../proto/wtools/abase/l0/l5/Symbol.s
           - ../proto/wtools/abase/l0/l5/Time.s
           - ../proto/wtools/abase/l0/l5/Type.s
           - ../proto/wtools/abase/l0/l5/Units.s
@@ -323,6 +329,8 @@ module:
           - ../proto/wtools/abase/l0/l8/Object.s
           - ../proto/wtools/abase/l0/l8/Pair.s
           - ../proto/wtools/abase/l0/l8/Path.s
+          - ../proto/wtools/abase/l0/l8/Primitive.s
+          - ../proto/wtools/abase/l0/l8/Printer.s
           - ../proto/wtools/abase/l0/l8/Process.s
           - ../proto/wtools/abase/l0/l8/Property.s
           - ../proto/wtools/abase/l0/l8/PropertyTransformer.s
@@ -332,6 +340,7 @@ module:
           - ../proto/wtools/abase/l0/l8/Set.s
           - ../proto/wtools/abase/l0/l8/Sorted.s
           - ../proto/wtools/abase/l0/l8/Str.s
+          - ../proto/wtools/abase/l0/l8/Symbol.s
           - ../proto/wtools/abase/l0/l8/Time.s
           - ../proto/wtools/abase/l0/l8/Type.s
           - ../proto/wtools/abase/l0/l8/Units.s
@@ -344,6 +353,7 @@ module:
           - ../proto/wtools/abase/l0.test/Array.test.s
           - ../proto/wtools/abase/l0.test/ArraySet.test.s
           - ../proto/wtools/abase/l0.test/Auxiliary.test.s
+          - ../proto/wtools/abase/l0.test/BigInt.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
@@ -359,6 +369,7 @@ module:
           - ../proto/wtools/abase/l0.test/Escape.test.s
           - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
+          - ../proto/wtools/abase/l0.test/Fuzzy.test.s
           - ../proto/wtools/abase/l0.test/Global.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
@@ -371,6 +382,8 @@ module:
           - ../proto/wtools/abase/l0.test/Object.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
+          - ../proto/wtools/abase/l0.test/Primitive.test.s
+          - ../proto/wtools/abase/l0.test/Printer.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
           - ../proto/wtools/abase/l0.test/PropertyTransformer.test.s
@@ -379,6 +392,7 @@ module:
           - ../proto/wtools/abase/l0.test/Routine.test.s
           - ../proto/wtools/abase/l0.test/Sorted.test.s
           - ../proto/wtools/abase/l0.test/Str.test.s
+          - ../proto/wtools/abase/l0.test/Symbol.tes.s
           - ../proto/wtools/abase/l0.test/Time.test.s
           - ../proto/wtools/abase/l0.test/Typing.test.s
           - ../proto/wtools/abase/l0.test/Units.test.s
