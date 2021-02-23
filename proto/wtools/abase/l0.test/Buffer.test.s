@@ -12779,7 +12779,6 @@ function bufferReusingGrowDstIsArrayUnroll( test )
   test.case = 'wrong value in range';
   var dst = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, true, [ 2 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, null, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, 'str', [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [ 'str', 1 ], [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [], [ 2 ] ) );
