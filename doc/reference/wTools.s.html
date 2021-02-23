@@ -978,7 +978,7 @@ var entitySame = function entitySame()
   {
 
     _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.object.is( o ), '_.toStrFine :','options must be object' );
+    _assert( o === undefined || _.object.is( o ), '_.entity.exportStringFine :','options must be object' );
     var o = o || {};
 
     _.assertMapHasOnly( o,def );
@@ -1014,10 +1014,10 @@ var entityDiff = function entityDiff( src1,src2,o )
   var result = '';
 
   if( !_.atomicIs( src1 ) )
-  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+  src1 = _.entity.exportString( _.entitySelect( src1,o.path ) );
 
   if( !_.atomicIs( src2 ) )
-  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+  src2 = _.entity.exportString( _.entitySelect( src2,o.path ) );
 
   result += _.str
   (
@@ -3107,7 +3107,7 @@ var diagnosticWatchFields = function( options )
     {
       var result = options.dst[ fieldSymbol ];
       if( options.printValue )
-      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
+      console.log( 'reading ' + fieldName + ' ' + _.entity.exportString( result ) );
       else
       console.log( 'reading ' + fieldName );
       return result;
@@ -3118,7 +3118,7 @@ var diagnosticWatchFields = function( options )
     var write = function write( src )
     {
       if( options.printValue )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
+      console.log( 'writing ' + fieldName + ' ' + _.entity.exportString( src ) );
       else
       console.log( 'writing ' + fieldName );
       debugger;
@@ -7555,7 +7555,7 @@ var arrayMask = function arrayMask( srcArray, mask )
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.toStr({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.entity.exportString({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
 
   var preserve = 0;
   for( var m = 0 ; m &lt; mask.length ; m++ )
@@ -7607,7 +7607,7 @@ var arrayUnmask = function arrayUnmask( o )
 
   var length = o.src.length / atomsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.entity.exportString({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
 
   var dstArray = new o.src.constructor( atomsPerElement*length );
 
