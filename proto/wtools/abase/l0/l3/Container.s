@@ -14,11 +14,11 @@ function is( src )
 {
   if( _.longLike( src ) )
   return true;
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   return true;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return true;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   return false;
 }
@@ -31,9 +31,9 @@ function like( src )
   return true;
   if( _.object.like( src ) )
   return true;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return true;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   return false;
 }
@@ -45,9 +45,10 @@ function lengthOf( container )
 
   _.assert( arguments.length === 1 );
 
-  let type = _.container.typeOf( container );
-  if( type && type._lengthGet )
-  return type._lengthGet( container );
+  // yyy
+  // let type = _.container.typeOf( container );
+  // if( type && type._lengthGet )
+  // return type._lengthGet( container );
 
   if( _.entity.methodIteratorOf( container ) )
   return [ ... container ].length;

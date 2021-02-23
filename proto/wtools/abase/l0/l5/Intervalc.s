@@ -333,7 +333,7 @@ function firstGet( cinterval, options )
 
   if( options )
   {
-    _.assert( _.auxiliary.is( options ) );
+    _.assert( _.aux.is( options ) );
     if( options.increment === undefined )
     options.increment = 1;
   }
@@ -347,7 +347,7 @@ function firstGet( cinterval, options )
   {
     return cinterval.first;
   }
-  _.assert( 0, 'unexpected type of cinterval', _.strType( cinterval ) );
+  _.assert( 0, 'unexpected type of cinterval', _.entity.strType( cinterval ) );
 }
 
 //
@@ -377,7 +377,7 @@ function lastGet( cinterval, options )
   {
     return cinterval.last;
   }
-  _.assert( 0, 'unexpected type of cinterval', _.strType( cinterval ) );
+  _.assert( 0, 'unexpected type of cinterval', _.entity.strType( cinterval ) );
 
 }
 

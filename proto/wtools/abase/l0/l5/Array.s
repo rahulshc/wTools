@@ -180,7 +180,7 @@ function arrayMake( src )
   if( _.numberIs( src ) )
   return Array( src );
 
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return [ ... src ];
 
   _.assert( _.longLike( src ) );
@@ -281,7 +281,7 @@ function arrayMakeUndefined( src, length )
   return Array( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
+  _.assert( _.numberIs( src ) || _.longLike( src ) || _.set.like( src ) || src === null );
 
   if( _.longIs( length ) )
   {
@@ -293,7 +293,7 @@ function arrayMakeUndefined( src, length )
     length = 0;
     else if( _.numberIs( src ) )
     length = src;
-    else if( _.setLike( src ) )
+    else if( _.set.like( src ) )
     length = src.size;
     else if( _.longIs( src ) )
     length = src.length;
@@ -376,7 +376,7 @@ function arrayFromCoercing( src )
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
 
-  _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
+  _.assert( 0, 'Unknown data type : ' + _.entity.strType( src ) );
 }
 
 //
@@ -1977,7 +1977,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
   }
   else
   {
@@ -2075,7 +2075,7 @@ function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
   }
   else
   {
@@ -2173,7 +2173,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
 
   return dstArray;
 }
@@ -3045,7 +3045,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
   }
   else
   {
@@ -3097,7 +3097,7 @@ function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ 
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strEntityShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
   }
   else
   {
@@ -3716,10 +3716,10 @@ function arrayRemovedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   {
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
 
   let newIndex = _.longLeftIndex.apply( _, arguments );
-  _.assert( newIndex < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+  _.assert( newIndex < 0, () => 'The element ' + _.entity.exportStringShort( ins ) + ' is several times in dstArray' );
 
   return index;
 }
@@ -3800,7 +3800,7 @@ function arrayRemoveElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator
     let result = _.arrayRemovedElementOnce.apply( this, arguments );
     let index = _.longLeftIndex.apply( _, arguments );
     _.assert( index < 0 );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
   }
   else
   {
@@ -3813,7 +3813,7 @@ function arrayRemoveElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator
 function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result = arrayRemovedElementOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
   return dstArray;
 }
 */
@@ -3992,10 +3992,10 @@ function arrayRemovedElementOnceStrictly( /* dstArray, ins, evaluator1, evaluato
     result = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
 
   index = _.longLeftIndex.apply( _, arguments );
-  _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+  _.assert( index < 0, () => 'The element ' + _.entity.exportStringShort( ins ) + ' is several times in dstArray' );
 
   return result;
 }
@@ -4016,10 +4016,10 @@ function arrayRemovedElementOnceStrictly_( /* dstArray, ins, evaluator1, evaluat
     removedElement = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
 
   index = _.longLeftIndex.apply( _, arguments );
-  _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+  _.assert( index < 0, () => 'The element ' + _.entity.exportStringShort( ins ) + ' is several times in dstArray' );
 
   return removedElement;
 }
@@ -4035,7 +4035,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
     result = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
 
   return result;
 }
@@ -4605,7 +4605,7 @@ function arrayFlattened( dstArray, src )
     for( let i = 0 ; i < dstArray.length ; i++ )
     {
       let e = dstArray[ i ];
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -4635,7 +4635,7 @@ function arrayFlattened( dstArray, src )
     }
   }
 
-  if( _.longLike( src ) || _.setLike( src ) )
+  if( _.longLike( src ) || _.set.like( src ) )
   {
     containerAppend( src );
   }
@@ -4667,7 +4667,7 @@ function arrayFlattened( dstArray, src )
       break;
       count--;
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -4687,7 +4687,7 @@ function arrayFlattened( dstArray, src )
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -4726,7 +4726,7 @@ function arrayFlattenedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
     for( let i = 0 ; i < dstArray.length ; i++ )
     {
       let e = dstArray[ i ];
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -4753,7 +4753,7 @@ function arrayFlattenedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
     }
   }
 
-  if( _.longLike( insArray ) || _.setLike( insArray ) )
+  if( _.longLike( insArray ) || _.set.like( insArray ) )
   {
     containerAppend( insArray );
   }
@@ -4786,7 +4786,7 @@ function arrayFlattenedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
       break;
       count--;
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -4806,7 +4806,7 @@ function arrayFlattenedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -4919,7 +4919,7 @@ function arrayFlattenedOnceStrictly( /* dstArray, insArray, evaluator1, evaluato
     for( let i = 0 ; i < dstArray.length ; i++ )
     {
       let e = dstArray[ i ];
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -4946,7 +4946,7 @@ function arrayFlattenedOnceStrictly( /* dstArray, insArray, evaluator1, evaluato
     }
   }
 
-  if( _.longLike( insArray ) || _.setLike( insArray ) )
+  if( _.longLike( insArray ) || _.set.like( insArray ) )
   {
     containerAppend( insArray );
   }
@@ -4985,7 +4985,7 @@ function arrayFlattenedOnceStrictly( /* dstArray, insArray, evaluator1, evaluato
 
       _.assert( e !== undefined, 'The container should have no undefined' );
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -5008,7 +5008,7 @@ function arrayFlattenedOnceStrictly( /* dstArray, insArray, evaluator1, evaluato
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -5177,7 +5177,7 @@ function arrayFlattenedDefined( dstArray, src )
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      else if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -5204,7 +5204,7 @@ function arrayFlattenedDefined( dstArray, src )
     }
   }
 
-  if( _.longLike( src ) || _.setLike( src ) )
+  if( _.longLike( src ) || _.set.like( src ) )
   {
     containerAppend( src );
   }
@@ -5236,7 +5236,7 @@ function arrayFlattenedDefined( dstArray, src )
       break;
       count--;
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -5259,7 +5259,7 @@ function arrayFlattenedDefined( dstArray, src )
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -5380,7 +5380,7 @@ function arrayFlattenedDefinedOnce( /* dstArray, insArray, evaluator1, evaluator
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      else if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -5407,7 +5407,7 @@ function arrayFlattenedDefinedOnce( /* dstArray, insArray, evaluator1, evaluator
     }
   }
 
-  if( _.longLike( insArray ) || _.setLike( insArray ) )
+  if( _.longLike( insArray ) || _.set.like( insArray ) )
   {
     containerAppend( insArray );
   }
@@ -5443,7 +5443,7 @@ function arrayFlattenedDefinedOnce( /* dstArray, insArray, evaluator1, evaluator
       break;
       count--;
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -5466,7 +5466,7 @@ function arrayFlattenedDefinedOnce( /* dstArray, insArray, evaluator1, evaluator
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -5586,7 +5586,7 @@ function arrayFlattenedDefinedOnceStrictly( /* dstArray, insArray, evaluator1, e
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      else if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.set.like( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
@@ -5613,7 +5613,7 @@ function arrayFlattenedDefinedOnceStrictly( /* dstArray, insArray, evaluator1, e
     }
   }
 
-  if( _.longLike( insArray ) || _.setLike( insArray ) )
+  if( _.longLike( insArray ) || _.set.like( insArray ) )
   {
     containerAppend( insArray );
   }
@@ -5651,7 +5651,7 @@ function arrayFlattenedDefinedOnceStrictly( /* dstArray, insArray, evaluator1, e
       break;
       count--;
 
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         containerAppend( e )
       }
@@ -5676,7 +5676,7 @@ function arrayFlattenedDefinedOnceStrictly( /* dstArray, insArray, evaluator1, e
   {
     for( let e of src )
     {
-      if( _.longLike( e ) || _.setLike( e ) )
+      if( _.longLike( e ) || _.set.like( e ) )
       {
         index = containerReplace( e, index );
       }
@@ -5876,9 +5876,9 @@ function arrayReplaceOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result < 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( result < 0, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -5891,7 +5891,7 @@ function arrayReplaceOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2
 function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
   return dstArray;
 }
 */
@@ -5965,9 +5965,9 @@ function arrayReplacedOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
     let newResult = arrayReplacedOnce.apply( this, arguments );
-    _.assert( newResult < 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult < 0, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6032,9 +6032,9 @@ function arrayReplaceElementOnceStrictly( /* dstArray, ins, sub, evaluator1, eva
   if( Config.debug )
   {
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result === undefined, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( result === undefined, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6114,9 +6114,9 @@ function arrayReplacedElementOnceStrictly( /* dstArray, ins, sub, evaluator1, ev
   if( Config.debug )
   {
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
     let newResult = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( newResult === undefined, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === undefined, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6130,7 +6130,7 @@ function arrayReplacedElementOnceStrictly( /* dstArray, ins, sub, evaluator1, ev
 function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShort( ins ) );
   return result;
 }
 */
@@ -6186,7 +6186,7 @@ function arrayReplaceArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, evalu
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
-    _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6319,7 +6319,7 @@ function arrayReplacedArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, eval
     return result;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6388,7 +6388,7 @@ function arrayReplaceArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, eval
     return dstArray;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -6568,7 +6568,7 @@ function arrayReplacedArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, eva
     return result;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringShort( ins ) + 'is several times in dstArray' );
   }
   else
   {

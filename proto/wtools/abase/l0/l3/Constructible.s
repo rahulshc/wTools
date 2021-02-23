@@ -25,13 +25,13 @@ function constructibleIs( src ) /* xxx qqq : optimize */
   if( proto.constructor === Object )
   return false;
 
-  if( _.auxiliary.is( src ) ) /* xxx : remove? */
+  if( _.aux.is( src ) ) /* xxx : remove? */
   return false;
   if( _.vector.is( src ) )
   return false;
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
   return true;

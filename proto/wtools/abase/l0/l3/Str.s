@@ -109,8 +109,8 @@ function strsDefined( src )
 function strHas( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( src ), () => `Expects string, got ${_.strType( src )}` );
-  _.assert( _.regexpLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
+  _.assert( _.strIs( src ), () => `Expects string, got ${_.entity.strType( src )}` );
+  _.assert( _.regexpLike( ins ), () => `Expects string-like, got ${_.entity.strType( ins )}` );
 
   if( _.strIs( ins ) )
   return src.indexOf( ins ) !== -1;
@@ -207,38 +207,27 @@ function strsEquivalent( src1, src2 )
 // converter
 // --
 
-function toStrShort( src, opts )
-{
-  let result = '';
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.toStrSimple( src );
-  return result;
-}
-
-toStrShort.fields = toStrShort;
-toStrShort.routines = toStrShort;
-
-//
-
 /**
  * Return in one string value of all arguments.
  *
  * @example
- * let args = _.toStrSimple( 'test2' );
+ * let args = _.entity.exportStringSimple( 'test2' );
  *
  * @return {string}
  * If no arguments return empty string
- * @function toStrSimple
+ * @function exportStringSimple
  * @namespace Tools
  */
 
-function toStrSimple()
+function exportStringSimple()
 {
   let result = '';
   let line;
 
   if( !arguments.length )
   return result;
+
+  _.assert( arguments.length === 1 );
 
   for( let a = 0 ; a < arguments.length ; a++ )
   {
@@ -254,7 +243,7 @@ function toStrSimple()
     }
     catch( err )
     {
-      line = _.strType( src );
+      line = _.entity.strType( src );
     }
 
     result += line;
@@ -268,14 +257,28 @@ function toStrSimple()
 
 //
 
-/* qqq for Yevhen : write perfect test and maybe extend */
-/* qqq for Yevhen : use template strings in this file */
-/* qqq for Yevhen : implement test routine in module MathVector and MathMatrix */
-function strEntityShort( src )
+function exportStringShort( src, opts )
+{
+  let result = '';
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  result = _.entity.exportStringShortDiagnostic( src );
+  // result = _.entity.exportStringSimple( src );
+  // result = _.entity.exportStringShort( src ); xxx
+  return result;
+}
+
+// exportStringShort.fields = exportStringShort;
+// exportStringShort.routines = exportStringShort;
+
+//
+
+/* qqq for Yevhen : make head and body */
+function exportStringShortDiagnostic( src )
 {
   let result = '';
 
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  /* qqq : don't produce options-map when possible that here */
 
   try
   {
@@ -288,28 +291,30 @@ function strEntityShort( src )
     }
     else if( _.primitiveIs( src ) )
     {
+      if( _.bigIntIs( src ) )
+      return `${String( src )}n`; /* qqq for Yevhen : no! */
       return String( src );
     }
     // else if( _.vectorAdapterIs( src ) )
     // {
     //   result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
     // }
-    else if( _.setLike( src ) || _.hashMapLike( src ) )
+    else if( _.set.like( src ) || _.hashMap.like( src ) )
     {
-      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
+      result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
     }
     else if( _.vector.is( src ) )
     {
-      result += `{- ${_.strType( src )} with ${src.length} elements -}`;
+      result += `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
     }
     else if( _.date.is( src ) )
     {
-      result += src.toISOString();
+      result += src.toISOString(); /* qqq for Yevhen : no! */
     }
     else if( _.regexpIs( src ) )
     {
       debugger;
-      result += src.toString();
+      result += src.toString(); /* qqq for Yevhen : no! */
       debugger;
     }
     else if( _.routineIs( src ) )
@@ -323,19 +328,18 @@ function strEntityShort( src )
     }
     else if( _.object.like( src ) )
     {
-      /* xxx : call exportString() if exists */
-      result += `{- ${_.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
+      result += `{- ${_.entity.strType( src )} with ${_.entityLengthOf( src )} elements -}`;
       if( _.routineIs( src.exportString ) )
       {
         // _.assert( 0, 'not tesed' ); /* qqq : test please */
         result = src.exportString({ verbosity : 1 });
-        result = _.strStrShort( result );
+        result = _.strShort( result );
       }
     }
     else
     {
       result += String( src );
-      result = _.strStrShort( result );
+      result = _.strShort( result );
     }
 
   }
@@ -346,6 +350,13 @@ function strEntityShort( src )
   }
 
   return result;
+}
+
+exportStringShortDiagnostic.defaults =
+{
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
 //
@@ -367,38 +378,38 @@ function strEntityShort( src )
  * @returns {string} Returns simplified source string.
  *
  * @example
- * _.strStrShort( 'string', 4 );
+ * _.strShort( 'string', 4 );
  * // returns 'stng'
  *
  * @example
- * _.strStrShort( 'a\nb', 3 );
+ * _.strShort( 'a\nb', 3 );
  * // returns 'a\nb'
  *
  * @example
- * _.strStrShort( 'string', 0 );
+ * _.strShort( 'string', 0 );
  * // returns ''
  *
  * @example
- * _.strStrShort({ src : 'string', limit : 4 });g
+ * _.strShort({ src : 'string', limit : 4 });g
  * // returns 'stng'
  *
  * @example
- *  _.strStrShort({ src : 'simple', limit : 4, prefix : '<' });
+ *  _.strShort({ src : 'simple', limit : 4, prefix : '<' });
  * // returns '<ile'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 5, infix : '.' });
+ *  _.strShort({ src : 'string', limit : 5, infix : '.' });
  * // returns 'st.ng'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
+ *  _.strShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
  * // returns '<s.g>'
  *
  * @example
- *  _.strStrShort({ src : 'string', limit : 3, cutting : 'right' });
+ *  _.strShort({ src : 'string', limit : 3, cutting : 'right' });
  * // returns 'str'
  *
- * @method strStrShort
+ * @method strShort
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -412,7 +423,7 @@ function strEntityShort( src )
  *
  */
 
-function strStrShort( o )
+function strShort( o )
 {
 
   if( arguments.length === 2 )
@@ -421,14 +432,14 @@ function strStrShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strStrShort, o );
+  _.routineOptions( strShort, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( !o.infix )
@@ -445,7 +456,7 @@ function strStrShort( o )
     o.prefix = '';
     o.postfix = '';
   }
-  if( _.boolLikeTrue( o.infix ) )
+  if( _.bool.likeTrue( o.infix ) )
   o.infix = '...';
 
   if( !o.onLength )
@@ -468,7 +479,7 @@ function strStrShort( o )
 
   if( o.cutting === 'left' )
   {
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.limit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
       src = src.slice( 1 );
     }
@@ -499,7 +510,7 @@ function strStrShort( o )
 
 }
 
-strStrShort.defaults =
+strShort.defaults =
 {
   src : null,
   limit : 40,
@@ -533,7 +544,7 @@ function strPrimitive( src )
  * Return primitive type of src.
  *
  * @example
- * let str = _.strTypeSecondary( 'testing' );
+ * let str = _.entity.strTypeSecondary( 'testing' );
  *
  * @param {*} src
  *
@@ -558,7 +569,7 @@ function strTypeSecondary( src )
  * Return type of src.
  *
  * @example
- * let str = _.strType( 'testing' );
+ * let str = _.entity.strType( 'testing' );
  *
  * @param {*} src
  *
@@ -568,9 +579,7 @@ function strTypeSecondary( src )
  * @namespace Tools
  */
 
-/* qqq : cover please | aaa : Done. Yevhen S. */
-/* qqq : write perfect coverage */
-/* qqq : jsdoc */
+/* qqq for Yevhen : jsdoc */
 /* xxx : optimize later */
 /* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
@@ -578,37 +587,37 @@ function strTypeWithTraits( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   {
 
     if( _.mapIsPure( src ) )
     return 'Map.pure';
     else if( _.mapIsPolluted( src ) )
     return 'Map.polluted';
-    else if( _.auxiliary.isPure( src ) && _.auxiliary.isPrototyped( src ) )
+    else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
     return 'MapLike.pure.prototyped';
-    else if( _.auxiliary.isPolluted( src ) && _.auxiliary.isPrototyped( src ) )
+    else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
     return 'MapLike.polluted.prototyped';
     else _.assert( 0, 'undexpected' );
 
   }
 
   if( _.primitiveIs( src ) )
-  return end( _.strTypeSecondary( src ) );
+  return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
   if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
   return end( proto.constructor.name );
 
-  return end( _.strTypeSecondary( src ) );
+  return end( _.entity.strTypeSecondary( src ) );
 
   function end( result )
   {
-    let translated = _.TranslatedType[ result ];
+    let translated = _.entity.TranslatedTypeMap[ result ];
     if( translated )
     result = translated;
 
-    if( !_.StandardTypeSet.has( result ) )
+    if( !_.entity.StandardTypeSet.has( result ) )
     {
       if( _.countableIs( src ) )
       result += '.countable';
@@ -623,13 +632,13 @@ function strTypeWithTraits( src )
 
 //
 
-/* qqq : jsdoc please */
+/* qqq for Yevhen : jsdoc */
 function strTypeWithoutTraits( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.auxiliary.is( src ) )
+  if( _.aux.is( src ) )
   {
 
     if( _.mapIs( src ) )
@@ -640,59 +649,23 @@ function strTypeWithoutTraits( src )
   }
 
   if( _.primitiveIs( src ) )
-  return end( _.strTypeSecondary( src ) );
+  return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
   if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
   return end( proto.constructor.name );
 
-  return end( _.strTypeSecondary( src ) );
+  return end( _.entity.strTypeSecondary( src ) );
 
   function end( result )
   {
-    let translated = _.TranslatedType[ result ];
+    let translated = _.entity.TranslatedTypeMap[ result ];
     if( translated )
     result = translated;
     return result;
   }
 
 }
-
-// function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
-// {
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( !_.primitiveIs( src ) )
-//   if( src.constructor && src.constructor.name )
-//   {
-//     if( _.mapIsPolluted( src ) )
-//     return 'Map.polluted';
-//     return end( src.constructor.name );
-//   }
-//
-//   let result = _.strTypeSecondary( src );
-//
-//   if( result === 'Object' )
-//   {
-//     if( Object.getPrototypeOf( src ) === null )
-//     result = 'Map.pure';
-//     // else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-//     else if( _.auxiliary.isPrototyped( src ) )
-//     result = 'Map.prototyped';
-//   }
-//
-//   return end( result );
-//
-//   function end( result )
-//   {
-//     let translated = _.TranslatedType[ result ];
-//     if( translated )
-//     result = translated;
-//     return result;
-//   }
-//
-// }
 
 //
 
@@ -756,7 +729,7 @@ function strTypeWithoutTraits( src )
  * then routine inserts one space between this elements.
  * @param { String } o.linePrefix - The prefix, which is added to each line. Default value is empty string.
  * @param { String } o.linePostfix - The postfix, which is added to each line. Default value is empty string.
- * @param { Map } o.optionsForToStr - The options for routine _.toStr that uses as default callback {-o.onToStr-}. Default value is null.
+ * @param { Map } o.optionsForToStr - The options for routine _.entity.exportString that uses as default callback {-o.onToStr-}. Default value is null.
  * @param { Function } o.onToStr - The callback, which uses for conversion of each element of {-srcs-}. Accepts element {-src-} and options map {-o-}.
  * @param { Function } o.onPairWithDelimeter - The callback, which uses for concatenation of two strings.
  * The callback calls if first string {-src1-} end with line delimeter {-o.lineDelimter-} or second string {-src2-}
@@ -876,7 +849,7 @@ function strConcat( srcs, o )
   // for( let a = 0 ; a < srcs.length ; a++ )
   // {
   //   let src = srcs[ a ];
-  //   src = _.toStr( src, o.optionsForToStr );
+  //   src = _.entity.exportString( src, o.optionsForToStr );
   //   if( !nl )
   //   {
   //     let i = src.trim().lastIndexOf( o.lineDelimter );
@@ -914,7 +887,7 @@ function strConcat( srcs, o )
 
   function onToStr( src, op )
   {
-    return _.toStr( src, op.optionsForToStr );
+    return _.entity.exportString( src, op.optionsForToStr );
   }
 
   /* */
@@ -1061,7 +1034,7 @@ function strBegins( src, begin )
 function strEnds( src, end )
 {
 
-  _.assert( _.strIs( src ), () => `Expects argument::src of type::string, but got ${_.strType( src )}` );
+  _.assert( _.strIs( src ), () => `Expects argument::src of type::string, but got ${_.entity.strType( src )}` );
   _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ), 'Expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -1298,7 +1271,7 @@ function strRemove( srcStr, insStr )
 // routines
 // --
 
-let TranslatedType =
+let TranslatedTypeMap =
 {
 
   'BigUint64Array' : 'U64x',
@@ -1354,7 +1327,30 @@ let StandardTypeSet = new Set
 
 ]);
 
-let Extension =
+let ExtensionEntity =
+{
+
+  exportStringSimple,
+  exportStringShort,
+  exportString : exportStringShort,
+  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
+  exportStringShortDiagnostic,
+  // exportStringShortCode, /* qqq xxx : introduce */
+
+  strPrimitive,
+  strTypeSecondary,
+  strType : strTypeWithTraits,
+  strTypeWithTraits,
+  strTypeWithoutTraits,
+
+  // fields
+
+  TranslatedTypeMap,
+  StandardTypeSet,
+
+}
+
+let ExtensionTools =
 {
 
   // checker
@@ -1373,17 +1369,18 @@ let Extension =
 
   // converter
 
-  toStrShort,
-  toStr : toStrShort,
-  toStrSimple,
-  strEntityShort, /* qqq for Yevhen : perfect coverage required! */
-  strStrShort, /* qqq for Yevhen : cover */
-  strPrimitive,
-  strTypeSecondary,
+  // exportStringShort,
+  // exportString : exportStringShort,
+  // exportStringSimple,
+  // exportStringShortDiagnostic, /* qqq for Yevhen : perfect coverage required! */
+  strStrShort : strShort, /* xxx : remove */
+  strShort, /* qqq for Yevhen : cover */
+  // strPrimitive,
+  // strTypeSecondary,
   // strPrimitiveType : strTypeSecondary, /* xxx : remove */
-  strType : strTypeWithTraits,
-  strTypeWithTraits,
-  strTypeWithoutTraits,
+  // strType : strTypeWithTraits,
+  // strTypeWithTraits,
+  // strTypeWithoutTraits,
   strConcat,
 
   //
@@ -1403,14 +1400,15 @@ let Extension =
 
   // fields
 
-  TranslatedType,
-  StandardTypeSet,
+  // TranslatedTypeMap,
+  // StandardTypeSet,
 
 }
 
 //
 
-Object.assign( Self, Extension );
+Object.assign( _.entity, ExtensionEntity );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

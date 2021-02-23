@@ -296,7 +296,7 @@ function mapOnlyOwnKey( object, key )
   else if( _.symbolIs( key ) )
   return Object.hasOwnProperty.call( object, key );
 
-  _.assert( 0, 'mapOnlyOwnKey :', 'unknown type of key :', _.strType( key ) );
+  _.assert( 0, 'mapOnlyOwnKey :', 'unknown type of key :', _.entity.strType( key ) );
 }
 
 //
@@ -928,7 +928,7 @@ function mapExtendConditional( filter, dstMap )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.strType( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -961,7 +961,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.strType( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1583,59 +1583,6 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 }
 
 // --
-// hash map
-// --
-
-function hashMapExtend( dst, src )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( dst === null || _.hashMapLike( dst ) || _.auxiliary.is( dst ) );
-  _.assert( _.hashMapLike( src ) || _.auxiliary.is( src ) );
-
-  if( dst === null )
-  dst = new HashMap;
-
-  if( dst === src  )
-  return dst;
-
-  if( _.hashMapLike( dst ) )
-  {
-    if( _.hashMapLike( src ) )
-    {
-      for( let [ k, e ] of src )
-      dst.set( k, e );
-    }
-    else
-    {
-      for( let k in src )
-      {
-        dst.set( k, src[ k ] );
-      }
-    }
-  }
-  else
-  {
-    if( _.hashMapLike( src ) )
-    {
-      for( let [ k, e ] of src )
-      {
-        _.assert( _.strIs( k ) );
-        dst[ k ] = e;
-      }
-    }
-    else
-    {
-      for( let k in src )
-      {
-        dst[ k ] = src[ k ];
-      }
-    }
-  }
-
-  return dst;
-}
-
-// --
 // map selector
 // --
 
@@ -1872,7 +1819,7 @@ function mapsFlatten( o )
   _.routineOptions( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
-  _.assert( _.arrayLike( o.src ) || _.auxiliary.is( o.src ) )
+  _.assert( _.arrayLike( o.src ) || _.aux.is( o.src ) )
 
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
@@ -1890,7 +1837,7 @@ function mapsFlatten( o )
       extend( src[ s ], prefix );
 
     }
-    else if( _.auxiliary.is( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -1910,7 +1857,7 @@ function mapsFlatten( o )
       }
 
     }
-    else _.assert( 0, 'Expects map or array of maps, but got ' + _.strType( src ) );
+    else _.assert( 0, 'Expects map or array of maps, but got ' + _.entity.strType( src ) );
 
   }
 
@@ -2114,8 +2061,8 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.auxiliary.is( dstMap ) || _.object.like( dstMap ), 'Expects map like {-dstMap-}' );
-  _.assert( _.auxiliary.is( srcMap ) || _.object.like( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.aux.is( dstMap ) || _.object.like( dstMap ), 'Expects map like {-dstMap-}' );
+  _.assert( _.aux.is( srcMap ) || _.object.like( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2259,8 +2206,8 @@ function mapBut_( dstMap, srcMap, butMap )
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.auxiliary.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
-  _.assert( _.auxiliary.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.aux.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  _.assert( _.aux.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
   _.assert( _.object.like( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
@@ -2964,7 +2911,7 @@ function _mapOnly_( o )
           break;
           if( k === screenMap[ m ] )
           break;
-          if( _.auxiliary.is( screenMap[ m ] ) && k in screenMap[ m ] )
+          if( _.aux.is( screenMap[ m ] ) && k in screenMap[ m ] )
           break;
         }
 
@@ -3138,8 +3085,8 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
-      // args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
+      // args : [ _.entity.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3245,7 +3192,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3349,7 +3296,7 @@ function sureMapHasAll( srcMap, all, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3452,7 +3399,7 @@ function sureMapOwnAll( srcMap, all, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3556,7 +3503,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3596,7 +3543,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3697,7 +3644,7 @@ function sureMapHasNoUndefine( srcMap, msg )
     if( arguments.length === 1 )
     throw _._err
     ({
-      args : [ `${ _.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.entity.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3822,11 +3769,14 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
+    let err;
     let msgKeys = _.strQuote( but ).join( ', ' );
     if( arguments.length === 2 )
-    throw errFromArgs([ `${ _.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
+    err = errFromArgs([ `${ _.entity.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
     else
-    throw errFromArgs([ msgMake( arguments ), msgKeys ]);
+    err = errFromArgs([ msgMake( arguments ), msgKeys ]);
+    debugger;
+    throw err;
   }
 
   return true;
@@ -4280,7 +4230,7 @@ function assertMapHasNoUndefine( srcMap, msg )
   {
     let msgKeys = _.strQuote( but ).join( ', ' );
     if( arguments.length === 1 )
-    throw errFromArgs([ `${ _.strType( srcMap ) } should have no undefines, but has : ${ msgKeys }` ]);
+    throw errFromArgs([ `${ _.entity.strType( srcMap ) } should have no undefines, but has : ${ msgKeys }` ]);
     else
     throw errFromArgs([ msgMake( arguments ), msgKeys ])
   }
@@ -4423,10 +4373,6 @@ let Extension =
   mapsSupplementOwnRecursive,
   mapSupplementRemovingRecursive,
   mapSupplementByMapsRemovingRecursive,
-
-  // hash map
-
-  hashMapExtend,
 
   // map selector
 

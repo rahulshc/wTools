@@ -158,7 +158,7 @@ function typeOf( src, constructor )
   {
     return null;
   }
-  else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) ) /* yyy */
+  else if( _.numberIs( src ) || _.bool.is( src ) || _.strIs( src ) ) /* yyy */
   {
     return src.constructor;
   }
@@ -349,8 +349,8 @@ function processIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  // let type = _.strType( src );
-  let type = _.strTypeSecondary( src );
+  // let type = _.entity.strType( src );
+  let type = _.entity.strTypeSecondary( src );
   if( type === 'ChildProcess' || type === 'process' )
   return true;
 

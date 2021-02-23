@@ -5,10 +5,11 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _;
+let Self = _.set = _.set || Object.create( null );
+_.set.s = _.set.s || Object.create( null );
 
 // --
-// checker
+// implementation
 // --
 
 function setIs( src )
@@ -22,7 +23,7 @@ function setIs( src )
 
 function setLike( src )
 {
-  return _.setIs( src );
+  return _.set.is( src );
 }
 
 //
@@ -31,7 +32,7 @@ function setAdapterLike( src )
 {
   if( !src )
   return false;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   if( src instanceof _.containerAdapter.Set )
   return true;
@@ -59,7 +60,7 @@ function setIsPopulated()
 function setFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( _.setAdapterLike( src ) )
+  if( _.set.adapterLike( src ) )
   return src;
   if( src === null )
   return new Set();
@@ -77,7 +78,7 @@ function setsFrom( srcs )
   _.assert( _.longIs( srcs ) );
   let result = [];
   for( let s = 0, l = srcs.length ; s < l ; s++ )
-  result[ s ] = _.setFrom( srcs[ s ] );
+  result[ s ] = _.set.from( srcs[ s ] );
   return result;
 }
 
@@ -86,7 +87,7 @@ function setsFrom( srcs )
 function setToArray( src )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.setLike( src ) );
+  _.assert( _.set.like( src ) );
   return [ ... src ];
 }
 
@@ -98,12 +99,12 @@ function setsToArrays( srcs )
   _.assert( _.longIs( srcs ) );
   let result = [];
   for( let s = 0, l = srcs.length ; s < l ; s++ )
-  result[ s ] = _.setToArray( srcs[ s ] );
+  result[ s ] = _.set.toArray( srcs[ s ] );
   return result;
 }
 
 // --
-// routines
+// extension
 // --
 
 let ToolsExtension =
@@ -128,7 +129,40 @@ let ToolsExtension =
 
 //
 
-Object.assign( Self, ToolsExtension );
+let Extension =
+{
+
+  // checker
+
+  is : setIs,
+  like : setLike,
+  adapterLike : setAdapterLike,
+  isEmpty : setIsEmpty,
+  isPopulated : setIsPopulated,
+
+  // set
+
+  from : setFrom,
+  toArray : setToArray,
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  // set
+
+  from : setsFrom,
+  toArrays : setsToArrays,
+}
+
+//
+
+Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
+Object.assign( _.set.s, ExtensionS );
 
 // --
 // export

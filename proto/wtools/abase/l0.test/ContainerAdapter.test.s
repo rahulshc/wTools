@@ -145,7 +145,7 @@ function make( test )
   var exp = [];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
@@ -153,7 +153,7 @@ function make( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
@@ -177,7 +177,7 @@ function make( test )
   var exp = [];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
@@ -185,7 +185,7 @@ function make( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -247,7 +247,7 @@ function makeByConstructor( test )
   var exp = [];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
@@ -255,7 +255,7 @@ function makeByConstructor( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
@@ -279,7 +279,7 @@ function makeByConstructor( test )
   var exp = [];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
@@ -287,7 +287,7 @@ function makeByConstructor( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */
@@ -349,7 +349,7 @@ function from( test )
   var exp = [];
   var got = _.containerAdapter.from( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
@@ -357,7 +357,7 @@ function from( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
   test.true( got !== src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
@@ -381,7 +381,7 @@ function from( test )
   var exp = [];
   var got = _.containerAdapter.from( src );
   test.true( got === src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
@@ -389,7 +389,7 @@ function from( test )
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
   test.true( got === src );
-  test.true( _.setIs( got.original ) );
+  test.true( _.set.is( got.original ) );
   test.identical( [ ... got.original ], exp );
 
   /* - */

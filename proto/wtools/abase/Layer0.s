@@ -13,6 +13,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
+  require( './l0/l3/ArraySet.s' );
   require( './l0/l3/Auxiliary.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
@@ -26,7 +27,9 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Escape.s' );
   require( './l0/l3/Event.s' );
   require( './l0/l3/Functional.s' );
+  require( './l0/l3/Fuzzy.s' );
   require( './l0/l3/Global.s' );
+  require( './l0/l3/HashMap.s' );
   require( './l0/l3/Interval.s' );
   require( './l0/l3/Intervalc.s' );
   require( './l0/l3/Intervall.s' );
@@ -57,6 +60,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l5/ArgumentsArray.s' );
   require( './l0/l5/Array.s' );
+  require( './l0/l5/ArraySet.s' );
   require( './l0/l5/Auxiliary.s' );
   require( './l0/l5/Bool.s' );
   require( './l0/l5/Buffer.s' );
@@ -70,7 +74,9 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Escape.s' );
   require( './l0/l5/Event.s' );
   require( './l0/l5/Functional.s' );
+  require( './l0/l5/Fuzzy.s' );
   require( './l0/l5/Global.s' );
+  require( './l0/l5/HashMap.s' );
   require( './l0/l5/Interval.s' );
   require( './l0/l5/Intervalc.s' );
   require( './l0/l5/Intervall.s' );
@@ -110,6 +116,7 @@ if( typeof module !== 'undefined' )
 
   require( './l0/l8/ArgumentsArray.s' );
   require( './l0/l8/Array.s' );
+  require( './l0/l8/ArraySet.s' );
   require( './l0/l8/Auxiliary.s' );
   require( './l0/l8/Bool.s' );
   require( './l0/l8/Buffer.s' );
@@ -123,7 +130,9 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Escape.s' );
   require( './l0/l8/Event.s' );
   require( './l0/l8/Functional.s' );
+  require( './l0/l8/Fuzzy.s' );
   require( './l0/l8/Global.s' );
+  require( './l0/l8/HashMap.s' );
   require( './l0/l8/Interval.s' );
   require( './l0/l8/Intervalc.s' );
   require( './l0/l8/Intervall.s' );

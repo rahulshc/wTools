@@ -144,7 +144,7 @@ function declare( o )
     (
       !was || was === o, () => `Module ${o.name} is trying to register path registered by ${was.name}\nPath : ${sourcePath}`
     );
-    _.assert( _.strIs( sourcePath ), `Expects string, but got ${_.strType( sourcePath )}` );
+    _.assert( _.strIs( sourcePath ), `Expects string, but got ${_.entity.strType( sourcePath )}` );
   }
 
   for( let i = 0 ; i < o.sourcePath.length ; i++ )

@@ -259,7 +259,7 @@ function _bufferMake_functor( onMake )
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.numberIsFinite( length ) );
-    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
 
@@ -409,7 +409,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 //
 //   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
 //   {
@@ -496,7 +496,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -652,7 +652,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.routineIs( ins ) )
 //   result = new ins( length );
@@ -699,7 +699,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -1019,7 +1019,7 @@ function bufferRawFrom( buffer )
     result = fileReader.readAsArrayBuffer( buffer );
     _.assert( 0, 'not tested' );
   }
-  else _.assert( 0, () => 'Unknown type of source ' + _.strType( buffer ) );
+  else _.assert( 0, () => 'Unknown type of source ' + _.entity.strType( buffer ) );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -1092,7 +1092,7 @@ function bufferNodeFrom( buffer )
   return buffer;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.bufferAnyIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects buffer, string of array, but got', _.strType( buffer ) );
+  _.assert( _.bufferAnyIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects buffer, string of array, but got', _.entity.strType( buffer ) );
 
   /* */
 
@@ -1158,7 +1158,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
 function _returnDst( dst, src )
 {
   let dstLength;
-  if( !_.boolIs( dst ) )
+  if( !_.bool.is( dst ) )
   dstLength = dst.length === undefined ? dst.byteLength : dst.length;
 
   if( dstLength !== undefined )
@@ -3801,7 +3801,7 @@ function bufferJoin()
       srcs.push( new U8x( src.buffer, src.byteOffset, src.byteLength ) );
     }
 
-    _.assert( src.byteLength >= 0, 'Expects buffers, but got', _.strType( src ) );
+    _.assert( src.byteLength >= 0, 'Expects buffers, but got', _.entity.strType( src ) );
 
     size += src.byteLength;
   }

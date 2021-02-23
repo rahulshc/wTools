@@ -367,7 +367,7 @@ function eachSample( o )
   _.routineOptions( eachSample, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( o.onEach ) || o.onEach === null );
-  _.assert( _.longLike( o.sets ) || _.auxiliary.is( o.sets ) );
+  _.assert( _.longLike( o.sets ) || _.aux.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
   /* sample */
@@ -378,7 +378,7 @@ function eachSample( o )
   /* */
 
   let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
-  if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   if( keys.length === 0 )
   return o.result ? o.result : 0;
@@ -448,7 +448,7 @@ function eachSample( o )
     });
 
     if( o.result )
-    if( _.auxiliary.is( o.sample ) )
+    if( _.aux.is( o.sample ) )
     o.result.push( _.mapExtend( null, o.sample ) );
     else
     o.result.push( o.sample.slice() );
@@ -475,7 +475,7 @@ function eachSample( o )
       index += 1;
 
       if( o.result )
-      if( _.auxiliary.is( o.sample ) )
+      if( _.aux.is( o.sample ) )
       o.result.push( _.mapExtend( null, o.sample ) );
       else
       o.result.push( o.sample.slice() );
@@ -930,7 +930,7 @@ function _entityFilterDeep( o )
   let onEach = _._filter_functor( o.onEach, o.conditionLevels );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
+  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.entity.strType( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -1049,7 +1049,7 @@ function _entityIndex_functor( fop )
 
     /* */
 
-    if( _.auxiliary.is( src ) )
+    if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -1099,7 +1099,7 @@ function _entityIndex_functor( fop )
       }
       else
       {
-        if( !_.auxiliary.is( ext ) )
+        if( !_.aux.is( ext ) )
         {
           _.assert( _.primitiveIs( ext ) );
           ext = { [ ext ] : val }
@@ -1458,7 +1458,7 @@ function _entityRemap_functor( fop )
 
     /* */
 
-    if( _.auxiliary.is( src ) )
+    if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -1508,7 +1508,7 @@ function _entityRemap_functor( fop )
       }
       else
       {
-        if( _.auxiliary.is( res ) )
+        if( _.aux.is( res ) )
         extendRoutine( result, res );
         else if( key !== undefined )
         result[ key ] = res;

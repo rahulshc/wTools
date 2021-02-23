@@ -32,7 +32,7 @@ function strQuote( o )
   let src = o.src;
 
   if( !_.primitiveIs( src ) )
-  src = _.toStr( src );
+  src = _.entity.exportString( src );
 
   _.assert( _.primitiveIs( src ) );
 
@@ -87,9 +87,9 @@ strUnquote.defaults =
  * The routine `strQuotePairsNormalize` analyzes source String or Array and creates an Array of arrays of pairs of quotes.
  * Returns an array with arrays of pairs of quotes.
  *
- * @param { String|Array|_.boolLikeTrue } quote -
+ * @param { String|Array|_.bool.likeTrue } quote -
  * String : String to add matching pairs to.
- * _.boolLikeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
+ * _.bool.likeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
  * Array of strings : Creates matching quotes for strings.
  * Array of arrays of strings : Checks to be exactly 2 elements in array & adds them to the result array.
  *
@@ -151,7 +151,7 @@ strUnquote.defaults =
 function strQuotePairsNormalize( quote )
 {
 
-  if( ( _.boolLike( quote ) && quote ) )
+  if( ( _.bool.like( quote ) && quote ) )
   quote = strQuoteAnalyze.defaults.quote;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1521,12 +1521,12 @@ function strStrip( o )
     return result;
   }
 
-  if( _.boolLikeTrue( o.stripper ) )
+  if( _.bool.likeTrue( o.stripper ) )
   {
     o.stripper = strStrip.defaults.stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
@@ -1860,7 +1860,7 @@ function strSplitsQuotedRejoin_head( routine, args )
   if( o.quoting )
   {
 
-    if( _.boolLike( o.quoting ) )
+    if( _.bool.like( o.quoting ) )
     {
       if( !o.quotingPrefixes )
       o.quotingPrefixes = [ '"' ];
@@ -1887,7 +1887,7 @@ function strSplitsQuotedRejoin_head( routine, args )
     if( Config.debug )
     {
       _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
-      _.assert( _.boolLike( o.quoting ) );
+      _.assert( _.bool.like( o.quoting ) );
       o.quotingPrefixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
       o.quotingPostfixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
     }
@@ -2063,7 +2063,7 @@ function strSplitsStrip_head( routine, args )
 
   _.routineOptions( routine, o );
 
-  if( o.stripping && _.boolLike( o.stripping ) )
+  if( o.stripping && _.bool.like( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -2196,7 +2196,7 @@ function strSplitFast_body( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.delimeter ) );
-  _.assert( _.boolLike( o.preservingDelimeters ) );
+  _.assert( _.bool.like( o.preservingDelimeters ) );
 
   /* */
 

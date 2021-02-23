@@ -24,8 +24,8 @@
 
 * `from`
   * `_.locationFromStackFrame`
-  * `_.setFrom`
-  * `_.setsFrom`
+  * `_.set.from`
+  * `_.set.s.from`
   * `_.arrayFrom`
   * `_.arrayFromCoercing`
   * `_.arrayFromStr`
@@ -47,9 +47,9 @@
   * `_.unrollFromMaybe`
   * `_.containerAdapter.from`
   * `_.entity.assign2FieldFromContainer`
-  * `_.boolFrom`
-  * `_.boolFromMaybe`
-  * `_.boolFromForce`
+  * `_.bool.from`
+  * `_.bool.fromMaybe`
+  * `_.bool.fromForce`
   * `_.bufferFromArrayOfArray`
   * `_.bufferFrom`
   * `_.bufferRawFromTyped`

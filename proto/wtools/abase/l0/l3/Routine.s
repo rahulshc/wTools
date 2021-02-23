@@ -154,8 +154,8 @@ function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.boolIs( o.sealing ) );
-  _.assert( _.boolIs( o.extending ) );
+  _.assert( _.bool.is( o.sealing ) );
+  _.assert( _.bool.is( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
 
@@ -788,7 +788,7 @@ function _routinesCompose_body( o )
     let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
@@ -900,7 +900,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.auxiliary.is( src ) || _.routineIs( src ) );
+//   _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
 //
 //   /* generate dst routine */
 //
@@ -949,7 +949,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.auxiliary.is( src ) || _.routineIs( src ) );
+//     _.assert( _.aux.is( src ) || _.routineIs( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
@@ -1027,7 +1027,7 @@ function routineExtend( dst, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.auxiliary.is( src ) || _.routineIs( src ) );
+  _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -1073,7 +1073,7 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.auxiliary.is( src ) || _.routineIs( src ) );
+    _.assert( _.aux.is( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -1108,7 +1108,7 @@ function routineDefaults( dst, src, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( dst === null || src === null );
-  _.assert( _.auxiliary.is( defaults ) );
+  _.assert( _.aux.is( defaults ) );
 
   return _.routineExtend( dst, src, { defaults } );
 }
@@ -1129,7 +1129,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -1680,7 +1680,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.toStrShort( this ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -1690,7 +1690,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.toStrShort( c ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
@@ -1725,7 +1725,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingArray && _.setLike( args[ d ] ) )
+      else if( vectorizingArray && _.set.like( args[ d ] ) )
       {
         length = args[ d ].size;
         break;
@@ -1735,7 +1735,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingMapVals && _.auxiliary.is( args[ d ] ) )
+      else if( vectorizingMapVals && _.aux.is( args[ d ] ) )
       {
         keys = _.mapOnlyOwnKeys( args[ d ] );
         break;
@@ -1759,7 +1759,7 @@ function vectorize_body( o )
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
       {
-        _.assert( _.arraySetIdentical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+        _.assert( _.arraySet.identical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
       }
       else
       {
@@ -1854,7 +1854,7 @@ function vectorize_body( o )
       //
       // return result;
     }
-    else if( _.setLike( src ) ) /* qqq : cover please */
+    else if( _.set.like( src ) ) /* qqq : cover please */
     {
       let args2 = [ ... args ];
       let result = new Set;
@@ -1965,7 +1965,7 @@ function vectorize_body( o )
       // return result;
 
     }
-    else if( _.setLike( src ) ) /* qqq : cover */
+    else if( _.set.like( src ) ) /* qqq : cover */
     {
       debugger;
       if( head )

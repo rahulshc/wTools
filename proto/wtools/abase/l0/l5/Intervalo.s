@@ -282,7 +282,7 @@ function lastGet( ointerval, options )
   {
     return ointerval.last;
   }
-  _.assert( 0, 'unexpected type of ointerval', _.strType( ointerval ) );
+  _.assert( 0, 'unexpected type of ointerval', _.entity.strType( ointerval ) );
 
 }
 

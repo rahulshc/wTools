@@ -223,7 +223,7 @@ var entityClone = function( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
+      var good = _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -235,7 +235,7 @@ var entityClone = function( src,options )
     }
     else
     {
-      if( _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.boolIs( src ) || _.regexpIs( src ) )
+      if( _.strIs( src ) || _.numberIs( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) )
       result = src.constructor( src );
       else if( _.routineIs( src ) )
       result = src;
@@ -1907,10 +1907,10 @@ var entityCoerceTo = function( src,ins )
     return _.strFrom( src );
 
   }
-  else if( _.boolIs( ins ) )
+  else if( _.bool.is( ins ) )
   {
 
-    return _.boolFrom( src );
+    return _.bool.from( src );
 
   }
   else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
@@ -4451,7 +4451,7 @@ var _routineBind = function _routineBind( options )
 {
 
   _assert( arguments.length === 1 );
-  _assert( _.boolIs( options.seal ) );
+  _assert( _.bool.is( options.seal ) );
   _assert( _.routineIs( options.routine ),'_routineBind :','expects routine' );
   _assert( _.arrayIs( options.args ) || _.argumentsIs( options.args ) || options.args === undefined );
 
@@ -10744,7 +10744,7 @@ var and = function()
       var filter = filters[ f ];
 
       var result = filter( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return mappers.length ? undefined : false;
     }
@@ -10779,7 +10779,7 @@ var makeMapper = function( routine )
     var r = function( dstContainer,srcContainer,key )
     {
       var result = routine( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return;
       dstContainer[ key ] = srcContainer[ key ];

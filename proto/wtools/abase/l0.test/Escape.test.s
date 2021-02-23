@@ -348,7 +348,7 @@ function toStrStandard( test )
   var src = new _.Escape( null );
   console.log( src );
   var exp = `Escape`;
-  test.identical( _.strTypeSecondary( src ), exp );
+  test.identical( _.entity.strTypeSecondary( src ), exp );
 
   /* */
 
@@ -356,7 +356,7 @@ function toStrStandard( test )
   var src = new _.Escape( null );
   console.log( src );
   var exp = `Escape.countable.constructible`;
-  test.identical( _.strType( src ), exp );
+  test.identical( _.entity.strType( src ), exp );
 
   /* */
 
@@ -382,7 +382,7 @@ function toStrStandard( test )
   var src = new _.Escape( _.null );
   console.log( src );
   var exp = `Escape`;
-  test.identical( _.strTypeSecondary( src ), exp );
+  test.identical( _.entity.strTypeSecondary( src ), exp );
 
   /* */
 
@@ -390,7 +390,7 @@ function toStrStandard( test )
   var src = new _.Escape( _.null );
   console.log( src );
   var exp = `Escape.countable.constructible`;
-  test.identical( _.strType( src ), exp );
+  test.identical( _.entity.strType( src ), exp );
 
   /* */
 
