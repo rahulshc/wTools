@@ -187,7 +187,7 @@ module:
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
           - ../proto/wtools/abase/l0/l3/ArraySet.s
-          - ../proto/wtools/abase/l0/l3/Auxiliary.s
+          - ../proto/wtools/abase/l0/l3/Aux.s
           - ../proto/wtools/abase/l0/l3/BigInt.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
@@ -239,7 +239,7 @@ module:
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
           - ../proto/wtools/abase/l0/l5/ArraySet.s
-          - ../proto/wtools/abase/l0/l5/Auxiliary.s
+          - ../proto/wtools/abase/l0/l5/Aux.s
           - ../proto/wtools/abase/l0/l5/BigInt.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
@@ -299,7 +299,7 @@ module:
           - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l8/Array.s
           - ../proto/wtools/abase/l0/l8/ArraySet.s
-          - ../proto/wtools/abase/l0/l8/Auxiliary.s
+          - ../proto/wtools/abase/l0/l8/Aux.s
           - ../proto/wtools/abase/l0/l8/BigInt.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
