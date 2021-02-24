@@ -20,38 +20,16 @@ let _ = _global_.wTools;
 
 function entityPlay( test )
 {
-
-  test.case = 'vector & vectorLike';
-  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  test.case = 'countable & countableLike';
-  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  test.case = 'Object & ObjectLike & Container & ContainerLike';
-  var src1 = { [ Symbol.iterator ] : 1 };
-  var src2 = { [ Symbol.iterator ] : 1 };
-  test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  test.case = 'timer';
-  var src1 = _.time._begin( Infinity );
-  var src2 = _.time._begin( Infinity );
-  test.identical( _.entity.identicalShallow( src1, src2 ), true );
-  _.time.cancel( src1 );
-  _.time.cancel( src2 );
-
   test.case = 'BufferRaw';
-  var src1 = new BufferRaw( 'str' );
-  var src2 = new BufferRaw( 'str2' );
+  debugger
+  var src1 = new BufferRaw( 5 );
+  var src2 = new BufferRaw( 6 );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  test.case = 'BufferRawShared';
-  var src1 = new BufferRawShared( 'str' );
-  var src2 = new BufferRawShared( 'str2' );
-  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  // test.case = 'BufferRawShared';
+  // var src1 = new BufferRawShared( 'str' );
+  // var src2 = new BufferRawShared( 'str2' );
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
 
   // console.log( _realGlobal_.wTools.container.types )
@@ -1032,31 +1010,15 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = _.longMake([ 1, 2 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  // test.case = 'vector & vectorLike';
-  // var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  // var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // test.case = 'countable & countableLike';
-  // var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  // var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
   test.case = 'Global & GlobalReal';
   var src1 = global;
   var src2 = global;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  /* */
   test.case = 'Global & GlobalDerived';
   var src1 = Object.create( global );
   var src2 = Object.create( global );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // test.case = 'Object & ObjectLike & Container & ContainerLike';
-  // var src1 = { [ Symbol.iterator ] : 1 };
-  // var src2 = { [ Symbol.iterator ] : 1 };
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src1 = { a : 1 };
@@ -1115,13 +1077,13 @@ function entityIdenticalShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.case = 'BufferRaw';
-  var src1 = new BufferRaw( 'str' );
-  var src2 = new BufferRaw( 'str' );
+  var src1 = new BufferRaw( 5 );
+  var src2 = new BufferRaw( 5 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.case = 'BufferRawShared';
-  var src1 = new BufferRawShared( 'str' );
-  var src2 = new BufferRawShared( 'str' );
+  var src1 = new BufferRawShared( 10 );
+  var src2 = new BufferRawShared( 10 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.case = 'BufferTyped';
@@ -1173,13 +1135,6 @@ function entityIdenticalShallowAllTypes( test )
   var src1 = routine;
   var src2 = routine;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  // test.case = 'timer';
-  // var src1 = _.time._begin( Infinity );
-  // var src2 = _.time._begin( Infinity );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-  // _.time.cancel( src1 );
-  // _.time.cancel( src2 );
 
   test.case = 'date & objectLike';
   var src1 = new Date( '2021-02-19T11:26:42.840Z' );
@@ -1308,20 +1263,29 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = _.longMake([ 1, 2, [ 5 ] ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  test.case = 'vector & vectorLike';
+  test.case = 'vector & vectorLike same elements';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  test.case = 'countable & countableLike same elements';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  test.case = 'vector & vectorLike not same elements';
   var src1 = new countableConstructor({ elements : [ '1', '2' ], withIterator : 1, length : 2 });
   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  test.case = 'countable & countableLike';
+  test.case = 'countable & countableLike not same elements';
   var src1 = new countableConstructor({ elements : [ '1', '2' ], withIterator : 1 });
   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  /* ? compare symbols or not */
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src1 = { [ Symbol.iterator ] : 1 };
-  var src2 = { [ Symbol.iterator ] : 2 };
+  var src2 = { [ Symbol.iterator ] : 1 };
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
@@ -1382,15 +1346,15 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = new BufferNode( 'str2' );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  // test.case = 'BufferRaw';
-  // var src1 = new BufferRaw( 'str' );
-  // var src2 = new BufferRaw( 'str2' );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.case = 'BufferRaw';
+  var src1 = new BufferRaw( 5 );
+  var src2 = new BufferRaw( 6 );
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  // test.case = 'BufferRawShared';
-  // var src1 = new BufferRawShared( 'str' );
-  // var src2 = new BufferRawShared( 'str2' );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.case = 'BufferRawShared';
+  var src1 = new BufferRawShared( 5 );
+  var src2 = new BufferRawShared( 6 );
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'BufferTyped';
   var src1 = new I8x( 20 );
@@ -1431,6 +1395,13 @@ function entityIdenticalShallowAllTypes( test )
   var src1 = _.pair.make( 1, 2 );
   var src2 = _.pair.make( 1, 3 );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
+
+  test.case = 'timer';
+  var src1 = _.time._begin( Infinity );
+  var src2 = _.time._begin( Infinity );
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  _.time.cancel( src1 );
+  _.time.cancel( src2 );
 
   test.case = 'path & str';
   var src1 = '/a/b/';

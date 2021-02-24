@@ -120,103 +120,6 @@ function identicalShallow( src1, src2 )
   {
     return false;
   }
-
-  // let containerType2 = _.container.typeOf( src2 );
-  // if( containerType2 )
-  // {
-  //   it.containerType = it.containerType || containerType2;
-  //   it.type2 = _.equaler.containerNameToIdMap.custom;
-  //   it.iterable = _.equaler.containerNameToIdMap.custom;
-  // }
-  // else if( _.entity.methodEqualOf( src2 ) && !_.auxiliary.is( src2 ) ) /* xxx */
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.object;
-  //   if( it.iterable !== _.equaler.containerNameToIdMap.custom )
-  //   it.iterable = _.equaler.containerNameToIdMap.object;
-  // }
-  // else if( it.isCountable( src2 ) )
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.countable;
-  // }
-  // else if( _.hashMapLike( src2 ) )
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.hashMap;
-  // }
-  // else if( _.setLike( src2 ) )
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.set;
-  // }
-  // else if( _.auxiliary.is( src2 ) )
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.auxiliary;
-  // }
-  // else if( _.primitiveIs( src2 ) )
-  // {
-  //   it.type2 = 0;
-  // }
-  // else
-  // {
-  //   it.type2 = _.equaler.containerNameToIdMap.object;
-
-  //   if( it.iterable !== _.equaler.containerNameToIdMap.custom )
-  //   {
-  //     if( it.iterable !== _.equaler.containerNameToIdMap.auxiliary && it.iterable !== _.equaler.containerNameToIdMap.countable )
-  //     {
-  //       it.iterable = _.equaler.containerNameToIdMap.object;
-  //     }
-  //     else if( !it.containing || it.containing === 'only' )
-  //     {
-  //       // if( !_.entity.methodIteratorOf( it.srcEffective ) ) /* yyy */
-  //       it.iterable = _.equaler.containerNameToIdMap.object;
-  //     }
-  //   }
-
-  // }
-}
-
-//
-
-function equivalentShallow( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects no arguments' );
-
-  let containerType1 = _.container.typeOf( src1 );
-  if( containerType1 )
-  {
-    //
-  }
-  else if( _.mapIs( src1 ) )
-  {
-
-  }
-  else if( _.entity.methodEqualOf( src1 ) && !_.auxiliary.is( src1 ) )
-  {
-
-  }
-  else if( _.hashMapLike( src1 ) )
-  {
-
-  }
-  else if( _.setLike( src1 ) )
-  {
-
-  }
-  else if( it.isCountable( src1 ) )
-  {
-
-  }
-  else if( _.primitiveIs( src1 ) )
-  {
-
-  }
-  else if( _.auxiliary.is( src1 ) )
-  {
-
-  }
-  else
-  {
-
-  }
 }
 
 //
@@ -832,7 +735,6 @@ const deepCloneSymbol = _.entity.deepCloneSymbol;
 let EntityExtension =
 {
   identicalShallow,
-  equivalentShallow,
 
   makeEmpty,
   makeUndefined,
