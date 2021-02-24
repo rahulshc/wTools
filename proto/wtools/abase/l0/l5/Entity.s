@@ -702,7 +702,6 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 let ToolsExtension =
 {
   entityIdenticalShallow : identicalShallow,
-  entityEquivalentShallow : equivalentShallow,
 
   makeEmpty,
   entityMakeEmpty : makeEmpty,
