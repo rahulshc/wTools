@@ -118,6 +118,11 @@ function production( test )
   {
     test.case = 'install module';
     test.identical( op.exitCode, 0 );
+
+    test.case = 'clean module without test files';
+    let moduleDir = _.path.join( a.routinePath, 'node_modules', mdl.name );
+    let testFiles = a.fileProvider.filesFind({ filePath : _.path.join( moduleDir, '**.test*' ) });
+    test.identical( testFiles.length, 0 );
     return null;
   });
 
