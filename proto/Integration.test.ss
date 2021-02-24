@@ -122,9 +122,7 @@ function production( test )
     test.case = 'clean module without test files';
     let moduleDir = _.path.join( a.routinePath, 'node_modules', mdl.name );
     let testFiles = a.fileProvider.filesFind({ filePath : _.path.join( moduleDir, '**.test*', outputFormat : 'relative', ) });
-    test.true( testFiles.length === 0 );
-    if( testFiles.length )
-    console.log( `Production version of "${ mdl.name }" contains test files :\n${ _.entity.exportStringFine( testFiles ) }` );
+    test.identical( testFiles, [] );
     return null;
   });
 
