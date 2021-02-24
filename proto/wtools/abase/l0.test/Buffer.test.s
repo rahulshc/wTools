@@ -10856,7 +10856,7 @@ function bufferReusingButDstIsArrayUnroll( test )
   test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), 'wrong', 1, [ 4 ] ) );
 
   test.case = 'wrong range';
-  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], 'wrong', [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingBut( new I16x( 10 ), [ 1, 2, 3 ], {}, [ 1 ] ) );
 }
 
@@ -12779,7 +12779,6 @@ function bufferReusingGrowDstIsArrayUnroll( test )
   test.case = 'wrong value in range';
   var dst = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, true, [ 2 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, null, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, 'str', [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [ 'str', 1 ], [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingGrow( dst, [], [ 2 ] ) );
@@ -13732,7 +13731,6 @@ function bufferReusingRelengthDstIsArrayUnroll( test )
   test.case = 'wrong value in range';
   var dst = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, true, [ 2 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, null, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, 'str', [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [ 'str', 1 ], [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferReusingRelength( dst, [], [ 2 ] ) );
