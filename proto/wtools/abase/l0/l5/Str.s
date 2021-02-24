@@ -31,10 +31,10 @@ function strQuote( o )
 
   let src = o.src;
 
-  if( !_.primitiveIs( src ) )
+  if( !_.primitive.is( src ) )
   src = _.entity.exportString( src );
 
-  _.assert( _.primitiveIs( src ) );
+  _.assert( _.primitive.is( src ) );
 
   let result = o.quote + String( src ) + o.quote;
 
@@ -314,7 +314,7 @@ strQuoteAnalyze.defaults =
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -399,7 +399,7 @@ function _strLeftSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -502,7 +502,7 @@ aa_bb_bb|b|_cc_cc
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -628,7 +628,7 @@ function _strRightSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -1450,7 +1450,7 @@ function strReplace( src, ins, sub )
   //   }
   //
   //   for( let j = 0 ; j < container.length ; j++ )
-  //   if( _.numberIs( container[ j ] ) )
+  //   if( _.number.is( container[ j ] ) )
   //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
   //
   //   result[ k ] = container.join( '' );
@@ -3253,7 +3253,7 @@ function strFrom( src )
   if( src === undefined )
   return src;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   if( _.bufferAnyIs( src ) )

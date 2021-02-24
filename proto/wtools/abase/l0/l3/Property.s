@@ -17,7 +17,7 @@ function _ofAct( o )
 
   _.routineOptions( _ofAct, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( !_.primitiveIs( o.srcMap ) );
+  _.assert( !_.primitive.is( o.srcMap ) );
   _.assert( this === _.property );
 
   let keys = _._mapKeys( o );

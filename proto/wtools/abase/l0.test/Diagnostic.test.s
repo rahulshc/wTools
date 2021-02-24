@@ -23,7 +23,7 @@ function structureGenerate( test )
   var got = _.diagnostic.structureGenerate();
   test.true( _.mapIs( got.result ) );
   test.identical( got.result[ 'number.big' ], 1 << 30 );
-  test.true( _.numberIs( got.size ) );
+  test.true( _.number.is( got.size ) );
 
   test.case = 'defaultComplexity : 5, depth : 3';
   var got = _.diagnostic.structureGenerate({ defaultComplexity : 5, depth : 3 });

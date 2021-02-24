@@ -150,7 +150,7 @@ function unrollMakeUndefined( src, length )
     {
       length = src.length;
     }
-    else if( _.numberIs( src ) )
+    else if( _.number.is( src ) )
     {
       length = src;
       src = null;
@@ -159,7 +159,7 @@ function unrollMakeUndefined( src, length )
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.number.isFinite( length ) );
   _.assert( _.longIs( src ) || src === null );
 
   return _.unrollMake( length );
@@ -332,7 +332,7 @@ function unrollFromMaybe( src )
   // return _.unrollMake( src );
   if( _.unrollIs( src ) ) /* previous implementation is wrong */ /* Condition of routine can be combined by another order */
   return src;
-  else if( _.longIs( src ) || _.numberIs( src ) || src === null )
+  else if( _.longIs( src ) || _.number.is( src ) || src === null )
   return _.unrollMake( src );
   else
   return src;
@@ -472,7 +472,7 @@ function unrollSelect( src, range, val )
   if( range === undefined )
   return _.unrollMake( src );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ range, src.length ];
 
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;

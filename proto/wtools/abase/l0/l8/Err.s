@@ -29,7 +29,7 @@ function _isInstanceOrClass( _constructor, _this )
 
 function _ownNoConstructor( ins )
 {
-  _.assert( !_.primitiveIs( ins ) );
+  _.assert( !_.primitive.is( ins ) );
   _.assert( arguments.length === 1 );
   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
   return result;
@@ -47,7 +47,7 @@ function sureInstanceOrClass( _constructor, _this )
 
 function sureOwnNoConstructor( ins )
 {
-  _.sure( !_.primitiveIs( ins ) );
+  _.sure( !_.primitive.is( ins ) );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _._ownNoConstructor( ins );
   _.sure.apply( _, args );
@@ -65,11 +65,11 @@ function assertInstanceOrClass( _constructor, _this )
 
 function assertOwnNoConstructor( ins )
 {
-  _.assert( !_.primitiveIs( ins ) );
+  _.assert( !_.primitive.is( ins ) );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _._ownNoConstructor( ins );
   _.assert.apply( _, args );
-  // _.assert( !_.primitiveIs( ins ) );
+  // _.assert( !_.primitive.is( ins ) );
   // let args = Array.prototype.slice.call( arguments );
   // args[ 0 ] = _.sureOwnNoConstructor( ins );
   //

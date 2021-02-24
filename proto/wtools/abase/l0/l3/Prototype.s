@@ -35,7 +35,7 @@ function each( proto, onEach )
   let result = [];
 
   _.assert( _.routineIs( onEach ) || !onEach );
-  _.assert( !_.primitiveIs( proto ) || proto === null );
+  _.assert( !_.primitive.is( proto ) || proto === null );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   while( proto )
@@ -75,7 +75,7 @@ function isPrototypeFor( superPrototype, subPrototype ) /* xxx : move */
 function havingProperty( srcPrototype, name ) /* yyy qqq : names could be only string */
 {
 
-  _.assert( !_.primitiveIs( srcPrototype ) );
+  _.assert( !_.primitive.is( srcPrototype ) );
   _.assert( _.strIs( name ) );
 
   do
@@ -137,7 +137,7 @@ function has( superPrototype, subPrototype ) /* xxx : move */
 function is( src ) /* xxx : move */
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
   if( _.routineIs( src ) )
   return false;

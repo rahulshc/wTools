@@ -577,17 +577,17 @@ function longRandom( o )
 
   if( arguments[ 2 ] !== undefined )
   o = { dst : arguments[ 0 ], value : arguments[ 1 ], length : arguments[ 2 ] }
-  else if( _.numberIs( o ) || _.intervalIs( o ) )
+  else if( _.number.is( o ) || _.intervalIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.routineOptions( longRandom, o );
 
   if( o.onEach === null )
-  o.onEach = ( value ) => _.numberRandom( value );
+  o.onEach = ( value ) => _.number.random( value );
 
   if( o.value === null )
   o.value = [ 0, 1 ];
-  if( _.numberIs( o.value ) )
+  if( _.number.is( o.value ) )
   o.value = [ 0, o.value ]
   // o.value = [ o.value, o.value ]
 
@@ -650,7 +650,7 @@ longRandom.defaults =
 function longFromRange( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1058,7 +1058,7 @@ function longPut( dstArray, dstOffset )
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
+  _.assert( _.number.is( dstOffset ) );
 
   dstOffset = dstOffset || 0;
 
@@ -1124,7 +1124,7 @@ function longSupplement( dstArray )
   result = [];
 
   let length = result.length;
-  _.assert( _.longIs( result ) || _.numberIs( result ), 'Expects object as argument' );
+  _.assert( _.longIs( result ) || _.number.is( result ), 'Expects object as argument' );
 
   for( let a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -1132,7 +1132,7 @@ function longSupplement( dstArray )
     length = Math.max( length, arguments[ a ].length );
   }
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = arrayFill
   ({
     value : result,

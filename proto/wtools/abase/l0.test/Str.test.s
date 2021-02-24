@@ -3255,6 +3255,16 @@ function exportStringShortDiagnostic( test )
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
+  test.case = `object countable - empty, non-vector`;
+  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var expected = '{- Object.countable with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var expected = '{- Object.countable with 3 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
   test.case = 'Global & GlobalReal';
   var src = global;
   var expected = '{- Aux.polluted.prototyped with ';
@@ -3265,9 +3275,18 @@ function exportStringShortDiagnostic( test )
   var expected = '{- Aux.polluted.prototyped with ';
   test.true( _.strHas( _.entity.exportStringShortDiagnostic( src ), expected ) );
 
-  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases */
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Object -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  test.case = 'Object & ObjectLike & Container & ContainerLike with `exportString` method';
+  var src =
+  {
+    [ Symbol.iterator ] : 1,
+    exportString : () => 'Custom string transformation'
+  };
+  var expected = 'Custom string transformation';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
@@ -3276,9 +3295,26 @@ function exportStringShortDiagnostic( test )
   var expected = '{- Aux.polluted.prototyped with 2 elements -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted with `exportString` method';
+  var src = { a : 1 };
+  var proto =
+  {
+    b : 2,
+    exportString : () => 'Custom string transformation'
+  }
+  Object.setPrototypeOf( src, proto )
+  var expected = '{- Aux.polluted.prototyped with 3 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure with `exportString` method';
+  var src = Object.create( null );
+  src.exportString = () => 'Custom string transformation'
+  var expected = '{- Map.pure with 1 elements -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
@@ -3449,7 +3485,7 @@ function exportStringShortDiagnostic( test )
   // var expected = '{- Console.constructible with 1 elements -}';
   // test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
-  /* qqq : for Yevhen : introduce namespace::printer */
+  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
   test.case = 'printerLike'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';

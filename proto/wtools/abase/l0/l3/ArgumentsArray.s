@@ -22,8 +22,8 @@ function make( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( src === undefined || src === null )
   src = 0;
-  _.assert( _.numberIs( src ) || _.longLike( src ) );
-  if( _.numberIs( src ) )
+  _.assert( _.number.is( src ) || _.longLike( src ) );
+  if( _.number.is( src ) )
   return _.argumentsArray._make.apply( _, Array( src ) );
   else
   return _.argumentsArray._make.apply( _, src );

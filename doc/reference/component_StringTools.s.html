@@ -51,7 +51,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-var strTypeOf = _.strTypeOf;
+var strTypeOf = _.entity.strTypeOf;
 
 //
 
@@ -120,15 +120,15 @@ var toStrFields = function( src,options )
  *
  * @example
  * //returns { routine add }
- * _.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
+ * _.entity.exportStringFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
  *
  *  @example
  * //returns { Object with 1 elements }
- * _.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
+ * _.entity.exportStringFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
  *
  * @example
  * //returns a : 1 | b : 2
- * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
+ * _.entity.exportStringFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
  *
  * @method toStrFine
  * @throws { Exception } Throw an exception if( options ) is not a Object.
@@ -209,7 +209,7 @@ var toStrFine_gen = function()
   {
 
     if( options !== undefined &amp;&amp; !_.object.is( options ) )
-    throw _.err( '_.toStrFine :','options must be object' );
+    throw _.err( '_.entity.exportStringFine :','options must be object' );
 
     var options = options || {};
 
@@ -308,7 +308,7 @@ var _toStrFine = function _toStrFine( src,options )
     return;
     result += '{ routine ' + ( src.name || 'noname' ) + ' }';
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( options.noNumber )
     return;
@@ -370,7 +370,7 @@ var _toStrShort = function( src,options )
   {
     result += _ObjectToString.call( src );
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     result += _toStrFromNumber( src,options );
   }
@@ -386,7 +386,7 @@ var _toStrShort = function( src,options )
     else
     result += '"' + src + '"';
   }
-  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.numberIs( src.length ) )
+  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.number.is( src.length ) )
   {
 
     result += '[ ' + strTypeOf( src ) + ' with ' + src.length + ' elements ]';
@@ -435,9 +435,9 @@ var _toStrFromNumber = function( src,options )
 {
   var result = '';
 
-  if( _.numberIs( options.precision ) )
+  if( _.number.is( options.precision ) )
   result += src.toPrecision( options.precision );
-  else if( _.numberIs( options.fixed ) )
+  else if( _.number.is( options.fixed ) )
   result += src.toFixed( options.fixed );
   else
   result += String( src );
@@ -490,7 +490,7 @@ var _toStrFromArray = function( src,options )
 {
   var result = '';
 
-  _assert( src &amp;&amp; _.numberIs( src.length ) );
+  _assert( src &amp;&amp; _.number.is( src.length ) );
 
   if( options.level >= options.levels )
   {
@@ -721,7 +721,7 @@ var _toStrIsSimpleElement = function( element )
 {
   if( _.strIs( element ) )
   return element.length &lt; 40;
-  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.numberIs( element.length ) )
+  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.number.is( element.length ) )
   return !element.length;
   else if( _.object.is( element ) || _.object.like( element ) )
   return !_.entityLength( element );
@@ -760,9 +760,9 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
     result += ', ';
 
     if( _.object.is( e ) )
-    result += k + ' :' + _.toStr( e,options );
+    result += k + ' :' + _.entity.exportString( e,options );
     else
-    result += _.toStr( e,options );
+    result += _.entity.exportString( e,options );
 
     first = false;
 
@@ -771,7 +771,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
   result += ' )';
 
   if( arguments.length >= 3 )
-  result += ' -> ' + _.toStr( ret,options );
+  result += ' -> ' + _.entity.exportString( ret,options );
 
   return result;
 }
@@ -844,7 +844,7 @@ var strTimes = function( s,times )
   var result = '';
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( times ) );
+  _.assert( _.number.is( times ) );
 
   for( var t = 0 ; t &lt; times ; t++ )
   result += s;
@@ -920,7 +920,7 @@ var strSplitStrNumber = function( src )
   {
     var mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
-    result.number = _.numberFrom( mnumber[0] );
+    result.number = _.number.from( mnumber[0] );
   }
   else
   {
@@ -1290,7 +1290,7 @@ var strStrip = function( o )
   _.mapSupplement( o,strStrip.defaults );
   _.assertMapHasOnly( o,strStrip.defaults );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.entity.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
 
   //logger.log( 'strStrip.src :',o.src ); debugger;
@@ -1526,7 +1526,7 @@ var strJoin = function()
   {
     var src = arguments[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.number.is( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -2082,7 +2082,7 @@ var strMetricFormat = function( number,options )
   var options = options || {};
 
   if( _.strIs( number ) ) number = parseFloat( number );
-  if( !_.numberIs( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
+  if( !_.number.is( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
 
   if( options.divisor === undefined ) options.divisor = 3;
   if( options.thousand === undefined ) options.thousand = 1000;

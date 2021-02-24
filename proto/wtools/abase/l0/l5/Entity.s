@@ -224,7 +224,7 @@ function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -258,7 +258,7 @@ function makeEmpty( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
@@ -276,7 +276,7 @@ function makeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -310,7 +310,7 @@ function makeUndefined( src, length )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
@@ -351,7 +351,7 @@ function makeUndefined( src, length )
 //   {
 //     return undefined;
 //   }
-//   else if( !src || _.primitiveIs( src ) )
+//   else if( !src || _.primitive.is( src ) )
 //   {
 //     return src;
 //   }
@@ -365,7 +365,7 @@ function cloneShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -394,7 +394,7 @@ function cloneShallow( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
@@ -420,7 +420,7 @@ function cloneDeep( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -461,7 +461,7 @@ function cloneDeep( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
@@ -622,7 +622,7 @@ function assign2( dst, src, onRecursive )
       throw _.err( 'not tested' );
       result = src.clone( dst );
     }
-    else if( _.primitiveIs( dst ) || _.longIs( dst ) )
+    else if( _.primitive.is( dst ) || _.longIs( dst ) )
     {
       result = src.clone();
     }
@@ -649,7 +649,7 @@ function assign2( dst, src, onRecursive )
       result = _.mapCloneAssigning
       ({
         srcMap : src,
-        dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst,
+        dstMap : _.primitive.is( dst ) ? Object.create( null ) : dst,
         onField : onRecursive
       });
     }
@@ -718,7 +718,7 @@ function assign2FieldFromContainer( /* dstContainer, srcContainer, name, onRecur
 
   let result;
 
-  _.assert( _.strIs( name ) || _.symbolIs( name ) );
+  _.assert( _.strIs( name ) || _.symbol.is( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   let dstValue = Object.hasOwnProperty.call( dstContainer, name ) ? dstContainer[ name ] : undefined;
@@ -770,7 +770,7 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
   let result;
 
-  _.assert( _.strIs( name ) || _.symbolIs( name ) );
+  _.assert( _.strIs( name ) || _.symbol.is( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   let dstValue = dstContainer[ name ];

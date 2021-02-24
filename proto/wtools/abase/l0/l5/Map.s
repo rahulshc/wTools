@@ -247,7 +247,7 @@ function mapHasKey( srcMap, key )
   // if( typeof srcMap !== 'object' )
   // return false;
 
-  if( _.primitiveIs( srcMap ) )
+  if( _.primitive.is( srcMap ) )
   return false;
 
   if( !Reflect.has( srcMap, key ) )
@@ -293,7 +293,7 @@ function mapOnlyOwnKey( object, key )
   return Object.hasOwnProperty.call( object, key );
   else if( _.mapIs( key ) )
   return Object.hasOwnProperty.call( object, _.nameUnfielded( key ).coded );
-  else if( _.symbolIs( key ) )
+  else if( _.symbol.is( key ) )
   return Object.hasOwnProperty.call( object, key );
 
   _.assert( 0, 'mapOnlyOwnKey :', 'unknown type of key :', _.entity.strType( key ) );
@@ -865,13 +865,13 @@ function mapsExtend( dstMap, srcMaps )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayLike( srcMaps ) );
-  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
+  _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
+    _.assert( !_.primitive.is( srcMap ), 'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
@@ -922,13 +922,13 @@ function mapExtendConditional( filter, dstMap )
   _.assert( _.property.mapperIs( filter ) && !filter.identity.functor );
   _.assert( arguments.length >= 3, 'Expects more arguments' );
   _.assert( _.routineIs( filter ), 'Expects filter' );
-  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as argument' );
+  _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 2 ; a < arguments.length ; a++ )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
+    _.assert( !_.primitive.is( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -955,13 +955,13 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   _.assert( _.property.mapperIs( filter ) && !filter.identity.functor );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.routineIs( filter ), 'Expects filter' );
-  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as argument' );
+  _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
+    _.assert( !_.primitive.is( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1618,7 +1618,7 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 function mapOnlyPrimitives( srcMap )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   let result = _.mapExtendConditional( _.property.mapper.primitive(), Object.create( null ), srcMap );
   return result;
@@ -1994,8 +1994,8 @@ function mapButConditional( propertyFilter, srcMap, butMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) /* && !_.longIs( srcMap ) */, 'Expects map {-srcMap-}' );
+  _.assert( !_.primitive.is( butMap ), 'Expects map {-butMap-}' );
+  _.assert( !_.primitive.is( srcMap ) /* && !_.longIs( srcMap ) */, 'Expects map {-srcMap-}' );
   _.assert( propertyFilter && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
 
@@ -2152,7 +2152,7 @@ function mapBut( srcMap, butMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
 
   if( _.longLike( butMap ) )
   {
@@ -2281,8 +2281,8 @@ function mapBut_( dstMap, srcMap, butMap )
 //   // srcMap = _.mapMake.apply( this, srcMap );
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-//   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
+//   _.assert( !_.primitive.is( butMap ), 'Expects map {-butMap-}' );
+//   _.assert( !_.primitive.is( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
 //
 //   if( _.arrayLike( butMap ) )
 //   {
@@ -2375,8 +2375,8 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //   let result = Object.create( null );
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-//   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'Expects map {-srcMap-}' );
+//   _.assert( !_.primitive.is( butMap ), 'Expects map {-butMap-}' );
+//   _.assert( !_.primitive.is( srcMap ) && !_.longIs( srcMap ), 'Expects map {-srcMap-}' );
 //
 //   if( _.arrayLike( butMap ) )
 //   {
@@ -2428,7 +2428,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //   let a, k;
 //
 //   _.assert( arguments.length >= 2 );
-//   _.assert( !_.primitiveIs( srcMap ), 'Expects object as argument' );
+//   _.assert( !_.primitive.is( srcMap ), 'Expects object as argument' );
 //
 //   for( k in srcMap )
 //   {
@@ -2437,7 +2437,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //     {
 //       let argument = arguments[ a ];
 //
-//       _.assert( !_.primitiveIs( argument ), 'argument', '#'+a, 'is not object' );
+//       _.assert( !_.primitive.is( argument ), 'argument', '#'+a, 'is not object' );
 //
 //       if( k in argument )
 //       if( argument[ k ] !== undefined )
@@ -2461,7 +2461,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //   let a, k;
 //
 //   _.assert( arguments.length >= 2 );
-//   _.assert( !_.primitiveIs( srcMap ), 'mapBut :', 'Expects object as argument' );
+//   _.assert( !_.primitive.is( srcMap ), 'mapBut :', 'Expects object as argument' );
 //
 //   for( k in srcMap )
 //   {
@@ -2469,7 +2469,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 //     {
 //       let argument = arguments[ a ];
 //
-//       _.assert( !_.primitiveIs( argument ), 'argument', '#'+a, 'is not object' );
+//       _.assert( !_.primitive.is( argument ), 'argument', '#'+a, 'is not object' );
 //
 //       if( k in argument )
 //       break;
@@ -2784,12 +2784,12 @@ function _mapOnly( o )
     _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
     _.assert( arguments.length === 1, 'Expects single argument' );
     _.assert( _.object.like( dstMap ), 'Expects object-like {-dstMap-}' );
-    _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+    _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o, _mapOnly.defaults );
 
     for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
-    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+    _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
 
   }
 
@@ -2868,12 +2868,12 @@ function _mapOnly_( o )
     _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
     _.assert( arguments.length === 1, 'Expects single argument' );
     _.assert( _.object.like( dstMap ), 'Expects object-like {-dstMap-}' );
-    _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+    _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o, _mapOnly_.defaults );
 
     for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
-    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+    _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
 
   }
 
@@ -3786,7 +3786,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
   function mapButKeys( srcMap, butMap )
   {
     let result = [];
-    _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
+    _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
 
     if( _.longLike( butMap ) )
     {
@@ -4218,7 +4218,7 @@ function assertMapHasNoUndefine( srcMap, msg )
   /* */
 
   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects one, two or three arguments' )
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   let but = [];
 

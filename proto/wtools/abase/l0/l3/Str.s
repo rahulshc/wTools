@@ -283,15 +283,15 @@ function exportStringShortDiagnostic( src )
   try
   {
 
-    if( _.symbolIs( src ) )
+    if( _.symbol.is( src ) )
     {
       let text = src.toString().slice( 7, -1 );
       let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
       return result;
     }
-    else if( _.primitiveIs( src ) )
+    else if( _.primitive.is( src ) )
     {
-      if( _.bigIntIs( src ) )
+      if( _.bigInt.is( src ) )
       return `${String( src )}n`; /* qqq for Yevhen : no! */
       return String( src );
     }
@@ -329,7 +329,7 @@ function exportStringShortDiagnostic( src )
     {
       if( _.routineIs( src.exportString ) )
       {
-        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please */
+        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please | aaa : Added. */
         // debugger;
         result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
@@ -441,7 +441,7 @@ function strShort( o )
   _.routineOptions( strShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
+  _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
@@ -538,7 +538,7 @@ function strPrimitive( src )
   if( src === null || src === undefined )
   return;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   return;
@@ -608,7 +608,7 @@ function strTypeWithTraits( src )
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
@@ -654,7 +654,7 @@ function strTypeWithoutTraits( src )
 
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return end( _.entity.strTypeSecondary( src ) );
 
   let proto = Object.getPrototypeOf( src );
