@@ -17,7 +17,7 @@ let Self = _global_.wTools;
  *
  * It takes two objects (scr1, src2), checks
  * if both object have the same length and [key, value] return true
- * otherwise it returns undefined.
+ * otherwise it returns false.
  *
  * @param { objectLike } src1 - First object.
  * @param { objectLike } src2 - Target object.

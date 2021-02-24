@@ -6,6 +6,7 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+_global_.wTools.date.s = _global_.wTools.date.s || Object.create( null );
 
 // --
 // typing
@@ -54,8 +55,18 @@ let Extension =
 
 //
 
+
+let ExtensionS =
+{
+  areIdentical,
+  areIdenticalShallow : areIdentical
+}
+
+//
+
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
+Object.assign( _global_.wTools.date.s, ExtensionS );
 
 // --
 // export

@@ -14,7 +14,7 @@ let Self = _.entity = _.entity || Object.create( null );
 function identicalShallow( src1, src2 )
 {
   debugger;
-  _.assert( arguments.length === 2, 'Expects no arguments' );
+  _.assert( arguments.length === 2, 'Expects 2 arguments' );
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
@@ -28,7 +28,7 @@ function identicalShallow( src1, src2 )
   if( methodEqual && !_.aux.is( src1 ) )
   {
     /*
-      object with method iterator
+      object with method iterator or non-standart prototype
       and equalAre method
     */
     if( _.escape.is( src1 ) )
@@ -72,7 +72,7 @@ function identicalShallow( src1, src2 )
       - vector
       - long
     */
-    return _.countable.areIdenticalShallow( src1, src2 );
+    return _.countable.s.areIdenticalShallow( src1, src2 );
   }
   else if( _.object.like( src1 ) )
   {
@@ -90,19 +90,19 @@ function identicalShallow( src1, src2 )
     */
     if( _.date.is( src1 ) )
     {
-      return _.date.areIdenticalShallow( src1, src2 );
+      return _.date.s.areIdenticalShallow( src1, src2 );
     }
     else if( _.regexp.is( src1 ) ) // investigate whether nedeed
     {
-      return _.regexp.areIdenticalShallow( src1, src2 );
+      return _.regexp.s.areIdenticalShallow( src1, src2 );
+    }
+    else if( _.aux.is( src1 ) )
+    {
+      return _.mapsAreIdenticalShallow( src1, src2 );
     }
 
-    /* rest */
-    return _.mapsAreIdenticalShallow( src1, src2 );
-  }
-  else if( _.routineIs( src1 ) )
-  {
-    return src1 === src2;
+    /* non-identical objects */
+    return false;
   }
   else if( _.primitiveIs( src1 ) )
   {
@@ -113,7 +113,8 @@ function identicalShallow( src1, src2 )
       - Boolean
       - String
     */
-    return Object.is( src1, src2 );
+    // return Object.is( src1, src2 );
+    return _.primitive.s.areIdenticalShallow( src1, src2 );
   }
   else
   {

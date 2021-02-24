@@ -6,6 +6,7 @@
 let _global = _global_;
 let _ = _global_.wTools;
 _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
+_global_.wTools.countable.s = _global_.wTools.countable.s || Object.create( null );
 
 // --
 // implementation
@@ -20,7 +21,7 @@ function areIdenticalShallow( src1, src2 )
   let length1 = src1.length || 0;
   let length2 = src2.length || 0;
 
-  if( src1.length !== src2.length )
+  if( length1 !== length2 )
   return false;
 
   if( _.longLike( src1 ) && _.longLike( src2 ) )
@@ -29,8 +30,8 @@ function areIdenticalShallow( src1, src2 )
   }
 
   /*
-    object with method iterator
-    vector included
+    object with method iterator,
+    vector
   */
   return _.mapsAreIdentical( src1, src2 )
 }
@@ -40,12 +41,20 @@ function areIdenticalShallow( src1, src2 )
 // --
 var Extension =
 {
+
+}
+
+//
+
+var ExtensionS =
+{
   areIdenticalShallow
 }
 
 //
 
 Object.assign( _.countable, Extension );
+Object.assign( _.countable.s, ExtensionS );
 
 // --
 // export
