@@ -2001,9 +2001,6 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   }
   if( arguments.length === 3 )
   {
-    if( _.longIs( dstMap ) )
-    dstMap = _.mapExtend( null, dstMap );
-
     butMap = srcMap;
     srcMap = dstMap;
   }
@@ -2148,9 +2145,8 @@ function mapBut_( dstMap, srcMap, butMap )
   }
   if( arguments.length === 2 )
   {
-
-    if( _.longIs( dstMap ) ) /* xxx qqq : for Dmytro : ? */
-    dstMap = _.mapExtend( null, dstMap );
+    // if( _.longIs( dstMap ) ) /* xxx aaa : for Dmytro : ? */ /* Dmytro : fixed */
+    // dstMap = _.mapExtend( null, dstMap );
 
     butMap = srcMap;
     srcMap = dstMap;
@@ -2231,23 +2227,28 @@ function mapDelete( dstMap, ins )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.object.like( dstMap ) );
 
-  if( ins !== undefined )
-  {
-    _.assert( _.object.like( ins ) );
-    for( let i in ins )
-    {
-      delete dstMap[ i ];
-    }
-  }
-  else
-  {
-    for( let i in dstMap )
-    {
-      delete dstMap[ i ];
-    }
-  }
+  if( ins === undefined )
+  return _.mapEmpty( dstMap );
 
-  return dstMap;
+  return _.mapBut_( dstMap, dstMap, ins );
+
+  // if( ins !== undefined )
+  // {
+  //   _.assert( _.object.like( ins ) );
+  //   for( let i in ins )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  // else
+  // {
+  //   for( let i in dstMap )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  //
+  // return dstMap;
 }
 
 //
@@ -2590,10 +2591,8 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -2643,10 +2642,8 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -2690,10 +2687,8 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
