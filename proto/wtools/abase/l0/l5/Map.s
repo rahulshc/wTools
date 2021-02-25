@@ -2964,10 +2964,6 @@ _mapOnly_.defaults =
   filter : null,
 }
 
-//
-
-let mapDelete = mapBut_;
-
 // --
 // map sure
 // --
