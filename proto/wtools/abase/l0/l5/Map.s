@@ -2228,7 +2228,7 @@ function mapDelete( dstMap, ins )
   _.assert( _.object.like( dstMap ) );
 
   if( ins === undefined )
-  ins = dstMap;
+  return _.mapEmpty( dstMap );
 
   return _.mapBut_( dstMap, dstMap, ins );
 
