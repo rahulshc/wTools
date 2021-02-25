@@ -2051,9 +2051,6 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   }
   if( arguments.length === 3 )
   {
-    if( _.longIs( dstMap ) )
-    dstMap = _.mapExtend( null, dstMap );
-
     butMap = srcMap;
     srcMap = dstMap;
   }
@@ -2198,9 +2195,6 @@ function mapBut_( dstMap, srcMap, butMap )
   }
   if( arguments.length === 2 )
   {
-    if( _.longIs( dstMap ) )
-    dstMap = _.mapExtend( null, dstMap );
-
     butMap = srcMap;
     srcMap = dstMap;
   }
@@ -2596,10 +2590,8 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -2651,8 +2643,6 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 
     screenMaps = srcMaps;
     srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
   }
   else if( arguments.length !== 3 )
   {
@@ -2696,10 +2686,8 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
