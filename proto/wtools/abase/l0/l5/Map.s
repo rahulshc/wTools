@@ -2964,6 +2964,13 @@ _mapOnly_.defaults =
   filter : null,
 }
 
+//
+
+function mapDelete()
+{
+  return _.mapBut_.apply( this, arguments );
+}
+
 // --
 // map sure
 // --
@@ -4400,6 +4407,8 @@ let Extension =
   mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
   _mapOnly,
   _mapOnly_,
+
+  mapDelete,
 
   // map surer
 
