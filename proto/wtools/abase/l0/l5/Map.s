@@ -2966,10 +2966,7 @@ _mapOnly_.defaults =
 
 //
 
-function mapDelete()
-{
-  return _.mapBut_.apply( this, arguments );
-}
+let mapDelete = mapBut_;
 
 // --
 // map sure
