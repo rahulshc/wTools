@@ -33,6 +33,26 @@ function areIdentical( src1, src2 )
   return src1 === src2;
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.date.is( src ) );
+
+  return src.toISOString();
+}
+
+//
+
+function exportStringShortCode( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.date.is( src ) );
+
+  return `new Date( '${src.toISOString()}' )`;
+}
+
 // --
 // extension
 // --
@@ -48,7 +68,14 @@ let ToolsExtension =
 let Extension =
 {
   is,
-  areIdentical
+  areIdentical,
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortCode,
+  exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortCode
+
 }
 
 //

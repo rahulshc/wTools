@@ -292,7 +292,7 @@ function exportStringShortDiagnostic( src )
     else if( _.primitive.is( src ) )
     {
       if( _.bigInt.is( src ) )
-      return _.bigInt.exportString( src ); /* qqq for Yevhen : no! | aaa : Fixed */
+      return _.bigInt.exportStringShortDiagnostic( src ); /* qqq for Yevhen : no! | aaa : Fixed */
       return String( src );
     }
     else if( _.set.like( src ) || _.hashMap.like( src ) )
@@ -308,7 +308,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.date.is( src ) )
     {
-      result += _.date.exportString( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      result += _.date.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
     }
     else if( _.regexpIs( src ) )
     {
