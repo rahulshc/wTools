@@ -3486,9 +3486,19 @@ function exportStringShortDiagnostic( test )
   // test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
-  test.case = 'printerLike'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers */
+  test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  test.case = 'printerLike';
+  var src = new _globals_.testing.wTools.Logger();
+  var expected = '{- wLoggerTop.constructible -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  test.case = 'printerLike with output to console';
+  var src = new _globals_.testing.wTools.Logger({ output : console });
+  var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'process';
