@@ -2227,23 +2227,28 @@ function mapDelete( dstMap, ins )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.object.like( dstMap ) );
 
-  if( ins !== undefined )
-  {
-    _.assert( _.object.like( ins ) );
-    for( let i in ins )
-    {
-      delete dstMap[ i ];
-    }
-  }
-  else
-  {
-    for( let i in dstMap )
-    {
-      delete dstMap[ i ];
-    }
-  }
+  if( ins === undefined )
+  ins = dstMap;
 
-  return dstMap;
+  return _.mapBut_( dstMap, dstMap, ins );
+
+  // if( ins !== undefined )
+  // {
+  //   _.assert( _.object.like( ins ) );
+  //   for( let i in ins )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  // else
+  // {
+  //   for( let i in dstMap )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  //
+  // return dstMap;
 }
 
 //
@@ -4400,8 +4405,6 @@ let Extension =
   mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
   _mapOnly,
   _mapOnly_,
-
-  mapDelete,
 
   // map surer
 
