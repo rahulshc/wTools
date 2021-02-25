@@ -608,6 +608,30 @@ function onlyImplicit( src, o )
   return result;
 }
 
+//
+
+function own( src, key )
+{
+  // if( src === null )
+  // return false;
+  // if( src === undefined )
+  // return false;
+  if( _.primitive.is( src ) )
+  return false;
+  return Object.hasOwnProperty.call( src, key );
+}
+
+//
+
+function has( src, key )
+{
+  if( _.primitive.is( src ) )
+  return false;
+  if( !Reflect.has( src, key ) )
+  return false;
+  return true;
+}
+
 // --
 // extension
 // --
@@ -629,6 +653,9 @@ let Extension =
   onlyExplicitFields,
 
   onlyImplicit,
+
+  own,
+  has,
 
 }
 
