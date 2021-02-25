@@ -122,6 +122,121 @@ function primitiveIs( test )
   test.identical( got, false );
 }
 
+function primitivesAreIdenticalShallow( test )
+{
+  test.open( 'identical' );
+
+  test.case = 'null';
+  var got = _.primitive.s.areIdenticalShallow( null, null );
+  test.identical( got, true );
+
+  test.case = 'undefined';
+  var got = _.primitive.s.areIdenticalShallow( undefined, undefined );
+  test.identical( got, true );
+
+  test.case = 'symbol _.nothing';
+  var got = _.primitive.s.areIdenticalShallow( _.nothing, _.nothing );
+  test.identical( got, true );
+
+  test.case = 'empty string';
+  var got = _.primitive.s.areIdenticalShallow( '', '' );
+  test.identical( got, true );
+
+  test.case = 'non-empty string';
+  var got = _.primitive.s.areIdenticalShallow( 'aa', 'aa' );
+  test.identical( got, true );
+
+  test.case = 'number';
+  var got = _.primitive.s.areIdenticalShallow( 1, 1 );
+  test.identical( got, true );
+
+  test.case = 'zero';
+  var got = _.primitive.s.areIdenticalShallow( 0, 0 );
+  test.identical( got, true );
+
+  test.case = 'NaN';
+  var got = _.primitive.s.areIdenticalShallow( NaN, NaN );
+  test.identical( got, true );
+
+  test.case = 'Infinity';
+  var got = _.primitive.s.areIdenticalShallow( Infinity, Infinity );
+  test.identical( got, true );
+
+  test.case = 'BigInt';
+  var got = _.primitive.s.areIdenticalShallow( 10n, 10n );
+  test.identical( got, true );
+
+  test.case = 'Bool';
+  var got = _.primitive.s.areIdenticalShallow( true, true );
+  test.identical( got, true );
+
+  test.close( 'identical' );
+
+  /* - */
+
+  test.open( 'not identical' );
+
+  test.case = 'null - undefined';
+  var got = _.primitive.s.areIdenticalShallow( null, undefined );
+  test.identical( got, false );
+
+  test.case = 'symbols _.nothing - _.null';
+  var got = _.primitive.s.areIdenticalShallow( _.nothing, _.null );
+  test.identical( got, false );
+
+  test.case = 'empty string - non-empty';
+  var got = _.primitive.s.areIdenticalShallow( '', 'a' );
+  test.identical( got, false );
+
+  test.case = 'non-empty strings';
+  var got = _.primitive.s.areIdenticalShallow( 'aa', 'aab' );
+  test.identical( got, false );
+
+  test.case = 'numbers';
+  var got = _.primitive.s.areIdenticalShallow( 1, 2 );
+  test.identical( got, false );
+
+  test.case = '-0 and +0';
+  var got = _.primitive.s.areIdenticalShallow( -0, +0 );
+  test.identical( got, false );
+
+  test.case = 'NaN - number';
+  var got = _.primitive.s.areIdenticalShallow( NaN, 1 );
+  test.identical( got, false );
+
+  test.case = 'Infinity';
+  var got = _.primitive.s.areIdenticalShallow( -Infinity, Infinity );
+  test.identical( got, false );
+
+  test.case = 'BigInt';
+  var got = _.primitive.s.areIdenticalShallow( 10n, 9n );
+  test.identical( got, false );
+
+  test.case = 'same BigInt and number';
+  var got = _.primitive.s.areIdenticalShallow( 10n, 10 );
+  test.identical( got, false );
+
+  test.case = 'Bool';
+  var got = _.primitive.s.areIdenticalShallow( true, false );
+  test.identical( got, false );
+
+  test.close( 'not identical' );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( () => _.primitive.s.areIdenticalShallow() )
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.primitive.s.areIdenticalShallow( 1, 1, 1 ) )
+
+  test.case = 'non primitive arguments';
+  test.shouldThrowErrorSync( () => _.primitive.s.areIdenticalShallow({}) )
+}
+
 //
 
 // --
@@ -136,7 +251,8 @@ var Self =
 
   tests :
   {
-    primitiveIs
+    primitiveIs,
+    primitivesAreIdenticalShallow,
   }
 
 }
