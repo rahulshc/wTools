@@ -1314,6 +1314,8 @@ routineUnite.head = routineUnite_head;
 routineUnite.body = routineUnite_body;
 routineUnite.defaults = { ... routineUnite_body.defaults };
 
+/* xxx : should routineUnite add group to routines? */
+
 //
 
 /**

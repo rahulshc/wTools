@@ -197,7 +197,7 @@ let wSelectorExtra =
 let wResolverExtra =
 {
   sourcePath : sourcePath( 'abase/l7/ResolverExtra.s', 'wresolverextra' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver && !!_global.wTools.resolveQualified; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver2 && !!_global.wTools.resolver2.resolveQualified; },
 }
 
 // base / l7_mixin
