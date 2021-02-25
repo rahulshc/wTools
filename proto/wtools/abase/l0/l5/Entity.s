@@ -13,7 +13,6 @@ let Self = _.entity = _.entity || Object.create( null );
 
 function identicalShallow( src1, src2 )
 {
-  debugger;
   _.assert( arguments.length === 2, 'Expects 2 arguments' );
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
@@ -22,7 +21,6 @@ function identicalShallow( src1, src2 )
   if( src1 === src2 )
   return true;
 
-  // false if not present
   const methodEqual = _.entity.methodEqualOf( src1 ) || _.entity.methodEqualOf( src2 );
 
   if( methodEqual && !_.aux.is( src1 ) )
@@ -71,6 +69,7 @@ function identicalShallow( src1, src2 )
       - countable
       - vector
       - long
+      - array
     */
     return _.countable.s.areIdenticalShallow( src1, src2 );
   }
@@ -98,7 +97,7 @@ function identicalShallow( src1, src2 )
     }
     else if( _.aux.is( src1 ) )
     {
-      return _.mapsAreIdenticalShallow( src1, src2 );
+      return _.aux.s.areIdenticalShallow( src1, src2 );
     }
 
     /* non-identical objects */

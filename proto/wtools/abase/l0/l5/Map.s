@@ -4273,7 +4273,6 @@ let Extension =
   // map checker
 
   mapsAreIdentical,
-  mapsAreIdenticalShallow : mapsAreIdentical,
   mapContain,
 
   objectSatisfy,
