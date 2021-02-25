@@ -18,76 +18,6 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function entityPlay( test )
-{
-  test.case = 'BufferRaw';
-  debugger
-  var src1 = new BufferRaw( 5 );
-  var src2 = new BufferRaw( 6 );
-  test.identical( _.entity.identicalShallow( src1, src2 ), false );
-
-  // test.case = 'BufferRawShared';
-  // var src1 = new BufferRawShared( 'str' );
-  // var src2 = new BufferRawShared( 'str2' );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
-
-
-  // console.log( _realGlobal_.wTools.container.types )
-
-  // test.case = 'escape';
-  // var src1 = _.escape.make( 1 );
-  // var src2 = _.escape.make( 1 );
-  // test.identical( _.entity.identicalShallow( src1, src2 ), true );
-
-  /* - */
-  
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
-
-  
-  // console.log( Object.prototype.toString.call( _.err( 'error' ) ) );
-}
-
-//
-
 function entityIdenticalShallowBasic( test )
 {
   /* */
@@ -4877,7 +4807,6 @@ let Self =
 
   tests :
   {
-    entityPlay,
     entityIdenticalShallowBasic,
     entityIdenticalShallowAllTypes,
 
