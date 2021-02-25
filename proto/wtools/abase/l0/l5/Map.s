@@ -2256,7 +2256,7 @@ function mapEmpty( dstMap )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.object.like( dstMap ) );
+  _.assert( _.object.like( dstMap ) ); /* xxx : should !_.primitive */
 
   for( let i in dstMap )
   {
