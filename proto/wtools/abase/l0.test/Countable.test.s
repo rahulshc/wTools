@@ -825,6 +825,97 @@ function typingExtended( test )
 
 }
 
+//
+
+function countablesAreIdenticalShallow( test )
+{
+  test.open( 'identical' );
+
+  test.case = 'arrays empty';
+  var src1 = [];
+  var src2 = []
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'arrays non-empty with primitives';
+  var src1 = [ 1, 'str', true, 10n, _.nothing ];
+  var src2 = [ 1, 'str', true, 10n, _.nothing ]
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'arrays non-empty with non-primitives, same reference';
+  var objE = {};
+  var objF = { a : 1, b : 2 };
+  var arrE = [];
+  var arrF = [ 1, 2, 3 ];
+  var src1 = [ objE, objF, arrE, arrF ];
+  var src2 = [ objE, objF, arrE, arrF ]
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.close( 'identical' );
+
+  /* - */
+
+  test.open( 'not identical' );
+
+  test.case = 'arrays non-empty with num';
+  var src1 = [ 1 ];
+  var src2 = [ 2 ];
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with str';
+  var src1 = [ 'str' ];
+  var src2 = [ 'str2' ];
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with bool';
+  var src1 = [ false ];
+  var src2 = [ true ];
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with bigInt';
+  var src1 = [ 10n ];
+  var src2 = [ 11n ];
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with bigInt and same number';
+  var src1 = [ 10n ];
+  var src2 = [ 10 ]
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with Symbol';
+  var src1 = [ _.nothing ];
+  var src2 = [ _.null ]
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with empty objects, not the same reference';
+  var got = _.countable.s.areIdenticalShallow( [ {} ], [ {} ] );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with non-empty objects, not the same reference';
+  var got = _.countable.s.areIdenticalShallow( [ { a : 1 } ], [ { a : 1 } ] );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with empty arrays, not the same reference';
+  var got = _.countable.s.areIdenticalShallow( [ [] ], [ [] ] );
+  test.identical( got, false );
+
+  test.case = 'arrays non-empty with non-empty arrays, not the same reference';
+  var got = _.countable.s.areIdenticalShallow( [ [ 1, 2 ] ], [ [ 1, 2 ] ] );
+  test.identical( got, false );
+
+  test.close( 'not identical' );
+}
+
+
+
 // --
 // declaration
 // --
@@ -840,7 +931,8 @@ var Self =
 
     typing,
     /* xxx qqq : write test routine typingObject and use _.object.forTesting() */
-    typingExtended
+    typingExtended,
+    countablesAreIdenticalShallow,
 
   }
 
