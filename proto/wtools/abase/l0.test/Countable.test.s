@@ -1035,8 +1035,6 @@ function countablesAreIdenticalShallow( test )
   }
 }
 
-
-
 // --
 // declaration
 // --
