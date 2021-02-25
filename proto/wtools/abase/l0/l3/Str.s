@@ -836,7 +836,6 @@ function strConcat( srcs, o )
 
   function onToStr( src, op )
   {
-    debugger;
     return _.entity.exportString( src, op.optionsForToStr );
   }
 
