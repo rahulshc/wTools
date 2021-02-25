@@ -632,6 +632,14 @@ function regexpArrayNone( arr, ins, ifEmpty )
   return arr.length ? true : ifEmpty;
 }
 
+function exportString( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.regexp.is( src ) );
+
+  return src.toString();
+}
+
 // --
 // extension
 // --
@@ -678,6 +686,8 @@ let Extension =
   arrayAny : regexpArrayAny,
   arrayAll : regexpArrayAll,
   arrayNone : regexpArrayNone,
+
+  exportString
 
 }
 
