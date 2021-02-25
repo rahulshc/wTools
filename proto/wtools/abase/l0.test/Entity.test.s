@@ -940,6 +940,22 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = _.longMake([ 1, 2 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
+  test.case = 'vector & vectorLike with primitives';
+  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
+  test.identical( _.entity.identicalShallow( src1, src2 ), true );
+
+  test.case = 'countable & countableLike with primitives';
+  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
+  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
+  test.identical( _.entity.identicalShallow( src1, src2 ), true );
+
+  test.case = `object countable, non-vector with primitives`;
+  var src1 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
+  var src2 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
+  var got = _.countable.s.areIdenticalShallow( src1, src2 );
+  test.identical( got, true );
+
   test.case = 'Global & GlobalReal';
   var src1 = global;
   var src2 = global;
