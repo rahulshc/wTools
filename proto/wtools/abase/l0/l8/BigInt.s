@@ -11,6 +11,14 @@ let Self = _.bigInt = _.bigInt || Object.create( null );
 // implementation
 // --
 
+function exportString( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.bigInt.is( src ) );
+
+  return `${String( src )}n`;
+}
+
 // --
 // extension
 // --
@@ -24,7 +32,7 @@ let ExtensionTools =
 
 let Extension =
 {
-
+  exportString
 }
 
 Object.assign( Self, Extension );
