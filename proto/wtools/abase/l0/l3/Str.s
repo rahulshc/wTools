@@ -329,8 +329,6 @@ function exportStringShortDiagnostic( src )
     {
       if( _.routineIs( src.exportString ) )
       {
-        // _.assert( 0, 'not tesed' ); /* qqq fro Yevhen : test please | aaa : Added. */
-        // debugger;
         result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
       }
@@ -838,7 +836,6 @@ function strConcat( srcs, o )
 
   function onToStr( src, op )
   {
-    debugger;
     return _.entity.exportString( src, op.optionsForToStr );
   }
 

@@ -229,9 +229,11 @@ objectSatisfy.defaults =
 
 function mapOwnKey( srcMap, key )
 {
-  if( srcMap === null )
-  return false;
-  if( srcMap === undefined )
+  // if( srcMap === null )
+  // return false;
+  // if( srcMap === undefined )
+  // return false;
+  if( _.primitive.is( srcMap ) )
   return false;
   return Object.hasOwnProperty.call( srcMap, key );
 }
@@ -240,19 +242,10 @@ function mapOwnKey( srcMap, key )
 
 function mapHasKey( srcMap, key )
 {
-
-  // if( !srcMap )
-  // return false;
-  // bad!
-  // if( typeof srcMap !== 'object' )
-  // return false;
-
   if( _.primitive.is( srcMap ) )
   return false;
-
   if( !Reflect.has( srcMap, key ) )
   return false;
-
   return true;
 }
 
@@ -1262,49 +1255,6 @@ function mapsComplementPreservingUndefines( dstMap, srcMaps )
   return _.mapsExtendConditional( _.property.mapper.dstNotOwnAssigning(), dstMap, srcMaps );
 }
 
-//
-
-function mapDelete( dstMap, ins )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.like( dstMap ) );
-
-  if( ins !== undefined )
-  {
-    _.assert( _.object.like( ins ) );
-    for( let i in ins )
-    {
-      delete dstMap[ i ];
-    }
-  }
-  else
-  {
-    for( let i in dstMap )
-    {
-      delete dstMap[ i ];
-    }
-  }
-
-  return dstMap;
-}
-
-//
-
-function mapEmpty( dstMap )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.object.like( dstMap ) );
-
-  for( let i in dstMap )
-  {
-    delete dstMap[ i ];
-  }
-
-  return dstMap;
-}
-
 // --
 // map recursive
 // --
@@ -2051,9 +2001,6 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   }
   if( arguments.length === 3 )
   {
-    if( _.longIs( dstMap ) )
-    dstMap = _.mapExtend( null, dstMap );
-
     butMap = srcMap;
     srcMap = dstMap;
   }
@@ -2198,8 +2145,8 @@ function mapBut_( dstMap, srcMap, butMap )
   }
   if( arguments.length === 2 )
   {
-    if( _.longIs( dstMap ) )
-    dstMap = _.mapExtend( null, dstMap );
+    // if( _.longIs( dstMap ) ) /* xxx aaa : for Dmytro : ? */ /* Dmytro : fixed */
+    // dstMap = _.mapExtend( null, dstMap );
 
     butMap = srcMap;
     srcMap = dstMap;
@@ -2267,6 +2214,54 @@ function mapBut_( dstMap, srcMap, butMap )
       }
     }
 
+  }
+
+  return dstMap;
+}
+
+//
+
+function mapDelete( dstMap, ins )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.object.like( dstMap ) );
+
+  if( ins === undefined )
+  return _.mapEmpty( dstMap );
+
+  return _.mapBut_( dstMap, dstMap, ins );
+
+  // if( ins !== undefined )
+  // {
+  //   _.assert( _.object.like( ins ) );
+  //   for( let i in ins )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  // else
+  // {
+  //   for( let i in dstMap )
+  //   {
+  //     delete dstMap[ i ];
+  //   }
+  // }
+  //
+  // return dstMap;
+}
+
+//
+
+function mapEmpty( dstMap )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.object.like( dstMap ) ); /* xxx : should !_.primitive */
+
+  for( let i in dstMap )
+  {
+    delete dstMap[ i ];
   }
 
   return dstMap;
@@ -2596,10 +2591,8 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -2649,10 +2642,8 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -2696,10 +2687,8 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
-    if( _.longIs( dstMap ) )
-    dstMap = Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
@@ -4383,8 +4372,6 @@ let Extension =
   objectSetWithKeys,
   mapSet : objectSetWithKeys,
   objectSetWithKeyStrictly,
-  mapDelete, /* qqq2 : cover please */
-  mapEmpty,
 
   // map transformer
 
@@ -4402,6 +4389,9 @@ let Extension =
   mapButConditional_,
   mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
   mapBut_, /* qqq : make it accept null in the first argument */
+  mapDelete, /* xxx : deprecate in favor of mapBut_ */
+  mapEmpty,
+
   mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
   mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
   mapOnlyOwnBut, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
