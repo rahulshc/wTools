@@ -168,6 +168,145 @@ function is( test )
 
 }
 
+//
+
+function exportStringShortDiagnostic( test )
+{
+  test.case = 'new Date( 1000 )';
+  var src = new Date( 1000 );
+  var expected = '1970-01-01T00:00:01.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( \'01 Jan 1970 00:00:00 GMT\' )';
+  var src = new Date( '01 Jan 1970 00:00:00 GMT' );
+  var expected = '1970-01-01T00:00:00.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1 )';
+  var src = new Date( 2011, 1 );
+  var expected = '2011-01-31T22:00:00.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1, 1';
+  var src = new Date( 2011, 1, 1 );
+  var expected = '2011-01-31T22:00:00.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1 );
+  var expected = '2011-01-31T23:00:00.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1 );
+  var expected = '2011-01-31T23:01:00.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1, 1 );
+  var expected = '2011-01-31T23:01:01.000Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1, 1, 1 );
+  var expected = '2011-01-31T23:01:01.001Z';
+  var got = _.date.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortDiagnostic() );
+
+  test.case = 'not a date';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortDiagnostic( 11314 ) );
+
+}
+
+//
+
+function exportStringShortCode( test )
+{
+  test.case = 'new Date( 1000 )';
+  var src = new Date( 1000 );
+  var expected = `new Date( '1970-01-01T00:00:01.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( \'01 Jan 1970 00:00:00 GMT\' )';
+  var src = new Date( '01 Jan 1970 00:00:00 GMT' );
+  var expected = `new Date( '1970-01-01T00:00:00.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1 )';
+  var src = new Date( 2011, 1 );
+  var expected = `new Date( '2011-01-31T22:00:00.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1, 1';
+  var src = new Date( 2011, 1, 1 );
+  var expected = `new Date( '2011-01-31T22:00:00.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1 );
+  var expected = `new Date( '2011-01-31T23:00:00.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1 );
+  var expected = `new Date( '2011-01-31T23:01:00.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1, 1 );
+  var expected = `new Date( '2011-01-31T23:01:01.000Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  test.case = 'new Date( 2011, 1, 1, 1, 1, 1, 1 )';
+  var src = new Date( 2011, 1, 1, 1, 1, 1, 1 );
+  var expected = `new Date( '2011-01-31T23:01:01.001Z' )`;
+  var got = _.date.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToDate( got ), src );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode() );
+
+  test.case = 'not a date';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode( 11314 ) );
+
+  /* - */
+
+  function strToDate( stringDate )
+  {
+    return Function(`return ${stringDate}`)();
+  }
+}
 
 // --
 //
@@ -183,6 +322,8 @@ let Self =
   tests :
   {
     is,
+    exportStringShortDiagnostic,
+    exportStringShortCode
   }
 
 }
