@@ -2637,8 +2637,8 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
     if( dstMap === null )
     return Object.create( null );
 
-    screenMaps = srcMaps;
-    srcMaps = dstMap;
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
