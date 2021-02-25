@@ -153,6 +153,80 @@ function is( test )
 
 }
 
+//
+
+function auxsAreIdentical( test )
+{
+
+  test.case = 'same values';
+  var got = _.aux.s.areIdenticalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'same values with nested objects';
+  var got = _.aux.s.areIdenticalShallow( { a : 7, b : { c : 13 } }, { a : 7, b : { c : 13 } } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'not the same values in'
+  var got = _.aux.s.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'different number of keys, more in the first argument'
+  var got = _.aux.s.areIdenticalShallow( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'different number of keys, more in the second argument'
+  var got = _.aux.s.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty maps, standrard'
+  var got = _.aux.s.areIdenticalShallow( {}, {} );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'empty maps, pure'
+  var got = _.aux.s.areIdenticalShallow( Object.create( null ), Object.create( null ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'empty maps, one standard another pure'
+  var got = _.aux.s.areIdenticalShallow( {}, Object.create( null ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.aux.s.areIdenticalShallow();
+  });
+
+  test.case = 'not object-like arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.aux.s.areIdenticalShallow( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.aux.s.areIdenticalShallow( {} );
+  });
+
+  test.case = 'redundant arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.aux.s.areIdenticalShallow( {}, {}, 'redundant argument' );
+  });
+
+}
+
 // --
 // declaration
 // --
@@ -166,6 +240,7 @@ var Self =
   tests :
   {
     is,
+    auxsAreIdentical
   }
 
 }
