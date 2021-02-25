@@ -686,8 +686,10 @@ function strParseType( src )
     - '{- routine name -}'
     - '{- routine.anonymous -}'
     - '{- Map -}'
+    - '{- Map name -}'
     - '{- Map with 9 elements -}'
     - '{- Map.polluted with 9 elements -}'
+    - '{- Map name with 9 elements -}'
   */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -716,14 +718,30 @@ function _strParseType( src )
 
   let splitted = src.split( ' ' );
   let type = splitted[ 0 ];
-  let length = isNaN( +splitted[ 2 ] ) ? null : +splitted[ 2 ];
+  let length;
+
+  if( splitted.length === 2 )
+  {
+    o.name = splitted[ 1 ];
+  }
+  else
+  {
+    if( splitted[ 1 ] === 'with' )
+    {
+      length = +splitted[ 2 ];
+    }
+    else if( splitted[ 2 ] === 'with' )
+    {
+      o.name = splitted[ 1 ];
+      length = +splitted[ 3 ];
+    }
+  }
+
+  length = isNaN( length ) ? null : length;
 
   if( type.indexOf( '.' ) === -1 )
   {
     o.type = type;
-
-    if( o.type === 'Symbol' || o.type === 'routine' )
-    o.name = splitted[ 1 ];
   }
   else
   {
