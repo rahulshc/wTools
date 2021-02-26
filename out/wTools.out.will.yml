@@ -371,6 +371,7 @@ module:
           - ../proto/wtools/abase/l0.test/Functional.test.s
           - ../proto/wtools/abase/l0.test/Fuzzy.test.s
           - ../proto/wtools/abase/l0.test/Global.test.s
+          - ../proto/wtools/abase/l0.test/HashMap.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
@@ -390,6 +391,7 @@ module:
           - ../proto/wtools/abase/l0.test/Prototype.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
           - ../proto/wtools/abase/l0.test/Routine.test.s
+          - ../proto/wtools/abase/l0.test/Set.test.s
           - ../proto/wtools/abase/l0.test/Sorted.test.s
           - ../proto/wtools/abase/l0.test/Str.test.s
           - ../proto/wtools/abase/l0.test/Symbol.tes.s

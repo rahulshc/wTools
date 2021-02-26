@@ -640,7 +640,7 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   defaults = defaults || routine.defaults;
 
   _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
-  _.assertMapHasOnly( options, defaults );
+  _.map.assertHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
 
   return options;
@@ -664,7 +664,7 @@ function routineOptionsReplacingUndefines( routine, args, defaults )
   _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-  _.assertMapHasOnly( options, defaults );
+  _.map.assertHasOnly( options, defaults );
   _.mapComplementReplacingUndefines( options, defaults );
 
   return options;
@@ -686,8 +686,8 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
   _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-  _.assertMapHasOnly( options, defaults );
-  _.assertMapHasAll( options, defaults );
+  _.map.assertHasOnly( options, defaults );
+  _.map.assertHasAll( options, defaults );
 
   return options;
 }
@@ -1484,7 +1484,7 @@ function routineErFor( routine, erhead )
     let op = erhead.call( self, routine, arguments );
 
     _.assert( _.mapIs( op ) );
-    _.assertMapHasOnly( op, defaults );
+    _.map.assertHasOnly( op, defaults );
 
     er.defaults = _.mapSupplement( op, defaults );
 
@@ -1523,7 +1523,7 @@ function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
   let op = erhead.call( self, routine, arguments );
 
   _.assert( _.mapIs( op ) );
-  _.assertMapHasOnly( op, defaults );
+  _.map.assertHasOnly( op, defaults );
 
   er.defaults = _.mapSupplement( op, defaults );
 

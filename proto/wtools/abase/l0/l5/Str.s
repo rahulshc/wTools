@@ -18,7 +18,7 @@ function strQuote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
-  _.assertMapHasOnly( o, strQuote.defaults );
+  _.map.assertHasOnly( o, strQuote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -56,7 +56,7 @@ function strUnquote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strUnquote.defaults.quote;
-  _.assertMapHasOnly( o, strUnquote.defaults );
+  _.map.assertHasOnly( o, strUnquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -224,7 +224,7 @@ function strQuoteAnalyze( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuoteAnalyze.defaults.quote;
-  _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
+  _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );

@@ -248,7 +248,7 @@ function empty( dstContainer )
 // function typeDeclare( type )
 // {
 //
-//   _.assertMapHasOnly( type, this.knownTypeFields );
+//   _.map.assertHasOnly( type, this.knownTypeFields );
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.strDefined( type.name ) );
 //   _.assert( _.routineIs( type._is ) );

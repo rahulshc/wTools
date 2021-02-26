@@ -6,6 +6,7 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
+_global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 // --
 // map checker
@@ -1133,9 +1134,9 @@ function mapOptionsApplyDefaults( options, defaults )
 {
 
   _.assert( arguments.length === 2 );
-  _.assertMapHasOnly( options, defaults, `Does not expect options:` );
+  _.map.assertHasOnly( options, defaults, `Does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
-  _.assertMapHasNoUndefine( options, `Options map should have no undefined fileds, but it does have` );
+  _.map.assertHasNoUndefine( options, `Options map should have no undefined fileds, but it does have` );
 
   return options;
 }
@@ -1199,7 +1200,13 @@ let Extension =
 
 //
 
+let ExtensionMap =
+{
+
+}
+
 Object.assign( Self, Extension );
+Object.assign( _.map, ExtensionMap );
 
 // --
 // export

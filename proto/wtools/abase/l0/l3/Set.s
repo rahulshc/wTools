@@ -103,6 +103,19 @@ function setsToArrays( srcs )
   return result;
 }
 
+//
+
+function setsAreIdenticalShallow( src1, src2 )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.setIs( src1 ) );
+  _.assert( _.setIs( src2 ) );
+
+  let [ arr1, arr2 ] = _.setsToArrays([ src1, src2 ]);
+
+  return _.longAreIdenticalShallow( arr1, arr2 );
+}
+
 // --
 // extension
 // --
@@ -117,6 +130,7 @@ let ToolsExtension =
   setAdapterLike,
   setIsEmpty,
   setIsPopulated,
+  setsAreIdenticalShallow,
 
   // set
 
@@ -139,6 +153,7 @@ let Extension =
   adapterLike : setAdapterLike,
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
+  areIdenticalShallow : setsAreIdenticalShallow,
 
   // set
 
