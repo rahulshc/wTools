@@ -872,13 +872,7 @@ function entityIdenticalShallowBasic( test )
 
 function entityIdenticalShallowAllTypes( test )
 {
-  /*
-   - same type, identical
-   - same type, not identical
-   - diff type, never identical
-  */
-
-  test.open( 'same type, identical' );
+  test.open( 'identical' );
 
   test.case = 'number';
   var src1 = 1;
@@ -1142,11 +1136,11 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = process;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
-  test.close( 'same type, identical' );
+  test.close( 'identical' );
 
   /* - */
 
-  test.open( 'same type, not identical' );
+  test.open( 'not identical' );
 
   test.case = 'number';
   var src1 = 1;
@@ -1401,7 +1395,7 @@ function entityIdenticalShallowAllTypes( test )
   var src2 = require( 'stream' ).Readable();
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
-  test.close( 'same type, not identical' );
+  test.close( 'not identical' );
 
   /* - */
 
