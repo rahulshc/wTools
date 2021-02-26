@@ -6541,7 +6541,6 @@ function mapOnlyTwoArguments_( test )
   test.shouldThrowErrorSync( () => _.mapOnly_( {}, 2, [] ) );
 
   test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapOnly_( [], {} ) );
   test.shouldThrowErrorSync( () => _.mapOnly_( 'wrong', {}, {} ) );
   test.shouldThrowErrorSync( () => _.mapOnly_( 2, {}, {} ) );
 
@@ -7374,7 +7373,6 @@ function mapOnlyOwnTwoArguments_( test )
   test.shouldThrowErrorSync( () => _.mapOnlyOwn_( {}, 2, [] ) );
 
   test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapOnlyOwn_( [], {} ) );
   test.shouldThrowErrorSync( () => _.mapOnlyOwn_( 'wrong', {}, {} ) );
   test.shouldThrowErrorSync( () => _.mapOnlyOwn_( 2, {}, {} ) );
 
@@ -8240,7 +8238,6 @@ function mapOnlyComplementingTwoArguments_( test )
   test.shouldThrowErrorSync( () => _.mapOnlyComplementing_( {}, 2, [] ) );
 
   test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapOnlyComplementing_( [], {} ) );
   test.shouldThrowErrorSync( () => _.mapOnlyComplementing_( 'wrong', {}, {} ) );
   test.shouldThrowErrorSync( () => _.mapOnlyComplementing_( 2, {}, {} ) );
 
@@ -8607,7 +8604,6 @@ function mapOnlyComplementing_DstMapMap( test )
   srcMap.a = 'abc';
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  debugger;
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
   var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
@@ -8800,20 +8796,6 @@ function mapOnlyComplementing_DstMapMap( test )
 
 //
 
-function mapOnlyComplementing_Experiment( test )
-{
-  var dstMap = { a : undefined, b : 2 };
-  var srcMap = { a : 'abc', b : 33 };
-  var screenMap = [ 'a', 'b' ];
-  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 33 };
-  test.identical( got, expected );
-}
-
-mapOnlyComplementing_Experiment.experimental = 1;
-
-//
-
 function _mapOnly( test )
 {
 
@@ -8918,10 +8900,10 @@ function mapsAreIdentical( test )
   });
 
   test.case = 'not object-like arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapsAreIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
-  });
+  // test.shouldThrowErrorSync( function() /* qqq : for Dmytro : need to investigate, two different namespaces */
+  // {
+  //   _.mapsAreIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  // });
   test.shouldThrowErrorSync( function()
   {
     _.mapsAreIdentical( 'a', 'b' );
@@ -12459,8 +12441,6 @@ let Self =
     mapOnlyComplementingTwoArguments_,
     mapOnlyComplementingDstMapNull_,
     mapOnlyComplementing_DstMapMap,
-
-    mapOnlyComplementing_Experiment,
 
     _mapOnly,
 
