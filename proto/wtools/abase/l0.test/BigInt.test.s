@@ -122,6 +122,55 @@ function bigIntIs( test )
   test.identical( got, false );
 }
 
+//
+
+function exportStringShortCode( test )
+{
+  test.case = '1n';
+  var src = 1n;
+  var expected = '1n';
+  var got = _.bigInt.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToBigInt( got ), src );
+
+  test.case = '1000n';
+  var src = 1000n;
+  var expected = '1000n';
+  var got = _.bigInt.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToBigInt( got ), src );
+
+  test.case = 'BigInt( 5 )';
+  var src = BigInt( 5 );
+  var expected = '5n'
+  var got = _.bigInt.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToBigInt( got ), src );
+
+  test.case = 'BigInt( \'5\' )';
+  var src = BigInt( '5' );
+  var expected = '5n'
+  var got = _.bigInt.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToBigInt( got ), src );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode() );
+
+  test.case = 'not a bigInt';
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode( 1 ) );
+
+  /* - */
+
+  function strToBigInt( stringBigInt )
+  {
+    return Function(`return ${stringBigInt}`)();
+  }
+}
+
 
 // --
 // declaration
@@ -135,7 +184,8 @@ var Self =
 
   tests :
   {
-    bigIntIs
+    bigIntIs,
+    exportStringShortCode
   }
 
 }
