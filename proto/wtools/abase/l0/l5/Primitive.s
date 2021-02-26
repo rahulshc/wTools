@@ -33,6 +33,9 @@ function exportStringShortCode( src )
   if( _.bigInt.is( src ) )
   return _.bigInt.exportStringShortCode( src );
 
+  if( _.strIs( src ) )
+  return `'${src}'`;
+
   return String( src );
 }
 
