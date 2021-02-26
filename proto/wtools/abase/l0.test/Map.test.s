@@ -8514,7 +8514,7 @@ function mapOnlyComplementingDstMapNull_( test )
 
 //
 
-function mapOnlyComplementingDstMapMap_( test )
+function mapOnlyComplementing_DstMapMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -8607,6 +8607,7 @@ function mapOnlyComplementingDstMapMap_( test )
   srcMap.a = 'abc';
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  debugger;
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
   var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
@@ -8796,6 +8797,20 @@ function mapOnlyComplementingDstMapMap_( test )
 
   test.close( 'srcMap - long' );
 }
+
+//
+
+function mapOnlyComplementing_Experiment( test )
+{
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = { a : 'abc', b : 33 };
+  var screenMap = [ 'a', 'b' ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 33 };
+  test.identical( got, expected );
+}
+
+mapOnlyComplementing_Experiment.experimental = 1;
 
 //
 
@@ -12443,7 +12458,9 @@ let Self =
 
     mapOnlyComplementingTwoArguments_,
     mapOnlyComplementingDstMapNull_,
-    mapOnlyComplementingDstMapMap_,
+    mapOnlyComplementing_DstMapMap,
+
+    mapOnlyComplementing_Experiment,
 
     _mapOnly,
 
