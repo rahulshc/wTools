@@ -48,7 +48,7 @@ function bigIntsFrom( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShortCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.bigInt.is( src ) );
@@ -72,12 +72,12 @@ let Extension =
 {
   from : bigIntFrom,
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic
+  exportString : exportStringShortCode,
+  exportStringShort : exportStringShortCode,
+  exportStringShortCode,
+  exportStringShortDiagnostic : exportStringShortCode,
+  exportStringDiagnostic : exportStringShortCode,
+  exportStringCode : exportStringShortCode
 }
 
 //
