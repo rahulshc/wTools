@@ -49,7 +49,7 @@ function once( delay, onBegin, onEnd )
   {
     options = delay;
     _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assertMapHasOnly( options, optionsDefault );
+    _.map.assertHasOnly( options, optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
     onEnd = options.onEnd;

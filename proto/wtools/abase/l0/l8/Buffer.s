@@ -785,7 +785,7 @@ function bufferFrom( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
-  _.assertMapHasOnly( o, bufferFrom.defaults );
+  _.map.assertHasOnly( o, bufferFrom.defaults );
 
   if( o.src === null || _.number.is( o.src ) )
   {
@@ -841,7 +841,7 @@ function bufferFrom( o )
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.object.is( o ) );
 //   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
-//   _.assertMapHasOnly( o, bufferFrom.defaults );
+//   _.map.assertHasOnly( o, bufferFrom.defaults );
 //
 //   /* same */
 //
@@ -4334,7 +4334,7 @@ function bufferMove( dst, src )
   {
 
     let options = arguments[ 0 ];
-    _.assertMapHasOnly( options, bufferMove.defaults );
+    _.map.assertHasOnly( options, bufferMove.defaults );
 
     src = options.src;
     dst = options.dst;

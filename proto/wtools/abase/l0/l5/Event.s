@@ -317,7 +317,7 @@ function on( ehandler, o )
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -458,7 +458,7 @@ function once( ehandler, o )
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -622,7 +622,7 @@ function off( ehandler, o )
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   for( let c in o.callbackMap )

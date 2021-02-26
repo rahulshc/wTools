@@ -6,6 +6,7 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
+_global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 /* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch */
 /* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch */
@@ -2579,7 +2580,7 @@ function _mapOnly( o )
     _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
     _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.vector.is( srcMaps ), 'Expects array {-srcMaps-}' );
-    _.assertMapHasOnly( o, _mapOnly.defaults );
+    _.map.assertHasOnly( o, _mapOnly.defaults );
 
     for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
     _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
@@ -2665,7 +2666,7 @@ function _mapOnly_( o )
     _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
     _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.vector.is( srcMaps ), 'Expects array {-srcMaps-}' );
-    _.assertMapHasOnly( o, _mapOnly_.defaults );
+    _.map.assertHasOnly( o, _mapOnly_.defaults );
 
     for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
     _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
@@ -2790,8 +2791,8 @@ function sureMapHasExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapHasOnly.apply( this, arguments );
-  result = result && _.sureMapHasAll.apply( this, arguments );
+  result = result && _.map.sureHasOnly.apply( this, arguments );
+  result = result && _.map.sureHasAll.apply( this, arguments );
 
   return true;
 }
@@ -2802,8 +2803,8 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapOwnOnly.apply( this, arguments );
-  result = result && _.sureMapOwnAll.apply( this, arguments );
+  result = result && _.map.sureOwnOnly.apply( this, arguments );
+  result = result && _.map.sureOwnAll.apply( this, arguments );
 
   return true;
 }
@@ -2824,13 +2825,13 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1, b : 3 };
  * let b = { a : 2, b : 3 };
- * _.sureMapHasOnly( a, b );
+ * _.map.sureHasOnly( a, b );
  * // no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
  * let b = { a : 2, b : 3 };
- * _.sureMapHasOnly( a, b );
+ * _.map.sureHasOnly( a, b );
  *
  * // log
  * // caught <anonymous>:3:8
@@ -2844,7 +2845,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * _.sureMapHasOnly( a, b, 'message' )
+ * _.map.sureHasOnly( a, b, 'message' )
  *
  * // log
  * // caught <anonymous>:4:8
@@ -2858,7 +2859,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * _.sureMapHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
+ * _.map.sureHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
  *
  * // log
  * // caught <anonymous>:4:8
@@ -2931,13 +2932,13 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * _.sureMapOwnOnly( a, b );
+ * _.map.sureOwnOnly( a, b );
  * //no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * _.sureMapOwnOnly( a, b );
+ * _.map.sureOwnOnly( a, b );
  *
  * // log
  * // caught <anonymous>:3:10
@@ -2951,7 +2952,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * _.sureMapOwnOnly( a, b, 'error msg' );
+ * _.map.sureOwnOnly( a, b, 'error msg' );
  *
  * // log
  * // caught <anonymous>:4:8
@@ -2965,7 +2966,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * _.sureMapOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
+ * _.map.sureOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3036,13 +3037,13 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * _.sureMapHasAll( a, b );
+ * _.map.sureHasAll( a, b );
  * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * _.sureMapHasAll( a, b );
+ * _.map.sureHasAll( a, b );
  *
  * // log
  * // caught <anonymous>:3:10
@@ -3055,7 +3056,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * _.sureMapHasAll( a, b, 'error msg' );
+ * _.map.sureHasAll( a, b, 'error msg' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3068,7 +3069,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * _.sureMapHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
+ * _.map.sureHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3145,7 +3146,7 @@ function sureMapHasAll( srcMap, all, msg )
  * @example
  * let a = { a : 1 };
  * let b = { a : 2, b : 2 }
- * _.sureMapOwnAll( a, b );
+ * _.map.sureOwnAll( a, b );
  *
  * // log
  * // caught <anonymous>:3:8
@@ -3158,7 +3159,7 @@ function sureMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * _.sureMapOwnAll( a, b, 'error, should own fields' );
+ * _.map.sureOwnAll( a, b, 'error, should own fields' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3171,7 +3172,7 @@ function sureMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * _.sureMapOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
+ * _.map.sureOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3242,14 +3243,14 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * _.sureMapHasNone( a, b );
+ * _.map.sureHasNone( a, b );
  * // no exception
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2, b : 2 }
- * _.sureMapHasNone( a, b );
+ * _.map.sureHasNone( a, b );
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3262,7 +3263,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * _.sureMapHasNone( a, b, 'error, map should have no fields' );
+ * _.map.sureHasNone( a, b, 'error, map should have no fields' );
  *
  * // log
  * // caught <anonymous>:3:9
@@ -3275,7 +3276,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * _.sureMapHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
+ * _.map.sureHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
  *
  * // log
  * // caught <anonymous>:3:9
@@ -3383,12 +3384,12 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : '1', b : 'name' };
- * _.sureMapHasNoUndefine( map );
+ * _.map.sureHasNoUndefine( map );
  * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
- * _.sureMapHasNoUndefine( map );
+ * _.map.sureHasNoUndefine( map );
  *
  * // log
  * // caught <anonymous>:2:8
@@ -3400,7 +3401,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * _.sureMapHasNoUndefine( map, '"map" has undefines :');
+ * _.map.sureHasNoUndefine( map, '"map" has undefines :');
  *
  * // log
  * // caught <anonymous>:2:8
@@ -3412,7 +3413,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * _.sureMapHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
+ * _.map.sureHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
  *
  * // log
  * // caught <anonymous>:2:8
@@ -3479,7 +3480,7 @@ function assertMapHasFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasExactly.apply( this, arguments );
+  return _.map.sureHasExactly.apply( this, arguments );
 }
 
 //
@@ -3488,7 +3489,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapOwnExactly.apply( this, arguments );
+  return _.map.sureOwnExactly.apply( this, arguments );
 }
 
 //
@@ -3507,13 +3508,13 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1, b : 3 };
  * let b = { a : 2, b : 3 };
- * _.assertMapHasOnly( a, b );
+ * _.map.assertHasOnly( a, b );
  * //no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
  * let b = { a : 2, b : 3 };
- * _.assertMapHasOnly( a, b );
+ * _.map.assertHasOnly( a, b );
  *
  * // log
  * // caught <anonymous>:3:8
@@ -3527,7 +3528,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * _.assertMapHasOnly( a, b, 'map should have no fields :' )
+ * _.map.assertHasOnly( a, b, 'map should have no fields :' )
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3541,7 +3542,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * _.assertMapHasOnly( a, b, 'map', () => ' should' + ' have no fields :' )
+ * _.map.assertHasOnly( a, b, 'map', () => ' should' + ' have no fields :' )
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3676,13 +3677,13 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * _.assertMapOwnOnly( a, b );
+ * _.map.assertOwnOnly( a, b );
  * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * _.assertMapOwnOnly( a, b );
+ * _.map.assertOwnOnly( a, b );
  *
  * // log
  * // caught <anonymous>:3:10
@@ -3696,7 +3697,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * _.assertMapOwnOnly( a, b, 'error, map should have no own fields :' );
+ * _.map.assertOwnOnly( a, b, 'error, map should have no own fields :' );
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3710,7 +3711,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * _.assertMapOwnOnly( a, b, () => 'error, ' + 'map', ' should have no own fields :' );
+ * _.map.assertOwnOnly( a, b, () => 'error, ' + 'map', ' should have no own fields :' );
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3731,7 +3732,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapOwnOnly.apply( this, arguments );
+  return _.map.sureOwnOnly.apply( this, arguments );
 }
 
 //
@@ -3750,14 +3751,14 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * _.assertMapHasNone( a, b );
+ * _.map.assertHasNone( a, b );
  * // no exception
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2, b : 2 }
- * _.assertMapHasNone( a, b );
+ * _.map.assertHasNone( a, b );
  *
  * // log
  * // caught <anonymous>:4:8
@@ -3770,7 +3771,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * _.assertMapHasNone( a, b, 'map should have no fields :' );
+ * _.map.assertHasNone( a, b, 'map should have no fields :' );
  *
  * // log
  * // caught <anonymous>:3:9
@@ -3783,7 +3784,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * _.assertMapHasNone( a, b, () => 'map ' + 'should ', 'have no fields :' );
+ * _.map.assertHasNone( a, b, () => 'map ' + 'should ', 'have no fields :' );
  *
  * // log
  * // caught <anonymous>:3:9
@@ -3804,7 +3805,7 @@ function assertMapHasNone( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasNone.apply( this, arguments );
+  return _.map.sureHasNone.apply( this, arguments );
 }
 
 //
@@ -3813,7 +3814,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapOwnNone.apply( this, arguments );
+  return _.map.sureOwnNone.apply( this, arguments );
 }
 
 //
@@ -3833,13 +3834,13 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * _.assertMapHasAll( a, b );
+ * _.map.assertHasAll( a, b );
  * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * _.assertMapHasAll( a, b );
+ * _.map.assertHasAll( a, b );
  *
  * // log
  * // caught <anonymous>:3:10
@@ -3852,7 +3853,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * _.assertMapHasAll( a, b, 'map should have fields :' );
+ * _.map.assertHasAll( a, b, 'map should have fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3865,7 +3866,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * _.assertMapHasAll( a, b, () => 'map' + ' should', ' have fields :' );
+ * _.map.assertHasAll( a, b, () => 'map' + ' should', ' have fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3886,7 +3887,7 @@ function assertMapHasAll( srcMap, all, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasAll.apply( this, arguments );
+  return _.map.sureHasAll.apply( this, arguments );
 }
 
 //
@@ -3905,13 +3906,13 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { a : 1 };
  * let b = { a : 2 };
- * _.assertMapOwnAll( a, b );
+ * _.map.assertOwnAll( a, b );
  * // no exception
  *
  * @example
  * let a = { a : 1 };
  * let b = { a : 2, b : 2 }
- * _.assertMapOwnAll( a, b );
+ * _.map.assertOwnAll( a, b );
  *
  * // log
  * // caught <anonymous>:3:8
@@ -3924,7 +3925,7 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * _.assertMapOwnAll( a, b, 'error msg, map should own fields :' );
+ * _.map.assertOwnAll( a, b, 'error msg, map should own fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3937,7 +3938,7 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * _.assertMapOwnAll( a, b, 'error msg, ', () => 'map' + ' should own fields :' );
+ * _.map.assertOwnAll( a, b, 'error msg, ', () => 'map' + ' should own fields :' );
  *
  * // log
  * // caught <anonymous>:4:9
@@ -3958,7 +3959,7 @@ function assertMapOwnAll( srcMap, all, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapOwnAll.apply( this, arguments );
+  return _.map.sureOwnAll.apply( this, arguments );
 }
 
 //
@@ -3974,12 +3975,12 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : '1', b : 'name' };
- * _.assertMapHasNoUndefine( map );
+ * _.map.assertHasNoUndefine( map );
  * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
- * _.assertMapHasNoUndefine( map );
+ * _.map.assertHasNoUndefine( map );
  *
  * // log
  * // caught <anonymous>:2:8
@@ -3991,7 +3992,7 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * _.assertMapHasNoUndefine( map, '"map" has undefines :');
+ * _.map.assertHasNoUndefine( map, '"map" has undefines :');
  *
  * // log
  * // caught <anonymous>:2:8
@@ -4003,7 +4004,7 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * _.assertMapHasNoUndefine( map, 'map', () => ' has ' + 'undefines :');
+ * _.map.assertHasNoUndefine( map, 'map', () => ' has ' + 'undefines :');
  *
  * // log
  * // caught <anonymous>:2:8
@@ -4230,42 +4231,80 @@ let Extension =
   // map surer
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine */
-  sureMapHasExactly,
-  sureMapOwnExactly,
+  sureMapHasExactly, /* !!! */
+  sureMapOwnExactly, /* !!! */
 
-  sureMapHasOnly,
-  sureMapOwnOnly,
+  sureMapHasOnly, /* !!! */
+  sureMapOwnOnly, /* !!! */
 
-  sureMapHasAll,
-  sureMapOwnAll,
+  sureMapHasAll, /* !!! */
+  sureMapOwnAll, /* !!! */
 
-  sureMapHasNone,
-  sureMapOwnNone,
+  sureMapHasNone, /* !!! */
+  sureMapOwnNone, /* !!! */
 
-  sureMapHasNoUndefine,
+  sureMapHasNoUndefine, /* !!! */
 
   // map assert
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine */
-  assertMapHasFields,
-  assertMapOwnFields,
+  assertMapHasFields, /* !!! */
+  assertMapOwnFields, /* !!! */
 
-  assertMapHasOnly,
-  assertMapOwnOnly,
+  assertMapHasOnly, /* !!! */
+  assertMapOwnOnly, /* !!! */
 
-  assertMapHasNone,
-  assertMapOwnNone,
+  assertMapHasNone, /* !!! */
+  assertMapOwnNone, /* !!! */
 
-  assertMapHasAll,
-  assertMapOwnAll,
+  assertMapHasAll, /* !!! */
+  assertMapOwnAll, /* !!! */
 
-  assertMapHasNoUndefine,
+  assertMapHasNoUndefine, /* !!! */
 
 }
 
 //
 
+let ExtensionMap =
+{
+  // map surer
+
+  sureHasExactly : sureMapHasExactly,
+  sureOwnExactly : sureMapOwnExactly,
+
+  sureHasOnly : sureMapHasOnly,
+  sureOwnOnly : sureMapOwnOnly,
+
+  sureHasAll : sureMapHasAll,
+  sureOwnAll : sureMapOwnAll,
+
+  sureHasNone : sureMapHasNone,
+  sureOwnNone : sureMapOwnNone,
+
+  sureHasNoUndefine : sureMapHasNoUndefine,
+
+  // map assert
+
+  assertHasFields : assertMapHasFields,
+  assertOwnFields : assertMapOwnFields,
+
+  assertHasOnly : assertMapHasOnly,
+  assertOwnOnly : assertMapOwnOnly,
+
+  assertHasNone : assertMapHasNone,
+  assertOwnNone : assertMapOwnNone,
+
+  assertHasAll : assertMapHasAll,
+  assertOwnAll : assertMapOwnAll,
+
+  assertHasNoUndefine : assertMapHasNoUndefine,
+}
+
+//
+
 _.mapSupplement( _, Extension );
+_.mapSupplement( _.map, ExtensionMap );
 
 // --
 // export
