@@ -143,7 +143,7 @@ function _formatAffixesForStyleObject( styleObject )
   result.head = '';
   result.post = '';
 
-  _.assertMapHasOnly( styleObject, _formatAffixesForStyleObject.defaults );
+  _.map.assertHasOnly( styleObject, _formatAffixesForStyleObject.defaults );
 
   if( styleObject.fg )
   _.ct._affixesJoin( result, _.ct._formatAffixesForeground( styleObject.fg ) );
@@ -186,7 +186,7 @@ function _formatAffixes( styles )
     if( _.object.is( style ) )
     {
       // let obj = style[ s ];
-      // _.assertMapHasOnly( obj, StyleObjectOptions );
+      // _.map.assertHasOnly( obj, StyleObjectOptions );
       // if( obj.fg )
       // result = join( result, _.ct._formatAffixesForeground( obj.fg ) );
       // if( obj.bg )
