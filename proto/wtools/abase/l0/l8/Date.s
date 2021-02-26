@@ -11,14 +11,6 @@ let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 // typing
 // --
 
-function exportString( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.date.is( src ) );
-
-  return src.toISOString();
-}
-
 // --
 // extension
 // --
@@ -32,7 +24,7 @@ let ToolsExtension =
 
 let Extension =
 {
-  exportString
+
 }
 
 //
