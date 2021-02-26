@@ -283,17 +283,21 @@ function exportStringShortDiagnostic( src )
   try
   {
 
-    if( _.symbol.is( src ) )
+    // if( _.symbol.is( src ) )
+    // {
+    //   let text = src.toString().slice( 7, -1 );
+    //   let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
+    //   return result;
+    // }
+    // else if( _.primitive.is( src ) )
+    // {
+    //   if( _.bigInt.is( src ) )
+    //   return _.bigInt.exportStringShortDiagnostic( src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    //   return String( src );
+    // }
+    if( _.primitive.is( src ) )
     {
-      let text = src.toString().slice( 7, -1 );
-      let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
-      return result;
-    }
-    else if( _.primitive.is( src ) )
-    {
-      if( _.bigInt.is( src ) )
-      return _.bigInt.exportStringShortDiagnostic( src ); /* qqq for Yevhen : no! | aaa : Fixed */
-      return String( src );
+      return _.primitive.exportStringShortDiagnostic( src );
     }
     else if( _.set.like( src ) || _.hashMap.like( src ) )
     {
