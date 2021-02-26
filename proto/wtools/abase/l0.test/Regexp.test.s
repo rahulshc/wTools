@@ -163,7 +163,7 @@ function regexpIdentical( test )
   test.case = 'null';
 
   var expected = false;
-  var got = _.regexp.s.identical( null, null );
+  var got = _.regexp.identical( null, null );
   test.identical( got, expected );
 
   /* */
@@ -171,7 +171,7 @@ function regexpIdentical( test )
   test.case = 'null and regexp';
 
   var expected = false;
-  var got = _.regexp.s.identical( /x/, null );
+  var got = _.regexp.identical( /x/, null );
   test.identical( got, expected );
 
   /* */
@@ -179,35 +179,35 @@ function regexpIdentical( test )
   test.case = 'same string';
 
   var expected = false;
-  var got = _.regexp.s.identical( 'x', 'x' );
+  var got = _.regexp.identical( 'x', 'x' );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'same regexp';
   var expected = true;
-  var got = _.regexp.s.identical( /abc/iy, /abc/yi );
+  var got = _.regexp.identical( /abc/iy, /abc/yi );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'not identical regexp, different flags';
   var expected = false;
-  var got = _.regexp.s.identical( /abc/i, /abc/ );
+  var got = _.regexp.identical( /abc/i, /abc/ );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'not identical regexp, different source';
   var expected = false;
-  var got = _.regexp.s.identical( /abcd/i, /abc/i );
+  var got = _.regexp.identical( /abcd/i, /abc/i );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'not identical regexp';
   var expected = false;
-  var got = _.regexp.s.identical( /abcd/y, /abc/i );
+  var got = _.regexp.identical( /abcd/y, /abc/i );
   test.identical( got, expected );
 
   /* */
@@ -217,11 +217,11 @@ function regexpIdentical( test )
 
   test.case = 'none argument';
 
-  test.shouldThrowErrorSync( () => _.regexp.s.identical() );
+  test.shouldThrowErrorSync( () => _.regexp.identical() );
 
   test.case = 'too many arguments';
 
-  test.shouldThrowErrorSync( () => _.regexp.s.identical( /abc/i, /def/i, /a/i ) );
+  test.shouldThrowErrorSync( () => _.regexp.identical( /abc/i, /def/i, /a/i ) );
 
 }
 
@@ -284,10 +284,10 @@ function regexpEquivalent( test )
   return;
 
   test.case = 'none argument';
-  test.shouldThrowErrorSync( () => _.regexp.s.identical() );
+  test.shouldThrowErrorSync( () => _.regexp.identical() );
 
   test.case = 'too many arguments';
-  test.shouldThrowErrorSync( () => _.regexp.s.identical( /abc/i, /def/i, /a/i ) );
+  test.shouldThrowErrorSync( () => _.regexp.identical( /abc/i, /def/i, /a/i ) );
 
 }
 
