@@ -2558,6 +2558,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
 
 function _mapOnly( o )
 {
+  let self = this;
 
   let dstMap = o.dstMap || Object.create( null );
   let screenMap = o.screenMaps;
@@ -2587,49 +2588,111 @@ function _mapOnly( o )
   }
 
   /* qqq : allow and cover vector */
-  if( _.longIs( screenMap ) )
+
+  for( let srcMap of srcMaps )
   {
-    for( let k in screenMap ) /* qqq : for Dmytro : bad */
-    {
-
-      if( screenMap[ k ] === undefined )
-      continue;
-
-      let s;
-      for( s = srcMaps.length-1 ; s >= 0 ; s-- )
-      {
-        if( !_.aux.is( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
-        {
-          // k = screenMap[ k ]; /* qqq : ? */
-          break;
-        }
-        if( k in srcMaps[ s ] )
-        {
-          break;
-        }
-      }
-
-      if( s === -1 )
-      continue;
-
-      o.filter.call( this, dstMap, srcMaps[ s ], k );
-
-    }
-  }
-  else
-  {
-    for( let k in screenMap )
-    {
-      if( screenMap[ k ] === undefined )
-      continue;
-
-      for( let s in srcMaps )
-      if( k in srcMaps[ s ] )
-      o.filter.call( this, dstMap, srcMaps[ s ], k );
-    }
+    if( _.vector.is( screenMap ) )
+    filterSrcMapWithVectorScreenMap( srcMap );
+    else
+    filterSrcMap( srcMap );
   }
 
   return dstMap;
+
+  /* */
+
+  function filterSrcMapWithVectorScreenMap( srcMap )
+  {
+    for( let key in srcMap )
+    {
+      let screenKey = screenKeySearch( key );
+      if( screenKey )
+      o.filter.call( self, dstMap, srcMap, screenKey );
+    }
+  }
+
+  /* */
+
+  function screenKeySearch( key )
+  {
+    let m;
+    if( _.arrayLike( screenMap ) )
+    {
+      for( m = 0 ; m < screenMap.length ; m++ )
+      if( _.vector.is( screenMap[ m ] ) && key in screenMap[ m ] )
+      return key;
+      // else if( _.aux.is( screenMap[ m ] ) && key in screenMap[ m ] )
+      // return key;
+      else if( _.primitive.is( screenMap[ m ] ) && screenMap[ m ] === key )
+      return key;
+      else if( key === String( m ) )
+      return key;
+    }
+    else
+    {
+      for( m of screenMap )
+      if( _.vector.is( m ) && key in m )
+      return key;
+      // else if( _.aux.is( m ) && key in m )
+      // return key;
+      else if( _.primitive.is( m ) && m === key )
+      return key;
+    }
+  }
+
+  /* */
+
+  function filterSrcMap( srcMap )
+  {
+    for( let key in screenMap )
+    {
+      if( screenMap[ key ] === undefined )
+      continue;
+
+      if( key in srcMap )
+      o.filter.call( this, dstMap, srcMap, key );
+    }
+  }
+
+  // if( _.longIs( screenMap ) )
+  // {
+  //   for( let k in screenMap ) /* qqq : for Dmytro : bad */
+  //   {
+  //
+  //     if( screenMap[ k ] === undefined )
+  //     continue;
+  //
+  //     let s;
+  //     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+  //     {
+  //       if( !_.aux.is( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
+  //       // k = screenMap[ k ]; /* qqq : ? */
+  //       break;
+  //       if( k in srcMaps[ s ] )
+  //       break;
+  //     }
+  //
+  //     if( s === -1 )
+  //     continue;
+  //
+  //     o.filter.call( this, dstMap, srcMaps[ s ], k );
+  //
+  //   }
+  // }
+  // else
+  // {
+  //   for( let k in screenMap )
+  //   {
+  //     if( screenMap[ k ] === undefined )
+  //     continue;
+  //
+  //     for( let s in srcMaps )
+  //     if( k in srcMaps[ s ] )
+  //     o.filter.call( this, dstMap, srcMaps[ s ], k );
+  //   }
+  // }
+  //
+  // return dstMap;
 }
 
 _mapOnly.defaults =
