@@ -2787,7 +2787,7 @@ _mapOnly_.defaults =
 // map sure
 // --
 
-function sureMapHasExactly( srcMap, screenMaps, msg )
+function sureHasExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
@@ -2799,7 +2799,7 @@ function sureMapHasExactly( srcMap, screenMaps, msg )
 
 //
 
-function sureMapOwnExactly( srcMap, screenMaps, msg )
+function sureOwnExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
@@ -2838,7 +2838,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * // Object should have no fields : c
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at sureHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:3
  *
  * @example
@@ -2852,7 +2852,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * // message Object should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at sureHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
  * @example
@@ -2866,17 +2866,17 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * // message Object should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at sureHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
- * @function sureMapHasOnly
+ * @function sureHasOnly
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @namespace Tools
  *
  */
 
-function sureMapHasOnly( srcMap, screenMaps, msg )
+function sureHasOnly( srcMap, screenMaps, msg )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
@@ -2945,7 +2945,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * // Object should have no own fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at sureOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:3
  *
  * @example
@@ -2959,7 +2959,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * // error msg Object should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at sureOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
  * @example
@@ -2973,17 +2973,17 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * // error, map should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at sureOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:3
  *
- * @function sureMapOwnOnly
+ * @function sureOwnOnly
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @namespace Tools
  *
  */
 
-function sureMapOwnOnly( srcMap, screenMaps, msg )
+function sureOwnOnly( srcMap, screenMaps, msg )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
@@ -3050,7 +3050,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * // Object should have fields : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at sureHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
  * @example
@@ -3063,7 +3063,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * // error msg Object should have fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at sureHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
  * @example
@@ -3076,17 +3076,17 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * // error, map should have fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at sureHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
- * @function sureMapHasAll
+ * @function sureHasAll
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @namespace Tools
  *
  */
 
-function sureMapHasAll( srcMap, all, msg )
+function sureHasAll( srcMap, all, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
@@ -3153,7 +3153,7 @@ function sureMapHasAll( srcMap, all, msg )
  * // Object should have own fields : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at sureOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
@@ -3166,7 +3166,7 @@ function sureMapHasAll( srcMap, all, msg )
  * // error, should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at sureOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
@@ -3179,17 +3179,17 @@ function sureMapHasAll( srcMap, all, msg )
  * // error, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at sureOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
- * @function sureMapOwnAll
+ * @function sureOwnAll
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @namespace Tools
  *
  */
 
-function sureMapOwnAll( srcMap, all, msg )
+function sureOwnAll( srcMap, all, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
@@ -3257,7 +3257,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * // Object should have no fields : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at sureHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:4
  *
  * @example
@@ -3270,7 +3270,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * // error, map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at sureHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @example
@@ -3283,17 +3283,17 @@ function sureMapOwnAll( srcMap, all, msg )
  * // error, map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at sureHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
- * @function sureMapHasNone
+ * @function sureHasNone
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @namespace Tools
  *
  */
 
-function sureMapHasNone( srcMap, screenMaps, msg )
+function sureHasNone( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
@@ -3333,7 +3333,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
 
 //
 
-function sureMapOwnNone( srcMap, screenMaps, msg )
+function sureOwnNone( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
@@ -3396,7 +3396,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  * // Object  should have no undefines, but has : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at sureHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @example
@@ -3408,7 +3408,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  * // "map" has undefines : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at sureHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @example
@@ -3420,17 +3420,17 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  * // "map" should have no undefines, but has : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at sureHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
- * @function sureMapHasNoUndefine
+ * @function sureHasNoUndefine
  * @throws {Exception} If no arguments passed or than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
  * @namespace Tools
  *
  */
 
-function sureMapHasNoUndefine( srcMap, msg )
+function sureHasNoUndefine( srcMap, msg )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3, 'Expects one, two or three arguments' )
@@ -3476,7 +3476,7 @@ function sureMapHasNoUndefine( srcMap, msg )
 // map assert
 // --
 
-function assertMapHasFields( srcMap, screenMaps, msg )
+function assertHasFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3485,7 +3485,7 @@ function assertMapHasFields( srcMap, screenMaps, msg )
 
 //
 
-function assertMapOwnFields( srcMap, screenMaps, msg )
+function assertOwnFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3521,7 +3521,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * // Object should have no fields : c
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at assertHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:3
  *
  * @example
@@ -3535,7 +3535,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * // map should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at assertHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
  * @example
@@ -3549,17 +3549,17 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * // map should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at assertHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
- * @function assertMapHasOnly
+ * @function assertHasOnly
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @namespace Tools
  *
  */
 
-function assertMapHasOnly( srcMap, screenMaps, msg )
+function assertHasOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3690,7 +3690,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * // Object should have no own fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at assertOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:3
  *
  * @example
@@ -3704,7 +3704,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * // error, map should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at assertOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
  * @example
@@ -3718,17 +3718,17 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * // error, map should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at assertOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
- * @function assertMapOwnOnly
+ * @function assertOwnOnly
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @namespace Tools
  *
  */
 
-function assertMapOwnOnly( srcMap, screenMaps, msg )
+function assertOwnOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3765,7 +3765,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * // Object should have no fields : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4518)
+ * // at assertHasAll (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:4
  *
  * @example
@@ -3778,7 +3778,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * // map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at assertHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @example
@@ -3791,17 +3791,17 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * // map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at assertHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
- * @function assertMapHasNone
+ * @function assertHasNone
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @namespace Tools
  *
  */
 
-function assertMapHasNone( srcMap, screenMaps, msg )
+function assertHasNone( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3810,7 +3810,7 @@ function assertMapHasNone( srcMap, screenMaps, msg )
 
 //
 
-function assertMapOwnNone( srcMap, screenMaps, msg )
+function assertOwnNone( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3847,7 +3847,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * // Object should have fields : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at assertHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
  * @example
@@ -3860,7 +3860,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * // map should have fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at assertHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
  * @example
@@ -3873,17 +3873,17 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * // map should have fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at assertHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
- * @function assertMapHasAll
+ * @function assertHasAll
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @namespace Tools
  *
  */
 
-function assertMapHasAll( srcMap, all, msg )
+function assertHasAll( srcMap, all, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3919,7 +3919,7 @@ function assertMapHasAll( srcMap, all, msg )
  * // Object should own fields : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4269)
+ * // at assertHasAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
@@ -3932,7 +3932,7 @@ function assertMapHasAll( srcMap, all, msg )
  * // error msg, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at assertOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
@@ -3945,17 +3945,17 @@ function assertMapHasAll( srcMap, all, msg )
  * // error msg, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at assertOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
- * @function assertMapOwnAll
+ * @function assertOwnAll
  * @throws {Exception} If no arguments passed or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @namespace Tools
  *
  */
 
-function assertMapOwnAll( srcMap, all, msg )
+function assertOwnAll( srcMap, all, msg )
 {
   if( Config.debug === false )
   return true;
@@ -3987,7 +3987,7 @@ function assertMapOwnAll( srcMap, all, msg )
  * // Object should have no undefines, but has : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at assertHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @example
@@ -3999,7 +3999,7 @@ function assertMapOwnAll( srcMap, all, msg )
  * // "map" has undefines : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at assertHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @example
@@ -4011,17 +4011,17 @@ function assertMapOwnAll( srcMap, all, msg )
  * // map has undefines : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at assertHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
- * @function assertMapHasNoUndefine
+ * @function assertHasNoUndefine
  * @throws {Exception} If no arguments provided or more than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
  * @namespace Tools
  *
  */
 
-function assertMapHasNoUndefine( srcMap, msg )
+function assertHasNoUndefine( srcMap, msg )
 {
   if( Config.debug === false )
   return true;
@@ -4231,36 +4231,36 @@ let Extension =
   // map surer
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
-  sureMapHasExactly, /* !!! */
-  sureMapOwnExactly, /* !!! */
+  sureMapHasExactly : sureHasExactly, /* !!! */
+  sureMapOwnExactly : sureOwnExactly, /* !!! */
 
-  sureMapHasOnly, /* !!! */
-  sureMapOwnOnly, /* !!! */
+  sureMapHasOnly : sureHasOnly, /* !!! */
+  sureMapOwnOnly : sureOwnOnly, /* !!! */
 
-  sureMapHasAll, /* !!! */
-  sureMapOwnAll, /* !!! */
+  sureMapHasAll : sureHasAll, /* !!! */
+  sureMapOwnAll : sureOwnAll, /* !!! */
 
-  sureMapHasNone, /* !!! */
-  sureMapOwnNone, /* !!! */
+  sureMapHasNone : sureHasNone, /* !!! */
+  sureMapOwnNone : sureOwnNone, /* !!! */
 
-  sureMapHasNoUndefine, /* !!! */
+  sureMapHasNoUndefine : sureHasNoUndefine, /* !!! */
 
   // map assert
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
-  assertMapHasFields, /* !!! */
-  assertMapOwnFields, /* !!! */
+  assertMapHasFields : assertHasFields, /* !!! */
+  assertMapOwnFields : assertOwnFields, /* !!! */
 
-  assertMapHasOnly, /* !!! */
-  assertMapOwnOnly, /* !!! */
+  assertMapHasOnly : assertHasOnly, /* !!! */
+  assertMapOwnOnly : assertOwnOnly, /* !!! */
 
-  assertMapHasNone, /* !!! */
-  assertMapOwnNone, /* !!! */
+  assertMapHasNone : assertHasNone, /* !!! */
+  assertMapOwnNone : assertOwnNone, /* !!! */
 
-  assertMapHasAll, /* !!! */
-  assertMapOwnAll, /* !!! */
+  assertMapHasAll : assertHasAll, /* !!! */
+  assertMapOwnAll : assertOwnAll, /* !!! */
 
-  assertMapHasNoUndefine, /* !!! */
+  assertMapHasNoUndefine : assertHasNoUndefine, /* !!! */
 
 }
 
@@ -4270,35 +4270,35 @@ let ExtensionMap =
 {
   // map surer
 
-  sureHasExactly : sureMapHasExactly,
-  sureOwnExactly : sureMapOwnExactly,
+  sureHasExactly,
+  sureOwnExactly,
 
-  sureHasOnly : sureMapHasOnly,
-  sureOwnOnly : sureMapOwnOnly,
+  sureHasOnly,
+  sureOwnOnly,
 
-  sureHasAll : sureMapHasAll,
-  sureOwnAll : sureMapOwnAll,
+  sureHasAll,
+  sureOwnAll,
 
-  sureHasNone : sureMapHasNone,
-  sureOwnNone : sureMapOwnNone,
+  sureHasNone,
+  sureOwnNone,
 
-  sureHasNoUndefine : sureMapHasNoUndefine,
+  sureHasNoUndefine,
 
   // map assert
 
-  assertHasFields : assertMapHasFields,
-  assertOwnFields : assertMapOwnFields,
+  assertHasFields,
+  assertOwnFields,
 
-  assertHasOnly : assertMapHasOnly,
-  assertOwnOnly : assertMapOwnOnly,
+  assertHasOnly,
+  assertOwnOnly,
 
-  assertHasNone : assertMapHasNone,
-  assertOwnNone : assertMapOwnNone,
+  assertHasNone,
+  assertOwnNone,
 
-  assertHasAll : assertMapHasAll,
-  assertOwnAll : assertMapOwnAll,
+  assertHasAll,
+  assertOwnAll,
 
-  assertHasNoUndefine : assertMapHasNoUndefine,
+  assertHasNoUndefine,
 }
 
 //
