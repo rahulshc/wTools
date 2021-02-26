@@ -7,6 +7,10 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
+/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch */
+/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch */
+/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch */
+
 // --
 // map checker
 // --
