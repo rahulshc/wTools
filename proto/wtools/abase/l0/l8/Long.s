@@ -201,7 +201,7 @@ function longHasUniques( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( o.src ) );
-  _.assertMapHasOnly( o, longHasUniques.defaults );
+  _.map.assertHasOnly( o, longHasUniques.defaults );
 
   /* */
 
@@ -429,7 +429,7 @@ function longUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapHasOnly( o, longUnmask.defaults );
+  _.map.assertHasOnly( o, longUnmask.defaults );
   _.assert( _.longIs( o.src ), 'Expects o.src as ArrayLike' );
 
   let scalarsPerElement = o.mask.length;

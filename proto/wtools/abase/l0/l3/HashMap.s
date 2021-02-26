@@ -39,6 +39,32 @@ function isPopulated()
   return !!src.size;
 }
 
+//
+
+function areIdenticalShallow( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.hashMap.like( src1 ) );
+  _.assert( _.hashMap.like( src2 ) );
+
+  let testVal;
+
+  if( src1.size !== src2.size )
+  return false;
+
+  for( let [ key, val ] of src1 )
+  {
+    testVal = src2.get( key );
+    /*
+      in cases of an undefined value, make sure the key
+      exists on the object so there are no false positives
+    */
+    if( testVal !== val || ( testVal === undefined && !src2.has( key ) ) )
+    return false;
+  }
+  return true;
+}
+
 // --
 // extension
 // --
@@ -59,6 +85,7 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
+  areIdenticalShallow
 }
 
 Object.assign( _, ToolsExtension );

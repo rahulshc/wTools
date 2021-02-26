@@ -532,7 +532,7 @@ function locationToStack( o )
 
   /* */
 
-  // _.assertMapHasOnly( o, locationToStack.defaults );
+  // _.map.assertHasOnly( o, locationToStack.defaults );
   if( Config.debug )
   {
     let extraKeys = mapButKeys( o, locationToStack.defaults );

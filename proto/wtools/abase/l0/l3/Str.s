@@ -677,6 +677,96 @@ function strTypeWithoutTraits( src )
 
 //
 
+function strParseType( src )
+{
+  /*
+    - 'string'
+    - '5'
+    - '5n'
+    - 'null'
+    - 'undefined'
+    - 'Escape( 1 )'
+    - '{- Symbol undefined -}'
+    - '{- routine name -}'
+    - '{- routine.anonymous -}'
+    - '{- Map -}'
+    - '{- Map name -}'
+    - '{- Map with 9 elements -}'
+    - '{- Map.polluted with 9 elements -}'
+    - '{- Map name with 9 elements -}'
+  */
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ), 'Expects string' );
+
+  if( !( /^{- .+ -}$/g.test( src ) ) )
+  return Object.create( null );
+
+  src = src.slice( 3, -3 );
+
+  return _.entity._strParseType( src );
+
+}
+
+//
+
+function _strParseType( src )
+{
+  /*
+
+  {- with with 2 elements -} 4
+  {- with name with 2 elements -} 5
+  {- with.with with with 2 elements -} 5
+
+  */
+  _.assert( _.strIs( src ), 'Expects string' );
+
+  let o =
+  {
+    type : '',
+    traits : [],
+  }
+
+  let splitted = src.split( ' ' );
+  let type = splitted[ 0 ];
+  let length;
+
+  if( splitted.length === 2 ) /* with name & no length */
+  {
+    o.name = splitted[ 1 ];
+  }
+  else if( splitted.length === 4 ) /* without name & with length */
+  {
+    length = +splitted[ 2 ];
+  }
+  else if( splitted.length === 5 ) /* with name & with length */
+  {
+    o.name = splitted[ 1 ];
+    length = +splitted[ 3 ];
+  }
+
+  length = isNaN( length ) ? null : length;
+
+  if( type.indexOf( '.' ) === -1 )
+  {
+    o.type = type;
+  }
+  else
+  {
+    let [ t, ... traits ] = type.split( '.' );
+    o.type = t;
+    o.traits = traits;
+  }
+
+  if( length !== null )
+  o.length = length;
+
+  return o;
+
+}
+
+//
+
 /**
  * The routine strConcat() provides the concatenation of array of elements ( or single element )
  * into a String. Returned string can be formatted by using options in options map {-o-}.
@@ -1294,6 +1384,8 @@ let ExtensionEntity =
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
+  strParseType,
+  _strParseType,
 
   // fields
 
