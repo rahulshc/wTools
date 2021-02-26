@@ -133,6 +133,7 @@ let Extension =
   is : regexpIs,
   objectIs : regexpObjectIs,
   like : regexpLike,
+  areIdenticalShallow : regexpIdentical,
 
   escape : regexpEscape,
 }
@@ -146,7 +147,6 @@ let ExtensionS =
 
   likeAll : regexpsLikeAll,
   identical : regexpIdentical,
-  areIdenticalShallow : regexpIdentical,
   equivalent : regexpEquivalent,
 
 }

@@ -947,8 +947,7 @@ function entityIdenticalShallowAllTypes( test )
   test.case = `object countable, non-vector with primitives`;
   var src1 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
   var src2 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
-  var got = _.countable.s.areIdenticalShallow( src1, src2 );
-  test.identical( got, true );
+  test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   test.case = 'Global & GlobalReal';
   var src1 = global;

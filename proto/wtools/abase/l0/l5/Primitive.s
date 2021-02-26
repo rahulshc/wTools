@@ -6,7 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _.primitive = _.primitive || Object.create( null );
-_.primitive.s = _.primitive.s || Object.create( null );
 
 // --
 // primitive
@@ -34,17 +33,11 @@ let ExtensionTools =
 
 let Extension =
 {
-
-}
-
-let ExtensionS =
-{
   areIdenticalShallow
 }
 
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-Object.assign( _.primitive.s, ExtensionS );
 
 // --
 // export

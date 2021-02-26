@@ -21,31 +21,19 @@ function identicalShallow( src1, src2 )
   if( src1 === src2 )
   return true;
 
-  const methodEqual = _.entity.methodEqualOf( src1 ) || _.entity.methodEqualOf( src2 );
-
-  if( methodEqual && !_.aux.is( src1 ) )
-  {
-    /*
-      object with method iterator or non-standart prototype
-      and equalAre method
-    */
-    let it = { srcEffective : src1, srcEffective2 : src2 }
-    methodEqual( it );
-    return it.result;
-  }
-  else if( _.hashMap.like( src1 ) )
+  if( _.hashMap.like( src1 ) )
   {
     /*
       - hashmap
     */
-    return _.hashMap.s.areIdenticalShallow( src1, src2 )
+    return _.hashMap.areIdenticalShallow( src1, src2 )
   }
   else if( _.set.like( src1 ) )
   {
     /*
       - set
     */
-    return _.set.s.areIdenticalShallow( src1, src2 );
+    return _.set.areIdenticalShallow( src1, src2 );
   }
   else if( _.bufferAnyIs( src1 ) )
   {
@@ -67,7 +55,7 @@ function identicalShallow( src1, src2 )
       - long
       - array
     */
-    return _.countable.s.areIdenticalShallow( src1, src2 );
+    return _.countable.areIdenticalShallow( src1, src2 );
   }
   else if( _.object.like( src1 ) )
   {
@@ -85,15 +73,15 @@ function identicalShallow( src1, src2 )
     */
     if( _.date.is( src1 ) )
     {
-      return _.date.s.areIdenticalShallow( src1, src2 );
+      return _.date.areIdenticalShallow( src1, src2 );
     }
     else if( _.regexp.is( src1 ) ) // investigate whether nedeed
     {
-      return _.regexp.s.areIdenticalShallow( src1, src2 );
+      return _.regexp.areIdenticalShallow( src1, src2 );
     }
     else if( _.aux.is( src1 ) )
     {
-      return _.aux.s.areIdenticalShallow( src1, src2 );
+      return _.aux.areIdenticalShallow( src1, src2 );
     }
 
     /* non-identical objects */
@@ -108,8 +96,8 @@ function identicalShallow( src1, src2 )
       - Boolean
       - String
     */
-    // return Object.is( src1, src2 );
-    return _.primitive.s.areIdenticalShallow( src1, src2 );
+
+    return _.primitive.areIdenticalShallow( src1, src2 );
   }
   else
   {

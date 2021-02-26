@@ -153,6 +153,7 @@ let Extension =
   adapterLike : setAdapterLike,
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
+  areIdenticalShallow : setsAreIdenticalShallow,
 
   // set
 
@@ -170,7 +171,6 @@ let ExtensionS =
 
   from : setsFrom,
   toArrays : setsToArrays,
-  areIdenticalShallow : setsAreIdenticalShallow
 }
 
 //

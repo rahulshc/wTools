@@ -6,7 +6,6 @@
 let _global = _global_;
 let _ = _global_.wTools;
 _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
-_global_.wTools.countable.s = _global_.wTools.countable.s || Object.create( null );
 
 // --
 // implementation
@@ -39,14 +38,8 @@ function areIdenticalShallow( src1, src2 )
 // --
 // extension
 // --
+
 var Extension =
-{
-
-}
-
-//
-
-var ExtensionS =
 {
   areIdenticalShallow
 }
@@ -54,7 +47,6 @@ var ExtensionS =
 //
 
 Object.assign( _.countable, Extension );
-Object.assign( _.countable.s, ExtensionS );
 
 // --
 // export

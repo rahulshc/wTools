@@ -6,7 +6,7 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
-_global_.wTools.hashMap.s = _global_.wTools.hashMap.s || Object.create( null );
+
 // --
 // implementation
 // --
@@ -85,18 +85,11 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
-}
-
-//
-
-let ExtensionS =
-{
   areIdenticalShallow
 }
 
 Object.assign( _, ToolsExtension );
 Object.assign( _.hashMap, Extension );
-Object.assign( _.hashMap.s, ExtensionS );
 
 // --
 // export
