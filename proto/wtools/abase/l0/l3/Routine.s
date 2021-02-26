@@ -26,7 +26,7 @@ let Self = _global_.wTools;
 function routineIs( src )
 {
   let typeStr = Object.prototype.toString.call( src );
-  return _routineIs( src, typeStr );
+  return _._routineIs( src, typeStr );
 }
 
 //
@@ -41,7 +41,7 @@ function _routineIs( src, typeStr )
 function routineLike( src )
 {
   let typeStr = Object.prototype.toString.call( src );
-  return _routineLike( src, typeStr );
+  return _._routineLike( src, typeStr );
 }
 
 //
@@ -289,7 +289,7 @@ function constructorJoin( routine, args )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context : routine,
@@ -345,7 +345,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
@@ -401,7 +401,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
@@ -440,7 +440,7 @@ function routineSeal( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
