@@ -135,6 +135,7 @@ let Extension =
   like : regexpLike,
   identical : regexpIdentical,
   equivalent : regexpEquivalent,
+  areIdenticalShallow : regexpIdentical,
 
   escape : regexpEscape,
 }

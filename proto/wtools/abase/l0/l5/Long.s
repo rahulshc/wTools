@@ -3754,6 +3754,7 @@ let Extension =
 
   // longCompare,
   longIdentical,
+  longAreIdenticalShallow : longIdentical,
 
   longHas,
   longHasAny,
