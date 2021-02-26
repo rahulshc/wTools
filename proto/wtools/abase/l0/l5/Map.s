@@ -4230,7 +4230,7 @@ let Extension =
 
   // map surer
 
-  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine */
+  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
   sureMapHasExactly, /* !!! */
   sureMapOwnExactly, /* !!! */
 
@@ -4247,7 +4247,7 @@ let Extension =
 
   // map assert
 
-  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine */
+  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
   assertMapHasFields, /* !!! */
   assertMapOwnFields, /* !!! */
 
