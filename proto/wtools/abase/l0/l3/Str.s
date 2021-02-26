@@ -708,6 +708,13 @@ function strParseType( src )
 
 function _strParseType( src )
 {
+  /*
+
+  {- with with 2 elements -} 4
+  {- with name with 2 elements -} 5
+  {- with.with with with 2 elements -} 5
+
+  */
   _.assert( _.strIs( src ), 'Expects string' );
 
   let o =
@@ -720,21 +727,18 @@ function _strParseType( src )
   let type = splitted[ 0 ];
   let length;
 
-  if( splitted.length === 2 )
+  if( splitted.length === 2 ) /* with name & no length */
   {
     o.name = splitted[ 1 ];
   }
-  else
+  else if( splitted.length === 4 ) /* without name & with length */
   {
-    if( splitted[ 1 ] === 'with' )
-    {
-      length = +splitted[ 2 ];
-    }
-    else if( splitted[ 2 ] === 'with' )
-    {
-      o.name = splitted[ 1 ];
-      length = +splitted[ 3 ];
-    }
+    length = +splitted[ 2 ];
+  }
+  else if( splitted.length === 5 ) /* with name & with length */
+  {
+    o.name = splitted[ 1 ];
+    length = +splitted[ 3 ];
   }
 
   length = isNaN( length ) ? null : length;

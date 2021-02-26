@@ -4877,7 +4877,93 @@ function strParseType( test )
   };
   test.identical( _.entity.strParseType( src ), expected );
 
-  test.close( 'with name' )
+  test.close( 'with name' );
+
+  /* special */
+
+  test.case = 'only type=with';
+  var src = '{- with -}';
+  var expected =
+  {
+    type : 'with',
+    traits : [],
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with and name=name';
+  var src = '{- with name -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'name',
+    traits : [],
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with and name=with';
+  var src = '{- with with -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'with',
+    traits : [],
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with, name=with, 2 elems';
+  var src = '{- with with with 2 elements -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'with',
+    traits : [],
+    length : 2
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with and name, 2 elems';
+  var src = '{- with name with 2 elements -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'name',
+    traits : [],
+    length : 2
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with, traits and name, 2 elems';
+  var src = '{- with.trait name with 2 elements -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'name',
+    traits : [ 'trait' ],
+    length : 2
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with, trait=with and name, 2 elems';
+  var src = '{- with.with name with 2 elements -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'name',
+    traits : [ 'with' ],
+    length : 2
+  };
+  test.identical( _.entity.strParseType( src ), expected );
+
+  test.case = 'type=with, trait=with, name=with, 2 elems';
+  var src = '{- with.with with with 2 elements -}';
+  var expected =
+  {
+    type : 'with',
+    name : 'with',
+    traits : [ 'with' ],
+    length : 2
+  };
+  test.identical( _.entity.strParseType( src ), expected );
 
 }
 
