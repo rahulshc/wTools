@@ -14,10 +14,10 @@ let Self = _.symbol = _.symbol || Object.create( null );
 function exportStringShortCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.primitive.is( src ) );
+  _.assert( _.symbol.is( src ) );
 
   let text = src.toString().slice( 7, -1 );
-  let result = `Symbol.for( ${text ? '\'' + text + '\'' : ' )'}`;
+  let result = `Symbol.for(${text ? ' \'' + text + '\' )' : ')'}`;
   return result;
 }
 
