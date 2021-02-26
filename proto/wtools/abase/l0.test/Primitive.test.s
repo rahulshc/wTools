@@ -122,6 +122,8 @@ function primitiveIs( test )
   test.identical( got, false );
 }
 
+//
+
 function primitivesAreIdenticalShallow( test )
 {
   test.open( 'identical' );
@@ -239,6 +241,185 @@ function primitivesAreIdenticalShallow( test )
 
 //
 
+function exportStringShortCode( test )
+{
+
+  test.case = 'Number';
+  var src = 10;
+  var expected = '10';
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'string';
+  var src = 'string';
+  var expected = '\'string\'';
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'bool';
+  var src = true;
+  var expected = 'true';
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'bigInt';
+  var src = 10n;
+  var expected = '10n';
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'Symbol( a )';
+  var src = Symbol( 'a' );
+  var expected = `Symbol.for( 'a' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol.for( a )';
+  var src = Symbol.for( 'a' );
+  var expected = `Symbol.for( 'a' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  /* error eslint : Symbol(), passes */
+  // test.case = 'Symbol()';
+  // var src = Symbol();
+  // var expected = `Symbol.for()`;
+  // var got = _.primitive.exportStringShortCode( src );
+  // test.identical( got, expected );
+
+  test.case = 'Symbol.for()';
+  var src = Symbol.for();
+  var expected = `Symbol.for( 'undefined' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  var expected = `Symbol.for( 'null' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  var expected = `Symbol.for( 'undefined' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  var expected = `Symbol.for( 'nothing' )`;
+  var got = _.primitive.exportStringShortCode( src );
+  test.identical( got, expected );
+  test.identical( strToPrimitive( got ), src );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShortCode() );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShortCode( {} ) );
+
+  /* - */
+
+  function strToPrimitive( string )
+  {
+    return Function(`return ${string}`)();
+  }
+}
+
+//
+
+function exportStringShortDiagnostic( test )
+{
+
+  test.case = 'Number';
+  var src = 10;
+  var expected = '10';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = 'string';
+  var expected = 'string';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'bool';
+  var src = true;
+  var expected = 'true';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'bigInt';
+  var src = 10n;
+  var expected = '10n';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol( a )';
+  var src = Symbol( 'a' );
+  var expected = '{- Symbol a -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol.for( a )';
+  var src = Symbol.for( 'a' );
+  var expected = '{- Symbol a -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  /* error eslint : Symbol(), passes */
+  // test.case = 'Symbol()';
+  // var src = Symbol();
+  // var expected = '{- Symbol -}';
+  // var got = _.primitive.exportStringShortDiagnostic( src );
+  // test.identical( got, expected );
+
+  test.case = 'Symbol.for()';
+  var src = Symbol.for();
+  var expected = '{- Symbol undefined -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  var expected = '{- Symbol null -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  var expected = '{- Symbol undefined -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  var expected = '{- Symbol nothing -}';
+  var got = _.primitive.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShortDiagnostic() );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShortDiagnostic( {} ) );
+}
+
+
 // --
 // declaration
 // --
@@ -253,6 +434,8 @@ var Self =
   {
     primitiveIs,
     primitivesAreIdenticalShallow,
+    exportStringShortCode,
+    exportStringShortDiagnostic
   }
 
 }
