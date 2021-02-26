@@ -616,6 +616,7 @@ function own( src, key )
   // return false;
   // if( src === undefined )
   // return false;
+  /* xxx */
   if( _.primitive.is( src ) )
   return false;
   return Object.hasOwnProperty.call( src, key );
