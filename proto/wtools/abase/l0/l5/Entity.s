@@ -29,13 +29,9 @@ function identicalShallow( src1, src2 )
       object with method iterator or non-standart prototype
       and equalAre method
     */
-    if( _.escape.is( src1 ) )
-    {
-      let it = { srcEffective : src1, srcEffective2 : src2 }
-      methodEqual( it );
-      return it.result;
-    }
-    return methodEqual( src1, src2 );
+    let it = { srcEffective : src1, srcEffective2 : src2 }
+    methodEqual( it );
+    return it.result;
   }
   else if( _.hashMap.like( src1 ) )
   {
