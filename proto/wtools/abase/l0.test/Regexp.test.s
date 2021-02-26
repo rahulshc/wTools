@@ -231,51 +231,51 @@ function regexpEquivalent( test )
 {
   test.case = 'null';
   var expected = false;
-  var got = _.regexp.s.equivalent( null, null );
+  var got = _.regexp.equivalent( null, null );
   test.identical( got, expected );
 
   test.case = 'null and regexp';
   var expected = false;
-  var got = _.regexp.s.equivalent( /x/, null );
+  var got = _.regexp.equivalent( /x/, null );
   test.identical( got, expected );
 
   test.case = 'same string';
   var expected = false;
-  var got = _.regexp.s.equivalent( 'x', 'x' );
+  var got = _.regexp.equivalent( 'x', 'x' );
   test.identical( got, expected );
 
   test.case = 'same regexp';
   var expected = true;
-  var got = _.regexp.s.equivalent( /abc/iy, /abc/yi );
+  var got = _.regexp.equivalent( /abc/iy, /abc/yi );
   test.identical( got, expected );
 
   /* - */
 
   test.case = 'identical regexp, first with flag';
   var expected = true;
-  var got = _.regexp.s.equivalent( /abc/i, /abc/ );
+  var got = _.regexp.equivalent( /abc/i, /abc/ );
   test.identical( got, expected );
 
   test.case = 'identical regexp, different flags';
   var expected = true;
-  var got = _.regexp.s.equivalent( /abc/i, /abc/g );
+  var got = _.regexp.equivalent( /abc/i, /abc/g );
   test.identical( got, expected );
 
   test.case = 'identical regexp, second with flag';
   var expected = true;
-  var got = _.regexp.s.equivalent( /abc/, /abc/g );
+  var got = _.regexp.equivalent( /abc/, /abc/g );
   test.identical( got, expected );
 
   /* - */
 
   test.case = 'not identical regexp, different source';
   var expected = false;
-  var got = _.regexp.s.equivalent( /abcd/i, /abc/i );
+  var got = _.regexp.equivalent( /abcd/i, /abc/i );
   test.identical( got, expected );
 
   test.case = 'not identical regexp, different source & flags';
   var expected = false;
-  var got = _.regexp.s.equivalent( /abcd/y, /abc/i );
+  var got = _.regexp.equivalent( /abcd/y, /abc/i );
   test.identical( got, expected );
 
   /* - */
