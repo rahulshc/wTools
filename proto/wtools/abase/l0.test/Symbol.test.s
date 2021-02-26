@@ -139,17 +139,15 @@ function exportStringShortCode( test )
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
-  test.case = 'Symbol()';
-  var src = Symbol();
-  var expected = `Symbol.for()`;
-  var got = _.symbol.exportStringShortCode( src );
-  test.identical( got, expected );
+  // test.case = 'Symbol()';
+  // var src = Symbol();
+  // var expected = `Symbol.for()`;
+  // var got = _.symbol.exportStringShortCode( src );
+  // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
-  console.log( src )
-  console.log( Symbol.for( undefined ) )
-  var expected = `Symbol.for( undefined )`;
+  var expected = `Symbol.for( 'undefined' )`;
   var got = _.symbol.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
@@ -181,7 +179,7 @@ function exportStringShortCode( test )
   test.case = 'without argument';
   test.shouldThrowErrorSync( () => _.symbol.exportStringShortCode() );
 
-  test.case = 'not a symbol';
+  test.case = 'wrong type';
   test.shouldThrowErrorSync( () => _.symbol.exportStringShortCode( 1 ) );
 
   /* - */
@@ -209,11 +207,11 @@ function exportStringShortDiagnostic( test )
   var got = _.symbol.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'Symbol()';
-  var src = Symbol();
-  var expected = '{- Symbol -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
-  test.identical( got, expected );
+  // test.case = 'Symbol()';
+  // var src = Symbol();
+  // var expected = '{- Symbol -}';
+  // var got = _.symbol.exportStringShortDiagnostic( src );
+  // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
@@ -245,7 +243,7 @@ function exportStringShortDiagnostic( test )
   test.case = 'without argument';
   test.shouldThrowErrorSync( () => _.symbol.exportStringShortDiagnostic() );
 
-  test.case = 'not a symbol';
+  test.case = 'wrong type';
   test.shouldThrowErrorSync( () => _.symbol.exportStringShortDiagnostic( 1 ) );
 }
 
