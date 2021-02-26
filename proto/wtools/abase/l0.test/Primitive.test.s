@@ -285,6 +285,7 @@ function exportStringShortCode( test )
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
+  /* error eslint : Symbol(), passes */
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = `Symbol.for()`;
@@ -377,6 +378,7 @@ function exportStringShortDiagnostic( test )
   var got = _.primitive.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
+  /* error eslint : Symbol(), passes */
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = '{- Symbol -}';
