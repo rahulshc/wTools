@@ -1180,6 +1180,53 @@ function mapsExtend( test )
 
 //
 
+function mapsExtendWithVectorsInSrcMaps( test )
+{
+  test.case = 'srcMaps - argumentsArray';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.argumentsArray.make([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps - unroll';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.unrollMake([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps - ContainerAdapter';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.containerAdapter.make([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+}
+
+//
+
 function mapSupplement( test )
 {
 
@@ -12710,6 +12757,7 @@ let Self =
     mapExtendConditional,
     mapExtendNotIdentical,
     mapsExtend,
+    mapsExtendWithVectorsInSrcMaps,
     mapSupplement,
     mapComplement,
 
