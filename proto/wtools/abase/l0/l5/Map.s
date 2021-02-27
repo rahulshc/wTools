@@ -806,33 +806,58 @@ function mapsExtend( dstMap, srcMaps )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
-  return Object.assign( dstMap, srcMaps[ 0 ] );
-
-  if( !_.vector.is( srcMaps ) )
-  srcMaps = [ srcMaps ];
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.vector.is( srcMaps ) );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
-  /* qqq : allow and cover vector */
-  for( let a = 0 ; a < srcMaps.length ; a++ )
-  {
-    let srcMap = srcMaps[ a ];
+  /* aaa : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
+  if( !_.vector.is( srcMaps ) )
+  dstMapExtend( srcMaps );
+  else
+  for( let srcMap of srcMaps )
+  dstMapExtend( srcMap );
 
+  return dstMap;
+
+  /* */
+
+  function dstMapExtend( srcMap )
+  {
     _.assert( !_.primitive.is( srcMap ), 'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
     else for( let k in srcMap )
-    {
-      dstMap[ k ] = srcMap[ k ];
-    }
-
+    dstMap[ k ] = srcMap[ k ];
   }
 
-  return dstMap;
+  // if( dstMap === null )
+  // dstMap = Object.create( null );
+  //
+  // if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
+  // return Object.assign( dstMap, srcMaps[ 0 ] );
+  //
+  // if( !_.vector.is( srcMaps ) )
+  // srcMaps = [ srcMaps ];
+  //
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.vector.is( srcMaps ) );
+  // _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
+  //
+  // /* aaa : allow and cover vector */
+  // for( let a = 0 ; a < srcMaps.length ; a++ )
+  // {
+  //   let srcMap = srcMaps[ a ];
+  //
+  //   _.assert( !_.primitive.is( srcMap ), 'Expects non primitive' );
+  //
+  //   if( Object.getPrototypeOf( srcMap ) === null )
+  //   Object.assign( dstMap, srcMap );
+  //   else for( let k in srcMap )
+  //   dstMap[ k ] = srcMap[ k ];
+  //
+  // }
+  //
+  // return dstMap;
 }
 
 //
