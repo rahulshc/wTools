@@ -487,47 +487,6 @@ function mapCloneAssigning( test )
 
 //
 
-function mapExtendConditional( test )
-{
-
-  test.case = 'an unique object';
-  var got = _.mapExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, { a : 1, c : 3 } );
-  var expected = { a : 1, b : 2, c : 3 };
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional();
-  });
-
-  test.case = 'few argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( _.property.mapper.dstNotHas() );
-  });
-
-  test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( [] );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( 'wrong arguments' );
-  });
-
-}
-
-//
-
 function mapExtend( test )
 {
   test.open( 'first argument is null' );
@@ -775,11 +734,49 @@ function mapExtend( test )
 
 //
 
-function mapExtendNotIdentical( test )
+function mapExtendConditional( test )
 {
+
+  test.case = 'an unique object';
+  var got = _.mapExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, { a : 1, c : 3 } );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
 
   /* */
 
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional();
+  });
+
+  test.case = 'few argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( _.property.mapper.dstNotHas() );
+  });
+
+  test.case = 'wrong type of array';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( [] );
+  });
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( 'wrong arguments' );
+  });
+
+}
+
+//
+
+function mapExtendNotIdentical( test )
+{
   test.case = 'basic';
   var prototype = Object.create( null );
   prototype.a = 1;
@@ -819,9 +816,366 @@ function mapExtendNotIdentical( test )
 
   var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
   test.identical( src, exp );
+}
+
+//
+
+function mapsExtend( test )
+{
+  test.open( 'first argument is null' );
+
+  test.case = 'single src map is provided';
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( null, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got !== src1 );
 
   /* */
 
+  test.case = 'unical fields in maps';
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps have same option, rewriting';
+  var src1 = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { b : 22, c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'first argument is null' );
+
+  /* - */
+
+  test.open( 'first argument is dst' );
+
+  test.case = 'dst - empty map, single src map';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  /* */
+
+  test.case = 'dst - empty map, unical values';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'dst - empty map, srcMaps have same option, rewriting';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { b : 22, c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - filled map, single src map, unical values';
+  var dst = { a : 1 };
+  var src1 = { b : 2, c : 3 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+  test.identical( src1, { b : 2, c : 3 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, single src map has same option, rewriting';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 2, b : 3 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  /* */
+
+  test.case = 'dst - filled map, unical values';
+  var dst = { a : 1 };
+  var src1 = { b : 2, c : 3 };
+  var src2 = { d : 4, e : 5 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4, e : 5 };
+  test.identical( got, expected );
+  test.identical( src1, { b : 2, c : 3 } );
+  test.identical( src2, { d : 4, e : 5 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'dst - filled map, srcMaps have same option, rewriting by the last child';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 2, b : 3 } );
+  test.identical( src2, { b : 4, c : 5 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'first argument is dst' );
+
+  /* - */
+
+  test.open( 'extend by empty map' );
+
+  test.case = 'dst - null, srcMaps - single empty map';
+  var src1 = {};
+  var got = _.mapsExtend( null, src1 );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got !== src1 );
+
+  test.case = 'dst - null, srcMaps - several empty maps';
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = {};
+  var src1 = {};
+  var got = _.mapsExtend( dst, src1 );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - empty map, srcMaps - several empty maps';
+  var dst = {};
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = { a : 1 };
+  var src1 = {};
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, srcMaps - several empty maps';
+  var dst = { a : 1 };
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'extend by empty map' );
+
+  /* - */
+
+  test.open( 'extend by prototyped map' );
+
+  test.case = 'dst - null, srcMaps - single empty map';
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( null, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got !== src1 );
+
+  test.case = 'dst - null, srcMaps - several empty maps';
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = {};
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - empty map, srcMaps - several empty maps';
+  var dst = {};
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = { a : 1 };
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, srcMaps - several empty maps';
+  var dst = { a : 1 };
+  var prototype1 = { a : 2, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 2, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 2, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'extend by prototyped map' );
+
+  /* - */
+
+  test.open( 'null prototyped map extesion' );
+
+  test.case = 'srcMaps - simple map';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'srcMaps - map with prototype';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  src1.c = 3;
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+  test.identical( src1.c, 3 );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'srcMaps - null prototyped map';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var src1 = Object.create( null );
+  src1.a = 1;
+  src1.b = 2;
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.close( 'null prototyped map extesion' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapsExtend() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, {}, {} ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.mapsExtend( 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.mapsExtend( undefined, {} ) );
+
+  test.case = 'wrong type of srcMaps';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, [ 'wrong' ] ) );
 }
 
 //
@@ -12352,11 +12706,14 @@ let Self =
 
     mapCloneAssigning,
 
-    mapExtendConditional,
     mapExtend,
+    mapExtendConditional,
     mapExtendNotIdentical,
+    mapsExtend,
     mapSupplement,
     mapComplement,
+
+    //
 
     mapMake,
     mapMakeBugWithArray,
