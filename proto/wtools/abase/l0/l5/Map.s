@@ -165,7 +165,7 @@ function objectSatisfy( o )
 
   return _objectSatisfy( o.template, o.src, o.src, o.levels, o.strict );
 
-  /**/
+  /* */
 
   function _objectSatisfy( /* template, src, root, levels, strict */ )
   {
@@ -1592,7 +1592,6 @@ function objectSetWithKeys( dstMap, key, val )
     dstMap[ key ] = val;
 
   }
-
 }
 
 //
@@ -1923,21 +1922,19 @@ mapToStr.defaults =
 
 function mapButConditional( propertyFilter, srcMap, butMap )
 {
-  let result = Object.create( null );
-
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( !_.primitive.is( butMap ), 'Expects map {-butMap-}' );
   _.assert( !_.primitive.is( srcMap ) /* && !_.longIs( srcMap ) */, 'Expects map {-srcMap-}' );
   _.assert( propertyFilter && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
 
+  let result = Object.create( null );
+
   /* qqq : allow and cover vector */
   if( _.vector.is( butMap ) )
   {
-
     for( let s in srcMap )
     {
-
       let m;
       for( m = 0 ; m < butMap.length ; m++ )
       {
@@ -1947,23 +1944,15 @@ function mapButConditional( propertyFilter, srcMap, butMap )
 
       if( m === butMap.length )
       result[ s ] = srcMap[ s ];
-
     }
-
   }
   else
   {
-
     for( let s in srcMap )
     {
-
       if( propertyFilter( butMap, srcMap, s ) )
-      {
-        result[ s ] = srcMap[ s ];
-      }
-
+      result[ s ] = srcMap[ s ];
     }
-
   }
 
   return result;
@@ -2586,44 +2575,36 @@ function _mapOnly( o )
 {
   let self = this;
 
-  let dstMap = o.dstMap || Object.create( null );
-  let screenMap = o.screenMaps;
-  let srcMaps = o.srcMaps;
+  o.dstMap = o.dstMap || Object.create( null );
+  o.filter = o.filter || _.property.mapper.bypass();
 
-  /* qqq : for Dmytro : not optimal */
-  if( !_.vector.is( srcMaps ) )
-  srcMaps = [ srcMaps ];
-
-  if( !o.filter )
-  o.filter = _.property.mapper.bypass();
-
-  if( Config.debug )
-  {
-
-    // _.assert( o.filter.functionFamily === 'PropertyMapper' );
-    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
-    _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
-    _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
-    _.assert( _.vector.is( srcMaps ), 'Expects array {-srcMaps-}' );
-    _.map.assertHasOnly( o, _mapOnly.defaults );
-
-    for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
-    _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
-
-  }
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+  _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+  _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
+  _.map.assertHasOnly( o, _mapOnly.defaults );
 
   /* qqq : allow and cover vector */
-
-  for( let srcMap of srcMaps )
+  if( _.vector.is( o.srcMaps ) )
+  for( let srcMap of o.srcMaps )
   {
-    if( _.vector.is( screenMap ) )
+    _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
+
+    if( _.vector.is( o.screenMaps ) )
     filterSrcMapWithVectorScreenMap( srcMap );
     else
     filterSrcMap( srcMap );
   }
+  else
+  {
+    if( _.vector.is( o.screenMaps ) )
+    filterSrcMapWithVectorScreenMap( o.srcMaps );
+    else
+    filterSrcMap( o.srcMaps );
+  }
 
-  return dstMap;
+  return o.dstMap;
 
   /* */
 
@@ -2633,7 +2614,7 @@ function _mapOnly( o )
     {
       let screenKey = screenKeySearch( key );
       if( screenKey )
-      o.filter.call( self, dstMap, srcMap, screenKey );
+      o.filter.call( self, o.dstMap, srcMap, screenKey );
     }
   }
 
@@ -2642,21 +2623,21 @@ function _mapOnly( o )
   function screenKeySearch( key )
   {
     let m;
-    if( _.arrayLike( screenMap ) )
+    if( _.arrayLike( o.screenMaps ) )
     {
-      for( m = 0 ; m < screenMap.length ; m++ )
-      if( _.vector.is( screenMap[ m ] ) && key in screenMap[ m ] )
+      for( m = 0 ; m < o.screenMaps.length ; m++ )
+      if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
       return key;
-      // else if( _.aux.is( screenMap[ m ] ) && key in screenMap[ m ] )
+      // else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
       // return key;
-      else if( _.primitive.is( screenMap[ m ] ) && screenMap[ m ] === key )
+      else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
       return key;
       else if( key === String( m ) )
       return key;
     }
     else
     {
-      for( m of screenMap )
+      for( m of o.screenMaps )
       if( _.vector.is( m ) && key in m )
       return key;
       // else if( _.aux.is( m ) && key in m )
@@ -2670,19 +2651,46 @@ function _mapOnly( o )
 
   function filterSrcMap( srcMap )
   {
-    for( let key in screenMap )
+    for( let key in o.screenMaps )
     {
-      if( screenMap[ key ] === undefined )
+      if( o.screenMaps[ key ] === undefined )
       continue;
 
       if( key in srcMap )
-      o.filter.call( this, dstMap, srcMap, key );
+      o.filter.call( this, o.dstMap, srcMap, key );
     }
   }
 
+  // let dstMap = o.dstMap || Object.create( null );
+  // let screenMap = o.screenMaps;
+  // let srcMaps = o.srcMaps;
+  //
+  // /* aaa : for Dmytro : not optimal */ /* Dmytro : optimized */
+  // if( !_.vector.is( srcMaps ) )
+  // srcMaps = [ srcMaps ];
+  //
+  // if( !o.filter )
+  // o.filter = _.property.mapper.bypass();
+  //
+  // if( Config.debug )
+  // {
+  //
+  //   // _.assert( o.filter.functionFamily === 'PropertyMapper' );
+  //   _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
+  //   _.assert( arguments.length === 1, 'Expects single argument' );
+  //   _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
+  //   _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
+  //   _.assert( _.vector.is( srcMaps ), 'Expects array {-srcMaps-}' );
+  //   _.map.assertHasOnly( o, _mapOnly.defaults );
+  //
+  //   for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
+  //   _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+  //
+  // }
+  //
   // if( _.longIs( screenMap ) )
   // {
-  //   for( let k in screenMap ) /* qqq : for Dmytro : bad */
+  //   for( let k in screenMap ) /* aaa : for Dmytro : bad */ /* Dmytro : improved, used conditions for types */
   //   {
   //
   //     if( screenMap[ k ] === undefined )
@@ -2692,7 +2700,7 @@ function _mapOnly( o )
   //     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
   //     {
   //       if( !_.aux.is( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
-  //       // k = screenMap[ k ]; /* qqq : ? */
+  //       // k = screenMap[ k ]; /* aaa : ? */ /* Dmytro : key definition */
   //       break;
   //       if( k in srcMaps[ s ] )
   //       break;

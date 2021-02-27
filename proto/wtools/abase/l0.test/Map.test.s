@@ -454,7 +454,7 @@ function mapCloneAssigning( test )
   test.true( dstMap === got );
   test.identical( _.mapExtend( null, got ), expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -1235,7 +1235,7 @@ function mapSupplement( test )
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -1264,7 +1264,7 @@ function mapComplement( test )
   var expected = { a : 1, b : 'ab', c : 3 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -2167,7 +2167,7 @@ function mapFirstPair( test )
   var expected = [ 'a', 7 ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -2263,7 +2263,7 @@ function mapKeyWithIndex( test )
   var expected = '3';
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -2411,7 +2411,7 @@ function mapToStr( test )
   test.identical( got, expected );
 
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -2508,7 +2508,7 @@ function mapKeys( test )
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'onlyEnumerable : 0, onlyOwn : 0'
   var a = Object.create( null );
@@ -2750,14 +2750,14 @@ function mapVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var o = { onlyOwn : 0, onlyEnumerable : 1 };
   var got = _.mapVals( a, o );
   var expected = [ 1, 2 ]
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var o = { onlyOwn : 1, onlyEnumerable : 1 };
   var got = _.mapVals( a, o );
@@ -2770,13 +2770,13 @@ function mapVals( test )
   var a = { a : 1 };
   Object.defineProperty( a, 'k', { enumerable : 0, value : 2 } );
 
-  /**/
+  /* */
 
   var got = _.mapVals( a, { onlyEnumerable : 1, onlyOwn : 0 } );
   var expected = [ 1 ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'onlyEnumerable : 0, onlyOwn : 0'
   var a = Object.create( null );
@@ -2843,7 +2843,7 @@ function mapOnlyOwnVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var got = _.mapOnlyOwnVals( a );
   var expected = [ 1 ];
@@ -2892,14 +2892,14 @@ function mapAllVals( test )
   var got = _.mapAllVals( {} );
   test.true( got.length !== 0 );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( { a : 7, b : 13 } );
   test.true( got.length !== 0 );
   test.true( got.indexOf( 7 ) !== -1 );
   test.true( got.indexOf( 13 ) !== -1 );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( new Date );
   test.true( got.length > _.mapAllVals( {} ).length );
@@ -2911,7 +2911,7 @@ function mapAllVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( a );
   var expected = [ 1 ];
@@ -2959,7 +2959,7 @@ function mapPairs( test )
   var expected = [];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'list of [ key, value ] pairs';
 
@@ -2972,7 +2972,7 @@ function mapPairs( test )
   var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -2980,7 +2980,7 @@ function mapPairs( test )
   var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var got = _.mapPairs( new Date );
   var expected = [];
@@ -3074,7 +3074,7 @@ function mapOnlyOwnPairs( test )
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -3082,7 +3082,7 @@ function mapOnlyOwnPairs( test )
   var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var got = _.mapOnlyOwnPairs( new Date );
   var expected = [];
@@ -3148,7 +3148,7 @@ function mapAllPairs( test )
   test.identical( got[ 0 ], [ 'a', 7 ] );
   test.identical( got[ 1 ], [ 'b', 13 ] );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -3158,7 +3158,7 @@ function mapAllPairs( test )
   test.true( got.indexOf( 'k' ) !== -1 );
   test.identical( got[ got.indexOf( 'k' ) + 1 ], 1 );
 
-  /**/
+  /* */
 
   var got = _.mapAllPairs( new Date );
   test.true( got.length > 1 );
@@ -3565,13 +3565,15 @@ function mapOnlyPrimitives( test )
 
 function mapButConditional( test )
 {
-
   test.case = 'an object';
-  var got = _.mapButConditional( _.property.filter.dstNotHasSrcPrimitive(), { a : 1, b : 'ab', c : [ 1, 2, 3 ] }, { a : 1, b : 'ab', d : [ 1, 2, 3 ] }  );
+  var filter = _.property.filter.dstNotHasSrcPrimitive();
+  var src = { a : 1, b : 'ab', c : [ 1, 2, 3 ] };
+  var but = { a : 1, b : 'ab', d : [ 1, 2, 3 ] };
+  var got = _.mapButConditional( filter, src, but );
   var expected = {};
   test.identical( got, expected );
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
@@ -5716,7 +5718,7 @@ function mapOnlyOwnBut( test )
   var expected = { a : 7 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -9213,7 +9215,7 @@ function _mapOnly( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -9353,7 +9355,7 @@ function mapContain( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -9903,7 +9905,7 @@ function mapOnlyOwnKey( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
