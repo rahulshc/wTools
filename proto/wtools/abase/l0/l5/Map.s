@@ -217,8 +217,6 @@ function objectSatisfy( o )
       return true;
     }
 
-    debugger;
-
     return false;
   }
 
@@ -400,12 +398,9 @@ function mapHasAny( src, screen )
   for( let k in screen )
   {
     if( k in src )
-    debugger;
-    if( k in src )
     return true;
   }
 
-  debugger;
   return false;
 }
 
@@ -503,7 +498,6 @@ function mapOnlyOwnAll( src, screen )
     return false;
   }
 
-  debugger;
   return true;
 }
 
@@ -553,7 +547,6 @@ function mapOnlyOwnAny( src, screen )
     return true;
   }
 
-  debugger;
   return false;
 }
 
@@ -604,7 +597,6 @@ function mapOnlyOwnNone( src, screen )
     return false;
   }
 
-  debugger;
   return true;
 }
 
@@ -809,7 +801,7 @@ function mapsExtend( dstMap, srcMaps )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
-  /* aaa : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
+  /* qqq : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
   if( !_.vector.is( srcMaps ) )
   dstMapExtend( srcMaps );
   else
@@ -843,7 +835,7 @@ function mapsExtend( dstMap, srcMaps )
   // _.assert( _.vector.is( srcMaps ) );
   // _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
   //
-  // /* aaa : allow and cover vector */
+  // /* qqq : allow and cover vector */
   // for( let a = 0 ; a < srcMaps.length ; a++ )
   // {
   //   let srcMap = srcMaps[ a ];
@@ -2578,7 +2570,7 @@ function _mapOnly( o )
   o.dstMap = o.dstMap || Object.create( null );
   o.filter = o.filter || _.property.mapper.bypass();
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
   _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
   _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
   _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
@@ -2741,170 +2733,285 @@ _mapOnly.defaults =
 
 function _mapOnly_( o )
 {
+  let self = this;
+  o.dstMap = o.dstMap || Object.create( null );
+  o.filter = o.filter || _.property.mapper.bypass();
 
-  let dstMap = o.dstMap || Object.create( null );
-  let screenMap = o.screenMaps;
-  let srcMaps = o.srcMaps;
+  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+  _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+  _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+  _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-o.srcMaps-}' );
+  _.map.assertHasOnly( o, _mapOnly_.defaults );
 
-  /* aaa : for Dmytro : not optimal */ /* Dmytro : improved */
-  // if( !_.vector.is( srcMaps ) )
-  // srcMaps = [ srcMaps ];
-  srcMaps = _.arrayAs( srcMaps );
+  /* qqq : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
 
-  if( !o.filter )
-  o.filter = _.property.mapper.bypass();
+  let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
+  let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
+  let filterRoutines = [ filterNotIdentical, filterIdentical, filterWithVectorScreenMap, filterWithVectorScreenMap ];
+  let filterCallbacks = [ filterNotIdenticalMaps, filterIdenticalMaps ];
+  let key = mapsAreIdentical + screenMapsIsVector;
 
-  if( Config.debug )
+  if( _.vector.is( o.srcMaps ) )
   {
+    _.assert( !_.vector.is( o.dstMap ), 'Expects not a vector {-o.dstMap-}' );
 
-    // _.assert( o.filter.functionFamily === 'PropertyMapper' );
-    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
-    _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
-    _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
-    _.assert( _.vector.is( srcMaps ), 'Expects vector {-srcMaps-}' );
-    _.assertMapHasOnly( o, _mapOnly_.defaults );
-    _.map.assertHasOnly( o, _mapOnly_.defaults );
-
-    for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
-    _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
-
-  }
-
-  /* qqq : allow and cover vector */
-
-  if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
-  {
-    if( _.vector.is( screenMap ) )
-    _mapsFilterWithLongScreenMap.call( this, mapsIdenticalFilterWithLong );
-    else
-    _mapsIdenticalFilter.call( this );
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects no primitive in {-o.srcMaps-}' );
+      filterRoutines[ key ]( srcMap, filterCallbacks[ mapsAreIdentical ] );
+    }
   }
   else
   {
-    if( _.vector.is( screenMap ) )
-    _mapsFilterWithLongScreenMap.call( this, mapsNotIdenticalFilterWithLong );
-    else
-    _mapsNotIdenticalFilter.call( this )
+    filterRoutines[ key ]( o.srcMaps, filterCallbacks[ mapsAreIdentical ] );
   }
 
-  return dstMap;
+  return o.dstMap;
 
   /* */
 
-  function _mapsFilterWithLongScreenMap( filterCallback )
+  function filterNotIdenticalMaps( src, key, foundKey )
   {
-    for( let s in srcMaps )
-    {
-      let srcMap = srcMaps[ s ];
-
-      for( let k in srcMap )
-      {
-        let m = iterateKeyOfScreenMap( k );
-        // for( m = 0 ; m < screenMap.length ; m++ ) /* qqq : for Dmytro : teach to work with any vector here and in similar places */
-        // for( m of screenMap )
-        // {
-        //   if( _.vector.is( screenMap[ m ] ) )
-        //   {
-        //     /* qqq : for Dmytro : check */
-        //     if( k in screenMap[ m ] )
-        //     break;
-        //   }
-        //   else
-        //   {
-        //     if( k === String( m ) )
-        //     break;
-        //   }
-        // }
-
-        filterCallback.call( this, srcMap, m, k );
-      }
-    }
+    if( foundKey !== undefined )
+    o.filter.call( self, o.dstMap, src, key );
   }
 
   /* */
 
-  function iterateKeyOfScreenMap( k )
+  function filterIdenticalMaps( src, key, foundKey )
   {
-    let m;
-    if( _.arrayLike( screenMap ) )
-    {
-      for( m = 0 ; m < screenMap.length ; m++ )
-      if( _.vector.is( screenMap[ m ] ) && k in screenMap[ m ] )
-      return m;
-      else if( _.aux.is( screenMap[ m ] ) && k in screenMap[ m ] )
-      return m;
-      else if( _.primitive.is( screenMap[ m ] ) && screenMap[ m ] === k )
-      return m;
-      else if( k === String( m ) )
-      return m;
-    }
-    else
-    {
-      for( m of screenMap )
-      if( _.vector.is( m ) && k in m )
-      return k;
-      else if( _.aux.is( m ) && k in m )
-      return k;
-      else if( _.primitive.is( m ) && m === k )
-      return k;
-
-      return srcMaps.length;
-    }
-
-    return m;
-  }
-
-  /* */
-
-  function mapsIdenticalFilterWithLong( src, index, key )
-  {
-    if( index === screenMap.length )
+    if( foundKey === undefined )
     delete src[ key ];
     else
-    o.filter.call( this, dstMap, src, key );
+    o.filter.call( self, o.dstMap, src, key );
   }
 
   /* */
 
-  function mapsNotIdenticalFilterWithLong( src, index, key )
+  function filterWithVectorScreenMap( srcMap, filterCallback )
   {
-    if( index !== screenMap.length )
-    o.filter.call( this, dstMap, src, key );
-  }
-
-  /* */
-
-  function _mapsIdenticalFilter()
-  {
-    for( let s in srcMaps )
+    for( let key in srcMap )
     {
-      let srcMap = srcMaps[ s ];
-
-      for( let k in srcMap )
-      {
-        if( !( k in screenMap ) )
-        delete srcMap[ k ];
-        else
-        o.filter.call( this, dstMap, srcMap, k );
-      }
+      let screenKey = screenMapSearch( key );
+      filterCallback( srcMap, key, screenKey );
     }
   }
 
   /* */
 
-  function _mapsNotIdenticalFilter()
+  function screenMapSearch( key )
   {
-    for( let k in screenMap )
+    if( _.arrayLike( o.screenMaps ) )
     {
-      if( screenMap[ k ] === undefined )
-      continue;
-
-      for( let s in srcMaps )
-      if( k in srcMaps[ s ] )
-      o.filter.call( this, dstMap, srcMaps[ s ], k );
+      for( let m = 0 ; m < o.screenMaps.length ; m++ )
+      if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+      return m;
+      else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+      return m;
+      else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+      return m;
+      else if( key === String( m ) )
+      return m;
+    }
+    else
+    {
+      for( m of o.screenMaps )
+      if( _.vector.is( m ) && key in m )
+      return key;
+      else if( _.aux.is( m ) && key in m )
+      return key;
+      else if( _.primitive.is( m ) && m === key )
+      return key;
     }
   }
+
+  /* */
+
+  function filterNotIdentical( srcMap )
+  {
+    for( let key in srcMap )
+    {
+      if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+      o.filter.call( self, o.dstMap, srcMap, key );
+    }
+  }
+
+  /* */
+
+  function filterIdentical( srcMap )
+  {
+    for( let key in srcMap )
+    {
+      if( !( key in o.screenMaps ) )
+      delete srcMap[ key ];
+      else
+      o.filter.call( self, o.dstMap, srcMap, key );
+    }
+  }
+
+  // let dstMap = o.dstMap || Object.create( null );
+  // let screenMap = o.screenMaps;
+  // let srcMaps = o.srcMaps;
+  //
+  // /* aaa : for Dmytro : not optimal */ /* Dmytro : optimized */
+  // if( !_.vector.is( srcMaps ) )
+  // srcMaps = [ srcMaps ];
+  //
+  // if( !o.filter )
+  // o.filter = _.property.mapper.bypass();
+  //
+  // if( Config.debug )
+  // {
+  //
+  //   // _.assert( o.filter.functionFamily === 'PropertyMapper' );
+  //   _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
+  //   _.assert( arguments.length === 1, 'Expects single argument' );
+  //   _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
+  //   _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
+  //   _.assert( _.vector.is( srcMaps ), 'Expects vector {-srcMaps-}' );
+  //   _.assertMapHasOnly( o, _mapOnly_.defaults );
+  //   _.map.assertHasOnly( o, _mapOnly_.defaults );
+  //
+  //   for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
+  //   _.assert( !_.primitive.is( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+  //
+  // }
+  //
+  // /* qqq : allow and cover vector */
+  //
+  // if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
+  // {
+  //   if( _.vector.is( screenMap ) )
+  //   _mapsFilterWithLongScreenMap.call( this, mapsIdenticalFilterWithLong );
+  //   else
+  //   _mapsIdenticalFilter.call( this );
+  // }
+  // else
+  // {
+  //   if( _.vector.is( screenMap ) )
+  //   _mapsFilterWithLongScreenMap.call( this, mapsNotIdenticalFilterWithLong );
+  //   else
+  //   _mapsNotIdenticalFilter.call( this )
+  // }
+  //
+  // return dstMap;
+  //
+  // /* */
+  //
+  // function _mapsFilterWithLongScreenMap( filterCallback )
+  // {
+  //   for( let s in srcMaps )
+  //   {
+  //     let srcMap = srcMaps[ s ];
+  //
+  //     for( let k in srcMap )
+  //     {
+  //       let m = iterateKeyOfScreenMap( k );
+  //       // for( m = 0 ; m < screenMap.length ; m++ ) /* qqq : for Dmytro : teach to work with any vector here and in similar places */
+  //       // for( m of screenMap )
+  //       // {
+  //       //   if( _.vector.is( screenMap[ m ] ) )
+  //       //   {
+  //       //     /* qqq : for Dmytro : check */
+  //       //     if( k in screenMap[ m ] )
+  //       //     break;
+  //       //   }
+  //       //   else
+  //       //   {
+  //       //     if( k === String( m ) )
+  //       //     break;
+  //       //   }
+  //       // }
+  //
+  //       filterCallback.call( this, srcMap, m, k );
+  //     }
+  //   }
+  // }
+  //
+  // /* */
+  //
+  // function iterateKeyOfScreenMap( k )
+  // {
+  //   let m;
+  //   if( _.arrayLike( screenMap ) )
+  //   {
+  //     for( m = 0 ; m < screenMap.length ; m++ )
+  //     if( _.vector.is( screenMap[ m ] ) && k in screenMap[ m ] )
+  //     return m;
+  //     else if( _.aux.is( screenMap[ m ] ) && k in screenMap[ m ] )
+  //     return m;
+  //     else if( _.primitive.is( screenMap[ m ] ) && screenMap[ m ] === k )
+  //     return m;
+  //     else if( k === String( m ) )
+  //     return m;
+  //   }
+  //   else
+  //   {
+  //     for( m of screenMap )
+  //     if( _.vector.is( m ) && k in m )
+  //     return k;
+  //     else if( _.aux.is( m ) && k in m )
+  //     return k;
+  //     else if( _.primitive.is( m ) && m === k )
+  //     return k;
+  //
+  //     return srcMaps.length;
+  //   }
+  //
+  //   return m;
+  // }
+  //
+  // /* */
+  //
+  // function mapsIdenticalFilterWithLong( src, index, key )
+  // {
+  //   if( index === screenMap.length )
+  //   delete src[ key ];
+  //   else
+  //   o.filter.call( this, dstMap, src, key );
+  // }
+  //
+  // /* */
+  //
+  // function mapsNotIdenticalFilterWithLong( src, index, key )
+  // {
+  //   if( index !== screenMap.length )
+  //   o.filter.call( this, dstMap, src, key );
+  // }
+  //
+  // /* */
+  //
+  // function _mapsIdenticalFilter()
+  // {
+  //   for( let s in srcMaps )
+  //   {
+  //     let srcMap = srcMaps[ s ];
+  //
+  //     for( let k in srcMap )
+  //     {
+  //       if( !( k in screenMap ) )
+  //       delete srcMap[ k ];
+  //       else
+  //       o.filter.call( this, dstMap, srcMap, k );
+  //     }
+  //   }
+  // }
+  //
+  // /* */
+  //
+  // function _mapsNotIdenticalFilter()
+  // {
+  //   for( let k in screenMap )
+  //   {
+  //     if( screenMap[ k ] === undefined )
+  //     continue;
+  //
+  //     for( let s in srcMaps )
+  //     if( k in srcMaps[ s ] )
+  //     o.filter.call( this, dstMap, srcMaps[ s ], k );
+  //   }
+  // }
 }
 
 _mapOnly_.defaults =
@@ -3016,7 +3123,6 @@ function sureHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3123,7 +3229,6 @@ function sureOwnOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3227,7 +3332,6 @@ function sureHasAll( srcMap, all, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3330,7 +3434,6 @@ function sureOwnAll( srcMap, all, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3434,7 +3537,6 @@ function sureHasNone( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3474,7 +3576,6 @@ function sureOwnNone( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 2 )
     throw _._err
     ({
@@ -3575,7 +3676,6 @@ function sureHasNoUndefine( srcMap, msg )
 
   if( but.length > 0 )
   {
-    debugger;
     if( arguments.length === 1 )
     throw _._err
     ({
@@ -3710,7 +3810,6 @@ function assertHasOnly( srcMap, screenMaps, msg )
     err = errFromArgs([ `${ _.entity.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
     else
     err = errFromArgs([ msgMake( arguments ), msgKeys ]);
-    debugger;
     throw err;
   }
 
