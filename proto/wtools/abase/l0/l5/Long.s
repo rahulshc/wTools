@@ -3140,11 +3140,18 @@ function longRelength_( /* dst, src, cinterval, ins */ )
  * @namespace Tools
  */
 
+/* xxx : vector? */
+/* qqq : extend test */
 function longIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longLike( src1 ) );
-  _.assert( _.longLike( src2 ) );
+  // _.assert( _.longLike( src1 ) );
+  // _.assert( _.longLike( src2 ) );
+
+  if( _.primitiveIs( src1 ) )
+  return false;
+  if( _.primitiveIs( src2 ) )
+  return false;
 
   let result = true;
 
