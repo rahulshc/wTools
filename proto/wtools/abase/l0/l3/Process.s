@@ -112,7 +112,7 @@ function entryPointStructure()
   {
     if( _global.process.argv )
     result.execPath = _global.process.argv.join( ' ' );
-    if( _.routineIs( _global.process.cwd ) )
+    if( _.routine.is( _global.process.cwd ) )
     result.currentPath = _global.process.cwd();
   }
   return result;

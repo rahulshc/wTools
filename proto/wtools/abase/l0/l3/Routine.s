@@ -6,6 +6,8 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
+let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
+let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
 
 // --
 // routine
@@ -20,13 +22,13 @@ let Self = _global_.wTools;
 //
 // function routineLike( src )
 // {
-//   return _.routineIs( src );
+//   return _.routine.is( src );
 // }
 
 function routineIs( src )
 {
   let typeStr = Object.prototype.toString.call( src );
-  return _._routineIs( src, typeStr );
+  return _.routine._is( src, typeStr );
 }
 
 //
@@ -41,7 +43,7 @@ function _routineIs( src, typeStr )
 function routineLike( src )
 {
   let typeStr = Object.prototype.toString.call( src );
-  return _._routineLike( src, typeStr );
+  return _.routine._like( src, typeStr );
 }
 
 //
@@ -121,12 +123,12 @@ function routinesAre( src )
   if( _.arrayLike( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !_.routineIs( src[ s ] ) )
+    if( !_.routine.is( src[ s ] ) )
     return false;
     return true;
   }
 
-  return _.routineIs( src );
+  return _.routine.is( src );
 }
 
 //
@@ -156,7 +158,7 @@ function _routineJoin( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bool.is( o.sealing ) );
   _.assert( _.bool.is( o.extending ) );
-  _.assert( _.routineIs( o.routine ), 'Expects routine' );
+  _.assert( _.routine.is( o.routine ), 'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
 
   let routine = o.routine;
@@ -289,7 +291,7 @@ function constructorJoin( routine, args )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  return _._routineJoin
+  return _.routine._join
   ({
     routine,
     context : routine,
@@ -314,7 +316,7 @@ function constructorJoin( routine, args )
  * {
  *   return x + y + this.z;
  * }
- * let newSum = _.routineJoin( o, sum, [ 3 ] );
+ * let newSum = _.routine.join( o, sum, [ 3 ] );
  * newSum( y );
  * // returns 12
  *
@@ -325,7 +327,7 @@ function constructorJoin( routine, args )
  * };
  * let f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
  * f2.call( o ); // try to call new function with context set to { z: 5 }
- * let f3 = _.routineJoin( undefined, f1 ); // new function.
+ * let f3 = _.routine.join( undefined, f1 ); // new function.
  * f3.call( o )
  * // log { z: 5 }
  *
@@ -345,7 +347,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _._routineJoin
+  return _.routine._join
   ({
     routine,
     context,
@@ -370,7 +372,7 @@ function routineJoin( context, routine, args )
  * {
  *   return x + y + this.z;
  * }
- * let newSum = _.routineJoin( o, sum, [ 3 ] );
+ * let newSum = _.routine.join( o, sum, [ 3 ] );
  * newSum( y );
  * // returns 12
  *
@@ -381,7 +383,7 @@ function routineJoin( context, routine, args )
  * };
  * let f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
  * f2.call( o ); // try to call new function with context set to { z: 5 }
- * let f3 = _.routineJoin( undefined, f1 ); // new function.
+ * let f3 = _.routine.join( undefined, f1 ); // new function.
  * f3.call( o )
  * // log { z: 5 }
  *
@@ -401,7 +403,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _._routineJoin
+  return _.routine._join
   ({
     routine,
     context,
@@ -423,7 +425,7 @@ function routineJoin( context, routine, args )
  * {
  *   return x + y + this.z;
  * }
- * let newSum = _.routineSeal( o, sum, [ 3, 4 ] );
+ * let newSum = _.routine.seal( o, sum, [ 3, 4 ] );
  * newSum();
  * // returns : 12
  *
@@ -440,7 +442,7 @@ function routineSeal( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _._routineJoin
+  return _.routine._join
   ({
     routine,
     context,
@@ -467,7 +469,7 @@ function routineOptions( routine, args, defaults )
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
@@ -563,7 +565,7 @@ function assertRoutineOptions( routine, args, defaults )
   defaults = defaults || ( routine ? routine.defaults : null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
   _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
@@ -622,7 +624,7 @@ function assertRoutineOptions( routine, args, defaults )
 /* qqq for Dmytro : forbid 3rd argument */
 /* qqq for Dmytro : inline implementation */
 /* qqq for Dmytro : make possible pass defaults-map instead of routine */
-/* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
+/* qqq for Dmytro : make sure _.routine.options and routineOptionsPreservingUndefines are similar */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -633,7 +635,7 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   options = Object.create( null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
   _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
 
@@ -659,7 +661,7 @@ function routineOptionsReplacingUndefines( routine, args, defaults )
   defaults = defaults || routine.defaults;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
+  _.assert( _.routine.is( routine ), 'Expects routine' );
   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
@@ -681,7 +683,7 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
   defaults = defaults || routine.defaults;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
+  _.assert( _.routine.is( routine ), 'Expects routine' );
   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
@@ -703,7 +705,7 @@ function routineOptionsFromThis( routine, _this, constructor )
   if( Object.isPrototypeOf.call( constructor, _this ) || constructor === _this )
   options = Object.create( null );
 
-  return _.routineOptions( routine, options );
+  return _.routine.options( routine, options );
 }
 
 //
@@ -720,15 +722,15 @@ function _routinesCompose_head( routine, args )
   o.elements = _.arrayAppendArrays( [], [ o.elements ] );
   o.elements = o.elements.filter( ( e ) => e === null ? false : e );
 
-  _.routineOptions( routine, o );
-  _.assert( _.routinesAre( o.elements ) );
+  _.routine.options( routine, o );
+  _.assert( _.routine.s.are( o.elements ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
-  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
-  _.assert( o.chainer === null || _.routineIs( o.chainer ) );
-  _.assert( o.supervisor === null || _.routineIs( o.supervisor ) );
+  _.assert( _.arrayIs( o.elements ) || _.routine.is( o.elements ) );
+  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
+  _.assert( o.supervisor === null || _.routine.is( o.supervisor ) );
 
   return o;
 }
@@ -747,7 +749,7 @@ function _routinesCompose_body( o )
   for( let s = 0 ; s < o.elements.length ; s++ )
   {
     let src = o.elements[ s ];
-    _.assert( _.routineIs( src ) );
+    _.assert( _.routine.is( src ) );
     if( src.composed )
     {
       if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
@@ -770,8 +772,8 @@ function _routinesCompose_body( o )
   let chainer = o.chainer;
   let act;
 
-  _.assert( _.routineIs( chainer ) );
-  _.assert( supervisor === null || _.routineIs( supervisor ) );
+  _.assert( _.routine.is( chainer ) );
+  _.assert( supervisor === null || _.routine.is( supervisor ) );
 
   /* */
 
@@ -815,7 +817,7 @@ function _routinesCompose_body( o )
 
   if( supervisor )
   {
-    _.routineExtend( compositionSupervise, act );
+    _.routine.extend( compositionSupervise, act );
     return compositionSupervise;
   }
 
@@ -839,8 +841,8 @@ _routinesCompose_body.defaults =
 
 function routinesCompose()
 {
-  let o = _.routinesCompose.head( routinesCompose, arguments );
-  let result = _.routinesCompose.body( o );
+  let o = _.routine.s.compose.head( routinesCompose, arguments );
+  let result = _.routine.s.compose.body( o );
   return result;
 }
 
@@ -870,24 +872,24 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //  * @example
 //  * var src =
 //  * {
-//  *   head : _.routinesCompose.head,
-//  *   body : _.routinesCompose.body,
+//  *   head : _.routine.s.compose.head,
+//  *   body : _.routine.s.compose.body,
 //  *   someOption : 1,
 //  * }
-//  * var got = _.routineExtend_old( null, src );
+//  * var got = _.routine.extend_old( null, src );
 //  * // returns [ routine routinesCompose ], got.option === 1
 //  *
 //  * @example
-//  * _.routineExtend_old( null, _.routinesCompose );
+//  * _.routine.extend_old( null, _.routine.s.compose );
 //  * // returns [ routine routinesCompose ]
 //  *
 //  * @example
-//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
+//  * _.routine.extend_old( _.routine.s.compose, { someOption : 1 } );
 //  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
 //  *
 //  * @example
-//  * _.routinesComposes.someOption = 22;
-//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
+//  * _.routine.s.composes.someOption = 22;
+//  * _.routine.extend_old( _.routine.s.compose, { someOption : 1 } );
 //  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
 //  *
 //  * @returns { routine } It will return the target routine with extended properties.
@@ -903,8 +905,8 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 // {
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-//   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
+//   _.assert( _.routine.is( dst ) || dst === null );
+//   _.assert( src === null || src === undefined || _.aux.is( src ) || _.routine.is( src ) );
 //
 //   /* generate dst routine */
 //
@@ -922,11 +924,11 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //     if( dstMap.head && dstMap.body )
 //     {
-//       dst = _.routineUnite( dstMap.head, dstMap.body );
+//       dst = _.routine.unite( dstMap.head, dstMap.body );
 //     }
 //     else
 //     {
-//       _.assert( _.routineIs( src ) );
+//       _.assert( _.routine.is( src ) );
 //       dst = function(){ return src.apply( this, arguments ); }
 //     }
 //     // _.assert( 0, 'Not clear how to construct the routine' );
@@ -953,7 +955,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.aux.is( src ) || _.routineIs( src ) );
+//     _.assert( _.aux.is( src ) || _.routine.is( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
@@ -997,24 +999,24 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @example
  * var src =
  * {
- *   head : _.routinesCompose.head,
- *   body : _.routinesCompose.body,
+ *   head : _.routine.s.compose.head,
+ *   body : _.routine.s.compose.body,
  *   someOption : 1,
  * }
- * var got = _.routineExtend( null, src );
+ * var got = _.routine.extend( null, src );
  * // returns [ routine routinesCompose ], got.option === 1
  *
  * @example
- * _.routineExtend( null, _.routinesCompose );
+ * _.routine.extend( null, _.routine.s.compose );
  * // returns [ routine routinesCompose ]
  *
  * @example
- * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * _.routine.extend( _.routine.s.compose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @example
- * _.routinesComposes.someOption = 22;
- * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * _.routine.s.composes.someOption = 22;
+ * _.routine.extend( _.routine.s.compose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @returns { routine } It will return the target routine with extended properties.
@@ -1030,8 +1032,8 @@ function routineExtend( dst, src )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
+  _.assert( _.routine.is( dst ) || dst === null );
+  _.assert( src === null || src === undefined || _.aux.is( src ) || _.routine.is( src ) );
 
   /* generate dst routine */
 
@@ -1049,11 +1051,11 @@ function routineExtend( dst, src )
 
     if( dstMap.head && dstMap.body )
     {
-      dst = _.routineUnite( dstMap.head, dstMap.body );
+      dst = _.routine.unite( dstMap.head, dstMap.body );
     }
     else
     {
-      _.assert( _.routineIs( src ) );
+      _.assert( _.routine.is( src ) );
       dst = function(){ return src.apply( this, arguments ); }
     }
   }
@@ -1077,7 +1079,7 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.aux.is( src ) || _.routineIs( src ) );
+    _.assert( _.aux.is( src ) || _.routine.is( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -1114,7 +1116,7 @@ function routineDefaults( dst, src, defaults )
   _.assert( dst === null || src === null );
   _.assert( _.aux.is( defaults ) );
 
-  return _.routineExtend( dst, src, { defaults } );
+  return _.routine.extend( dst, src, { defaults } );
 }
 
 //
@@ -1128,12 +1130,12 @@ function routineUnite_head( routine, args )
     o = { head : args[ 0 ], body : args[ 1 ], tail : args[ 2 ] };
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
-  _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
+  _.assert( _.routine.is( o.head ) || _.routine.s.are( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
+  _.assert( _.routine.is( o.body ), 'Expects routine {-o.body-}' );
+  _.assert( !o.tail || _.routine.is( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -1146,9 +1148,9 @@ function routineUnite_body( o )
 
   _.assert( arguments.length === 1 );
 
-  if( !_.routineIs( o.head ) && o.head !== null ) /* Dmytro : o.head - optional */
+  if( !_.routine.is( o.head ) && o.head !== null ) /* Dmytro : o.head - optional */
   {
-    let _head = _.routinesCompose( o.head, function( /* args, result, op, k */ )
+    let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
@@ -1160,7 +1162,7 @@ function routineUnite_body( o )
       _.assert( _.object.is( result ) );
       return _.unrollAppend([ unitedRoutine, [ result ] ]);
     });
-    _.assert( _.routineIs( _head ) );
+    _.assert( _.routine.is( _head ) );
     o.head = function head()
     {
 
@@ -1193,7 +1195,7 @@ function routineUnite_body( o )
 
   _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routineExtend( unitedRoutine, o.body );
+  _.routine.extend( unitedRoutine, o.body );
 
   unitedRoutine.head = o.head;
   unitedRoutine.body = o.body;
@@ -1335,7 +1337,7 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
  *     o = Object.create( null );
  *   }
  *
- *   _.routineOptions( routine, o );
+ *   _.routine.options( routine, o );
  *   return o;
  * }
  *
@@ -1345,7 +1347,7 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
  * }
  * test_body.defaults = { arg : null, arg2 : 'arg2' };
  *
- * let routine = _.routineUnite( test_head, test_body );
+ * let routine = _.routine.unite( test_head, test_body );
  * console.log( routine.er === undefined );
  * // log : true
  *
@@ -1355,8 +1357,8 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
  *   return args[ 0 ];
  *   return { 'arg' : args[ 0 ] };
  * };
- * _.routineEr( routine, erhead );
- * console.log( _.routineIs( routine.er ) );
+ * _.routine.er( routine, erhead );
+ * console.log( _.routine.is( routine.er ) );
  * // log : true
  *
  * let newRoutine = routine.er( 'arg1' );
@@ -1386,8 +1388,8 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
 function routineEr( routine, erhead )
 {
   if( routine.er )
-  return routine.er; /* Dmytro : maybe before return should be assert like : _.assert( _.routineIs( routine.er ) ) */
-  routine.er = _.routineErFor( ... arguments );
+  return routine.er; /* Dmytro : maybe before return should be assert like : _.assert( _.routine.is( routine.er ) ) */
+  routine.er = _.routine.erFor( ... arguments );
   return routine;
 }
 
@@ -1410,7 +1412,7 @@ function routineEr( routine, erhead )
  *     o = Object.create( null );
  *   }
  *
- *   _.routineOptions( routine, o );
+ *   _.routine.options( routine, o );
  *   return o;
  * }
  *
@@ -1420,15 +1422,15 @@ function routineEr( routine, erhead )
  * }
  * test_body.defaults = { arg : null, arg2 : 'arg2' };
  *
- * let routine = _.routineUnite( test_head, test_body );
+ * let routine = _.routine.unite( test_head, test_body );
  * let erhead = ( routine, args ) =>
  * {
  *   if( _.mapIs( args[ 0 ] ) )
  *   return args[ 0 ];
  *   return { 'arg' : args[ 0 ] };
  * };
- * let functor = _.routineErFor( routine, erhead );
- * console.log( _.routineIs( functor ) );
+ * let functor = _.routine.erFor( routine, erhead );
+ * console.log( _.routine.is( functor ) );
  * // log : true
  *
  * let newRoutine = functor( 'arg1' );
@@ -1469,10 +1471,10 @@ function routineErFor( routine, erhead )
   let defaults = routine.defaults;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( routine ) );
-  _.assert( _.routineIs( erhead ) );
-  _.assert( _.routineIs( head ) );
-  _.assert( _.routineIs( body ) );
+  _.assert( _.routine.is( routine ) );
+  _.assert( _.routine.is( erhead ) );
+  _.assert( _.routine.is( head ) );
+  _.assert( _.routine.is( body ) );
   _.assert( _.object.is( defaults ) );
 
   return er_functor;
@@ -1490,7 +1492,7 @@ function routineErFor( routine, erhead )
 
     return er;
 
-    function er() /* Dmytro : using of routineUnite can extend behavior of routine _.routineUnite({ head, body, head, name : 'er' }) */
+    function er() /* Dmytro : using of routineUnite can extend behavior of routine _.routine.unite({ head, body, head, name : 'er' }) */
     {
       let result;
       let op2 = head.call( self, er, arguments );
@@ -1514,10 +1516,10 @@ function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
   erhead = erhead || routine.erhead || routine.head;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( routine ) );
-  _.assert( _.routineIs( erhead ) );
-  _.assert( _.routineIs( head ) );
-  _.assert( _.routineIs( body ) );
+  _.assert( _.routine.is( routine ) );
+  _.assert( _.routine.is( erhead ) );
+  _.assert( _.routine.is( head ) );
+  _.assert( _.routine.is( body ) );
   _.assert( _.object.is( defaults ) );
 
   let op = erhead.call( self, routine, arguments );
@@ -1550,12 +1552,12 @@ function vectorize_head( routine, args )
 
   if( args.length === 2 )
   o = { routine : args[ 0 ], select : args[ 1 ] }
-  else if( _.routineIs( o ) || _.strIs( o ) )
+  else if( _.routine.is( o ) || _.strIs( o ) )
   o = { routine : args[ 0 ] }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( o.routine ) || _.strIs( o.routine ) || _.strsAreAll( o.routine ), () => 'Expects routine {-o.routine-}, but got ' + o.routine );
+  _.assert( _.routine.is( o.routine ) || _.strIs( o.routine ) || _.strsAreAll( o.routine ), () => 'Expects routine {-o.routine-}, but got ' + o.routine );
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( o.select >= 1 || _.strIs( o.select ) || _.arrayLike( o.select ), () => 'Expects {-o.select-} as number >= 1, string or array, but got ' + o.select );
 
@@ -1571,7 +1573,7 @@ qqq : add support and coverage of Set and HashMap
 function vectorize_body( o )
 {
 
-  _.assertRoutineOptions( vectorize_body, arguments );
+  _.routine.assertOptions( vectorize_body, arguments );
 
   if( _.arrayLike( o.routine ) && o.routine.length === 1 )
   o.routine = o.routine[ 0 ];
@@ -1592,7 +1594,7 @@ function vectorize_body( o )
 
   routine = routineNormalize( routine );
 
-  _.assert( _.routineIs( routine ), () => 'Expects routine {-o.routine-}, but got ' + routine );
+  _.assert( _.routine.is( routine ), () => 'Expects routine {-o.routine-}, but got ' + routine );
 
   /* */
 
@@ -1667,7 +1669,7 @@ function vectorize_body( o )
 
   /* */
 
-  _.routineExtend( resultRoutine, routine );
+  _.routine.extend( resultRoutine, routine );
   return resultRoutine;
 
   /*
@@ -1686,7 +1688,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -1696,7 +1698,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
@@ -2322,11 +2324,11 @@ vectorize.defaults = { ... vectorize_body.defaults };
 
 function vectorizeAll_body( o )
 {
-  _.assertRoutineOptions( vectorize, arguments );
+  _.routine.assertOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
 
-  _.routineExtend( all, o.routine );
+  _.routine.extend( all, o.routine );
 
   return all;
 
@@ -2357,10 +2359,10 @@ vectorizeAll.defaults = { ... vectorizeAll_body.defaults };
 
 function vectorizeAny_body( o )
 {
-  _.assertRoutineOptions( vectorize, arguments );
+  _.routine.assertOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
-  _.routineExtend( any, o.routine );
+  _.routine.extend( any, o.routine );
 
   return any;
 
@@ -2391,10 +2393,10 @@ vectorizeAny.defaults = { ... vectorizeAny_body.defaults };
 
 function vectorizeNone_body( o )
 {
-  _.assertRoutineOptions( vectorize, arguments );
+  _.routine.assertOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
-  _.routineExtend( none, o.routine );
+  _.routine.extend( none, o.routine );
 
   return none;
 
@@ -2522,7 +2524,7 @@ function vectorizeAccess( vector )
       return vector;
     }
 
-    let routineIs = vector.some( ( scalar ) => _.routineIs( scalar[ key ] ) );
+    let routineIs = vector.some( ( scalar ) => _.routine.is( scalar[ key ] ) );
 
     if( !routineIs )
     if( _.all( vector, ( scalar ) => scalar[ key ] === undefined ) )
@@ -2566,24 +2568,11 @@ function vectorizeAccess( vector )
 
 }
 
-//
-
-function routineExportStringShortDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.routineIs( src ) );
-
-  if( src.name )
-  return `{- routine ${src.name} -}`;
-  else
-  return `{- routine.anonymous -}`;
-}
-
 // --
 // routines
 // --
 
-let Extension =
+let ExtensionTools =
 {
 
   routineIs,
@@ -2625,18 +2614,64 @@ let Extension =
 
   vectorizeAccess,
 
-  routineExportString : routineExportStringShortDiagnostic,
-  routineExportStringShort : routineExportStringShortDiagnostic,
-  routineExportStringShortDiagnostic,
-  routineExportStringShortCode : routineExportStringShortDiagnostic,
-  routineExportStringDiagnostic : routineExportStringShortDiagnostic,
-  routineExportStringCode : routineExportStringShortDiagnostic,
+}
+
+//
+
+let Extension =
+{
+
+  is : routineIs,
+  _is : _routineIs,
+  like : routineLike,
+  _like : _routineLike,
+  isTrivial : routineIsTrivial,
+  isSync : routineIsSync,
+  isAsync : routineIsAsync,
+  withName : routineWithName,
+
+  _join : _routineJoin,
+  constructorJoin,
+  join : routineJoin,
+  seal : routineSeal,
+
+  options : routineOptions,
+  assertOptions : assertRoutineOptions,
+  optionsPreservingUndefines : routineOptionsPreservingUndefines,
+  assertOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
+  optionsFromThis : routineOptionsFromThis,
+
+  // routineExtend_old, /* xxx : deprecate */
+  // routineExtend : routineExtend_,
+  extend : routineExtend,
+  defaults : routineDefaults,
+  unite : routineUnite,
+  er : routineEr,
+  erFor : routineErFor,
+  erJoin : routineErJoin,
+
+  vectorize_functor : vectorize,
+  vectorize,
+  vectorizeAll,
+  vectorizeAny,
+  vectorizeNone,
+
+  vectorizeAccess,
 
 }
 
 //
 
-Object.assign( Self, Extension );
+let ExtensionS =
+{
+
+  are : routinesAre,
+  compose : routinesCompose,
+}
+
+Object.assign( Self, ExtensionTools );
+Object.assign( Routine, Extension );
+Object.assign( RoutineS, ExtensionS );
 
 // --
 // export

@@ -321,7 +321,7 @@ function _setupUncaughtErrorHandler9()
 
   /* */
 
-  if( _global.process && _.routineIs( _global.process.on ) )
+  if( _global.process && _.routine.is( _global.process.on ) )
   {
     _.error._handleUncaughtHead = _errHeadNode;
   }

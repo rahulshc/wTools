@@ -9,7 +9,7 @@ let _ = _global_.wTools;
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
 
-_.assert( _.routineIs( _.longLeft ) );
+_.assert( _.routine.is( _.longLeft ) );
 
 // --
 // type test
@@ -197,7 +197,7 @@ class ContainerAdapterAbstract
   }
   _filterArguments( dst, onEach )
   {
-    if( _.routineIs( arguments[ 0 ] ) )
+    if( _.routine.is( arguments[ 0 ] ) )
     {
       _.assert( onEach === undefined );
       onEach = dst;
@@ -218,7 +218,7 @@ class ContainerAdapterAbstract
     let onEvaluate1 = arguments[ 2 ];
     let onEvaluate2 = arguments[ 3 ];
 
-    if( _.routineIs( src2 ) || src2 === undefined )
+    if( _.routine.is( src2 ) || src2 === undefined )
     {
       if( dst === undefined )
       dst = null;

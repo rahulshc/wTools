@@ -2196,13 +2196,13 @@ function exportStringShortDiagnostic( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic( /hello/, /hello/ ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( /hello/, /hello/ ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( {} ) );
 }
 
 // --

@@ -29,7 +29,7 @@ function strIsolate_head( routine, args )
     _.assert( args.length === 1, 'Expects single argument' );
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
@@ -84,7 +84,7 @@ function strIsolate_head( routine, args )
 //   let delimeter
 //   let index = o.left ? -1 : o.src.length;
 //
-//   _.assertRoutineOptions( strIsolate, o );
+//   _.routine.assertOptions( strIsolate, o );
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.entity.strType( o.src ) );
 //   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
@@ -216,7 +216,7 @@ function strIsolate_body( o )
   let more = o.left ? strLeft : strRight;
   let delta = ( o.left ? +1 : -1 );
 
-  _.assertRoutineOptions( strIsolate_body, arguments );
+  _.routine.assertOptions( strIsolate_body, arguments );
 
   /* */
 
@@ -824,11 +824,11 @@ let Routines =
 {
 
 
-  strIsolate : _.routineUnite( strIsolate_head, strIsolate_body ),
-  strIsolateLeftOrNone : _.routineUnite( strIsolate_head, strIsolateLeftOrNone_body ),
-  strIsolateLeftOrAll : _.routineUnite( strIsolate_head, strIsolateLeftOrAll_body ),
-  strIsolateRightOrNone : _.routineUnite( strIsolate_head, strIsolateRightOrNone_body ),
-  strIsolateRightOrAll : _.routineUnite( strIsolate_head, strIsolateRightOrAll_body ),
+  strIsolate : _.routine.unite( strIsolate_head, strIsolate_body ),
+  strIsolateLeftOrNone : _.routine.unite( strIsolate_head, strIsolateLeftOrNone_body ),
+  strIsolateLeftOrAll : _.routine.unite( strIsolate_head, strIsolateLeftOrAll_body ),
+  strIsolateRightOrNone : _.routine.unite( strIsolate_head, strIsolateRightOrNone_body ),
+  strIsolateRightOrAll : _.routine.unite( strIsolate_head, strIsolateRightOrAll_body ),
 
   // strIsolateInsideOrNoneSingle,
   // strIsolateInsideOrNone,

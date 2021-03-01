@@ -149,7 +149,7 @@ function makeEmpty( src )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
@@ -201,7 +201,7 @@ function makeUndefined( src, length )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
@@ -285,15 +285,15 @@ function cloneShallow( src )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
+  else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
     return src.cloneShallow();
   }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
@@ -315,11 +315,11 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routineIs( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ deepCloneSymbol ]();
   }
-  else if( _.routineIs( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
+  else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
     return src.cloneDeep();
   }
@@ -352,7 +352,7 @@ function cloneDeep( src )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
@@ -487,7 +487,7 @@ function assign2( dst, src, onRecursive )
   let result;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length < 3 || _.routineIs( onRecursive ) );
+  _.assert( arguments.length < 3 || _.routine.is( onRecursive ) );
 
   if( src === null )
   {
@@ -495,13 +495,13 @@ function assign2( dst, src, onRecursive )
     result = src;
 
   }
-  else if( dst && _.routineIs( dst.copy ) )
+  else if( dst && _.routine.is( dst.copy ) )
   {
 
     dst.copy( src );
 
   }
-  else if( src && _.routineIs( src.clone ) )
+  else if( src && _.routine.is( src.clone ) )
   {
 
     if( dst instanceof src.constructor )
@@ -516,13 +516,13 @@ function assign2( dst, src, onRecursive )
     else _.assert( 0, 'unknown' );
 
   }
-  else if( src && _.routineIs( src.slice ) )
+  else if( src && _.routine.is( src.slice ) )
   {
 
     result = src.slice();
 
   }
-  else if( dst && _.routineIs( dst.set ) )
+  else if( dst && _.routine.is( dst.set ) )
   {
 
     dst.set( src );

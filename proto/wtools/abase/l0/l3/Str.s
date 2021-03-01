@@ -318,9 +318,9 @@ function exportStringShortDiagnostic( src )
     {
       result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
     }
-    else if( _.routineIs( src ) )
+    else if( _.routine.is( src ) )
     {
-      result += _.routineExportStringShortDiagnostic( src );
+      result += _.routine.exportStringShortDiagnostic( src );
       // if( src.name )
       // result += `{- routine ${src.name} -}`;
       // else
@@ -332,7 +332,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.object.like( src ) )
     {
-      if( _.routineIs( src.exportString ) )
+      if( _.routine.is( src.exportString ) )
       {
         result = src.exportString({ verbosity : 1, /*, ... o */ });
         result = _.strShort( result );
@@ -441,7 +441,7 @@ function strShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strShort, o );
+  _.routine.options( strShort, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
@@ -866,7 +866,7 @@ Dmytro : routine covered and documented, not extended
 function strConcat( srcs, o )
 {
 
-  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  o = _.routine.options( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
 
@@ -880,7 +880,7 @@ function strConcat( srcs, o )
 
   o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
 
-  if( _.routineIs( srcs ) )
+  if( _.routine.is( srcs ) )
   srcs = srcs();
 
   if( !_.arrayLike( srcs ) )

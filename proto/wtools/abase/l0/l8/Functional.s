@@ -364,9 +364,9 @@ function eachSample( o )
     onEach : arguments[ 1 ],
   }
 
-  _.routineOptions( eachSample, o );
+  _.routine.options( eachSample, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) || o.onEach === null );
+  _.assert( _.routine.is( o.onEach ) || o.onEach === null );
   _.assert( _.longLike( o.sets ) || _.aux.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
@@ -545,7 +545,7 @@ eachSample.defaults =
 function eachPermutation( o )
 {
 
-  _.routineOptions( eachPermutation, arguments );
+  _.routine.options( eachPermutation, arguments );
 
   if( _.number.is( o.container ) )
   {
@@ -595,7 +595,7 @@ function eachPermutation( o )
   counter[ i ] = last-i;
 
   _.assert( _.longIs( container ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
   _.assert( length >= 0 );
   _.assert( length <= 30 );
 
@@ -931,7 +931,7 @@ function _entityFilterDeep( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.entity.strType( o.src ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -1011,7 +1011,7 @@ qqq2 : poor coverage and implementation was wrong!
 function _entityIndex_functor( fop )
 {
 
-  fop = _.routineOptions( _entityIndex_functor, fop );
+  fop = _.routine.options( _entityIndex_functor, fop );
 
   let extendRoutine = fop.extendRoutine;
 
@@ -1029,7 +1029,7 @@ function _entityIndex_functor( fop )
     else if( _.strIs( onEach ) )
     {
       let selector = onEach;
-      _.assert( _.routineIs( _.select ) );
+      _.assert( _.routine.is( _.select ) );
       _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
       selector = _.strRemoveBegin( selector, '*/' );
       onEach = function( e, k )
@@ -1044,7 +1044,7 @@ function _entityIndex_functor( fop )
     }
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.routineIs( onEach ) );
+    _.assert( _.routine.is( onEach ) );
     _.assert( src !== undefined, 'Expects {-src-}' );
 
     /* */
@@ -1425,7 +1425,7 @@ let entityIndexAppending = _entityIndex_functor({ extendRoutine : _.mapExtendApp
 function _entityRemap_functor( fop )
 {
 
-  fop = _.routineOptions( _entityRemap_functor, fop );
+  fop = _.routine.options( _entityRemap_functor, fop );
 
   let extendRoutine = fop.extendRoutine;
 
@@ -1443,7 +1443,7 @@ function _entityRemap_functor( fop )
     else if( _.strIs( onEach ) )
     {
       let selector = onEach;
-      _.assert( _.routineIs( _.select ) );
+      _.assert( _.routine.is( _.select ) );
       _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
       selector = _.strRemoveBegin( selector, '*/' );
       onEach = function( e, k )
@@ -1453,7 +1453,7 @@ function _entityRemap_functor( fop )
     }
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.routineIs( onEach ) );
+    _.assert( _.routine.is( onEach ) );
     _.assert( src !== undefined, 'Expects src' );
 
     /* */
