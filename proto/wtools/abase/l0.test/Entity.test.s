@@ -2327,6 +2327,11 @@ function entityEquivalentShallowAllTypes( test )
   var src2 = 10n;
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
+  test.case = 'bigint and int';
+  var src1 = 10n;
+  var src2 = 10;
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
   test.case = 'str & regexpLike';
   var src1 = 'str';
   var src2 = 'str';
@@ -2592,12 +2597,6 @@ function entityEquivalentShallowAllTypes( test )
   test.case = 'fuzzy';
   var src1 = _.maybe;
   var src2 = 0;
-  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
-
-  /* ? */
-  test.case = 'bigint';
-  var src1 = 10n;
-  var src2 = 10;
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
   test.case = 'str & regexpLike';
@@ -2869,6 +2868,41 @@ function entityEquivalentShallowAllTypes( test )
 
   function routine () {}
 
+}
+
+//
+
+function entityEquivalentNotIdentical( test )
+{
+  test.case = 'true and 1';
+  var src1 = true;
+  var src2 = 1;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
+  test.case = 'false and 0';
+  var src1 = false;
+  var src2 = 0;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
+  test.case = '1 and 2, acc : 1';
+  var src1 = 1;
+  var src2 = 2;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+
+  test.case = 'regexps with diff flags';
+  var src1 = /hello/g;
+  var src2 = /hello/i;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
+  test.case = 'one string with whitespaces';
+  var src1 = 'hello';
+  var src2 = ' hello \n';
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  // test.identical( _.entity.equivalentShallow( src1, src2 ), true ); /* ?? */
 }
 
 //
@@ -6248,6 +6282,7 @@ let Self =
     entityIdenticalShallowAllTypes,
     entityEquivalentShallowBasic,
     entityEquivalentShallowAllTypes,
+    entityEquivalentNotIdentical,
 
     // entityMakeConstructing,
     // entityMakeConstructingArgumentsArray,

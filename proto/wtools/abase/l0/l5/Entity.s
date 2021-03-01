@@ -113,10 +113,22 @@ function equivalentShallow( src1, src2, accuracy )
     - boolLikeTrue and boolLikeTrue - ( true, 1 )
     - boolLikeFalse and boolLikeFalse - ( false, 0 )
     - | number1 - number2 | < accuracy
-    - strings that differ only in whitespaces at the start and/or at the end
+    - strings that differ only in whitespaces at the start and/or at the end ?
     - regexp with same source and different flags
   */
-  _.assert( arguments.length === 2, 'Expects 2 arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+
+  if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
+  {
+    /*
+      - Symbol
+      - Number
+      - BigInt
+      - Boolean
+      - String
+    */
+    return _.primitive.areEquivalentShallow( src1, src2, accuracy );
+  }
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
@@ -189,18 +201,6 @@ function equivalentShallow( src1, src2, accuracy )
 
     /* non-identical objects */
     return false;
-  }
-  else if( _.primitiveIs( src1 ) )
-  {
-    /*
-      - Symbol
-      - Number
-      - BigInt
-      - Boolean
-      - String
-    */
-
-    return _.primitive.areEquivalentShallow( src1, src2, accuracy );
   }
   else
   {
