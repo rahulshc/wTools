@@ -602,6 +602,7 @@ let Self =
     boolLikeTrue,
 
     // l0/l5/Bool.s
+
     boolAreEquivalentShallow,
 
     // l0/l8/Bool.s
