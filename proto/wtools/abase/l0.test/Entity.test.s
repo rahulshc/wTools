@@ -2300,7 +2300,7 @@ function entityEquivalentShallowBasic( test )
 
 function entityEquivalentShallowAllTypes( test )
 {
-  test.open( 'identical' );
+  test.open( 'equivalent' );
 
   test.case = 'number';
   var src1 = 1;
@@ -2573,11 +2573,11 @@ function entityEquivalentShallowAllTypes( test )
   var src2 = process;
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
-  test.close( 'identical' );
+  test.close( 'equivalent' );
 
   /* - */
 
-  test.open( 'not identical' );
+  test.open( 'not equivalent' );
 
   test.case = 'number';
   var src1 = 1;
@@ -2821,7 +2821,7 @@ function entityEquivalentShallowAllTypes( test )
   var src2 = require( 'stream' ).Readable();
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
-  test.close( 'not identical' );
+  test.close( 'not equivalent' );
 
   /* - */
 
@@ -2886,23 +2886,41 @@ function entityEquivalentNotIdentical( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
+  test.case = '1 and 2, acc : 1, default accuracy';
+  var src1 = 1;
+  var src2 = 1.00000001;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
   test.case = '1 and 2, acc : 1';
   var src1 = 1;
   var src2 = 2;
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+  test.identical( _.entity.equivalentShallow( src1, src2, { accuracy : 1 } ), true );
 
-  // test.case = '1n and 2, acc : 1';
+  test.case = '10 and 20, acc : 10';
+  var src1 = 10;
+  var src2 = 20;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2, { accuracy : 10 } ), true );
+
+  test.case = '1 and 1.2, acc : 02';
+  var src1 = 1;
+  var src2 = 1.2;
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2, { accuracy : 0.2 } ), true );
+
+  // test.case = '1n and 2, acc : 1'; /* qqq : not implemented. non-identical bigints with accuracy  */
   // var src1 = 1n;
   // var src2 = 2;
   // test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  // test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+  // test.identical( _.entity.equivalentShallow( src1, src2, { accuracy : 1 } ), true );
 
-  // test.case = '1n and 2n, acc : 1';
+  // test.case = '1n and 2n, acc : 1'; /* qqq : not implemented. non-identical bigints with accuracy  */
   // var src1 = 1n;
   // var src2 = 2n;
   // test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  // test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+  // test.identical( _.entity.equivalentShallow( src1, src2, { accuracy : 1 } ), true );
 
   test.case = 'regexps with diff flags';
   var src1 = /hello/g;
@@ -2914,7 +2932,13 @@ function entityEquivalentNotIdentical( test )
   var src1 = 'hello';
   var src2 = ' hello \n';
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  // test.identical( _.entity.equivalentShallow( src1, src2 ), true ); /* ?? */
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
+  test.case = 'both strings with whitespaces';
+  var src1 = '     hello\n\n\n\n\t';
+  var src2 = ' \n  \thello \n';
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 }
 
 //

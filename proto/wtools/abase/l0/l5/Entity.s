@@ -107,7 +107,7 @@ function identicalShallow( src1, src2 )
 
 //
 
-function equivalentShallow( src1, src2, accuracy )
+function equivalentShallow( src1, src2, options )
 {
   /*
     - boolLikeTrue and boolLikeTrue - ( true, 1 )
@@ -117,6 +117,12 @@ function equivalentShallow( src1, src2, accuracy )
     - regexp with same source and different flags
   */
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+  _.assert( options === undefined || _.objectLike( options ), 'Expects map of options as third argument' );
+
+  let accuracy;
+
+  if( options )
+  accuracy = options.accuracy || undefined;
 
   if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
   {
