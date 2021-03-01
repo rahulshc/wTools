@@ -1409,6 +1409,7 @@ let ExtensionTools =
   strHas,
 
   strEquivalent,
+  areEquivalentShallow : strEquivalent,
   strsEquivalent,
 
   // converter

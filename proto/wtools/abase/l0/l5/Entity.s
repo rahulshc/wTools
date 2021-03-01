@@ -107,6 +107,109 @@ function identicalShallow( src1, src2 )
 
 //
 
+function equivalentShallow( src1, src2 )
+{
+  /*
+    - boolLikeTrue and boolLikeTrue - ( true, 1 )
+    - boolLikeFalse and boolLikeFalse - ( false, 0 )
+    - | number1 - number2 | < accuracy
+    - strings that differ only in whitespaces at the start and/or at the end
+    - regexp with same source and different flags
+  */
+  _.assert( arguments.length === 2, 'Expects 2 arguments' );
+
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( src1 === src2 )
+  return true;
+
+  if( _.hashMap.like( src1 ) )
+  {
+    /*
+      - hashmap
+    */
+    return _.hashMap.areEquivalentShallow( src1, src2 )
+  }
+  else if( _.set.like( src1 ) )
+  {
+    /*
+      - set
+    */
+    return _.set.areEquivalentShallow( src1, src2 );
+  }
+  else if( _.bufferAnyIs( src1 ) )
+  {
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersAreEquivalentShallow( src1, src2 );
+  }
+  else if( _.countable.is( src1 ) )
+  {
+    /*
+      - countable
+      - vector
+      - long
+      - array
+    */
+    return _.countable.areEquivalentShallow( src1, src2 );
+  }
+  else if( _.object.like( src1 ) )
+  {
+    /*
+      - objectLike
+      - object
+
+      - Map
+      - Auxiliary
+      - MapPure
+      - MapPolluted
+      - AuxiliaryPolluted
+      - MapPrototyped
+      - AuxiliaryPrototyped
+    */
+    if( _.date.is( src1 ) )
+    {
+      return _.date.areEquivalentShallow( src1, src2 );
+    }
+    else if( _.regexp.is( src1 ) ) // investigate whether nedeed
+    {
+      return _.regexp.areEquivalentShallow( src1, src2 );
+    }
+    else if( _.aux.is( src1 ) )
+    {
+      return _.aux.areEquivalentShallow( src1, src2 );
+    }
+
+    /* non-identical objects */
+    return false;
+  }
+  else if( _.primitiveIs( src1 ) )
+  {
+    /*
+      - Symbol
+      - Number
+      - BigInt
+      - Boolean
+      - String
+    */
+
+    return _.primitive.areEquivalentShallow( src1, src2 );
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//
+
 function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
@@ -717,6 +820,7 @@ const deepCloneSymbol = _.entity.deepCloneSymbol;
 let EntityExtension =
 {
   identicalShallow,
+  equivalentShallow,
 
   makeEmpty,
   makeUndefined,

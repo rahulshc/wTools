@@ -41,7 +41,8 @@ function areIdenticalShallow( src1, src2 )
 
 var Extension =
 {
-  areIdenticalShallow
+  areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow
 }
 
 //

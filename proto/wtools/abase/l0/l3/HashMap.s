@@ -85,7 +85,8 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
-  areIdenticalShallow
+  areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow
 }
 
 Object.assign( _, ToolsExtension );
