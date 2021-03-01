@@ -316,7 +316,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.regexpIs( src ) )
     {
-      result += _.regexp.exportString( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
     }
     else if( _.routineIs( src ) )
     {
