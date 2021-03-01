@@ -2892,6 +2892,18 @@ function entityEquivalentNotIdentical( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
   test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
 
+  // test.case = '1n and 2, acc : 1';
+  // var src1 = 1n;
+  // var src2 = 2;
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  // test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+
+  // test.case = '1n and 2n, acc : 1';
+  // var src1 = 1n;
+  // var src2 = 2n;
+  // test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  // test.identical( _.entity.equivalentShallow( src1, src2, 1 ), true );
+
   test.case = 'regexps with diff flags';
   var src1 = /hello/g;
   var src2 = /hello/i;
