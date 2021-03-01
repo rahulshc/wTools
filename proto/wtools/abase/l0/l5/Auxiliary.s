@@ -36,7 +36,8 @@ function areIdenticalShallow( src1, src2 )
 
 var AuxiliaryExtension =
 {
-  areIdenticalShallow
+  areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow
 }
 
 Object.assign( _.aux, AuxiliaryExtension );
