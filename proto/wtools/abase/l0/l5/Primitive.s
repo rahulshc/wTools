@@ -22,18 +22,27 @@ function areIdenticalShallow( src1, src2 )
 
 //
 
-function areEquivalentShallow( src1, src2 )
+function areEquivalentShallow( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.primitive.is( src1 ) );
   _.assert( _.primitive.is( src2 ) );
 
   // only ===
-  if( _.strIs( src1 ) && _.strIs( src2 ) )
+  if( _.strsAreAll([ src1, src2 ]) )
   return _.areEquivalentShallow( src1, src2 );
 
   if( _.bool.like( src1 ) && _.bool.like( src2 ) )
   return _.bool.areEquivalentShallow( src1, src2 );
+
+  if
+  (
+    ( _.number.is( src1 ) || _.bigInt.is( src1 ) )
+    && ( _.number.is( src2 ) || _.bigInt.is( src2 ) )
+  )
+  return _.number.areEquivalentShallow( src1, src2, accuracy );
+
+  return Object.is( src1, src2 );
 }
 
 //

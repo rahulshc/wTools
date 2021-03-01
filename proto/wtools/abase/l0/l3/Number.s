@@ -342,6 +342,7 @@ let ExtensionS =
   areIdentical : numbersAreIdentical,
   areIdenticalNotStrictly : numbersAreIdenticalNotStrictly,
   areEquivalent : numbersAreEquivalent,
+  areEquivalentShallow : numbersAreEquivalent,
 
   areFinite : numbersAreFinite,
   arePositive : numbersArePositive,

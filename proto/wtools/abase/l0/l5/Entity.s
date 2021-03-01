@@ -75,7 +75,7 @@ function identicalShallow( src1, src2 )
     {
       return _.date.areIdenticalShallow( src1, src2 );
     }
-    else if( _.regexp.is( src1 ) ) // investigate whether nedeed
+    else if( _.regexp.is( src1 ) )
     {
       return _.regexp.areIdenticalShallow( src1, src2 );
     }
@@ -107,7 +107,7 @@ function identicalShallow( src1, src2 )
 
 //
 
-function equivalentShallow( src1, src2 )
+function equivalentShallow( src1, src2, accuracy )
 {
   /*
     - boolLikeTrue and boolLikeTrue - ( true, 1 )
@@ -178,7 +178,7 @@ function equivalentShallow( src1, src2 )
     {
       return _.date.areEquivalentShallow( src1, src2 );
     }
-    else if( _.regexp.is( src1 ) ) // investigate whether nedeed
+    else if( _.regexp.is( src1 ) )
     {
       return _.regexp.areEquivalentShallow( src1, src2 );
     }
@@ -200,7 +200,7 @@ function equivalentShallow( src1, src2 )
       - String
     */
 
-    return _.primitive.areEquivalentShallow( src1, src2 );
+    return _.primitive.areEquivalentShallow( src1, src2, accuracy );
   }
   else
   {

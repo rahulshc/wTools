@@ -90,6 +90,8 @@ function noneAre( src )
   return _.none( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
+//
+
 function areEquivalentShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
