@@ -907,6 +907,7 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
+/* qqq for Yevhen : bad! ask */
 function numbersAreEquivalentBasic( test )
 {
 
@@ -1171,7 +1172,6 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
 //
 
-/* qqq for Yevhen : bad! ask */
 function numbersAreEquivalentBasic2( test )
 {
 
