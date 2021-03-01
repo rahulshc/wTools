@@ -5,7 +5,9 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+// let Self = _global_.wTools;
+let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -464,7 +466,7 @@ regexpsAll.defaults =
 function regexpArrayMake( src )
 {
 
-  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.strType( src ) );
+  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 
@@ -630,23 +632,20 @@ function regexpArrayNone( arr, ins, ifEmpty )
   return arr.length ? true : ifEmpty;
 }
 
-// --
-// fields
-// --
-
-let Fields =
+function exportString( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.regexp.is( src ) );
 
+  return src.toString();
 }
 
 // --
-// routines
+// extension
 // --
 
-let Routines =
+let ExtensionTools =
 {
-
-  // regexp
 
   regexpFrom,
 
@@ -673,8 +672,53 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+  // regexp
+
+  from : regexpFrom,
+
+  maybeFrom : regexpMaybeFrom,
+
+  arrayMake : regexpArrayMake,
+  arrayIndex : regexpArrayIndex,
+  arrayAny : regexpArrayAny,
+  arrayAll : regexpArrayAll,
+  arrayNone : regexpArrayNone,
+
+  exportString
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  // regexps
+
+  maybeFrom : regexpsMaybeFrom,
+
+  sources : regexpsSources,
+  join : regexpsJoin,
+  joinEscaping : regexpsJoinEscaping,
+  atLeastFirst : regexpsAtLeastFirst,
+  atLeastFirstOnly : regexpsAtLeastFirstOnly,
+
+  none : regexpsNone,
+  any : regexpsAny,
+  all : regexpsAll,
+
+}
+
+Object.assign( _, ExtensionTools );
+Object.assign( Regexp, Extension );
+Object.assign( Regexps, ExtensionS );
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
+// Object.assign( _, Routines );
+// Object.assign( _, Fields );
 
 // --
 // export

@@ -18,7 +18,7 @@ function strQuote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
-  _.assertMapHasOnly( o, strQuote.defaults );
+  _.map.assertHasOnly( o, strQuote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -31,10 +31,10 @@ function strQuote( o )
 
   let src = o.src;
 
-  if( !_.primitiveIs( src ) )
-  src = _.toStr( src );
+  if( !_.primitive.is( src ) )
+  src = _.entity.exportString( src );
 
-  _.assert( _.primitiveIs( src ) );
+  _.assert( _.primitive.is( src ) );
 
   let result = o.quote + String( src ) + o.quote;
 
@@ -56,7 +56,7 @@ function strUnquote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strUnquote.defaults.quote;
-  _.assertMapHasOnly( o, strUnquote.defaults );
+  _.map.assertHasOnly( o, strUnquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -87,9 +87,9 @@ strUnquote.defaults =
  * The routine `strQuotePairsNormalize` analyzes source String or Array and creates an Array of arrays of pairs of quotes.
  * Returns an array with arrays of pairs of quotes.
  *
- * @param { String|Array|_.boolLikeTrue } quote -
+ * @param { String|Array|_.bool.likeTrue } quote -
  * String : String to add matching pairs to.
- * _.boolLikeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
+ * _.bool.likeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
  * Array of strings : Creates matching quotes for strings.
  * Array of arrays of strings : Checks to be exactly 2 elements in array & adds them to the result array.
  *
@@ -151,7 +151,7 @@ strUnquote.defaults =
 function strQuotePairsNormalize( quote )
 {
 
-  if( ( _.boolLike( quote ) && quote ) )
+  if( ( _.bool.like( quote ) && quote ) )
   quote = strQuoteAnalyze.defaults.quote;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -224,7 +224,7 @@ function strQuoteAnalyze( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuoteAnalyze.defaults.quote;
-  _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
+  _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );
@@ -314,7 +314,7 @@ strQuoteAnalyze.defaults =
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -399,7 +399,7 @@ function _strLeftSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -502,7 +502,7 @@ aa_bb_bb|b|_cc_cc
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -628,7 +628,7 @@ function _strRightSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -1450,7 +1450,7 @@ function strReplace( src, ins, sub )
   //   }
   //
   //   for( let j = 0 ; j < container.length ; j++ )
-  //   if( _.numberIs( container[ j ] ) )
+  //   if( _.number.is( container[ j ] ) )
   //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
   //
   //   result[ k ] = container.join( '' );
@@ -1521,12 +1521,12 @@ function strStrip( o )
     return result;
   }
 
-  if( _.boolLikeTrue( o.stripper ) )
+  if( _.bool.likeTrue( o.stripper ) )
   {
     o.stripper = strStrip.defaults.stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
@@ -1741,8 +1741,8 @@ function strSplitsCoupledGroup( o )
   o.postfix = _.arrayAs( o.postfix );
 
   _.assert( arguments.length === 1 );
-  _.assert( _.regexpsLike( o.prefix ) );
-  _.assert( _.regexpsLike( o.postfix ) );
+  _.assert( _.regexpsLikeAll( o.prefix ) );
+  _.assert( _.regexpsLikeAll( o.postfix ) );
 
   let level = 0;
   let begins = [];
@@ -1855,12 +1855,12 @@ function strSplitsQuotedRejoin_head( routine, args )
   _.routineOptions( routine, o );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1, 'Expects one or two arguments' );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   if( o.quoting )
   {
 
-    if( _.boolLike( o.quoting ) )
+    if( _.bool.like( o.quoting ) )
     {
       if( !o.quotingPrefixes )
       o.quotingPrefixes = [ '"' ];
@@ -1887,7 +1887,7 @@ function strSplitsQuotedRejoin_head( routine, args )
     if( Config.debug )
     {
       _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
-      _.assert( _.boolLike( o.quoting ) );
+      _.assert( _.bool.like( o.quoting ) );
       o.quotingPrefixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
       o.quotingPostfixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
     }
@@ -2007,7 +2007,7 @@ function strSplitsDropDelimeters_head( routine, args )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2063,12 +2063,12 @@ function strSplitsStrip_head( routine, args )
 
   _.routineOptions( routine, o );
 
-  if( o.stripping && _.boolLike( o.stripping ) )
+  if( o.stripping && _.bool.like( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
 
   return o;
@@ -2122,7 +2122,7 @@ function strSplitsDropEmpty_head( routine, args )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2179,7 +2179,7 @@ function strSplitFast_head( routine, args )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'Expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2196,7 +2196,7 @@ function strSplitFast_body( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.delimeter ) );
-  _.assert( _.boolLike( o.preservingDelimeters ) );
+  _.assert( _.bool.like( o.preservingDelimeters ) );
 
   /* */
 
@@ -2418,7 +2418,7 @@ let strSplitFast = _.routineUnite( strSplitFast_head, strSplitFast_body );
 
 _.assert( strSplitFast.head === strSplitFast_head );
 _.assert( strSplitFast.body === strSplitFast_body );
-_.assert( _.objectIs( strSplitFast.defaults ) );
+_.assert( _.object.is( strSplitFast.defaults ) );
 
 //
 
@@ -2584,7 +2584,7 @@ let strSplit = _.routineUnite( head, strSplit_body );
 _.assert( strSplit.head !== strSplitFast.head );
 _.assert( _.routineIs( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
-_.assert( _.objectIs( strSplit.defaults ) );
+_.assert( _.object.is( strSplit.defaults ) );
 
 //
 
@@ -2793,7 +2793,7 @@ function strSplitInlinedStereo( o )
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( strSplitInlinedStereo, o );
 
@@ -2916,7 +2916,7 @@ function strSplitInlinedStereo_( o )
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( strSplitInlinedStereo_, o );
 
@@ -3253,7 +3253,7 @@ function strFrom( src )
   if( src === undefined )
   return src;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   if( _.bufferAnyIs( src ) )
@@ -3332,7 +3332,7 @@ let Extension =
   // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
-  strSplitInlinedStereo,
+  strSplitInlinedStereo, /* !!! xxx : deprecate */
   strSplitInlinedStereo_,
 
   // converter

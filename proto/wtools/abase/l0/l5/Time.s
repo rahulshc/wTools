@@ -133,7 +133,7 @@ function _periodic( delay, onTime, onCancel )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
-  // _.assert( _.numberIs( delay ) );
+  // _.assert( _.number.is( delay ) );
   // _.assert( _.routineIs( onTime ) );
   // _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
@@ -528,7 +528,7 @@ function begin( /* delay, procedure, onTime, onCancel */ )
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
-  _.assert( _.numberIs( delay ) );
+  _.assert( _.number.is( delay ) );
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
   _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
@@ -578,7 +578,7 @@ function finally_( delay, procedure, onTime )
   onTime = arguments[ 1 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.numberIs( delay ) );
+  _.assert( _.number.is( delay ) );
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
 
   return this._finally( delay, onTime );
@@ -657,7 +657,7 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
-  _.assert( _.numberIs( delay ) );
+  _.assert( _.number.is( delay ) );
   _.assert( _.routineIs( onTime ) );
   _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
@@ -801,11 +801,11 @@ function from( time )
 
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( time ) )
+  if( _.number.is( time ) )
   {
     return time;
   }
-  if( _.dateIs( time ) )
+  if( _.date.is( time ) )
   {
     return time.getTime();
   }
@@ -817,7 +817,7 @@ function from( time )
     else
     _.assert( 0, 'Wrong time format' );
   }
-  _.assert( 0, 'Not clear how to coerce to time', _.strType( time ) );
+  _.assert( 0, 'Not clear how to coerce to time', _.entity.strType( time ) );
 }
 
 //
@@ -845,6 +845,9 @@ function from( time )
  * @extends Tools
  */
 
+/* qqq : introduce namespace _.units */
+/* xxx : expose units formatter interface in wTools */
+/* qqq xxx : use units formatters */
 function spent( description, time )
 {
   let now = _.time.now();
@@ -856,11 +859,8 @@ function spent( description, time )
   }
 
   _.assert( 1 <= arguments.length && arguments.length <= 2 );
-  _.assert( _.numberIs( time ) );
+  _.assert( _.number.is( time ) );
   _.assert( _.strIs( description ) );
-
-  // if( description && description !== ' ' )
-  // description = description;
 
   let result = description + _.time.spentFormat( now-time );
 
@@ -893,39 +893,10 @@ function spentFormat( spent )
 {
 
   _.assert( 1 === arguments.length );
-  _.assert( _.numberIs( spent ) );
+  _.assert( _.number.is( spent ) );
 
   let result = ( 0.001*( spent ) ).toFixed( 3 ) + 's';
 
-  return result;
-}
-
-//
-
-/**
- * The routine dateToStr() converts Date object {-date-} to formatted string.
- * The format is : YYYY.MM.DD
- *
- * @example
- * let date = new Date();
- * console.log( _.time.dateToStr( date ) );
- * // log : '2020.10.20'
- *
- * @param { Date } date - The date to convert.
- * @returns { String } - Returns date in string format.
- * @function dateToStr
- * @namespace wTools.time
- * @extends Tools
- */
-
-function dateToStr( date )
-{
-  let y = date.getFullYear();
-  let m = date.getMonth() + 1;
-  let d = date.getDate();
-  if( m < 10 ) m = '0' + m;
-  if( d < 10 ) d = '0' + d;
-  let result = [ y, m, d ].join( '.' );
   return result;
 }
 
@@ -963,8 +934,6 @@ let Extension =
   from,
   spent,
   spentFormat,
-
-  dateToStr,
 
 }
 

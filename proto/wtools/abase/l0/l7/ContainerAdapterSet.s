@@ -36,7 +36,7 @@ function Make( src )
 {
   if( src === undefined || src === null )
   return this.MakeEmpty();
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   return new ContainerAdapterSet( new Set );
   else if( this.IsContainer( src ) )
   return new ContainerAdapterSet( new Set( src ) );
@@ -63,7 +63,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     container = new Set;
     super( container );
     _.assert( arguments.length === 0 || arguments.length === 1 );
-    _.assert( _.setLike( container ) );
+    _.assert( _.set.like( container ) );
   }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
@@ -74,7 +74,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
 
     let fromIndex = 0;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       fromIndex = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -142,7 +142,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       let from = 0;
       let result = 0;
-      if( _.numberIs( onEvaluate1 ) )
+      if( _.number.is( onEvaluate1 ) )
       {
         from = onEvaluate1;
         onEvaluate1 = onEvaluate2;
@@ -153,7 +153,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       {
         if( from === 0 )
         {
-          if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
           result++;
         }
         else
@@ -273,7 +273,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       this.original.add( container[ k ] );
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       this.original.add( e );
@@ -296,7 +296,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         if( !this.has( container[ i ], onEvaluate1, onEvaluate2 ) )
         this.append( container[ i ] );
       }
-      else if( _.setIs( container ) )
+      else if( _.set.is( container ) )
       {
         for( let e of container )
         if( !this.has( e, onEvaluate1, onEvaluate2 ) )
@@ -322,7 +322,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         this.append( container[ i ] );
       }
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       {
@@ -357,7 +357,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       // aaa | Dmytro : tabs are removed
       // aaa : not clear. explain during call
       let last = _.nothing;
-      self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
+      self.reduce( ( a, e2 ) => _.entity.equalize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
       _.assert( last !== _.nothing );
       container.delete( last );
       return last;
@@ -367,7 +367,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let last = this.last();
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entityEntityEqualize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
+    _.assert( _.entity.equalize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
 
     this.original.delete( last );
     return last;
@@ -378,7 +378,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       let from = 0;
       let result = 0;
-      if( _.numberIs( onEvaluate1 ) )
+      if( _.number.is( onEvaluate1 ) )
       {
         from = onEvaluate1;
         onEvaluate1 = onEvaluate2;
@@ -389,7 +389,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       {
         if( from === 0 )
         {
-          if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
           {
             this.original.delete( v );
             result++;
@@ -413,7 +413,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let from = 0;
     let index = -1;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       from = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -424,7 +424,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( from === 0 )
       {
-        if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
         {
           this.original.delete( v );
           return ++index;
@@ -446,7 +446,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let temp = [ ... this.original ];
     let to = this.length;
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       to = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -455,7 +455,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     for( let i = to - 1; i >= 0; i-- )
     {
-      if( _.entityEntityEqualize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
+      if( _.entity.equalize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
       {
         this.original.delete( temp[ i ] );
         return i;
@@ -469,7 +469,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let index = -1;
     let result;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       from = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -480,7 +480,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( from === 0 )
       {
-        if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
         {
           if( result === undefined )
           {
@@ -489,7 +489,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
           }
           else
           {
-            _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+            _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
           }
         }
       }
@@ -513,7 +513,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let temp = [ ... this.original ];
     let result;
 
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     {
       to = onEvaluate1;
       onEvaluate1 = onEvaluate2;
@@ -522,7 +522,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     for( let i = to - 1; i >= 0; i-- )
     {
-      if( _.entityEntityEqualize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
+      if( _.entity.equalize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
       {
         if( result === undefined )
         {
@@ -531,7 +531,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         }
         else
         {
-          _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' )
+          _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' )
         }
       }
     }
@@ -1076,7 +1076,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let onEvaluate2 = arguments[ 3 ];
 
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
-    return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+    return _.arraySet.left( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   right( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
@@ -1086,7 +1086,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let onEvaluate2 = arguments[ 3 ];
 
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
-    return _.arraySetRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+    return _.arraySet.right( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {

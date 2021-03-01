@@ -255,7 +255,7 @@ function on_head( routine, args )
   //   _.assert( _.strIs( args[ 0 ] ) );
   //   o = Object.create( null );
   //   o.callbackMap = Object.create( null );
-  //   o.callbackMap[ args[ 0 ] ] = _.longShrink( args, 1 );
+  //   o.callbackMap[ args[ 0 ] ] = _.longOnly( args, 1 );
   // }
   if( args.length === 2 )
   {
@@ -267,7 +267,9 @@ function on_head( routine, args )
     if( _.event.chainIs( args[ 0 ] ) )
     {
       let chain = args[ 0 ].chain;
-      o.callbackMap[ chain[ 0 ].value ] = _.longShrink( chain, 1 );
+      // debugger; /* xxx aaa for Dmytro : check */ /* Dmytro : vector of events should be sliced from first argument */
+      // o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
+      o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, [ 1, chain.length - 1 ] );
       o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
     }
     else if( _.strIs( args[ 0 ] ) )
@@ -313,9 +315,9 @@ function on( ehandler, o )
 
   _.routineOptions( on, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -431,12 +433,12 @@ on.defaults =
  * // log : []
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Array with callbacks.
  * @param { Boolean|BoolLike } o.first - If it has value `true`, then callback prepends to callback queue.
  * Otherwise, callback appends to callback queue.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function once
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.
@@ -454,9 +456,9 @@ function once( ehandler, o )
 
   _.routineOptions( once, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -575,10 +577,10 @@ once.defaults =
  * // log : 0
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Null. If null is provided, routine removes all callbacks.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function off
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.
@@ -618,9 +620,9 @@ function off( ehandler, o )
 
   _.routineOptions( off, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   for( let c in o.callbackMap )
@@ -797,13 +799,13 @@ let Extension =
   Name,
   Chain,
 
-  on, /* aaa : cover please, take into accout chain case */ /* Dmytro : covered */
+  on,
   once,
-  off, /* aaa : cover please */ /* Dmytro : covered */
+  off,
   off_functor,
 
-  eventHasHandler, /* aaa : cover please */ /* Dmytro : covered */
-  eventGive, /* aaa : cover please */ /* Dmytro : covered */
+  eventHasHandler,
+  eventGive,
 
 }
 

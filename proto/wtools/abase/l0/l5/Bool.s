@@ -1,11 +1,12 @@
-( function _fBool_s_()
+( function _l5_Bool_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.bool = _.bool || Object.create( null );
+_.bool.s = _.bool.s || Object.create( null );
 
 // --
 // bool
@@ -21,12 +22,12 @@ let Self = _global_.wTools;
  * @namespace Tools
  */
 
-function boolsAre( src )
+function are( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayLike( src ) )
   return false;
-  return src.filter( ( e ) => _.boolIs( e ) );
+  return src.filter( ( e ) => _.bool.is( e ) );
 }
 
 //
@@ -41,12 +42,12 @@ function boolsAre( src )
  * @namespace Tools
  */
 
-function boolsAllAre( src )
+function allAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.all( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.all( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //
@@ -61,12 +62,12 @@ function boolsAllAre( src )
  * @namespace Tools
  */
 
-function boolsAnyAre( src )
+function anyAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.any( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.any( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //
@@ -81,29 +82,42 @@ function boolsAnyAre( src )
  * @namespace Tools
  */
 
-function boolsNoneAre( src )
+function noneAre( src )
 {
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
-  return _.boolIs( src );
-  return _.none( src.filter( ( e ) => _.boolIs( e ) ) );
+  return _.bool.is( src );
+  return _.none( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 // --
 // extension
 // --
 
-let Extension =
+let ExtensionTools =
 {
 
-  boolsAre,
-  boolsAllAre,
-  boolsAnyAre,
-  boolsNoneAre,
+  boolsAre : are,
+  boolsAllAre : allAre,
+  boolsAnyAre : anyAre,
+  boolsNoneAre : noneAre,
 
 }
 
-_.mapSupplement( Self, Extension );
+//
+
+let ExtensionS =
+{
+
+  are,
+  allAre,
+  anyAre,
+  noneAre,
+
+}
+
+Object.assign( _, ExtensionTools );
+Object.assign( _.bool.s, ExtensionS );
 
 // --
 // export

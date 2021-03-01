@@ -11,18 +11,92 @@ let Self = _global_.wTools;
 // routine
 // --
 
+// function routineIs( src )
+// {
+//   let typeStr = Object.prototype.toString.call( src );
+//   return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
+// }
+//
+//
+// function routineLike( src )
+// {
+//   return _.routineIs( src );
+// }
+
 function routineIs( src )
 {
-  let result = Object.prototype.toString.call( src );
-  return result === '[object Function]' || result === '[object AsyncFunction]';
+  let typeStr = Object.prototype.toString.call( src );
+  return _._routineIs( src, typeStr );
+}
+
+//
+
+function _routineIs( src, typeStr )
+{
+  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
 }
 
 //
 
 function routineLike( src )
 {
-  return _.routineIs( src );
+  let typeStr = Object.prototype.toString.call( src );
+  return _._routineLike( src, typeStr );
 }
+
+//
+
+function _routineLike( src, typeStr )
+{
+  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
+}
+
+//
+
+function routineIsTrivial_functor()
+{
+
+  const syncPrototype = Object.getPrototypeOf( Function );
+  const asyncPrototype = Object.getPrototypeOf( _async );
+  return routineIsTrivial;
+
+  function routineIsTrivial( src )
+  {
+    if( !src )
+    return false;
+    let prototype = Object.getPrototypeOf( src );
+    if( prototype === syncPrototype )
+    return true;
+    if( prototype === asyncPrototype )
+    return true;
+    return false;
+  }
+
+  async function _async()
+  {
+  }
+
+}
+
+let routineIsTrivial = routineIsTrivial_functor();
+routineIsTrivial.functor = routineIsTrivial_functor;
+// function routineIsTrivial( src )
+// {
+//   if( !src )
+//   return false;
+//   let proto = Object.getPrototypeOf( src );
+//   if( proto === Object.getPrototypeOf( Function ) )
+//   debugger;
+//   if( proto === Object.getPrototypeOf( Function ) )
+//   return true;
+//   if( !proto )
+//   return false;
+//   if( !proto.constructor )
+//   return false;
+//   if( proto.constructor.name !== 'AsyncFunction' )
+//   return false;
+//   return true;
+// }
 
 //
 
@@ -57,24 +131,6 @@ function routinesAre( src )
 
 //
 
-function routineIsTrivial( src )
-{
-  if( !src )
-  return false;
-  let proto = Object.getPrototypeOf( src );
-  if( proto === Object.getPrototypeOf( Function ) )
-  return true;
-  if( !proto )
-  return false;
-  if( !proto.constructor )
-  return false;
-  if( proto.constructor.name !== 'AsyncFunction' )
-  return false;
-  return true;
-}
-
-//
-
 function routineWithName( src )
 {
   if( !routineIs( src ) )
@@ -98,8 +154,8 @@ function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.boolIs( o.sealing ) );
-  _.assert( _.boolIs( o.extending ) );
+  _.assert( _.bool.is( o.sealing ) );
+  _.assert( _.bool.is( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
 
@@ -188,7 +244,7 @@ function _routineJoin( o )
         return Function.prototype.bind.call( routine, context );
       }
     }
-    else if( context === undefined && args !== undefined ) // zzz
+    else if( context === undefined && args !== undefined )
     {
       if( o.sealing === true )
       {
@@ -233,7 +289,7 @@ function constructorJoin( routine, args )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context : routine,
@@ -289,7 +345,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
@@ -345,7 +401,7 @@ function routineJoin( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
@@ -384,7 +440,7 @@ function routineSeal( context, routine, args )
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
-  return _routineJoin
+  return _._routineJoin
   ({
     routine,
     context,
@@ -412,24 +468,20 @@ function routineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
-
-  /* aaa
-    inline assertMapHasOnly, mapSupplementStructureless, assertMapHasNoUndefine manually
-    to make the routine available on low levels
-    error in Map.s cause problem with catching uncaught error
-  */
-  /* Dmytro : all routines are inlined */
 
   if( Config.debug )
   {
     let extraKeys = mapButKeys( options, defaults );
     _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
 
-    mapSupplementStructurelessMin( options, defaults );
+  mapSupplementStructurelessMin( options, defaults );
 
+  if( Config.debug )
+  {
     let undefineKeys = mapUndefineKeys( options );
     _.assert
     (
@@ -485,8 +537,13 @@ function routineOptions( routine, args, defaults )
       if( dstMap[ s ] !== undefined )
       continue;
 
-      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      if( Config.debug )
+      if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
+      {
+        debugger;
+        throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+      }
 
       dstMap[ s ] = srcMap[ s ];
     }
@@ -507,15 +564,9 @@ function assertRoutineOptions( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
-
-  /* aaa
-    inline assertMapHasOnly, assertMapHasAll, assertMapHasNoUndefine manually
-    to make the routine available on low levels
-  */
-  /* Dmytro : all routines are inlined */
 
   if( Config.debug )
   {
@@ -568,6 +619,10 @@ function assertRoutineOptions( routine, args, defaults )
 
 //
 
+/* qqq for Dmytro : forbid 3rd argument */
+/* qqq for Dmytro : inline implementation */
+/* qqq for Dmytro : make possible pass defaults-map instead of routine */
+/* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -578,14 +633,14 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   options = Object.create( null );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( routine.defaults ), 'Expects routine with defined defaults' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+  _.assert( _.aux.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
 
   defaults = defaults || routine.defaults;
 
-  _.assertMapHasOnly( options, defaults );
+  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
+  _.map.assertHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
 
   return options;
@@ -605,11 +660,11 @@ function routineOptionsReplacingUndefines( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-  _.assertMapHasOnly( options, defaults );
+  _.map.assertHasOnly( options, defaults );
   _.mapComplementReplacingUndefines( options, defaults );
 
   return options;
@@ -627,12 +682,12 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.object.is( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 
-  _.assertMapHasOnly( options, defaults );
-  _.assertMapHasAll( options, defaults );
+  _.map.assertHasOnly( options, defaults );
+  _.map.assertHasAll( options, defaults );
 
   return options;
 }
@@ -669,7 +724,7 @@ function _routinesCompose_head( routine, args )
   _.assert( _.routinesAre( o.elements ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
+  _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
   _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
   _.assert( o.chainer === null || _.routineIs( o.chainer ) );
@@ -737,11 +792,11 @@ function _routinesCompose_body( o )
     let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArrayIs( r ) );
+      _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
       _.unrollAppend( result, r );
       // args = chainer( r, k, args, o );
@@ -849,7 +904,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+//   _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
 //
 //   /* generate dst routine */
 //
@@ -898,16 +953,16 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //     let src = arguments[ a ];
 //     if( src === null )
 //     continue;
-//     _.assert( _.mapLike( src ) || _.routineIs( src ) );
+//     _.assert( _.aux.is( src ) || _.routineIs( src ) );
 //     for( let s in src )
 //     {
 //       let property = src[ s ];
 //       let d = Object.getOwnPropertyDescriptor( dst, s );
 //       if( d && !d.writable )
 //       continue;
-//       if( _.objectIs( property ) )
+//       if( _.object.is( property ) )
 //       {
-//         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+//         _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
 //         property = Object.create( property );
 //         // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
 //         if( dst[ s ] )
@@ -976,7 +1031,7 @@ function routineExtend( dst, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+  _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -1022,16 +1077,16 @@ function routineExtend( dst, src )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( _.mapLike( src ) || _.routineIs( src ) );
+    _.assert( _.aux.is( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
       let d = Object.getOwnPropertyDescriptor( dst, s );
       if( d && !d.writable )
       continue;
-      if( _.objectIs( property ) )
+      if( _.object.is( property ) )
       {
-        _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+        _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
         // property = Object.create( property );
         property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
         if( dst[ s ] )
@@ -1057,7 +1112,7 @@ function routineDefaults( dst, src, defaults )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( dst === null || src === null );
-  _.assert( _.mapLike( defaults ) );
+  _.assert( _.aux.is( defaults ) );
 
   return _.routineExtend( dst, src, { defaults } );
 }
@@ -1078,7 +1133,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -1102,7 +1157,7 @@ function routineUnite_body( o )
 
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
-      _.assert( _.objectIs( result ) );
+      _.assert( _.object.is( result ) );
       return _.unrollAppend([ unitedRoutine, [ result ] ]);
     });
     _.assert( _.routineIs( _head ) );
@@ -1180,7 +1235,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1221,7 +1276,7 @@ function routineUnite_body( o )
         let result;
         let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
-        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+        _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
         if( _.unrollIs( o ) )
         result = body.apply( this, o );
@@ -1258,6 +1313,8 @@ function routineUnite()
 routineUnite.head = routineUnite_head;
 routineUnite.body = routineUnite_body;
 routineUnite.defaults = { ... routineUnite_body.defaults };
+
+/* xxx : should routineUnite add group to routines? */
 
 //
 
@@ -1416,7 +1473,7 @@ function routineErFor( routine, erhead )
   _.assert( _.routineIs( erhead ) );
   _.assert( _.routineIs( head ) );
   _.assert( _.routineIs( body ) );
-  _.assert( _.objectIs( defaults ) );
+  _.assert( _.object.is( defaults ) );
 
   return er_functor;
 
@@ -1427,7 +1484,7 @@ function routineErFor( routine, erhead )
     let op = erhead.call( self, routine, arguments );
 
     _.assert( _.mapIs( op ) );
-    _.assertMapHasOnly( op, defaults );
+    _.map.assertHasOnly( op, defaults );
 
     er.defaults = _.mapSupplement( op, defaults );
 
@@ -1461,12 +1518,12 @@ function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
   _.assert( _.routineIs( erhead ) );
   _.assert( _.routineIs( head ) );
   _.assert( _.routineIs( body ) );
-  _.assert( _.objectIs( defaults ) );
+  _.assert( _.object.is( defaults ) );
 
   let op = erhead.call( self, routine, arguments );
 
   _.assert( _.mapIs( op ) );
-  _.assertMapHasOnly( op, defaults );
+  _.map.assertHasOnly( op, defaults );
 
   er.defaults = _.mapSupplement( op, defaults );
 
@@ -1541,7 +1598,7 @@ function vectorize_body( o )
 
   let resultRoutine = vectorizeArray;
 
-  if( _.numberIs( select ) )
+  if( _.number.is( select ) )
   {
 
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )
@@ -1629,7 +1686,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.toStrShort( this ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( this[ routine ] ), () => 'Context ' + _.entity.exportStringShort( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -1639,7 +1696,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.toStrShort( c ) + ' does not have routine ' + routine );
+        _.assert( _.routineIs( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShort( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
@@ -1674,7 +1731,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingArray && _.setLike( args[ d ] ) )
+      else if( vectorizingArray && _.set.like( args[ d ] ) )
       {
         length = args[ d ].size;
         break;
@@ -1684,9 +1741,9 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
+      else if( vectorizingMapVals && _.aux.is( args[ d ] ) )
       {
-        keys = _.mapOwnKeys( args[ d ] );
+        keys = _.mapOnlyOwnKeys( args[ d ] );
         break;
       }
     }
@@ -1708,7 +1765,7 @@ function vectorize_body( o )
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
       {
-        _.assert( _.arraySetIdentical( _.mapOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+        _.assert( _.arraySet.identical( _.mapOnlyOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
       }
       else
       {
@@ -1753,7 +1810,7 @@ function vectorize_body( o )
       // // let result = [];
       // let result;
       // result = _.longMakeEmpty( src ); /* qqq : use this code */
-      // // if( _.argumentsArrayIs( src ) )
+      // // if( _.argumentsArray.is( src ) )
       // // result = [];
       // // else
       // // result = new src.constructor();
@@ -1767,7 +1824,7 @@ function vectorize_body( o )
       //   append( routine.apply( this, args2 ) );
       // });
       // // // debugger;
-      // // if( _.hasMethodIterator( src ) )
+      // // if( _.entity.methodIteratorOf( src ) )
       // // for( let e of src )
       // // {
       // //   // debugger;
@@ -1803,7 +1860,7 @@ function vectorize_body( o )
       //
       // return result;
     }
-    else if( _.setLike( src ) ) /* qqq : cover please */
+    else if( _.set.like( src ) ) /* qqq : cover please */
     {
       let args2 = [ ... args ];
       let result = new Set;
@@ -1914,7 +1971,7 @@ function vectorize_body( o )
       // return result;
 
     }
-    else if( _.setLike( src ) ) /* qqq : cover */
+    else if( _.set.like( src ) ) /* qqq : cover */
     {
       debugger;
       if( head )
@@ -2517,11 +2574,13 @@ let Extension =
 {
 
   routineIs,
+  _routineIs,
   routineLike,
+  _routineLike,
+  routineIsTrivial,
   routineIsSync,
   routineIsAsync,
   routinesAre,
-  routineIsTrivial,
   routineWithName,
 
   _routineJoin,

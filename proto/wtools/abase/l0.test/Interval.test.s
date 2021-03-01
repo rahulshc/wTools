@@ -12,8 +12,340 @@ if( typeof module !== 'undefined' )
 let _ = wTools;
 
 //--
-// range l0/l3/Interval.s
+// interval l0/l3/Interval.s
 //--
+
+function intervalIs( test )
+{
+  test.case = 'undefined';
+  var got = _.intervalIs( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.intervalIs( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.intervalIs( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.intervalIs( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.intervalIs( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.intervalIs( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.intervalIs( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.intervalIs( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.intervalIs( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  function Constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.intervalIs( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.intervalIs( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.intervalIs( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.intervalIs( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Set';
+  var got = _.intervalIs( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.intervalIs( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.intervalIs( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.intervalIs( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.intervalIs( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.intervalIs( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.intervalIs( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'array.length = 0';
+  var got = _.intervalIs( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 1';
+  var got = _.intervalIs( [ 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, numbers';
+  var got = _.intervalIs( [ 1, 2 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, number and undefined';
+  var got = _.intervalIs( [ 1, undefined ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length > 2';
+  var got = _.intervalIs( [ 1, 2, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 0';
+  var got = _.intervalIs( _.unrollMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 1';
+  var got = _.intervalIs( _.unrollMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, numbers';
+  var got = _.intervalIs( _.unrollMake( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, number and undefined';
+  var got = _.intervalIs( _.unrollMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length > 2';
+  var got = _.intervalIs( _.unrollMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 0';
+  var got = _.intervalIs( _.argumentsArray.make( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 1';
+  var got = _.intervalIs( _.argumentsArray.make( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, numbers';
+  var got = _.intervalIs( _.argumentsArray.make( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, number and undefined';
+  var got = _.intervalIs( _.argumentsArray.make( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length > 2';
+  var got = _.intervalIs( _.argumentsArray.make( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 0';
+  var got = _.intervalIs( new U8x() );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 1';
+  var got = _.intervalIs( new I16x( 1 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2';
+  var got = _.intervalIs( new F32x( 2 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length > 2';
+  var got = _.intervalIs( new F32x( 4 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intervalIs() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intervalIs( [ 1, 2 ], 'extra' ) );
+}
+
+//
+
+function intervalIsValid( test )
+{
+  test.case = 'not a range, long with 1 element';
+  var got = _.intervalIsValid([ 1 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'not a range, long with 3 elements';
+  var got = _.intervalIsValid([ 1, 2, 3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, elements isValid undefined';
+  var got = _.intervalIsValid([ undefined, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid undefined';
+  var got = _.intervalIsValid([ undefined, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid undefined';
+  var got = _.intervalIsValid([ 2, undefined ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two NaN';
+  var got = _.intervalIsValid([ NaN, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid NaN';
+  var got = _.intervalIsValid([ NaN, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid NaN';
+  var got = _.intervalIsValid([ 2, NaN ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two not integer numbers';
+  var got = _.intervalIsValid([ 2.01, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid not an integer';
+  var got = _.intervalIsValid([ 2.01, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid not an integer';
+  var got = _.intervalIsValid([ 2, 10/3 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two Infinity';
+  var got = _.intervalIsValid([ Infinity, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, first element isValid Infinity';
+  var got = _.intervalIsValid([ Infinity, 2 ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'range, second element isValid Infinity';
+  var got = _.intervalIsValid([ 2, Infinity ]);
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'range, two positive integer';
+  var got = _.intervalIsValid([ 2, 10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, two negative integer';
+  var got = _.intervalIsValid([ -2, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'range, first element +0';
+  var got = _.intervalIsValid([ +0, -10 ]);
+  var expected = true;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intervalIsValid( [ 1, 2 ], 'extra' ) );
+}
+
+// --
+// common
+// --
 
 function is( test )
 {
@@ -196,27 +528,27 @@ function is( test )
     test.identical( got, expected );
 
     test.case = 'argumentsArray.length = 0';
-    var got = _[ namespace ].is( _.argumentsArrayMake( [] ) );
+    var got = _[ namespace ].is( _.argumentsArray.make( [] ) );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'argumentsArray.length = 1';
-    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1 ] ) );
+    var got = _[ namespace ].is( _.argumentsArray.make( [ 1 ] ) );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'argumentsArray.length = 2, numbers';
-    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, 2 ] ) );
+    var got = _[ namespace ].is( _.argumentsArray.make( [ 1, 2 ] ) );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'argumentsArray.length = 2, number and undefined';
-    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, undefined ] ) );
+    var got = _[ namespace ].is( _.argumentsArray.make( [ 1, undefined ] ) );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'argumentsArray.length > 2';
-    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+    var got = _[ namespace ].is( _.argumentsArray.make( [ 1, 2, 3 ] ) );
     var expected = false;
     test.identical( got, expected );
 
@@ -474,33 +806,33 @@ function fromLeft( test )
     /* */
 
     test.case = 'range.length === 1';
-    var src = _.argumentsArrayMake( [ 1 ] );
+    var src = _.argumentsArray.make( [ 1 ] );
     var got = _[ namespace ].fromLeft( src );
     test.identical( got, [ 1, Infinity ] );
     test.true( got !== src );
 
     test.case = 'range[ 0 ] - undefined';
-    var src = _.argumentsArrayMake( [ undefined, 1 ] );
+    var src = _.argumentsArray.make( [ undefined, 1 ] );
     var got = _[ namespace ].fromLeft( src );
-    test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
+    test.identical( got, _.argumentsArray.make([ 0, 1 ]) );
     test.true( got === src );
 
     test.case = 'range[ 1 ] - undefined';
-    var src = _.argumentsArrayMake( [ 1, undefined ] );
+    var src = _.argumentsArray.make( [ 1, undefined ] );
     var got = _[ namespace ].fromLeft( src );
-    test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
+    test.identical( got, _.argumentsArray.make([ 1, Infinity ]) );
     test.true( got === src );
 
     test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
-    var src = _.argumentsArrayMake( [ undefined, undefined ] );
+    var src = _.argumentsArray.make( [ undefined, undefined ] );
     var got = _[ namespace ].fromLeft( src );
-    test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
+    test.identical( got, _.argumentsArray.make([ 0, Infinity ]) );
     test.true( got === src );
 
     test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-    var src = _.argumentsArrayMake( [ 1, 5 ] );
+    var src = _.argumentsArray.make( [ 1, 5 ] );
     var got = _[ namespace ].fromLeft( src );
-    test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+    test.identical( got, _.argumentsArray.make( [ 1, 5 ] ) );
     test.true( got === src );
 
     /* */
@@ -633,33 +965,33 @@ function fromRight( test )
     /* */
 
     test.case = 'range.length === 1';
-    var src = _.argumentsArrayMake( [ 1 ] );
+    var src = _.argumentsArray.make( [ 1 ] );
     var got = _[ namespace ].fromRight( src );
     test.identical( got, [ 1, Infinity ] );
     test.true( got !== src );
 
     test.case = 'range[ 0 ] - undefined';
-    var src = _.argumentsArrayMake( [ undefined, 1 ] );
+    var src = _.argumentsArray.make( [ undefined, 1 ] );
     var got = _[ namespace ].fromRight( src );
-    test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
+    test.identical( got, _.argumentsArray.make([ 0, 1 ]) );
     test.true( got === src );
 
     test.case = 'range[ 1 ] - undefined';
-    var src = _.argumentsArrayMake( [ 1, undefined ] );
+    var src = _.argumentsArray.make( [ 1, undefined ] );
     var got = _[ namespace ].fromRight( src );
-    test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
+    test.identical( got, _.argumentsArray.make([ 1, Infinity ]) );
     test.true( got === src );
 
     test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
-    var src = _.argumentsArrayMake( [ undefined, undefined ] );
+    var src = _.argumentsArray.make( [ undefined, undefined ] );
     var got = _[ namespace ].fromRight( src );
-    test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
+    test.identical( got, _.argumentsArray.make([ 0, Infinity ]) );
     test.true( got === src );
 
     test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-    var src = _.argumentsArrayMake( [ 1, 5 ] );
+    var src = _.argumentsArray.make( [ 1, 5 ] );
     var got = _[ namespace ].fromRight( src );
-    test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+    test.identical( got, _.argumentsArray.make( [ 1, 5 ] ) );
     test.true( got === src );
 
     /* */
@@ -792,30 +1124,30 @@ function firstGet( test )
     test.open( 'range - argumentsArray' );
 
     test.case = 'without options';
-    var got = _[ namespace ].firstGet( _.argumentsArrayMake( [ 1, 2 ] ) );
+    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ) );
     test.identical( got, 1 );
 
     test.case = 'options - undefined';
     var options = undefined;
-    var got = _[ namespace ].firstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
     test.identical( got, 1 );
     test.identical( options, undefined );
 
     test.case = 'options - empty map';
     var options = {};
-    var got = _[ namespace ].firstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
     test.identical( got, 1 );
     test.identical( options, { increment : 1 } );
 
     test.case = 'options - map with own field increment';
     var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
     test.identical( got, 1 );
     test.identical( options, { increment : 2 } );
 
     test.case = 'options - map with own field increment - undefined';
     var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
     test.identical( got, 1 );
     test.identical( options, { increment : 1 } );
 
@@ -1208,37 +1540,37 @@ function cintervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, cinterval[ 0 ] - cinterval[ 1 ] === 1';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ -1, -2 ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ -1, -2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.cinterval.isEmpty( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.cinterval.isEmpty( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -1469,37 +1801,37 @@ function cintervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, cinterval[ 0 ] - cinterval[ 1 ] === 1';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ -1, -2 ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ -1, -2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.cinterval.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.cinterval.isPopulated( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -1625,27 +1957,27 @@ function cintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, cinterval[ 0 ] < srcNumber < cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -1790,32 +2122,32 @@ function cintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < cinterval[ 0 ]';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 0 ]';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > cinterval[ 1 ] + 1';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber === cinterval[ 1 ] + 1';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 1 ]';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, cinterval[ 0 ] < srcNumber < cinterval[ 1 ]';
-//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -1950,27 +2282,27 @@ function cintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, cinterval[ 0 ] < srcNumber < cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -2100,27 +2432,27 @@ function cintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 0 ]';
-//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, cinterval[ 0 ] < srcNumber < cinterval[ 1 ]';
-//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.cinterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -2414,33 +2746,33 @@ function cintervalFromSingle( test )
   /* */
 
   test.case = 'cinterval.length === 1';
-  var src = _.argumentsArrayMake( [ 1 ] );
+  var src = _.argumentsArray.make( [ 1 ] );
   var got = _.cinterval.fromSingle( src );
   test.identical( got, [ 1, 1 ] );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, 2 ] );
+  var src = _.argumentsArray.make( [ undefined, 2 ] );
   var got = _.cinterval.fromSingle( src );
   test.identical( got, [ 2, 2 ] );
   test.true( got !== src );
 
   test.case = 'cinterval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ 1, undefined ] );
+  var src = _.argumentsArray.make( [ 1, undefined ] );
   var got = _.cinterval.fromSingle( src );
   test.identical( got, [ 1, 1 ] );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - undefined, cinterval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var src = _.argumentsArray.make( [ undefined, undefined ] );
   var got = _.cinterval.fromSingle( src );
   test.identical( got, [ 0, 0 ] );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - number, cinterval[ 1 ] - number';
-  var src = _.argumentsArrayMake( [ 1, 5 ] );
+  var src = _.argumentsArray.make( [ 1, 5 ] );
   var got = _.cinterval.fromSingle( src );
-  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 5 ] ) );
   test.true( got === src );
 
   /* */
@@ -2624,66 +2956,66 @@ function cintervalClamp( test )
   test.open( 'argumentsArray' );
 
   test.case = 'identical ranges';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 2, 2 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 2 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 4 ] );
+  var dst = _.argumentsArray.make( [ 2, 4 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 4 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 2 ] );
+  var dst = _.argumentsArray.make( [ 4, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 5 ] );
+  var dst = _.argumentsArray.make( [ 4, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 7, 5 ] );
+  var dst = _.argumentsArray.make( [ 7, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 6, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 6, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 4, 7 ] );
+  var dst = _.argumentsArray.make( [ 4, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 8, 7 ] );
+  var dst = _.argumentsArray.make( [ 8, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 6, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 6, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 2, 7 ] );
+  var dst = _.argumentsArray.make( [ 2, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.cinterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 6 ] ) );
   test.true( got === dst );
 
   test.close( 'argumentsArray' );
@@ -2975,30 +3307,30 @@ function cintervalLastGet( test )
   test.open( 'cinterval - argumentsArray' );
 
   test.case = 'without options';
-  var got = _.cinterval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, 2 );
 
   test.case = 'options - undefined';
   var options = undefined;
-  var got = _.cinterval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 2 );
   test.identical( options, undefined );
 
   test.case = 'options - empty map';
   var options = {};
-  var got = _.cinterval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 2 );
   test.identical( options, { increment : 1 } );
 
   test.case = 'options - map with own field increment';
   var options = { increment : 2 };
-  var got = _.cinterval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 2 );
   test.identical( options, { increment : 2 } );
 
   test.case = 'options - map with own field increment - undefined';
   var options = { increment : undefined };
-  var got = _.cinterval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 2 );
   test.identical( options, { increment : 1 } );
 
@@ -3344,37 +3676,37 @@ function lintervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, linterval[ 1 ] === 0';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ -1, 0 ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ -1, 0 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.linterval.isEmpty( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.linterval.isEmpty( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -3605,37 +3937,37 @@ function lintervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, linterval[ 0 ] - linterval[ 1 ] === 1';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ -1, -2 ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ -1, -2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.linterval.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.linterval.isPopulated( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -3776,32 +4108,32 @@ function lintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < linterval[ 0 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 0 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber > linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber === linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 1 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, linterval[ 0 ] < srcNumber < linterval[ 1 ]';
-//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -3951,32 +4283,32 @@ function lintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < linterval[ 0 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 0 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber === linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 1 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, linterval[ 0 ] < srcNumber < linterval[ 1 ]';
-//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -4126,32 +4458,32 @@ function lintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < linterval[ 0 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 0 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber > linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber === linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, linterval[ 0 ] < srcNumber < linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -4301,32 +4633,32 @@ function lintervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < linterval[ 0 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 0 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber > linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > linterval[ 1 ], srcNumber === linterval[ 0 ] + linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, linterval[ 0 ] < srcNumber < linterval[ 1 ]';
-//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.linterval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -4625,33 +4957,33 @@ function lintervalFromSingle( test )
   /* */
 
   test.case = 'linterval.length === 1';
-  var src = _.argumentsArrayMake( [ 1 ] );
+  var src = _.argumentsArray.make( [ 1 ] );
   var got = _.linterval.fromSingle( src );
   test.identical( got, [ 1, 1 ] );
   test.true( got !== src );
 
   test.case = 'linterval[ 0 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, 1 ] );
+  var src = _.argumentsArray.make( [ undefined, 1 ] );
   var got = _.linterval.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.true( got !== src );
 
   test.case = 'linterval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ 1, undefined ] );
+  var src = _.argumentsArray.make( [ 1, undefined ] );
   var got = _.linterval.fromSingle( src );
   test.identical( got, [ 1, 1 ] );
   test.true( got !== src );
 
   test.case = 'linterval[ 0 ] - undefined, linterval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var src = _.argumentsArray.make( [ undefined, undefined ] );
   var got = _.linterval.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.true( got !== src );
 
   test.case = 'linterval[ 0 ] - number, linterval[ 1 ] - number';
-  var src = _.argumentsArrayMake( [ 1, 5 ] );
+  var src = _.argumentsArray.make( [ 1, 5 ] );
   var got = _.linterval.fromSingle( src );
-  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 5 ] ) );
   test.true( got === src );
 
   /* */
@@ -4835,66 +5167,66 @@ function lintervalClamp( test )
   test.open( 'argumentsArray' );
 
   test.case = 'identical ranges';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 2, 2 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 2 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 2 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 4 ] );
+  var dst = _.argumentsArray.make( [ 2, 4 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 4 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 2 ] );
+  var dst = _.argumentsArray.make( [ 4, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 2 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 5 ] );
+  var dst = _.argumentsArray.make( [ 4, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 7, 5 ] );
+  var dst = _.argumentsArray.make( [ 7, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 4, 7 ] );
+  var dst = _.argumentsArray.make( [ 4, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 8, 7 ] );
+  var dst = _.argumentsArray.make( [ 8, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 2, 7 ] );
+  var dst = _.argumentsArray.make( [ 2, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.linterval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 6 ] ) );
   test.true( got === dst );
 
   test.close( 'argumentsArray' );
@@ -5186,30 +5518,30 @@ function lintervalLastGet( test )
   test.open( 'linterval - argumentsArray' );
 
   test.case = 'without options';
-  var got = _.linterval.lastGet( _.argumentsArrayMake( [ 2, 3 ] ) );
+  var got = _.linterval.lastGet( _.argumentsArray.make( [ 2, 3 ] ) );
   test.identical( got, 4 );
 
   test.case = 'options - undefined';
   var options = undefined;
-  var got = _.linterval.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  var got = _.linterval.lastGet( _.argumentsArray.make( [ 2, 3 ] ), options );
   test.identical( got, 4 );
   test.identical( options, undefined );
 
   test.case = 'options - empty map';
   var options = {};
-  var got = _.linterval.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  var got = _.linterval.lastGet( _.argumentsArray.make( [ 2, 3 ] ), options );
   test.identical( got, 4 );
   test.identical( options, { increment : 1 } );
 
   test.case = 'options - map with own field increment';
   var options = { increment : 2 };
-  var got = _.linterval.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  var got = _.linterval.lastGet( _.argumentsArray.make( [ 2, 3 ] ), options );
   test.identical( got, 4 );
   test.identical( options, { increment : 2 } );
 
   test.case = 'options - map with own field increment - undefined';
   var options = { increment : undefined };
-  var got = _.linterval.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  var got = _.linterval.lastGet( _.argumentsArray.make( [ 2, 3 ] ), options );
   test.identical( got, 4 );
   test.identical( options, { increment : 1 } );
 
@@ -5545,32 +5877,32 @@ function ointervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.ointerval.isEmpty( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.ointerval.isEmpty( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -5786,32 +6118,32 @@ function ointervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [ 1, 2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [ -2, -2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.ointerval.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.ointerval.isPopulated( _.argumentsArray.make( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -5932,27 +6264,27 @@ function ointervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, ointerval[ 0 ] < srcNumber < range[ 1 ]';
-//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -6082,27 +6414,27 @@ function ointervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < ointerval[ 0 ]';
-//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 0 ]';
-//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > ointerval[ 1 ]';
-//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 1 ]';
-//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, ointerval[ 0 ] < srcNumber < ointerval[ 1 ]';
-//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inExclusive( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -6232,27 +6564,27 @@ function ointervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, ointerval[ 0 ] < srcNumber < range[ 1 ]';
-//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveLeft( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -6382,27 +6714,27 @@ function ointervalIsPopulated( test )
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber < ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 0 ]';
-//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber > ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, srcNumber = ointerval[ 1 ]';
-//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0, 0 ] ) );
 //   var expected = false;
 //   test.identical( got, expected );
 //
 //   test.case = 'srcNumber - argumentsArray, ointerval[ 0 ] < srcNumber < range[ 1 ]';
-//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+//   var got = _.ointerval.inInclusiveRight( [ 2, 5 ], _.argumentsArray.make( [ 0, 0, 0, 0 ] ) );
 //   var expected = true;
 //   test.identical( got, expected );
 //
@@ -6696,33 +7028,33 @@ function ointervalFromSingle( test )
   /* */
 
   test.case = 'ointerval.length === 1';
-  var src = _.argumentsArrayMake( [ 1 ] );
+  var src = _.argumentsArray.make( [ 1 ] );
   var got = _.ointerval.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.true( got !== src );
 
   test.case = 'ointerval[ 0 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, 2 ] );
+  var src = _.argumentsArray.make( [ undefined, 2 ] );
   var got = _.ointerval.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.true( got !== src );
 
   test.case = 'ointerval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ 1, undefined ] );
+  var src = _.argumentsArray.make( [ 1, undefined ] );
   var got = _.ointerval.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.true( got !== src );
 
   test.case = 'ointerval[ 0 ] - undefined, ointerval[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var src = _.argumentsArray.make( [ undefined, undefined ] );
   var got = _.ointerval.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.true( got !== src );
 
   test.case = 'ointerval[ 0 ] - number, ointerval[ 1 ] - number';
-  var src = _.argumentsArrayMake( [ 1, 5 ] );
+  var src = _.argumentsArray.make( [ 1, 5 ] );
   var got = _.ointerval.fromSingle( src );
-  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 5 ] ) );
   test.true( got === src );
 
   /* */
@@ -6906,66 +7238,66 @@ function ointervalClamp( test )
   test.open( 'argumentsArray' );
 
   test.case = 'identical ranges';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 2, 2 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 2, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 2, 2 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var dst = _.argumentsArray.make( [ 2, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 2, 4 ] );
+  var dst = _.argumentsArray.make( [ 2, 4 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 4 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 2 ] );
+  var dst = _.argumentsArray.make( [ 4, 2 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 4, 5 ] );
+  var dst = _.argumentsArray.make( [ 4, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
-  var dst = _.argumentsArrayMake( [ 7, 5 ] );
+  var dst = _.argumentsArray.make( [ 7, 5 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 6, 5 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 6, 5 ] ) );
   test.true( got === dst );
 
   test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 4, 7 ] );
+  var dst = _.argumentsArray.make( [ 4, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 4, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 4, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 8, 7 ] );
+  var dst = _.argumentsArray.make( [ 8, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 6, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 6, 6 ] ) );
   test.true( got === dst );
 
   test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
-  var dst = _.argumentsArrayMake( [ 2, 7 ] );
+  var dst = _.argumentsArray.make( [ 2, 7 ] );
   var clamp = [ 3, 6 ];
   var got = _.ointerval.clamp( dst, clamp );
-  test.identical( got, _.argumentsArrayMake( [ 3, 6 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 3, 6 ] ) );
   test.true( got === dst );
 
   test.close( 'argumentsArray' );
@@ -7257,30 +7589,30 @@ function ointervalLastGet( test )
   test.open( 'ointerval - argumentsArray' );
 
   test.case = 'without options';
-  var got = _.ointerval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.ointerval.lastGet( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, 1 );
 
   test.case = 'options - undefined';
   var options = undefined;
-  var got = _.ointerval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.ointerval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 1 );
   test.identical( options, undefined );
 
   test.case = 'options - empty map';
   var options = {};
-  var got = _.ointerval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.ointerval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 1 );
   test.identical( options, { increment : 1 } );
 
   test.case = 'options - map with own field increment';
   var options = { increment : 2 };
-  var got = _.ointerval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.ointerval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 1 );
   test.identical( options, { increment : 2 } );
 
   test.case = 'options - map with own field increment - undefined';
   var options = { increment : undefined };
-  var got = _.ointerval.lastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  var got = _.ointerval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
   test.identical( got, 1 );
   test.identical( options, { increment : 1 } );
 
@@ -7452,6 +7784,11 @@ let Self =
 
   tests :
   {
+
+    // l0/l3/Interval.s
+
+    intervalIs,
+    intervalIsValid,
 
     // common
 

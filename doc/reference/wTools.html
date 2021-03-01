@@ -6941,7 +6941,7 @@ or new TypedArray with the same length of the initial array if second argument i
 <dl>
     <dt>
         <div class="param-desc">
-        <p>If the (length === undefined) and (_.numberIs(ins.length)) is not a number.</p>
+        <p>If the (length === undefined) and (_.number.is(ins.length)) is not a number.</p>
         </div>
     </dt>
     <dd></dd>
@@ -33811,7 +33811,7 @@ _.strToBytes( 'example' );</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var str = _.strTypeOf( 'testing' );</code></pre>
+    <pre class="prettyprint"><code>var str = _.entity.strTypeOf( 'testing' );</code></pre>
 
 
 
@@ -35077,15 +35077,15 @@ _toStrFine( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } )</code></pre>
 _toStrFine( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } )</code></pre>
 
     <pre class="prettyprint"><code>//returns { routine add }
-_.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
+_.entity.exportStringFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
 
  </code></pre>
 
     <pre class="prettyprint"><code>//returns { Object with 1 elements }
-_.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )</code></pre>
+_.entity.exportStringFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )</code></pre>
 
     <pre class="prettyprint"><code>//returns a : 1 | b : 2
-_.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )</code></pre>
+_.entity.exportStringFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )</code></pre>
 
 
 

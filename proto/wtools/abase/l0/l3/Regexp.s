@@ -34,16 +34,33 @@ function regexpLike( src )
   return false;
 }
 
+// //
+//
+// function regexpsLike( srcs )
+// {
+//   if( !_.arrayIs( srcs ) )
+//   return false;
+//   for( let s = 0 ; s < srcs.length ; s++ )
+//   if( !_.regexpLike( srcs[ s ] ) )
+//   return false;
+//   return true;
+// }
+
 //
 
-function regexpsLike( srcs )
+function regexpsLikeAll( src )
 {
-  if( !_.arrayIs( srcs ) )
-  return false;
-  for( let s = 0 ; s < srcs.length ; s++ )
-  if( !_.regexpLike( srcs[ s ] ) )
-  return false;
-  return true;
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( let s = 0 ; s < src.length ; s++ )
+    if( !_.regexpLike( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return _.regexpLike( src );
 }
 
 //
@@ -89,27 +106,16 @@ function regexpEscape( src )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
+let ExtensionTools =
 {
-
-}
-
-// --
-// routines
-// --
-
-let Routines =
-{
-
-  // regexp
 
   regexpIs,
   regexpObjectIs,
   regexpLike,
-  regexpsLike,
+  regexpsLikeAll,
   regexpIdentical, /* qqq : cover please */
   regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
 
@@ -119,8 +125,43 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+  // regexp
+
+  is : regexpIs,
+  objectIs : regexpObjectIs,
+  like : regexpLike,
+  identical : regexpIdentical,
+  equivalent : regexpEquivalent,
+  areIdenticalShallow : regexpIdentical,
+
+  escape : regexpEscape,
+}
+
+//
+
+let ExtensionS =
+{
+
+  // regexps
+
+  likeAll : regexpsLikeAll,
+
+}
+
+
+_.assert( _.regexp === undefined );
+_.regexp = Object.create( null );
+_.assert( _.regexp.s === undefined );
+_.regexp.s = Object.create( null );
+
+Object.assign( _.regexp, Extension )
+Object.assign( _.regexp.s, ExtensionS )
+Object.assign( Self, ExtensionTools )
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
 
 // --
 // export

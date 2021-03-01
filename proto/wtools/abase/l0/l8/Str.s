@@ -33,8 +33,8 @@ function strIsolate_head( routine, args )
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strsLikeAll( o.delimeter ) )
-  _.assert( _.numberIs( o.times ) );
+  _.assert( _.regexpsLikeAll( o.delimeter ) )
+  _.assert( _.number.is( o.times ) );
 
   return o;
 }
@@ -42,7 +42,7 @@ function strIsolate_head( routine, args )
 //
 
 /**
-* @typedef {object} wTools.toStrInhalfOptions
+* @typedef {object} wTools.entity.exportStringInhalfOptions
 * @property {string} [ o.src=null ] - Source string.
 * @property {string | array} [ o.delimeter=' ' ] - Splitter of the string.
 * @property {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
@@ -52,7 +52,7 @@ function strIsolate_head( routine, args )
  * Finds occurrence of delimeter( o.delimeter ) in source( o.src ) and splits string in finded position by half.
  * If function finds  more then one occurrence, it separates string in the position of the last.
  *
- * @param {wTools.toStrInhalfOptions} o - Contains data and options {@link wTools.toStrInhalfOptions}.
+ * @param {wTools.entity.exportStringInhalfOptions} o - Contains data and options {@link wTools.entity.exportStringInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -86,9 +86,9 @@ function strIsolate_head( routine, args )
 //
 //   _.assertRoutineOptions( strIsolate, o );
 //   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.strType( o.src ) );
+//   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.entity.strType( o.src ) );
 //   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
-//   _.assert( _.numberIs( o.times ) );
+//   _.assert( _.number.is( o.times ) );
 //
 //   /* */
 //
@@ -402,7 +402,7 @@ strIsolate_body.defaults =
  * Short-cut for strIsolate function.
  * Finds occurrence of delimeter( o.delimeter ) from begining of ( o.src ) and splits string in finded position by half.
  *
- * @param {wTools.toStrInhalfOptions} o - Contains data and options {@link wTools.toStrInhalfOptions}.
+ * @param {wTools.entity.exportStringInhalfOptions} o - Contains data and options {@link wTools.entity.exportStringInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -465,7 +465,7 @@ strIsolateLeftOrAll_body.defaults =
  * Short-cut for strIsolate function.
  * Finds occurrence of delimeter( o.delimeter ) from end of ( o.src ) and splits string in finded position by half.
  *
- * @param {wTools.toStrInhalfOptions} o - Contains data and options {@link wTools.toStrInhalfOptions}.
+ * @param {wTools.entity.exportStringInhalfOptions} o - Contains data and options {@link wTools.entity.exportStringInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -663,7 +663,7 @@ function strIsolateInsideSignle( src, begin, end )
       if( b.entry === undefined )
       return notFound();
 
-      _.assert( _.numberIs( b.instanceIndex ) );
+      _.assert( _.number.is( b.instanceIndex ) );
       let end = pairs[ b.instanceIndex ][ 1 ];
 
       // e = _.strRight( src, end, Math.min( b.index+1, src.length ) );

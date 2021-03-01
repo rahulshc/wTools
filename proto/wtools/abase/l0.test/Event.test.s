@@ -67,7 +67,8 @@ function Chain( test )
   test.true( _.event.chainIs( got ) );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 1 );
-  test.identical( got.chain[ 0 ], _.event.Name( 'begin' ) );
+  test.true( _.event.nameIs( got.chain[ 0 ] ) );
+  test.identical( got.chain[ 0 ].value, 'begin' );
 
   test.case = 'single Name';
   var name = _.event.Name( 'begin' );
@@ -85,7 +86,9 @@ function Chain( test )
   test.true( got === chain );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 2 );
-  test.equivalent( got.chain, [ name, _.event.Name( 'end' ) ] );
+  test.identical( got.chain[ 0 ], name );
+  test.true( _.event.nameIs( got.chain[ 1 ] ) );
+  test.identical( got.chain[ 1 ].value, 'end' );
 
   /* */
 
@@ -94,7 +97,12 @@ function Chain( test )
   test.true( _.event.chainIs( got ) );
   test.true( _.longIs( got.chain ) );
   test.identical( got.chain.length, 3 );
-  test.equivalent( got.chain, [ _.event.Name( 'begin' ), _.event.Name( 'end' ), _.event.Name( 'error' ) ] );
+  test.true( _.event.nameIs( got.chain[ 0 ] ) );
+  test.identical( got.chain[ 0 ].value, 'begin' );
+  test.true( _.event.nameIs( got.chain[ 1 ] ) );
+  test.identical( got.chain[ 1 ].value, 'end' );
+  test.true( _.event.nameIs( got.chain[ 2 ] ) );
+  test.identical( got.chain[ 2 ].value, 'error' );
 
   test.case = 'a few Names';
   var name1 = _.event.Name( 'begin' );
@@ -503,8 +511,10 @@ function onWithChain( test )
   _.event.on( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0, 1 ] );
+  test.identical( ehandler.events.event[ 0 ].native, onEvent );
 
   /* */
 
@@ -515,12 +525,16 @@ function onWithChain( test )
   _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
 
   /* */
 
@@ -531,17 +545,23 @@ function onWithChain( test )
   _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
 
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
 
   test.close( 'with string names' );
 
@@ -556,12 +576,16 @@ function onWithChain( test )
   _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
 
   /* */
 
@@ -572,17 +596,24 @@ function onWithChain( test )
   _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
 
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
+
   test.close( 'with instances of Name' );
 }
 
@@ -985,10 +1016,13 @@ function onceWithChain( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
+  test.identical( ehandler.events.event[ 0 ].native, onEvent );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event, [] );
 
   /* */
 
@@ -999,12 +1033,16 @@ function onceWithChain( test )
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
 
   /* */
 
@@ -1015,17 +1053,23 @@ function onceWithChain( test )
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
 
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
 
   test.close( 'with string names' );
 
@@ -1040,12 +1084,16 @@ function onceWithChain( test )
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
 
   /* */
 
@@ -1056,17 +1104,24 @@ function onceWithChain( test )
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
 
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
+  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
+  test.identical( ehandler.events.event2, [] );
+
   test.close( 'with instances of Name' );
 }
 

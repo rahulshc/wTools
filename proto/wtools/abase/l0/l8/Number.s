@@ -5,7 +5,8 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.number = _.number || Object.create( null );
+_.number.s = _.number.s || Object.create( null );
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -29,7 +30,7 @@ function numbersTotal( numbers )
   for( let n = 0 ; n < numbers.length ; n++ )
   {
     let number = numbers[ n ];
-    _.assert( _.numberIs( number ) )
+    _.assert( _.number.is( number ) )
     result += number;
   }
   return result;
@@ -54,9 +55,9 @@ function numbersFrom( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.strIs( src ) )
-  return _.numberFrom( src );
+  return _.number.from( src );
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return src;
 
   let result;
@@ -65,17 +66,17 @@ function numbersFrom( src )
   {
     result = [];
     for( let s = 0 ; s < src.length ; s++ )
-    result[ s ] = _.numberFrom( src[ s ] );
+    result[ s ] = _.number.from( src[ s ] );
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     result = Object.create( null );
     for( let s in src )
-    result[ s ] = _.numberFrom( src[ s ] );
+    result[ s ] = _.number.from( src[ s ] );
   }
   else
   {
-    result = _.numberFrom( src );
+    result = _.number.from( src );
   }
 
   return result;
@@ -97,12 +98,19 @@ function numberFromStr( src )
 function numberFromStrMaybe( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ) || _.numberIs( src ) );
-  if( _.numberIs( src ) )
+  _.assert( _.strIs( src ) || _.number.is( src ) );
+
+  if( _.number.is( src ) )
   return src;
   if( !src ) /* qqq : cover */
   return src;
-  let parsed = !src ? NaN : Number( src );
+
+  // let parsed = !src ? NaN : Number( src ); /* Dmytro : it is strange code, the previous branch checks this condition */
+  // if( !isNaN( parsed ) )
+  // return parsed;
+  // return src;
+
+  let parsed = src ? Number( src ) : NaN;
   if( !isNaN( parsed ) )
   return parsed;
   return src;
@@ -113,9 +121,9 @@ function numberFromStrMaybe( src )
 function numbersSlice( src, f, l )
 {
   if( _.arrayLike( src ) )
-  _.assert( _.numbersAreAll( src ) )
+  _.assert( _.number.s.areAll( src ) )
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return src;
   return _.longSlice( src, f, l );
 }
@@ -130,40 +138,40 @@ function numbersSlice( src, f, l )
  * If {-range-} is number, routine generates random number from zero to provided value.
  *
  * @example
- * let got = _.numberRandom( 0 );
+ * let got = _.number.random( 0 );
  * // returns random number in range [ 0, 0 ]
  * console.log( got );
  * // log 0
  *
  * @example
- * let got = _.numberRandom( 3 );
+ * let got = _.number.random( 3 );
  * // returns random number in range [ 0, 3 ]
  * console.log( got );
  * // log 0.10161347203073712
  *
  * @example
- * let got = _.numberRandom( -3 );
+ * let got = _.number.random( -3 );
  * // returns random number in range [ -3, 0 ]
  * console.log( got );
  * // log -1.4184648844870276
  *
  * @example
- * let got = _.numberRandom( [ 3, 3 ] );
+ * let got = _.number.random( [ 3, 3 ] );
  * console.log( got );
  * // log 3
  *
  * @example
- * let got = _.numberRandom( [ -3, 0 ] );
+ * let got = _.number.random( [ -3, 0 ] );
  * console.log( got );
  * // log -1.5699334307486583
  *
  * @example
- * let got = _.numberRandom( [ 0, 3 ] );
+ * let got = _.number.random( [ 0, 3 ] );
  * console.log( got );
  * // log 0.6154656826553855
  *
  * @example
- * let got = _.numberRandom( [ -3, 3 ] );
+ * let got = _.number.random( [ -3, 3 ] );
  * console.log( got );
  * // log 1.9835540787557022
  *
@@ -177,7 +185,7 @@ function numbersSlice( src, f, l )
 function numberRandom( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = range >= 0 ? [ 0, range ] : [ range, 0 ];
   _.assert( arguments.length === 1 && _.intervalIs( range ), 'Expects range' );
 
@@ -248,7 +256,7 @@ function numberRandom( range )
 function intRandom( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = range >= 0 ? [ 0, range ] : [ range, 0 ];
   _.assert( arguments.length === 1 && _.intervalIs( range ), 'Expects range' );
 
@@ -263,7 +271,7 @@ function intRandomBut( range )
   let result;
   let attempts = 50;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
   else if( _.arrayIs( range ) )
   range = range;
@@ -313,43 +321,43 @@ function intRandomBut( range )
  * @param { length|Number } length - the size of the returned array.
  *
  * @example
- * let got = _.numbersMake( 1, 0 );
+ * let got = _.number.s.make( 1, 0 );
  * // returns an empty array
  * console.log( got )
  * // log []
  *
  * @example
- * let got = _.numbersMake( 1, 3 );
+ * let got = _.number.s.make( 1, 3 );
  * // returns an array of size 3 filled with ones
  * console.log( got )
  * // log [ 1, 1, 1 ]
  *
  * @example
- * let got = _.numbersMake( -5.22, 3 );
+ * let got = _.number.s.make( -5.22, 3 );
  * // returns an array of size 3 filled with -5.22
  * console.log( got )
  * // log [ -5.22, -5.22, -5.22 ]
  *
  * @example
- * let got = _.numbersMake( NaN, 3 );
+ * let got = _.number.s.make( NaN, 3 );
  * // returns an array of size 3 filled with NaN
  * console.log( got )
  * // log [ NaN, NaN, NaN ]
  *
  * @example
- * let got = _.numbersMake( [ 1, 2, 3 ], 3 );
+ * let got = _.number.s.make( [ 1, 2, 3 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1, 2, 3 ]
  *
  * @example
- * let got = _.numbersMake( [ 1.00, -2.777, 3.00 ], 3 );
+ * let got = _.number.s.make( [ 1.00, -2.777, 3.00 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1.00, -2.777, 3.00 ]
  *
  * @example
- * let got = _.numbersMake( [ NaN, Infinity, -Infinity ], 3 );
+ * let got = _.number.s.make( [ NaN, Infinity, -Infinity ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ NaN, Infinity, -Infinity ]
@@ -367,22 +375,22 @@ function numbersMake( src, length )
 {
   let result;
 
-  if( _.vectorAdapterIs( src ) )
+  if( _.vector.adapterIs( src ) )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( src ) || _.arrayLike( src ) );
+  _.assert( _.number.is( src ) || _.arrayLike( src ) );
 
   if( _.arrayLike( src ) )
   {
     _.assert( src.length === length );
-    result = this.longMakeUndefined( length );
+    result = _.longMakeUndefined( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src[ i ];
   }
   else
   {
-    result = this.longMakeUndefined( length );
+    result = _.longMakeUndefined( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src;
   }
@@ -402,43 +410,43 @@ function numbersMake( src, length )
  * @param { length|Number } length - the size of the returned array.
  *
  * @example
- * let got = _.numbersFromNumber( 1, 0 );
+ * let got = _.number.s.fromNumber( 1, 0 );
  * // returns an empty array
  * console.log( got )
  * // log []
  *
  * @example
- * let got = _.numbersFromNumber( 1, 3 );
+ * let got = _.number.s.fromNumber( 1, 3 );
  * // returns an array of size 3 filled with ones
  * console.log( got )
  * // log [ 1, 1, 1 ]
  *
  * @example
- * let got = _.numbersFromNumber( -5.22, 3 );
+ * let got = _.number.s.fromNumber( -5.22, 3 );
  * // returns an array of size 3 filled with -5.22
  * console.log( got )
  * // log [ -5.22, -5.22, -5.22 ]
  *
  * @example
- * let got = _.numbersFromNumber( NaN, 3 );
+ * let got = _.number.s.fromNumber( NaN, 3 );
  * // returns an array of size 3 filled with NaN
  * console.log( got )
  * // log [ NaN, NaN, NaN ]
  *
  * @example
- * let got = _.numbersFromNumber( [ 1, 2, 3 ], 3 );
+ * let got = _.number.s.fromNumber( [ 1, 2, 3 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1, 2, 3 ]
  *
  * @example
- * let got = _.numbersFromNumber( [ 1.00, -2.777, 3.00 ], 3 );
+ * let got = _.number.s.fromNumber( [ 1.00, -2.777, 3.00 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1.00, -2.777, 3.00 ]
  *
  * @example
- * let got = _.numbersFromNumber( [ NaN, Infinity, -Infinity ], 3 );
+ * let got = _.number.s.fromNumber( [ NaN, Infinity, -Infinity ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ NaN, Infinity, -Infinity ]
@@ -455,11 +463,11 @@ function numbersMake( src, length )
 function numbersFromNumber( src, length )
 {
 
-  if( _.vectorAdapterIs( src ) )
+  if( _.vector.adapterIs( src ) )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( src ) || _.arrayLike( src ) );
+  _.assert( _.number.is( src ) || _.arrayLike( src ) );
 
   if( _.arrayLike( src ) )
   {
@@ -468,7 +476,7 @@ function numbersFromNumber( src, length )
   }
 
   // debugger; /* xxx2 : test */
-  let result = this.longMakeUndefined( length );
+  let result = _.longMakeUndefined( length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = src;
 
@@ -487,25 +495,25 @@ function numbersFromNumber( src, length )
  * @param { length|Number } length - the size of the returned array.
  *
  * @example
- * let got = _.numbersFromInt( 1, 0 );
+ * let got = _.number.s.fromInt( 1, 0 );
  * // returns an empty array
  * console.log( got )
  * // log []
  *
  * @example
- * let got = _.numbersFromInt( 1, 3 );
+ * let got = _.number.s.fromInt( 1, 3 );
  * // returns an array of size 3 filled with ones
  * console.log( got )
  * // log [ 1, 1, 1 ]
  *
  * @example
- * let got = _.numbersFromInt( [ 1, 2, 3 ], 3 );
+ * let got = _.number.s.fromInt( [ 1, 2, 3 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1, 2, 3 ]
  *
  * @example
- * let got = _.numbersFromInt( [ 1.00, -2.00, 3.00 ], 3 );
+ * let got = _.number.s.fromInt( [ 1.00, -2.00, 3.00 ], 3 );
  * // returns source array
  * console.log( got )
  * // log [ 1.00, -2.00, 3.00 ]
@@ -526,7 +534,7 @@ function numbersFromInt( dst, length )
   _.assert( _.intIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( length >= 0 );
 
-  if( _.numberIs( dst ) )
+  if( _.number.is( dst ) )
   {
     debugger;
     // dst = _.longFillTimes( [], length , dst );
@@ -546,14 +554,14 @@ function numbersFromInt( dst, length )
 
 function numbersMake_functor( length )
 {
-  let _ = this;
+  // let _ = this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.number.is( length ) );
 
   function numbersMake( src )
   {
-    return _.numbersMake( src, length );
+    return _.number.s.make( src, length );
   }
 
   return numbersMake;
@@ -563,32 +571,24 @@ function numbersMake_functor( length )
 
 function numbersFrom_functor( length )
 {
-  let _ = this;
+  // let _ = this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.number.is( length ) );
 
   function numbersFromNumber( src )
   {
-    return _.numbersFromNumber( src, length );
+    return _.number.s.fromNumber( src, length );
   }
 
-  return numbersFrom;
+  return numbersFromNumber;
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ExtensionTools =
 {
 
   numbersTotal,
@@ -615,8 +615,43 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+
+  from : numberFrom,
+  fromStr : numberFromStr,
+  fromStrMaybe : numberFromStrMaybe, /* qqq : cover */
+
+  random : numberRandom,
+  intRandom,
+  intRandomBut, /* dubious */
+
+}
+
+//
+
+let ExtensionS =
+{
+
+  total : numbersTotal,
+  from : numbersFrom,
+  slice : numbersSlice,
+
+  make : numbersMake,
+  fromNumber : numbersFromNumber,
+  fromInt : numbersFromInt,
+
+  make_functor : numbersMake_functor,
+  from_functor : numbersFrom_functor,
+
+}
+
+//
+
+Object.assign( Self, Extension );
+Object.assign( _.number.s, ExtensionS );
+Object.assign( _, ExtensionTools );
 
 // --
 // export

@@ -5,99 +5,70 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.entity = _.entity || Object.create( null );
+// let Self = _global_.wTools;
 
 // --
 // container
 // --
 
-function containerIs( src )
-{
-  if( _.longLike( src ) )
-  return true;
-  if( _.mapLike( src ) )
-  return true;
-  if( _.hashMapLike( src ) )
-  return true;
-  if( _.setLike( src ) )
-  return true;
-  return false;
-}
+// /**
+//  * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
+//  * Returns "true" if provided argument is countable. Othervise "false" returned.
+//  *
+//  * @param { * } src - Argument of any type.
+//  *
+//  * @example
+//  * _.iterableIs( 10 );
+//  * // returns false
+//  *
+//  * @example
+//  * _.iterableIs( [ 1, 2, 3 ] );
+//  * // returns true
+//  *
+//  * @example
+//  * _.iterableIs( { a : 2, b : 'str' } );
+//  * // returns true
+//  *
+//  * @example
+//  * _.iterableIs( new Set( [ 1, 2, 3 ] ) );
+//  * // returns true
+//  *
+//  * @return { Boolean } - Returns the boolean value of whether the argument is countable.
+//  * @function iterableIs
+//  * @namespace Tools
+//  */
+//
+// function iterableIs( src )
+// {
+//   if( !src )
+//   return false;
+//   if( _.aux.is( src ) )
+//   return true;
+//   if( _.routineIs( src[ Symbol.iterator ] ) )
+//   return true;
+//   return false;
+// }
 
 //
 
-function containerLike( src )
-{
-  if( _.longLike( src ) )
-  return true;
-  if( _.objectLike( src ) )
-  return true;
-  if( _.hashMapLike( src ) )
-  return true;
-  if( _.setLike( src ) )
-  return true;
-  return false;
-}
-
-//
-
-/**
- * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
- * Returns "true" if provided argument is countable. Othervise "false" returned.
- *
- * @param { * } src - Argument of any type.
- *
- * @example
- * _.iterableIs( 10 );
- * // returns false
- *
- * @example
- * _.iterableIs( [ 1, 2, 3 ] );
- * // returns true
- *
- * @example
- * _.iterableIs( { a : 2, b : 'str' } );
- * // returns true
- *
- * @example
- * _.iterableIs( new Set( [ 1, 2, 3 ] ) );
- * // returns true
- *
- * @return { Boolean } - Returns the boolean value of whether the argument is countable.
- * @function iterableIs
- * @namespace Tools
- */
-
-function iterableIs( src ) /* qqq xxx : check. good coverage is required */
+function methodIteratorOf( src )
 {
   if( !src )
   return false;
-  if( _.mapLike( src ) )
-  return true;
-  if( _.routineIs( src[ Symbol.iterator ] ) )
-  return true;
+  if( _.routineIs( src[ iteratorSymbol ] ) )
+  return src[ iteratorSymbol ];
   return false;
 }
 
 //
 
-function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
+function methodEqualOf( src )
 {
   if( !src )
   return false;
-  if( _.routineIs( src[ Symbol.iterator ] ) )
-  return true;
-  return false;
-}
-
-//
-
-function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
-{
-  if( !src )
-  return false;
-  if( _.routineIs( src[ Symbol.for( 'equalAre' ) ] ) )
-  return true;
+  if( _.routineIs( src[ equalAreSymbol ] ) )
+  return src[ equalAreSymbol ];
   return false;
 }
 
@@ -113,76 +84,117 @@ function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required |
  * @param { * } src - Source entity.
  *
  * @example
- * _.entityLength( [ 1, 2, 3 ] );
+ * _.lengthOf( [ 1, 2, 3 ] );
  * // returns 3
  *
  * @example
- * _.entityLength( 'string' );
+ * _.lengthOf( 'string' );
  * // returns 1
  *
  * @example
- * _.entityLength( { a : 1, b : 2 } );
+ * _.lengthOf( { a : 1, b : 2 } );
  * // returns 2
  *
  * @example
  * let src = undefined;
- * _.entityLength( src );
+ * _.lengthOf( src );
  * // returns 0
  *
  * @returns {number} Returns "length" of entity.
- * @function entityLength
+ * @function lengthOf
  * @namespace Tools
 */
 
-function entityLength( src )
+function lengthOf( src )
 {
   if( src === undefined )
   return 0;
-  if( _.mapLike( src ) )
-  return _.mapOwnKeys( src ).length;
-  if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
-  return [ ... src ].length;
-  if( _.longLike( src ) )
+  if( src === null )
+  return 1;
+
+  // if( _.routineIs( src[ Symbol.iterator ] ) )
+  // return [ ... src ].length;
+
+  if( _.vectorLike( src ) )
   return src.length;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return src.size;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return src.size;
+  if( _.countableIs( src ) )
+  return [ ... src ].length;
+
+  if( _.aux.is( src ) )
+  return _.mapKeys( src ).length;
+  // if( _.aux.is( src ) )
+  // return _.mapOnlyOwnKeys( src ).length;
+
   return 1;
 }
 
 // --
-// fields
+// tools extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ToolsExtension =
 {
 
   // container
 
-  containerIs,
-  containerLike,
-  iterableIs,
-  hasMethodIterator,
-  hasMethodEqualer, /* xxx : add other similar routines */
-
-  entityLength,
-  lengthOf : entityLength,
+  // iterableIs,
+  // methodIteratorOf,
+  // methodEqualOf, /* xxx : add other similar routines */
+  lengthOf,
+  entityLengthOf : lengthOf,
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _, ToolsExtension );
+
+// --
+// entity extension
+// --
+
+const iteratorSymbol = Symbol.iterator;
+const typeNameGetterSymbol = Symbol.toStringTag;
+const toPrimitiveSymbol = Symbol.toPrimitive;
+const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
+const equalAreSymbol = Symbol.for( 'equalAre' );
+const shallowCloneSymbol = Symbol.for( 'cloneShallow' );
+const deepCloneSymbol = Symbol.for( 'cloneDeep' );
+
+// _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
+// _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );
+// _metaDefine( 'field', Symbol.toPrimitive, _toPrimitive );
+// _metaDefine( 'field', Symbol.toPrimitive, _toPrimitive );
+
+let EntityExtension =
+{
+
+  tools : _,
+
+  // container
+
+  // iterableIs,
+  methodIteratorOf,
+  methodEqualOf, /* xxx : add other similar routines */
+  lengthOf,
+
+  iteratorSymbol,
+  typeNameGetterSymbol,
+  toPrimitiveSymbol,
+  toStrNjsSymbol,
+  equalAreSymbol,
+  shallowCloneSymbol,
+  deepCloneSymbol,
+
+}
+
+//
+
+Object.assign( _.entity, EntityExtension );
 
 // --
 // export

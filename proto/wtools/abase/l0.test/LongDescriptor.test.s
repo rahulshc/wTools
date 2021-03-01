@@ -101,12 +101,12 @@ function isArrayUnrollArgumentsArray( test )
     test.identical( got, expected );
 
     test.case = 'empty ArgumentsArray';
-    var got = descriptor.is( _.argumentsArrayMake( [] ) );
+    var got = descriptor.is( _.argumentsArray.make( [] ) );
     var expected = descriptor.name === 'ArgumentsArray';
     test.identical( got, expected );
 
     test.case = 'ArgumentsArray';
-    var got = descriptor.is( _.argumentsArrayMake( [ true ] ) );
+    var got = descriptor.is( _.argumentsArray.make( [ true ] ) );
     var expected = descriptor.name === 'ArgumentsArray';
     test.identical( got, expected );
 
@@ -173,7 +173,7 @@ function isBufferTypedInstance( test )
     test.identical( got, expected );
 
     test.case = 'ArgumentsArray';
-    var got = descriptor.is( _.argumentsArrayMake( [ true ] ) );
+    var got = descriptor.is( _.argumentsArray.make( [ true ] ) );
     var expected =  false;
     test.identical( got, expected );
 
@@ -277,7 +277,7 @@ function isBufferTypedInstance( test )
 function makeArrayUnrollArgumentsArray( test )
 {
   var descriptorsList = [ 'Array', 'Unroll', 'ArgumentsArray' ];
-  var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArrayMake ];
+  var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArray.make ];
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
@@ -435,7 +435,7 @@ function makeArrayUnrollArgumentsArray( test )
     /* */
 
     test.case = 'src = empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.make( src );
     var expected = getExpectedLong( [] );
     test.equivalent( got, expected );
@@ -443,7 +443,7 @@ function makeArrayUnrollArgumentsArray( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length = 1';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.make( src );
     var expected = getExpectedLong( [ {} ] );
     test.equivalent( got, expected );
@@ -451,7 +451,7 @@ function makeArrayUnrollArgumentsArray( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length > 1';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.make( src );
     var expected = getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
@@ -662,7 +662,7 @@ function makeBufferTypedInstance( test )
     /* */
 
     test.case = 'src = empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.make( src );
     var expected = new getExpectedLong( [] );
     test.equivalent( got, expected );
@@ -670,7 +670,7 @@ function makeBufferTypedInstance( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length = 1';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.make( src );
     var expected = new getExpectedLong( [ {} ] );
     test.equivalent( got, expected );
@@ -678,7 +678,7 @@ function makeBufferTypedInstance( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length > 1';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.make( src );
     var expected = new getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
@@ -731,7 +731,7 @@ function makeBufferTypedInstance( test )
 function fromArrayUnrollArgumentsArray( test )
 {
   var descriptorsList = [ 'Array', 'Unroll', 'ArgumentsArray' ];
-  var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArrayMake ];
+  var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArray.make ];
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
@@ -883,7 +883,7 @@ function fromArrayUnrollArgumentsArray( test )
     /* */
 
     test.case = 'src = empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.from( src );
     var expected = getExpectedLong( [] );
     test.equivalent( got, expected );
@@ -891,7 +891,7 @@ function fromArrayUnrollArgumentsArray( test )
     test.true( descriptor.name === 'ArgumentsArray' ? src === got : src !== got );
 
     test.case = 'src = arguments array, src.length = 1';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.from( src );
     var expected = getExpectedLong( [ {} ] );
     test.equivalent( got, expected );
@@ -899,7 +899,7 @@ function fromArrayUnrollArgumentsArray( test )
     test.true( descriptor.name === 'ArgumentsArray' ? src === got : src !== got );
 
     test.case = 'src = arguments array, src.length > 1';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.from( src );
     var expected = getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
@@ -1113,7 +1113,7 @@ function fromBufferTypedInstance( test )
     /* */
 
     test.case = 'src = empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.from( src );
     var expected = new getExpectedLong( [] );
     test.equivalent( got, expected );
@@ -1121,7 +1121,7 @@ function fromBufferTypedInstance( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length = 1';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.from( src );
     var expected = new getExpectedLong( [ {} ] );
     test.equivalent( got, expected );
@@ -1129,7 +1129,7 @@ function fromBufferTypedInstance( test )
     test.true( src !== got );
 
     test.case = 'src = arguments array, src.length > 1';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.from( src );
     var expected = new getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );

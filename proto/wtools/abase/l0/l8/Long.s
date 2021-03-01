@@ -201,7 +201,7 @@ function longHasUniques( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( o.src ) );
-  _.assertMapHasOnly( o, longHasUniques.defaults );
+  _.map.assertHasOnly( o, longHasUniques.defaults );
 
   /* */
 
@@ -385,7 +385,7 @@ function longMask( srcArray, mask )
   (
     _.intIs( length ),
     'longMask :', 'Expects mask that has component for each atom of srcArray',
-    _.toStr
+    _.entity.exportString
     ({
       scalarsPerElement,
       'srcArray.length' : srcArray.length,
@@ -429,7 +429,7 @@ function longUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapHasOnly( o, longUnmask.defaults );
+  _.map.assertHasOnly( o, longUnmask.defaults );
   _.assert( _.longIs( o.src ), 'Expects o.src as ArrayLike' );
 
   let scalarsPerElement = o.mask.length;
@@ -445,7 +445,7 @@ function longUnmask( o )
   (
     'longMask :',
     'Expects mask that has component for each atom of o.src',
-    _.toStr({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
+    _.entity.exportString({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
   );
 
   let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );
@@ -577,17 +577,17 @@ function longRandom( o )
 
   if( arguments[ 2 ] !== undefined )
   o = { dst : arguments[ 0 ], value : arguments[ 1 ], length : arguments[ 2 ] }
-  else if( _.numberIs( o ) || _.intervalIs( o ) )
+  else if( _.number.is( o ) || _.intervalIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.routineOptions( longRandom, o );
 
   if( o.onEach === null )
-  o.onEach = ( value ) => _.numberRandom( value );
+  o.onEach = ( value ) => _.number.random( value );
 
   if( o.value === null )
   o.value = [ 0, 1 ];
-  if( _.numberIs( o.value ) )
+  if( _.number.is( o.value ) )
   o.value = [ 0, o.value ]
   // o.value = [ o.value, o.value ]
 
@@ -650,7 +650,7 @@ longRandom.defaults =
 function longFromRange( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -783,43 +783,43 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
 // array converter
 // --
 
-// /**
-//  * The longToMap() converts an (array) into Object.
-//  *
-//  * @param { longIs } array - To convert into Object.
-//  *
-//  * @example
-//  * _.longToMap( [] );
-//  * // returns {}
-//  *
-//  * @example
-//  * _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
-//  * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
-//  *
-//  * @example
-//  * let args = ( function() {
-//  *   return arguments;
-//  * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
-//  * _.longToMap( args );
-//  * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
-//  *
-//  * @returns { Object } Returns an Object.
-//  * @function longToMap
-//  * @throws { Error } Will throw an Error if (array) is not an array-like.
-//  * @namespace Tools
-//  */
-//
-// function longToMap( array )
-// {
-//   let result = Object.create( null );
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.longIs( array ) );
-//
-//   for( let a = 0 ; a < array.length ; a++ )
-//   result[ a ] = array[ a ];
-//   return result;
-// }
+/**
+ * The longToMap() converts an (array) into Object.
+ *
+ * @param { longIs } array - To convert into Object.
+ *
+ * @example
+ * _.longToMap( [] );
+ * // returns {}
+ *
+ * @example
+ * _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+ * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
+ *
+ * @example
+ * let args = ( function() {
+ *   return arguments;
+ * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+ * _.longToMap( args );
+ * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
+ *
+ * @returns { Object } Returns an Object.
+ * @function longToMap
+ * @throws { Error } Will throw an Error if (array) is not an array-like.
+ * @namespace Tools
+ */
+
+function longToMap( array )
+{
+  let result = Object.create( null );
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.longIs( array ) );
+
+  for( let a = 0 ; a < array.length ; a++ )
+  result[ a ] = array[ a ];
+  return result;
+}
 //
 // //
 //
@@ -893,32 +893,32 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
 // --
 
 /**
- * The longShrinkWithIndices() routine selects elements from (srcArray) by indexes of (indicesArray).
+ * The longOnlyWithIndices() routine selects elements from (srcArray) by indexes of (indicesArray).
  *
  * @param { longIs } srcArray - Values for the new array.
  * @param { ( longIs | object ) } [ indicesArray = indicesArray.indices ] - Indexes of elements from the (srcArray) or options map.
  *
  * @example
- * _.longShrinkWithIndices( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
+ * _.longOnlyWithIndices( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
  * // returns [ 3, 4, 5 ]
  *
  * @example
- * _.longShrinkWithIndices( [ 1, 2, 3 ], [ 4, 5 ] );
+ * _.longOnlyWithIndices( [ 1, 2, 3 ], [ 4, 5 ] );
  * // returns [ undefined, undefined ]
  *
  * @returns { longIs } - Returns a new array with the length equal (indicesArray.length) and elements from (srcArray).
    If there is no element with necessary index than the value will be undefined.
- * @function longShrinkWithIndices
+ * @function longOnlyWithIndices
  * @throws { Error } If passed arguments is not array like object.
  * @throws { Error } If the scalarsPerElement property is not equal to 1.
  * @namespace Tools
  */
 
-function longShrinkWithIndices( srcArray, indicesArray )
+function longOnlyWithIndices( srcArray, indicesArray )
 {
   let scalarsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
+  if( _.object.is( indicesArray ) )
   {
     scalarsPerElement = indicesArray.scalarsPerElement || 1;
     indicesArray = indicesArray.indices;
@@ -1058,7 +1058,7 @@ function longPut( dstArray, dstOffset )
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
+  _.assert( _.number.is( dstOffset ) );
 
   dstOffset = dstOffset || 0;
 
@@ -1124,7 +1124,7 @@ function longSupplement( dstArray )
   result = [];
 
   let length = result.length;
-  _.assert( _.longIs( result ) || _.numberIs( result ), 'Expects object as argument' );
+  _.assert( _.longIs( result ) || _.number.is( result ), 'Expects object as argument' );
 
   for( let a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -1132,7 +1132,7 @@ function longSupplement( dstArray )
     length = Math.max( length, arguments[ a ].length );
   }
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = arrayFill
   ({
     value : result,
@@ -1295,7 +1295,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 
   if( dstLong === null )
   dstLong = _.arrayMake( srcLong );
-  if( _.argumentsArrayIs( dstLong ) ) // Dmytro : missed
+  if( _.argumentsArray.is( dstLong ) ) // Dmytro : missed
   dstLong = this.longDescriptor.from( dstLong );
 
   if( onEvaluate === undefined )
@@ -1450,12 +1450,12 @@ let Routines =
 
   // // array converter
   //
-  // longToMap, /* dubious */
+  longToMap, /* dubious */ /* Yevhen : uncommented, routine is used in module::wChangeTransactor */
   // longToStr, /* dubious */
 
   // long transformer
 
-  longShrinkWithIndices,
+  longOnlyWithIndices,
 
   // long mutator
 

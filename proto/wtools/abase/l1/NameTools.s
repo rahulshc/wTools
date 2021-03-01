@@ -28,7 +28,7 @@ var _arraySlice = _.longSlice;
 function nameFielded( nameString )
 {
 
-  if( _.objectIs( nameString ) )
+  if( _.object.is( nameString ) )
   {
     return nameString;
   }
@@ -68,7 +68,7 @@ function nameUnfielded( nameObject )
     name.raw = nameObject;
     name.coded = nameObject;
   }
-  else if( _.symbolIs( nameObject ) )
+  else if( _.symbol.is( nameObject ) )
   {
     name.raw = nameObject;
     name.coded = nameObject;
@@ -76,8 +76,8 @@ function nameUnfielded( nameObject )
   else _.assert( 0, 'nameUnfielded :', 'Unknown arguments' );
 
   // _.assert( arguments.length === 1 );
-  // _.assert( _.strIs( name.raw ) || _.symbolIs( name.raw ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
-  // _.assert( _.strIs( name.coded ) || _.symbolIs( name.coded ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
+  // _.assert( _.strIs( name.raw ) || _.symbol.is( name.raw ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
+  // _.assert( _.strIs( name.coded ) || _.symbol.is( name.coded ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
 
   return name;
 }
@@ -99,7 +99,7 @@ function namesCoded( namesMap )
   if( _.assert )
   _.assert( arguments.length === 1 );
   if( _.assert )
-  _.assert( _.objectIs( namesMap ) );
+  _.assert( _.object.is( namesMap ) );
 
   for( var n in namesMap )
   result[ n ] = n;

@@ -35,7 +35,7 @@ function assigning()
   return routine;
   function assigning( dstContainer, srcContainer, key )
   {
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 }
 
@@ -51,7 +51,7 @@ function primitive()
 
   function primitive( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -210,10 +210,10 @@ function notPrimitiveAssigning()
 
   function notPrimitiveAssigning( dstContainer, srcContainer, key )
   {
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -230,7 +230,7 @@ function assigningRecursive()
 
   function assigningRecursive( dstContainer, srcContainer, key )
   {
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entity.assign2FieldFromContainer );
   }
 
 }
@@ -244,7 +244,7 @@ function drop( dropContainer )
 
   debugger;
 
-  _.assert( _.objectIs( dropContainer ) );
+  _.assert( _.object.is( dropContainer ) );
 
   let routine = drop;
 
@@ -263,6 +263,23 @@ function drop( dropContainer )
 }
 
 drop.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+
+//
+
+function notIdentical()
+{
+  let routine = notIdentical;
+  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  return routine;
+  function notIdentical( dstContainer, srcContainer, key )
+  {
+    if( dstContainer[ key ] === srcContainer[ key ] )
+    return false;
+    return true;
+  }
+}
+
+notIdentical.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
 
 // --
 // src
@@ -293,7 +310,6 @@ function dstNotHasOrSrcNotNull()
   return routine;
   function dstNotHasOrSrcNotNull( dstContainer, srcContainer, key )
   {
-    // if( key in dstContainer && srcContainer[ key ] === null )
     if( key in dstContainer && dstContainer[ key ] !== undefined )
     return false;
     if( srcContainer[ key ] === null )
@@ -447,7 +463,7 @@ function dstNotHasAssigning()
     if( dstContainer[ key ] !== undefined )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -492,7 +508,7 @@ function dstNotHasSrcPrimitive()
     if( key in dstContainer )
     return false;
 
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -540,7 +556,7 @@ function dstNotHasSrcOwnAssigning()
     if( key in dstContainer )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -586,7 +602,7 @@ function dstNotHasAssigningRecursive()
     if( key in dstContainer )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entity.assign2FieldFromContainer );
   }
 
 }
@@ -695,7 +711,7 @@ function dstNotOwnSrcOwnAssigning()
     if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -721,7 +737,7 @@ function dstNotOwnOrUndefinedAssigning()
 
     }
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -744,7 +760,7 @@ function dstNotOwnAssigning()
 
     let srcElement = srcContainer[ key ];
     if( _.mapIs( srcElement ) || _.arrayIs( srcElement ) )
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
     else
     dstContainer[ key ] = srcContainer[ key ];
 
@@ -921,7 +937,7 @@ function srcOwnAssigning()
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -940,7 +956,7 @@ function srcOwnPrimitive()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -963,10 +979,10 @@ function srcOwnNotPrimitiveAssigning()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
   }
 
 }
@@ -985,10 +1001,10 @@ function srcOwnNotPrimitiveAssigningRecursive()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entity.assign2FieldFromContainer );
   }
 
 }
@@ -1008,7 +1024,7 @@ function srcOwnAssigningRecursive()
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
+    _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entity.assign2FieldFromContainer );
   }
 
 }
@@ -1036,6 +1052,7 @@ let _Transformers =
   notPrimitiveAssigning,
   assigningRecursive,
   drop,
+  notIdentical,
 
   // src
 
@@ -1073,8 +1090,6 @@ let _Transformers =
   dstNotOwnOrUndefinedAssigning,
   dstNotOwnAssigning,
   dstNotOwnAppending,
-  // dstNotOwnFromDefinition, /* yyy : move it and related to blueprint */
-  // dstNotOwnFromDefinitionStrictlyPrimitive, /* yyy : move it and related to blueprint */
 
   // dstHas
 

@@ -43,27 +43,27 @@ _.long_ = _.long_ || Object.create( null );
  */
 
 let notLongSymbol = Symbol.for( 'notLong' );
+/* xxx : optimize! */
 function longIs( src ) /* qqq : check coverage */
 {
-  if( _.primitiveIs( src ) )
+
+  if( _.primitive.is( src ) )
   return false;
   if( _.routineIs( src ) )
   return false;
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return false;
   if( _.strIs( src ) )
   return false;
   if( _.bufferNodeIs( src ) )
   return false;
-  // if( _.vectorAdapterIs( src ) )
-  // return false;
 
   if( notLongSymbol in src ) /* qqq : cover please */
   return false;
 
   if( Object.propertyIsEnumerable.call( src, 'length' ) )
   return false;
-  if( !_.numberIs( src.length ) )
+  if( !_.number.is( src.length ) )
   return false;
 
   return true;
@@ -89,14 +89,14 @@ function longIsPopulated( src )
 
 //
 
-function longLike( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
+/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
+function longLike( src ) /* qqq : cover */
 {
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
-  if( _.hasMethodIterator( src ) ) /* yyy */
-  if( !_.mapIs( src ) && _.objectIs( src ) )
-  return true;
-  // if( _.bufferNodeIs( src ) )
+  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // // if( !_.mapIs( src ) && _.object.is( src ) )
+  // if( !_.mapIs( src ) )
   // return true;
   return _.longIs( src );
 }
@@ -128,7 +128,7 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   let fromIndex = 0;
 
-  if( _.numberIs( arguments[ 2 ] ) )
+  if( _.number.is( arguments[ 2 ] ) )
   {
     fromIndex = arguments[ 2 ];
     evaluator1 = arguments[ 3 ];
@@ -137,7 +137,7 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.longLike( arr ), 'Expect a Long' );
-  _.assert( _.numberIs( fromIndex ) );
+  _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -194,7 +194,7 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
   let fromIndex = arr.length-1;
 
-  if( _.numberIs( arguments[ 2 ] ) )
+  if( _.number.is( arguments[ 2 ] ) )
   {
     fromIndex = arguments[ 2 ];
     evaluator1 = arguments[ 3 ];
@@ -202,7 +202,7 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
   }
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.numberIs( fromIndex ) );
+  _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -546,7 +546,7 @@ function eacher( src )
 
   _.assert( _.longLike( src ) );
 
-  if( _.hasMethodIterator( src ) )
+  if( _.entity.methodIteratorOf( src ) )
   return eachOf;
   else
   return eachLength;

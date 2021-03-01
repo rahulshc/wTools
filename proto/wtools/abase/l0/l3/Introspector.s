@@ -34,7 +34,7 @@ let Location =
 function location( o )
 {
 
-  if( _.numberIs( o ) )
+  if( _.number.is( o ) )
   o = { level : o }
   else if( _.strIs( o ) )
   o = { stack : o, level : 0 }
@@ -183,7 +183,7 @@ function locationFromStackFrame( o )
   /* */
 
   if( !( _.strIs( o.stackFrame ) ) )
-  throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( o.stackFrame )}` );
+  throw Error( `Expects string {- stackFrame -}, but fot ${_.entity.strType( o.stackFrame )}` );
 
   if( o.location && !_.mapIs( o.location ) )
   throw Error( 'Expects map option::location' );
@@ -245,10 +245,10 @@ function locationNormalize( o )
   // if( !_.strIs( o.filePath ) )
   // return end();
 
-  if( !_.numberDefined( o.line ) || !_.numberDefined( o.col ) )
+  if( !_.number.defined( o.line ) || !_.number.defined( o.col ) )
   o.filePath = lineColFromPath( o.filePath );
 
-  if( !_.numberIs( o.line ) && hadPath )
+  if( !_.number.is( o.line ) && hadPath )
   {
     let path = pathFromStack();
     if( path )
@@ -266,10 +266,10 @@ function locationNormalize( o )
     /* filePathLineCol */
 
     o.filePathLineCol = path || '';
-    if( _.numberDefined( o.line ) )
+    if( _.number.defined( o.line ) )
     {
       o.filePathLineCol += ':' + o.line;
-      if( _.numberDefined( o.col ) )
+      if( _.number.defined( o.col ) )
       o.filePathLineCol += ':' + o.col;
     }
 
@@ -295,10 +295,10 @@ function locationNormalize( o )
     /* fileNameLineCol */
 
     o.fileNameLineCol = o.fileName || '';
-    if( _.numberDefined( o.line ) )
+    if( _.number.defined( o.line ) )
     {
       o.fileNameLineCol += ':' + o.line;
-      if( _.numberDefined( o.col ) )
+      if( _.number.defined( o.col ) )
       o.fileNameLineCol += ':' + o.col;
     }
 
@@ -383,7 +383,7 @@ function locationNormalize( o )
   function internalForm()
   {
 
-    if( _.numberDefined( o.internal ) )
+    if( _.number.defined( o.internal ) )
     return;
 
     o.internal = 0;
@@ -407,7 +407,7 @@ function locationNormalize( o )
   function abstractionForm()
   {
 
-    if( _.numberDefined( o.abstraction ) )
+    if( _.number.defined( o.abstraction ) )
     return;
 
     o.abstraction = 0;
@@ -484,18 +484,18 @@ function locationNormalize( o )
       lineNumber = numberFromToInt( lineNumber );
       colNumber = numberFromToInt( colNumber );
 
-      if( !_.numberDefined( o.line ) )
-      if( _.numberDefined( lineNumber ) )
+      if( !_.number.defined( o.line ) )
+      if( _.number.defined( lineNumber ) )
       o.line = lineNumber;
 
-      if( !_.numberDefined( o.col ) )
-      if( _.numberDefined( colNumber ) )
+      if( !_.number.defined( o.col ) )
+      if( _.number.defined( colNumber ) )
       o.col = colNumber;
     }
 
-    if( !_.numberDefined( o.line ) )
+    if( !_.number.defined( o.line ) )
     o.line = null;
-    if( !_.numberDefined( o.col ) )
+    if( !_.number.defined( o.col ) )
     o.col = null;
 
     return path;
@@ -524,16 +524,6 @@ locationNormalize.defaults =
 
 function locationToStack( o )
 {
-
-  /* */
-
-  if( locationNormalize.defaults )
-  for( let e in o )
-  {
-    if( locationNormalize.defaults[ e ] === undefined )
-    throw Error( `Location does not have field ${e}` );
-  }
-
   if( !( arguments.length === 1 ) )
   throw Error( 'Expects single argument' );
 
@@ -542,16 +532,22 @@ function locationToStack( o )
 
   /* */
 
-  _.assertMapHasOnly( o, locationToStack.defaults );
+  // _.map.assertHasOnly( o, locationToStack.defaults );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( o, locationToStack.defaults );
+    _.assert( extraKeys.length === 0, () => `Routine "locationToStack" does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
+
   _.introspector.locationNormalize( o );
 
   if( !o.filePathLineCol )
   return null;
 
-  if( o.routineFilePathLineCol )
-  {
-    _.assert( 0, 'not tested' );
-  }
+  // if( o.routineFilePathLineCol )
+  // {
+  //   _.assert( 0, 'not tested' );
+  // }
 
   if( o.routineName )
   return `at ${o.routineName} (${o.filePathLineCol})`;
@@ -561,6 +557,29 @@ function locationToStack( o )
   /*
     at Object.locationToStack (http://127.0.0.1:5000//builder/include/wtools/abase/l0/l3/Introspector.s:723:10)
   */
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let s in srcMap )
+    if( !( s in butMap ) )
+    result.push( s );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 locationToStack.defaults =
@@ -657,9 +676,9 @@ function stack( stack, range )
     }
     else
     {
-      if( _.numberIs( range[ 0 ] ) ) /* Dmytro : previous implementation affects range - not a number value + number => NaN, so assertion does not word properly */
+      if( _.number.is( range[ 0 ] ) ) /* Dmytro : previous implementation affects range - not a number value + number => NaN, so assertion does not word properly */
       range[ 0 ] += 1;
-      if( _.numberIs( range[ 1 ] ) && range[ 1 ] >= 0 )
+      if( _.number.is( range[ 1 ] ) && range[ 1 ] >= 0 )
       range[ 1 ] += 1;
     }
   }
@@ -676,22 +695,22 @@ function stack( stack, range )
   if( !_.intervalIs( range ) )
   {
     debugger;
-    throw Error( 'stack : expects range but, got ' + _.strType( range ) );
+    throw Error( 'stack : expects range but, got ' + _.entity.strType( range ) );
   }
 
   let first = range[ 0 ];
   let last = range[ 1 ];
 
-  // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.intervalIs checks number value in passed array
+  // if( !_.number.is( first ) ) // Dmytro : it's unnecessary assertions, _.intervalIs checks number value in passed array
   // {
   //   debugger;
-  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.entity.strType( first ) );
   // }
   //
-  // if( !_.numberIs( last ) )
+  // if( !_.number.is( last ) )
   // {
   //   debugger;
-  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.entity.strType( last ) );
   // }
 
   let errIs = 0;
@@ -747,11 +766,11 @@ function stack( stack, range )
   first = first === undefined ? 0 : first;
   last = last === undefined ? stack.length : last;
 
-  // if( _.numberIs( first ) ) // Dmytro : first and last - is always some numbers, see above about assertions
+  // if( _.number.is( first ) ) // Dmytro : first and last - is always some numbers, see above about assertions
   if( first < 0 )
   first = stack.length + first;
 
-  // if( _.numberIs( last ) )
+  // if( _.number.is( last ) )
   if( last < 0 )
   last = stack.length + last + 1;
 
@@ -773,8 +792,8 @@ function stack( stack, range )
 
 function stackRelative( stack, delta )
 {
-  _.assert( delta === undefined || _.numberIs( delta ) );
-  _.assert( stack === undefined || stack === null || _.boolIs( stack ) || _.numberIs( stack ) || _.strIs( stack ) );
+  _.assert( delta === undefined || _.number.is( delta ) );
+  _.assert( stack === undefined || stack === null || _.bool.is( stack ) || _.number.is( stack ) || _.strIs( stack ) );
   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
 
   if( _.strIs( stack ) )
@@ -784,12 +803,12 @@ function stackRelative( stack, delta )
 
   if( stack === undefined || stack === null || stack === true )
   stack = 1;
-  else if( _.numberIs( stack ) )
+  else if( _.number.is( stack ) )
   stack += 1;
 
   if( delta )
   stack += delta;
-  if( _.numberIs( stack ) )
+  if( _.number.is( stack ) )
   stack = _.introspector.stack([ stack, Infinity ]);
 
   _.assert( _.strIs( stack ) );
@@ -896,7 +915,7 @@ function stackFilter( stack, onEach )
       result.push( r );
       return;
     }
-    _.assert( _.objectIs( r ) );
+    _.assert( _.object.is( r ) );
     _.assert( _.strIs( r.original ) );
     result.push( r.original );
   });

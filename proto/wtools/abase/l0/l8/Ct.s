@@ -37,7 +37,7 @@ function _formatAffixesBackground( color )
 function formatBackground( srcStr, color )
 {
 
-  if( _.numberIs( color ) )
+  if( _.number.is( color ) )
   color = _.color.colorNameNearest( color );
 
   _.assert( arguments.length === 2, 'Expects 2 arguments' );
@@ -67,7 +67,7 @@ function _formatAffixesForeground( color )
 function formatForeground( srcStr, color )
 {
 
-  if( _.numberIs( color ) )
+  if( _.number.is( color ) )
   color = _.color.colorNameNearest( color );
 
   _.assert( arguments.length === 2, 'Expects 2 arguments' );
@@ -82,10 +82,10 @@ function formatForeground( srcStr, color )
 function _strEscape( srcStr )
 {
   let result = srcStr;
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
   return '❮inputRaw:1❯' + srcStr + '❮inputRaw:0❯'
 }
 
@@ -96,10 +96,10 @@ let escape = _.routineVectorize_functor( _strEscape );
 function _strUnescape( srcStr )
 {
   let result = srcStr;
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
   return '❮inputRaw:0❯' + srcStr + '❮inputRaw:1❯'
 }
 
@@ -110,7 +110,7 @@ let unescape = _.routineVectorize_functor( _strUnescape );
 function styleObjectFor( style )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( style ), 'Expects string got', _.strType( style ) );
+  _.assert( _.strIs( style ), 'Expects string got', _.entity.strType( style ) );
 
   let result = _.ct.Style[ style ];
 
@@ -143,7 +143,7 @@ function _formatAffixesForStyleObject( styleObject )
   result.head = '';
   result.post = '';
 
-  _.assertMapHasOnly( styleObject, _formatAffixesForStyleObject.defaults );
+  _.map.assertHasOnly( styleObject, _formatAffixesForStyleObject.defaults );
 
   if( styleObject.fg )
   _.ct._affixesJoin( result, _.ct._formatAffixesForeground( styleObject.fg ) );
@@ -183,10 +183,10 @@ function _formatAffixes( styles )
   {
     let style = styles[ s ];
 
-    if( _.objectIs( style ) )
+    if( _.object.is( style ) )
     {
       // let obj = style[ s ];
-      // _.assertMapHasOnly( obj, StyleObjectOptions );
+      // _.map.assertHasOnly( obj, StyleObjectOptions );
       // if( obj.fg )
       // result = join( result, _.ct._formatAffixesForeground( obj.fg ) );
       // if( obj.bg )
@@ -236,10 +236,10 @@ function _format( srcStr, style )
 {
   let result = srcStr;
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
+  _.assert( _.strIs( result ), 'Expects string got', _.entity.strType( result ) );
 
   let r = _.ct._formatAffixes( style );
 

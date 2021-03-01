@@ -5,23 +5,41 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _;
+let Self = _.set = _.set || Object.create( null );
+_.set.s = _.set.s || Object.create( null );
 
 // --
-// array set
+// implementation
 // --
 
 // --
-// routines
+// extension
 // --
 
-let NamespaceExtension =
+let ExtensionTools =
 {
+
 }
 
 //
 
-Object.assign( Self, NamespaceExtension );
+let Extension =
+{
+
+}
+
+//
+
+let ExtensionS =
+{
+
+}
+
+//
+
+Object.assign( _, ExtensionTools );
+Object.assign( Self, Extension );
+Object.assign( _.set.s, ExtensionS );
 
 // --
 // export

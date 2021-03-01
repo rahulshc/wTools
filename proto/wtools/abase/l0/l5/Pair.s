@@ -8,11 +8,11 @@ let _ = _global_.wTools;
 let Self = _global_.wTools.pair = _global_.wTools.pair || Object.create( null );
 
 // --
-//
+// implementation
 // --
 
 // --
-//
+// extension
 // --
 
 var Extension =

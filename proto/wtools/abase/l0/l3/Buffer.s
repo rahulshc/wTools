@@ -15,14 +15,15 @@ let Self = _global_.wTools;
 // declaration
 // --
 
-let Routines =
+let Extension =
 {
 
+  /* xxx qqq : move buffer checks here */
 }
 
 //
 
-Object.assign( Self, Routines );
+Object.assign( Self, Extension );
 
 // --
 // export

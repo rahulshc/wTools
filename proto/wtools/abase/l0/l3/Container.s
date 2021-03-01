@@ -12,18 +12,52 @@ let _ = _global_.wTools;
 
 function is( src )
 {
-  return _.containerIs( src );
+  if( _.longLike( src ) )
+  return true;
+  if( _.aux.is( src ) )
+  return true;
+  if( _.hashMap.like( src ) )
+  return true;
+  if( _.set.like( src ) )
+  return true;
+  return false;
 }
 
 //
 
 function like( src )
 {
-  return _.containerLike( src );
+  if( _.longLike( src ) )
+  return true;
+  if( _.object.like( src ) )
+  return true;
+  if( _.hashMap.like( src ) )
+  return true;
+  if( _.set.like( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function lengthOf( container )
+{
+
+  _.assert( arguments.length === 1 );
+
+  // yyy
+  // let type = _.container.typeOf( container );
+  // if( type && type._lengthGet )
+  // return type._lengthGet( container );
+
+  if( _.entity.methodIteratorOf( container ) )
+  return [ ... container ].length;
+
+  return _.lengthOf( container );
 }
 
 // --
-// define
+// declare type
 // --
 
 let types;
@@ -57,21 +91,20 @@ let Handler =
 let Self = new Proxy( Container, Handler );
 Self.original = Container;
 
-//
+// --
+// extend container
+// --
 
-let Extension =
+let ContainerExtension =
 {
 
-  //
-
-  is,
-  like,
-
-  //
-
-  types
+  is, /* qqq : cover please */
+  like, /* qqq : cover please | aaa : Done. Yevhen S. */
+  lengthOf, /* qqq : cover please | aaa : Done. Yevhen S. */
 
   //
+
+  types,
 
 }
 
@@ -79,7 +112,24 @@ let Extension =
 
 _.container = Self;
 
-Object.assign( Self, Extension );
+Object.assign( Self, ContainerExtension );
+
+// --
+// extend tools
+// --
+
+let ToolsExtension =
+{
+
+  containerIs : is,
+  containerLike : like,
+  containerLengthOf : lengthOf,
+
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 
 // --
 // export

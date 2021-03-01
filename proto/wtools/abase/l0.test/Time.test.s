@@ -59,7 +59,7 @@ function timerIs( test )
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
-  var got = _.timerIs( _.argumentsArrayMake( [] ) );
+  var got = _.timerIs( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty unroll';

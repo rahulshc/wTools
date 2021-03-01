@@ -10,15 +10,6 @@ let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 // --
-// arguments array
-// --
-
-function argumentsArrayIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Arguments]';
-}
-
-// --
 // array
 // --
 
@@ -78,15 +69,17 @@ function arrayLikeResizable( src )
 
 //
 
-function arrayLike( src )
+/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
+function arrayLike( src ) /* qqq : cover */
 {
   if( _.arrayIs( src ) )
   return true;
-  if( _.argumentsArrayIs( src ) )
+  if( _.argumentsArray.is( src ) )
   return true;
-  if( _.hasMethodIterator( src ) ) /* yyy */
-  if( !_.mapIs( src ) && _.objectIs( src ) )
-  return true;
+  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // // if( !_.mapIs( src ) && _.object.is( src ) )
+  // if( !_.mapIs( src ) )
+  // return true;
   return false;
 }
 
@@ -111,10 +104,6 @@ let Fields =
 
 let Routines =
 {
-
-  // arguments array
-
-  argumentsArrayIs,
 
   //
 

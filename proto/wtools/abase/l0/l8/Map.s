@@ -6,32 +6,30 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
+_global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 // --
 // routines
 // --
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ExtensionTools =
 {
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let ExtensionMap =
+{
+
+}
+
+Object.assign( Self, ExtensionTools );
+Object.assign( _.map, ExtensionMap );
 
 // --
 // export

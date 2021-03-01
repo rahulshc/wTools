@@ -37,7 +37,7 @@ function scalarAppend( test )
 
   test.case = 'dst is undefined, src = argumentsArray';
   var dst = undefined;
-  var src = _.argumentsArrayMake( [ null, '', 1 ] );
+  var src = _.argumentsArray.make( [ null, '', 1 ] );
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ null, '', 1 ] );
 
@@ -150,37 +150,37 @@ function scalarAppend( test )
   /* dst is argumentsArray */
 
   test.case = 'dst is empty unroll, src is empty array';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = [];
   var got = _.scalarAppend( dst, src );
   test.identical( got, [] );
 
   test.case = 'dst is empty unroll, src is null';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = null;
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ null ] );
 
   test.case = 'dst is unroll, src = undefined';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
   var src = undefined;
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
 
   test.case = 'dst is unroll, src is string';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = 'str';
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ 1, null, 'str', [], 'str' ] );
 
   test.case = 'dst is unroll, src is map';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = { 'a' : 1 };
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
 
   test.case = 'dst is unroll, src = array';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = [ 'src', 2, undefined ];
   var got = _.scalarAppend( dst, src );
   test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
@@ -317,7 +317,7 @@ function scalarAppendOnce( test )
 
   test.case = 'dst is undefined, src = argumentsArray';
   var dst = undefined;
-  var src = _.argumentsArrayMake( [ null, '', 1 , null, '', 1 ] );
+  var src = _.argumentsArray.make( [ null, '', 1 , null, '', 1 ] );
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ null, '', 1 ] );
 
@@ -430,37 +430,37 @@ function scalarAppendOnce( test )
   /* dst is argumentsArray */
 
   test.case = 'dst is empty unroll, src is empty array';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = [];
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [] );
 
   test.case = 'dst is empty unroll, src is null';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = null;
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ null ] );
 
   test.case = 'dst is unroll, src = undefined';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
   var src = undefined;
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
 
   test.case = 'dst is unroll, src is string';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = 'str';
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ 1, null, 'str', [] ] );
 
   test.case = 'dst is unroll, src is map';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [], { 'a' : 1 } ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [], { 'a' : 1 } ] );
   var src = { 'a' : 1 };
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ 1, null, 'str', [], { 'a' : 1 }, { 'a' : 1 } ] );
 
   test.case = 'dst is unroll, src = array';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = [ 'str', 1, undefined ];
   var got = _.scalarAppendOnce( dst, src );
   test.identical( got, [ 1, null, 'str', [], undefined ] );
@@ -597,7 +597,7 @@ function scalarPrepend( test )
 
   test.case = 'dst is undefined, src = argumentsArray';
   var dst = undefined;
-  var src = _.argumentsArrayMake( [ null, '', 1 ] );
+  var src = _.argumentsArray.make( [ null, '', 1 ] );
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ null, '', 1 ] );
 
@@ -710,37 +710,37 @@ function scalarPrepend( test )
   /* dst is argumentsArray */
 
   test.case = 'dst is empty unroll, src is empty array';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = [];
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [] );
 
   test.case = 'dst is empty unroll, src is null';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = null;
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ null ] );
 
   test.case = 'dst is unroll, src = undefined';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
   var src = undefined;
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
 
   test.case = 'dst is unroll, src is string';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = 'str';
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ 'str', 1, null, 'str', [] ] );
 
   test.case = 'dst is unroll, src is map';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = { 'a' : 1 };
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ { 'a' : 1 }, 1, null, 'str', [] ] );
 
   test.case = 'dst is unroll, src = array';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = [ 'src', 2, undefined ];
   var got = _.scalarPrepend( dst, src );
   test.identical( got, [ 'src', 2, undefined, 1, null, 'str', [] ] );
@@ -877,7 +877,7 @@ function scalarPrependOnce( test )
 
   test.case = 'dst is undefined, src = argumentsArray';
   var dst = undefined;
-  var src = _.argumentsArrayMake( [ null, '', 1 , null, '', 1 ] );
+  var src = _.argumentsArray.make( [ null, '', 1 , null, '', 1 ] );
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ null, '', 1 ] );
 
@@ -990,37 +990,37 @@ function scalarPrependOnce( test )
   /* dst is argumentsArray */
 
   test.case = 'dst is empty unroll, src is empty array';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = [];
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [] );
 
   test.case = 'dst is empty unroll, src is null';
-  var dst = _.argumentsArrayMake( [] );
+  var dst = _.argumentsArray.make( [] );
   var src = null;
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ null ] );
 
   test.case = 'dst is unroll, src = undefined';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
   var src = undefined;
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
 
   test.case = 'dst is unroll, src is string';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = 'str';
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ 1, null, 'str', [] ] );
 
   test.case = 'dst is unroll, src is map';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [], { 'a' : 1 } ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [], { 'a' : 1 } ] );
   var src = { 'a' : 1 };
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ { 'a' : 1 }, 1, null, 'str', [], { 'a' : 1 } ] );
 
   test.case = 'dst is unroll, src = array';
-  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var dst = _.argumentsArray.make( [ 1, null, 'str', [] ] );
   var src = [ 'str', 1, undefined ];
   var got = _.scalarPrependOnce( dst, src );
   test.identical( got, [ undefined, 1, null, 'str', [] ] );
@@ -1373,7 +1373,7 @@ function entityEach( test )
   test.true( _.arrayIs( got ) );
 
   var got = [];
-  var src = _.argumentsArrayMake( 0 );
+  var src = _.argumentsArray.make( 0 );
   _.entityEach( src, ( v, i ) => got[ i ] = v + i );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
@@ -1407,7 +1407,7 @@ function entityEach( test )
   test.true( _.arrayIs( src ) );
 
   var got = [];
-  var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2 ] );
   _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
   test.identical( got, [ 0, 2, 6 ] );
   test.true( _.longIs( src ) );
@@ -1458,7 +1458,7 @@ function entityEach( test )
   test.identical( got, 18 );
 
   var got = 0;
-  var src = _.argumentsArrayMake( [ 1, 'str', [ 2, 'str' ] ] );
+  var src = _.argumentsArray.make( [ 1, 'str', [ 2, 'str' ] ] );
   _.entityEach( src, onEach );
   test.identical( got, 8 );
 
@@ -1494,7 +1494,7 @@ function entityEach( test )
   test.true( _.arrayIs( got ) );
 
   var got;
-  var src = _.argumentsArrayMake( [ 0, 1, [ 3, 5 ] ] );
+  var src = _.argumentsArray.make( [ 0, 1, [ 3, 5 ] ] );
   _.entityEach( src, onEach );
   test.identical( got, src );
   test.true( _.longIs( got ) );
@@ -1558,7 +1558,7 @@ function entityEach( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.objectIs( src ) )
+    if( _.object.is( src ) )
     got = src;
     else
     got += 10;
@@ -1636,7 +1636,7 @@ function entityEach( test )
 //   test.true( _.arrayIs( got ) );
 //
 //   var got = [];
-//   var src = _.argumentsArrayMake( 0 );
+//   var src = _.argumentsArray.make( 0 );
 //   _.entityEachKey( src, ( v, i ) => got[ i ] = v + i );
 //   test.identical( got, [] );
 //   test.true( _.longIs( src ) );
@@ -1669,7 +1669,7 @@ function entityEach( test )
 //   test.true( _.arrayIs( src ) );
 //
 //   var got = [];
-//   var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+//   var src = _.argumentsArray.make( [ 0, 1, 2 ] );
 //   _.entityEachKey( src, ( v, u, i ) => got[ i ] = v * v );
 //   test.identical( got, [ 0, 1, 4 ] );
 //   test.true( _.longIs( src ) );
@@ -1716,7 +1716,7 @@ function entityEach( test )
 //   test.identical( got, 18 );
 //
 //   var got = 0;
-//   var src = _.argumentsArrayMake( [ 1, 'str', [ [ 'abc' ], 'str' ] ] );
+//   var src = _.argumentsArray.make( [ 1, 'str', [ [ 'abc' ], 'str' ] ] );
 //   _.entityEachKey( src, onEach );
 //   test.identical( got, 8 );
 //
@@ -1752,7 +1752,7 @@ function entityEach( test )
 //   test.true( _.arrayIs( got ) );
 //
 //   var got;
-//   var src = _.argumentsArrayMake( [ 0, 1, [ 3, 5 ] ] );
+//   var src = _.argumentsArray.make( [ 0, 1, [ 3, 5 ] ] );
 //   _.entityEachKey( src, onEach );
 //   test.identical( got, src );
 //   test.true( _.longIs( got ) );
@@ -1890,7 +1890,7 @@ function entityEachOwn( test )
   test.true( _.arrayIs( got ) );
 
   var got = [];
-  var src = _.argumentsArrayMake( 0 );
+  var src = _.argumentsArray.make( 0 );
   _.entityEachOwn( src, ( v, i ) => got[ i ] = v + i );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
@@ -1924,7 +1924,7 @@ function entityEachOwn( test )
   test.true( _.arrayIs( src ) );
 
   var got = [];
-  var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2 ] );
   _.entityEachOwn( src, ( v, i ) => got[ i ] = v * v + i );
   test.identical( got, [ 0, 2, 6 ] );
   test.true( _.longIs( src ) );
@@ -1975,7 +1975,7 @@ function entityEachOwn( test )
   test.identical( got, 18 );
 
   var got = 0;
-  var src = _.argumentsArrayMake( [ 1, 'str', [ 2, 'str' ] ] );
+  var src = _.argumentsArray.make( [ 1, 'str', [ 2, 'str' ] ] );
   _.entityEachOwn( src, onEach );
   test.identical( got, 8 );
 
@@ -2011,7 +2011,7 @@ function entityEachOwn( test )
   test.true( _.arrayIs( got ) );
 
   var got;
-  var src = _.argumentsArrayMake( [ 0, 1, [ 3, 5 ] ] );
+  var src = _.argumentsArray.make( [ 0, 1, [ 3, 5 ] ] );
   _.entityEachOwn( src, onEach );
   test.identical( got, src );
   test.true( _.longIs( got ) );
@@ -2098,7 +2098,7 @@ function entityEachOwn( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.objectIs( src ) )
+    if( _.object.is( src ) )
     got = src;
     else
     got += 10;
@@ -14381,23 +14381,23 @@ function entityAll( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], false, 4 ] );
   var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
   var got = _.entityAll( src, ( v ) => v );
   test.identical( got, true );
 
@@ -14423,7 +14423,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAll( { '1' : 2, 'c' : 4, 'a' : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -14451,7 +14451,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityAll( undefined, ( src, u ) => src !== u );
   test.identical( got, false );
@@ -14546,15 +14546,15 @@ function entityAll( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], undefined, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], undefined, 4 ] );
   var got = _.entityAll( src );
   test.identical( got, undefined );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAll( src );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], false, 4 ] );
   var got = _.entityAll( src );
   test.identical( got, false );
 
@@ -14576,7 +14576,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAll( { '1' : 2, 'c' : 4, 'a' : undefined } );
   test.identical( got, undefined );
@@ -14595,7 +14595,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityAll( undefined );
   test.identical( got, undefined );
@@ -14738,23 +14738,23 @@ function entityAny( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 4 );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ false, null, undefined ] );
+  var src = _.argumentsArray.make( [ false, null, undefined ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], false, 4 ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ _.nothing, 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ _.nothing, 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v ) => v );
   test.identical( got, _.nothing );
 
@@ -14780,7 +14780,7 @@ function entityAny( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityAny( { '1' : 2, 'c' : 4, 'a' : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -14900,15 +14900,15 @@ function entityAny( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ null, false, [ 'str' ], undefined, 4 ] );
+  var src = _.argumentsArray.make( [ null, false, [ 'str' ], undefined, 4 ] );
   var got = _.entityAny( src );
   test.identical( got, [ 'str' ] );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src );
   test.identical( got, 1 );
 
-  var src = _.argumentsArrayMake( [ null, false, undefined ] );
+  var src = _.argumentsArray.make( [ null, false, undefined ] );
   var got = _.entityAny( src );
   test.identical( got, false );
 
@@ -15092,23 +15092,23 @@ function entityNone( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityNone( src, ( v, i ) => !!v && i + 2 < 4 );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ false, null, undefined ] );
+  var src = _.argumentsArray.make( [ false, null, undefined ] );
   var got = _.entityNone( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], false, 4 ] );
   var got = _.entityNone( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityNone( src, () => undefined );
   test.identical( got, true );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
   var got = _.entityNone( src, ( v ) => v );
   test.identical( got, false );
 
@@ -15254,15 +15254,15 @@ function entityNone( test )
 
   test.case = 'argument array';
 
-  var src = _.argumentsArrayMake( [ null, false, [ 'str' ], undefined, 4 ] );
+  var src = _.argumentsArray.make( [ null, false, [ 'str' ], undefined, 4 ] );
   var got = _.entityNone( src );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityNone( src );
   test.identical( got, false );
 
-  var src = _.argumentsArrayMake( [ null, false, undefined ] );
+  var src = _.argumentsArray.make( [ null, false, undefined ] );
   var got = _.entityNone( src );
   test.identical( got, true );
 
@@ -15284,7 +15284,7 @@ function entityNone( test )
 
   /* */
 
-  test.case = 'MapLike';
+  test.case = 'Aux';
 
   var got = _.entityNone( { '1' : 2, 'c' : 4, 'a' : undefined } );
   test.identical( got, false );
@@ -15303,7 +15303,7 @@ function entityNone( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no MapLike'
+  test.case = 'no ArrayLike, no Aux'
 
   var got = _.entityNone( undefined );
   test.identical( got, true );
@@ -15473,7 +15473,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
   test.false( _.unrollIs( got ) );
 
   test.case = 'argument array';
-  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.map_( null, src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.true( _.arrayIs( got ) );
@@ -15524,7 +15524,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
 
   /* - */
 
-  test.open( 'not longLike, not mapLike' );
+  test.open( 'not longLike, not aixiliary' );
 
   test.case = 'number';
   var got = _.map_( null, 2, ( v, u, u2 ) => v + v );
@@ -15552,7 +15552,7 @@ function entityMap( test ) /* 'Dmytro' : if have a time, improve coverage for di
   test.identical( got, src );
   test.true( got === src );
 
-  test.close( 'not longLike, not mapLike' );
+  test.close( 'not longLike, not aixiliary' );
 
   /* - */
 
@@ -15603,7 +15603,7 @@ function entityMapDifferentCallbacks( test )
 
   /* - */
 
-  test.open( 'mapLike' );
+  test.open( 'aixiliary' );
 
   test.case = 'onEach returns element';
   var src = { 'a' : 1, 'b' : 'a', 'c' : -1 };
@@ -15629,7 +15629,7 @@ function entityMapDifferentCallbacks( test )
   test.identical( got, { 'a' : 1, 'b' : 'a', 'c' : -1 } );
   test.true( got !== src );
 
-  test.close( 'mapLike' );
+  test.close( 'aixiliary' );
 
   /* - */
 
@@ -15682,9 +15682,9 @@ function entityMapWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] );
   var got = _.entityMap_( src, ( e ) => e );
-  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -15768,9 +15768,9 @@ function entityMapWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( src, ( e, k ) => k );
-  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -15855,9 +15855,9 @@ function entityMapWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
-  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -15941,9 +15941,9 @@ function entityMapWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2 ] );
   var got = _.entityMap_( src, ( e, k, c ) => undefined );
-  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 0, 1, 2 ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -16061,7 +16061,7 @@ function entityMapDstNull_( test )
   test.true( _.arrayIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] );
   var got = _.entityMap_( null, src, ( e ) => e );
   test.identical( got, [ 1, 2, 3, 4, 'str' ] );
   test.true( got !== src );
@@ -16147,7 +16147,7 @@ function entityMapDstNull_( test )
   test.true( _.arrayIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( null, src, ( e, k ) => k );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
   test.true( got !== src );
@@ -16233,7 +16233,7 @@ function entityMapDstNull_( test )
   test.true( _.arrayIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
   test.true( got !== src );
@@ -16309,10 +16309,10 @@ function entityMapDstNotNull_( test )
   test.open( 'onEach returns element' );
 
   test.case = 'dst - argumentsArray, empty array';
-  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var dst = _.argumentsArray.make( [ 1, 2, 3 ] );
   var src = [];
   var got = _.entityMap_( dst, src, ( e ) => e );
-  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 2, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'dst - array, unroll';
@@ -16324,7 +16324,7 @@ function entityMapDstNotNull_( test )
 
   test.case = 'dst - unroll, argumentsArray';
   var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( dst, src, ( e ) => e );
   test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
   test.true( got === dst );
@@ -16413,10 +16413,10 @@ function entityMapDstNotNull_( test )
   test.open( 'onEach returns key' );
 
   test.case = 'dst - argumentsArray, empty array';
-  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var dst = _.argumentsArray.make( [ 1, 2, 3 ] );
   var src = [];
   var got = _.entityMap_( dst, src, ( e, k ) => k );
-  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 2, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'dst - array, unroll';
@@ -16428,7 +16428,7 @@ function entityMapDstNotNull_( test )
 
   test.case = 'dst - unroll, argumentsArray';
   var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( dst, src, ( e, k ) => k );
   test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
   test.true( got === dst );
@@ -16517,10 +16517,10 @@ function entityMapDstNotNull_( test )
   test.open( 'onEach checks container' );
 
   test.case = 'dst - argumentsArray, empty array';
-  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var dst = _.argumentsArray.make( [ 1, 2, 3 ] );
   var src = [];
   var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
-  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 2, 3 ] ) );
   test.true( got === dst );
 
   test.case = 'dst - array, unroll';
@@ -16532,7 +16532,7 @@ function entityMapDstNotNull_( test )
 
   test.case = 'dst - unroll, argumentsArray';
   var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
-  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
   test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
   test.true( got === dst );
@@ -16653,7 +16653,7 @@ function entityFilter( test )
 
   test.case = 'argumentsArray';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var src = _.argumentsArrayMake( [ 9, -16, 25, 36, -49 ] );
+  var src = _.argumentsArray.make( [ 9, -16, 25, 36, -49 ] );
   var got = _.filter_( null, src, callback );
   test.identical( got, [ 3, 5, 6 ] );
 
@@ -16665,7 +16665,7 @@ function entityFilter( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike';
+  test.case = 'aixiliary';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.filter_( null, { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -16769,9 +16769,9 @@ function entityFilterWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] );
   var got = _.entityFilter_( src, ( e ) => e );
-  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -16851,9 +16851,9 @@ function entityFilterWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( src, ( e, k ) => k );
-  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -16933,9 +16933,9 @@ function entityFilterWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
-  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.identical( got, _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -17085,9 +17085,9 @@ function entityFilterWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 } ] );
+  var src = _.argumentsArray.make( [ { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 } ] );
   var got = _.entityFilter_( src, { 'a' : 1 } );
-  test.identical( got, _.argumentsArrayMake( [ { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 } ] ) );
+  test.identical( got, _.argumentsArray.make( [ { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 }, { 'a' : 1 } ] ) );
   test.true( got === src );
 
   /* */
@@ -17161,9 +17161,9 @@ function entityFilterWithoutDst_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
-  test.identical( got, _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] ) );
+  test.identical( got, _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] ) );
   test.true( got === src );
 
   test.case = 'BufferTyped';
@@ -17242,7 +17242,7 @@ function entityFilterWithoutDst_( test )
   test.shouldThrowErrorSync( () => _.entityFilter_( { 'a' : 1 }, { 'b' : 2 }, ( e ) => e, 'extra' ) );
 
   test.case = 'src is not resizable long, cannot delete element';
-  test.shouldThrowErrorSync( () => _.entityFilter_( _.argumentsArrayMake( [ undefined, undefined ], ( e ) => e ) ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( _.argumentsArray.make( [ undefined, undefined ], ( e ) => e ) ) );
 
   test.case = 'wrong type of onEach';
   test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 2 ], [] ) );
@@ -17262,6 +17262,13 @@ function entityFilterWithoutDst_( test )
 
 //
 
+/* qqq for Dmytro : bad coverage
+
+for example :
+commands = _.filter_( null, 'string', ( command ) => xxx )
+
+*/
+
 function entityFilterDstNull_( test )
 {
   test.open( 'onEach returns element' );
@@ -17272,6 +17279,12 @@ function entityFilterDstNull_( test )
   test.identical( got, [] );
   test.true( got !== src );
 
+  test.case = 'string';
+  var src = 'abc';
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, 'abc' );
+  test.true( got === src );
+
   test.case = 'unroll';
   var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e ) => e );
@@ -17279,7 +17292,7 @@ function entityFilterDstNull_( test )
   test.true( got !== src );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e ) => e );
   test.identical( got, [ 1, 3, 'str' ] );
   test.true( got !== src );
@@ -17361,7 +17374,7 @@ function entityFilterDstNull_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e, k ) => k );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
   test.true( got !== src );
@@ -17443,7 +17456,7 @@ function entityFilterDstNull_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
   test.true( got !== src );
@@ -17524,7 +17537,7 @@ function entityFilterDstNull_( test )
   test.true( got !== src );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e ) => undefined );
   test.identical( got, [] );
   test.true( got !== src );
@@ -17599,7 +17612,7 @@ function entityFilterDstNull_( test )
   test.true( got !== src );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, { a : 1 } );
   test.identical( got, [] );
   test.true( got !== src );
@@ -17675,7 +17688,7 @@ function entityFilterDstNull_( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
   test.identical( got, [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str' ] );
   test.true( got !== src );
@@ -17762,7 +17775,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, ( e ) => e );
   test.identical( got, [ 1, 3, 'str', 7, 7, 7 ] );
   test.true( got === dst );
@@ -17858,7 +17871,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, ( e, k ) => k );
   test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
   test.true( got === dst );
@@ -17954,7 +17967,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
   test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
   test.true( got === dst );
@@ -18050,7 +18063,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, ( e ) => undefined );
   test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
   test.true( got === dst );
@@ -18146,7 +18159,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, { a : 1 }, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, { a : 1 }, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, { a : 1 } );
   test.identical( got, [ { a : 1 }, 7, 7, 7, 7, 7 ] );
   test.true( got === dst );
@@ -18244,7 +18257,7 @@ function entityFilterDstNotNull_( test )
 
   test.case = 'argumentsArray';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
-  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var src = _.argumentsArray.make( [ 1, undefined, 3, undefined, 'str' ] );
   var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
   test.identical( got, [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str', 7 ] );
   test.true( got === dst );
@@ -18344,7 +18357,7 @@ function entityFilterDeep( test )
 
   test.case = 'argumentsArray';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
-  var src = _.argumentsArrayMake( [ 9, -16, 25, 36, -49 ] );
+  var src = _.argumentsArray.make( [ 9, -16, 25, 36, -49 ] );
   var got = _.entityFilterDeep( src, callback );
   test.identical( got, [ 3, 5, 6 ] );
 
@@ -18356,7 +18369,7 @@ function entityFilterDeep( test )
   test.identical( got, [ 3, 5, 6 ] );
   test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
 
-  test.case = 'mapLike';
+  test.case = 'aixiliary';
   var callback = ( v, i, s ) => v < 0 ? undefined : Math.sqrt( v );
   var got = _.entityFilterDeep( { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
   test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
@@ -18456,7 +18469,7 @@ function entityFilterDeep( test )
   test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( [ 1, 3 ], 'callback' ) );
 
-  test.case = 'src is not arrayLike or mapLike';
+  test.case = 'src is not arrayLike or aixiliary';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( undefined, ( e ) => e ) );
 }
 
@@ -18471,7 +18484,7 @@ function first( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray with undefined';
-  var got = _.first( _.argumentsArrayMake( [ undefined, undefined, undefined ] ), ( e ) => e );
+  var got = _.first( _.argumentsArray.make( [ undefined, undefined, undefined ] ), ( e ) => e );
   test.identical( got, undefined );
 
   test.case = 'unroll has defined elements';
@@ -18547,7 +18560,7 @@ function first( test )
   test.identical( got, 0 );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e, k ) => k );
+  var got = _.first( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e, k ) => k );
   test.identical( got, 0 );
 
   test.case = 'BufferTyped with zeros';
@@ -18619,7 +18632,7 @@ function first( test )
   test.identical( got, 0 );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e, k, c ) => c ? k : e );
+  var got = _.first( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e, k, c ) => c ? k : e );
   test.identical( got, 0 );
 
   test.case = 'BufferTyped with zeros';
@@ -18691,7 +18704,7 @@ function first( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e ) => undefined );
+  var got = _.first( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e ) => undefined );
   test.identical( got, undefined );
 
   test.case = 'BufferTyped with zeros';
@@ -18763,7 +18776,7 @@ function first( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.first( _.argumentsArrayMake( [ { b : 1 }, 'str', { a : 1 } ] ), { a : 1 } );
+  var got = _.first( _.argumentsArray.make( [ { b : 1 }, 'str', { a : 1 } ] ), { a : 1 } );
   test.identical( got, { a : 1 } );
 
   test.case = 'BufferTyped with zeros';
@@ -18852,7 +18865,7 @@ function last( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray with undefined';
-  var got = _.last( _.argumentsArrayMake( [ undefined, undefined, undefined ] ), ( e ) => e );
+  var got = _.last( _.argumentsArray.make( [ undefined, undefined, undefined ] ), ( e ) => e );
   test.identical( got, undefined );
 
   test.case = 'unroll has defined elements';
@@ -18928,7 +18941,7 @@ function last( test )
   test.identical( got, 2 );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.last( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e, k ) => k );
+  var got = _.last( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e, k ) => k );
   test.identical( got, 2 );
 
   test.case = 'BufferTyped with zeros';
@@ -19000,7 +19013,7 @@ function last( test )
   test.identical( got, 2 );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.last( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e, k, c ) => c ? k : e );
+  var got = _.last( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e, k, c ) => c ? k : e );
   test.identical( got, 2 );
 
   test.case = 'BufferTyped with zeros';
@@ -19072,7 +19085,7 @@ function last( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.last( _.argumentsArrayMake( [ undefined, 'str', 1 ] ), ( e ) => undefined );
+  var got = _.last( _.argumentsArray.make( [ undefined, 'str', 1 ] ), ( e ) => undefined );
   test.identical( got, undefined );
 
   test.case = 'BufferTyped with zeros';
@@ -19144,7 +19157,7 @@ function last( test )
   test.identical( got, undefined );
 
   test.case = 'argumentsArray has defined elements';
-  var got = _.last( _.argumentsArrayMake( [ { a : 1 }, 'str', { b : 1 } ] ), { a : 1 } );
+  var got = _.last( _.argumentsArray.make( [ { a : 1 }, 'str', { b : 1 } ] ), { a : 1 } );
   test.identical( got, { a : 1 } );
 
   test.case = 'BufferTyped with zeros';
@@ -21877,7 +21890,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -21885,7 +21898,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -21933,7 +21946,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -21941,7 +21954,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -21962,7 +21975,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -21970,7 +21983,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22128,7 +22141,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22136,7 +22149,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22184,7 +22197,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22192,7 +22205,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22213,7 +22226,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22221,7 +22234,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22395,7 +22408,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22403,7 +22416,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22451,7 +22464,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22459,7 +22472,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22480,7 +22493,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22488,7 +22501,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22662,7 +22675,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22670,7 +22683,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22718,7 +22731,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22726,7 +22739,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22747,7 +22760,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22755,7 +22768,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22929,7 +22942,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22937,7 +22950,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22985,7 +22998,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22993,7 +23006,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23014,7 +23027,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23022,7 +23035,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23193,7 +23206,7 @@ function indexInplace( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplace( src );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23201,7 +23214,7 @@ function indexInplace( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplace( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23249,7 +23262,7 @@ function indexInplace( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplace( src, ( e, k ) => e );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23257,7 +23270,7 @@ function indexInplace( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplace( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23265,7 +23278,7 @@ function indexInplace( test )
   var src = 'src';
   var got = _.indexInplace( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.close( 'onEach - routine returning element' );
@@ -23279,7 +23292,7 @@ function indexInplace( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplace( src, ( e, k ) => k );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23287,7 +23300,7 @@ function indexInplace( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplace( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23437,7 +23450,7 @@ function indexInplaceSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplaceSupplementing( src );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23445,7 +23458,7 @@ function indexInplaceSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplaceSupplementing( src );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23493,7 +23506,7 @@ function indexInplaceSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplaceSupplementing( src, ( e, k ) => e );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23501,7 +23514,7 @@ function indexInplaceSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplaceSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23509,7 +23522,7 @@ function indexInplaceSupplementing( test )
   var src = 'src';
   var got = _.indexInplaceSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.close( 'onEach - routine returning element' );
@@ -23523,7 +23536,7 @@ function indexInplaceSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexInplaceSupplementing( src, ( e, k ) => k );
   test.true( src === got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23531,7 +23544,7 @@ function indexInplaceSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.indexInplaceSupplementing( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23783,7 +23796,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, without onEvaluate';
+  test.case = 'src - aixiliary, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23794,7 +23807,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach';
+  test.case = 'src - aixiliary, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23881,7 +23894,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, without onEvaluate';
+  test.case = 'src - aixiliary, without onEvaluate';
   var o =
   {
     src : { a : 1, b : 0, c : 3, d : 2 },
@@ -23892,7 +23905,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach';
+  test.case = 'src - aixiliary, onEach';
   var o =
   {
     src : { a : 5, b : 1, c : 3, d : 2 },
@@ -23956,7 +23969,7 @@ function _entityMost( test )
 
   /* */
 
-  test.case = 'src - mapLike, onEvaluate1.length - 1';
+  test.case = 'src - aixiliary, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 2, c : 3, d : 4 },
@@ -23967,7 +23980,7 @@ function _entityMost( test )
   test.true( got !== o );
   test.identical( got, exp );
 
-  test.case = 'src - mapLike, onEach, onEvaluate1.length - 1';
+  test.case = 'src - aixiliary, onEach, onEvaluate1.length - 1';
   var o =
   {
     src : { a : 0, b : 6, c : 3, d : 4 },
@@ -24077,13 +24090,13 @@ function entityMin( test )
   test.identical( got, exp );
 
   test.case = 'argumentsArray, without onEvaluate';
-  var src = _.argumentsArrayMake( [ 3, 1, 9, 0, 5 ] );
+  var src = _.argumentsArray.make( [ 3, 1, 9, 0, 5 ] );
   var exp = { index : 3, key : 3, value : 0, element : 0 };
   var got = _.entityMin( src );
   test.identical( got, exp );
 
   test.case = 'argumentsArray, onEvaluate';
-  var src = _.argumentsArrayMake( [ 3, -4, 9, -16, 5, -2 ] );
+  var src = _.argumentsArray.make( [ 3, -4, 9, -16, 5, -2 ] );
   var exp = { index : 5, key : 5, value : 4, element : -2 };
   var got = _.entityMin( src, ( e ) => e * e );
   test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
@@ -24161,13 +24174,13 @@ function entityMax( test )
   test.identical( got, exp );
 
   test.case = 'argumentsArray, without onEvaluate';
-  var src = _.argumentsArrayMake( [ 3, 1, 9, 0, 5 ] );
+  var src = _.argumentsArray.make( [ 3, 1, 9, 0, 5 ] );
   var exp = { index : 2, key : 2, value : 9, element : 9 };
   var got = _.entityMax( src );
   test.identical( got, exp );
 
   test.case = 'argumentsArray, onEvaluate';
-  var src = _.argumentsArrayMake( [ 3, -4, 9, -16, 5, -2 ] );
+  var src = _.argumentsArray.make( [ 3, -4, 9, -16, 5, -2 ] );
   var exp = { index : 3, key : 3, value : 256, element : -16 };
   var got = _.entityMax( src, ( e ) => e * e );
   test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
@@ -24219,6 +24232,7 @@ function entityMax( test )
 
 function eachSample( test )
 {
+
   /* */
 
   test.case = 'sets - array with single element';
@@ -24258,12 +24272,12 @@ function eachSample( test )
   test.identical( src, _.unrollMake( [ 1 ] ) );
 
   test.case = 'sets - argumentsArray with single element';
-  var src = _.argumentsArrayMake( [ 1 ] );
+  var src = _.argumentsArray.make( [ 1 ] );
   var got = _.eachSample( src, null );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( [ 1 ] ) );
+  test.identical( src, _.argumentsArray.make( [ 1 ] ) );
 
   /* */
 
@@ -24286,16 +24300,16 @@ function eachSample( test )
   var got = _.eachSample( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
   test.identical( src, _.unrollMake( [ 1, 2, 3 ] ) );
 
   test.case = 'sets - argumentsArray, result - 0';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.eachSample( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
-  test.true( _.primitiveIs( got ) );
-  test.identical( src, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.true( _.primitive.is( got ) );
+  test.identical( src, _.argumentsArray.make( [ 1, 2, 3 ] ) );
 
   /* */
 
@@ -24328,21 +24342,12 @@ function eachSample( test )
   test.identical( src, _.unrollMake( [ [ 1, 2, null, 'str' ] ] ) );
 
   test.case = 'sets - argumentsArray, contains array';
-  var src = _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] );
+  var src = _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] );
   var got = _.eachSample( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
-
-  /* aaa2 : strange? explain please */
-  /* Dmytro : it was strange because BufferTyped was not used properly */
-  // var src = _.arrayFrom( new F32x( [ 1, 2, 3 ] ) );
-  // var got = _.eachSample( src );
-  // var expected = [ [ 1, 2, 3 ] ];
-  // test.identical( got, expected );
-  // test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
-  // test.true( _.arrayIs( got ) );
+  test.identical( src, _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] ) );
 
   /* */
 
@@ -24437,7 +24442,7 @@ function eachSample( test )
   test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] } );
 
   test.case = 'sets - two dimentional array, contains argumentsArray';
-  var src = [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ];
+  var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
   var got = _.eachSample
   ({
     sets : src,
@@ -24449,7 +24454,7 @@ function eachSample( test )
   ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
-  test.identical( src, [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ] );
+  test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
 
   /* */
 
@@ -24580,7 +24585,7 @@ function eachSample( test )
   test.identical( src, [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ] );
 
   test.case = 'sets - array with argumentsArray, leftToRight - 1, result - 0';
-  var src = [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ];
+  var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
   var got = _.eachSample
   ({
     sets : src,
@@ -24588,7 +24593,7 @@ function eachSample( test )
   });
   var expected = 3;
   test.identical( got, expected );
-  test.identical( src, [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ] );
+  test.identical( src, [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ] );
 
   test.case = 'sets - two dimentional array, sample - not default, equal length of vectors';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
@@ -24700,6 +24705,19 @@ function eachSample( test )
   test.identical( result, [ 0, 2, 3, 4 ] );
   test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
 
+  test.case = 'string and number';
+  var src = { str : 'abc', n : 3 };
+  var options =
+  {
+    sets : src,
+  }
+  var got = _.eachSample( options );
+  var expected =
+  [
+    { str : 'abc', n : 3 }
+  ];
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -24709,7 +24727,7 @@ function eachSample( test )
   test.shouldThrowErrorSync( () => _.eachSample() );
   test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
 
-  test.case = 'o.sets is not arraylike, not mapLike';
+  test.case = 'o.sets is not arraylike, not aixiliary';
   test.shouldThrowErrorSync( () => _.eachSample( {} ) );
   test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
   test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );
@@ -24762,12 +24780,12 @@ function eachSampleEmptyContainers( test )
   test.identical( src, _.unrollMake( [] ) );
 
   test.case = 'sets - empty argumentsArray';
-  var src = _.argumentsArrayMake( 0 );
+  var src = _.argumentsArray.make( 0 );
   var got = _.eachSample( src, null );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( 0 ) );
+  test.identical( src, _.argumentsArray.make( 0 ) );
 
   /* */
 
@@ -24808,12 +24826,12 @@ function eachSampleEmptyContainers( test )
   test.identical( src, _.unrollMake( [ [], [] ] ) );
 
   test.case = 'sets - argumentsArray with several empty arrays';
-  var src = _.argumentsArrayMake( [ [], [] ] );
+  var src = _.argumentsArray.make( [ [], [] ] );
   var got = _.eachSample( src );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( [ [], [] ] ) );
+  test.identical( src, _.argumentsArray.make( [ [], [] ] ) );
 
   /* */
 
@@ -25135,7 +25153,7 @@ function eachPermutationBasic( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.numberIs( o.container ) )
+    if( _.number.is( o.container ) )
     {
       if( o.container < 0 )
       o.container = 0;
@@ -25289,7 +25307,7 @@ function eachPermutationOptions( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.numberIs( o.container ) )
+    if( _.number.is( o.container ) )
     {
       if( o.container < 0 )
       o.container = 0;

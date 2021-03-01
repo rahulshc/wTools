@@ -149,7 +149,7 @@ function errOriginalMessage( err )
   {
     let fields = _.property.fields( err );
     if( Object.keys( fields ).length )
-    message += '\n' + _.toStr( fields, { wrap : 0, multiline : 1, levels : 2 } );
+    message += '\n' + _.entity.exportString( fields, { wrap : 0, multiline : 1, levels : 2 } );
   }
 
   return message;
@@ -303,12 +303,12 @@ function _errMake( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
+        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}` );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
+        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}` );
         delete o.sections[ s ];
       }
     }
@@ -559,7 +559,7 @@ function _err( o )
   // let message = null;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
   if( _global_.debugger )
   debugger;
@@ -647,7 +647,9 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          o.args = _.longBut( o.args, [ a, a+1 ], arg );
+          debugger;
+          o.args = _.longBut_( null, o.args, [ a, a ], arg );
+          // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
           continue;
         }
@@ -731,7 +733,7 @@ function _err( o )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let arg = o.args[ a ];
-      if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
+      if( !_.primitive.is( arg ) && _.object.like( arg ) )
       try
       {
         o.throwLocation = _.introspector.location
@@ -906,7 +908,7 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.catchLocation.abstraction ) );
+    _.assert( _.number.is( o.catchLocation.abstraction ) );
     if( !o.catchLocation.abstraction || o.catchLocation.abstraction === 1 )
     {
       if( o.throwsStack )
@@ -959,10 +961,10 @@ function _err( o )
       let arg = o.args[ a ];
       let str;
 
-      if( arg && !_.primitiveIs( arg ) )
+      if( arg && !_.primitive.is( arg ) )
       {
 
-        // if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
+        // if( _.primitive.is( arg ) ) // Dmytro : unnecessary condition, see above
         // {
         //   str = String( arg );
         // }
@@ -983,11 +985,11 @@ function _err( o )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
-          str = _.toStr( arg );
+          str = _.entity.exportString( arg );
         }
         else
         {
-          str = _.toStr( arg, { levels : 2 } );
+          str = _.entity.exportString( arg, { levels : 2 } );
         }
       }
       else if( arg === undefined )
@@ -1305,7 +1307,7 @@ function _errFields( args, fields )
 
   let err = args[ 0 ];
 
-  if( _.symbolIs( err ) )
+  if( _.symbol.is( err ) )
   {
     _.assert( args.length === 1 );
     return err;
@@ -1460,7 +1462,7 @@ function errRestack( err, level )
   if( level === undefined )
   level = 1;
 
-  if( !_.numberDefined( level ) )
+  if( !_.number.defined( level ) )
   throw Error( 'Expects defined number' );
 
   let err2 = _._err
@@ -1730,7 +1732,7 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
 }
 
@@ -1850,48 +1852,30 @@ function sureWithoutDebugger( condition )
 
 }
 
-//
-
-function sureInstanceOrClass( _constructor, _this )
-{
-  _.sure( arguments.length === 2, 'Expects exactly two arguments' );
-  _.sure( _.isInstanceOrClass( _constructor, _this ) );
-}
-
-//
-
-function sureOwnNoConstructor( ins )
-{
-  _.sure( !_.primitiveIs( ins ) );
-  let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _.ownNoConstructor( ins );
-  _.sure.apply( _, args );
-}
-
 // --
-// assert
+//
 // --
 
-function breakpoint( condition )
-{
-
-  if( Config.debug === false )
-  return true;
-
-  if( !condition )
-  {
-    // let err = _err
-    // ({
-    //   args : Array.prototype.slice.call( arguments, 1 ),
-    //   level : 2,
-    // });
-    logger.log( _.introspector.stack() );
-
-    return false;
-  }
-
-  return true;
-}
+// function breakpoint( condition )
+// {
+//
+//   if( Config.debug === false )
+//   return true;
+//
+//   if( !condition )
+//   {
+//     // let err = _err
+//     // ({
+//     //   args : Array.prototype.slice.call( arguments, 1 ),
+//     //   level : 2,
+//     // });
+//     logger.log( _.introspector.stack() );
+//
+//     return false;
+//   }
+//
+//   return true;
+// }
 
 //
 
@@ -1998,7 +1982,7 @@ function assert( condition )
 
   function _assertDebugger( condition, args )
   {
-    if( !_.error.breakpointEnabled )
+    if( !_.error.breakpointOnAssertEnabled )
     return;
     debugger;
   }
@@ -2015,7 +1999,7 @@ function assertWithoutBreakpoint( condition )
   if( Config.debug === false )
   return true;
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !_.bool.like( condition ) )
   {
     if( arguments.length === 1 )
     throw _err
@@ -2045,7 +2029,7 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
-  if( _.error.breakpointEnabled )
+  if( _.error.breakpointOnAssertEnabled )
   debugger;
   _.assert( false, 'not tested : ' + stack( 1 ) );
 
@@ -2076,7 +2060,7 @@ function assertWarn( condition )
   if( Config.debug )
   return;
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !_.bool.like( condition ) )
   {
     console.warn.apply( console, [].slice.call( arguments, 1 ) );
   }
@@ -2085,39 +2069,38 @@ function assertWarn( condition )
 
 //
 
-function assertInstanceOrClass( _constructor, _this )
+if( Config.debug )
+Object.defineProperty( _, 'debugger',
 {
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.isInstanceOrClass( _constructor, _this ) );
-}
-
-//
-
-function assertOwnNoConstructor( ins )
-{
-  _.assert( !_.primitiveIs( ins ) );
-  let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _.ownNoConstructor( ins );
-
-  if( args.length === 1 )
-  args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
-
-  _.assert.apply( _, args );
-}
+  enumerable : false,
+  configurable : false,
+  set : function( val )
+  {
+    _[ Symbol.for( 'debugger' ) ] = val;
+    // if( val )
+    // debugger;
+    return val;
+  },
+  get : function()
+  {
+    let val = _[ Symbol.for( 'debugger' ) ];
+    if( val )
+    debugger;
+    return val;
+  },
+});
 
 // --
 // namespace
 // --
 
-// let _errorCounter = 0;
-// let _errorMaking = false;
 let stackSymbol = Symbol.for( 'stack' );
 
 /* Error.stackTraceLimit = 99; */
 
 /**
  * @property {Object} error={}
- * @property {Boolean} breakpointEnabled=!!Config.debug
+ * @property {Boolean} breakpointOnAssertEnabled=!!Config.debug
  * @name ErrFields
  * @namespace Tools
  */
@@ -2125,8 +2108,9 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
-  breakpoint,
-  breakpointEnabled : !!Config.debug,
+  // breakpoint,
+  breakpointOnDebugger : 0,
+  breakpointOnAssertEnabled : !!Config.debug,
   _errorCounter : 0,
   _errorMaking : false,
 
@@ -2184,6 +2168,14 @@ let ToolsExtension =
   sureBriefly,
   sureWithoutDebugger,
 
+  // sureInstanceOrClass,
+  // sureOwnNoConstructor,
+  //
+  // // checker
+  //
+  // _isInstanceOrClass,
+  // _ownNoConstructor,
+
   // assert
 
   assert,
@@ -2194,7 +2186,7 @@ let ToolsExtension =
   // fields
 
   // error : Object.create( null ),
-  // breakpointEnabled : !!Config.debug,
+  // breakpointOnAssertEnabled : !!Config.debug,
   //
   // _errorCounter,
   // _errorMaking,

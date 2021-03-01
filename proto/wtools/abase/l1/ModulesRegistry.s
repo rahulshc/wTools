@@ -197,7 +197,7 @@ let wSelectorExtra =
 let wResolverExtra =
 {
   sourcePath : sourcePath( 'abase/l7/ResolverExtra.s', 'wresolverextra' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver && !!_global.wTools.resolveQualified; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver2 && !!_global.wTools.resolver2.resolveQualified; },
 }
 
 // base / l7_mixin
@@ -540,13 +540,13 @@ let wTemplateFileWriter =
 
 let wColor =
 {
-  sourcePath : sourcePath( 'amid/color/Color.s', 'wColor' ),
+  sourcePath : sourcePath( 'amid/l1/color/entry/ColorBasic.s', 'wColor' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap },
 }
 
 let wColor256 =
 {
-  sourcePath : sourcePath( 'amid/color/Color256.s', 'wColor256' ),
+  sourcePath : sourcePath( 'amid/l1/color/entry/Color256.s', 'wColor256' ),
   isIncluded : function()
   {
     return !!_global.wTools && !!_global.wTools.color

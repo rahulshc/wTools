@@ -1,4 +1,8 @@
-| Type         | Description
+# Types
+
+## Old types table
+
+| Type          | Description
 | ------------- | -----------------------
 | number    | numeric data type in the double-precision floating format
 | bool  | logical type that can have only true or false
@@ -8,7 +12,7 @@
 | object    | collection of user defined properties( key:value pairs) and default properties inherited from Object's prototype
 | map   | dictionary type of data collection in which, data is stored in a form of key:value pairs, doesn't have a prototype, usually is used to store options of the routine, example of empty map : ```let map = Object.create( null )```
 | objectLike  |
-| mapLike   |
+| Auxiliary   |
 | RegExp    | regular expression for matching text
 | Interval | array-like object with two values : indecies of first and last + 1 element
 | Time  | Date object or number and string that are convertable to Date object
@@ -26,3 +30,140 @@
 | Consequence resource | result of Consequence value computation, there are two kinds of resource: argument and error, only one can be defined at same time
 | Consequence competitor | function that handles the resource
 ...
+
+## Types table
+
+| Type         | Prime | Generic | Complex | Defined in wTools |
+|:------------ | ----- | ------- | ------- | ----------------- |
+| Global       |   -   |    +    |    +    |                   |
+| GlobalReal   |   +   |    -    |    +    |                   |
+| GlobalDrived |   +   |    -    |    +    |                   |
+|              |       |         |         |                   |
+| Object       |   -   |    -    |    +    |                   |
+| ObjectLike   |   -   |    -    |    +    |                   |
+|              |       |         |         |                   |
+|              |       |         |         |                   |
+...
+
+# Types list
+
+Primitive
+Symbol
+Null
+Undefined
+Number
+NumberLike
+Bool
+BoolLike
+Fuzzy
+FuzzyLike
+BigInt
+Str
+
+Timer
+Time
+Date
+Regexp
+RegexpLike
+
+ArgumentsArray
+Unroll
+Array
+ArrayLike
+Long
+LongLike
+Vector
+Countable
+CountableLike
+
+Global
+GlobalReal
+GlobalDerived
+
+objectIs,
+objectLike,
+
+Map,
+Auxiliary
+MapPure,
+MapPolluted,
+AuxiliaryPolluted,
+MapPrototyped,
+AuxiliaryPrototyped,
+
+HashMap
+Set
+SetLike?
+
+BufferNode
+BufferRaw
+BufferRawShared
+BufferTyped
+BufferView
+BufferBytes
+
+constructible
+constructibleLike
+
+Container
+ContainerLike
+
+Entity
+
+err
+errStandard
+
+Escape
+
+Interval
+Cinterval
+Linterval
+Ointerval
+
+Pair
+Path
+
+PropertyTransformer
+PropertyTransformer.Mapper
+PropertyTransformer.Filter
+
+Routine
+RoutineLike
+
+Consequence
+ConsequenceLike,
+Promise
+PromiseLike,
+
+Worker
+Stream
+Console
+Printer
+PrinterLike,
+Logger
+Process
+Procedure
+
+## Secondary types
+
+constructor
+instance
+
+blueprintIsDefinitive,
+blueprintIsRuntime,
+definition
+trait
+containerAdapter
+ContainerAdapterArray?
+ContainerAdapterSet?
+LongDescriptors?
+
+## Non-differentiable types
+
+Event?
+
+## Special symbols
+
+Symbol null
+Symbol undefined
+Symbol nothing

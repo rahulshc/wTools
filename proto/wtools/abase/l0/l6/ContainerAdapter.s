@@ -26,9 +26,11 @@ function is( src )
 
 function isContainer( src )
 {
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return true;
   if( _.longLike( src ) )
+  return true;
+  if( _.containerAdapter.is( src ) )
   return true;
   return false;
 }
@@ -40,7 +42,7 @@ function make( container )
 
   _.assert( arguments.length === 1 );
 
-  if( _.setIs( container ) )
+  if( _.set.is( container ) )
   {
     return new _.containerAdapter.Set( container );
   }
@@ -65,7 +67,7 @@ function from( container )
   {
     return container;
   }
-  else if( _.setIs( container ) )
+  else if( _.set.is( container ) )
   {
     return new _.containerAdapter.Set( container );
   }

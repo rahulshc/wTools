@@ -40,25 +40,6 @@ function onSuiteEnd()
 // tests
 // --
 
-function diagnosticStructureGenerate( test )
-{
-
-  test.case = 'implicity call';
-  var got = _.diagnosticStructureGenerate();
-  test.true( _.mapIs( got.structure ) );
-  test.identical( got.structure[ 'number.big' ], 1 << 30 );
-  test.true( _.numberIs( got.size ) );
-
-  test.case = 'defaultComplexity : 5, depth : 3';
-  var got = _.diagnosticStructureGenerate({ defaultComplexity : 5, depth : 3 });
-  test.true( _.mapIs( got.structure ) );
-  test.true( _.hashMapIs( got.structure.hashmap ) );
-  test.true( _.setIs( got.structure.set ) );
-
-}
-
-diagnosticStructureGenerate.timeOut = 50000;
-
 //
 
 function errArgumentObject( test )
@@ -1045,7 +1026,10 @@ function _errOriginalMessageForm( test )
   test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
+  test.identical( _.strCount( err.originalMessage, "{- routine.anonymous -}" ), 1 );
+  console.log( err.originalMessage );
+  // Dmytro : affects in group testing but has no reason for it
+  // qqq : for Dmytro : ?
 
   test.case = 'args - different, routine returns map with toStr';
   var a = () =>
@@ -3445,8 +3429,6 @@ let Self =
 
   tests :
   {
-
-    diagnosticStructureGenerate,
 
     errArgumentObject,
     errFromStringedError, /* qqq : extend the test routine. low priority problem */

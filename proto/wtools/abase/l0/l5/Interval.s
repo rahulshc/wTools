@@ -17,7 +17,7 @@
 // {
 //   _.assert( arguments.length === 1 );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   return [ range, Infinity ];
 //
 //   _.assert( _.longIs( range ) );
@@ -27,12 +27,12 @@
 //   else
 //   _.assert( range.length === 2 );
 //
-//   if( !_.numberIs( range[ 0 ] ) )
+//   if( !_.number.is( range[ 0 ] ) )
 //   {
 //     _.assert( range[ 0 ] === undefined );
 //     range[ 0 ] = 0;
 //   }
-//   if( !_.numberIs( range[ 1 ] ) )
+//   if( !_.number.is( range[ 1 ] ) )
 //   {
 //     _.assert( range[ 1 ] === undefined );
 //     range[ 1 ] = Infinity;
@@ -44,12 +44,12 @@
 // // function fromLeft( range )
 // // {
 // //   _.assert( arguments.length === 1 );
-// //   if( _.numberIs( range ) )
+// //   if( _.number.is( range ) )
 // //   return [ range, Infinity ];
 // //   _.assert( _.longIs( range ) );
 // //   _.assert( range.length === 1 || range.length === 2 );
-// //   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-// //   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+// //   _.assert( range[ 0 ] === undefined || _.number.is( range[ 0 ] ) );
+// //   _.assert( range[ 1 ] === undefined || _.number.is( range[ 1 ] ) );
 // //   if( range[ 0 ] === undefined )
 // //   return [ 0, range[ 1 ] ];
 // //   if( range[ 1 ] === undefined )
@@ -67,7 +67,7 @@
 // {
 //   _.assert( arguments.length === 1 );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   return [ 0, range ];
 //
 //   _.assert( _.longIs( range ) );
@@ -77,12 +77,12 @@
 //   else
 //   _.assert( range.length === 2 );
 //
-//   if( !_.numberIs( range[ 0 ] ) )
+//   if( !_.number.is( range[ 0 ] ) )
 //   {
 //     _.assert( range[ 0 ] === undefined );
 //     range[ 0 ] = 0;
 //   }
-//   if( !_.numberIs( range[ 1 ] ) )
+//   if( !_.number.is( range[ 1 ] ) )
 //   {
 //     _.assert( range[ 1 ] === undefined );
 //     range[ 1 ] = Infinity;
@@ -94,12 +94,12 @@
 // // function fromRight( range )
 // // {
 // //   _.assert( arguments.length === 1 );
-// //   if( _.numberIs( range ) )
+// //   if( _.number.is( range ) )
 // //   return [ 0, range ];
 // //   _.assert( _.longIs( range ) );
 // //   _.assert( range.length === 1 || range.length === 2 );
-// //   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-// //   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+// //   _.assert( range[ 0 ] === undefined || _.number.is( range[ 0 ] ) );
+// //   _.assert( range[ 1 ] === undefined || _.number.is( range[ 1 ] ) );
 // //   if( range[ 0 ] === undefined )
 // //   return [ 0, range[ 1 ] ];
 // //   if( range[ 1 ] === undefined )
@@ -112,13 +112,13 @@
 // // function fromSingle( range )
 // // {
 // //   _.assert( arguments.length === 1 );
-// //   if( _.numberIs( range ) )
+// //   if( _.number.is( range ) )
 // //   return [ range, range + 1 ];
 // //
 // //   _.assert( _.longIs( range ) );
 // //   _.assert( range.length === 1 || range.length === 2 );
-// //   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-// //   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+// //   _.assert( range[ 0 ] === undefined || _.number.is( range[ 0 ] ) );
+// //   _.assert( range[ 1 ] === undefined || _.number.is( range[ 1 ] ) );
 // //
 // //   if( range[ 0 ] === undefined )
 // //   if( range[ 1 ] !== undefined )
@@ -141,7 +141,7 @@
 // //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 // //   _.assert( _.intervalIs( dstRange ) );
 // //
-// //   if( _.numberIs( clampRange ) )
+// //   if( _.number.is( clampRange ) )
 // //   {
 // //     dstRange[ 0 ] = clampRange;
 // //     dstRange[ 1 ] = clampRange;
@@ -175,7 +175,7 @@
 // //   if( increment === undefined )
 // //   increment = 1;
 // //
-// //   _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+// //   _.assert( _.number.is( increment ), 'Increment should has a number value' );
 // //
 // //   return increment ? ( range[ 1 ]-range[ 0 ] ) / increment : 0;
 // // }
@@ -193,7 +193,7 @@
 //
 //   if( options )
 //   {
-//     _.assert( _.mapLike( options ) );
+//     _.assert( _.aux.is( options ) );
 //     if( options.increment === undefined )
 //     options.increment = 1;
 //   }
@@ -207,7 +207,7 @@
 //   {
 //     return range.first;
 //   }
-//   _.assert( 0, 'unexpected type of range', _.strType( range ) );
+//   _.assert( 0, 'unexpected type of range', _.entity.strType( range ) );
 // }
 //
 // // //
@@ -230,7 +230,7 @@
 // //   {
 // //     return range.last
 // //   }
-// //   _.assert( 0, 'unexpected type of range', _.strType( range ) );
+// //   _.assert( 0, 'unexpected type of range', _.entity.strType( range ) );
 // //
 // // }
 //

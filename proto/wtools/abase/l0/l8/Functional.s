@@ -161,7 +161,7 @@ function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  // _.assert( _.number.is( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( dst !== undefined, 'Expects array or scalar' );
   _.assert( length >= 0 );
 
@@ -207,9 +207,9 @@ function scalarFromOrNull( src )
 function dup( ins, times, result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ), 'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.longIs( times ), 'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -349,7 +349,7 @@ function multipleAll( dsts )
  * @throws {exception} If ( arguments.length ) is less then one or more then two.
  * @throws {exception} If( onEach ) is not a Routine or null.
  * @throws {exception} If( o.sets ) is not array or objectLike.
- * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If ( sets ) is aixiliary and ( onEach ) not passed.
  * @throws {exception} If( o.base ) or ( o.add) is undefined.
  * @namespace Tools
  */
@@ -367,25 +367,25 @@ function eachSample( o )
   _.routineOptions( eachSample, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( o.onEach ) || o.onEach === null );
-  _.assert( _.longLike( o.sets ) || _.mapLike( o.sets ) );
+  _.assert( _.longLike( o.sets ) || _.aux.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
   /* sample */
 
   if( !o.sample )
-  o.sample = _.entityMakeUndefined( o.sets );
+  o.sample = _.entity.makeUndefined( o.sets );
 
   /* */
 
   let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
-  if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   if( keys.length === 0 )
   return o.result ? o.result : 0;
   let len = [];
   let indexnd = [];
   let index = 0;
-  let l = _.entityLength( o.sets );
+  let l = _.entityLengthOf( o.sets );
 
   /* sets */
 
@@ -394,17 +394,17 @@ function eachSample( o )
 
   o.sets = _.filter_( null, o.sets, function( set, k )
   {
-    _.assert( _.longIs( set ) || _.primitiveIs( set ) );
+    _.assert( _.longIs( set ) || _.primitive.is( set ) );
 
     if( breaking === 0 )
     {
-      if( _.primitiveIs( set ) )
+      if( _.primitive.is( set ) )
       set = [ set ];
 
       if( set.length === 0 )
       breaking = 1;
 
-      len[ sindex ] = _.entityLength( o.sets[ k ] );
+      len[ sindex ] = _.entityLengthOf( o.sets[ k ] );
       indexnd[ sindex ] = 0;
       sindex += 1;
     }
@@ -448,7 +448,7 @@ function eachSample( o )
     });
 
     if( o.result )
-    if( _.mapLike( o.sample ) )
+    if( _.aux.is( o.sample ) )
     o.result.push( _.mapExtend( null, o.sample ) );
     else
     o.result.push( o.sample.slice() );
@@ -475,7 +475,7 @@ function eachSample( o )
       index += 1;
 
       if( o.result )
-      if( _.mapLike( o.sample ) )
+      if( _.aux.is( o.sample ) )
       o.result.push( _.mapExtend( null, o.sample ) );
       else
       o.result.push( o.sample.slice() );
@@ -547,7 +547,7 @@ function eachPermutation( o )
 
   _.routineOptions( eachPermutation, arguments );
 
-  if( _.numberIs( o.container ) )
+  if( _.number.is( o.container ) )
   {
     if( o.container < 0 )
     o.container = 0;
@@ -667,7 +667,7 @@ eachPermutation.defaults =
 {
   onEach : null,
   container : null,
-  dst : null,
+  dst : null, /* qqq for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */
   returning : 0,
 }
 
@@ -930,7 +930,7 @@ function _entityFilterDeep( o )
   let onEach = _._filter_functor( o.onEach, o.conditionLevels );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.strType( o.src ) );
+  _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.entity.strType( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -967,7 +967,7 @@ function _entityFilterDeep( o )
   }
   else
   {
-    result = _.entityMakeUndefined( o.src );
+    result = _.entity.makeUndefined( o.src );
     for( let s in o.src )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );
@@ -1049,7 +1049,7 @@ function _entityIndex_functor( fop )
 
     /* */
 
-    if( _.mapLike( src ) )
+    if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -1099,9 +1099,9 @@ function _entityIndex_functor( fop )
       }
       else
       {
-        if( !_.mapLike( ext ) )
+        if( !_.aux.is( ext ) )
         {
-          _.assert( _.primitiveIs( ext ) );
+          _.assert( _.primitive.is( ext ) );
           ext = { [ ext ] : val }
         }
         extendRoutine( result, ext );
@@ -1458,7 +1458,7 @@ function _entityRemap_functor( fop )
 
     /* */
 
-    if( _.mapLike( src ) )
+    if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -1508,7 +1508,7 @@ function _entityRemap_functor( fop )
       }
       else
       {
-        if( _.mapLike( res ) )
+        if( _.aux.is( res ) )
         extendRoutine( result, res );
         else if( key !== undefined )
         result[ key ] = res;

@@ -261,7 +261,7 @@ function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  // _.assert( _.number.is( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( dst !== undefined, 'Expects array or scalar' );
   _.assert( length >= 0 );
 
@@ -307,9 +307,9 @@ function scalarFromOrNull( src )
 function dup( ins, times, result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ), 'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.longIs( times ), 'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -389,7 +389,7 @@ function entityEach( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let k in src )
@@ -428,7 +428,7 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) || _.object.like( src ) )
   {
 
     for( let k in src )
@@ -469,7 +469,7 @@ function entityEachOwn( src, onEach )
 //     }
 //
 //   }
-//   else if( _.objectLike( src ) )
+//   else if( _.object.like( src ) )
 //   {
 //
 //     let index = 0;
@@ -507,7 +507,7 @@ function entityEachOwn( src, onEach )
 //   //   }
 //   //
 //   // }
-//   // else if( _.objectLike( o.src ) )
+//   // else if( _.object.like( o.src ) )
 //   // {
 //   //
 //   //   let index = 0;
@@ -534,7 +534,7 @@ function entityEachOwn( src, onEach )
 
 /*
 
-LongLike / MapLike / HashMapLike / SetLike
+LongLike / Aux / HashMapLike / SetLike
 
 
 _.only( Array::dst, Map::src );
@@ -787,7 +787,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -827,7 +827,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -911,7 +911,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -966,7 +966,7 @@ function entityOnly( dst, src, onEach )
   //     }
   //
   //   }
-  //   else if( _.mapLike( src ) )
+  //   else if( _.aux.is( src ) )
   //   {
   //
   //     for( let k in dst )
@@ -1003,7 +1003,7 @@ function entityOnly( dst, src, onEach )
         dst.splice( k, 1 );
       }
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1058,7 +1058,7 @@ function entityOnly( dst, src, onEach )
   //     }
   //
   //   }
-  //   else if( _.mapLike( src ) )
+  //   else if( _.aux.is( src ) )
   //   {
   //
   //     for( let k in dst )
@@ -1085,11 +1085,11 @@ function entityOnly( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -1325,7 +1325,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1365,7 +1365,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1448,7 +1448,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1503,7 +1503,7 @@ function entityBut( dst, src, onEach )
   //     }
   //
   //   }
-  //   else if( _.mapLike( src ) )
+  //   else if( _.aux.is( src ) )
   //   {
   //
   //     for( let k in dst )
@@ -1541,7 +1541,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1598,7 +1598,7 @@ function entityBut( dst, src, onEach )
   //     }
   //
   //   }
-  //   else if( _.mapLike( src ) )
+  //   else if( _.aux.is( src ) )
   //   {
   //
   //     for( let k in dst )
@@ -1625,11 +1625,11 @@ function entityBut( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -1675,7 +1675,7 @@ function entityBut( dst, src, onEach )
 //       }
 //
 //     }
-//     else if( _.mapLike( src ) )
+//     else if( _.aux.is( src ) )
 //     {
 //
 //       result = Object.create( null );
@@ -1710,7 +1710,7 @@ function entityBut( dst, src, onEach )
 //       }
 //
 //     }
-//     else if( _.mapLike( src ) )
+//     else if( _.aux.is( src ) )
 //     {
 //
 //       result = Object.create( null );
@@ -1955,7 +1955,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1995,7 +1995,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2095,7 +2095,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2139,7 +2139,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2166,11 +2166,11 @@ function entityAnd( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2402,7 +2402,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2442,7 +2442,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2559,7 +2559,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2618,7 +2618,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2657,11 +2657,11 @@ function entityOr( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2900,7 +2900,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2938,7 +2938,7 @@ function entityXor( dst, src, onEach )
       if( e )
       dst.push( e );
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       dst = Object.assign( Object.create( null ), src );
       let  unnecessaries = [ null, 0, undefined, false, '' ];
@@ -3075,7 +3075,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in src )
@@ -3130,7 +3130,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in src )
@@ -3169,11 +3169,11 @@ function entityXor( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -3197,7 +3197,7 @@ function entityAll( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3208,7 +3208,7 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3230,8 +3230,8 @@ function entityAll( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3253,7 +3253,7 @@ function entityAll( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3270,8 +3270,8 @@ function entityAll( src, onEach )
       // }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3282,7 +3282,7 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3322,7 +3322,7 @@ function entityAny( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3334,7 +3334,7 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3357,8 +3357,8 @@ function entityAny( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3380,7 +3380,7 @@ function entityAny( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3397,8 +3397,8 @@ function entityAny( src, onEach )
       // }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3409,7 +3409,7 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3448,7 +3448,7 @@ function entityNone( src, onEach )
   if( _.routineIs( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3459,7 +3459,7 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3481,8 +3481,8 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3504,7 +3504,7 @@ function entityNone( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3515,8 +3515,8 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    // else if( _.object.like( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3527,7 +3527,7 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3585,9 +3585,9 @@ function _filter_functor( condition, levels )
   let result;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+  _.assert( _.routineIs( condition ) || _.object.is( condition ) );
 
-  if( _.objectIs( condition ) )
+  if( _.object.is( condition ) )
   {
     let template = condition;
     condition = function condition( e, k, src )
@@ -3595,7 +3595,7 @@ function _filter_functor( condition, levels )
       _.assert( arguments.length === 3 );
       if( e === template )
       return e;
-      if( !_.objectLike( e ) )
+      if( !_.object.like( e ) )
       return;
       let satisfied = _.objectSatisfy
       ({
@@ -3674,8 +3674,8 @@ function entityMap( src, onEach )
 
   if( _.longIs( src ) )
   {
-    // result = _.entityMakeUndefined( src );
-    result = _.entityMake( src );
+    // result = _.entity.makeUndefined( src );
+    result = _.entity.make( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach( src[ s ], s, src );
@@ -3684,11 +3684,11 @@ function entityMap( src, onEach )
       // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
-  // else if( _.objectLike( src ) )
-  else if( _.mapLike( src ) )
+  // else if( _.object.like( src ) )
+  else if( _.aux.is( src ) )
   {
-    // result = _.entityMakeUndefined( src );
-    result = _.entityMake( src );
+    // result = _.entity.makeUndefined( src );
+    result = _.entity.make( src );
     for( let s in src )
     {
       let r = onEach( src[ s ], s, src );
@@ -3743,7 +3743,7 @@ function entityMap_( dst, src, onEach )
         // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       for( let s in src )
       {
@@ -3770,7 +3770,7 @@ function entityMap_( dst, src, onEach )
     if( _.longIs( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src, src.length );
+      result = _.entity.makeUndefined( src, src.length );
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
@@ -3782,12 +3782,12 @@ function entityMap_( dst, src, onEach )
         // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src );
+      result = _.entity.makeUndefined( src );
       else
-      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+      _.assert( _.aux.is( dst ), '{-dst-} container should be map like' );
 
       for( let s in src )
       {
@@ -3805,9 +3805,9 @@ function entityMap_( dst, src, onEach )
 
       if( _.longIs( dst ) )
       result = _.arrayAppendElement( dst, r );
-      else if( _.mapLike( dst ) )
+      else if( _.aux.is( dst ) )
       result = _.mapExtend( dst, r );
-      else if( _.primitiveIs( dst ) )
+      else if( _.primitive.is( dst ) )
       result = r;
       else
       _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
@@ -3820,12 +3820,6 @@ function entityMap_( dst, src, onEach )
 
 //
 
-/*
-qqq : cover entityFilter and entityFilterDeep, take into account unroll cases
-aaa Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
-qqq : find good explanation and explain during call. make simple example if needed
-*/
-
 function entityFilter( src, onEach )
 {
   let result;
@@ -3833,9 +3827,7 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  // _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strType( src ) );
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -3862,11 +3854,11 @@ function entityFilter( src, onEach )
     result = _.arraySlice( result, 0, d );
 
   }
-  // else if( _.objectLike( src ) )
-  else if( _.mapLike( src ) )
+  // else if( _.object.like( src ) )
+  else if( _.aux.is( src ) )
   {
 
-    result = _.entityMakeUndefined( src );
+    result = _.entity.makeUndefined( src );
     for( let s in src )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3904,7 +3896,6 @@ function entityFilter_( dst, src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); qqq2 : !
 
   /* */
 
@@ -3927,7 +3918,7 @@ function entityFilter_( dst, src, onEach )
         result.splice( s, 1 );
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       for( let s in src )
       {
@@ -3971,12 +3962,12 @@ function entityFilter_( dst, src, onEach )
         }
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src );
+      result = _.entity.makeUndefined( src );
       else
-      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+      _.assert( _.aux.is( dst ), '{-dst-} container should be map like' );
 
       for( let s in src )
       {
@@ -3993,9 +3984,9 @@ function entityFilter_( dst, src, onEach )
       {
         if( _.longIs( dst ) )
         result = _.arrayAppendElement( dst, r );
-        else if( _.mapLike( dst ) )
+        else if( _.aux.is( dst ) )
         result = _.mapExtend( dst, r );
-        else if( _.primitiveIs( dst ) )
+        else if( _.primitive.is( dst ) )
         result = r;
         else
         _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
@@ -4017,7 +4008,6 @@ function entityFirst( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( onEach ) );
-  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -4032,7 +4022,7 @@ function entityFirst( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let s in src )
@@ -4080,7 +4070,7 @@ function entityLast( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let s in src )
@@ -4142,172 +4132,12 @@ function entityLast( src, onEach )
  * @namespace Tools
  */
 
-/*
-qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and can use evaluator or comparator
-- make o-fication
-- make it accept evaluator or comparator( not in the same call )
-*/
-
-// function _entityMost_head( routine, args )
-// {
-//   _.assert( args.length === 1 || args.length === 2 );
-//
-//   let o = args[ 0 ];
-//   if( !_.mapIs( o ) )
-//   o = { src : args[ 0 ], onEach : args[ 1 ] };
-//
-//   _.routineOptions( _entityMost, o );
-//
-//   return o;
-// }
-//
-// function _entityMost_body( o )
-// {
-//   // _.assert( arguments.length === 1, 'Expects exactly one argument' );
-//   // _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
-//   // _.routineOptions( _entityMost, o );
-//
-//   if( !o.onEvaluate )
-//   {
-//     _.assert( o.returnMax !== null, 'o.returnMax should has value' );
-//
-//     if( o.returnMax )
-//     o.onEvaluate = ( a, b ) => a - b > 0;
-//     else
-//     o.onEvaluate = ( a, b ) => b - a > 0;
-//   }
-//
-//   _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
-//   _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
-//
-//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
-//
-//   if( _.longIs( o.src ) )
-//   {
-//     if( o.src.length === 0 )
-//     return result;
-//
-//     let s = 0;
-//     if( o.onEvaluate.length === 1 )
-//     for( ; s < o.src.length; s++ )
-//     {
-//       let value = o.onEach( o.src[ s ], s, o.src );
-//       if( o.onEvaluate( value ) )
-//       {
-//         result.value = value;
-//         result.key = s;
-//         break;
-//       }
-//     }
-//     else
-//     {
-//       result.key = s;
-//       result.value = o.onEach( o.src[ s ], s, o.src );
-//     }
-//
-//     for( ; s < o.src.length; s++ )
-//     resultValue( o.src[ s ], s, o.src );
-//     result.index = result.key;
-//     result.element = o.src[ result.key ];
-//   }
-//   else if( _.mapLike( o.src ) )
-//   {
-//     let index = 0;
-//     if( o.onEvaluate.length === 1 )
-//     {
-//       for( let s in o.src )
-//       {
-//         if( result.value === undefined )
-//         {
-//           let value = o.onEach( o.src[ s ], s, o.src );
-//           if( o.onEvaluate( value ) )
-//           {
-//             result.value = value;
-//             result.index = index;
-//             result.key = s;
-//           }
-//         }
-//         else
-//         {
-//           if( resultValue( o.src[ s ], s, o.src ) )
-//           result.index = index;
-//         }
-//
-//         index++;
-//
-//       }
-//       result.element = o.src[ result.key ];
-//     }
-//     else
-//     {
-//       for( let s in o.src )
-//       {
-//         result.index = 0;
-//         result.key = s;
-//         result.value = o.onEach( o.src[ s ], s, o.src );
-//         break;
-//       }
-//
-//       for( let s in o.src )
-//       {
-//         if( resultValue( o.src[ s ], s, o.src ) )
-//         result.index = index;
-//
-//         index++;
-//       }
-//       result.element = o.src[ result.key ];
-//     }
-//
-//   }
-//   else
-//   _.assert( 0 );
-//
-//   return result;
-//
-//   /* */
-//
-//   function resultValue( e, k, s )
-//   {
-//     let value = o.onEach( e, k, s );
-//     if( o.onEvaluate.length === 1 )
-//     {
-//       if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
-//       {
-//         result.key = k;
-//         result.value = value;
-//         return true;
-//       }
-//     }
-//     else if( o.onEvaluate( value, result.value ) )
-//     {
-//       result.key = k;
-//       result.value = value;
-//       return true;
-//     }
-//
-//     return false;
-//   }
-//
-// }
-//
-// _entityMost_body.defaults =
-// {
-//   src : null,
-//   onEach : ( e ) => e,
-//   onEvaluate : null,
-//   returnMax : null
-// }
-//
-// //
-//
-// let _entityMost = _.routineUnite( _entityMost_head, _entityMost_body );
-
 //
 
 function _entityMost( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
+  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.entity.strType( o ) );
   _.routineOptions( _entityMost, o );
 
   if( !o.onEvaluate )
@@ -4353,7 +4183,7 @@ function _entityMost( o )
     result.index = result.key;
     result.element = o.src[ result.key ];
   }
-  else if( _.mapLike( o.src ) )
+  else if( _.aux.is( o.src ) )
   {
     let index = 0;
     if( o.onEvaluate.length === 1 )
@@ -4441,88 +4271,6 @@ _entityMost.defaults =
   returnMax : null
 }
 
-// function _entityMost( src, onEvaluate, returnMax )
-// {
-//
-//   if( onEvaluate === undefined )
-//   onEvaluate = function( element ){ return element; }
-//
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( onEvaluate.length === 1, 'not implemented' );
-//
-//   let onCompare = null;
-//
-//   if( returnMax )
-//   onCompare = function( a, b )
-//   {
-//     return a-b;
-//   }
-//   else
-//   onCompare = function( a, b )
-//   {
-//     return b-a;
-//   }
-//
-//   _.assert( onEvaluate.length === 1 );
-//   _.assert( onCompare.length === 2 );
-//
-//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
-//
-//   if( _.longIs( src ) )
-//   {
-//
-//     if( src.length === 0 )
-//     return result;
-//     result.key = 0;
-//     result.value = onEvaluate( src[ 0 ] );
-//     result.element = src[ 0 ];
-//
-//     for( let s = 0 ; s < src.length ; s++ )
-//     {
-//       let value = onEvaluate( src[ s ] );
-//       if( onCompare( value, result.value ) > 0 )
-//       {
-//         result.key = s;
-//         result.value = value;
-//         result.element = src[ s ];
-//       }
-//     }
-//     result.index = result.key;
-//
-//   }
-//   else if( _.mapLike( src ) )
-//   {
-//
-//     debugger;
-//     for( let s in src )
-//     {
-//       result.index = 0;
-//       result.key = s;
-//       result.value = onEvaluate( src[ s ] );
-//       result.element = src[ s ]
-//       break;
-//     }
-//
-//     let index = 0;
-//     for( let s in src )
-//     {
-//       let value = onEvaluate( src[ s ] );
-//       if( onCompare( value, result.value ) > 0 )
-//       {
-//         result.index = index;
-//         result.key = s;
-//         result.value = value;
-//         result.element = src[ s ];
-//       }
-//       index += 1;
-//     }
-//
-//   }
-//   else _.assert( 0 );
-//
-//   return result;
-// }
-
 //
 
 /**
@@ -4545,13 +4293,9 @@ _entityMost.defaults =
  * @namespace Tools
  */
 
-// let entityMin = _.routineUnite( _entityMost_head, _entityMost_body );
-// entityMin.defaults.returnMax = 0;
-
 function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  // return _entityMost( src, onEvaluate, 0 );
   return _entityMost
   ({
     src,

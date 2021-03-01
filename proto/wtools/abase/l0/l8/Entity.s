@@ -48,16 +48,19 @@ function uncountableSize( src )
     return src.length;
   }
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return 8;
 
-  if( _.numberIs( src.byteLength ) )
+  if( _.number.is( src.byteLength ) )
   return src.byteLength;
 
   if( _.regexpIs( src ) )
   return _.uncountableSize( src.source ) + src.flags.length;
 
-  if( !_.iterableIs( src ) )
+  // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine countableIs has different behavior */
+  // return 8;
+  if( !_.aux.is( src ) )
+  if( !_.entity.methodIteratorOf( src ) )
   return 8;
 
   return NaN;
@@ -103,13 +106,17 @@ function entitySize( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.primitiveIs( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) )
+  // if( _.primitive.is( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) ) /* yyy */
+  // if( _.primitive.is( src ) || _.bufferAnyIs( src ) ) /* Dmytro : added branch for routine iterableIs, routine countableIs has different behavior */
+  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
   return _.uncountableSize( src );
 
   if( _.look )
-  if( _.containerIs( src ) || _.iterableIs( src ) )
+  // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
+  // if( _.containerIs( src ) )
+  if( _.containerIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
   {
-    _.look( src, onEach );
+    _.look({ src, onUp : onEach, withCountable : 1 });
   }
 
   if( _.look )
@@ -120,7 +127,7 @@ function entitySize( src )
   function onEach( e, k, it )
   {
 
-    if( !_.numberDefined( result ) )
+    if( !_.number.defined( result ) )
     {
       it.iterator.continue = false;
       return;
@@ -135,7 +142,8 @@ function entitySize( src )
       result += _.uncountableSize( k );
     }
 
-    if( _.primitiveIs( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) )
+    // if( _.primitive.is( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
+    if( _.primitive.is( e ) || _.bufferAnyIs( e ) ) /* yyy */
     result += _.uncountableSize( e );
 
   }

@@ -16,7 +16,7 @@ function rarely_functor( perTime, routine )
   let lastTime = _.time.now() - perTime;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( perTime ) );
+  _.assert( _.number.is( perTime ) );
   _.assert( _.routineIs( routine ) );
 
   return function fewer()
@@ -45,11 +45,11 @@ function once( delay, onBegin, onEnd )
     onEnd : null,
   }
 
-  if( _.objectIs( delay ) )
+  if( _.object.is( delay ) )
   {
     options = delay;
     _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assertMapHasOnly( options, optionsDefault );
+    _.map.assertHasOnly( options, optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
     onEnd = options.onEnd;
@@ -61,8 +61,8 @@ function once( delay, onBegin, onEnd )
 
   // _.assert( 0, 'not tested' );
   _.assert( delay >= 0 );
-  _.assert( _.primitiveIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
-  _.assert( _.primitiveIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
+  _.assert( _.primitive.is( onBegin ) || _.routineIs( onBegin ) || _.object.is( onBegin ) );
+  _.assert( _.primitive.is( onEnd ) || _.routineIs( onEnd ) || _.object.is( onEnd ) );
 
   return function once()
   {
@@ -77,7 +77,7 @@ function once( delay, onBegin, onEnd )
     if( onBegin )
     {
       if( _.routineIs( onBegin ) ) onBegin.apply( this, arguments );
-      else if( _.objectIs( onBegin ) ) onBegin.take( arguments );
+      else if( _.object.is( onBegin ) ) onBegin.take( arguments );
       if( con )
       con.take( null );
     }
@@ -88,7 +88,7 @@ function once( delay, onBegin, onEnd )
       if( onEnd )
       {
         if( _.routineIs( onEnd ) ) onEnd.apply( this, arguments );
-        else if( _.objectIs( onEnd ) ) onEnd.take( arguments );
+        else if( _.object.is( onEnd ) ) onEnd.take( arguments );
         if( con )
         con.take( null );
       }
@@ -120,7 +120,7 @@ function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? 
   _.routineOptions( debounce, o  );
 
   _.assert( _.routineIs( o.routine ) );
-  _.assert( _.numberIs( o.delay ) );
+  _.assert( _.number.is( o.delay ) );
 
   let timer, lastCallTime, routine, result;
 

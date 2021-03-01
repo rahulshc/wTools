@@ -5,7 +5,6 @@
 
 let _global = _realGlobal_;
 let _ = _global_.wTools;
-// let ContainerAdapterAbstract = _.containerAdapter.Abstract;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -44,7 +43,7 @@ function Make( src )
 {
   if( src === undefined || src === null )
   return this.MakeEmpty();
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   return new ContainerAdapterArray( new Array( src ) );
   else if( this.IsContainer( src ) )
   return new ContainerAdapterArray( [ ... src ] );
@@ -128,7 +127,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     {
       _.arrayAppendArray( this.original, container );
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       {
@@ -146,7 +145,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnce( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
@@ -156,7 +155,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
@@ -164,13 +163,13 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
-    _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
+    _.assert( e === undefined || _.entity.equalize( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entityEntityEqualize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
+    _.assert( _.entity.equalize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
 
     var poped = this.original.pop();
     return poped;
@@ -206,11 +205,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, () => 'Container has not element ' + _.toStrShort( e ) );
+    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
     container.splice( index, 1 );
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )
@@ -762,7 +761,6 @@ function ExportTo( dstGlobal, srcGlobal )
   let _ = dstGlobal.wTools;
   _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
-  // _.containerAdapter = srcGlobal.wTools.containerAdapter;
   if( typeof module !== 'undefined' )
   module[ 'exports' ] = _.containerAdapter;
 }
@@ -793,7 +791,6 @@ var Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 _.assert( _.containerAdapter === Self );
-// _.containerAdapter = Self;
 
 // --
 // export

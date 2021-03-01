@@ -74,7 +74,7 @@ function _setupTesterPlaceholder()
     testSuit.suiteFileLocation = _.introspector.location( 1 ).fileNameLineCol;
 
     _.assert( _.strDefined( testSuit.suiteFileLocation ), 'Test suit expects a mandatory option ( suiteFileLocation )' );
-    _.assert( _.objectIs( testSuit ) );
+    _.assert( _.object.is( testSuit ) );
 
     if( !testSuit.abstract )
     _.assert( !_realGlobal_.wTests[ testSuit.name ], 'Test suit with name "' + testSuit.name + '" already registered!' );
@@ -182,17 +182,6 @@ function _Setup9()
 // routines
 // --
 
-// let ErrorExtension =
-// {
-//
-//   _handleUncaught2,
-//   _handleUncaughtAsync,
-//   _setupUncaughtErrorHandler9,
-//
-//   uncaughtDelayTime : 100,
-//
-// }
-
 let SetupExtension =
 {
 
@@ -211,7 +200,6 @@ let SetupExtension =
 
 }
 
-// Object.assign( _.error, ErrorExtension );
 Object.assign( _.setup, SetupExtension );
 Self._Setup9();
 
