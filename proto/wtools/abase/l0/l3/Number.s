@@ -245,22 +245,24 @@ function numbersAreEquivalent2( a, b, accuracy )
   if( accuracy !== undefined )
   _.assert
   (
-    ( _.numberIs( accuracy ) || _.bigIntIs( accuracy ) ) && accuracy >= 0 && accuracy !== Infinity,
+    ( _.number.is( accuracy ) || _.bigInt.is( accuracy ) ) && accuracy >= 0 && accuracy !== Infinity,
     'Accuracy has to be a finite Number >= 0'
   );
 
-  let bigIntIsA = _.bigIntIs( a );
-  let bigIntIsB = _.bigIntIs( b );
+  let bigIntIsA = _.bigInt.is( a );
+  let bigIntIsB = _.bigInt.is( b );
+  let numberIsA = _.number.is( a );
+  let numberIsB = _.number.is( b );
 
   /* qqq for Yevhen : bad! */
 
-  if( !_.numberIs( a ) && !bigIntIsA )
+  if( !numberIsA && !bigIntIsA )
   return false;
 
-  if( !_.numberIs( b ) && !bigIntIsB )
+  if( !numberIsB && !bigIntIsB )
   return false;
 
-  if( _.numberIs( a ) && _.numberIs( b ) )
+  if( numberIsA && numberIsB )
   {
     if( Object.is( a, b ) )
     return true;
@@ -339,17 +341,10 @@ function numbersAreEquivalent2( a, b, accuracy )
 
           */
 
-          /* EASY WAY : max loss of precision 0.5(1) */
+          /* max loss of precision 0.5(1) */
           b = BigInt( Math.round( b ) );
 
-          /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision
-          Posibilities:
-          1.BOF -> BIF. In loop reduce `a` until it's within the range of BIF, then a = Number( a )
-            problems :
-            - reducing by dividing - loss of precision at each division : 5n / 2n = 2n
-            - reducing by substracting - no way to choose an optimal value,
-              either substractions could possibly go on unreasonably long or BIF range is skipped at some point.
-          */
+          /* without loss of precision - NOT IMPLEMENTED */
         }
       }
     }
@@ -377,15 +372,15 @@ function numbersAreEquivalent2( a, b, accuracy )
         }
         else /* a : FOB, b : BOF, accuracy : BIF/BOF */
         {
-          /* EASY WAY : max loss of precision 0.5(1) */
+          /* max loss of precision 0.5(1) */
           a = BigInt( Math.round( a ) );
         }
-        /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision */
+        /* without loss of precision - NOT IMPLEMENTED */
       }
     }
   }
 
-  if( _.numberIs( a ) && _.numberIs( b ) ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
+  if( numberIsA && numberIsB ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
   return Math.abs( a - b ) <= accuracy;
   else
   return abs( a - b ) <= accuracy;
