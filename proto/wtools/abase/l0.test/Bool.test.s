@@ -263,6 +263,70 @@ function boolLikeTrue ( test )
 }
 
 //--
+// l0/l5/Bool.s
+//--
+
+function boolAreEquivalentShallow ( test )
+{
+  test.case = 'true - true';
+  var got = _.bool.areEquivalentShallow( true, true );
+  test.identical( got, true );
+
+  test.case = 'false - false';
+  var got = _.bool.areEquivalentShallow( false, false );
+  test.identical( got, true );
+
+  test.case = '1 - true';
+  var got = _.bool.areEquivalentShallow( 1, true );
+  test.identical( got, true );
+
+  test.case = '0 - false';
+  var got = _.bool.areEquivalentShallow( 0, false );
+  test.identical( got, true );
+
+  test.case = '1 - 1';
+  var got = _.bool.areEquivalentShallow( 1, 1 );
+  test.identical( got, true );
+
+  test.case = '0 - 0';
+  var got = _.bool.areEquivalentShallow( 1, 1 );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'true - false';
+  var got = _.bool.areEquivalentShallow( true, false );
+  test.identical( got, false );
+
+  test.case = '1 - false';
+  var got = _.bool.areEquivalentShallow( 1, false );
+  test.identical( got, false );
+
+  test.case = '0 - true';
+  var got = _.bool.areEquivalentShallow( 0, true );
+  test.identical( got, false );
+
+  test.case = '1 - 0';
+  var got = _.bool.areEquivalentShallow( 1, 0 );
+  test.identical( got, false );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow() );
+
+  test.case = 'too many args';
+  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( true, true, true ) );
+
+  test.case = 'not a boolLike';
+  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( {}, [] ) );
+
+}
+
+//--
 // l0/l8/Bool.s
 //--
 
@@ -536,6 +600,9 @@ let Self =
     boolLike,
     boolLikeFalse,
     boolLikeTrue,
+
+    // l0/l5/Bool.s
+    boolAreEquivalentShallow,
 
     // l0/l8/Bool.s
 

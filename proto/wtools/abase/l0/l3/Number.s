@@ -328,6 +328,7 @@ let Extension =
   isFinite : numberIsFinite,
   defined : numberIsFinite,
   isInfinite : numberIsInfinite,
+  areEquivalentShallow : numbersAreEquivalent,
 
   intIs,
 
@@ -342,7 +343,6 @@ let ExtensionS =
   areIdentical : numbersAreIdentical,
   areIdenticalNotStrictly : numbersAreIdenticalNotStrictly,
   areEquivalent : numbersAreEquivalent,
-  areEquivalentShallow : numbersAreEquivalent,
 
   areFinite : numbersAreFinite,
   arePositive : numbersArePositive,

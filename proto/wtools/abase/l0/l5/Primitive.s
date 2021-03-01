@@ -28,19 +28,18 @@ function areEquivalentShallow( src1, src2, accuracy )
   _.assert( _.primitive.is( src1 ) );
   _.assert( _.primitive.is( src2 ) );
 
-  // only ===
   if( _.strsAreAll([ src1, src2 ]) )
   return _.areEquivalentShallow( src1, src2 );
 
   if( _.bool.like( src1 ) && _.bool.like( src2 ) )
-  return _.bool.s.areEquivalentShallow( src1, src2 );
+  return _.bool.areEquivalentShallow( src1, src2 );
 
   if
   (
     ( _.number.is( src1 ) || _.bigInt.is( src1 ) )
     && ( _.number.is( src2 ) || _.bigInt.is( src2 ) )
   )
-  return _.number.s.areEquivalentShallow( src1, src2, accuracy );
+  return _.number.areEquivalentShallow( src1, src2, accuracy );
 
   return Object.is( src1, src2 );
 }

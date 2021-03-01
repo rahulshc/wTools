@@ -124,6 +124,11 @@ let ExtensionTools =
 
 //
 
+let Extension =
+{
+  areEquivalentShallow
+}
+
 let ExtensionS =
 {
 
@@ -132,11 +137,10 @@ let ExtensionS =
   anyAre,
   noneAre,
 
-  areEquivalentShallow,
-
 }
 
 Object.assign( _, ExtensionTools );
+Object.assign( _.bool, Extension );
 Object.assign( _.bool.s, ExtensionS );
 
 // --
