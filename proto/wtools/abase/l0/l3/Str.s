@@ -320,10 +320,11 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.routineIs( src ) )
     {
-      if( src.name )
-      result += `{- routine ${src.name} -}`;
-      else
-      result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      result += _.routineExportStringShortDiagnostic( src );
+      // if( src.name )
+      // result += `{- routine ${src.name} -}`;
+      // else
+      // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
     }
     else if( _.aux.like( src ) )
     {

@@ -2566,6 +2566,19 @@ function vectorizeAccess( vector )
 
 }
 
+//
+
+function routineExportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.routineIs( src ) );
+
+  if( src.name )
+  return `{- routine ${src.name} -}`;
+  else
+  return `{- routine.anonymous -}`;
+}
+
 // --
 // routines
 // --
@@ -2611,6 +2624,13 @@ let Extension =
   vectorizeNone,
 
   vectorizeAccess,
+
+  routineExportString : routineExportStringShortDiagnostic,
+  routineExportStringShort : routineExportStringShortDiagnostic,
+  routineExportStringShortDiagnostic,
+  routineExportStringShortCode : routineExportStringShortDiagnostic,
+  routineExportStringDiagnostic : routineExportStringShortDiagnostic,
+  routineExportStringCode : routineExportStringShortDiagnostic,
 
 }
 

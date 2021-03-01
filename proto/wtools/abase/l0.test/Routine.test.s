@@ -6387,6 +6387,74 @@ function vectorizeAccessSpecial( test )
 
 }
 
+//
+
+function routineExportStringShortDiagnostic( test )
+{
+
+  test.case = 'function';
+  var src = plain;
+  var expected = '{- routine plain -}';
+  var got = _.routineExportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'async function';
+  var src = async;
+  var expected = '{- routine async -}';
+  var got = _.routineExportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'arrow function';
+  var arrow = () => {};
+  var src = arrow;
+  var expected = '{- routine arrow -}';
+  var got = _.routineExportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'anonymos function';
+  var expected = '{- routine.anonymous -}';
+  var got = _.routineExportStringShortDiagnostic( function () {} );
+  test.identical( got, expected );
+
+  test.case = 'anonymos arrow function';
+  var expected = '{- routine.anonymous -}';
+  var got = _.routineExportStringShortDiagnostic( () => {} );
+  test.identical( got, expected );
+
+  // test.case = 'func expression';
+  // var expr = function () {};
+  // var src = expr;
+  // var expected = '{- routine expr -}';
+  // var got = _.routineExportStringShortDiagnostic( src );
+  // test.identical( got, expected );
+
+  // test.case = 'func expression with name';
+  // var expr = function expr2() {};
+  // var src = expr;
+  // var expected = '{- routine expr2 -}';
+  // var got = _.routineExportStringShortDiagnostic( src );
+  // test.identical( got, expected );
+
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic( () => {}, () => {} ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.routineExportStringShortDiagnostic( {} ) );
+
+  /* - */
+
+  function plain() {};
+
+  async function async() {};
+}
+
 // --
 //
 // --
@@ -6446,6 +6514,8 @@ var Self =
 
     vectorizeAccessBasic,
     vectorizeAccessSpecial,
+
+    routineExportStringShortDiagnostic,
 
   }
 
