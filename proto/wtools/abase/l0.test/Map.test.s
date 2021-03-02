@@ -4007,7 +4007,6 @@ function mapButConditional( test )
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
   var butMap = [ 'a', 0, 'b', 1 ];
-  debugger;
   var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );

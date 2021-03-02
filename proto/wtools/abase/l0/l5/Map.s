@@ -2100,37 +2100,46 @@ function mapBut( srcMap, butMap )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
 
-  /* qqq : allow and cover vector */
+  /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   if( _.vector.is( butMap ) )
   {
-    /* qqq : for Dmytro : bad */
+    let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
+    let arrayLikeIs = _.arrayLike( butMap ) ? 1 : 0;
     for( let s in srcMap )
     {
-      let m;
-      for( m = 0 ; m < butMap.length ; m++ )
-      {
-        /* qqq : for Dmytro : write GOOD coverage */
-        if( _.primitive.is( butMap[ m ] ) )
-        {
-          if( s === butMap[ m ] )
-          break;
-        }
-        else
-        {
-          if( s in butMap[ m ] )
-          break;
-        }
-        //
-        // if( s === butMap[ m ] )
-        // break;
-        // if( _.aux.is( butMap[ m ] ) )
-        // if( s in butMap[ m ] )
-        // break;
-      }
-
-      if( m === butMap.length )
+      let butKey = filterRoutines[ arrayLikeIs ]( s );
+      if( butKey === undefined )
       result[ s ] = srcMap[ s ];
     }
+
+    // /* aaa : for Dmytro : bad */ /* Dmytro : improved, used checks with types */
+    // for( let s in srcMap )
+    // {
+    //   let m;
+    //   for( m = 0 ; m < butMap.length ; m++ )
+    //   {
+    //     /* aaa : for Dmytro : write GOOD coverage */ /* Dmytro : coverage extended */
+    //     if( _.primitive.is( butMap[ m ] ) )
+    //     {
+    //       if( s === butMap[ m ] )
+    //       break;
+    //     }
+    //     else
+    //     {
+    //       if( s in butMap[ m ] )
+    //       break;
+    //     }
+    //     //
+    //     // if( s === butMap[ m ] )
+    //     // break;
+    //     // if( _.aux.is( butMap[ m ] ) )
+    //     // if( s in butMap[ m ] )
+    //     // break;
+    //   }
+    //
+    //   if( m === butMap.length )
+    //   result[ s ] = srcMap[ s ];
+    // }
   }
   else if( !_.primitive.is( butMap ) )
   {
@@ -2146,6 +2155,52 @@ function mapBut( srcMap, butMap )
   }
 
   return result;
+
+  /* */
+
+  function filterWithVectorButMap( s )
+  {
+    for( let but of butMap )
+    {
+      if( _.primitive.is( but ) )
+      {
+        if( s === but )
+        return s;
+      }
+      else if( _.aux.is( but ) )
+      {
+        if( s in but )
+        return s;
+      }
+      else
+      {
+        _.assert( 0, 'Unexpected type of element' );
+      }
+    }
+  }
+
+  /* */
+
+  function filterWithArrayLikeButMap( s )
+  {
+    for( let m = 0 ; m < butMap.length ; m++ )
+    {
+      if( _.primitive.is( butMap[ m ] ) )
+      {
+        if( s === butMap[ m ] )
+        return s;
+      }
+      else if( _.aux.is( butMap[ m ] ) )
+      {
+        if( s in butMap[ m ] )
+        return s;
+      }
+      else
+      {
+        _.assert( 0, 'Unexpected type of element' );
+      }
+    }
+  }
 }
 
 //
