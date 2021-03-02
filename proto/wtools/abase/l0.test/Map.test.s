@@ -2538,46 +2538,45 @@ function mapValWithIndex( test )
 
 function mapKeyWithIndex( test )
 {
+  test.case = 'negative index';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, -1 );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'first key';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 0 );
+  var expected = 'a';
+  test.identical( got, expected );
 
   test.case = 'last key';
   var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 2 );
   var expected = 'c';
   test.identical( got, expected );
 
-  test.case = 'first key';
-  var got = _.mapKeyWithIndex( { 0 : { a : 3 },  1 : 13, 2 : 'c', 3 : 7 }, 3 );
-  var expected = '3';
+  test.case = 'index outside of entries number';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 3 );
+  var expected = undefined;
   test.identical( got, expected );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex();
-  });
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex() );
 
-  test.case = 'few arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( [] );
-  });
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {} ) );
 
-  test.case = 'redundant argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
-  });
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {}, 2, 'wrong arguments' ) );
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( 'wrong argumetns' );
-  });
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( 'wrong argumetns', 2 ) );
 
+  test.case = 'wrong type of index';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {}, 2.1 ) );
 }
 
 //
