@@ -112,8 +112,8 @@ function equivalentShallow( src1, src2, options )
   /*
     - boolLikeTrue and boolLikeTrue - ( true, 1 )
     - boolLikeFalse and boolLikeFalse - ( false, 0 )
-    - | number1 - number2 | < accuracy
-    - strings that differ only in whitespaces at the start and/or at the end ?
+    - | number1 - number2 | <= accuracy
+    - strings that differ only in whitespaces at the start and/or at the end
     - regexp with same source and different flags
   */
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
