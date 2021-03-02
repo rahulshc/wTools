@@ -918,10 +918,8 @@ function mapKeyWithValue( srcMap, value )
   _.assert( !_.primitive.is( srcMap ) );
 
   for( let s in srcMap )
-  {
-    if( srcMap[ s ] === value )
-    return s;
-  }
+  if( srcMap[ s ] === value )
+  return s;
 }
 
 //

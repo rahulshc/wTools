@@ -1600,7 +1600,7 @@ function objectSetWithKeyStrictly( dstMap, key, val )
   _.assert( _.strIs( key ) || _.vector.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  /* qqq : allow and cover vector */
+  /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
   if( _.vector.is( key ) )
   {
     if( _.arrayLike( key ) )
@@ -1739,7 +1739,7 @@ function mapsFlatten( o )
 {
 
   if( _.vector.is( o ) )
-  o = { src : o }
+  o = { src : o };
 
   _.routineOptions( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1756,12 +1756,15 @@ function mapsFlatten( o )
   function extend( src, prefix )
   {
 
-    /* qqq : allow and cover vector */
+    /* aaa : allow and cover vector */ /* Dmytro : extended, covered */
     if( _.vector.is( src ) )
     {
+      if( _.arrayLike( src ) )
       for( let s = 0 ; s < src.length ; s++ )
       extend( src[ s ], prefix );
-
+      else
+      for( let value of src )
+      extend( value, prefix );
     }
     else if( _.aux.is( src ) )
     {
@@ -1771,6 +1774,7 @@ function mapsFlatten( o )
         let key = k;
         if( _.strIs( o.delimeter ) )
         key = ( prefix ? prefix + o.delimeter : '' ) + k;
+
         if( _.aux.is( src[ k ] ) )
         {
           extend( src[ k ], key );
@@ -1783,8 +1787,10 @@ function mapsFlatten( o )
       }
 
     }
-    else _.assert( 0, 'Expects map or array of maps, but got ' + _.entity.strType( src ) );
-
+    else
+    {
+      _.assert( 0, 'Expects map or array of maps, but got ' + _.entity.strType( src ) );
+    }
   }
 
 }
