@@ -2272,61 +2272,135 @@ function _mapBut_( o )
   _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
   // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
 
-  if( o.dstMap === o.srcMap )
-  {
+  let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
+  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let filterRoutines =
+  [
+    filterNotIdentical,
+    filterIdentical,
+    filterNotIdenticalWithVectorButMap,
+    filterIdenticalWithVectorButMap
+  ];
+  let key = mapsAreIdentical + butMapIsVector;
 
-    /* qqq : allow and cover vector */
-    if( _.vector.is( o.butMap ) )
-    {
-      for( let s in o.srcMap )
-      {
-        for( let m = 0 ; m < o.butMap.length ; m++ )
-        {
-          if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
-          delete o.dstMap[ s ];
-        }
-      }
-    }
-    else
-    {
-      for( let s in o.srcMap )
-      {
-        if( !o.filter( o.butMap, o.srcMap, s ) )
-        delete o.dstMap[ s ];
-      }
-    }
-
-  }
-  else
-  {
-
-    /* qqq : allow and cover vector */
-    if( _.vector.is( o.butMap ) )
-    {
-      /* qqq : for Dmytro : bad */
-      for( let s in o.srcMap )
-      {
-        let m;
-        for( m = 0 ; m < o.butMap.length ; m++ )
-        if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
-        break;
-
-        if( m === o.butMap.length )
-        o.dstMap[ s ] = o.srcMap[ s ];
-      }
-    }
-    else
-    {
-      for( let s in o.srcMap )
-      {
-        if( o.filter( o.butMap, o.srcMap, s ) )
-        o.dstMap[ s ] = o.srcMap[ s ];
-      }
-    }
-
-  }
+  for( let s in o.srcMap )
+  filterRoutines[ key ]( s );
 
   return o.dstMap;
+
+  /* */
+
+  function filterNotIdentical( key )
+  {
+    if( o.filter( o.butMap, o.srcMap, key ) )
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterIdentical( key )
+  {
+    if( !o.filter( o.butMap, o.srcMap, key ) )
+    delete o.dstMap[ key ];
+  }
+
+  /* */
+
+  function filterNotIdenticalWithVectorButMap( key )
+  {
+    /* qqq : for Dmytro : bad */
+    if( _.arrayLike( o.butMap ) )
+    {
+      for( let m = 0 ; m < o.butMap.length ; m++ )
+      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      return;
+
+      o.dstMap[ key ] = o.srcMap[ key ];
+    }
+    else
+    {
+      for( let but of o.butMap )
+      if( !o.filter( but, o.srcMap, key ) )
+      return;
+
+      o.dstMap[ key ] = o.srcMap[ key ];
+    }
+  }
+
+  /* */
+
+  function filterIdenticalWithVectorButMap( key )
+  {
+    /* qqq : for Dmytro : bad */
+    if( _.arrayLike( o.butMap ) )
+    {
+      for( let m = 0 ; m < o.butMap.length ; m++ )
+      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      delete o.dstMap[ key ];
+    }
+    else
+    {
+      for( let but of o.butMap )
+      if( !o.filter( but, o.srcMap, key ) )
+      delete o.dstMap[ key ];
+    }
+  }
+
+  // if( o.dstMap === o.srcMap )
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( o.butMap ) )
+  //   {
+  //     for( let s in o.srcMap )
+  //     {
+  //       for( let m = 0 ; m < o.butMap.length ; m++ )
+  //       {
+  //         if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+  //         delete o.dstMap[ s ];
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in o.srcMap )
+  //     {
+  //       if( !o.filter( o.butMap, o.srcMap, s ) )
+  //       delete o.dstMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  // else
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( o.butMap ) )
+  //   {
+  //     /* qqq : for Dmytro : bad */
+  //     for( let s in o.srcMap )
+  //     {
+  //       let m;
+  //       for( m = 0 ; m < o.butMap.length ; m++ )
+  //       if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+  //       break;
+  //
+  //       if( m === o.butMap.length )
+  //       o.dstMap[ s ] = o.srcMap[ s ];
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in o.srcMap )
+  //     {
+  //       if( o.filter( o.butMap, o.srcMap, s ) )
+  //       o.dstMap[ s ] = o.srcMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  //
+  // return o.dstMap;
 }
 
 //
@@ -2859,6 +2933,7 @@ function _mapOnly_( o )
   _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
   _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-o.srcMaps-}' );
   _.map.assertHasOnly( o, _mapOnly_.defaults );
+  _.assert( !_.vector.is( o.dstMap ), 'Expects not a vector {-o.dstMap-}' );
 
   /* qqq : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
 
@@ -2870,8 +2945,6 @@ function _mapOnly_( o )
 
   if( _.vector.is( o.srcMaps ) )
   {
-    _.assert( !_.vector.is( o.dstMap ), 'Expects not a vector {-o.dstMap-}' );
-
     for( let srcMap of o.srcMaps )
     {
       _.assert( !_.primitive.is( srcMap ), 'Expects no primitive in {-o.srcMaps-}' );
