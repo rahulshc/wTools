@@ -328,18 +328,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.object.like( src ) )
     {
-      if( _.routineIs( src.exportString ) )
-      {
-        result = src.exportString({ verbosity : 1, /*, ... o */ });
-        result = _.strShort( result );
-      }
-      else
-      {
-        if( _.countable.is( src ) )
-        result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
-        else
-        result += `{- ${_.entity.strType( src )} -}`;
-      }
+      result += _.object.exportStringShortDiagnostic( src );
     }
     else
     {
