@@ -1593,7 +1593,6 @@ function objectSetWithKeys( dstMap, key, val )
 
 function objectSetWithKeyStrictly( dstMap, key, val )
 {
-
   if( dstMap === null )
   dstMap = Object.create( null );
 
@@ -1604,8 +1603,12 @@ function objectSetWithKeyStrictly( dstMap, key, val )
   /* qqq : allow and cover vector */
   if( _.vector.is( key ) )
   {
+    if( _.arrayLike( key ) )
     for( let s = 0 ; s < key.length ; s++ )
     set( dstMap, key[ s ], val );
+    else
+    for( let value of key )
+    set( dstMap, value, val );
   }
   else
   {
@@ -1616,7 +1619,6 @@ function objectSetWithKeyStrictly( dstMap, key, val )
 
   function set( dstMap, key, val )
   {
-
     if( val === undefined )
     {
       delete dstMap[ key ];
@@ -1626,9 +1628,7 @@ function objectSetWithKeyStrictly( dstMap, key, val )
       _.assert( dstMap[ key ] === undefined || dstMap[ key ] === val );
       dstMap[ key ] = val;
     }
-
   }
-
 }
 
 // --
