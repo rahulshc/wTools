@@ -1865,6 +1865,149 @@ function objectSetWithKeyStrictly( test )
 
 //
 
+function objectSetWithKeyStrictlyKeyIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'c', 'd' ]), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 3, b : 3 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'c', 'd' ]), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 3, b : 3 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
 function mapDelete( test )
 {
   test.case = 'dstMap - empty map';
@@ -12916,6 +13059,7 @@ let Self =
     objectSetWithKeys,
     objectSetWithKeysKeyIsVector,
     objectSetWithKeyStrictly,
+    objectSetWithKeyStrictlyKeyIsVector,
     mapDelete,
     mapEmpty,
     mapInvert,
