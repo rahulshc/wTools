@@ -136,7 +136,7 @@ function has( ointerval, src )
 
 //
 
-function sureInInterval( src, ointerval )
+function sureIn( src, ointerval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -148,7 +148,7 @@ function sureInInterval( src, ointerval )
 
 //
 
-function assertInInterval( src, ointerval )
+function assertIn( src, ointerval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -331,8 +331,8 @@ let Extension =
   // has : inInclusiveLeft,
   has,
 
-  sureInInterval,
-  assertInInterval,
+  sureIn,
+  assertIn,
 
   // maker
 

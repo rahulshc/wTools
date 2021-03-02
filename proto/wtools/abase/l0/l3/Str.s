@@ -845,27 +845,6 @@ function _strParseType( src )
  * @namespace Tools
  */
 
-/*
-aaa : cover routine strConcat and extend it. ask how to
-Dmytro : routine covered and documented, not extended
-*/
-
-/*
-  aaa : does not work properly, remove indentation, but should not
-  srcs :
-[
-  'b',
-  `variant:: : #83
-  path::local
-  module::module-a
-`
-]
-
-
-  Dmytro : fixed, all comments below
-*/
-
-/* qqq for Dmytro : bad */
 function strConcat( srcs, o )
 {
 
@@ -950,9 +929,8 @@ strConcat.defaults =
   linePrefix : '',
   linePostfix : '',
   lineDelimter : '\n',
-  // delimeter : ' ',
   optionsForToStr : null,
-  onToStr : null, /* Dmytro : maybe it should have name onEach */
+  onToStr : null,
   onPairWithDelimeter : null,
 }
 
