@@ -2581,6 +2581,54 @@ function mapKeyWithIndex( test )
 
 //
 
+function mapKeyWithValue( test )
+{
+  test.case = 'entry - first element';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 3 );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'entry - last element';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 7 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.case = 'no entry';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 2 );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'similar entries, but not identical';
+  var got = _.mapKeyWithValue( { 'a' : {}, 'b' : 13, 'c' : 7 }, {} );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'identical entries';
+  var entry = {};
+  var got = _.mapKeyWithValue( { 'a' : {}, 'b' : entry, 'c' : 7 }, entry );
+  var expected = 'b';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( {} ) );
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( {}, 2, 'wrong arguments' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( 'wrong argumetns', 2 ) );
+}
+
+//
+
 function mapToArray( test )
 {
   test.case = 'src - empty map';
@@ -13070,6 +13118,7 @@ let Self =
     mapFirstPair,
     mapValWithIndex,
     mapKeyWithIndex,
+    mapKeyWithValue,
     mapToArray,
     mapToStr,
 
