@@ -36,6 +36,7 @@ function areIdenticalShallow( src1, src2 )
 
 var AuxiliaryExtension =
 {
+  identical : areIdenticalShallow,
   areIdenticalShallow
 }
 

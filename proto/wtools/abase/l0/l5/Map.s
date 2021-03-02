@@ -47,8 +47,8 @@ _global_.wTools.map = _global_.wTools.map || Object.create( null );
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : duplicate in _.property.identical() */
-/* xxx qqq : for Yevhen : move to _.aux.identical() */
+/* xxx qqq : for Yevhen : duplicate in _.property.identical() | aaa : Done */
+/* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
 function mapsAreIdentical( src1, src2 )
 {
 
@@ -390,7 +390,7 @@ function mapHasAll( src, screen )
  */
 
 /* xxx qqq : for Yevhen : teach to accept vector */
-/* xxx qqq : for Yevhen : duplicate in _.property.hasAll() */
+/* xxx qqq : for Yevhen : duplicate in _.property.hasAny() | aaa : Done */
 function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -441,7 +441,7 @@ function mapHasAny( src, screen )
  */
 
 /* qqq : for Yevhen : teach to accept vector */
-/* xxx qqq : for Yevhen : duplicate in _.property.hasNone() */
+/* xxx qqq : for Yevhen : duplicate in _.property.hasNone() | aaa : Done */
 function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
