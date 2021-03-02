@@ -3049,7 +3049,7 @@ function mapAllKeys( test )
 
   test.case = 'not enumerable'
   var a = { };
-  Object.defineProperty( a, 'k', { enumerable : 0 })
+  Object.defineProperty( a, 'k', { enumerable : 0 } )
   var got = _.mapAllKeys( a );
   var expected = _expected.slice();
   expected.push( 'k' );
@@ -4156,6 +4156,156 @@ function mapButConditional( test )
 
 //
 
+function mapButConditionalButMapIsVector( test )
+{
+  var filter = ( but, src, key ) =>
+  {
+    if( _.primitive.is( but ) && but !== undefined )
+    if( but !== key )
+    return true;
+    return false;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
 function mapButConditional_WithThreeArguments( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
@@ -4843,7 +4993,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -4853,7 +5003,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -4863,7 +5013,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -4876,7 +5026,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -4887,7 +5037,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -4898,7 +5048,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -4911,7 +5061,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -4922,7 +5072,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -4933,7 +5083,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -4946,7 +5096,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -4957,7 +5107,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -4968,7 +5118,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -5013,7 +5163,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -5023,7 +5173,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -5033,7 +5183,7 @@ function mapButConditional_ButMapIsVector( test )
   var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -5046,7 +5196,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -5057,7 +5207,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -5068,7 +5218,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -5081,7 +5231,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -5092,7 +5242,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -5103,7 +5253,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -5116,7 +5266,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -5127,7 +5277,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -5138,7 +5288,7 @@ function mapButConditional_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -6052,7 +6202,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -6062,7 +6212,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -6072,7 +6222,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -6085,7 +6235,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -6096,7 +6246,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -6107,7 +6257,7 @@ function mapBut_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -6120,7 +6270,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -6131,7 +6281,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -6142,7 +6292,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -6155,7 +6305,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -6166,7 +6316,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -6177,7 +6327,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -6222,7 +6372,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -6232,7 +6382,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -6242,7 +6392,7 @@ function mapBut_ButMapIsVector( test )
   var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -6255,7 +6405,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -6266,7 +6416,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -6277,7 +6427,7 @@ function mapBut_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -6290,7 +6440,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -6301,7 +6451,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -6312,7 +6462,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -6325,7 +6475,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -6336,7 +6486,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -6347,7 +6497,7 @@ function mapBut_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -7007,7 +7157,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -7017,7 +7167,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -7027,7 +7177,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -7040,7 +7190,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -7051,7 +7201,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -7062,7 +7212,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -7075,7 +7225,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -7086,7 +7236,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3, a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -7097,7 +7247,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -7110,7 +7260,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake( [] ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -7121,7 +7271,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -7132,7 +7282,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
 
   /* */
@@ -7177,7 +7327,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
@@ -7187,7 +7337,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
@@ -7197,7 +7347,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -7210,7 +7360,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
@@ -7221,7 +7371,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
@@ -7232,7 +7382,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -7245,7 +7395,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3, a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
@@ -7256,7 +7406,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3, a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
@@ -7267,7 +7417,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { c : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -7280,7 +7430,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1, b : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
@@ -7291,7 +7441,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : 1, b : undefined });
+  test.identical( srcMap, { a : 1, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
 
   test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
@@ -7302,7 +7452,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
   var expected = { a : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
-  test.identical( srcMap, { a : undefined, b : undefined });
+  test.identical( srcMap, { a : undefined, b : undefined } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   /* */
@@ -14454,6 +14604,7 @@ let Self =
     // map logic
 
     mapButConditional,
+    mapButConditionalButMapIsVector,
 
     mapButConditional_WithThreeArguments,
     mapButConditional_DstMapIsNull,
