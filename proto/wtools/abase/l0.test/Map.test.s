@@ -380,7 +380,7 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'prototyped from polluted map with constructor';
   var prototype = {};
-  prototype.constructor = function(){}
+  prototype.constructor = function(){};
   var src = Object.create( prototype );
   test.identical( _.object.is( src ), true );
   test.identical( _.object.like( src ), true );
@@ -784,7 +784,7 @@ function mapExtendNotIdentical( test )
   var dst = Object.create( prototype );
   dst.c = 1;
   dst.d = 1;
-  var src = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  var src = { a : 1, b : 2, c : 1, d : 2, e : 2 };
   var got = _.mapExtendNotIdentical( dst, src );
 
   var exp = { a : 1, b : 1 };
@@ -793,7 +793,7 @@ function mapExtendNotIdentical( test )
   var exp = { b : 2, c : 1, d : 2, e : 2 };
   test.identical( _.property.onlyOwn( dst ), exp );
 
-  var exp = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  var exp = { a : 1, b : 2, c : 1, d : 2, e : 2 };
   test.identical( src, exp );
 
   /* */
@@ -805,7 +805,7 @@ function mapExtendNotIdentical( test )
   var dst = Object.create( prototype );
   dst.c = undefined;
   dst.d = undefined;
-  var src = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  var src = { a : undefined, b : 2, c : undefined, d : 2, e : undefined };
   var got = _.mapExtendNotIdentical( dst, src );
 
   var exp = { a : undefined, b : undefined };
@@ -814,7 +814,7 @@ function mapExtendNotIdentical( test )
   var exp = { b : 2, c : undefined, d : 2 };
   test.identical( _.property.onlyOwn( dst ), exp );
 
-  var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined };
   test.identical( src, exp );
 }
 
@@ -2194,7 +2194,7 @@ function mapInvert( test )
     'function b() {}' : 'g',
     'null' : 'h',
     'undefined' : 'i'
-  }
+  };
   var got = _.mapInvert( src );
   test.identical( got, expected );
 
@@ -2273,7 +2273,7 @@ function mapInvert( test )
     'e' : new Set([ 1, 2, 3 ]),
     'f' : [ 1, 2 ],
     'h' : null
-  }
+  };
   var got = _.mapInvert( src, dst );
   test.identical( got, expected );
 
@@ -2305,97 +2305,92 @@ function mapInvert( test )
 
 function mapsFlatten( test )
 {
-
   test.case = 'empty map';
   var src = {};
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten({ src });
   test.identical( got, expected );
 
   test.case = 'empty array';
   var src = [];
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'array of empty maps';
   var src = [ {}, {} ];
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'trivial';
   var src = [ { a : 1, b : { c : 1, d : 1 } }, { e : 2, f : { g : { h : 2 } } } ];
-  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1, 'e' : 2, 'f/g/h' : 2 }
+  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1, 'e' : 2, 'f/g/h' : 2 };
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'delimeter : .';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : '.' });
   test.identical( got, expected );
 
   test.case = 'delimeter : ';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'dirb' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'dirb' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : '' });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : 0 });
   test.identical( got, expected );
 
   test.case = 'delimeter : false';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : false });
   test.identical( got, expected );
 
   test.case = 'allowingCollision : 1';
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'dir/b' : 4, 'dir/c' : 5 }
+  var expected = { 'a' : 3, 'dir/b' : 4, 'dir/c' : 5 };
   var got = _.mapsFlatten({ src, allowingCollision : 1 });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0, allowingCollision : 1';
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'b' : 4, 'c' : 5 }
+  var expected = { 'a' : 3, 'b' : 4, 'c' : 5 };
   var got = _.mapsFlatten({ src, delimeter : 0, allowingCollision : 1 });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0, allowingCollision : 1';
-  var dst = { a : 0, d : 6 }
+  var dst = { a : 0, d : 6 };
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'b' : 4, 'c' : 5, 'd' : 6 }
+  var expected = { 'a' : 3, 'b' : 4, 'c' : 5, 'd' : 6 };
   var got = _.mapsFlatten({ src, dst, delimeter : 0, allowingCollision : 1 });
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'collision';
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapsFlatten() );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var dst = { 'dir/a' : 1 }
-    var src = { dir : { a : 2 } };
-    var got = _.mapsFlatten({ src, dst });
-  });
+  test.case = 'collision between dst and src';
+  var dst = { 'dir/a' : 1 };
+  var src = { dir : { a : 2 } };
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src, dst }) );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
-    var got = _.mapsFlatten({ src });
-  });
+  test.case = 'collision in src';
+  var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src }) );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
-    var got = _.mapsFlatten({ src, allowingCollision : 0 });
-  });
+  test.case = 'collision in src, allowingCollision - 0';
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src, allowingCollision : 0 }) );
 
   test.shouldThrowErrorSync( () =>
   {
@@ -2410,8 +2405,6 @@ function mapsFlatten( test )
   });
 
   test.case = 'bad arguments';
-
-  test.shouldThrowErrorSync( () => _.mapsFlatten() );
   test.shouldThrowErrorSync( () => _.mapsFlatten( {} ) );
   test.shouldThrowErrorSync( () => _.mapsFlatten( {}, {} ) );
   test.shouldThrowErrorSync( () => _.mapsFlatten( 'a' ) );
@@ -2429,6 +2422,57 @@ function mapsFlatten( test )
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 1 ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ null ] }) );
 
+}
+
+//
+
+function mapsFlattenWithVectorsInSrc( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'empty maps in vector';
+  var src = _.unrollMake([ {}, {} ]);
+  var expected = {};
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'flat maps in vector';
+  var src = _.unrollMake([ { a : 1 }, { b : 2 }, { c : 3 } ]);
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'multilevel maps in vector';
+  var src = _.unrollMake([ { a : { b : { c : 1 } } }, { b : { c : 3 } } ]);
+  var expected = { 'a/b/c' : 1, 'b/c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'empty maps in vector';
+  var src = _.containerAdapter.make( new Set([ {}, {} ]) );
+  var expected = {};
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'flat maps in vector';
+  var src = _.containerAdapter.make( new Set([ { a : 1 }, { b : 2 }, { c : 3 } ]) );
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'multilevel maps in vector';
+  var src = _.containerAdapter.make( new Set([ { a : { b : { c : 1 } } }, { b : { c : 3 } } ]) );
+  var expected = { 'a/b/c' : 1, 'b/c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.close( 'containerAdapter' );
 }
 
 //
@@ -2808,8 +2852,8 @@ function mapKeys( test )
   /* */
 
   test.case = 'options';
-  var a = { a : 1 }
-  var b = { b : 2 }
+  var a = { a : 1 };
+  var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
   /* onlyOwn off */
@@ -3845,7 +3889,7 @@ function mapOnlyPrimitives( test )
     h : [ 1 ],
     i : new Date(),
     j : new BufferRaw( 5 )
-  }
+  };
   var got = _.mapOnlyPrimitives( src );
   var expected =
   {
@@ -3854,7 +3898,7 @@ function mapOnlyPrimitives( test )
     c : 5,
     e : false,
     f : 'a',
-  }
+  };
   test.identical( got, expected );
 
   /* */
@@ -3951,7 +3995,7 @@ function mapButConditionalThreeArguments_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
@@ -4208,7 +4252,7 @@ function mapButConditionalDstMapNull_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
@@ -4399,7 +4443,7 @@ function mapButConditionalDstMapMap_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
@@ -13114,6 +13158,7 @@ let Self =
     // map convert
 
     mapsFlatten,
+    mapsFlattenWithVectorsInSrc,
 
     mapFirstPair,
     mapValWithIndex,
