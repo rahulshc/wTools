@@ -1966,9 +1966,12 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
 
   let propertyFilter = arguments[ 0 ];
-  let dstMap = arguments[ 1 ] = arguments[ 1 ] || Object.create( null );
+  let dstMap = arguments[ 1 ];
   let srcMap = arguments[ 2 ];
   let butMap = arguments[ 3 ];
+
+  if( dstMap === null )
+  dstMap = arguments[ 1 ] = Object.create( null );
 
   if( arguments.length === 3 )
   {
@@ -1994,7 +1997,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   // if( dstMap === srcMap )
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //   if( _.vector.is( butMap ) )
   //   {
   //     for( let s in srcMap )
@@ -2019,10 +2022,10 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   // else
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //   if( _.vector.is( butMap ) )
   //   {
-  //     /* qqq : for Dmytro : bad */
+  //     /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
   //     for( let s in srcMap )
   //     {
   //       let m;
@@ -2137,7 +2140,9 @@ function mapBut_( dstMap, srcMap, butMap )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
+  if( dstMap === null )
   dstMap = arguments[ 0 ] = arguments[ 0 ] || Object.create( null );
+
   if( arguments.length === 2 )
   {
     butMap = arguments[ 1 ];
@@ -2179,15 +2184,15 @@ function mapBut_( dstMap, srcMap, butMap )
   // if( dstMap === srcMap )
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //   if( _.vector.is( butMap ) )
   //   {
-  //     /* qqq : for Dmytro : bad */
+  //     /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
   //     for( let s in srcMap )
   //     {
   //       for( let m = 0 ; m < butMap.length ; m++ )
   //       {
-  //         /* qqq : for Dmytro : write GOOD coverage */
+  //         /* aaa : for Dmytro : write GOOD coverage */ /* Dmytro : coverage extended */
   //         if( _.aux.is( butMap[ m ] ) )
   //         {
   //           if( s in butMap[ m ] )
@@ -2214,16 +2219,16 @@ function mapBut_( dstMap, srcMap, butMap )
   // else
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //   if( _.vector.is( butMap ) )
   //   {
-  //     /* qqq : for Dmytro : bad */
+  //     /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
   //     for( let s in srcMap )
   //     {
   //       let m;
   //       for( m = 0 ; m < butMap.length ; m++ )
   //       {
-  //         /* qqq : for Dmytro : was bad implementation. cover */
+  //         /* aaa : for Dmytro : was bad implementation. cover */ /* Dmytro : improved, implemented, covered */
   //         if( _.primitiveIs( butMap[ m ] ) )
   //         {
   //           if( s === butMap[ m ] )
@@ -2264,6 +2269,7 @@ function _mapBut_( o )
   _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
   _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
   _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
+  _.assert( !_.vector.is( o.dstMap ), 'Expects aux like {-o.dstMap-}' );
   // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
 
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
@@ -2302,7 +2308,7 @@ function _mapBut_( o )
 
   function filterNotIdenticalWithVectorButMap( key )
   {
-    /* qqq : for Dmytro : bad */
+    /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
@@ -2325,7 +2331,6 @@ function _mapBut_( o )
 
   function filterIdenticalWithVectorButMap( key )
   {
-    /* qqq : for Dmytro : bad */
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
@@ -2343,7 +2348,7 @@ function _mapBut_( o )
   // if( o.dstMap === o.srcMap )
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : allowed, covered */
   //   if( _.vector.is( o.butMap ) )
   //   {
   //     for( let s in o.srcMap )
@@ -2368,10 +2373,10 @@ function _mapBut_( o )
   // else
   // {
   //
-  //   /* qqq : allow and cover vector */
+  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //   if( _.vector.is( o.butMap ) )
   //   {
-  //     /* qqq : for Dmytro : bad */
+  //      /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
   //     for( let s in o.srcMap )
   //     {
   //       let m;
@@ -4628,9 +4633,9 @@ let Extension =
   _mapBut_,
   mapDelete,
   mapEmpty,
-
   mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
   mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
+
   mapOnlyOwnBut, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
   mapOnlyOwnBut_, /* qqq : make it accept null in the first argument */
 
