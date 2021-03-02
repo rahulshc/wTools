@@ -32,7 +32,6 @@ function _chainGenerate( args )
   function chainMake( a )
   {
     let e1 = _.event.nameValueFrom( args[ a ] );
-    // let e2 = _.event.nameValueFrom( args[ a+1 ] ); /* Dmytro : the variable is not used in scope */
     chain.push([ e1, on ]);
     function on()
     {
@@ -60,11 +59,6 @@ function _chainGenerate( args )
         _.event.off( self, { callbackMap : { [ e1 ] : on } } );
       }
 
-      // this.on( next[ 0 ], next[ 1 ] ); /* Dmytro : previous implementation, use routines of _.process */
-      // if( this.eventHasHandler( e1, on ) )
-      // {
-      //   this.off( e1, on );
-      // }
     }
   }
 }
@@ -156,13 +150,13 @@ function chainIs( src )
 
 //
 
-/* xxx aaa for Dmytro : introduce mini-class _.event.Chain() // Dmytro : introduced, covered
+/*
 _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
 ->
 _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
-aaa for Dmytro : restrict routines _.*.on() to accept 2 arguments // Dmytro : restricted for _.event before I'd seen this task, improved routine on_head for another namespaces
 */
 
+/* qqq for Dmytro : remove the class */
 function Name( name )
 {
   if( !( this instanceof Name ) )
@@ -248,15 +242,6 @@ function on_head( routine, args )
   _.assert( _.longIs( args ) );
   _.assert( arguments.length === 2 );
 
-  // _.assert( args.length >= 1 );
-
-  // if( args.length > 1 ) /* Dmytro : deprecated feature, should be deleted */
-  // {
-  //   _.assert( _.strIs( args[ 0 ] ) );
-  //   o = Object.create( null );
-  //   o.callbackMap = Object.create( null );
-  //   o.callbackMap[ args[ 0 ] ] = _.longOnly( args, 1 );
-  // }
   if( args.length === 2 )
   {
     _.assert( _.routineIs( args[ 1 ] ) );
@@ -267,8 +252,6 @@ function on_head( routine, args )
     if( _.event.chainIs( args[ 0 ] ) )
     {
       let chain = args[ 0 ].chain;
-      // debugger; /* xxx aaa for Dmytro : check */ /* Dmytro : vector of events should be sliced from first argument */
-      // o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
       o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, [ 1, chain.length - 1 ] );
       o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
     }
@@ -373,7 +356,6 @@ function on( ehandler, o )
     descriptor.enabled = true;
     descriptor.first = o.first; /* Dmytro : please, explain, does it need to save original value? */
     descriptor.callbackMap = o.callbackMap; /* Dmytro : please, explain, does it need to save link to original callback map? */
-
     return descriptor;
   }
 }
@@ -542,16 +524,6 @@ once.defaults =
   callbackMap : null,
   first : 0,
 };
-
-//  aaa for Dmytro : implement /* Dmytro : implemented */
-// let descriptor = _.procedure.on( 'terminationBegin', _handleProcedureTerminationBegin );
-// descriptor.off();
-// descriptor.enabled = false;
-// _.procedure.eventHas( descriptor ); /* true */
-// _.procedure.eventHas( descriptor.callback ); /* true */
-// descriptoro.enabled = true;
-// _.procedure.eventHas( descriptor ); /* true */
-// _.procedure.eventHas( descriptor.callback ); /* true */
 
 //
 
@@ -754,7 +726,6 @@ function eventGive( ehandler, o )
       visited.push( callback );
       try
       {
-        // callback.apply( _.process, o.args ); /* Dmytro : it allows use different handlers instead of _.process._ehandler */
         callback.apply( ehandler, o.args );
       }
       catch( err )

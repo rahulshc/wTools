@@ -2592,22 +2592,22 @@ function cintervalHas( test )
 function cintervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in cinterval';
-  var got = _.cinterval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.cinterval.sureIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in cinterval';
-  var got = _.cinterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
+  var got = _.cinterval.sureIn( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in cinterval';
-  var got = _.cinterval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.sureIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in cinterval';
-  var got = _.cinterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.sureIn( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -2617,16 +2617,16 @@ function cintervalSureInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval() );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn( 2 ) );
 
   test.case = 'src out of cinterval';
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 6, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.sureInInterval( 6, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn( 6, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.sureIn( 6, [ 2, 5 ], {} ) );
 }
 
 //
@@ -2634,22 +2634,22 @@ function cintervalSureInRange( test )
 function cintervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in cinterval';
-  var got = _.cinterval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.cinterval.assertIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in cinterval';
-  var got = _.cinterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
+  var got = _.cinterval.assertIn( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in cinterval';
-  var got = _.cinterval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.assertIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in cinterval';
-  var got = _.cinterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.cinterval.assertIn( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -2659,16 +2659,16 @@ function cintervalAssertInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval() );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn( 2 ) );
 
   test.case = 'src out of cinterval';
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 6, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.cinterval.assertInInterval( 6, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn( 6, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.cinterval.assertIn( 6, [ 2, 5 ], {} ) );
 }
 
 //
@@ -4803,22 +4803,22 @@ function lintervalHas( test )
 function lintervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in linterval';
-  var got = _.linterval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.linterval.sureIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in linterval';
-  var got = _.linterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
+  var got = _.linterval.sureIn( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in linterval';
-  var got = _.linterval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.sureIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in linterval';
-  var got = _.linterval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.sureIn( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -4828,16 +4828,16 @@ function lintervalSureInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval() );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn( 2 ) );
 
   test.case = 'src out of linterval';
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval( 8, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.linterval.sureInInterval( 8, [ 2, 5 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn( 8, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.linterval.sureIn( 8, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -4845,22 +4845,22 @@ function lintervalSureInRange( test )
 function lintervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in linterval';
-  var got = _.linterval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.linterval.assertIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in linterval';
-  var got = _.linterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
+  var got = _.linterval.assertIn( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in linterval';
-  var got = _.linterval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.assertIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in linterval';
-  var got = _.linterval.assertInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.linterval.assertIn( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -4870,16 +4870,16 @@ function lintervalAssertInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval() );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn( 2 ) );
 
   test.case = 'src out of linterval';
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 8, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.linterval.assertInInterval( 8, [ 2, 5 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn( 8, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.linterval.assertIn( 8, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -6874,22 +6874,22 @@ function ointervalHas( test )
 function ointervalSureInRange( test )
 {
   test.case = 'two arguments, src - number, in ointerval';
-  var got = _.ointerval.sureInInterval( 3, [ 1, 5 ] );
+  var got = _.ointerval.sureIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in ointerval';
-  var got = _.ointerval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ] );
+  var got = _.ointerval.sureIn( [ 0, 0, 0 ], [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in ointerval';
-  var got = _.ointerval.sureInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.ointerval.sureIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in ointerval';
-  var got = _.ointerval.sureInInterval( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.ointerval.sureIn( [ 0, 0, 0 ], [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -6899,16 +6899,16 @@ function ointervalSureInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval() );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn( 2 ) );
 
   test.case = 'src out of ointerval';
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 5, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.sureInInterval( 7, [ 2, 5 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn( 5, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.sureIn( 7, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -6916,22 +6916,22 @@ function ointervalSureInRange( test )
 function ointervalAssertInRange( test )
 {
   test.case = 'two arguments, src - number, in ointerval';
-  var got = _.ointerval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.ointerval.assertIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'two arguments, src - array, in ointerval';
-  var got = _.ointerval.assertInInterval( 3, [ 1, 5 ] );
+  var got = _.ointerval.assertIn( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - number, in ointerval';
-  var got = _.ointerval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.ointerval.assertIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'more then two arguments, src - array, in ointerval';
-  var got = _.ointerval.assertInInterval( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var got = _.ointerval.assertIn( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -6939,18 +6939,18 @@ function ointervalAssertInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval() );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 2 ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 2 ) );
 
   test.case = 'src out of ointerval';
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 5, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 7, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 5, [ 2, 5 ], {} ) );
-  test.shouldThrowErrorSync( () => _.ointerval.assertInInterval( 7, [ 2, 5 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 5, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 5, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.ointerval.assertIn( 7, [ 2, 5 ], undefined ) );
 }
 
 //

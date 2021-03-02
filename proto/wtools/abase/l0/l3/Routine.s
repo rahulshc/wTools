@@ -848,133 +848,6 @@ routinesCompose.head = _routinesCompose_head;
 routinesCompose.body = _routinesCompose_body;
 routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose.body.defaults );
 
-// //
-//
-// /**
-//  * The routineExtend_old() is used to copy the values of all properties
-//  * from source routine to a target routine.
-//  *
-//  * It takes first routine (dst), and shallow clone each destination property of type map.
-//  * Then it checks properties of source routine (src) and extends dst by source properties.
-//  * The dst properties can be owerwriten by values of source routine
-//  * if descriptor (writable) of dst property is set.
-//  *
-//  * If the first routine (dst) is null then
-//  * routine routineExtend_old() makes a routine from routines head and body
-//  * @see {@link wTools.routineUnite} - Automatic routine generating
-//  * from preparation routine and main routine (body).
-//  *
-//  * @param{ routine } dst - The target routine or null.
-//  * @param{ * } src - The source routine or object to copy.
-//  *
-//  * @example
-//  * var src =
-//  * {
-//  *   head : _.routinesCompose.head,
-//  *   body : _.routinesCompose.body,
-//  *   someOption : 1,
-//  * }
-//  * var got = _.routineExtend_old( null, src );
-//  * // returns [ routine routinesCompose ], got.option === 1
-//  *
-//  * @example
-//  * _.routineExtend_old( null, _.routinesCompose );
-//  * // returns [ routine routinesCompose ]
-//  *
-//  * @example
-//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
-//  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
-//  *
-//  * @example
-//  * _.routinesComposes.someOption = 22;
-//  * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
-//  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
-//  *
-//  * @returns { routine } It will return the target routine with extended properties.
-//  * @function routineExtend_old
-//  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
-//  * @throws { Error } Throw an error if dst is not routine or not null.
-//  * @throws { Error } Throw an error if dst is null and src has not head and body properties.
-//  * @throws { Error } Throw an error if src is primitive value.
-//  * @namespace Tools
-//  */
-//
-// function routineExtend_old( dst, src )
-// {
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-//   _.assert( _.routineIs( dst ) || dst === null );
-//   _.assert( src === null || src === undefined || _.aux.is( src ) || _.routineIs( src ) );
-//
-//   /* generate dst routine */
-//
-//   if( dst === null )
-//   {
-//
-//     let dstMap = Object.create( null );
-//     for( let a = 0 ; a < arguments.length ; a++ )
-//     {
-//       let src = arguments[ a ];
-//       if( src === null )
-//       continue;
-//       _.mapExtend( dstMap, src )
-//     }
-//
-//     if( dstMap.head && dstMap.body )
-//     {
-//       dst = _.routineUnite( dstMap.head, dstMap.body );
-//     }
-//     else
-//     {
-//       _.assert( _.routineIs( src ) );
-//       dst = function(){ return src.apply( this, arguments ); }
-//     }
-//     // _.assert( 0, 'Not clear how to construct the routine' );
-//     // dst = dstMap;
-//
-//   }
-//
-//   /* shallow clone properties of dst routine */
-//
-//   for( let s in dst )
-//   {
-//     let property = dst[ s ];
-//     if( _.mapIs( property ) )
-//     {
-//       property = _.mapExtend( null, property );
-//       dst[ s ] = property;
-//     }
-//   }
-//
-//   /* extend dst routine */
-//
-//   for( let a = 0 ; a < arguments.length ; a++ )
-//   {
-//     let src = arguments[ a ];
-//     if( src === null )
-//     continue;
-//     _.assert( _.aux.is( src ) || _.routineIs( src ) );
-//     for( let s in src )
-//     {
-//       let property = src[ s ];
-//       let d = Object.getOwnPropertyDescriptor( dst, s );
-//       if( d && !d.writable )
-//       continue;
-//       if( _.object.is( property ) )
-//       {
-//         _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
-//         property = Object.create( property );
-//         // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
-//         if( dst[ s ] )
-//         _.mapSupplement( property, dst[ s ] );
-//       }
-//       dst[ s ] = property;
-//     }
-//   }
-//
-//   return dst;
-// }
-
 //
 
 /**
@@ -1233,7 +1106,7 @@ function routineUnite_body( o )
       [ o.name ] : function()
       {
         let result;
-        let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+        let o = head.call( this, unitedRoutine, arguments );
 
         _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
@@ -1263,7 +1136,6 @@ function routineUnite_body( o )
         _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
 
         result = tail.call( this, result, o );
-        /* aaa for Dmytro : not optimal */ /* Dmytro : optimized */
 
         return result;
       }
@@ -1274,7 +1146,7 @@ function routineUnite_body( o )
       [ o.name ] : function()
       {
         let result;
-        let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+        let o = head.call( this, unitedRoutine, arguments );
 
         _.assert( !_.argumentsArray.is( o ), 'does not expect arguments array' );
 
@@ -1460,12 +1332,7 @@ function routineErFor( routine, erhead )
 
   erhead = erhead || routine.erhead || routine.head;
   let head = routine.head;
-  // let body = routine.body || routine.body; /* Dmytro : duplicated value */
   let body = routine.body;
-  // let defaults = routine.defaults || routine.defaults; /* Dmytro : duplicated value, routine constructed by routineUnite should have defaults  */
-  /* Dmytro : alternative but not useful variant
-  let defaults = routine.defaults || Object.create( null );
-  */
   let defaults = routine.defaults;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1477,7 +1344,6 @@ function routineErFor( routine, erhead )
 
   return er_functor;
 
-  /* xxx aaa : cover */ /* Dmytro : covered */
   function er_functor()
   {
     let self = this;
@@ -2594,9 +2460,7 @@ let Extension =
   assertRoutineOptionsPreservingUndefines,
   routineOptionsFromThis,
 
-  routinesCompose,
-  // routineExtend_old, /* xxx : deprecate */
-  // routineExtend : routineExtend_,
+  routinesCompose, /* xxx : deprecate */
   routineExtend,
   routineDefaults,
   routineUnite,
