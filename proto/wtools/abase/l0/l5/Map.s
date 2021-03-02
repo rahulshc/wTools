@@ -1966,18 +1966,14 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
 
   let propertyFilter = arguments[ 0 ];
-  let dstMap = arguments[ 1 ];
+  let dstMap = arguments[ 1 ] = arguments[ 1 ] || Object.create( null );
   let srcMap = arguments[ 2 ];
   let butMap = arguments[ 3 ];
 
-  if( dstMap === null )
-  {
-    dstMap = Object.create( null );
-  }
   if( arguments.length === 3 )
   {
-    butMap = srcMap;
-    srcMap = dstMap;
+    butMap = arguments[ 2 ];
+    srcMap = arguments[ 1 ];
   }
 
   return _._mapBut_
@@ -2141,13 +2137,11 @@ function mapBut_( dstMap, srcMap, butMap )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  if( dstMap === null )
-  dstMap = Object.create( null );
-
+  dstMap = arguments[ 0 ] = arguments[ 0 ] || Object.create( null );
   if( arguments.length === 2 )
   {
-    butMap = srcMap;
-    srcMap = dstMap;
+    butMap = arguments[ 1 ];
+    srcMap = arguments[ 0 ];
   }
 
   let filter = _.property.filterFrom( filterBut );
@@ -2175,7 +2169,7 @@ function mapBut_( dstMap, srcMap, butMap )
       return key;
     }
   }
-  filterBut.identity = { propertyFilter : true };
+  filterBut.identity = { propertyFilter : true, propertyTransformer : true };
 
   // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   // _.assert( !_.primitive.is( dstMap ), 'Expects map like destination map {-dstMap-}' );

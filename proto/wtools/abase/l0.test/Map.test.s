@@ -3983,7 +3983,7 @@ function mapButConditional( test )
 
 //
 
-function mapButConditionalThreeArguments_( test )
+function mapButConditional_WithThreeArguments( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
@@ -4005,6 +4005,7 @@ function mapButConditionalThreeArguments_( test )
   test.case = 'srcMap - null, butMap - empty map';
   var srcMap = null;
   var screenMap = {};
+  debugger;
   var got = _.mapButConditional_( filter, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
@@ -4240,7 +4241,7 @@ function mapButConditionalThreeArguments_( test )
 
 //
 
-function mapButConditionalDstMapNull_( test )
+function mapButConditional_DstMapIsNull( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
@@ -4431,7 +4432,7 @@ function mapButConditionalDstMapNull_( test )
 
 //
 
-function mapButConditionalDstMapMap_( test )
+function mapButConditional_DstMapIsMap( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
@@ -4644,6 +4645,302 @@ function mapButConditionalDstMapMap_( test )
   test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
 
   test.close( 'srcMap - array' );
+}
+
+//
+
+function mapButConditional_ButMapIsVector( test )
+{
+  var filter = ( but, src, key ) =>
+  {
+    if( _.primitive.is( but ) && but !== undefined )
+    if( but !== key )
+    return true;
+    return false;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 });
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
 }
 
 //
@@ -13193,9 +13490,10 @@ let Self =
 
     mapButConditional,
 
-    mapButConditionalThreeArguments_,
-    mapButConditionalDstMapNull_,
-    mapButConditionalDstMapMap_,
+    mapButConditional_WithThreeArguments,
+    mapButConditional_DstMapIsNull,
+    mapButConditional_DstMapIsMap,
+    mapButConditional_ButMapIsVector,
 
     mapBut,
 
