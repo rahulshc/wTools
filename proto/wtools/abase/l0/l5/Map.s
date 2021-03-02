@@ -801,7 +801,7 @@ function mapsExtend( dstMap, srcMaps )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
-  /* qqq : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
+  /* aaa : allow and cover vector */ /* Dmytro : allowed and covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
   if( !_.vector.is( srcMaps ) )
   dstMapExtend( srcMaps );
   else
@@ -835,7 +835,7 @@ function mapsExtend( dstMap, srcMaps )
   // _.assert( _.vector.is( srcMaps ) );
   // _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
   //
-  // /* qqq : allow and cover vector */
+  // /* aaa : allow and cover vector */ /* Dmytro : allowed and covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
   // for( let a = 0 ; a < srcMaps.length ; a++ )
   // {
   //   let srcMap = srcMaps[ a ];
@@ -1554,7 +1554,6 @@ function mapOnlyPrimitives( srcMap )
 
 function objectSetWithKeys( dstMap, key, val )
 {
-
   if( dstMap === null )
   dstMap = Object.create( null );
 
@@ -1562,11 +1561,15 @@ function objectSetWithKeys( dstMap, key, val )
   _.assert( _.strIs( key ) || _.vector.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  /* qqq : allow and cover vector */
+  /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
   if( _.vector.is( key ) )
   {
+    if( _.arrayLike( key ) )
     for( let s = 0 ; s < key.length ; s++ )
     set( dstMap, key[ s ], val );
+    else
+    for( let value of key )
+    set( dstMap, value, val );
   }
   else
   {
@@ -1575,14 +1578,14 @@ function objectSetWithKeys( dstMap, key, val )
 
   return dstMap;
 
+  /* */
+
   function set( dstMap, key, val )
   {
-
     if( val === undefined )
     delete dstMap[ key ];
     else
     dstMap[ key ] = val;
-
   }
 }
 
