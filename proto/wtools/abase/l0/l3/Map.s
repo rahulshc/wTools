@@ -917,8 +917,11 @@ function mapKeyWithValue( srcMap, value )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( srcMap ) );
 
-  // Dmytro : maybe it is missed code
-
+  for( let s in srcMap )
+  {
+    if( srcMap[ s ] === value )
+    return s;
+  }
 }
 
 //
