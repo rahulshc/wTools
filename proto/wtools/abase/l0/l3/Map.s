@@ -894,9 +894,9 @@ function mapValWithIndex( srcMap, index )
 
 function mapKeyWithIndex( srcMap, index )
 {
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( srcMap ) );
+  _.assert( _.number.intIs( index ) );
 
   if( index < 0 )
   return;
@@ -908,7 +908,6 @@ function mapKeyWithIndex( srcMap, index )
     return s;
     i++;
   }
-
 }
 
 //
