@@ -1924,26 +1924,22 @@ mapToStr.defaults =
 function mapButConditional( propertyFilter, srcMap, butMap )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( !_.primitive.is( butMap ), 'Expects map {-butMap-}' );
-  _.assert( !_.primitive.is( srcMap ) /* && !_.longIs( srcMap ) */, 'Expects map {-srcMap-}' );
+  _.assert( !_.primitive.is( butMap ), 'Expects non primitive {-butMap-}' );
+  _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
   _.assert( propertyFilter && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
 
   let result = Object.create( null );
 
-  /* qqq : allow and cover vector */
+  /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   if( _.vector.is( butMap ) )
   {
+    let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
+    let arrayLikeIs = _.arrayLike( butMap ) ? 1 : 0;
     for( let s in srcMap )
     {
-      let m;
-      for( m = 0 ; m < butMap.length ; m++ )
-      {
-        if( !propertyFilter( butMap[ m ], srcMap, s ) )
-        break;
-      }
-
-      if( m === butMap.length )
+      let butKey = filterRoutines[ arrayLikeIs ]( s );
+      if( butKey === undefined )
       result[ s ] = srcMap[ s ];
     }
   }
@@ -1957,6 +1953,24 @@ function mapButConditional( propertyFilter, srcMap, butMap )
   }
 
   return result;
+
+  /* */
+
+  function filterWithVectorButMap( s )
+  {
+    for( let but of butMap )
+    if( !propertyFilter( but, srcMap, s ) )
+    return s;
+  }
+
+  /* */
+
+  function filterWithArrayLikeButMap( s )
+  {
+    for( let m = 0 ; m < butMap.length ; m++ )
+    if( !propertyFilter( butMap[ m ], srcMap, s ) )
+    return s;
+  }
 }
 
 //
