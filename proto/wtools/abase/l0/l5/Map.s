@@ -1963,6 +1963,8 @@ function mapButConditional( propertyFilter, srcMap, butMap )
 
 function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 {
+  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
+
   let propertyFilter = arguments[ 0 ];
   let dstMap = arguments[ 1 ];
   let srcMap = arguments[ 2 ];
@@ -1978,68 +1980,76 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
     srcMap = dstMap;
   }
 
-  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
-  _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( !_.primitive.is( dstMap ), 'Expects map like {-dstMap-}' );
-  _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  return _._mapBut_
+  ({
+    filter : propertyFilter,
+    dstMap,
+    srcMap,
+    butMap,
+  });
 
-  if( dstMap === srcMap )
-  {
-
-    /* qqq : allow and cover vector */
-    if( _.vector.is( butMap ) )
-    {
-      for( let s in srcMap )
-      {
-        for( let m = 0 ; m < butMap.length ; m++ )
-        {
-          if( !propertyFilter( butMap[ m ], srcMap, s ) )
-          delete dstMap[ s ];
-        }
-      }
-    }
-    else
-    {
-      for( let s in srcMap )
-      {
-        if( !propertyFilter( butMap, srcMap, s ) )
-        delete dstMap[ s ];
-      }
-    }
-
-  }
-  else
-  {
-
-    /* qqq : allow and cover vector */
-    if( _.vector.is( butMap ) )
-    {
-      /* qqq : for Dmytro : bad */
-      for( let s in srcMap )
-      {
-        let m;
-        for( m = 0 ; m < butMap.length ; m++ )
-        if( !propertyFilter( butMap[ m ], srcMap, s ) )
-        break;
-
-        if( m === butMap.length )
-        dstMap[ s ] = srcMap[ s ];
-      }
-    }
-    else
-    {
-      for( let s in srcMap )
-      {
-        if( propertyFilter( butMap, srcMap, s ) )
-        dstMap[ s ] = srcMap[ s ];
-      }
-    }
-
-  }
-
-  return dstMap;
+  // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
+  // _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
+  // _.assert( _.property.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  // _.assert( !_.primitive.is( dstMap ), 'Expects map like {-dstMap-}' );
+  // _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  // _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  //
+  // if( dstMap === srcMap )
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( butMap ) )
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       for( let m = 0 ; m < butMap.length ; m++ )
+  //       {
+  //         if( !propertyFilter( butMap[ m ], srcMap, s ) )
+  //         delete dstMap[ s ];
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       if( !propertyFilter( butMap, srcMap, s ) )
+  //       delete dstMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  // else
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( butMap ) )
+  //   {
+  //     /* qqq : for Dmytro : bad */
+  //     for( let s in srcMap )
+  //     {
+  //       let m;
+  //       for( m = 0 ; m < butMap.length ; m++ )
+  //       if( !propertyFilter( butMap[ m ], srcMap, s ) )
+  //       break;
+  //
+  //       if( m === butMap.length )
+  //       dstMap[ s ] = srcMap[ s ];
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       if( propertyFilter( butMap, srcMap, s ) )
+  //       dstMap[ s ] = srcMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  //
+  // return dstMap;
 }
 
 //
@@ -2129,52 +2139,160 @@ function mapBut( srcMap, butMap )
 
 function mapBut_( dstMap, srcMap, butMap )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
   if( dstMap === null )
-  {
-    dstMap = Object.create( null );
-  }
+  dstMap = Object.create( null );
+
   if( arguments.length === 2 )
   {
     butMap = srcMap;
     srcMap = dstMap;
   }
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( !_.primitive.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
-  _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
-  _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  let filter = _.property.filterFrom( filterBut );
 
-  if( dstMap === srcMap )
+  return _._mapBut_
+  ({
+    filter,
+    dstMap,
+    srcMap,
+    butMap,
+  });
+
+  /* */
+
+  function filterBut( butMap, srcMap, key )
+  {
+    if( _.aux.is( butMap ) )
+    {
+      if( !( key in butMap ) )
+      return key;
+    }
+    else if( _.primitive.is( butMap ) )
+    {
+      if( key !== butMap )
+      return key;
+    }
+  }
+  filterBut.identity = { propertyFilter : true };
+
+  // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  // _.assert( !_.primitive.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  // _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  // _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
+  //
+  // if( dstMap === srcMap )
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( butMap ) )
+  //   {
+  //     /* qqq : for Dmytro : bad */
+  //     for( let s in srcMap )
+  //     {
+  //       for( let m = 0 ; m < butMap.length ; m++ )
+  //       {
+  //         /* qqq : for Dmytro : write GOOD coverage */
+  //         if( _.aux.is( butMap[ m ] ) )
+  //         {
+  //           if( s in butMap[ m ] )
+  //           delete dstMap[ s ];
+  //         }
+  //         else
+  //         {
+  //           if( s === butMap[ m ] )
+  //           delete dstMap[ s ];
+  //         }
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       if( s in butMap )
+  //       delete dstMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  // else
+  // {
+  //
+  //   /* qqq : allow and cover vector */
+  //   if( _.vector.is( butMap ) )
+  //   {
+  //     /* qqq : for Dmytro : bad */
+  //     for( let s in srcMap )
+  //     {
+  //       let m;
+  //       for( m = 0 ; m < butMap.length ; m++ )
+  //       {
+  //         /* qqq : for Dmytro : was bad implementation. cover */
+  //         if( _.primitiveIs( butMap[ m ] ) )
+  //         {
+  //           if( s === butMap[ m ] )
+  //           break;
+  //         }
+  //         else
+  //         {
+  //           if( s in butMap[ m ] )
+  //           break;
+  //         }
+  //       }
+  //
+  //       if( m === butMap.length )
+  //       dstMap[ s ] = srcMap[ s ];
+  //     }
+  //   }
+  //   else
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       if( !( s in butMap ) )
+  //       dstMap[ s ] = srcMap[ s ];
+  //     }
+  //   }
+  //
+  // }
+  //
+  // return dstMap;
+}
+
+//
+
+function _mapBut_( o )
+{
+  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+  _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
+  _.assert( _.property.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+  _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
+  _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
+  // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
+
+  if( o.dstMap === o.srcMap )
   {
 
     /* qqq : allow and cover vector */
-    if( _.vector.is( butMap ) )
+    if( _.vector.is( o.butMap ) )
     {
-      /* qqq : for Dmytro : bad */
-      for( let s in srcMap )
+      for( let s in o.srcMap )
       {
-        for( let m = 0 ; m < butMap.length ; m++ )
+        for( let m = 0 ; m < o.butMap.length ; m++ )
         {
-          /* qqq : for Dmytro : write GOOD coverage */
-          if( _.aux.is( butMap[ m ] ) )
-          {
-            if( s in butMap[ m ] )
-            delete dstMap[ s ];
-          }
-          else
-          {
-            if( s === butMap[ m ] )
-            delete dstMap[ s ];
-          }
+          if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+          delete o.dstMap[ s ];
         }
       }
     }
     else
     {
-      for( let s in srcMap )
+      for( let s in o.srcMap )
       {
-        if( s in butMap )
-        delete dstMap[ s ];
+        if( !o.filter( o.butMap, o.srcMap, s ) )
+        delete o.dstMap[ s ];
       }
     }
 
@@ -2183,43 +2301,32 @@ function mapBut_( dstMap, srcMap, butMap )
   {
 
     /* qqq : allow and cover vector */
-    if( _.vector.is( butMap ) )
+    if( _.vector.is( o.butMap ) )
     {
       /* qqq : for Dmytro : bad */
-      for( let s in srcMap )
+      for( let s in o.srcMap )
       {
         let m;
-        for( m = 0 ; m < butMap.length ; m++ )
-        {
-          /* qqq : for Dmytro : was bad implementation. cover */
-          if( _.primitiveIs( butMap[ m ] ) )
-          {
-            if( s === butMap[ m ] )
-            break;
-          }
-          else
-          {
-            if( s in butMap[ m ] )
-            break;
-          }
-        }
+        for( m = 0 ; m < o.butMap.length ; m++ )
+        if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+        break;
 
-        if( m === butMap.length )
-        dstMap[ s ] = srcMap[ s ];
+        if( m === o.butMap.length )
+        o.dstMap[ s ] = o.srcMap[ s ];
       }
     }
     else
     {
-      for( let s in srcMap )
+      for( let s in o.srcMap )
       {
-        if( !( s in butMap ) )
-        dstMap[ s ] = srcMap[ s ];
+        if( o.filter( o.butMap, o.srcMap, s ) )
+        o.dstMap[ s ] = o.srcMap[ s ];
       }
     }
 
   }
 
-  return dstMap;
+  return o.dstMap;
 }
 
 //
@@ -4451,6 +4558,7 @@ let Extension =
   mapButConditional_,
   mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
   mapBut_, /* qqq : make it accept null in the first argument */
+  _mapBut_,
   mapDelete,
   mapEmpty,
 
