@@ -57,86 +57,9 @@ function has( linterval, src )
   return true;
 }
 
-// //
-//
-// function inInclusive( linterval, srcNumber )
-// {
-//
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inExclusive( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber <= linterval[ 0 ] )
-//   return false;
-//   if( srcNumber > linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveLeft( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveRight( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-
 //
 
-function sureInInterval( src, linterval )
+function sureIn( src, linterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -148,7 +71,7 @@ function sureInInterval( src, linterval )
 
 //
 
-function assertInInterval( src, linterval )
+function assertIn( src, linterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -324,15 +247,10 @@ let Extension =
   isEmpty,
   isPopulated,
 
-  // inInclusive,
-  // inExclusive,
-  // inInclusiveLeft,
-  // inInclusiveRight,
-  // has : inInclusiveLeft,
   has,
 
-  sureInInterval,
-  assertInInterval,
+  sureIn,
+  assertIn,
 
   // maker
 
@@ -352,7 +270,6 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-// _.assert( _.linterval === undefined ); /* aaa2 for Dmytro : rename in documentation */ /* Dmytro : renamed */
 _.assert( _.linterval !== undefined );
 _.mapSupplement( Self, _.linterval );
 _.linterval = Self;

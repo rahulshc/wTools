@@ -167,8 +167,6 @@ function likeTrue( src )
 let ExtensionTools =
 {
 
-  /* qqq : cover and document all that ( not Dmytro ) | Done. Yevhen S.  */
-
   boolIs : is,
   boolLike : like,
   boolLikeFalse : likeFalse,

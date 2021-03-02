@@ -141,7 +141,7 @@ function has( cinterval, src )
 
 //
 
-function sureInInterval( src, cinterval )
+function sureIn( src, cinterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -153,7 +153,7 @@ function sureInInterval( src, cinterval )
 
 //
 
-function assertInInterval( src, cinterval )
+function assertIn( src, cinterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -322,28 +322,26 @@ function countElements( cinterval, increment )
 
 //
 
-function firstGet( cinterval, options )
+// function firstGet( cinterval, options )
+function firstGet( cinterval )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 );
 
-  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
-  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
-  // options.increment = 1;
-
-  if( options )
-  {
-    _.assert( _.aux.is( options ) );
-    if( options.increment === undefined )
-    options.increment = 1;
-  }
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
+  // if( options )
+  // {
+  //   _.assert( _.aux.is( options ) );
+  //   if( options.increment === undefined )
+  //   options.increment = 1;
+  // }
 
   if( _.longIs( cinterval ) )
   {
     _.assert( _.intervalIs( cinterval ) );
     return cinterval[ 0 ];
   }
-  else if( _.mapIs( cinterval ) )
+  else if( _.mapIs( cinterval ) ) /* xxx : remove? */
   {
     return cinterval.first;
   }
@@ -352,21 +350,19 @@ function firstGet( cinterval, options )
 
 //
 
-function lastGet( cinterval, options )
+// function lastGet( cinterval, options )
+function lastGet( cinterval )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 );
 
-  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
-  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
-  // options.increment = 1;
-
-  if( options )
-  {
-    _.assert( _.object.like( options ) );
-    if( options.increment === undefined )
-    options.increment = 1;
-  }
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
+  // if( options )
+  // {
+  //   _.assert( _.object.like( options ) );
+  //   if( options.increment === undefined )
+  //   options.increment = 1;
+  // }
 
   if( _.longIs( cinterval ) )
   {
@@ -435,8 +431,8 @@ let Extension =
   // has : inInclusiveLeft,
   has,
 
-  sureInInterval,
-  assertInInterval,
+  sureIn,
+  assertIn,
 
   // maker
 

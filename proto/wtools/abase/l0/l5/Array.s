@@ -272,9 +272,6 @@ function arrayMake( src )
  * @namespace Tools
  */
 
-/* aaa : can accept zero arguments just like arrayMake */
-/* Dmytro : arrayMakeUndefined accepts zero arguments and works like arrayMake */
-
 function arrayMakeUndefined( src, length )
 {
   if( arguments.length === 0 )
@@ -383,11 +380,8 @@ function arrayFromCoercing( src )
 
 function arrayFromStr( src )
 {
-
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
-
-  // return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } ); /* Dmytro : eslint rules require new line for return statement */
   return src.split(/[, ]+/).map( ( s ) => s.length ? parseFloat( s ) : undefined );
 }
 
@@ -756,11 +750,9 @@ function arrayButInplace( src, range, ins )
   _.assert( _.intervalIs( range ) );
   _.assert( ins === undefined || _.longLike( ins ) );
 
-  // Dmytro : missed
-  _.ointerval.clamp/*rangeClamp*/( range, [ 0, src.length ] );
+  _.ointerval.clamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
-  //
 
   let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
 
@@ -3778,10 +3770,7 @@ function arrayRemoveElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
   let ins = arguments[ 1 ];
   let evaluator1 = arguments[ 2 ];
   let evaluator2 = arguments[ 3 ];
-
   _.arrayRemovedElementOnce.apply( this, arguments );
-  /* aaa : implement and cover routines arrayRemovedElement*_ returning element, not container? */
-  /* Dmytro : implemented and covered, proposed improvements of routine `arrayRemovedElement` */
   return dstArray;
 }
 

@@ -950,7 +950,6 @@ function _err( o )
 
   function originalMessageForm()
   {
-    let multiline = false; // Dmytro : this option is not used in code
     let result = [];
 
     if( o.message )
@@ -964,11 +963,6 @@ function _err( o )
       if( arg && !_.primitive.is( arg ) )
       {
 
-        // if( _.primitive.is( arg ) ) // Dmytro : unnecessary condition, see above
-        // {
-        //   str = String( arg );
-        // }
-        // else if( _.routine.is( arg.toStr ) )
         if( _.routine.is( arg.toStr ) )
         {
           str = arg.toStr();
@@ -979,9 +973,6 @@ function _err( o )
         }
         else if( _.errIs( arg ) )
         {
-          // if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
-          // str = arg.originalMessage;
-          // else if( _.strIs( arg.message ) )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
@@ -1001,34 +992,9 @@ function _err( o )
         str = String( arg );
       }
 
-      let currentIsMultiline = _.strHas( str, '\n' );
-      if( currentIsMultiline )
-      multiline = true;
-
       result[ a ] = str;
 
     }
-
-    // for( let a = 0 ; a < result.length ; a++ )
-    // {
-    //   let str = result[ a ];
-    //
-    //   if( !o.message.replace( /\s*/m, '' ) )
-    //   {
-    //     o.message = str;
-    //   }
-    //   else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
-    //   {
-    //     // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
-    //     o.message += str;
-    //   }
-    //   else
-    //   {
-    //     o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
-    //     // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
-    //   }
-    //
-    // }
 
     let o2 =
     {
@@ -1074,54 +1040,6 @@ function _err( o )
         str = before + str.substring( notSpaceLikeSymbol.index );
       }
     }
-
-    // let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ ); /* aaa2 for Dmytro : cant use _.strIsolate* on this level */ /* Dmytro : strIsolateLeft not used, rewrote subroutines, simplified subroutines */
-
-    /*
-
-    _.strIsolateLeftOrAll is not a function
-    TypeError: _.strIsolateLeftOrAll is not a function
-        at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/Err.s:1062:27)
-        at Object.strConcat (/wtools/abase/l0/l3/Str.s:723:13)
-        at originalMessageForm (/wtools/abase/l0/l3/Err.s:1034:19)
-        at Object._err (/wtools/abase/l0/l3/Err.s:577:5)
-        at Object.err (/wtools/abase/l0/l3/Err.s:1192:12)
-        at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _wToolsLayer0_s_ (/wtools/abase/Layer0.s:90:3)
-        at Object.<anonymous> (/wtools/abase/Layer0.s:112:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _wToolsLayer1_s_ (/wtools/abase/Layer1.s:9:3)
-        at Object.<anonymous> (/wtools/abase/Layer1.s:28:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at Object.<anonymous> (/wtools/Tools.s:19:5)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _StringTools_test_s_ (/wtools/abase/l5.test/Dissector.test.s:8:11)
-        at Object.<anonymous> (/wtools/abase/l5.test/Dissector.test.s:2061:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Function.Module.runMain (internal/modules/cjs/loader.js:999:10)
-        at internal/main/run_main_module.js:17:11
-
-    */
 
     if( str && !strEndsWithRegular )
     {
