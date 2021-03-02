@@ -2678,6 +2678,62 @@ function empty( test )
 
 //
 
+function elementThGet( test )
+{
+
+  /* */
+
+  test.case = 'map';
+  var src = { a : 1, b : 2 };
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'a', 1 ] );
+  var got = _.container.elementThGet( src, 1 );
+  test.identical( got, [ 'b', 2 ] );
+
+  /* */
+
+  test.case = 'hashmap';
+  var src = new HashMap();
+  src.set( 'a', 1 );
+  src.set( 'b', 2 );
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'a', 1 ] );
+  var got = _.container.elementThGet( src, 1 );
+  test.identical( got, [ 'b', 2 ] );
+
+  /* */
+
+  test.case = 'array';
+  var src = [ 1, 2 ];
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got = _.container.elementThGet( src, 1 );
+  test.identical( got, [ 1, 2 ] );
+
+  /* */
+
+  test.case = 'set';
+  var src = new Set([ 1, 2 ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got = _.container.elementThGet( src, 1 );
+  test.identical( got, [ 1, 2 ] );
+
+  /* */
+
+  test.case = 'escape';
+  var src = new _.Escape( 'abc' );
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 'abc' ] );
+  var got = _.container.elementThGet( src, 1 );
+  test.identical( got, [ 1, undefined ] );
+
+  /* */
+
+}
+
+//
+
 function elementGet( test )
 {
 
@@ -2728,6 +2784,7 @@ let Self =
 
     empty, /* qqq : implement test routine `empty` | Dmytro : implemented */
 
+    elementThGet, /* qqq for Yevhen : cover */
     elementGet, /* qqq for Yevhen : cover */
 
   }

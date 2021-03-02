@@ -924,37 +924,37 @@ function mapKeyWithValue( srcMap, value )
 
 //
 
-function mapIndexWithKey( srcMap, key )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitive.is( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( s === key )
-    return s;
-  }
-
-  return;
-}
-
+// function mapIndexWithKey( srcMap, key )
+// {
 //
-
-function mapIndexWithValue( srcMap, value )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitive.is( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( srcMap[ s ] === value )
-    return s;
-  }
-
-  return;
-}
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( s === key )
+//     return s;
+//   }
+//
+//   return;
+// }
+//
+// //
+//
+// function mapIndexWithValue( srcMap, value )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( srcMap[ s ] === value )
+//     return s;
+//   }
+//
+//   return;
+// }
 
 //
 
@@ -1181,8 +1181,8 @@ let Extension =
   mapValWithIndex,
   mapKeyWithIndex,
   mapKeyWithValue,
-  mapIndexWithKey,
-  mapIndexWithValue,
+  // mapIndexWithKey,
+  // mapIndexWithValue,
 
   mapOnlyNulls,
   mapButNulls,

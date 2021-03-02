@@ -228,72 +228,36 @@ function empty( dstContainer )
   return dstContainer;
 }
 
-// //
 //
-// function typeOf( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   for( let t in this.types )
-//   {
-//     let type = this.types[ t ];
-//     if( type._is( src ) )
-//     {
-//       return type;
-//     }
-//   }
-// }
-//
-// //
-//
-// function typeDeclare( type )
-// {
-//
-//   _.map.assertHasOnly( type, this.knownTypeFields );
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.strDefined( type.name ) );
-//   _.assert( _.routineIs( type._is ) );
-//   _.assert( this.types[ type.name ] === undefined || this.types[ type.name ] === type );
-//
-//   this.types[ type.name ] = type;
-//
-//   return type;
-// }
-//
-// //
-//
-// function typeUndeclare( type )
-// {
-//
-//   if( !_.strIs( type ) )
-//   {
-//     _.assert( _.longHas( _.mapVals( this.types ), type ), () => `Container type::${type.name} is not registered` );
-//     type = type.name;
-//   }
-//
-//   let result = this.types[ type ];
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( result !== undefined );
-//
-//   delete this.types[ type ];
-//
-//   return result;
-// }
+
+function elementThGet( container, key ) /* qqq for Yevhen : cover please */
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( key ) );
+
+  if( _.mapIs( container ) )
+  {
+    let key2 = Object.keys( container )[ key ];
+    return [ key2, container[ key2 ] ];
+  }
+  else if( _.hashMapIs( container ) )
+  {
+    return [ ... container ][ key ];
+  }
+  else if( _.entity.methodIteratorOf( container ) )
+  {
+    return [ key, [ ... container ][ key ] ];
+  }
+  else _.assert( 0 );
+
+}
 
 //
 
-function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
+function elementGet( container, key ) /* qqq for Yevhen : cover please */
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  _.assert( !type );
-  // if( type !== false ) /* yyy */
-  // {
-  //   type = _.container.typeOf( container );
-  //   if( type && type._elementGet )
-  //   return type._elementGet( container, key );
-  // }
+  _.assert( arguments.length === 2 );
 
   if( container )
   {
@@ -309,15 +273,15 @@ function elementGet( container, key, type ) /* qqq for Yevhen : cover please */
     {
       return [ ... container ][ key ];
     }
+    else if( _.escape.is( key ) )
+    {
+      debugger;
+      if( key.val === prototypeSymbol )
+      return _.prototype.of( container );
+      else _.assert( 0, 'Unknown implicit field' );
+    }
     else
     {
-      if( _.escape.is( key ) )
-      {
-        debugger;
-        if( key.val === prototypeSymbol )
-        return _.prototype.of( container );
-        else _.assert( 0 );
-      }
       return container[ key ];
     }
   }
@@ -334,10 +298,6 @@ function elementSet( container, key, value )
 {
 
   _.assert( arguments.length === 3 ); debugger;
-
-  // let type = _.container.typeOf( container );
-  // if( type && type._elementSet )
-  // return type._elementSet( container, key, value );
 
   if( container )
   {
@@ -364,23 +324,22 @@ function elementSet( container, key, value )
 // structure
 // --
 
-let knownTypeFields =
-{
-  name : null,
-  _elementSet : null,
-  _elementGet : null,
-  _lengthGet : null,
-  _is : null,
-  _identicalTypes : null, /* qqq : cover please. ask how */
-  _while : null,
-  _coerce : null, /* qqq : cover this callback */
-}
+// let knownTypeFields =
+// {
+//   name : null,
+//   _elementSet : null,
+//   _elementGet : null,
+//   _lengthGet : null,
+//   _is : null,
+//   _identicalTypes : null, /* qqq : cover please. ask how */
+//   _while : null,
+//   _coerce : null, /* qqq : cover this callback */
+// }
 
 // --
 // extension
 // --
 
-// const types = _realGlobal_.wTools.container.types;
 const prototypeSymbol = Symbol.for( 'prototype' );
 
 let Extension =
@@ -389,24 +348,19 @@ let Extension =
   extendReplacing,
   extendAppending,
 
-  // extendAppendingRecursive,
-
   empty,
 
-  // typeOf, /* yyy */
-  // typeDeclare, /* yyy */
-  // typeUndeclare, /* yyy */
+  elementThGet,
   elementGet, /* qqq : cover please */
   elementSet,
 
   // fields
 
-  knownTypeFields,
+  // knownTypeFields,
 
 }
 
 _.mapSupplement( Self, Extension );
-// _.container.types = types;
 
 // --
 // export
