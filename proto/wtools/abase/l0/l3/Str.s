@@ -369,6 +369,99 @@ exportStringShortDiagnostic.defaults =
 
 //
 
+function _exportStringShortDiagnostic_head( routine, args )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  let o = args[ 0 ];
+  _.routine.options( routine, o );
+  _.assert
+  (
+    o.format === 'string.diagnostic' || o.format === 'string.code',
+    `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
+  );
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2 );
+
+  return o;
+}
+//
+
+function _exportStringShortDiagnostic_body( o )
+{
+  let result = '';
+  let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
+
+  try
+  {
+    if( _.primitive.is( o.src ) )
+    {
+      result = _.primitive[ method ]( o.src );
+    }
+    else if( _.set.like( o.src ) )
+    {
+      result = _.set[ method ]( o.src );
+    }
+    else if( _.hashMap.like( o.src ) )
+    {
+      result = _.hashMap[ method ]( o.src );
+    }
+    else if( _.vector.like( o.src ) )
+    {
+      result = _.vector[ method ]( o.src );
+    }
+    else if( _.date.is( o.src ) )
+    {
+      result = _.date[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.regexpIs( o.src ) )
+    {
+      result = _.regexp[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.routine.is( o.src ) )
+    {
+      /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      result = _.routine[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.aux.like( o.src ) )
+    {
+      result = _.aux[ method ]( o.src );
+    }
+    else if( _.object.like( o.src ) )
+    {
+      result = _.object[ method ]( o.src );
+    }
+    else
+    {
+      result += String( o.src );
+      result = _.strShort( result );
+    }
+
+  }
+  catch( err )
+  {
+    debugger;
+    throw err;
+  }
+
+  return result;
+}
+
+_exportStringShortDiagnostic_body.defaults =
+{
+  src : null,
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+let _exportStringShortDiagnostic = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+
+let _exportStringShortCode = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+_exportStringShortCode.defaults.format = 'string.code';
+
+//
+
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
  * For example: src : 'string', limit : 4, result -> 'stng'.
@@ -1355,6 +1448,7 @@ let ExtensionEntity =
   exportString : exportStringShort,
   exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
   exportStringShortDiagnostic,
+  _exportStringShortDiagnostic,
   // exportStringShortCode, /* qqq xxx : introduce */
 
   strPrimitive,
