@@ -185,38 +185,38 @@ function exportStringShortDiagnostic( test )
   test.identical( got, expected );
 
   test.case = 'new Date( 2011, 1 )';
-  var src = new Date( 2011, 1 );
-  var expected = '2011-01-31T22:00:00.000Z';
+  var src = new Date( Date.UTC( 2011, 1 ) );
+  var expected = '2011-02-01T00:00:00.000Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'new Date( 2011, 1, 1';
-  var src = new Date( 2011, 1, 1 );
-  var expected = '2011-01-31T22:00:00.000Z';
+  test.case = 'new Date( Date.UTC( 2011, 1, 1 )';
+  var src = new Date( Date.UTC( 2011, 1, 1 ) );
+  var expected = '2011-02-01T00:00:00.000Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'new Date( 2011, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1 );
-  var expected = '2011-01-31T23:00:00.000Z';
+  test.case = 'new Date( Date.UTC( 2011, 1, 1, 1 ) )';
+  var src = new Date( Date.UTC( 2011, 1, 1, 1 ) );
+  var expected = '2011-02-01T01:00:00.000Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'new Date( 2011, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1 );
-  var expected = '2011-01-31T23:01:00.000Z';
+  test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1 ) )';
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1 ) );
+  var expected = '2011-02-01T01:01:00.000Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'new Date( 2011, 1, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1, 1 );
-  var expected = '2011-01-31T23:01:01.000Z';
+  test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) )';
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) );
+  var expected = '2011-02-01T01:01:01.000Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
-  test.case = 'new Date( 2011, 1, 1, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1, 1, 1 );
-  var expected = '2011-01-31T23:01:01.001Z';
+  test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) )';
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) );
+  var expected = '2011-02-01T01:01:01.001Z';
   var got = _.date.exportStringShortDiagnostic( src );
   test.identical( got, expected );
 
@@ -250,43 +250,43 @@ function exportStringShortCode( test )
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1 )';
-  var src = new Date( 2011, 1 );
-  var expected = `new Date( '2011-01-31T22:00:00.000Z' )`;
+  var src = new Date( Date.UTC( 2011, 1 ) );
+  var expected = `new Date( '2011-02-01T00:00:00.000Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1';
-  var src = new Date( 2011, 1, 1 );
-  var expected = `new Date( '2011-01-31T22:00:00.000Z' )`;
+  var src = new Date( Date.UTC( 2011, 1, 1 ) );
+  var expected = `new Date( '2011-02-01T00:00:00.000Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1 );
-  var expected = `new Date( '2011-01-31T23:00:00.000Z' )`;
+  var src = new Date( Date.UTC( 2011, 1, 1, 1 ) );
+  var expected = `new Date( '2011-02-01T01:00:00.000Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1 );
-  var expected = `new Date( '2011-01-31T23:01:00.000Z' )`;
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1 ) );
+  var expected = `new Date( '2011-02-01T01:01:00.000Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1, 1 );
-  var expected = `new Date( '2011-01-31T23:01:01.000Z' )`;
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) );
+  var expected = `new Date( '2011-02-01T01:01:01.000Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1, 1, 1 )';
-  var src = new Date( 2011, 1, 1, 1, 1, 1, 1 );
-  var expected = `new Date( '2011-01-31T23:01:01.001Z' )`;
+  var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) );
+  var expected = `new Date( '2011-02-01T01:01:01.001Z' )`;
   var got = _.date.exportStringShortCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
