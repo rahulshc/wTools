@@ -559,12 +559,7 @@ function eachPermutation( o )
 
   if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
-  // if( o.returning )
-  // if( o.dst === null )
-  // o.dst = [];
 
-  // const add = o.returning ? append1 : append0;
-  // const dst = o.returning ? o.dst : undefined;
   const add = ( _.arrayLike( o.result ) || _.routineIs( o.result.push ) ) ? append1 : append0;
   const dst = o.result ? o.result : undefined;
   const container = o.container;
@@ -672,9 +667,136 @@ eachPermutation.defaults =
   onEach : null,
   container : null,
   result : 1,
-  // dst : null, /* aaa for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */ /* Dmytro : implemented */
-  // returning : 0,
 };
+
+// function eachPermutation( o )
+// {
+//
+//   _.routineOptions( eachPermutation, arguments );
+//
+//   if( _.number.is( o.container ) )
+//   {
+//     if( o.container < 0 )
+//     o.container = 0;
+//     let container = Array( o.container );
+//     for( let i = o.container-1 ; i >= 0 ; i-- )
+//     container[ i ] = i;
+//     o.container = container;
+//   }
+//
+//   if( o.returning )
+//   if( o.dst === null )
+//   o.dst = [];
+//
+//   const add = o.returning ? append1 : append0;
+//   const dst = o.returning ? o.dst : undefined;
+//   const container = o.container;
+//   const length = o.container.length;
+//   const last = length - 1;
+//   const plast = length - 2;
+//   const slast = length - 3;
+//   const onEach = o.onEach;
+//   let left = last;
+//   let swaps = 0;
+//   let iteration = 0;
+//
+//   if( length <= 1 )
+//   {
+//     if( length === 1 )
+//     {
+//       onEach( container, iteration, left, last, swaps );
+//       add();
+//     }
+//     return;
+//   }
+//
+//   let iterations = 1;
+//   for( let i = plast-1 ; i >= 0 ; i-- )
+//   {
+//     iterations *= ( last - i );
+//   }
+//   iterations *= length;
+//
+//   let counter = [];
+//   for( let i = plast ; i >= 0 ; i-- )
+//   counter[ i ] = last-i;
+//
+//   _.assert( _.longIs( container ) );
+//   _.assert( _.routineIs( onEach ) );
+//   _.assert( length >= 0 );
+//   _.assert( length <= 30 );
+//
+//   while( iteration < iterations )
+//   {
+//
+//     onEach( container, iteration, left, last, swaps );
+//     add();
+//     left = plast;
+//     nextCounter();
+//     reverse();
+//     iteration += 1;
+//   }
+//
+//   return dst;
+//
+//   /* */
+//
+//   function append0()
+//   {
+//   }
+//
+//   function append1()
+//   {
+//     dst.push( container.slice() );
+//   }
+//
+//   function swap( left, right )
+//   {
+//     _.assert( container[ right ] !== undefined );
+//     _.assert( container[ left ] !== undefined );
+//     let ex = container[ right ];
+//     container[ right ] = container[ left ];
+//     container[ left ] = ex;
+//   }
+//
+//   function reverse()
+//   {
+//     if( left >= slast )
+//     {
+//       swaps = 1;
+//       swap( left, last );
+//       counter[ left ] -= 1;
+//     }
+//     else
+//     {
+//       swaps = last - left;
+//       if( swaps % 2 === 1 )
+//       swaps -= 1;
+//       swaps /= 2;
+//       for( let i = swaps ; i >= 0 ; i-- )
+//       swap( left + i, last - i );
+//       counter[ left ] -= 1;
+//       swaps += 1;
+//     }
+//   }
+//
+//   function nextCounter()
+//   {
+//     while( counter[ left ] === 0 && left !== 0 )
+//     left -= 1;
+//     for( let i = left + 1 ; i < counter.length ; i++ )
+//     counter[ i ] = last - i;
+//   }
+//
+// }
+//
+// eachPermutation.defaults =
+// {
+//   onEach : null,
+//   container : null,
+//   dst : null, /* aaa for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */ /* Dmytro : implemented */
+//   returning : 0,
+// }
 
 /*
 
