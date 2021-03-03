@@ -4050,99 +4050,100 @@ function assertHasOnly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
+  return _.map.sureHasOnly.apply( this, arguments );
 
   /* */
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4, 'Expects two, three or four arguments' );
-
-  let but = mapButKeys( srcMap, screenMaps );
-
-  if( but.length > 0 )
-  {
-    let err;
-    let msgKeys = _.strQuote( but ).join( ', ' );
-    if( arguments.length === 2 )
-    err = errFromArgs([ `${ _.entity.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
-    else
-    err = errFromArgs([ msgMake( arguments ), msgKeys ]);
-    throw err;
-  }
-
-  return true;
-
-  /* */
-
-  function mapButKeys( srcMap, butMap )
-  {
-    let result = [];
-    _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
-
-    /* qqq : allow and cover vector */
-    if( _.vector.is( butMap ) )
-    {
-      /* qqq : for Dmytro : bad */
-      for( let s in srcMap )
-      {
-        let m;
-        for( m = 0 ; m < butMap.length ; m++ )
-        {
-          /* qqq : for Dmytro : was bad implementation. cover */
-          if( _.primitive.is( butMap[ m ] ) )
-          {
-            if( s === butMap[ m ] )
-            break;
-          }
-          else
-          {
-            if( s in butMap[ m ] )
-            break;
-          }
-        }
-
-        if( m === butMap.length )
-        result.push( s );
-      }
-    }
-    else if( !_.primitive.is( butMap ) )
-    {
-      for( let s in srcMap )
-      {
-        if( !( s in butMap ) )
-        result.push( s );
-      }
-    }
-    else
-    {
-      _.assert( 0, 'Expects object-like or long-like {-butMap-}' );
-    }
-
-    return result;
-  }
-
-  /* */
-
-  function errFromArgs( args )
-  {
-    return _._err
-    ({
-      args,
-      level : 2,
-    });
-  }
-
-  /* */
-
-  function msgMake( args )
-  {
-    let arr = [];
-    for( let i = 2; i < args.length; i++ )
-    {
-      if( _.routineIs( args[ i ] ) )
-      args[ i ] = args[ i ]();
-      arr.push( args[ i ] );
-    }
-    return arr.join( ' ' );
-  }
+  // _.assert( 2 <= arguments.length && arguments.length <= 4, 'Expects two, three or four arguments' );
+  //
+  // let but = mapButKeys( srcMap, screenMaps );
+  //
+  // if( but.length > 0 )
+  // {
+  //   let err;
+  //   let msgKeys = _.strQuote( but ).join( ', ' );
+  //   if( arguments.length === 2 )
+  //   err = errFromArgs([ `${ _.entity.strType( srcMap ) } should have no fields : ${ msgKeys }` ]);
+  //   else
+  //   err = errFromArgs([ msgMake( arguments ), msgKeys ]);
+  //   throw err;
+  // }
+  //
+  // return true;
+  //
+  // /* */
+  //
+  // function mapButKeys( srcMap, butMap )
+  // {
+  //   let result = [];
+  //   _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
+  //
+  //   /* aaa : allow and cover vector */ /* Dmytro : this inlining is not needed, that was mistake */
+  //   if( _.vector.is( butMap ) )
+  //   {
+  //     /* aaa : for Dmytro : bad */ /* Dmytro : this inlining is not needed, that was mistake */
+  //     for( let s in srcMap )
+  //     {
+  //       let m;
+  //       for( m = 0 ; m < butMap.length ; m++ )
+  //       {
+  //         /* aaa : for Dmytro : was bad implementation. cover */ /* Dmytro : this inlining is not needed, that was mistake */
+  //         if( _.primitive.is( butMap[ m ] ) )
+  //         {
+  //           if( s === butMap[ m ] )
+  //           break;
+  //         }
+  //         else
+  //         {
+  //           if( s in butMap[ m ] )
+  //           break;
+  //         }
+  //       }
+  //
+  //       if( m === butMap.length )
+  //       result.push( s );
+  //     }
+  //   }
+  //   else if( !_.primitive.is( butMap ) )
+  //   {
+  //     for( let s in srcMap )
+  //     {
+  //       if( !( s in butMap ) )
+  //       result.push( s );
+  //     }
+  //   }
+  //   else
+  //   {
+  //     _.assert( 0, 'Expects object-like or long-like {-butMap-}' );
+  //   }
+  //
+  //   return result;
+  // }
+  //
+  // /* */
+  //
+  // function errFromArgs( args )
+  // {
+  //   return _._err
+  //   ({
+  //     args,
+  //     level : 2,
+  //   });
+  // }
+  //
+  // /* */
+  //
+  // function msgMake( args )
+  // {
+  //   let arr = [];
+  //   for( let i = 2; i < args.length; i++ )
+  //   {
+  //     if( _.routineIs( args[ i ] ) )
+  //     args[ i ] = args[ i ]();
+  //     arr.push( args[ i ] );
+  //   }
+  //   return arr.join( ' ' );
+  // }
 }
 
 //
