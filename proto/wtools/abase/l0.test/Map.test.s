@@ -9710,6 +9710,28 @@ function mapHasAny( test )
   var got = _.mapHasAny( a, { a : 1, x : 1 } );
   test.true( got );
 
+  /* vector */
+
+  test.case = 'same keys, array';
+  var got = _.mapHasAny( { a : 1 }, [ 'a' ] );
+  test.true( got );
+
+  test.case = 'has only one, array';
+  var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, [ 'b', 'x' ] );
+  test.true( got );
+
+  test.case = 'has all, array';
+  var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, [ 'a', 'b', 'c' ] );
+  test.true( got );
+
+  test.case = 'one is mising, array';
+  var got = _.mapHasAny( { a : 1, b : 2 }, [ 'a', 'b', 'c' ] );
+  test.true( got );
+
+  test.case = 'has no one, array';
+  var got = _.mapHasAny( { a : 1, b : 2 }, [ 'x', 'y' ] );
+  test.true( !got );
+
   /* */
 
   if( Config.degub )
