@@ -3801,7 +3801,7 @@ function strTypeWithTraitsGeneratedObject( test )
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample({ sets });
+  let samples = _.eachSample_({ sets });
 
   for( let env of samples )
   eachCase( env );
@@ -3878,7 +3878,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample({ sets });
+  let samples = _.eachSample_({ sets });
 
   for( let env of samples )
   eachCase( env );
