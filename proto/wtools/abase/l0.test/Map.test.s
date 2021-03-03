@@ -9897,6 +9897,92 @@ function mapHasNone( test )
   var got = _.mapHasNone( a, { a : 1 } );
   test.true( !got );
 
+  /* vector */
+
+  test.open( 'array' )
+
+  test.case = 'same keys';
+  var got = _.mapHasNone( { a : 1 }, [ 'a' ] );
+  test.true( !got );
+
+  test.case = 'has only one';
+  var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, [ 'b', 'x' ] );
+  test.true( !got );
+
+  test.case = 'has all';
+  var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, [ 'a', 'b', 'c' ] );
+  test.true( !got );
+
+  test.case = 'one is mising';
+  var got = _.mapHasNone( { a : 1, b : 2 }, [ 'a', 'b', 'c' ] );
+  test.true( !got );
+
+  test.case = 'has no one';
+  var got = _.mapHasNone( { a : 1, b : 2 }, [ 'x', 'y' ] );
+  test.true( got );
+
+  test.close( 'array' )
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [] )
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [ 'a' ] )
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [ 'b' ] )
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.unrollMake( [ 'b', 'a', 'x', 'y' ] )
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.close( 'containerAdapter' );
+
   /* */
 
   if( Config.degub )

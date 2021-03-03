@@ -389,7 +389,7 @@ function mapHasAll( src, screen )
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : teach to accept vector */
+/* xxx qqq : for Yevhen : teach to accept vector | aaa : Done. */
 /* xxx qqq : for Yevhen : duplicate in _.property.hasAny() | aaa : Done */
 function mapHasAny( src, screen )
 {
@@ -453,7 +453,7 @@ function mapHasAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done */
 /* xxx qqq : for Yevhen : duplicate in _.property.hasNone() | aaa : Done */
 function mapHasNone( src, screen )
 {
@@ -461,8 +461,24 @@ function mapHasNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.vector.is( screen ) )
   {
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( screen[ s ] in src )
+      return false;
+    }
+    else
+    {
+      for( let value of screen )
+      if( value in src )
+      return false;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return false;
   }
