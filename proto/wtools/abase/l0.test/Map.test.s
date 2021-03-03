@@ -15693,128 +15693,135 @@ function assertMapHasNoUndefine( test )
 
 //
 
-function measureForLoops( test )
+function measureMapHasNonePerformance( test )
 {
   /*
-  Array length = 50000000, iterations = 10
-
-  For took :    0.0769 on Njs v10.23.0
-  For of took : 2.8707000000000003 on Njs v10.23.0
-  ----------------------------------------------------
-  Array length = 500, iterations = 10000
-
-  For took :    0.000002000000000000001 on Njs v10.23.0
-  For of took : 0.000006400000000000004 on Njs v10.23.0
-
+    FOR :
+    Array length = 50000000, iterations = 10
+    Routine took : 1.361s on Njs v10.23.0
+    ----------------------------------------------------
+    Array length = 500, iterations = 10000
+    Routine took : 0.0000157s on Njs v10.23.0
+    ----------------------------------------------------
+    ----------------------------------------------------
+    FOR OF :
+    Array length = 50000000, iterations = 10
+    Routine took : 3.8853s on Njs v10.23.0
+    ----------------------------------------------------
+    Array length = 500, iterations = 10000
+    Routine took : 0.0000159s on Njs v10.23.0
+    ----------------------------------------------------
   */
 
   test.case = 'long array, 10 iterations';
-  var times = 20;
+  var times = 10;
   var size = 50000000;
   var array = new Array( size );
-  var counter1 = 0;
-  var timeSpent1 = [];
+
+  var counter = 0;
+  var took = 0;
+
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    // forLoop( array ); ROUTINE
-    var spent1 = _.time.spent( time1 )
-    timeSpent1.push( spent1 );
-    test.identical( counter1, size );
-    counter1 = 0
+    mapHasNoneForOf( { a : 1 }, array );
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, size );
+    counter = 0
   }
-  // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
 
-  // var counter2 = 0;
-  // var timeSpent2 = [];
-  // for( let i = times ; i > 0; i-- )
-  // {
-  //   var time2 = _.time.now();
-  //   // forOf( array ); ROUTINE
-  //   var spent2 = _.time.spent( time2 )
-  //   timeSpent2.push( spent2 );
-  //   test.identical( counter2, size );
-  //   counter2 = 0;
-  // }
-  // // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
-  // test.identical( timeSpent1.length, timeSpent2.length );
-
-  var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
-  // var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
-
-  console.log( `Array length = ${size}, iterations = ${times}\n` );
-  console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
-  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}` );
+  console.log( `Array length = ${size}, iterations = ${times}` );
+  console.log( `Routine took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
   console.log( '----------------------------------------------------' );
 
   /* - */
 
-  // test.case = 'short array, 10000 iterations';
-  // var times = 10000;
-  // var size = 500;
-  // var array = new Array( size );
-  // var counter1 = 0;
-  // var timeSpent1 = [];
-  // for( let i = times; i > 0; i-- )
-  // {
-  //   var time1 = _.time.now();
-  //   forLoop( array );
-  //   var spent1 = _.time.spent( time1 )
-  //   timeSpent1.push( spent1 );
-  //   test.identical( counter1, size );
-  //   counter1 = 0
-  // }
-  // // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
+  test.case = 'short array, 10000 iterations';
+  var times = 10000;
+  var size = 500;
+  var array = new Array( size );
+  var counter = 0;
+  var took = 0;
 
-  // var counter2 = 0;
-  // var timeSpent2 = [];
-  // for( let i = times ; i > 0; i-- )
-  // {
-  //   var time2 = _.time.now();
-  //   forOf( array );
-  //   var spent2 = _.time.spent( time2 )
-  //   timeSpent2.push( spent2 );
-  //   test.identical( counter2, size );
-  //   counter2 = 0;
-  // }
-  // // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
-  // test.identical( timeSpent1.length, timeSpent2.length );
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    mapHasNoneForOf( { a : 1 }, array );
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, size );
+    counter = 0
+  }
 
-  // var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
-  // var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
-
-  // console.log( `Array length = ${size}, iterations = ${times}\n` );
-  // console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
-  // console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
+  console.log( `Array length = ${size}, iterations = ${times}` );
+  console.log( `Routine took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
 
   /* - */
 
-  // function forLoop( src )
-  // {
-  //   // for( let k = 0 ; k < src.length ; k++ )
-  //   // counter1++
-  // }
-
-  // function forOf( src )
-  // {
-  //   // for( let k of src )
-  //   // counter2++;
-  // }
-
-  function calcAvg( src )
+  function mapHasNoneFor( src, screen )
   {
-    let result =
-    // (
-      src.map( ( el ) => parseFloat( el ) )
-      .reduce( ( p, c ) => p + c, 0 ) / src.length
-    // ).toFixed( 3 );
+    _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+    _.assert( !_.primitive.is( src ) );
+    _.assert( !_.primitive.is( screen ) );
 
-    return result;
+    if( _.vector.is( screen ) )
+    {
+      if( _.longIs( screen ) )
+      {
+        for( let s = 0 ; s < screen.length ; s++ )
+        {
+          if( screen[ s ] in src )
+          return false;
+          counter++;
+        }
+      }
+      else
+      {
+        for( let value of screen )
+        if( value in src )
+        return false;
+      }
+    }
+    else if( _.aux.is( screen ) )
+    {
+      for( let k in screen )
+      if( k in src )
+      return false;
+    }
+    return true;
+  }
+
+  //
+
+  function mapHasNoneForOf( src, screen )
+  {
+    _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+    _.assert( !_.primitive.is( src ) );
+    _.assert( !_.primitive.is( screen ) );
+
+    if( _.vector.is( screen ) )
+    {
+      for( let value of screen )
+      {
+        if( value in src )
+        return false;
+        counter++;
+      }
+    }
+    else if( _.aux.is( screen ) )
+    {
+      for( let k in screen )
+      if( k in src )
+      return false;
+    }
+    return true;
   }
 
 }
 
-measureForLoops.timeOut = 1e6;
+measureMapHasNonePerformance.timeOut = 1e6;
 
 // --
 // define test suite
@@ -15993,7 +16000,7 @@ let Self =
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
 
-    measureForLoops
+    measureMapHasNonePerformance
 
   }
 
