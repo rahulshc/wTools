@@ -397,15 +397,28 @@ function mapHasAny( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.vector.is( screen ) )
   {
-    if( k in src )
-    debugger;
-    if( k in src )
-    return true;
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( screen[ s ] in src )return true;
+    }
+    else
+    {
+      for( let value of screen )
+      if( value in src )return true;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
+    {
+      if( k in src )
+      return true;
+    }
   }
 
-  debugger;
   return false;
 }
 
