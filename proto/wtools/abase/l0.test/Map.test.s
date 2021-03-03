@@ -12333,57 +12333,111 @@ function assertMapHasNoUndefine( test )
 
 function measureForLoops( test )
 {
-  // for( let i = 0 ; i < nruns ; i++ )
-  // _.look( src, ( e, k, it ) => { ( counter += 1, undefined ) } );
-  // console.log( _.time.spent( time ) );
-  // test.identical( counter, 309516 * nruns );
-  // var src = _.diagnosticStructureGenerate({ defaultComplexity : 5, depth : 1 }).result;
-  // var n = 0
-  // for( let k in src )
-  // {
-  //   n++
-  // }
+  /*
+  Array length = 50000000, iterations = 10
 
-  let times = 10;
-  let size = 50000000;
-  let array = new Array( size );
+  For took : 0.07569999999999999 on Njs v12.9.1
+  For of took : 1.4411 on Njs v12.9.1
+  ----------------------------------------------------
+  Array length = 500, iterations = 10000
 
-  test.case = 'long array, 10 iterations'
+  For took : 0.0000015000000000000007 on Njs v12.9.1
+  For of took : 0.000002100000000000001 on Njs v12.9.1
+
+  */
+
+  test.case = 'long array, 10 iterations';
+  var times = 10;
+  var size = 50000000;
+  var array = new Array( size );
   var counter1 = 0;
   var timeSpent1 = [];
-  // console.log( `counter : ${counter1}` );
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
     forLoop( array );
-    timeSpent1.push( _.time.spent( time1 ) )
+    var spent1 = _.time.spent( time1 )
+    timeSpent1.push( spent1 );
     test.identical( counter1, size );
     counter1 = 0
   }
-  console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
-  // console.log( timeSpent1 );
+  // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
 
   var counter2 = 0;
   var timeSpent2 = [];
-  // console.log( `counter : ${counter2}` );
   for( let i = times ; i > 0; i-- )
   {
     var time2 = _.time.now();
     forOf( array );
-    timeSpent2.push( _.time.spent( time2 ) );
+    var spent2 = _.time.spent( time2 )
+    timeSpent2.push( spent2 );
     test.identical( counter2, size );
     counter2 = 0;
   }
-  console.log( `For of took ${timeSpent2} on Njs ${process.version}` );
-  // console.log( timeSpent2 );
-  console.log( '================' );
+  // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
+  test.identical( timeSpent1.length, timeSpent2.length );
 
-  let timeSpent1Numbers = timeSpent1.map( ( el ) => parseFloat( el ) );
-  // let timeSpent1NumbersAvg = timeSpent1Numbers.reduce(  )
-  let timeSpent2Numbers = timeSpent2.map( ( el ) => parseFloat( el ) );
-  test.identical( timeSpent1Numbers.length, timeSpent2Numbers.length );
-  console.log( timeSpent1Numbers );
-  console.log( timeSpent2Numbers );
+  var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
+  var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
+
+  console.log( `Array length = ${size}, iterations = ${times}\n` );
+  console.log( `For took : ${timeSpent1NumbersAvg} on Njs ${process.version}` );
+  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
+
+  /* - */
+
+  test.case = 'short array, 100000 iterations';
+  var times = 10000;
+  var size = 500;
+  var array = new Array( size );
+  var counter1 = 0;
+  var timeSpent1 = [];
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    forLoop( array );
+    var spent1 = _.time.spent( time1 )
+    timeSpent1.push( spent1 );
+    test.identical( counter1, size );
+    counter1 = 0
+  }
+  // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
+
+  var counter2 = 0;
+  var timeSpent2 = [];
+  for( let i = times ; i > 0; i-- )
+  {
+    var time2 = _.time.now();
+    forOf( array );
+    var spent2 = _.time.spent( time2 )
+    timeSpent2.push( spent2 );
+    test.identical( counter2, size );
+    counter2 = 0;
+  }
+  // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
+  test.identical( timeSpent1.length, timeSpent2.length );
+
+  var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
+  var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
+
+  console.log( `Array length = ${size}, iterations = ${times}\n` );
+  console.log( `For took : ${timeSpent1NumbersAvg} on Njs ${process.version}` );
+  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
+
+
+  // let o = Object.create( null );
+  // o.data = [ timeSpent1NumbersAvg, timeSpent2NumbersAvg ];
+  // o.dim = [ 2, 2 ];
+  // o.colWidth = 13;
+  // o.colSplits = 1;
+  // o.rowSplits = 1;
+  // o.style = 'doubleBorder';
+  // o.leftHead = [ `for : Njs ${process.version}`, `for of : Njs ${process.version}` ];
+  // console.log( 'TABLE :' );
+  // console.log( _.strTable( o ).result );
+
+  // console.log( timeSpent1NumbersAvg );
+  // console.log( timeSpent2NumbersAvg );
 
   /* - */
 
@@ -12397,6 +12451,17 @@ function measureForLoops( test )
   {
     for( let k of src )
     counter2++;
+  }
+
+  function calcAvg( src )
+  {
+    let result =
+    // (
+      src.map( ( el ) => parseFloat( el ) )
+      .reduce( ( p, c ) => p + c, 0 ) / src.length
+    // ).toFixed( 3 );
+
+    return result;
   }
 
   // _.assert( times.timesNoBuffer.length === times.timesBuffer.length );
@@ -12418,7 +12483,7 @@ function measureForLoops( test )
 
 }
 
-measureForLoops.timeOut = 1e5;
+measureForLoops.timeOut = 1e6;
 
 // --
 // define test suite
