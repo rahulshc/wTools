@@ -2782,46 +2782,70 @@ function elementGet( test )
   var got3 = _.container.elementGet( src, '2' );
   test.identical( got3, 3 );
 
-  // test.case = 'vector & vectorLike';
-  // var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  // var got = _.container.elementGet( src );
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var got = _.container.elementGet( src, 'elements' );
+  test.identical( got, [ '1', '10' ] );
 
-  // test.case = 'countable & countableLike';
-  // var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  // var got = _.container.elementGet( src );
+  test.case = 'vector & vectorLike wit 3 elems';
+  var src = new countableConstructor({ element1 : '1', element2 : 1, withIterator : 1, length : 2 });
+  var got = _.container.elementGet( src, 'element1' );
+  test.identical( got, '1' );
+  var got2 = _.container.elementGet( src, 'element2' );
+  test.identical( got2, 1 );
 
-  // test.case = 'Global & GlobalReal';
-  // var src = global;
-  // var got = _.container.elementGet( src );
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var got = _.container.elementGet( src, 'elements' );
+  test.identical( got, [ '1', '10' ] );
 
-  // test.case = 'Global & GlobalDerived';
-  // var src = Object.create( global );
-  // var got = _.container.elementGet( src );
+  test.case = 'Global & GlobalReal';
+  var src = global;
+  var got = _.container.elementGet( src, 'wTools' );
+  test.identical( _.object.is( got ), true );
 
-  // test.case = 'Object & ObjectLike & Container & ContainerLike';
-  // var src = { [ Symbol.iterator ] : 1 };
-  // var got = _.container.elementGet( src );
+  test.case = 'Global & GlobalDerived';
+  var src = Object.create( global );
+  var got = _.container.elementGet( src, 'wTools' );
+  test.identical( _.object.is( got ), true );
 
-  // test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
-  // var src = { a : 1 };
-  // Object.setPrototypeOf( src, { b : 2 } )
-  // var got = _.container.elementGet( src );
+  test.case = 'Object & ObjectLike & Container & ContainerLike';
+  var src = { [ Symbol.iterator ] : 1, a : 1 };
+  var got = _.container.elementGet( src, 'a' );
+  test.identical( got, 1 );
 
-  // test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
-  // var src = Object.create( null );
-  // var got = _.container.elementGet( src );
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  var got = _.container.elementGet( src, 'a' );
+  test.identical( got, 1 );
 
-  // test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
-  // var src = {};
-  // var got = _.container.elementGet( src );
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  src.a = 1;
+  var got = _.container.elementGet( src, 'a' );
+  test.identical( got, 1 );
 
-  // test.case = 'HashMap';
-  // var src = new HashMap();
-  // var got = _.container.elementGet( src );
+  test.case = 'HashMap';
+  var objRef = { a : 1 };
+  var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+  var got = _.container.elementGet( src, 'a' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, true );
+  test.identical( got2, false );
+  var got3 = _.container.elementGet( src, objRef );
+  test.identical( got3, { a : 2 } );
 
-  // test.case = 'Set & SetLike';
-  // var src = new Set();
-  // var got = _.container.elementGet( src );
+  test.case = 'Set & SetLike';
+  var objRef = { a : 1 };
+  var src = new Set([ 'a', 1, true, objRef ]);
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 'a' );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 1 );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, true );
+  var got4 = _.container.elementGet( src, '3' );
+  test.identical( got4, { a : 1 } );
 
   // test.case = 'BufferNode';
   // var src = BufferNode.from( 'str' );
