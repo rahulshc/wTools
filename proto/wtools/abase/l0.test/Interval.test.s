@@ -1059,29 +1059,29 @@ function firstGet( test )
     var got = _[ namespace ].firstGet( [ 1, 2 ] );
     test.identical( got, 1 );
 
-    test.case = 'options - undefined';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( [ 1, 2 ], options );
-    test.identical( got, 1 );
-    test.identical( options, undefined );
-
-    test.case = 'options - empty map';
-    var options = {};
-    var got = _[ namespace ].firstGet( [ 1, 2 ], options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( [ 1, 2 ], options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment - undefined';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( [ 1, 2 ], options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
+    // test.case = 'options - undefined';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( [ 1, 2 ], options );
+    // test.identical( got, 1 );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - empty map';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( [ 1, 2 ], options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( [ 1, 2 ], options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment - undefined';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( [ 1, 2 ], options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
 
     test.close( 'range - array' );
 
@@ -1093,29 +1093,29 @@ function firstGet( test )
     var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ) );
     test.identical( got, 1 );
 
-    test.case = 'options - undefined';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, undefined );
-
-    test.case = 'options - empty map';
-    var options = {};
-    var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment - undefined';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
+    // test.case = 'options - undefined';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - empty map';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment - undefined';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( _.unrollMake( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
 
     test.close( 'range - unroll' );
 
@@ -1127,29 +1127,29 @@ function firstGet( test )
     var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ) );
     test.identical( got, 1 );
 
-    test.case = 'options - undefined';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, undefined );
-
-    test.case = 'options - empty map';
-    var options = {};
-    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment - undefined';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
+    // test.case = 'options - undefined';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - empty map';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment - undefined';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
 
     test.close( 'range - argumentsArray' );
 
@@ -1161,29 +1161,29 @@ function firstGet( test )
     var got = _[ namespace ].firstGet( new U8x( [ 1, 2 ] ) );
     test.identical( got, 1 );
 
-    test.case = 'options - undefined';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( new I16x( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, undefined );
-
-    test.case = 'options - empty map';
-    var options = {};
-    var got = _[ namespace ].firstGet( new F32x( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( new F64x( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment - undefined';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( new I8x( [ 1, 2 ] ), options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
+    // test.case = 'options - undefined';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( new I16x( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - empty map';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( new F32x( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( new F64x( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment - undefined';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( new I8x( [ 1, 2 ] ), options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
 
     test.close( 'range - BufferTyped' );
 
@@ -1205,85 +1205,87 @@ function firstGet( test )
 
     /* */
 
-    test.case = 'options - undefined, first - undefined';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, undefined );
-
-    test.case = 'options - undefined, first - not exists';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( { last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, undefined );
-
-    test.case = 'options - undefined, first - number';
-    var options = undefined;
-    var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
-    test.identical( got, 1 );
-    test.identical( options, undefined );
-
-    /* */
-
-    test.case = 'options - empty map, first - undefined';
-    var options = {};
-    var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - empty map, first - not exists';
-    var options = {};
-    var got = _[ namespace ].firstGet( { last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - empty map, first - number';
-    var options = {};
-    var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
-
-    /* */
-
-    test.case = 'options - map with own field increment, first - undefined';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment, first - not exists';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( { last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 2 } );
-
-    test.case = 'options - map with own field increment, first - number';
-    var options = { increment : 2 };
-    var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 2 } );
-
-    /* */
-
-    test.case = 'options - map with own field increment - undefined, first - undefined';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment - undefined, first - not exists';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( { last : undefined }, options );
-    test.identical( got, undefined );
-    test.identical( options, { increment : 1 } );
-
-    test.case = 'options - map with own field increment - undefined, first - number';
-    var options = { increment : undefined };
-    var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
-    test.identical( got, 1 );
-    test.identical( options, { increment : 1 } );
+    // test.case = 'options - undefined, first - undefined';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - undefined, first - not exists';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( { last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, undefined );
+    //
+    // test.case = 'options - undefined, first - number';
+    // var options = undefined;
+    // var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
+    // test.identical( got, 1 );
+    // test.identical( options, undefined );
+    //
+    // /* */
+    //
+    // test.case = 'options - empty map, first - undefined';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - empty map, first - not exists';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( { last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - empty map, first - number';
+    // var options = {};
+    // var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
+    //
+    // /* */
+    //
+    // test.case = 'options - map with own field increment, first - undefined';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment, first - not exists';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( { last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 2 } );
+    //
+    // test.case = 'options - map with own field increment, first - number';
+    // var options = { increment : 2 };
+    // var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 2 } );
+    //
+    // /* */
+    //
+    // test.case = 'options - map with own field increment - undefined, first - undefined';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( { first : undefined, last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment - undefined, first - not exists';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( { last : undefined }, options );
+    // test.identical( got, undefined );
+    // test.identical( options, { increment : 1 } );
+    //
+    // test.case = 'options - map with own field increment - undefined, first - number';
+    // var options = { increment : undefined };
+    // var got = _[ namespace ].firstGet( { first : 1, last : undefined }, options );
+    // test.identical( got, 1 );
+    // test.identical( options, { increment : 1 } );
 
     test.close( 'range - map' );
+
+    /* - */
 
     if( !Config.debug )
     return;
@@ -3242,29 +3244,29 @@ function cintervalLastGet( test )
   var got = _.cinterval.lastGet( [ 1, 2 ] );
   test.identical( got, 2 );
 
-  test.case = 'options - undefined';
-  var options = undefined;
-  var got = _.cinterval.lastGet( [ 1, 2 ], options );
-  test.identical( got, 2 );
-  test.identical( options, undefined );
-
-  test.case = 'options - empty map';
-  var options = {};
-  var got = _.cinterval.lastGet( [ 1, 2 ], options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( [ 1, 2 ], options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment - undefined';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( [ 1, 2 ], options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
+  // test.case = 'options - undefined';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( [ 1, 2 ], options );
+  // test.identical( got, 2 );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - empty map';
+  // var options = {};
+  // var got = _.cinterval.lastGet( [ 1, 2 ], options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( [ 1, 2 ], options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment - undefined';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( [ 1, 2 ], options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
 
   test.close( 'cinterval - array' );
 
@@ -3276,29 +3278,29 @@ function cintervalLastGet( test )
   var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ) );
   test.identical( got, 2 );
 
-  test.case = 'options - undefined';
-  var options = undefined;
-  var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, undefined );
-
-  test.case = 'options - empty map';
-  var options = {};
-  var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment - undefined';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
+  // test.case = 'options - undefined';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - empty map';
+  // var options = {};
+  // var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment - undefined';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( _.unrollMake( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
 
   test.close( 'cinterval - unroll' );
 
@@ -3310,29 +3312,29 @@ function cintervalLastGet( test )
   var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ) );
   test.identical( got, 2 );
 
-  test.case = 'options - undefined';
-  var options = undefined;
-  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, undefined );
-
-  test.case = 'options - empty map';
-  var options = {};
-  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment - undefined';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
+  // test.case = 'options - undefined';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - empty map';
+  // var options = {};
+  // var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment - undefined';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( _.argumentsArray.make( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
 
   test.close( 'cinterval - argumentsArray' );
 
@@ -3344,29 +3346,29 @@ function cintervalLastGet( test )
   var got = _.cinterval.lastGet( new U8x( [ 1, 2 ] ) );
   test.identical( got, 2 );
 
-  test.case = 'options - undefined';
-  var options = undefined;
-  var got = _.cinterval.lastGet( new I16x( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, undefined );
-
-  test.case = 'options - empty map';
-  var options = {};
-  var got = _.cinterval.lastGet( new F32x( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( new F64x( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment - undefined';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( new I8x( [ 1, 2 ] ), options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
+  // test.case = 'options - undefined';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( new I16x( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - empty map';
+  // var options = {};
+  // var got = _.cinterval.lastGet( new F32x( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( new F64x( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment - undefined';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( new I8x( [ 1, 2 ] ), options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
 
   test.close( 'cinterval - BufferTyped' );
 
@@ -3388,83 +3390,83 @@ function cintervalLastGet( test )
 
   /* */
 
-  test.case = 'options - undefined, last - undefined';
-  var options = undefined;
-  var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, undefined );
-
-  test.case = 'options - undefined, last - not exists';
-  var options = undefined;
-  var got = _.cinterval.lastGet( { first : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, undefined );
-
-  test.case = 'options - undefined, last - number';
-  var options = undefined;
-  var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
-  test.identical( got, 2 );
-  test.identical( options, undefined );
-
-  /* */
-
-  test.case = 'options - empty map, last - undefined';
-  var options = {};
-  var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - empty map, last - not exists';
-  var options = {};
-  var got = _.cinterval.lastGet( { first : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - empty map, last - number';
-  var options = {};
-  var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
-
-  /* */
-
-  test.case = 'options - map with own field increment, last - undefined';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment, last - not exists';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( { first : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 2 } );
-
-  test.case = 'options - map with own field increment, last - number';
-  var options = { increment : 2 };
-  var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 2 } );
-
-  /* */
-
-  test.case = 'options - map with own field increment - undefined, last - undefined';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment - undefined, last - not exists';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( { first : undefined }, options );
-  test.identical( got, undefined );
-  test.identical( options, { increment : 1 } );
-
-  test.case = 'options - map with own field increment - undefined, last - number';
-  var options = { increment : undefined };
-  var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
-  test.identical( got, 2 );
-  test.identical( options, { increment : 1 } );
+  // test.case = 'options - undefined, last - undefined';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - undefined, last - not exists';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( { first : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, undefined );
+  //
+  // test.case = 'options - undefined, last - number';
+  // var options = undefined;
+  // var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
+  // test.identical( got, 2 );
+  // test.identical( options, undefined );
+  //
+  // /* */
+  //
+  // test.case = 'options - empty map, last - undefined';
+  // var options = {};
+  // var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - empty map, last - not exists';
+  // var options = {};
+  // var got = _.cinterval.lastGet( { first : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - empty map, last - number';
+  // var options = {};
+  // var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
+  //
+  // /* */
+  //
+  // test.case = 'options - map with own field increment, last - undefined';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment, last - not exists';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( { first : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 2 } );
+  //
+  // test.case = 'options - map with own field increment, last - number';
+  // var options = { increment : 2 };
+  // var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 2 } );
+  //
+  // /* */
+  //
+  // test.case = 'options - map with own field increment - undefined, last - undefined';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( { first : undefined, last : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment - undefined, last - not exists';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( { first : undefined }, options );
+  // test.identical( got, undefined );
+  // test.identical( options, { increment : 1 } );
+  //
+  // test.case = 'options - map with own field increment - undefined, last - number';
+  // var options = { increment : undefined };
+  // var got = _.cinterval.lastGet( { first : 1, last : 2 }, options );
+  // test.identical( got, 2 );
+  // test.identical( options, { increment : 1 } );
 
   test.close( 'cinterval - map' );
 
