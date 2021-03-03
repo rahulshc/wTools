@@ -12329,6 +12329,97 @@ function assertMapHasNoUndefine( test )
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( 'wrong' ) );
 }
 
+//
+
+function measureForLoops( test )
+{
+  // for( let i = 0 ; i < nruns ; i++ )
+  // _.look( src, ( e, k, it ) => { ( counter += 1, undefined ) } );
+  // console.log( _.time.spent( time ) );
+  // test.identical( counter, 309516 * nruns );
+  // var src = _.diagnosticStructureGenerate({ defaultComplexity : 5, depth : 1 }).result;
+  // var n = 0
+  // for( let k in src )
+  // {
+  //   n++
+  // }
+
+  let times = 10;
+  let size = 50000000;
+  let array = new Array( size );
+
+  test.case = 'long array, 10 iterations'
+  var counter1 = 0;
+  var timeSpent1 = [];
+  // console.log( `counter : ${counter1}` );
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    forLoop( array );
+    timeSpent1.push( _.time.spent( time1 ) )
+    test.identical( counter1, size );
+    counter1 = 0
+  }
+  console.log( `For loop took ${timeSpent1} on Njs ${process.version}, counter : ${counter1}` );
+  // console.log( timeSpent1 );
+
+  var counter2 = 0;
+  var timeSpent2 = [];
+  // console.log( `counter : ${counter2}` );
+  for( let i = times ; i > 0; i-- )
+  {
+    var time2 = _.time.now();
+    forOf( array );
+    timeSpent2.push( _.time.spent( time2 ) );
+    test.identical( counter2, size );
+    counter2 = 0;
+  }
+  console.log( `For of took ${timeSpent2} on Njs ${process.version}, counter : ${counter2}` );
+  // console.log( timeSpent2 );
+  console.log( '================' );
+
+  let timeSpent1Numbers = timeSpent1.map( ( el ) => parseFloat( el ) );
+  // let timeSpent1NumbersAvg = timeSpent1Numbers.reduce(  )
+  let timeSpent2Numbers = timeSpent2.map( ( el ) => parseFloat( el ) );
+  test.identical( timeSpent1Numbers.length, timeSpent2Numbers.length );
+  console.log( timeSpent1Numbers );
+  console.log( timeSpent2Numbers );
+
+  /* - */
+
+  function forLoop( src )
+  {
+    for( let k = 0 ; k < src.length ; k++ )
+    counter1++
+  }
+
+  function forOf( src )
+  {
+    for( let k of src )
+    counter2++;
+  }
+
+  // _.assert( times.timesNoBuffer.length === times.timesBuffer.length );
+  // let avgs = calculateAvg( times.timesNoBuffer, times.timesBuffer );
+  // times.timesNoBuffer.push( 'Avg : ' + avgs[ 0 ] );
+  // times.timesBuffer.push( 'Avg : ' + avgs[ 1 ] );
+  // times.timesNoBuffer.push( 'end NB' );
+  // times.timesBuffer.push( 'end WB' );
+  // let o = Object.create( null );
+  // o.data = [ ... times.timesNoBuffer, ... times.timesBuffer ];
+  // o.dim = [ 2, 11 ];
+  // o.colWidth = 13;
+  // o.colSplits = 1;
+  // o.rowSplits = 1;
+  // o.style = 'doubleBorder';
+  // o.leftHead = [ 'NoBuffer', 'WithBuffer' ];
+  // console.log( 'TABLE :' );
+  // console.log( _.strTable( o ).result );
+
+}
+
+measureForLoops.timeOut = 1e5;
+
 // --
 // define test suite
 // --
@@ -12484,6 +12575,8 @@ let Self =
 
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
+
+    measureForLoops
 
   }
 
