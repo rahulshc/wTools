@@ -1974,7 +1974,7 @@ let ErrorExtension =
 let ToolsExtension =
 {
 
-  /* xxx : make migration of routines to namespace */
+  /* qqq : for Yevhen : make migration of routines to namespace _.error */
 
   // error
 
