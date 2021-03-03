@@ -2741,10 +2741,221 @@ function elementGet( test )
 
   test.case = 'prototype';
   var src = new Obj1({});
-  debugger;
   var got = _.container.elementGet( src, _.escape.prototype );
   test.true( got === Obj1.prototype );
-  debugger;
+
+  /* */
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 2 );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, 3 );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 1, 2, 3 ]);
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 2 );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, 3 );
+
+  test.case = 'array';
+  var src = [ 1, 2, 3 ];
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 2 );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, 3 );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2, 3 ]);
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 2 );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, 3 );
+
+  // test.case = 'vector & vectorLike';
+  // var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'countable & countableLike';
+  // var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Global & GlobalReal';
+  // var src = global;
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Global & GlobalDerived';
+  // var src = Object.create( global );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Object & ObjectLike & Container & ContainerLike';
+  // var src = { [ Symbol.iterator ] : 1 };
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  // var src = { a : 1 };
+  // Object.setPrototypeOf( src, { b : 2 } )
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  // var src = Object.create( null );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
+  // var src = {};
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'HashMap';
+  // var src = new HashMap();
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'Set & SetLike';
+  // var src = new Set();
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'BufferNode';
+  // var src = BufferNode.from( 'str' );
+  // test.true( !_.container.elementGet( src ) );
+
+  // test.case = 'BufferRaw';
+  // var src = new BufferRaw( 'str' );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'BufferRawShared';
+  // var src = new BufferRawShared( 'str' );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'BufferTyped';
+  // var src = new I8x( 20 );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'BufferView';
+  // var src = new BufferView( new BufferRaw( 20 ) )
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'BufferBytes & BufferTyped';
+  // var src = new U8x( 20 );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'err';
+  // var src = _.err( 'error' );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'escape';
+  // var src = _.escape.make( 1 );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'interval & BufferTyped';
+  // var src = new F32x( 2 );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'pair';
+  // var src = _.pair.make();
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'propertyTransformer & filter';
+  // var src = _.property.filter[ 'dstAndSrcOwn' ];
+  // test.true( !_.container.elementGet( src ) );
+
+  // test.case = 'propertyTransformer & mapper';
+  // var src = _.property.mapper[ 'assigning' ];
+  // test.true( !_.container.elementGet( src ) );
+
+  // test.case = 'routine & routineLike';
+  // var src = routine;
+  // test.true( !_.container.elementGet( src ) );
+
+  // test.case = 'timer';
+  // var src = _.time._begin( Infinity );
+  // var got = _.container.elementGet( src );
+  // _.time.cancel( src );
+
+  // test.case = 'date & objectLike';
+  // var src = new Date();
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'ConsequenceLike & promiseLike & promise';
+  // var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'stream';
+  // var src = require( 'stream' ).Readable();
+  // var got = _.container.elementGet( src );
+
+  // test.case = 'process';
+  // var src = process;
+  // var got = _.container.elementGet( src );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args'
+  test.shouldThrowErrorSync( () => _.container.elementGet() );
+
+  test.case = 'to many args'
+  test.shouldThrowErrorSync( () => _.container.elementGet( {}, 'a', 'b' ) );
+
+  test.case = 'container = primitive'
+  test.shouldThrowErrorSync( () => _.container.elementGet( 'hello', 'h' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  /* */
+
+  function routine () {}
 
   /* */
 
