@@ -24229,42 +24229,42 @@ function entityMax( test )
 // permutation
 // --
 
-function eachSample( test )
+function eachSample_( test )
 {
 
   /* */
 
   test.case = 'sets - array with single element';
   var src = [ 1 ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.identical( src, [ 1 ] );
 
   test.case = 'sets - map with single element';
   var src = { a : 1 };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ { a : 1 } ];
   test.identical( got, expected );
   test.identical( src, { a : 1 } );
 
   test.case = 'sets - array with several element';
   var src = [ 1, 2, null ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1, 2, null ] ];
   test.identical( got, expected );
   test.identical( src, [ 1, 2, null ] );
 
   test.case = 'sets - map with several element';
   var src = { a : 1, b : 2, c : null };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ { a : 1, b : 2, c : null } ];
   test.identical( got, expected );
   test.identical( src, { a : 1, b : 2, c : null } );
 
   test.case = 'sets - unroll with single element';
   var src = _.unrollMake( [ 1 ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24272,7 +24272,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray with single element';
   var src = _.argumentsArray.make( [ 1 ] );
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24282,21 +24282,21 @@ function eachSample( test )
 
   test.case = 'sets - array, result - 0';
   var src = [ 1, 2, 3 ];
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.identical( src, [ 1, 2, 3 ] );
 
   test.case = 'sets - map, result - 0';
   var src = { a : 1, b : 2, c : null };
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.identical( src, { a : 1, b : 2, c : null } );
 
   test.case = 'sets - unroll, result - 0';
   var src = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.true( _.primitive.is( got ) );
@@ -24304,7 +24304,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray, result - 0';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.true( _.primitive.is( got ) );
@@ -24314,14 +24314,14 @@ function eachSample( test )
 
   test.case = 'sets - array contains array';
   var src = [ [ 1, 2, null, 'str' ] ] ;
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.identical( src, [ [ 1, 2, null, 'str' ] ]  );
 
   test.case = 'sets - map, contains array';
   var src = { a : [ 1, 2, null, 'str' ] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected =
   [
     { a : 1 },
@@ -24334,7 +24334,7 @@ function eachSample( test )
 
   test.case = 'sets - unroll, contains array';
   var src = _.unrollMake( [ [ 1, 2, null, 'str' ] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24342,7 +24342,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray, contains array';
   var src = _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24352,7 +24352,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, inner arrays has two elements';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24366,7 +24366,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, elements have arrays with two elements';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24380,7 +24380,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, with scalar element at the end of container';
   var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24394,7 +24394,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, two element have arrays, one has scalar';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24410,7 +24410,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements, two dimentional array';
   var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24426,7 +24426,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, elements have arrays';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24442,7 +24442,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, contains argumentsArray';
   var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24459,7 +24459,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, leftToRight - 0';
   var src = [ [ 0, 1 ], [ 5, 6 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24474,7 +24474,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, leftToRight - 0';
   var src = { a : [ 0, 1 ], b : [ 5, 6 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24489,7 +24489,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements two dimentional array, leftToRight - 0';
   var src = [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24508,7 +24508,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24519,7 +24519,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24530,7 +24530,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array with scalar, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24541,7 +24541,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map with scalar, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24552,7 +24552,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional three elements array, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24563,7 +24563,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, elements have arrays, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24574,7 +24574,7 @@ function eachSample( test )
 
   test.case = 'sets - array with unrolls, leftToRight - 1, result - 0';
   var src = [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24585,7 +24585,7 @@ function eachSample( test )
 
   test.case = 'sets - array with argumentsArray, leftToRight - 1, result - 0';
   var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24596,7 +24596,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, sample - not default, equal length of vectors';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : [ 1, 2 ]
@@ -24611,7 +24611,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, sample - not default, sample.length > vector.length';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : [ 1, 2, 3 ]
@@ -24626,7 +24626,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, sample - not default';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : { ak : 'a', bk : 'b', ck : 'c' }
@@ -24668,7 +24668,7 @@ function eachSample( test )
   test.case = 'sets - two dimentional array, sample - not default, onEach';
   var onEach = ( sample, i ) => sample[ i ] = sample[ i ] + 12;
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     onEach,
@@ -24689,7 +24689,7 @@ function eachSample( test )
     _.arrayAppend( result, sample[ i ] );
   };
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     onEach,
@@ -24710,7 +24710,7 @@ function eachSample( test )
   {
     sets : src,
   }
-  var got = _.eachSample( options );
+  var got = _.eachSample_( options );
   var expected =
   [
     { str : 'abc', n : 3 }
@@ -24723,24 +24723,24 @@ function eachSample( test )
   return;
 
   test.case = 'not argument, extra arguments';
-  test.shouldThrowErrorSync( () => _.eachSample() );
-  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.eachSample_() );
+  test.shouldThrowErrorSync( () => _.eachSample_( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
 
   test.case = 'o.sets is not arraylike, not aixiliary';
-  test.shouldThrowErrorSync( () => _.eachSample( {} ) );
-  test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
-  test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( {} ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( 1 ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( 'str', null ) );
 
   test.case = 'onEach is not a routine or null';
-  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], 'str' ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( [ [ 1 ], [ 2 ] ], 'str' ) );
 
   test.case = 'o.base has a value';
   var o = { sets : [ [ 1, 0 ], [ 2, 3 ] ], base : [ 5 ] };
-  test.shouldThrowErrorSync( () => _.eachSample( o ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( o ) );
 
   test.case = 'o.add has a value';
   var o = { sets : [ [ 1, 0 ], [ 2, 3 ] ], add : [ 5 ] };
-  test.shouldThrowErrorSync( () => _.eachSample( o ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( o ) );
 
 }
 
@@ -24750,28 +24750,28 @@ function eachSampleEmptyContainers( test )
 {
   test.case = 'sets - empty array';
   var src = [];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [] );
 
   test.case = 'sets - empty map';
   var src = {};
-  var got = _.eachSample( { sets : src } );
+  var got = _.eachSample_( { sets : src } );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, {} );
 
   test.case = 'sets - empty map, onEach - null';
   var src = {};
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, {} );
 
   test.case = 'sets - empty unroll';
   var src = _.unrollMake( [] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24780,7 +24780,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - empty argumentsArray';
   var src = _.argumentsArray.make( 0 );
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24790,35 +24790,35 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - array with nested empty array';
   var src = [ [] ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [ [] ] );
 
   test.case = 'sets - map with empty array';
   var src = { a : [] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, { a : [] } );
 
   test.case = 'sets - array with several empty arrays';
   var src = [ [], [], [] ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [ [], [], [] ] );
 
   test.case = 'sets - map with several empty arrays';
   var src = { a : [], b : [], c : [] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, { a : [], b : [], c : [] } );
 
   test.case = 'sets - unroll with several empty arrays';
   var src = _.unrollMake( [ [], [] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24826,7 +24826,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - argumentsArray with several empty arrays';
   var src = _.argumentsArray.make( [ [], [] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24836,7 +24836,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'second set is empty, array';
   var src = [ [ 0, 1 ], [] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24846,7 +24846,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'second set is empty, map';
   var src = { a : [ 0, 1 ], b : [] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24856,7 +24856,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'first set is empty, array';
   var src = [ [], [ 0, 1 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24866,7 +24866,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'first set is empty, map';
   var src = { a : [ 0, 1 ], b : [] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24879,7 +24879,7 @@ function eachSampleEmptyContainers( test )
 
 function eachSampleExperiment( test )
 {
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : [ [ 0, 1 ], [ 2, 3 ] ]
   });
@@ -24892,7 +24892,7 @@ function eachSampleExperiment( test )
   test.false( _.unrollIs( got ) );
   test.true( _.arrayIs( got ) );
 
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
   });
@@ -26085,7 +26085,7 @@ let Self =
 
     // permutation
 
-    eachSample,
+    eachSample_,
     eachSampleEmptyContainers,
     eachSampleExperiment,
 
