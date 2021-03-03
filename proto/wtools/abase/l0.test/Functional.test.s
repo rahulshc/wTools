@@ -15848,7 +15848,6 @@ function entityMapWithoutDst_( test )
 
   test.case = 'unroll';
   var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
-  debugger;
   var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
   test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
@@ -25241,7 +25240,8 @@ function eachPermutationOptions( test )
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container });
+  // var got = _.eachPermutation({ onEach, container });
+  var got = _.eachPermutation({ onEach, container, result : 0 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25258,11 +25258,13 @@ function eachPermutationOptions( test )
 
   /* */
 
-  test.case = 'returning:1';
+  // test.case = 'returning:1';
+  test.case = 'result : 1';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container, returning : 1 });
+  var got = _.eachPermutation({ onEach, container, result : 1 });
+  // var got = _.eachPermutation({ onEach, container, returning : 1 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25280,12 +25282,13 @@ function eachPermutationOptions( test )
 
   /* */
 
-  test.case = 'returning:1, dst:[]';
+  // test.case = 'returning:1, dst:[]';
+  test.case = 'result : []';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
   var dst = [];
-  var got = _.eachPermutation({ onEach, container, dst, returning : 1 });
+  var got = _.eachPermutation({ onEach, container, result : dst });
   var exp =
   [
     [ 'a', 'b', 'c' ],
