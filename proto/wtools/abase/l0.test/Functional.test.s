@@ -25240,8 +25240,7 @@ function eachPermutationOptions( test )
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  // var got = _.eachPermutation({ onEach, container });
-  var got = _.eachPermutation({ onEach, container, result : 0 });
+  var got = _.eachPermutation({ onEach, container });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25258,13 +25257,11 @@ function eachPermutationOptions( test )
 
   /* */
 
-  // test.case = 'returning:1';
-  test.case = 'result : 1';
+  test.case = 'returning:1';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container, result : 1 });
-  // var got = _.eachPermutation({ onEach, container, returning : 1 });
+  var got = _.eachPermutation({ onEach, container, returning : 1 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25282,13 +25279,467 @@ function eachPermutationOptions( test )
 
   /* */
 
-  // test.case = 'returning:1, dst:[]';
+  test.case = 'returning:1, dst:[]';
+  reset();
+  var container = [ 'a', 'b', 'c' ];
+  var length = container.length;
+  var dst = [];
+  var got = _.eachPermutation({ onEach, container, returning : 1, dst });
+  var exp =
+  [
+    [ 'a', 'b', 'c' ],
+    [ 'a', 'c', 'b' ],
+    [ 'b', 'c', 'a' ],
+    [ 'b', 'a', 'c' ],
+    [ 'c', 'a', 'b' ],
+    [ 'c', 'b', 'a' ],
+  ]
+  test.identical( permutation, exp );
+  test.identical( got, exp );
+  test.true( got !== permutation );
+  test.true( got === dst );
+  test.identical( analyse({ container, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  function analyse( o )
+  {
+    let encountered = Object.create( null );
+    if( _.number.is( o.container ) )
+    {
+      if( o.container < 0 )
+      o.container = 0;
+      let container = Array( o.container );
+      for( let i = o.container-1 ; i >= 0 ; i-- )
+      container[ i ] = i;
+      o.container = container;
+    }
+    for( let p = 0 ; p < o.permutation.length ; p++ )
+    {
+      let permutation = o.permutation[ p ];
+      let key = permutation.join( '-' );
+      encountered[ key ] = encountered[ key ] || 0;
+      encountered[ key ] += 1;
+    }
+    for( let key in encountered )
+    {
+      if( encountered[ key ] === 1 )
+      delete encountered[ key ]
+    }
+    return encountered;
+  }
+
+  /* */
+
+  function reset()
+  {
+    permutation = [];
+    index = [];
+    left = [];
+    right = [];
+    swaps = [];
+    all = [];
+  }
+
+  /* */
+
+  function onEach( /* _permutation, _index, _left, _right, _swaps */ )
+  {
+    let _permutation = arguments[ 0 ];
+    let _index = arguments[ 1 ];
+    let _left = arguments[ 2 ];
+    let _right = arguments[ 3 ];
+    let _swaps = arguments[ 4 ];
+
+    console.log( _index, '.', `${_left}..${_right}`, '.', _permutation.join( ' ' ) );
+    permutation.push( _permutation.slice() );
+    index.push( _index );
+    left.push( _left );
+    right.push( _right );
+    swaps.push( _swaps );
+    all.push([ ... _permutation, 'i', _index, 'l', _left, 'r', _right, 's', _swaps ]);
+  }
+
+}
+
+//
+
+function eachPermutation_Basic( test )
+{
+  let context = this;
+  let permutation = [];
+  let index = [];
+  let left = [];
+  let right = [];
+  let swaps = [];
+  let all = [];
+
+  /* */
+
+  test.case = '0 element';
+  reset();
+  var length = 0;
+  _.eachPermutation_({ onEach, container : length });
+  var exp = [];
+  test.identical( all, exp );
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, 0 );
+
+  /* */
+
+  test.case = '1 element';
+  reset();
+  var length = 1;
+  _.eachPermutation_({ onEach, container : length });
+  var exp = [ [ 0, 'i', 0, 'l', 0, 'r', 0, 's', 0 ] ]
+  test.identical( all, exp );
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  test.case = '2 elements';
+  reset();
+  var length = 2;
+  _.eachPermutation_({ onEach, container : length });
+  var exp =
+  [
+    [ 0, 1, 'i', 0, 'l', 1, 'r', 1, 's', 0 ],
+    [ 1, 0, 'i', 1, 'l', 0, 'r', 1, 's', 1 ]
+  ]
+  test.identical( all, exp );
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  test.case = '3 elements';
+  reset();
+  var length = 3;
+  _.eachPermutation_({ onEach, container : length });
+  var exp =
+  [
+    [ 0, 1, 2, 'i', 0, 'l', 2, 'r', 2, 's', 0 ],
+    [ 0, 2, 1, 'i', 1, 'l', 1, 'r', 2, 's', 1 ],
+    [ 1, 2, 0, 'i', 2, 'l', 0, 'r', 2, 's', 1 ],
+    [ 1, 0, 2, 'i', 3, 'l', 1, 'r', 2, 's', 1 ],
+    [ 2, 0, 1, 'i', 4, 'l', 0, 'r', 2, 's', 1 ],
+    [ 2, 1, 0, 'i', 5, 'l', 1, 'r', 2, 's', 1 ]
+  ]
+  test.identical( all, exp );
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  test.case = '4 elements';
+  reset();
+  var length = 4;
+  _.eachPermutation_({ onEach, container : length });
+  var exp =
+  [
+    [ 0, 1, 2, 3, 'i', 0, 'l', 3, 'r', 3, 's', 0 ],
+    [ 0, 1, 3, 2, 'i', 1, 'l', 2, 'r', 3, 's', 1 ],
+    [ 0, 2, 3, 1, 'i', 2, 'l', 1, 'r', 3, 's', 1 ],
+    [ 0, 2, 1, 3, 'i', 3, 'l', 2, 'r', 3, 's', 1 ],
+    [ 0, 3, 1, 2, 'i', 4, 'l', 1, 'r', 3, 's', 1 ],
+    [ 0, 3, 2, 1, 'i', 5, 'l', 2, 'r', 3, 's', 1 ],
+    [ 1, 2, 3, 0, 'i', 6, 'l', 0, 'r', 3, 's', 2 ],
+    [ 1, 2, 0, 3, 'i', 7, 'l', 2, 'r', 3, 's', 1 ],
+    [ 1, 3, 0, 2, 'i', 8, 'l', 1, 'r', 3, 's', 1 ],
+    [ 1, 3, 2, 0, 'i', 9, 'l', 2, 'r', 3, 's', 1 ],
+    [ 1, 0, 2, 3, 'i', 10, 'l', 1, 'r', 3, 's', 1 ],
+    [ 1, 0, 3, 2, 'i', 11, 'l', 2, 'r', 3, 's', 1 ],
+    [ 2, 3, 0, 1, 'i', 12, 'l', 0, 'r', 3, 's', 2 ],
+    [ 2, 3, 1, 0, 'i', 13, 'l', 2, 'r', 3, 's', 1 ],
+    [ 2, 0, 1, 3, 'i', 14, 'l', 1, 'r', 3, 's', 1 ],
+    [ 2, 0, 3, 1, 'i', 15, 'l', 2, 'r', 3, 's', 1 ],
+    [ 2, 1, 3, 0, 'i', 16, 'l', 1, 'r', 3, 's', 1 ],
+    [ 2, 1, 0, 3, 'i', 17, 'l', 2, 'r', 3, 's', 1 ],
+    [ 3, 0, 1, 2, 'i', 18, 'l', 0, 'r', 3, 's', 2 ],
+    [ 3, 0, 2, 1, 'i', 19, 'l', 2, 'r', 3, 's', 1 ],
+    [ 3, 1, 2, 0, 'i', 20, 'l', 1, 'r', 3, 's', 1 ],
+    [ 3, 1, 0, 2, 'i', 21, 'l', 2, 'r', 3, 's', 1 ],
+    [ 3, 2, 0, 1, 'i', 22, 'l', 1, 'r', 3, 's', 1 ],
+    [ 3, 2, 1, 0, 'i', 23, 'l', 2, 'r', 3, 's', 1 ]
+  ]
+  test.identical( all, exp );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 ];
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  test.case = '5 elements';
+  reset();
+  var length = 5;
+  _.eachPermutation_({ onEach, container : length });
+  var exp =
+  [
+    [ 0, 1, 2, 3, 4 ],
+    [ 0, 1, 2, 4, 3 ],
+    [ 0, 1, 3, 4, 2 ],
+    [ 0, 1, 3, 2, 4 ],
+    [ 0, 1, 4, 2, 3 ],
+    [ 0, 1, 4, 3, 2 ],
+    [ 0, 2, 3, 4, 1 ],
+    [ 0, 2, 3, 1, 4 ],
+    [ 0, 2, 4, 1, 3 ],
+    [ 0, 2, 4, 3, 1 ],
+    [ 0, 2, 1, 3, 4 ],
+    [ 0, 2, 1, 4, 3 ],
+    [ 0, 3, 4, 1, 2 ],
+    [ 0, 3, 4, 2, 1 ],
+    [ 0, 3, 1, 2, 4 ],
+    [ 0, 3, 1, 4, 2 ],
+    [ 0, 3, 2, 4, 1 ],
+    [ 0, 3, 2, 1, 4 ],
+    [ 0, 4, 1, 2, 3 ],
+    [ 0, 4, 1, 3, 2 ],
+    [ 0, 4, 2, 3, 1 ],
+    [ 0, 4, 2, 1, 3 ],
+    [ 0, 4, 3, 1, 2 ],
+    [ 0, 4, 3, 2, 1 ],
+    [ 1, 2, 3, 4, 0 ],
+    [ 1, 2, 3, 0, 4 ],
+    [ 1, 2, 4, 0, 3 ],
+    [ 1, 2, 4, 3, 0 ],
+    [ 1, 2, 0, 3, 4 ],
+    [ 1, 2, 0, 4, 3 ],
+    [ 1, 3, 4, 0, 2 ],
+    [ 1, 3, 4, 2, 0 ],
+    [ 1, 3, 0, 2, 4 ],
+    [ 1, 3, 0, 4, 2 ],
+    [ 1, 3, 2, 4, 0 ],
+    [ 1, 3, 2, 0, 4 ],
+    [ 1, 4, 0, 2, 3 ],
+    [ 1, 4, 0, 3, 2 ],
+    [ 1, 4, 2, 3, 0 ],
+    [ 1, 4, 2, 0, 3 ],
+    [ 1, 4, 3, 0, 2 ],
+    [ 1, 4, 3, 2, 0 ],
+    [ 1, 0, 2, 3, 4 ],
+    [ 1, 0, 2, 4, 3 ],
+    [ 1, 0, 3, 4, 2 ],
+    [ 1, 0, 3, 2, 4 ],
+    [ 1, 0, 4, 2, 3 ],
+    [ 1, 0, 4, 3, 2 ],
+    [ 2, 3, 4, 0, 1 ],
+    [ 2, 3, 4, 1, 0 ],
+    [ 2, 3, 0, 1, 4 ],
+    [ 2, 3, 0, 4, 1 ],
+    [ 2, 3, 1, 4, 0 ],
+    [ 2, 3, 1, 0, 4 ],
+    [ 2, 4, 0, 1, 3 ],
+    [ 2, 4, 0, 3, 1 ],
+    [ 2, 4, 1, 3, 0 ],
+    [ 2, 4, 1, 0, 3 ],
+    [ 2, 4, 3, 0, 1 ],
+    [ 2, 4, 3, 1, 0 ],
+    [ 2, 0, 1, 3, 4 ],
+    [ 2, 0, 1, 4, 3 ],
+    [ 2, 0, 3, 4, 1 ],
+    [ 2, 0, 3, 1, 4 ],
+    [ 2, 0, 4, 1, 3 ],
+    [ 2, 0, 4, 3, 1 ],
+    [ 2, 1, 3, 4, 0 ],
+    [ 2, 1, 3, 0, 4 ],
+    [ 2, 1, 4, 0, 3 ],
+    [ 2, 1, 4, 3, 0 ],
+    [ 2, 1, 0, 3, 4 ],
+    [ 2, 1, 0, 4, 3 ],
+    [ 3, 4, 0, 1, 2 ],
+    [ 3, 4, 0, 2, 1 ],
+    [ 3, 4, 1, 2, 0 ],
+    [ 3, 4, 1, 0, 2 ],
+    [ 3, 4, 2, 0, 1 ],
+    [ 3, 4, 2, 1, 0 ],
+    [ 3, 0, 1, 2, 4 ],
+    [ 3, 0, 1, 4, 2 ],
+    [ 3, 0, 2, 4, 1 ],
+    [ 3, 0, 2, 1, 4 ],
+    [ 3, 0, 4, 1, 2 ],
+    [ 3, 0, 4, 2, 1 ],
+    [ 3, 1, 2, 4, 0 ],
+    [ 3, 1, 2, 0, 4 ],
+    [ 3, 1, 4, 0, 2 ],
+    [ 3, 1, 4, 2, 0 ],
+    [ 3, 1, 0, 2, 4 ],
+    [ 3, 1, 0, 4, 2 ],
+    [ 3, 2, 4, 0, 1 ],
+    [ 3, 2, 4, 1, 0 ],
+    [ 3, 2, 0, 1, 4 ],
+    [ 3, 2, 0, 4, 1 ],
+    [ 3, 2, 1, 4, 0 ],
+    [ 3, 2, 1, 0, 4 ],
+    [ 4, 0, 1, 2, 3 ],
+    [ 4, 0, 1, 3, 2 ],
+    [ 4, 0, 2, 3, 1 ],
+    [ 4, 0, 2, 1, 3 ],
+    [ 4, 0, 3, 1, 2 ],
+    [ 4, 0, 3, 2, 1 ],
+    [ 4, 1, 2, 3, 0 ],
+    [ 4, 1, 2, 0, 3 ],
+    [ 4, 1, 3, 0, 2 ],
+    [ 4, 1, 3, 2, 0 ],
+    [ 4, 1, 0, 2, 3 ],
+    [ 4, 1, 0, 3, 2 ],
+    [ 4, 2, 3, 0, 1 ],
+    [ 4, 2, 3, 1, 0 ],
+    [ 4, 2, 0, 1, 3 ],
+    [ 4, 2, 0, 3, 1 ],
+    [ 4, 2, 1, 3, 0 ],
+    [ 4, 2, 1, 0, 3 ],
+    [ 4, 3, 0, 1, 2 ],
+    [ 4, 3, 0, 2, 1 ],
+    [ 4, 3, 1, 2, 0 ],
+    [ 4, 3, 1, 0, 2 ],
+    [ 4, 3, 2, 0, 1 ],
+    [ 4, 3, 2, 1, 0 ]
+  ]
+  test.identical( permutation, exp );
+  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
+  function analyse( o )
+  {
+    let encountered = Object.create( null );
+    if( _.number.is( o.container ) )
+    {
+      if( o.container < 0 )
+      o.container = 0;
+      let container = Array( o.container );
+      for( let i = o.container-1 ; i >= 0 ; i-- )
+      container[ i ] = i;
+      o.container = container;
+    }
+    for( let p = 0 ; p < o.permutation.length ; p++ )
+    {
+      let permutation = o.permutation[ p ];
+      let key = permutation.join( '-' );
+      encountered[ key ] = encountered[ key ] || 0;
+      encountered[ key ] += 1;
+    }
+    for( let key in encountered )
+    {
+      if( encountered[ key ] === 1 )
+      delete encountered[ key ]
+    }
+    return encountered;
+  }
+
+  /* */
+
+  function reset()
+  {
+    permutation = [];
+    index = [];
+    left = [];
+    right = [];
+    swaps = [];
+    all = [];
+  }
+
+  /* */
+
+  function onEach( /* _permutation, _index, _left, _right, _swaps */ )
+  {
+    let _permutation = arguments[ 0 ];
+    let _index = arguments[ 1 ];
+    let _left = arguments[ 2 ];
+    let _right = arguments[ 3 ];
+    let _swaps = arguments[ 4 ];
+
+    console.log( _index, '.', `${_left}..${_right}`, '.', _permutation.join( ' ' ) );
+    permutation.push( _permutation.slice() );
+    index.push( _index );
+    left.push( _left );
+    right.push( _right );
+    swaps.push( _swaps );
+    all.push([ ... _permutation, 'i', _index, 'l', _left, 'r', _right, 's', _swaps ]);
+  }
+
+}
+
+//
+
+function eachPermutation_Options( test )
+{
+  let context = this;
+  let all = [];
+  let permutation = [];
+  let index = [];
+  let left = [];
+  let right = [];
+  let swaps = [];
+
+  /* */
+
+  test.case = 'empty container';
+  reset();
+  var container = [];
+  var length = container.length;
+  var got = _.eachPermutation_({ onEach, container });
+  var exp = [];
+  test.identical( permutation, exp );
+  test.identical( analyse({ container, permutation }), {} );
+  test.identical( permutation.length, 0 );
+  test.true( got === undefined );
+
+  /* */
+
+  test.case = 'container';
+  reset();
+  var container = [ 'a', 'b', 'c' ];
+  var length = container.length;
+  var got = _.eachPermutation_({ onEach, container, result : 0 });
+  var exp =
+  [
+    [ 'a', 'b', 'c' ],
+    [ 'a', 'c', 'b' ],
+    [ 'b', 'c', 'a' ],
+    [ 'b', 'a', 'c' ],
+    [ 'c', 'a', 'b' ],
+    [ 'c', 'b', 'a' ],
+  ]
+  test.identical( permutation, exp );
+  test.identical( analyse({ container, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+  test.true( got === undefined );
+
+  /* */
+
+  test.case = 'result : 1';
+  reset();
+  var container = [ 'a', 'b', 'c' ];
+  var length = container.length;
+  var got = _.eachPermutation_({ onEach, container, result : 1 });
+  var exp =
+  [
+    [ 'a', 'b', 'c' ],
+    [ 'a', 'c', 'b' ],
+    [ 'b', 'c', 'a' ],
+    [ 'b', 'a', 'c' ],
+    [ 'c', 'a', 'b' ],
+    [ 'c', 'b', 'a' ],
+  ]
+  test.identical( permutation, exp );
+  test.identical( got, exp );
+  test.true( got !== permutation );
+  test.identical( analyse({ container, permutation }), {} );
+  test.identical( permutation.length, _.factorial( length ) );
+
+  /* */
+
   test.case = 'result : []';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
   var dst = [];
-  var got = _.eachPermutation({ onEach, container, result : dst });
+  var got = _.eachPermutation_({ onEach, container, result : dst });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25637,8 +26088,13 @@ let Self =
     eachSample,
     eachSampleEmptyContainers,
     eachSampleExperiment,
+
     eachPermutationBasic,
     eachPermutationOptions,
+
+    eachPermutation_Basic,
+    eachPermutation_Options,
+
     swapsCount,
 
   }
