@@ -9900,7 +9900,7 @@ function mapOnly_ScreenMapIsVector( test )
 
 //
 
-function mapOnlyOwnTwoArguments_( test )
+function mapOnlyOwn_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
@@ -10240,7 +10240,7 @@ function mapOnlyOwnTwoArguments_( test )
 
 //
 
-function mapOnlyOwnDstMapNull_( test )
+function mapOnlyOwn_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
@@ -10496,7 +10496,7 @@ function mapOnlyOwnDstMapNull_( test )
 
 //
 
-function mapOnlyOwnDstMapMap_( test )
+function mapOnlyOwn_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -10774,7 +10774,122 @@ function mapOnlyOwnDstMapMap_( test )
 
 //
 
-function mapOnlyComplementingTwoArguments_( test )
+function mapOnlyOwn_SrcMapsIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyComplementing_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
@@ -11105,7 +11220,7 @@ function mapOnlyComplementingTwoArguments_( test )
 
 //
 
-function mapOnlyComplementingDstMapNull_( test )
+function mapOnlyComplementing_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
@@ -11368,7 +11483,7 @@ function mapOnlyComplementingDstMapNull_( test )
 
 //
 
-function mapOnlyComplementing_DstMapMap( test )
+function mapOnlyComplementing_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -15308,13 +15423,14 @@ let Self =
     mapOnly_SrcMapsIsVector,
     mapOnly_ScreenMapIsVector,
 
-    mapOnlyOwnTwoArguments_,
-    mapOnlyOwnDstMapNull_,
-    mapOnlyOwnDstMapMap_,
+    mapOnlyOwn_WithTwoArguments,
+    mapOnlyOwn_DstMapIsNull,
+    mapOnlyOwn_DstMapIsMap,
+    mapOnlyOwn_SrcMapsIsVector,
 
-    mapOnlyComplementingTwoArguments_,
-    mapOnlyComplementingDstMapNull_,
-    mapOnlyComplementing_DstMapMap,
+    mapOnlyComplementing_WithTwoArguments,
+    mapOnlyComplementing_DstMapIsNull,
+    mapOnlyComplementing_DstMapIsMap,
 
     _mapOnly,
 
