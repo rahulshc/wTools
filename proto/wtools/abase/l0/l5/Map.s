@@ -1659,6 +1659,7 @@ function _mapInvert( o )
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( !_.primitive.is( o.src ) );
   _.assert( !_.primitive.is( o.dst ) );
+  /* qqq : for Yevhen : bad : lack of important assert */
 
   let del;
   if( o.duplicate === 'delete' )
@@ -4700,7 +4701,7 @@ let Extension =
   mapBut_, /* qqq : make it accept null in the first argument */
   _mapBut_,
   mapDelete,
-  mapEmpty,
+  mapEmpty, /* xxx : remove */
   mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
   mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
 
