@@ -232,6 +232,7 @@ function empty( dstContainer )
 
 function elementThGet( container, key ) /* qqq for Yevhen : cover please */
 {
+
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
 
