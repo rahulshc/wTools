@@ -557,12 +557,16 @@ function eachPermutation( o )
     o.container = container;
   }
 
-  if( o.returning )
-  if( o.dst === null )
-  o.dst = [];
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
+  o.result = [];
+  // if( o.returning )
+  // if( o.dst === null )
+  // o.dst = [];
 
-  const add = o.returning ? append1 : append0;
-  const dst = o.returning ? o.dst : undefined;
+  // const add = o.returning ? append1 : append0;
+  // const dst = o.returning ? o.dst : undefined;
+  const add = ( _.arrayLike( o.result ) || _.routineIs( o.result.push ) ) ? append1 : append0;
+  const dst = o.result ? o.result : undefined;
   const container = o.container;
   const length = o.container.length;
   const last = length - 1;
@@ -667,9 +671,10 @@ eachPermutation.defaults =
 {
   onEach : null,
   container : null,
-  dst : null, /* qqq for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */
-  returning : 0,
-}
+  result : 1,
+  // dst : null, /* aaa for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */ /* Dmytro : implemented */
+  // returning : 0,
+};
 
 /*
 
@@ -961,7 +966,6 @@ function _entityFilterDeep( o )
       // result[ d ] = r;
 
     }
-    debugger;
     if( d < o.src.length )
     result = _.arraySlice( result, 0, d );
   }
