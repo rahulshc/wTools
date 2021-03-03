@@ -12360,7 +12360,7 @@ function measureForLoops( test )
     test.identical( counter1, size );
     counter1 = 0
   }
-  console.log( `For loop took ${timeSpent1} on Njs ${process.version}, counter : ${counter1}` );
+  console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
   // console.log( timeSpent1 );
 
   var counter2 = 0;
@@ -12374,7 +12374,7 @@ function measureForLoops( test )
     test.identical( counter2, size );
     counter2 = 0;
   }
-  console.log( `For of took ${timeSpent2} on Njs ${process.version}, counter : ${counter2}` );
+  console.log( `For of took ${timeSpent2} on Njs ${process.version}` );
   // console.log( timeSpent2 );
   console.log( '================' );
 
