@@ -3061,22 +3061,22 @@ function _mapOnly_( o )
     {
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return m;
+      return key;
       else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return m;
+      return key;
       else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-      return m;
+      return key;
       else if( key === String( m ) )
-      return m;
+      return key;
     }
     else
     {
-      for( m of o.screenMaps )
-      if( _.vector.is( m ) && key in m )
+      for( let e of o.screenMaps )
+      if( _.vector.is( e ) && key in e )
       return key;
-      else if( _.aux.is( m ) && key in m )
+      else if( _.aux.is( e ) && key in e )
       return key;
-      else if( _.primitive.is( m ) && m === key )
+      else if( _.primitive.is( e ) && e === key )
       return key;
     }
   }
