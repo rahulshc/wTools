@@ -453,24 +453,32 @@ function routineSeal( context, routine, args )
 
 //
 
-function routineOptions( routine, args, defaults )
+function routineOptions( defaults, options )
 {
 
-  if( !_.arrayLike( args ) )
-  args = [ args ];
+  _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+  _.assert( _.routineIs( defaults ) || _.aux.is( defaults ) || defaults === null, 'Expects an object with options' );
 
-  let options = args[ 0 ];
+  if( _.arrayLike( options ) )
+  {
+    _.assert
+    (
+      options.length === 0 || options.length === 1,
+      'routineOptionsPreservingUndefines : expects single options map, but got', options.length, 'arguments'
+    );
+    options = options[ 0 ];
+  }
+
   if( options === undefined )
   options = Object.create( null );
+  if( defaults === null )
+  defaults = Object.create( null );
 
-  let name = routine ? routine.name : '';
-  defaults = defaults || ( routine ? routine.defaults : null );
+  let name = _.routineIs( defaults ) ? defaults.name : '';
+  defaults = ( _.routineIs( defaults ) && defaults.defaults ) ? defaults.defaults : defaults;
+  _.assert( _.aux.is( defaults ), 'Expects defined defaults' );
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
+  /* */
 
   if( Config.debug )
   {
@@ -546,6 +554,99 @@ function routineOptions( routine, args, defaults )
     }
   }
 }
+// function routineOptions( routine, args, defaults )
+// {
+//
+//   if( !_.arrayLike( args ) )
+//   args = [ args ];
+//
+//   let options = args[ 0 ];
+//   if( options === undefined )
+//   options = Object.create( null );
+//
+//   let name = routine ? routine.name : '';
+//   defaults = defaults || ( routine ? routine.defaults : null );
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+//   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.object.is( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
+//
+//   if( Config.debug )
+//   {
+//     let extraKeys = mapButKeys( options, defaults );
+//     _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+//   }
+//
+//   mapSupplementStructurelessMin( options, defaults );
+//
+//   if( Config.debug )
+//   {
+//     let undefineKeys = mapUndefineKeys( options );
+//     _.assert
+//     (
+//       undefineKeys.length === 0,
+//       () => `Options map for routine ${ name } should have no undefined fields, but it does have ${ keysQuote( undefineKeys ) }`
+//     );
+//   }
+//
+//   return options;
+//
+//   /* */
+//
+//   function mapButKeys( srcMap, butMap )
+//   {
+//     let result = [];
+//
+//     for( let s in srcMap )
+//     if( !( s in butMap ) )
+//     result.push( s );
+//
+//     return result;
+//   }
+//
+//   /* */
+//
+//   function mapUndefineKeys( srcMap )
+//   {
+//     let result = [];
+//
+//     for( let s in srcMap )
+//     if( srcMap[ s ] === undefined )
+//     result.push( s );
+//
+//     return result;
+//   }
+//
+//   /* */
+//
+//   function keysQuote( keys )
+//   {
+//     let result = `"${ keys[ 0 ] }"`;
+//     for( let i = 1 ; i < keys.length ; i++ )
+//     result += `, "${ keys[ i ] }"`;
+//     return result.trim();
+//   }
+//
+//   /* */
+//
+//   function mapSupplementStructurelessMin( dstMap, srcMap )
+//   {
+//     for( let s in srcMap )
+//     {
+//       if( dstMap[ s ] !== undefined )
+//       continue;
+//
+//       if( Config.debug )
+//       if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+//       if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
+//       throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
+//
+//       dstMap[ s ] = srcMap[ s ];
+//     }
+//   }
+// }
 
 //
 
@@ -849,7 +950,6 @@ function _routinesCompose_body( o )
       }
       else
       {
-        debugger;
         _.arrayAppendElement( elements, src );
       }
     }
@@ -881,7 +981,6 @@ function _routinesCompose_body( o )
   {
     let result = [];
     // let args = _.unrollAppend( _.unrollFrom( null ), arguments );
-    // debugger;
     let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
@@ -1764,7 +1863,6 @@ function vectorize_body( o )
       });
       return result;
 
-      // debugger;
       // let args2 = [ ... args ]; // Dmytro : if args[ 1 ] and next elements is not primitive, then vectorized routine can affects on this elements and array args
       // // let result = [];
       // let result;
@@ -1782,11 +1880,9 @@ function vectorize_body( o )
       //   args2[ 0 ] = e;
       //   append( routine.apply( this, args2 ) );
       // });
-      // // // debugger;
       // // if( _.entity.methodIteratorOf( src ) )
       // // for( let e of src )
       // // {
-      // //   // debugger;
       // //   // let e = src[ r ];
       // //   args2[ 0 ] = e;
       // //   append( routine.apply( this, args2 ) );
@@ -1932,7 +2028,6 @@ function vectorize_body( o )
     }
     else if( _.set.like( src ) ) /* qqq : cover */
     {
-      debugger;
       if( head )
       {
         args = head( routine, args );
@@ -1949,7 +2044,6 @@ function vectorize_body( o )
     }
     else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) ) /* qqq : cover */
     {
-      debugger;
       if( head )
       {
         args = head( routine, args );
