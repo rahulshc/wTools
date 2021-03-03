@@ -402,21 +402,21 @@ function mapHasAny( src, screen )
     if( _.arrayLike( screen ) )
     {
       for( let s = 0 ; s < screen.length ; s++ )
-      if( screen[ s ] in src )return true;
+      if( screen[ s ] in src )
+      return true;
     }
     else
     {
       for( let value of screen )
-      if( value in src )return true;
+      if( value in src )
+      return true;
     }
   }
   else if( _.aux.is( screen ) )
   {
     for( let k in screen )
-    {
-      if( k in src )
-      return true;
-    }
+    if( k in src )
+    return true;
   }
 
   return false;
