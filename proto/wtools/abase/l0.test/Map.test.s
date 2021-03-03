@@ -12347,7 +12347,7 @@ function measureForLoops( test )
   */
 
   test.case = 'long array, 10 iterations';
-  var times = 10;
+  var times = 20;
   var size = 50000000;
   var array = new Array( size );
   var counter1 = 0;
@@ -12355,7 +12355,7 @@ function measureForLoops( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    forLoop( array );
+    // forLoop( array ); ROUTINE
     var spent1 = _.time.spent( time1 )
     timeSpent1.push( spent1 );
     test.identical( counter1, size );
@@ -12363,22 +12363,22 @@ function measureForLoops( test )
   }
   // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
 
-  var counter2 = 0;
-  var timeSpent2 = [];
-  for( let i = times ; i > 0; i-- )
-  {
-    var time2 = _.time.now();
-    forOf( array );
-    var spent2 = _.time.spent( time2 )
-    timeSpent2.push( spent2 );
-    test.identical( counter2, size );
-    counter2 = 0;
-  }
-  // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
-  test.identical( timeSpent1.length, timeSpent2.length );
+  // var counter2 = 0;
+  // var timeSpent2 = [];
+  // for( let i = times ; i > 0; i-- )
+  // {
+  //   var time2 = _.time.now();
+  //   // forOf( array ); ROUTINE
+  //   var spent2 = _.time.spent( time2 )
+  //   timeSpent2.push( spent2 );
+  //   test.identical( counter2, size );
+  //   counter2 = 0;
+  // }
+  // // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
+  // test.identical( timeSpent1.length, timeSpent2.length );
 
   var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
-  var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
+  // var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
 
   console.log( `Array length = ${size}, iterations = ${times}\n` );
   console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
@@ -12387,57 +12387,57 @@ function measureForLoops( test )
 
   /* - */
 
-  test.case = 'short array, 10000 iterations';
-  var times = 10000;
-  var size = 500;
-  var array = new Array( size );
-  var counter1 = 0;
-  var timeSpent1 = [];
-  for( let i = times; i > 0; i-- )
-  {
-    var time1 = _.time.now();
-    forLoop( array );
-    var spent1 = _.time.spent( time1 )
-    timeSpent1.push( spent1 );
-    test.identical( counter1, size );
-    counter1 = 0
-  }
-  // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
+  // test.case = 'short array, 10000 iterations';
+  // var times = 10000;
+  // var size = 500;
+  // var array = new Array( size );
+  // var counter1 = 0;
+  // var timeSpent1 = [];
+  // for( let i = times; i > 0; i-- )
+  // {
+  //   var time1 = _.time.now();
+  //   forLoop( array );
+  //   var spent1 = _.time.spent( time1 )
+  //   timeSpent1.push( spent1 );
+  //   test.identical( counter1, size );
+  //   counter1 = 0
+  // }
+  // // console.log( `For loop took ${timeSpent1} on Njs ${process.version}` );
 
-  var counter2 = 0;
-  var timeSpent2 = [];
-  for( let i = times ; i > 0; i-- )
-  {
-    var time2 = _.time.now();
-    forOf( array );
-    var spent2 = _.time.spent( time2 )
-    timeSpent2.push( spent2 );
-    test.identical( counter2, size );
-    counter2 = 0;
-  }
-  // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
-  test.identical( timeSpent1.length, timeSpent2.length );
+  // var counter2 = 0;
+  // var timeSpent2 = [];
+  // for( let i = times ; i > 0; i-- )
+  // {
+  //   var time2 = _.time.now();
+  //   forOf( array );
+  //   var spent2 = _.time.spent( time2 )
+  //   timeSpent2.push( spent2 );
+  //   test.identical( counter2, size );
+  //   counter2 = 0;
+  // }
+  // // console.log( `For loop took ${timeSpent2} on Njs ${process.version}` );
+  // test.identical( timeSpent1.length, timeSpent2.length );
 
-  var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
-  var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
+  // var timeSpent1NumbersAvg = calcAvg( timeSpent1 );
+  // var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
 
-  console.log( `Array length = ${size}, iterations = ${times}\n` );
-  console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
-  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
+  // console.log( `Array length = ${size}, iterations = ${times}\n` );
+  // console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
+  // console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
 
   /* - */
 
-  function forLoop( src )
-  {
-    for( let k = 0 ; k < src.length ; k++ )
-    counter1++
-  }
+  // function forLoop( src )
+  // {
+  //   // for( let k = 0 ; k < src.length ; k++ )
+  //   // counter1++
+  // }
 
-  function forOf( src )
-  {
-    for( let k of src )
-    counter2++;
-  }
+  // function forOf( src )
+  // {
+  //   // for( let k of src )
+  //   // counter2++;
+  // }
 
   function calcAvg( src )
   {
