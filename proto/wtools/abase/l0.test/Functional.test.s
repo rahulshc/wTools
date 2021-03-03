@@ -25782,6 +25782,50 @@ function eachPermutation_Options( test )
 
   /* */
 
+  test.case = 'onEach : null, result : []';
+  reset();
+  var sets = [ 'a', 'b', 'c' ];
+  var dst = [];
+  var got = _.eachPermutation_({ onEach : null, sets, result : dst });
+  var exp =
+  [
+    [ 'a', 'b', 'c' ],
+    [ 'a', 'c', 'b' ],
+    [ 'b', 'c', 'a' ],
+    [ 'b', 'a', 'c' ],
+    [ 'c', 'a', 'b' ],
+    [ 'c', 'b', 'a' ],
+  ];
+  test.identical( permutation, [] );
+  test.identical( got, exp );
+  test.true( got !== permutation );
+  test.true( got === dst );
+  test.identical( analyse({ sets, permutation }), {} );
+  test.identical( permutation.length, 0 );
+
+  /* */
+
+  test.case = 'onEach : null, result : null';
+  reset();
+  var sets = [ 'a', 'b', 'c' ];
+  var got = _.eachPermutation_({ onEach : null, sets, result : null });
+  var exp =
+  [
+    [ 'a', 'b', 'c' ],
+    [ 'a', 'c', 'b' ],
+    [ 'b', 'c', 'a' ],
+    [ 'b', 'a', 'c' ],
+    [ 'c', 'a', 'b' ],
+    [ 'c', 'b', 'a' ],
+  ];
+  test.identical( permutation, [] );
+  test.identical( got, exp );
+  test.true( got !== permutation );
+  test.identical( analyse({ sets, permutation }), {} );
+  test.identical( permutation.length, 0 );
+
+  /* */
+
   function analyse( o )
   {
     let encountered = Object.create( null );
