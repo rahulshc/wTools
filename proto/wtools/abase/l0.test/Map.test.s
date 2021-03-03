@@ -9712,6 +9712,8 @@ function mapHasAny( test )
 
   /* vector */
 
+  test.open( 'array' )
+
   test.case = 'same keys, array';
   var got = _.mapHasAny( { a : 1 }, [ 'a' ] );
   test.true( got );
@@ -9731,6 +9733,68 @@ function mapHasAny( test )
   test.case = 'has no one, array';
   var got = _.mapHasAny( { a : 1, b : 2 }, [ 'x', 'y' ] );
   test.true( !got );
+
+  test.close( 'array' )
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [] )
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [ 'a' ] )
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.unrollMake( [ 'b' ] )
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.unrollMake( [ 'b', 'a', 'x', 'y' ] )
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.close( 'containerAdapter' );
 
   /* */
 

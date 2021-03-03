@@ -368,7 +368,7 @@ function mapHasAll( src, screen )
  * Returns true if any key from( screen ) exists on object( src ), otherwise returns false.
  *
  * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
- * @param { ObjectLike } screen - Map that hold keys.
+ * @param { ObjectLike|Vector } screen - Map or vector that hold keys.
  *
  * @example
  * _.mapHasAny( {}, {} );
