@@ -704,7 +704,7 @@ function eachPermutation_( o )
   const last = length - 1;
   const plast = length - 2;
   const slast = length - 3;
-  const onEach = o.onEach;
+  const onEach = o.onEach || onEachDefault;
   let left = last;
   let swaps = 0;
   let iteration = 0;
@@ -795,6 +795,10 @@ function eachPermutation_( o )
     left -= 1;
     for( let i = left + 1 ; i < counter.length ; i++ )
     counter[ i ] = last - i;
+  }
+
+  function onEachDefault()
+  {
   }
 
 }
