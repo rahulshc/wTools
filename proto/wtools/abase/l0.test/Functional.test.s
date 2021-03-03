@@ -15848,7 +15848,6 @@ function entityMapWithoutDst_( test )
 
   test.case = 'unroll';
   var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
-  debugger;
   var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
   test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
   test.true( got === src );
@@ -24230,42 +24229,42 @@ function entityMax( test )
 // permutation
 // --
 
-function eachSample( test )
+function eachSample_( test )
 {
 
   /* */
 
   test.case = 'sets - array with single element';
   var src = [ 1 ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.identical( src, [ 1 ] );
 
   test.case = 'sets - map with single element';
   var src = { a : 1 };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ { a : 1 } ];
   test.identical( got, expected );
   test.identical( src, { a : 1 } );
 
   test.case = 'sets - array with several element';
   var src = [ 1, 2, null ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1, 2, null ] ];
   test.identical( got, expected );
   test.identical( src, [ 1, 2, null ] );
 
   test.case = 'sets - map with several element';
   var src = { a : 1, b : 2, c : null };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ { a : 1, b : 2, c : null } ];
   test.identical( got, expected );
   test.identical( src, { a : 1, b : 2, c : null } );
 
   test.case = 'sets - unroll with single element';
   var src = _.unrollMake( [ 1 ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24273,7 +24272,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray with single element';
   var src = _.argumentsArray.make( [ 1 ] );
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24283,21 +24282,21 @@ function eachSample( test )
 
   test.case = 'sets - array, result - 0';
   var src = [ 1, 2, 3 ];
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.identical( src, [ 1, 2, 3 ] );
 
   test.case = 'sets - map, result - 0';
   var src = { a : 1, b : 2, c : null };
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.identical( src, { a : 1, b : 2, c : null } );
 
   test.case = 'sets - unroll, result - 0';
   var src = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.true( _.primitive.is( got ) );
@@ -24305,7 +24304,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray, result - 0';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.eachSample( { sets : src, result : 0 } );
+  var got = _.eachSample_( { sets : src, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
   test.true( _.primitive.is( got ) );
@@ -24315,14 +24314,14 @@ function eachSample( test )
 
   test.case = 'sets - array contains array';
   var src = [ [ 1, 2, null, 'str' ] ] ;
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.identical( src, [ [ 1, 2, null, 'str' ] ]  );
 
   test.case = 'sets - map, contains array';
   var src = { a : [ 1, 2, null, 'str' ] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected =
   [
     { a : 1 },
@@ -24335,7 +24334,7 @@ function eachSample( test )
 
   test.case = 'sets - unroll, contains array';
   var src = _.unrollMake( [ [ 1, 2, null, 'str' ] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24343,7 +24342,7 @@ function eachSample( test )
 
   test.case = 'sets - argumentsArray, contains array';
   var src = _.argumentsArray.make( [ [ 1, 2, null, 'str' ] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24353,7 +24352,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, inner arrays has two elements';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24367,7 +24366,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, elements have arrays with two elements';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24381,7 +24380,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, with scalar element at the end of container';
   var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24395,7 +24394,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, two element have arrays, one has scalar';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24411,7 +24410,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements, two dimentional array';
   var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24427,7 +24426,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, elements have arrays';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24443,7 +24442,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, contains argumentsArray';
   var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24460,7 +24459,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, leftToRight - 0';
   var src = [ [ 0, 1 ], [ 5, 6 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24475,7 +24474,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, leftToRight - 0';
   var src = { a : [ 0, 1 ], b : [ 5, 6 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24490,7 +24489,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements two dimentional array, leftToRight - 0';
   var src = [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     leftToRight : 0,
@@ -24509,7 +24508,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24520,7 +24519,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24531,7 +24530,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array with scalar, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ], 6 ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24542,7 +24541,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map with scalar, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24553,7 +24552,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional three elements array, leftToRight - 1, result - 0';
   var src = [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24564,7 +24563,7 @@ function eachSample( test )
 
   test.case = 'sets - three elements map, elements have arrays, leftToRight - 1, result - 0';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ], c : [ 6, null ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24575,7 +24574,7 @@ function eachSample( test )
 
   test.case = 'sets - array with unrolls, leftToRight - 1, result - 0';
   var src = [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24586,7 +24585,7 @@ function eachSample( test )
 
   test.case = 'sets - array with argumentsArray, leftToRight - 1, result - 0';
   var src = [ _.argumentsArray.make( [ 0, 1 ] ), _.argumentsArray.make( [ 2, 3 ] ) ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     result : 0,
@@ -24597,7 +24596,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, sample - not default, equal length of vectors';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : [ 1, 2 ]
@@ -24612,7 +24611,7 @@ function eachSample( test )
 
   test.case = 'sets - two dimentional array, sample - not default, sample.length > vector.length';
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : [ 1, 2, 3 ]
@@ -24627,7 +24626,7 @@ function eachSample( test )
 
   test.case = 'sets - two elements map, sample - not default';
   var src = { a : [ 0, 1 ], b : [ 2, 3 ] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     sample : { ak : 'a', bk : 'b', ck : 'c' }
@@ -24669,7 +24668,7 @@ function eachSample( test )
   test.case = 'sets - two dimentional array, sample - not default, onEach';
   var onEach = ( sample, i ) => sample[ i ] = sample[ i ] + 12;
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     onEach,
@@ -24690,7 +24689,7 @@ function eachSample( test )
     _.arrayAppend( result, sample[ i ] );
   };
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
     onEach,
@@ -24711,7 +24710,7 @@ function eachSample( test )
   {
     sets : src,
   }
-  var got = _.eachSample( options );
+  var got = _.eachSample_( options );
   var expected =
   [
     { str : 'abc', n : 3 }
@@ -24724,24 +24723,24 @@ function eachSample( test )
   return;
 
   test.case = 'not argument, extra arguments';
-  test.shouldThrowErrorSync( () => _.eachSample() );
-  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.eachSample_() );
+  test.shouldThrowErrorSync( () => _.eachSample_( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
 
   test.case = 'o.sets is not arraylike, not aixiliary';
-  test.shouldThrowErrorSync( () => _.eachSample( {} ) );
-  test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
-  test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( {} ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( 1 ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( 'str', null ) );
 
   test.case = 'onEach is not a routine or null';
-  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], 'str' ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( [ [ 1 ], [ 2 ] ], 'str' ) );
 
   test.case = 'o.base has a value';
   var o = { sets : [ [ 1, 0 ], [ 2, 3 ] ], base : [ 5 ] };
-  test.shouldThrowErrorSync( () => _.eachSample( o ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( o ) );
 
   test.case = 'o.add has a value';
   var o = { sets : [ [ 1, 0 ], [ 2, 3 ] ], add : [ 5 ] };
-  test.shouldThrowErrorSync( () => _.eachSample( o ) );
+  test.shouldThrowErrorSync( () => _.eachSample_( o ) );
 
 }
 
@@ -24751,28 +24750,28 @@ function eachSampleEmptyContainers( test )
 {
   test.case = 'sets - empty array';
   var src = [];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [] );
 
   test.case = 'sets - empty map';
   var src = {};
-  var got = _.eachSample( { sets : src } );
+  var got = _.eachSample_( { sets : src } );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, {} );
 
   test.case = 'sets - empty map, onEach - null';
   var src = {};
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, {} );
 
   test.case = 'sets - empty unroll';
   var src = _.unrollMake( [] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24781,7 +24780,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - empty argumentsArray';
   var src = _.argumentsArray.make( 0 );
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24791,35 +24790,35 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - array with nested empty array';
   var src = [ [] ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [ [] ] );
 
   test.case = 'sets - map with empty array';
   var src = { a : [] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, { a : [] } );
 
   test.case = 'sets - array with several empty arrays';
   var src = [ [], [], [] ];
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, [ [], [], [] ] );
 
   test.case = 'sets - map with several empty arrays';
   var src = { a : [], b : [], c : [] };
-  var got = _.eachSample( src, null );
+  var got = _.eachSample_( src, null );
   var expected = [];
   test.identical( got, expected );
   test.identical( src, { a : [], b : [], c : [] } );
 
   test.case = 'sets - unroll with several empty arrays';
   var src = _.unrollMake( [ [], [] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.false( _.unrollIs( got ) );
@@ -24827,7 +24826,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'sets - argumentsArray with several empty arrays';
   var src = _.argumentsArray.make( [ [], [] ] );
-  var got = _.eachSample( src );
+  var got = _.eachSample_( src );
   var expected = [];
   test.identical( got, expected );
   test.true( _.arrayIs( got ) );
@@ -24837,7 +24836,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'second set is empty, array';
   var src = [ [ 0, 1 ], [] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24847,7 +24846,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'second set is empty, map';
   var src = { a : [ 0, 1 ], b : [] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24857,7 +24856,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'first set is empty, array';
   var src = [ [], [ 0, 1 ] ];
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24867,7 +24866,7 @@ function eachSampleEmptyContainers( test )
 
   test.case = 'first set is empty, map';
   var src = { a : [ 0, 1 ], b : [] };
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : src,
   });
@@ -24880,7 +24879,7 @@ function eachSampleEmptyContainers( test )
 
 function eachSampleExperiment( test )
 {
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : [ [ 0, 1 ], [ 2, 3 ] ]
   });
@@ -24893,7 +24892,7 @@ function eachSampleExperiment( test )
   test.false( _.unrollIs( got ) );
   test.true( _.arrayIs( got ) );
 
-  var got = _.eachSample
+  var got = _.eachSample_
   ({
     sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
   });
@@ -24909,9 +24908,464 @@ function eachSampleExperiment( test )
 }
 eachSampleExperiment.experimental = 1;
 
+// //
+//
+// function eachPermutationBasic( test )
+// {
+//   let context = this;
+//   let permutation = [];
+//   let index = [];
+//   let left = [];
+//   let right = [];
+//   let swaps = [];
+//   let all = [];
+//
+//   /* */
+//
+//   test.case = '0 element';
+//   reset();
+//   var length = 0;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp = [];
+//   test.identical( all, exp );
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, 0 );
+//
+//   /* */
+//
+//   test.case = '1 element';
+//   reset();
+//   var length = 1;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp = [ [ 0, 'i', 0, 'l', 0, 'r', 0, 's', 0 ] ]
+//   test.identical( all, exp );
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   test.case = '2 elements';
+//   reset();
+//   var length = 2;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp =
+//   [
+//     [ 0, 1, 'i', 0, 'l', 1, 'r', 1, 's', 0 ],
+//     [ 1, 0, 'i', 1, 'l', 0, 'r', 1, 's', 1 ]
+//   ]
+//   test.identical( all, exp );
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   test.case = '3 elements';
+//   reset();
+//   var length = 3;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp =
+//   [
+//     [ 0, 1, 2, 'i', 0, 'l', 2, 'r', 2, 's', 0 ],
+//     [ 0, 2, 1, 'i', 1, 'l', 1, 'r', 2, 's', 1 ],
+//     [ 1, 2, 0, 'i', 2, 'l', 0, 'r', 2, 's', 1 ],
+//     [ 1, 0, 2, 'i', 3, 'l', 1, 'r', 2, 's', 1 ],
+//     [ 2, 0, 1, 'i', 4, 'l', 0, 'r', 2, 's', 1 ],
+//     [ 2, 1, 0, 'i', 5, 'l', 1, 'r', 2, 's', 1 ]
+//   ]
+//   test.identical( all, exp );
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   test.case = '4 elements';
+//   reset();
+//   var length = 4;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp =
+//   [
+//     [ 0, 1, 2, 3, 'i', 0, 'l', 3, 'r', 3, 's', 0 ],
+//     [ 0, 1, 3, 2, 'i', 1, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 0, 2, 3, 1, 'i', 2, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 0, 2, 1, 3, 'i', 3, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 0, 3, 1, 2, 'i', 4, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 0, 3, 2, 1, 'i', 5, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 1, 2, 3, 0, 'i', 6, 'l', 0, 'r', 3, 's', 2 ],
+//     [ 1, 2, 0, 3, 'i', 7, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 1, 3, 0, 2, 'i', 8, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 1, 3, 2, 0, 'i', 9, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 1, 0, 2, 3, 'i', 10, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 1, 0, 3, 2, 'i', 11, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 2, 3, 0, 1, 'i', 12, 'l', 0, 'r', 3, 's', 2 ],
+//     [ 2, 3, 1, 0, 'i', 13, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 2, 0, 1, 3, 'i', 14, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 2, 0, 3, 1, 'i', 15, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 2, 1, 3, 0, 'i', 16, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 2, 1, 0, 3, 'i', 17, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 3, 0, 1, 2, 'i', 18, 'l', 0, 'r', 3, 's', 2 ],
+//     [ 3, 0, 2, 1, 'i', 19, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 3, 1, 2, 0, 'i', 20, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 3, 1, 0, 2, 'i', 21, 'l', 2, 'r', 3, 's', 1 ],
+//     [ 3, 2, 0, 1, 'i', 22, 'l', 1, 'r', 3, 's', 1 ],
+//     [ 3, 2, 1, 0, 'i', 23, 'l', 2, 'r', 3, 's', 1 ]
+//   ]
+//   test.identical( all, exp );
+//   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 ];
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   test.case = '5 elements';
+//   reset();
+//   var length = 5;
+//   _.eachPermutation({ onEach, container : length });
+//   var exp =
+//   [
+//     [ 0, 1, 2, 3, 4 ],
+//     [ 0, 1, 2, 4, 3 ],
+//     [ 0, 1, 3, 4, 2 ],
+//     [ 0, 1, 3, 2, 4 ],
+//     [ 0, 1, 4, 2, 3 ],
+//     [ 0, 1, 4, 3, 2 ],
+//     [ 0, 2, 3, 4, 1 ],
+//     [ 0, 2, 3, 1, 4 ],
+//     [ 0, 2, 4, 1, 3 ],
+//     [ 0, 2, 4, 3, 1 ],
+//     [ 0, 2, 1, 3, 4 ],
+//     [ 0, 2, 1, 4, 3 ],
+//     [ 0, 3, 4, 1, 2 ],
+//     [ 0, 3, 4, 2, 1 ],
+//     [ 0, 3, 1, 2, 4 ],
+//     [ 0, 3, 1, 4, 2 ],
+//     [ 0, 3, 2, 4, 1 ],
+//     [ 0, 3, 2, 1, 4 ],
+//     [ 0, 4, 1, 2, 3 ],
+//     [ 0, 4, 1, 3, 2 ],
+//     [ 0, 4, 2, 3, 1 ],
+//     [ 0, 4, 2, 1, 3 ],
+//     [ 0, 4, 3, 1, 2 ],
+//     [ 0, 4, 3, 2, 1 ],
+//     [ 1, 2, 3, 4, 0 ],
+//     [ 1, 2, 3, 0, 4 ],
+//     [ 1, 2, 4, 0, 3 ],
+//     [ 1, 2, 4, 3, 0 ],
+//     [ 1, 2, 0, 3, 4 ],
+//     [ 1, 2, 0, 4, 3 ],
+//     [ 1, 3, 4, 0, 2 ],
+//     [ 1, 3, 4, 2, 0 ],
+//     [ 1, 3, 0, 2, 4 ],
+//     [ 1, 3, 0, 4, 2 ],
+//     [ 1, 3, 2, 4, 0 ],
+//     [ 1, 3, 2, 0, 4 ],
+//     [ 1, 4, 0, 2, 3 ],
+//     [ 1, 4, 0, 3, 2 ],
+//     [ 1, 4, 2, 3, 0 ],
+//     [ 1, 4, 2, 0, 3 ],
+//     [ 1, 4, 3, 0, 2 ],
+//     [ 1, 4, 3, 2, 0 ],
+//     [ 1, 0, 2, 3, 4 ],
+//     [ 1, 0, 2, 4, 3 ],
+//     [ 1, 0, 3, 4, 2 ],
+//     [ 1, 0, 3, 2, 4 ],
+//     [ 1, 0, 4, 2, 3 ],
+//     [ 1, 0, 4, 3, 2 ],
+//     [ 2, 3, 4, 0, 1 ],
+//     [ 2, 3, 4, 1, 0 ],
+//     [ 2, 3, 0, 1, 4 ],
+//     [ 2, 3, 0, 4, 1 ],
+//     [ 2, 3, 1, 4, 0 ],
+//     [ 2, 3, 1, 0, 4 ],
+//     [ 2, 4, 0, 1, 3 ],
+//     [ 2, 4, 0, 3, 1 ],
+//     [ 2, 4, 1, 3, 0 ],
+//     [ 2, 4, 1, 0, 3 ],
+//     [ 2, 4, 3, 0, 1 ],
+//     [ 2, 4, 3, 1, 0 ],
+//     [ 2, 0, 1, 3, 4 ],
+//     [ 2, 0, 1, 4, 3 ],
+//     [ 2, 0, 3, 4, 1 ],
+//     [ 2, 0, 3, 1, 4 ],
+//     [ 2, 0, 4, 1, 3 ],
+//     [ 2, 0, 4, 3, 1 ],
+//     [ 2, 1, 3, 4, 0 ],
+//     [ 2, 1, 3, 0, 4 ],
+//     [ 2, 1, 4, 0, 3 ],
+//     [ 2, 1, 4, 3, 0 ],
+//     [ 2, 1, 0, 3, 4 ],
+//     [ 2, 1, 0, 4, 3 ],
+//     [ 3, 4, 0, 1, 2 ],
+//     [ 3, 4, 0, 2, 1 ],
+//     [ 3, 4, 1, 2, 0 ],
+//     [ 3, 4, 1, 0, 2 ],
+//     [ 3, 4, 2, 0, 1 ],
+//     [ 3, 4, 2, 1, 0 ],
+//     [ 3, 0, 1, 2, 4 ],
+//     [ 3, 0, 1, 4, 2 ],
+//     [ 3, 0, 2, 4, 1 ],
+//     [ 3, 0, 2, 1, 4 ],
+//     [ 3, 0, 4, 1, 2 ],
+//     [ 3, 0, 4, 2, 1 ],
+//     [ 3, 1, 2, 4, 0 ],
+//     [ 3, 1, 2, 0, 4 ],
+//     [ 3, 1, 4, 0, 2 ],
+//     [ 3, 1, 4, 2, 0 ],
+//     [ 3, 1, 0, 2, 4 ],
+//     [ 3, 1, 0, 4, 2 ],
+//     [ 3, 2, 4, 0, 1 ],
+//     [ 3, 2, 4, 1, 0 ],
+//     [ 3, 2, 0, 1, 4 ],
+//     [ 3, 2, 0, 4, 1 ],
+//     [ 3, 2, 1, 4, 0 ],
+//     [ 3, 2, 1, 0, 4 ],
+//     [ 4, 0, 1, 2, 3 ],
+//     [ 4, 0, 1, 3, 2 ],
+//     [ 4, 0, 2, 3, 1 ],
+//     [ 4, 0, 2, 1, 3 ],
+//     [ 4, 0, 3, 1, 2 ],
+//     [ 4, 0, 3, 2, 1 ],
+//     [ 4, 1, 2, 3, 0 ],
+//     [ 4, 1, 2, 0, 3 ],
+//     [ 4, 1, 3, 0, 2 ],
+//     [ 4, 1, 3, 2, 0 ],
+//     [ 4, 1, 0, 2, 3 ],
+//     [ 4, 1, 0, 3, 2 ],
+//     [ 4, 2, 3, 0, 1 ],
+//     [ 4, 2, 3, 1, 0 ],
+//     [ 4, 2, 0, 1, 3 ],
+//     [ 4, 2, 0, 3, 1 ],
+//     [ 4, 2, 1, 3, 0 ],
+//     [ 4, 2, 1, 0, 3 ],
+//     [ 4, 3, 0, 1, 2 ],
+//     [ 4, 3, 0, 2, 1 ],
+//     [ 4, 3, 1, 2, 0 ],
+//     [ 4, 3, 1, 0, 2 ],
+//     [ 4, 3, 2, 0, 1 ],
+//     [ 4, 3, 2, 1, 0 ]
+//   ]
+//   test.identical( permutation, exp );
+//   test.identical( analyse({ container : length, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   function analyse( o )
+//   {
+//     let encountered = Object.create( null );
+//     if( _.number.is( o.container ) )
+//     {
+//       if( o.container < 0 )
+//       o.container = 0;
+//       let container = Array( o.container );
+//       for( let i = o.container-1 ; i >= 0 ; i-- )
+//       container[ i ] = i;
+//       o.container = container;
+//     }
+//     for( let p = 0 ; p < o.permutation.length ; p++ )
+//     {
+//       let permutation = o.permutation[ p ];
+//       let key = permutation.join( '-' );
+//       encountered[ key ] = encountered[ key ] || 0;
+//       encountered[ key ] += 1;
+//     }
+//     for( let key in encountered )
+//     {
+//       if( encountered[ key ] === 1 )
+//       delete encountered[ key ]
+//     }
+//     return encountered;
+//   }
+//
+//   /* */
+//
+//   function reset()
+//   {
+//     permutation = [];
+//     index = [];
+//     left = [];
+//     right = [];
+//     swaps = [];
+//     all = [];
+//   }
+//
+//   /* */
+//
+//   function onEach( /* _permutation, _index, _left, _right, _swaps */ )
+//   {
+//     let _permutation = arguments[ 0 ];
+//     let _index = arguments[ 1 ];
+//     let _left = arguments[ 2 ];
+//     let _right = arguments[ 3 ];
+//     let _swaps = arguments[ 4 ];
+//
+//     console.log( _index, '.', `${_left}..${_right}`, '.', _permutation.join( ' ' ) );
+//     permutation.push( _permutation.slice() );
+//     index.push( _index );
+//     left.push( _left );
+//     right.push( _right );
+//     swaps.push( _swaps );
+//     all.push([ ... _permutation, 'i', _index, 'l', _left, 'r', _right, 's', _swaps ]);
+//   }
+//
+// }
+//
+// //
+//
+// function eachPermutationOptions( test )
+// {
+//   let context = this;
+//   let all = [];
+//   let permutation = [];
+//   let index = [];
+//   let left = [];
+//   let right = [];
+//   let swaps = [];
+//
+//   /* */
+//
+//   test.case = 'empty container';
+//   reset();
+//   var container = [];
+//   var length = container.length;
+//   var got = _.eachPermutation({ onEach, container });
+//   var exp = [];
+//   test.identical( permutation, exp );
+//   test.identical( analyse({ container, permutation }), {} );
+//   test.identical( permutation.length, 0 );
+//   test.true( got === undefined );
+//
+//   /* */
+//
+//   test.case = 'container';
+//   reset();
+//   var container = [ 'a', 'b', 'c' ];
+//   var length = container.length;
+//   var got = _.eachPermutation({ onEach, container });
+//   var exp =
+//   [
+//     [ 'a', 'b', 'c' ],
+//     [ 'a', 'c', 'b' ],
+//     [ 'b', 'c', 'a' ],
+//     [ 'b', 'a', 'c' ],
+//     [ 'c', 'a', 'b' ],
+//     [ 'c', 'b', 'a' ],
+//   ]
+//   test.identical( permutation, exp );
+//   test.identical( analyse({ container, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//   test.true( got === undefined );
+//
+//   /* */
+//
+//   test.case = 'returning:1';
+//   reset();
+//   var container = [ 'a', 'b', 'c' ];
+//   var length = container.length;
+//   var got = _.eachPermutation({ onEach, container, returning : 1 });
+//   var exp =
+//   [
+//     [ 'a', 'b', 'c' ],
+//     [ 'a', 'c', 'b' ],
+//     [ 'b', 'c', 'a' ],
+//     [ 'b', 'a', 'c' ],
+//     [ 'c', 'a', 'b' ],
+//     [ 'c', 'b', 'a' ],
+//   ]
+//   test.identical( permutation, exp );
+//   test.identical( got, exp );
+//   test.true( got !== permutation );
+//   test.identical( analyse({ container, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   test.case = 'returning:1, dst:[]';
+//   reset();
+//   var container = [ 'a', 'b', 'c' ];
+//   var length = container.length;
+//   var dst = [];
+//   var got = _.eachPermutation({ onEach, container, returning : 1, dst });
+//   var exp =
+//   [
+//     [ 'a', 'b', 'c' ],
+//     [ 'a', 'c', 'b' ],
+//     [ 'b', 'c', 'a' ],
+//     [ 'b', 'a', 'c' ],
+//     [ 'c', 'a', 'b' ],
+//     [ 'c', 'b', 'a' ],
+//   ]
+//   test.identical( permutation, exp );
+//   test.identical( got, exp );
+//   test.true( got !== permutation );
+//   test.true( got === dst );
+//   test.identical( analyse({ container, permutation }), {} );
+//   test.identical( permutation.length, _.factorial( length ) );
+//
+//   /* */
+//
+//   function analyse( o )
+//   {
+//     let encountered = Object.create( null );
+//     if( _.number.is( o.container ) )
+//     {
+//       if( o.container < 0 )
+//       o.container = 0;
+//       let container = Array( o.container );
+//       for( let i = o.container-1 ; i >= 0 ; i-- )
+//       container[ i ] = i;
+//       o.container = container;
+//     }
+//     for( let p = 0 ; p < o.permutation.length ; p++ )
+//     {
+//       let permutation = o.permutation[ p ];
+//       let key = permutation.join( '-' );
+//       encountered[ key ] = encountered[ key ] || 0;
+//       encountered[ key ] += 1;
+//     }
+//     for( let key in encountered )
+//     {
+//       if( encountered[ key ] === 1 )
+//       delete encountered[ key ]
+//     }
+//     return encountered;
+//   }
+//
+//   /* */
+//
+//   function reset()
+//   {
+//     permutation = [];
+//     index = [];
+//     left = [];
+//     right = [];
+//     swaps = [];
+//     all = [];
+//   }
+//
+//   /* */
+//
+//   function onEach( /* _permutation, _index, _left, _right, _swaps */ )
+//   {
+//     let _permutation = arguments[ 0 ];
+//     let _index = arguments[ 1 ];
+//     let _left = arguments[ 2 ];
+//     let _right = arguments[ 3 ];
+//     let _swaps = arguments[ 4 ];
+//
+//     console.log( _index, '.', `${_left}..${_right}`, '.', _permutation.join( ' ' ) );
+//     permutation.push( _permutation.slice() );
+//     index.push( _index );
+//     left.push( _left );
+//     right.push( _right );
+//     swaps.push( _swaps );
+//     all.push([ ... _permutation, 'i', _index, 'l', _left, 'r', _right, 's', _swaps ]);
+//   }
+//
+// }
+
 //
 
-function eachPermutationBasic( test )
+function eachPermutation_Basic( test )
 {
   let context = this;
   let permutation = [];
@@ -24926,7 +25380,7 @@ function eachPermutationBasic( test )
   test.case = '0 element';
   reset();
   var length = 0;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp = [];
   test.identical( all, exp );
   test.identical( analyse({ container : length, permutation }), {} );
@@ -24937,7 +25391,7 @@ function eachPermutationBasic( test )
   test.case = '1 element';
   reset();
   var length = 1;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp = [ [ 0, 'i', 0, 'l', 0, 'r', 0, 's', 0 ] ]
   test.identical( all, exp );
   test.identical( analyse({ container : length, permutation }), {} );
@@ -24948,7 +25402,7 @@ function eachPermutationBasic( test )
   test.case = '2 elements';
   reset();
   var length = 2;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp =
   [
     [ 0, 1, 'i', 0, 'l', 1, 'r', 1, 's', 0 ],
@@ -24963,7 +25417,7 @@ function eachPermutationBasic( test )
   test.case = '3 elements';
   reset();
   var length = 3;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp =
   [
     [ 0, 1, 2, 'i', 0, 'l', 2, 'r', 2, 's', 0 ],
@@ -24982,7 +25436,7 @@ function eachPermutationBasic( test )
   test.case = '4 elements';
   reset();
   var length = 4;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp =
   [
     [ 0, 1, 2, 3, 'i', 0, 'l', 3, 'r', 3, 's', 0 ],
@@ -25020,7 +25474,7 @@ function eachPermutationBasic( test )
   test.case = '5 elements';
   reset();
   var length = 5;
-  _.eachPermutation({ onEach, container : length });
+  _.eachPermutation_({ onEach, container : length });
   var exp =
   [
     [ 0, 1, 2, 3, 4 ],
@@ -25212,7 +25666,7 @@ function eachPermutationBasic( test )
 
 //
 
-function eachPermutationOptions( test )
+function eachPermutation_Options( test )
 {
   let context = this;
   let all = [];
@@ -25228,7 +25682,7 @@ function eachPermutationOptions( test )
   reset();
   var container = [];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container });
+  var got = _.eachPermutation_({ onEach, container });
   var exp = [];
   test.identical( permutation, exp );
   test.identical( analyse({ container, permutation }), {} );
@@ -25241,7 +25695,7 @@ function eachPermutationOptions( test )
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container });
+  var got = _.eachPermutation_({ onEach, container, result : 0 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25258,11 +25712,11 @@ function eachPermutationOptions( test )
 
   /* */
 
-  test.case = 'returning:1';
+  test.case = 'result : 1';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
-  var got = _.eachPermutation({ onEach, container, returning : 1 });
+  var got = _.eachPermutation_({ onEach, container, result : 1 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25280,12 +25734,12 @@ function eachPermutationOptions( test )
 
   /* */
 
-  test.case = 'returning:1, dst:[]';
+  test.case = 'result : []';
   reset();
   var container = [ 'a', 'b', 'c' ];
   var length = container.length;
   var dst = [];
-  var got = _.eachPermutation({ onEach, container, dst, returning : 1 });
+  var got = _.eachPermutation_({ onEach, container, result : dst });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25631,11 +26085,16 @@ let Self =
 
     // permutation
 
-    eachSample,
+    eachSample_,
     eachSampleEmptyContainers,
     eachSampleExperiment,
-    eachPermutationBasic,
-    eachPermutationOptions,
+
+    // eachPermutationBasic,
+    // eachPermutationOptions,
+
+    eachPermutation_Basic,
+    eachPermutation_Options,
+
     swapsCount,
 
   }
