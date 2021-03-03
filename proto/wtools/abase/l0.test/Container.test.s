@@ -2847,76 +2847,85 @@ function elementGet( test )
   var got4 = _.container.elementGet( src, '3' );
   test.identical( got4, { a : 1 } );
 
-  // test.case = 'BufferNode';
-  // var src = BufferNode.from( 'str' );
-  // test.true( !_.container.elementGet( src ) );
+  test.case = 'BufferNode';
+  var src = BufferNode.from( 'str' );
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 115 );
 
-  // test.case = 'BufferRaw';
-  // var src = new BufferRaw( 'str' );
-  // var got = _.container.elementGet( src );
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.container.elementGet( src, 'byteLength' );
+  test.identical( got, 10 );
 
-  // test.case = 'BufferRawShared';
-  // var src = new BufferRawShared( 'str' );
-  // var got = _.container.elementGet( src );
+  test.case = 'BufferRawShared';
+  var src = new BufferRawShared( 15 );
+  var got = _.container.elementGet( src, 'byteLength' );
+  test.identical( got, 15 );
 
-  // test.case = 'BufferTyped';
-  // var src = new I8x( 20 );
-  // var got = _.container.elementGet( src );
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 0 );
 
-  // test.case = 'BufferView';
-  // var src = new BufferView( new BufferRaw( 20 ) )
-  // var got = _.container.elementGet( src );
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 20 ) )
+  var got = _.container.elementGet( src, 'byteLength' );
+  test.identical( got, 20 );
 
-  // test.case = 'BufferBytes & BufferTyped';
-  // var src = new U8x( 20 );
-  // var got = _.container.elementGet( src );
+  test.case = 'err';
+  var src = _.err( 'error' );
+  var got = _.container.elementGet( src, 'message' );
+  test.identical( _.strIs( got ), true );
 
-  // test.case = 'err';
-  // var src = _.err( 'error' );
-  // var got = _.container.elementGet( src );
+  test.case = 'escape';
+  var src = _.escape.make( 1 );
+  var got = _.container.elementGet( src, 'val' );
+  test.identical( got, 1 );
 
-  // test.case = 'escape';
-  // var src = _.escape.make( 1 );
-  // var got = _.container.elementGet( src );
+  test.case = 'pair';
+  var src = _.pair.make([ 1, 2 ]);
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 1 );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 2 );
 
-  // test.case = 'interval & BufferTyped';
-  // var src = new F32x( 2 );
-  // var got = _.container.elementGet( src );
+  test.case = 'propertyTransformer & filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  var got = _.container.elementGet( src, 'identity' );
+  test.identical( got, { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true } );
 
-  // test.case = 'pair';
-  // var src = _.pair.make();
-  // var got = _.container.elementGet( src );
+  test.case = 'propertyTransformer & mapper';
+  var src = _.property.mapper[ 'assigning' ];
+  var got = _.container.elementGet( src, 'identity' );
+  test.identical( got, { 'propertyMapper' : true, 'propertyTransformer' : true, 'functor' : true } );
 
-  // test.case = 'propertyTransformer & filter';
-  // var src = _.property.filter[ 'dstAndSrcOwn' ];
-  // test.true( !_.container.elementGet( src ) );
+  test.case = 'routine & routineLike';
+  var src = routine;
+  var got = _.container.elementGet( src, 'name' );
+  test.identical( got, 'routine' );
 
-  // test.case = 'propertyTransformer & mapper';
-  // var src = _.property.mapper[ 'assigning' ];
-  // test.true( !_.container.elementGet( src ) );
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );
+  var got = _.container.elementGet( src, 'type' );
+  test.identical( got, 'delay' );
+  _.time.cancel( src );
 
-  // test.case = 'routine & routineLike';
-  // var src = routine;
-  // test.true( !_.container.elementGet( src ) );
+  test.case = 'date & objectLike';
+  var src = new Date( 1000 );
+  var got = _.container.elementGet( src, 'getTime' );
+  test.identical( _.routineIs( got ), true );
 
-  // test.case = 'timer';
-  // var src = _.time._begin( Infinity );
-  // var got = _.container.elementGet( src );
-  // _.time.cancel( src );
+  test.case = 'stream';
+  var src = require( 'stream' ).Readable();
+  var got = _.container.elementGet( src, 'readable' );
+  test.identical( got, true );
 
-  // test.case = 'date & objectLike';
-  // var src = new Date();
-  // var got = _.container.elementGet( src );
+  test.case = 'process';
+  var src = process;
+  var got = _.container.elementGet( src, '' );
+  test.identical( got, true );
 
-  // test.case = 'ConsequenceLike & promiseLike & promise';
-  // var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  // var got = _.container.elementGet( src );
-
-  // test.case = 'stream';
-  // var src = require( 'stream' ).Readable();
-  // var got = _.container.elementGet( src );
-
-  // test.case = 'process';
+  // test.case = '';
   // var src = process;
   // var got = _.container.elementGet( src );
 
