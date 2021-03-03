@@ -24665,7 +24665,7 @@ function eachSample_( test )
   test.identical( got, expected );
   test.identical( src, { a : [ 0, 1 ], b : [ 2, 3 ] } );
 
-  test.case = 'sets - two dimentional array, sample - not default, onEach';
+  test.case = 'sets - two dimentional array, sample - not default, onEach - routine';
   var onEach = ( sample, i ) => sample[ i ] = sample[ i ] + 12;
   var src = [ [ 0, 1 ], [ 2, 3 ] ];
   var got = _.eachSample_
@@ -24674,15 +24674,27 @@ function eachSample_( test )
     onEach,
     sample : [ 1, 2, 3 ]
   });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two dimentional array, sample - not default, onEach - null';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample_
+  ({
+    sets : src,
+    onEach : null,
+    sample : [ 1, 2, 3 ]
+  });
   var expected =
   [
     [ 0, 2, 3 ], [ 1, 2, 3 ],
-    [ 0, 3, 3 ], [ 1, 3, 15 ],
+    [ 0, 3, 3 ], [ 1, 3, 3 ],
   ];
   test.identical( got, expected );
   test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
 
-  test.case = 'sets - two dimentional array, sample - not default, onEach';
+  test.case = 'sets - two dimentional array, sample - not default, onEach - routine';
   var result = [];
   var onEach = ( sample, i ) =>
   {
@@ -24695,13 +24707,25 @@ function eachSample_( test )
     onEach,
     sample : [ 1, 2, 3, 4 ]
   });
+  var expected = 3;
+  test.identical( got, expected );
+  test.identical( result, [ 0, 2, 3, 4 ] );
+  test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
+
+  test.case = 'sets - two dimentional array, sample - not default, onEach - routine';
+  var src = [ [ 0, 1 ], [ 2, 3 ] ];
+  var got = _.eachSample_
+  ({
+    sets : src,
+    onEach : null,
+    sample : [ 1, 2, 3, 4 ]
+  });
   var expected =
   [
     [ 0, 2, 3, 4 ], [ 1, 2, 3, 4 ],
     [ 0, 3, 3, 4 ], [ 1, 3, 3, 4 ],
   ];
   test.identical( got, expected );
-  test.identical( result, [ 0, 2, 3, 4 ] );
   test.identical( src, [ [ 0, 1 ], [ 2, 3 ] ] );
 
   test.case = 'string and number';
@@ -25380,10 +25404,10 @@ function eachPermutation_Basic( test )
   test.case = '0 element';
   reset();
   var length = 0;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp = [];
   test.identical( all, exp );
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, 0 );
 
   /* */
@@ -25391,10 +25415,10 @@ function eachPermutation_Basic( test )
   test.case = '1 element';
   reset();
   var length = 1;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp = [ [ 0, 'i', 0, 'l', 0, 'r', 0, 's', 0 ] ]
   test.identical( all, exp );
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25402,14 +25426,14 @@ function eachPermutation_Basic( test )
   test.case = '2 elements';
   reset();
   var length = 2;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp =
   [
     [ 0, 1, 'i', 0, 'l', 1, 'r', 1, 's', 0 ],
     [ 1, 0, 'i', 1, 'l', 0, 'r', 1, 's', 1 ]
   ]
   test.identical( all, exp );
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25417,7 +25441,7 @@ function eachPermutation_Basic( test )
   test.case = '3 elements';
   reset();
   var length = 3;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp =
   [
     [ 0, 1, 2, 'i', 0, 'l', 2, 'r', 2, 's', 0 ],
@@ -25428,7 +25452,7 @@ function eachPermutation_Basic( test )
     [ 2, 1, 0, 'i', 5, 'l', 1, 'r', 2, 's', 1 ]
   ]
   test.identical( all, exp );
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25436,7 +25460,7 @@ function eachPermutation_Basic( test )
   test.case = '4 elements';
   reset();
   var length = 4;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp =
   [
     [ 0, 1, 2, 3, 'i', 0, 'l', 3, 'r', 3, 's', 0 ],
@@ -25466,7 +25490,7 @@ function eachPermutation_Basic( test )
   ]
   test.identical( all, exp );
   var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 ];
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25474,7 +25498,7 @@ function eachPermutation_Basic( test )
   test.case = '5 elements';
   reset();
   var length = 5;
-  _.eachPermutation_({ onEach, container : length });
+  _.eachPermutation_({ onEach, sets : length });
   var exp =
   [
     [ 0, 1, 2, 3, 4 ],
@@ -25599,7 +25623,7 @@ function eachPermutation_Basic( test )
     [ 4, 3, 2, 1, 0 ]
   ]
   test.identical( permutation, exp );
-  test.identical( analyse({ container : length, permutation }), {} );
+  test.identical( analyse({ sets : length, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25607,14 +25631,14 @@ function eachPermutation_Basic( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.number.is( o.container ) )
+    if( _.number.is( o.sets ) )
     {
-      if( o.container < 0 )
-      o.container = 0;
-      let container = Array( o.container );
-      for( let i = o.container-1 ; i >= 0 ; i-- )
-      container[ i ] = i;
-      o.container = container;
+      if( o.sets < 0 )
+      o.sets = 0;
+      let sets = Array( o.sets );
+      for( let i = o.sets-1 ; i >= 0 ; i-- )
+      sets[ i ] = i;
+      o.sets = sets;
     }
     for( let p = 0 ; p < o.permutation.length ; p++ )
     {
@@ -25678,24 +25702,24 @@ function eachPermutation_Options( test )
 
   /* */
 
-  test.case = 'empty container';
+  test.case = 'empty sets';
   reset();
-  var container = [];
-  var length = container.length;
-  var got = _.eachPermutation_({ onEach, container });
+  var sets = [];
+  var length = sets.length;
+  var got = _.eachPermutation_({ onEach, sets });
   var exp = [];
   test.identical( permutation, exp );
-  test.identical( analyse({ container, permutation }), {} );
+  test.identical( analyse({ sets, permutation }), {} );
   test.identical( permutation.length, 0 );
   test.true( got === undefined );
 
   /* */
 
-  test.case = 'container';
+  test.case = 'sets';
   reset();
-  var container = [ 'a', 'b', 'c' ];
-  var length = container.length;
-  var got = _.eachPermutation_({ onEach, container, result : 0 });
+  var sets = [ 'a', 'b', 'c' ];
+  var length = sets.length;
+  var got = _.eachPermutation_({ onEach, sets, result : 0 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25706,7 +25730,7 @@ function eachPermutation_Options( test )
     [ 'c', 'b', 'a' ],
   ]
   test.identical( permutation, exp );
-  test.identical( analyse({ container, permutation }), {} );
+  test.identical( analyse({ sets, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
   test.true( got === undefined );
 
@@ -25714,9 +25738,9 @@ function eachPermutation_Options( test )
 
   test.case = 'result : 1';
   reset();
-  var container = [ 'a', 'b', 'c' ];
-  var length = container.length;
-  var got = _.eachPermutation_({ onEach, container, result : 1 });
+  var sets = [ 'a', 'b', 'c' ];
+  var length = sets.length;
+  var got = _.eachPermutation_({ onEach, sets, result : 1 });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25729,17 +25753,17 @@ function eachPermutation_Options( test )
   test.identical( permutation, exp );
   test.identical( got, exp );
   test.true( got !== permutation );
-  test.identical( analyse({ container, permutation }), {} );
+  test.identical( analyse({ sets, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
 
   test.case = 'result : []';
   reset();
-  var container = [ 'a', 'b', 'c' ];
-  var length = container.length;
+  var sets = [ 'a', 'b', 'c' ];
+  var length = sets.length;
   var dst = [];
-  var got = _.eachPermutation_({ onEach, container, result : dst });
+  var got = _.eachPermutation_({ onEach, sets, result : dst });
   var exp =
   [
     [ 'a', 'b', 'c' ],
@@ -25753,7 +25777,7 @@ function eachPermutation_Options( test )
   test.identical( got, exp );
   test.true( got !== permutation );
   test.true( got === dst );
-  test.identical( analyse({ container, permutation }), {} );
+  test.identical( analyse({ sets, permutation }), {} );
   test.identical( permutation.length, _.factorial( length ) );
 
   /* */
@@ -25761,14 +25785,14 @@ function eachPermutation_Options( test )
   function analyse( o )
   {
     let encountered = Object.create( null );
-    if( _.number.is( o.container ) )
+    if( _.number.is( o.sets ) )
     {
-      if( o.container < 0 )
-      o.container = 0;
-      let container = Array( o.container );
-      for( let i = o.container-1 ; i >= 0 ; i-- )
-      container[ i ] = i;
-      o.container = container;
+      if( o.sets < 0 )
+      o.sets = 0;
+      let sets = Array( o.sets );
+      for( let i = o.sets-1 ; i >= 0 ; i-- )
+      sets[ i ] = i;
+      o.sets = sets;
     }
     for( let p = 0 ; p < o.permutation.length ; p++ )
     {
