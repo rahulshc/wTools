@@ -540,10 +540,7 @@ function routineOptions( routine, args, defaults )
       if( Config.debug )
       if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
       if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
-      {
-        debugger;
-        throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
-      }
+      throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
 
       dstMap[ s ] = srcMap[ s ];
     }
@@ -619,32 +616,128 @@ function assertRoutineOptions( routine, args, defaults )
 
 //
 
-/* qqq for Dmytro : forbid 3rd argument */
-/* qqq for Dmytro : inline implementation */
-/* qqq for Dmytro : make possible pass defaults-map instead of routine */
+/* aaa for Dmytro : forbid 3rd argument */ /* Dmytro : forbidden */
+/* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
+/* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
 /* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
-function routineOptionsPreservingUndefines( routine, args, defaults )
+function routineOptionsPreservingUndefines( defaults, options )
 {
 
-  if( !_.arrayLike( args ) )
-  args = [ args ];
-  let options = args[ 0 ];
+  _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+  _.assert( _.routineIs( defaults ) || _.aux.is( defaults ) || defaults === null, 'Expects an object with options' );
+
+  if( _.arrayLike( options ) )
+  {
+    _.assert
+    (
+      options.length === 0 || options.length === 1,
+      'routineOptionsPreservingUndefines : expects single options map, but got', options.length, 'arguments'
+    );
+    options = options[ 0 ];
+  }
+
   if( options === undefined )
   options = Object.create( null );
+  if( defaults === null )
+  defaults = Object.create( null );
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.aux.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
+  let name = _.routineIs( defaults ) ? defaults.name : '';
+  defaults = ( _.routineIs( defaults ) && defaults.defaults ) ? defaults.defaults : defaults;
+  _.assert( _.aux.is( defaults ), 'Expects defined defaults' );
 
-  defaults = defaults || routine.defaults;
+  /* */
 
-  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
-  _.map.assertHasOnly( options, defaults );
-  _.mapComplementPreservingUndefines( options, defaults );
+  if( Config.debug )
+  {
+    let extraKeys = mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine ${ name } does not expect options: ${ keysQuote( extraKeys ) }` );
+  }
+
+  mapComplementPreservingUndefinesMin( options, defaults );
 
   return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let key in srcMap )
+    if( !( key in butMap ) )
+    result.push( key );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
+
+  /* */
+
+  function mapComplementPreservingUndefinesMin( dstMap, srcMap )
+  {
+    for( let key in srcMap )
+    {
+      if( Object.hasOwnProperty.call( dstMap, key ) )
+      continue;
+
+      if( _.arrayIs( srcMap[ key ] ) )
+      dstMap[ key ] = srcMap[ key ].slice();
+      else if( _.mapIs( srcMap[ key ] ) )
+      dstMap[ key ] = getCopy( srcMap[ key ] );
+      else
+      dstMap[ key ] = srcMap[ key ];
+    }
+  }
+
+  /* */
+
+  function getCopy( src )
+  {
+    if( _.routineIs( src.clone ) )
+    _.assert( 0, 'unknown' );
+
+    let result = Object.create( null );
+    for( let key in src )
+    {
+      _.assert( _.strIs( key ) );
+      result[ key ] = src[ key ];
+    }
+    Object.setPrototypeOf( result, Object.getPrototypeOf( src ) );
+    return result;
+  }
+
 }
+// function routineOptionsPreservingUndefines( routine, args, defaults )
+// {
+//
+//   if( !_.arrayLike( args ) )
+//   args = [ args ];
+//   let options = args[ 0 ];
+//   if( options === undefined )
+//   options = Object.create( null );
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routineIs( routine ) || routine === null, 'Expects routine' );
+//   _.assert( _.aux.is( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
+//
+//   defaults = defaults || routine.defaults;
+//
+//   _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
+//   _.map.assertHasOnly( options, defaults );
+//   _.mapComplementPreservingUndefines( options, defaults );
+//
+//   return options;
+// }
 
 //
 
