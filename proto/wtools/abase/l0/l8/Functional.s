@@ -272,15 +272,15 @@ function multipleAll( dsts )
 // --
 
 /**
- * Routine eachSample() accepts the container {-sets-} with scalar or vector elements.
+ * Routine eachSample_() accepts the container {-sets-} with scalar or vector elements.
  * Routine returns an array of vectors. Each vector is a unique combination of elements of vectors
  * that is passed in option {-sets-}.
  *
- * Routine eachSample() accepts the options map {-o-} or two arguments. If options map
+ * Routine eachSample_() accepts the options map {-o-} or two arguments. If options map
  * is used, all parameters can be set. If passed two arguments, first of them is ( sets )
  * and second is ( onEach ).
  *
- * Routine eachSample() accepts the callback {-onEach-}. Callback accepts two arguments. The first is
+ * Routine eachSample_() accepts the callback {-onEach-}. Callback accepts two arguments. The first is
  * template {-sample-} and second is index of vector in returned array. Callback can change template {-sample-}
  * and corrupt the building of vectors.
  *
@@ -292,35 +292,35 @@ function multipleAll( dsts )
  * @param {boolean} result - Sets retuned value. 1 - routine returns array with verctors, 0 - routine returns index of last element. By default is 1.
  *
  * @example
- * var got = _.eachSample( { sets : [ [ 0, 1 ], 2 ] });
+ * var got = _.eachSample_( { sets : [ [ 0, 1 ], 2 ] });
  * console.log( got );
  * // log [ [ 0, 2 ], [ 1, 2 ] ]
  *
  * @example
- * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
+ * var got = _.eachSample_( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
  * console.log( got );
  * // log 3
  *
  * @example
- * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
+ * var got = _.eachSample_( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
  * console.log( got );
  * // log [ [ 0, 2 ], [ 1, 2 ],
  *          [ 0, 3 ], [ 1, 3 ] ]
  *
  * @example
- * var got = _.eachSample( { sets : { a : [ 0, 1 ], b : [ 2, 3 ] } });
+ * var got = _.eachSample_( { sets : { a : [ 0, 1 ], b : [ 2, 3 ] } });
  * console.log( got );
  * // log [ { a : 0, b : 2}, { a : 1, b : 2},
  *          { a : 0, b : 3}, { a : 1, b : 3} ]
  *
  * @example
- * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 } );
+ * var got = _.eachSample_( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 } );
  * console.log( got );
  * // log [ [ 3, 0 ], [ 2, 0 ],
  *          [ 3, 1 ], [ 2, 1 ] ]
  *
  * @example
- * var got = _.eachSample
+ * var got = _.eachSample_
  * ({
  *   sets : [ [ 0, 1 ], [ 2, 3 ] ],
  *   sample : [ 2, 3, 4, 5 ]
@@ -335,7 +335,7 @@ function multipleAll( dsts )
  *   _.arrayAppend( got, sample[ i ] );
  * }
  * var got = [];
- * _.eachSample
+ * _.eachSample_
  * ({
  *   sets : [ [ 0, 1 ], [ 2, 3 ] ],
  *   onEach : onEach,
@@ -344,7 +344,7 @@ function multipleAll( dsts )
  * console.log( got );
  * // log [ 0, 2, 'c', 'd' ]
  *
- * @function eachSample
+ * @function eachSample_
  * @returns {Array} Returns array contained  check function.
  * @throws {exception} If ( arguments.length ) is less then one or more then two.
  * @throws {exception} If( onEach ) is not a Routine or null.
@@ -354,7 +354,7 @@ function multipleAll( dsts )
  * @namespace Tools
  */
 
-function eachSample( o )
+function eachSample_( o )
 {
 
   if( arguments.length === 2 || _.arrayLike( arguments[ 0 ] ) )
@@ -364,11 +364,14 @@ function eachSample( o )
     onEach : arguments[ 1 ],
   }
 
-  _.routine.options( eachSample, o );
+  _.routine.options( eachSample_, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routine.is( o.onEach ) || o.onEach === null );
   _.assert( _.longLike( o.sets ) || _.aux.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
+
+  if( o.result === null )
+  o.result = o.onEach === null;
 
   /* sample */
 
@@ -527,7 +530,7 @@ function eachSample( o )
 
 }
 
-eachSample.defaults =
+eachSample_.defaults =
 {
 
   leftToRight : 1,
@@ -536,35 +539,168 @@ eachSample.defaults =
   sets : null,
   sample : null,
 
-  result : 1,
+  result : null, /* was 1 */
 
 }
 
+// //
+//
+// function eachPermutation( o )
+// {
+//
+//   _.routineOptions( eachPermutation, arguments );
+//
+//   if( _.number.is( o.container ) )
+//   {
+//     if( o.container < 0 )
+//     o.container = 0;
+//     let container = Array( o.container );
+//     for( let i = o.container-1 ; i >= 0 ; i-- )
+//     container[ i ] = i;
+//     o.container = container;
+//   }
+//
+//   if( o.returning )
+//   if( o.dst === null )
+//   o.dst = [];
+//
+//   const add = o.returning ? append1 : append0;
+//   const dst = o.returning ? o.dst : undefined;
+//   const container = o.container;
+//   const length = o.container.length;
+//   const last = length - 1;
+//   const plast = length - 2;
+//   const slast = length - 3;
+//   const onEach = o.onEach;
+//   let left = last;
+//   let swaps = 0;
+//   let iteration = 0;
+//
+//   if( length <= 1 )
+//   {
+//     if( length === 1 )
+//     {
+//       onEach( container, iteration, left, last, swaps );
+//       add();
+//     }
+//     return;
+//   }
+//
+//   let iterations = 1;
+//   for( let i = plast-1 ; i >= 0 ; i-- )
+//   {
+//     iterations *= ( last - i );
+//   }
+//   iterations *= length;
+//
+//   let counter = [];
+//   for( let i = plast ; i >= 0 ; i-- )
+//   counter[ i ] = last-i;
+//
+//   _.assert( _.longIs( container ) );
+//   _.assert( _.routineIs( onEach ) );
+//   _.assert( length >= 0 );
+//   _.assert( length <= 30 );
+//
+//   while( iteration < iterations )
+//   {
+//
+//     onEach( container, iteration, left, last, swaps );
+//     add();
+//     left = plast;
+//     nextCounter();
+//     reverse();
+//     iteration += 1;
+//   }
+//
+//   return dst;
+//
+//   /* */
+//
+//   function append0()
+//   {
+//   }
+//
+//   function append1()
+//   {
+//     dst.push( container.slice() );
+//   }
+//
+//   function swap( left, right )
+//   {
+//     _.assert( container[ right ] !== undefined );
+//     _.assert( container[ left ] !== undefined );
+//     let ex = container[ right ];
+//     container[ right ] = container[ left ];
+//     container[ left ] = ex;
+//   }
+//
+//   function reverse()
+//   {
+//     if( left >= slast )
+//     {
+//       swaps = 1;
+//       swap( left, last );
+//       counter[ left ] -= 1;
+//     }
+//     else
+//     {
+//       swaps = last - left;
+//       if( swaps % 2 === 1 )
+//       swaps -= 1;
+//       swaps /= 2;
+//       for( let i = swaps ; i >= 0 ; i-- )
+//       swap( left + i, last - i );
+//       counter[ left ] -= 1;
+//       swaps += 1;
+//     }
+//   }
+//
+//   function nextCounter()
+//   {
+//     while( counter[ left ] === 0 && left !== 0 )
+//     left -= 1;
+//     for( let i = left + 1 ; i < counter.length ; i++ )
+//     counter[ i ] = last - i;
+//   }
+//
+// }
+//
+// eachPermutation.defaults =
+// {
+//   onEach : null,
+//   container : null,
+//   dst : null, /* aaa for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample_ does */ /* Dmytro : implemented */
+//   returning : 0,
+// }
+
 //
 
-function eachPermutation( o )
+function eachPermutation_( o )
 {
 
-  _.routine.options( eachPermutation, arguments );
+  _.routine.options( eachPermutation_, arguments );
 
-  if( _.number.is( o.container ) )
+  if( o.result === null )
+  o.result = o.onEach === null;
+
+  if( _.number.is( o.sets ) )
   {
-    if( o.container < 0 )
-    o.container = 0;
-    let container = Array( o.container );
-    for( let i = o.container-1 ; i >= 0 ; i-- )
-    container[ i ] = i;
-    o.container = container;
+    if( o.sets < 0 )
+    o.sets = 0;
+    let sets = Array( o.sets );
+    for( let i = o.sets-1 ; i >= 0 ; i-- )
+    sets[ i ] = i;
+    o.sets = sets;
   }
 
-  if( o.returning )
-  if( o.dst === null )
-  o.dst = [];
+  if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
+  o.result = [];
 
-  const add = o.returning ? append1 : append0;
-  const dst = o.returning ? o.dst : undefined;
-  const container = o.container;
-  const length = o.container.length;
+  const add = ( _.arrayLike( o.result ) || _.routineIs( o.result.push ) ) ? append1 : append0;
+  const dst = o.result ? o.result : undefined;
+  const sets = o.sets;
+  const length = o.sets.length;
   const last = length - 1;
   const plast = length - 2;
   const slast = length - 3;
@@ -577,7 +713,7 @@ function eachPermutation( o )
   {
     if( length === 1 )
     {
-      onEach( container, iteration, left, last, swaps );
+      onEach( sets, iteration, left, last, swaps );
       add();
     }
     return;
@@ -594,7 +730,7 @@ function eachPermutation( o )
   for( let i = plast ; i >= 0 ; i-- )
   counter[ i ] = last-i;
 
-  _.assert( _.longIs( container ) );
+  _.assert( _.longIs( sets ) );
   _.assert( _.routine.is( onEach ) );
   _.assert( length >= 0 );
   _.assert( length <= 30 );
@@ -602,7 +738,7 @@ function eachPermutation( o )
   while( iteration < iterations )
   {
 
-    onEach( container, iteration, left, last, swaps );
+    onEach( sets, iteration, left, last, swaps );
     add();
     left = plast;
     nextCounter();
@@ -620,16 +756,16 @@ function eachPermutation( o )
 
   function append1()
   {
-    dst.push( container.slice() );
+    dst.push( sets.slice() );
   }
 
   function swap( left, right )
   {
-    _.assert( container[ right ] !== undefined );
-    _.assert( container[ left ] !== undefined );
-    let ex = container[ right ];
-    container[ right ] = container[ left ];
-    container[ left ] = ex;
+    _.assert( sets[ right ] !== undefined );
+    _.assert( sets[ left ] !== undefined );
+    let ex = sets[ right ];
+    sets[ right ] = sets[ left ];
+    sets[ left ] = ex;
   }
 
   function reverse()
@@ -663,12 +799,11 @@ function eachPermutation( o )
 
 }
 
-eachPermutation.defaults =
+eachPermutation_.defaults =
 {
   onEach : null,
-  container : null,
-  dst : null, /* qqq for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample does */
-  returning : 0,
+  sets : null, /* was container */
+  result : null, /* was dst */
 }
 
 /*
@@ -961,7 +1096,6 @@ function _entityFilterDeep( o )
       // result[ d ] = r;
 
     }
-    debugger;
     if( d < o.src.length )
     result = _.arraySlice( result, 0, d );
   }
@@ -1845,8 +1979,9 @@ let Fields =
 let Routines =
 {
 
-  eachSample, /* aaa2 : does not work properly if set is empty! */ /* Dmytro : improved, if some set is empty, routine returns empty array. Improved subroutine iterate */
-  eachPermutation, /* xxx : move out */
+  eachSample_, /* aaa2 : does not work properly if set is empty! */ /* Dmytro : improved, if some set is empty, routine returns empty array. Improved subroutine iterate */
+  // eachPermutation, /* xxx : move out */
+  eachPermutation_,
   swapsCount,
   _factorial,
   factorial,

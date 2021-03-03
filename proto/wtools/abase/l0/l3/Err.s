@@ -633,7 +633,7 @@ function _err( o )
             let original = arg;
             arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
             console.error( String( err ) );
-            if( _.strLinesSelect ) /* qqq xxx : make sure it works and cover */
+            if( _.strLinesSelect ) /* qqq : for Dmytro : make sure it works and cover */
             console.error( _.strLinesSelect
             ({
               src : original.toString(),
@@ -1328,44 +1328,6 @@ function errWary( err, value )
   return _._errFields( err, { wary : value } );
 }
 
-// {
-//
-//   _.assert( arguments.length === 1 );
-//
-//   if( !_.errIsStandard( err ) )
-//   err = _._err
-//   ({
-//     args : arguments,
-//     level : 2,
-//   });
-//
-//   /* */
-//
-//   try
-//   {
-//
-//     let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-//     Object.defineProperty( err, 'logged',
-//     {
-//       enumerable : false,
-//       configurable : true,
-//       writable : true,
-//       value,
-//     });
-//
-//   }
-//   catch( err )
-//   {
-//     logger.warn( 'Cant assign logged property to error\n' + err.toString() );
-//   }
-//
-//   _.errAttend( err );
-//
-//   /* */
-//
-//   return err;
-// }
-
 //
 
 function errRestack( err, level )
@@ -1473,7 +1435,7 @@ function errFromStr( errStr )
 
     let throwLocation = _.introspector.locationFromStackFrame( throwCallsStack || dstError.stack );
 
-    let originalMessage = messages.join( '\n' ); /* xxx : implement routine for joining */
+    let originalMessage = messages.join( '\n' );
 
     let result = _._errMake
     ({
@@ -1774,29 +1736,6 @@ function sureWithoutDebugger( condition )
 //
 // --
 
-// function breakpoint( condition )
-// {
-//
-//   if( Config.debug === false )
-//   return true;
-//
-//   if( !condition )
-//   {
-//     // let err = _err
-//     // ({
-//     //   args : Array.prototype.slice.call( arguments, 1 ),
-//     //   level : 2,
-//     // });
-//     logger.log( _.introspector.stack() );
-//
-//     return false;
-//   }
-//
-//   return true;
-// }
-
-//
-
 /**
  * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2.
  *
@@ -1995,8 +1934,6 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    // if( val )
-    // debugger;
     return val;
   },
   get : function()
@@ -2037,7 +1974,7 @@ let ErrorExtension =
 let ToolsExtension =
 {
 
-  /* xxx : make migration of routines to namespace */
+  /* qqq : for Yevhen : make migration of routines to namespace _.error */
 
   // error
 
@@ -2086,28 +2023,12 @@ let ToolsExtension =
   sureBriefly,
   sureWithoutDebugger,
 
-  // sureInstanceOrClass,
-  // sureOwnNoConstructor,
-  //
-  // // checker
-  //
-  // _isInstanceOrClass,
-  // _ownNoConstructor,
-
   // assert
 
   assert,
   assertWithoutBreakpoint,
   assertNotTested,
   assertWarn,
-
-  // fields
-
-  // error : Object.create( null ),
-  // breakpointOnAssertEnabled : !!Config.debug,
-  //
-  // _errorCounter,
-  // _errorMaking,
 
 }
 

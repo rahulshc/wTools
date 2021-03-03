@@ -849,6 +849,7 @@ let Extension =
   eachElementComparator,
 
   structureGenerate, /* xxx : move */
+
 }
 
 //

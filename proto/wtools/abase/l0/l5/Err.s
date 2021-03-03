@@ -140,7 +140,6 @@ function _handleUncaught2( o )
     result = _.process;
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.process && _realGlobal_.wTools.process.exitReason )
     result = _realGlobal_.wTools.process;
-    // xxx : use _globals_
     if
     (
       !result
@@ -164,7 +163,6 @@ function _handleUncaught2( o )
     result = _.Logger;
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.Logger && _realGlobal_.wTools.Logger.ConsoleBar )
     result = _realGlobal_.wTools.Logger;
-    // xxx : use _globals_
     if
     (
       !result
@@ -212,7 +210,6 @@ function _handleUncaught2( o )
     try
     {
       process0.exitCode( -1 );
-      // if( rewriting || !process0.exitReason() )
       if( !process0.exitReason() )
       process0.exitReason( err );
       set = true;
