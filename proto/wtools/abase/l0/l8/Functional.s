@@ -704,7 +704,7 @@ function eachPermutation_( o )
   const last = length - 1;
   const plast = length - 2;
   const slast = length - 3;
-  const onEach = o.onEach || onEachDefault;
+  const onEach = o.onEach || onEachDefault; /* qqq for Dmytro : optimize */
   let left = last;
   let swaps = 0;
   let iteration = 0;
@@ -735,7 +735,7 @@ function eachPermutation_( o )
   _.assert( length >= 0 );
   _.assert( length <= 30 );
 
-  while( iteration < iterations )
+  while( iteration < iterations ) /* qqq for Dmytro : optimize */
   {
 
     onEach( sets, iteration, left, last, swaps );
