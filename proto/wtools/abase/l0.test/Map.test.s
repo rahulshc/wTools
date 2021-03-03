@@ -12336,13 +12336,13 @@ function measureForLoops( test )
   /*
   Array length = 50000000, iterations = 10
 
-  For took : 0.07569999999999999 on Njs v12.9.1
-  For of took : 1.4411 on Njs v12.9.1
+  For took :    0.0769 on Njs v10.23.0
+  For of took : 2.8707000000000003 on Njs v10.23.0
   ----------------------------------------------------
   Array length = 500, iterations = 10000
 
-  For took : 0.0000015000000000000007 on Njs v12.9.1
-  For of took : 0.000002100000000000001 on Njs v12.9.1
+  For took :    0.000002000000000000001 on Njs v10.23.0
+  For of took : 0.000006400000000000004 on Njs v10.23.0
 
   */
 
@@ -12381,12 +12381,13 @@ function measureForLoops( test )
   var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
 
   console.log( `Array length = ${size}, iterations = ${times}\n` );
-  console.log( `For took : ${timeSpent1NumbersAvg} on Njs ${process.version}` );
-  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
+  console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
+  console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
 
   /* - */
 
-  test.case = 'short array, 100000 iterations';
+  test.case = 'short array, 10000 iterations';
   var times = 10000;
   var size = 500;
   var array = new Array( size );
@@ -12421,23 +12422,8 @@ function measureForLoops( test )
   var timeSpent2NumbersAvg = calcAvg( timeSpent2 );
 
   console.log( `Array length = ${size}, iterations = ${times}\n` );
-  console.log( `For took : ${timeSpent1NumbersAvg} on Njs ${process.version}` );
+  console.log( `For took :    ${timeSpent1NumbersAvg} on Njs ${process.version}` );
   console.log( `For of took : ${timeSpent2NumbersAvg} on Njs ${process.version}\n` );
-
-
-  // let o = Object.create( null );
-  // o.data = [ timeSpent1NumbersAvg, timeSpent2NumbersAvg ];
-  // o.dim = [ 2, 2 ];
-  // o.colWidth = 13;
-  // o.colSplits = 1;
-  // o.rowSplits = 1;
-  // o.style = 'doubleBorder';
-  // o.leftHead = [ `for : Njs ${process.version}`, `for of : Njs ${process.version}` ];
-  // console.log( 'TABLE :' );
-  // console.log( _.strTable( o ).result );
-
-  // console.log( timeSpent1NumbersAvg );
-  // console.log( timeSpent2NumbersAvg );
 
   /* - */
 
@@ -12463,23 +12449,6 @@ function measureForLoops( test )
 
     return result;
   }
-
-  // _.assert( times.timesNoBuffer.length === times.timesBuffer.length );
-  // let avgs = calculateAvg( times.timesNoBuffer, times.timesBuffer );
-  // times.timesNoBuffer.push( 'Avg : ' + avgs[ 0 ] );
-  // times.timesBuffer.push( 'Avg : ' + avgs[ 1 ] );
-  // times.timesNoBuffer.push( 'end NB' );
-  // times.timesBuffer.push( 'end WB' );
-  // let o = Object.create( null );
-  // o.data = [ ... times.timesNoBuffer, ... times.timesBuffer ];
-  // o.dim = [ 2, 11 ];
-  // o.colWidth = 13;
-  // o.colSplits = 1;
-  // o.rowSplits = 1;
-  // o.style = 'doubleBorder';
-  // o.leftHead = [ 'NoBuffer', 'WithBuffer' ];
-  // console.log( 'TABLE :' );
-  // console.log( _.strTable( o ).result );
 
 }
 
