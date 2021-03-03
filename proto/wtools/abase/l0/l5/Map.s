@@ -2630,11 +2630,10 @@ function mapOnlyOwnBut_( dstMap, srcMap, butMap )
 
 function mapOnly( srcMaps, screenMaps )
 {
-
   if( arguments.length === 1 )
   return _.mapsExtend( null, srcMaps );
 
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
+  _.assert( arguments.length === 2, 'Expects single or two arguments' );
 
   return _._mapOnly
   ({
@@ -2642,7 +2641,6 @@ function mapOnly( srcMaps, screenMaps )
     screenMaps,
     dstMap : Object.create( null ),
   });
-
 }
 
 //
@@ -2878,8 +2876,8 @@ function _mapOnly( o )
       for( m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
       return key;
-      // else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      // return key;
+      else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+      return key;
       else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
       return key;
       else if( key === String( m ) )
@@ -2890,8 +2888,8 @@ function _mapOnly( o )
       for( m of o.screenMaps )
       if( _.vector.is( m ) && key in m )
       return key;
-      // else if( _.aux.is( m ) && key in m )
-      // return key;
+      else if( _.aux.is( m ) && key in m )
+      return key;
       else if( _.primitive.is( m ) && m === key )
       return key;
     }
