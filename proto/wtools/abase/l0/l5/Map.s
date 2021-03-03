@@ -2833,7 +2833,7 @@ function _mapOnly( o )
   _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
   _.map.assertHasOnly( o, _mapOnly.defaults );
 
-  /* qqq : allow and cover vector */
+  /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   if( _.vector.is( o.srcMaps ) )
   for( let srcMap of o.srcMaps )
   {
@@ -3001,7 +3001,7 @@ function _mapOnly_( o )
   _.map.assertHasOnly( o, _mapOnly_.defaults );
   _.assert( !_.vector.is( o.dstMap ), 'Expects not a vector {-o.dstMap-}' );
 
-  /* qqq : allow and cover vector */ /* Dmytro : allowed. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
+  /* aaa : allow and cover vector */ /* Dmytro : allowed, covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
 
   let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
   let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
@@ -3133,7 +3133,7 @@ function _mapOnly_( o )
   //
   // }
   //
-  // /* qqq : allow and cover vector */
+  // /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
   //
   // if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
   // {
@@ -3163,12 +3163,12 @@ function _mapOnly_( o )
   //     for( let k in srcMap )
   //     {
   //       let m = iterateKeyOfScreenMap( k );
-  //       // for( m = 0 ; m < screenMap.length ; m++ ) /* qqq : for Dmytro : teach to work with any vector here and in similar places */
+  //       // for( m = 0 ; m < screenMap.length ; m++ ) /* aaa : for Dmytro : teach to work with any vector here and in similar places */ /* Dmytro : implemented */
   //       // for( m of screenMap )
   //       // {
   //       //   if( _.vector.is( screenMap[ m ] ) )
   //       //   {
-  //       //     /* qqq : for Dmytro : check */
+  //       //     /* aaa : for Dmytro : check */ /* Dmytro : covered */
   //       //     if( k in screenMap[ m ] )
   //       //     break;
   //       //   }
