@@ -9714,23 +9714,23 @@ function mapHasAny( test )
 
   test.open( 'array' )
 
-  test.case = 'same keys, array';
+  test.case = 'same keys';
   var got = _.mapHasAny( { a : 1 }, [ 'a' ] );
   test.true( got );
 
-  test.case = 'has only one, array';
+  test.case = 'has only one';
   var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, [ 'b', 'x' ] );
   test.true( got );
 
-  test.case = 'has all, array';
+  test.case = 'has all';
   var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, [ 'a', 'b', 'c' ] );
   test.true( got );
 
-  test.case = 'one is mising, array';
+  test.case = 'one is mising';
   var got = _.mapHasAny( { a : 1, b : 2 }, [ 'a', 'b', 'c' ] );
   test.true( got );
 
-  test.case = 'has no one, array';
+  test.case = 'has no one';
   var got = _.mapHasAny( { a : 1, b : 2 }, [ 'x', 'y' ] );
   test.true( !got );
 
