@@ -15696,26 +15696,20 @@ function assertMapHasNoUndefine( test )
 function measureMapHasNonePerformance( test )
 {
   /*
-    FOR :
-    Array length = 50000000, iterations = 10
-    Routine took : 1.361s on Njs v10.23.0
-    ----------------------------------------------------
-    Array length = 500, iterations = 10000
-    Routine took : 0.0000157s on Njs v10.23.0
-    ----------------------------------------------------
-    ----------------------------------------------------
-    FOR OF :
-    Array length = 50000000, iterations = 10
-    Routine took : 3.8853s on Njs v10.23.0
-    ----------------------------------------------------
-    Array length = 500, iterations = 10000
-    Routine took : 0.0000159s on Njs v10.23.0
-    ----------------------------------------------------
+    | **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    | mapHasNoneFor BASI   | 1.3931s            | 1.9093s           | 1.7917s            | 1.8383s            | 2.0569s           |
+    | mapHasNoneForOf BASI | 3.5931s            | 2.0025s           | 1.9753s            | 2.0242s            | 2.1874s           |
+    | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
+    | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
+
+    BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
+    SABI = small array ( length : 5e2 ), big amount of iterations ( 1e5 )
   */
 
   test.case = 'long array, 10 iterations';
-  var times = 10;
-  var size = 50000000;
+  var times = 1e1;
+  var size = 5e7;
   var array = new Array( size );
 
   var counter = 0;
@@ -15724,7 +15718,7 @@ function measureMapHasNonePerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    mapHasNoneForOf( { a : 1 }, array );
+    mapHasNoneFor( { a : 1 }, array );
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15732,14 +15726,14 @@ function measureMapHasNonePerformance( test )
   }
 
   console.log( `Array length = ${size}, iterations = ${times}` );
-  console.log( `Routine took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( `Routine BASI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
   console.log( '----------------------------------------------------' );
 
   /* - */
 
   test.case = 'short array, 10000 iterations';
-  var times = 10000;
-  var size = 500;
+  var times = 1e4;
+  var size = 5e2;
   var array = new Array( size );
   var counter = 0;
   var took = 0;
@@ -15747,7 +15741,7 @@ function measureMapHasNonePerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    mapHasNoneForOf( { a : 1 }, array );
+    mapHasNoneFor( { a : 1 }, array );
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15755,7 +15749,7 @@ function measureMapHasNonePerformance( test )
   }
 
   console.log( `Array length = ${size}, iterations = ${times}` );
-  console.log( `Routine took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( `Routine SABI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
   console.log( '----------------------------------------------------' );
 
   /* - */
