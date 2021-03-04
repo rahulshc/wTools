@@ -15693,7 +15693,7 @@ function assertMapHasNoUndefine( test )
 
 //
 
-function measureMapHasNonePerformance( test )
+function mapHasNonePerformance( test )
 {
   /*
     | **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
@@ -16029,7 +16029,7 @@ function measureMapHasNonePerformance( test )
 
 }
 
-measureMapHasNonePerformance.timeOut = 1e7;
+mapHasNonePerformance.timeOut = 1e7;
 
 // --
 // define test suite
@@ -16208,7 +16208,7 @@ let Self =
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
 
-    measureMapHasNonePerformance
+    mapHasNonePerformance
 
   }
 

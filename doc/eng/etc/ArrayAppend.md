@@ -111,10 +111,10 @@ array{Append}{ed}{Array}{Once}
 | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
 | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
 | -                    | -                  | -                 | -                  | -                  | -                 |
-| _mapOnlyFor BASI     | 12.0337s           |                   |                    |                    |                   |
-| _mapOnlyForOf BASI   | 6.9514s            |                   |                    |                    |                   |
-| _mapOnlyFor SABI     | 0.0000882s         |                   |                    |                    |                   |
-| _mapOnlyForOf SABI   | 0.0000797s         |                   |                    |                    |                   |
+| _mapOnlyFor BASI     | 11.2114s           | 9.4113s           | 9.3383s            | 4.4493s            | 7.9273s           |
+| _mapOnlyForOf BASI   | 6.8788s            | 5.4186s           | 5.4821s            | 3.6895s            | 5.1652s           |
+| _mapOnlyFor SABI     | 0.0000781s         | 0.0000744s        | 0.0000638s         | 0.0000591s         | 0.00008s          |
+| _mapOnlyForOf SABI   | 0.0000864s         | 0.0000646s        | 0.0000633s         | 0.0000493s         | 0.000058s         |
 
 
 BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
