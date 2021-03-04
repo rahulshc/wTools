@@ -297,7 +297,7 @@ function exportStringShortDiagnostic( src )
     // }
     if( _.primitive.is( src ) )
     {
-      return _.primitive.exportStringShortDiagnostic( src );
+      result += _.primitive.exportStringShortDiagnostic( src );
     }
     else if( _.set.like( src ) || _.hashMap.like( src ) )
     {
@@ -305,10 +305,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.vector.like( src ) )
     {
-      if( _.unrollIs( src ) )
-      result += `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-      else
-      result += `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
+      result += _.vector.exportStringShortDiagnostic( src );
     }
     else if( _.date.is( src ) )
     {
@@ -331,18 +328,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.object.like( src ) )
     {
-      if( _.routineIs( src.exportString ) )
-      {
-        result = src.exportString({ verbosity : 1, /*, ... o */ });
-        result = _.strShort( result );
-      }
-      else
-      {
-        if( _.countable.is( src ) )
-        result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
-        else
-        result += `{- ${_.entity.strType( src )} -}`;
-      }
+      result += _.object.exportStringShortDiagnostic( src );
     }
     else
     {
