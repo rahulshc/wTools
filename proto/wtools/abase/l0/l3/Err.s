@@ -291,7 +291,7 @@ function _errMake( o )
     if( o.sourceCode )
     if( _.strIs( o.sourceCode ) )
     sectionWrite( 'sourceCode', `Source code`, o.sourceCode );
-    else if( _.routineIs( o.sourceCode.read ) )
+    else if( _.routine.is( o.sourceCode.read ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.read );
     else if( _.strIs( o.sourceCode.code ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
@@ -620,7 +620,7 @@ function _err( o )
     {
       let arg = o.args[ a ];
 
-      if( !_.errIs( arg ) && _.routineIs( arg ) )
+      if( !_.errIs( arg ) && _.routine.is( arg ) )
       {
         if( arg.length === 0 )
         {
@@ -963,7 +963,7 @@ function _err( o )
       if( arg && !_.primitive.is( arg ) )
       {
 
-        if( _.routineIs( arg.toStr ) )
+        if( _.routine.is( arg.toStr ) )
         {
           str = arg.toStr();
         }
@@ -1468,7 +1468,7 @@ function _errLog( err, logger )
   if( err && err.debugging )
   debugger;
 
-  if( _.routineIs( err.toString ) )
+  if( _.routine.is( err.toString ) )
   {
     let str = err.toString();
     if( _.color && _.color.strFormat )
@@ -1562,7 +1562,7 @@ function errLogOnce( err )
 function tryCatch( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
   try
   {
     return routine();
@@ -1578,7 +1578,7 @@ function tryCatch( routine )
 function tryCatchBrief( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
 
   try
   {
@@ -1595,7 +1595,7 @@ function tryCatchBrief( routine )
 function tryCatchDebug( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
   try
   {
     return routine();

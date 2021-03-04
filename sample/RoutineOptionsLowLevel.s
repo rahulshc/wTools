@@ -21,7 +21,7 @@ console.log( 'routineOptions, defaults in third argument' );
 var routine = () => true;
 var defaults = { a : null, b : 1 };
 var options = { a : 1, b : undefined };
-_.routineOptions( routine, options, defaults );
+_.routine.options( routine, options, defaults );
 console.log( options );
 /* log : { a : 1, b : 1 } */
 
@@ -29,7 +29,7 @@ console.log( 'routineOptions, defaults in routine field' );
 var routine = () => true;
 routine.defaults = { a : null, b : 1 };
 var options = { a : 1, b : undefined };
-_.routineOptions( routine, options );
+_.routine.options( routine, options );
 console.log( options );
 /* log : { a : 1, b : 1 } */
 
@@ -39,7 +39,7 @@ console.log( 'assertRoutineOptions, defaults in third argument' );
 var routine = () => true;
 var defaults = { a : null, b : 1 };
 var options = { a : 1, b : null };
-_.assertRoutineOptions( routine, options, defaults );
+_.routine.assertOptions( routine, options, defaults );
 console.log( options );
 /* log : { a : 1, b : null } */
 
@@ -47,6 +47,6 @@ console.log( 'assertRoutineOptions, defaults in routine field' );
 var routine = () => true;
 routine.defaults = { a : null, b : 1 };
 var options = { a : 1, b : null };
-_.assertRoutineOptions( routine, options );
+_.routine.assertOptions( routine, options );
 console.log( options );
 /* log : { a : 1, b : null } */
