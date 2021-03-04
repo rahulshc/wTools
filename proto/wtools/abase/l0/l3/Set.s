@@ -113,7 +113,7 @@ function setsAreIdenticalShallow( src1, src2 )
 
   let [ arr1, arr2 ] = _.setsToArrays([ src1, src2 ]);
 
-  return _.longAreIdenticalShallow( arr1, arr2 );
+  return _.longIdenticalShallow( arr1, arr2 );
 }
 
 //

@@ -42,31 +42,50 @@ _.long_ = _.long_ || Object.create( null );
  * @namespace Tools
  */
 
-let notLongSymbol = Symbol.for( 'notLong' );
+// let notLongSymbol = Symbol.for( 'notLong' );
 /* xxx : optimize! */
-function longIs( src ) /* qqq : check coverage */
+/* qqq : for Yevhen : optimize. ask how to */
+/* qqq : check coverage */
+function longIs( src )
 {
 
   if( _.primitive.is( src ) )
   return false;
-  if( _.routine.is( src ) )
-  return false;
-  if( _.object.is( src ) )
-  return false;
-  if( _.strIs( src ) )
-  return false;
-  if( _.bufferNodeIs( src ) )
-  return false;
 
-  if( notLongSymbol in src ) /* qqq : cover please */
-  return false;
-
-  if( Object.propertyIsEnumerable.call( src, 'length' ) )
-  return false;
-  if( !_.number.is( src.length ) )
-  return false;
-
+  if( _.bufferTypedIs( src ) )
   return true;
+  if( _.arrayLike( src ) )
+  return true;
+
+  // if( _.routine.is( src ) )
+  // return false;
+  // if( _.object.is( src ) )
+  // return false;
+  // if( _.strIs( src ) )
+  // return false;
+  // if( _.bufferNodeIs( src ) )
+  // return false;
+
+  // if( _.routineIs( src ) )
+  // return false;
+  // if( _.object.is( src ) )
+  // return false;
+  // if( _.strIs( src ) )
+  // return false;
+  // if( _.bufferNodeIs( src ) )
+  // return false;
+
+  // if( notLongSymbol in src )
+  // return false;
+
+  // yyy
+  // if( Object.propertyIsEnumerable.call( src, 'length' ) )
+  // return false;
+
+  // if( !_.number.is( src.length ) )
+  // return false;
+
+  return false;
 }
 
 //

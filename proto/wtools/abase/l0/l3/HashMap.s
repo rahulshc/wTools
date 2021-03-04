@@ -103,7 +103,8 @@ let Extension =
   exportStringShortDiagnostic,
   exportStringShortCode : exportStringShortDiagnostic,
   exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic
+  exportStringCode : exportStringShortDiagnostic,
+
 }
 
 Object.assign( _, ToolsExtension );

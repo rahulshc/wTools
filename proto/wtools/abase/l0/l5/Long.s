@@ -3125,24 +3125,24 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 //
 
 /**
- * The longIdentical() routine checks the equality of two arrays.
+ * The longIdenticalShallow() routine checks the equality of two arrays.
  *
  * @param { longLike } src1 - The first array.
  * @param { longLike } src2 - The second array.
  *
  * @example
- * _.longIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * _.longIdenticalShallow( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns true
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function longIdentical
+ * @function longIdenticalShallow
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @namespace Tools
  */
 
 /* xxx : vector? */
 /* qqq : extend test */
-function longIdentical( src1, src2 )
+function longIdenticalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   // _.assert( _.longLike( src1 ) );
@@ -3760,8 +3760,8 @@ let Extension =
   // array checker
 
   // longCompare,
-  longIdentical,
-  longAreIdenticalShallow : longIdentical,
+  longIdenticalShallow,
+  longIdentical : longIdenticalShallow,
 
   longHas,
   longHasAny,
