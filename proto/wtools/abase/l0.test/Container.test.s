@@ -2796,7 +2796,7 @@ function elementThGet( test )
   // test.case = 'Global & GlobalReal';
   // var src = global;
   // var got = _.container.elementThGet( src, 0 );
-  // test.identical( got, true );
+  // test.identical( got, 1 );
 
   /* else _.assert( 0 ); */
   // test.case = 'Global & GlobalDerived';
