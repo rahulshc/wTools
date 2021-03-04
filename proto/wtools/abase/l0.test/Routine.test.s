@@ -2452,6 +2452,199 @@ function routineOptionsPreservingUndefines_( test )
 
 //
 
+function assertRoutineOptionsPreservingUndefines_( test )
+{
+  test.open( 'empty defaults' );
+
+  test.case = 'defaults - null, args - empty map';
+  var defaults = null;
+  var options = {};
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, {} );
+  test.true( got === options );
+
+  test.case = 'defaults - null, args - array with empty map';
+  var defaults = null;
+  var options = [ {} ];
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, {} );
+  test.true( got === options[ 0 ] );
+
+  test.case = 'defaults - routine with empty defaults, args - empty map';
+  var routine = () => null;
+  routine.defaults = {};
+  var options = {};
+  var got = _.assertRoutineOptionsPreservingUndefines_( routine, options );
+  test.identical( got, {} );
+  test.true( got === options );
+
+  test.case = 'defaults - routine with empty defaults, args - array with empty map';
+  var routine = () => null;
+  routine.defaults = {};
+  var options = [ {} ];
+  var got = _.assertRoutineOptionsPreservingUndefines_( routine, options );
+  test.identical( got, {} );
+  test.true( got === options[ 0 ] );
+
+  test.case = 'defaults - empty defaults, args - empty map';
+  var defaults = {};
+  var options = {};
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, {} );
+  test.true( got === options );
+
+  test.case = 'defaults - empty defaults, args - array with empty map';
+  var defaults = {};
+  var options = [ {} ];
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, {} );
+  test.true( got === options[ 0 ] );
+
+  test.close( 'empty defaults' );
+
+  /* - */
+
+  test.open( 'defaults, options - filled, no complementing' );
+
+  test.case = 'defaults - routine with defaults, args - map';
+  var routine = () => null;
+  routine.defaults = { a : { d : 1 }, b : null, c : [ 'a' ] };
+  var options = { a : undefined, b : null, c : null };
+  var got = _.assertRoutineOptionsPreservingUndefines_( routine, options );
+  test.identical( got, { a : undefined, b : null, c : null } );
+  test.true( got === options );
+
+  test.case = 'defaults - routine with defaults, args - array with map';
+  var routine = () => null;
+  routine.defaults = { a : { d : 1 }, b : null, c : [ 'a' ] };
+  var options = [ { a : undefined, b : null, c : null } ];
+  var got = _.assertRoutineOptionsPreservingUndefines_( routine, options );
+  test.identical( got, { a : undefined, b : null, c : null } );
+  test.true( got === options[ 0 ] );
+
+  test.case = 'defaults - empty defaults, args - map';
+  var defaults = { a : { d : 1 }, b : null, c : [ 'a' ] };
+  var options = { a : undefined, b : null, c : null };
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, { a : undefined, b : null, c : null } );
+  test.true( got === options );
+
+  test.case = 'defaults - empty defaults, args - array with map';
+  var defaults = { a : { d : 1 }, b : null, c : [ 'a' ] };
+  var options = [ { a : undefined, b : null, c : null } ];
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got, { a : undefined, b : null, c : null } );
+  test.true( got === options[ 0 ] );
+
+  test.close( 'defaults, options - filled, no complementing' );
+
+  /* - */
+
+  test.case = 'defaults - has prototyped map, args - empty map';
+  var defaults = { a : { d : 1 }, b : null };
+  var prototype = { a : 1, b : 2 };
+  var options = Object.create( prototype );
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  var gotPrototype = Object.getPrototypeOf( got );
+  test.identical( gotPrototype, { a : 1, b : 2 } );
+  test.true( got === options );
+  test.true( gotPrototype === prototype );
+
+  test.case = 'defaults - has prototyped map, args - empty map';
+  var prototype = { a : 1, b : 2 };
+  var defaults = Object.create( null );
+  defaults.a = Object.create( prototype );
+  defaults.a.d = 1;
+  defaults.b = null;
+  var options = { a : null, b : null };
+  var got = _.assertRoutineOptionsPreservingUndefines_( defaults, options );
+  test.identical( got.a, null );
+  test.identical( got.b, null );
+  test.true( got === options );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {}, {}, {} ) );
+
+  test.case = 'wrong type of defaults';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( 'wrong', {} ) );
+
+  test.case = 'wrong type of defaults';
+  var routine = () => true;
+  routine.defaults = 'wrong';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( routine, {} ) );
+
+  test.case = 'wrong type of options';
+  var routine = () => true;
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( routine, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( routine, [ 'wrong' ] ) );
+
+  test.case = 'options.length > 1';
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {}, [ {}, {} ] ) );
+
+  test.case = 'options has unknown options';
+  var testRoutine = () => true;
+  testRoutine.defaults = {};
+  var msg = 'Object should have no fields : "unknown", "b"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, { unknown : true, b : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, [ { unknown : true, b : 1 } ] ), errCallback );
+
+  test.case = 'options has unknown options';
+  var msg = 'Object should have no fields : "unknown"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {}, { unknown : true } ), errCallback );
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {}, [ { unknown : true } ] ), errCallback );
+
+  test.case = 'options has no all options from defaults';
+  var testRoutine = () => true;
+  testRoutine.defaults = { known : true };
+  var msg = 'Object should have fields : "known"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, [ {} ] ), errCallback );
+
+  test.case = 'options has no all options from defaults';
+  var msg = 'Object should have fields : "known"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.errIs( err ) );
+    test.identical( _.strCount( err.message, msg ), 1 );
+  };
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( { known : true }, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( { known : true }, [ {} ] ), errCallback );
+}
+
+//
+
 function routinesCompose( test )
 {
 
@@ -7106,6 +7299,7 @@ var Self =
     assertRoutineOptions,
     assertRoutineOptions_,
     routineOptionsPreservingUndefines_,
+    assertRoutineOptionsPreservingUndefines_,
 
     routinesCompose,
     routinesComposeAll,
