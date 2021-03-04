@@ -4512,6 +4512,7 @@ let Routines =
   buffersAreEquivalent,
   buffersAreIdentical,
   buffersAreIdenticalShallow : buffersAreIdentical,
+  buffersAreEquivalentShallow : buffersAreEquivalent,
 
   _bufferMake_functor,
   bufferMake,

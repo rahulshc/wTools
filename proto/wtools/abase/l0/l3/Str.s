@@ -136,7 +136,7 @@ function strEquivalent( src1, src2 )
 
   if( strIs1 && strIs2 )
   {
-    return src1 === src2;
+    return src1.trim() === src2.trim();
   }
   else if( strIs1 )
   {
@@ -1378,6 +1378,7 @@ let ExtensionTools =
   strHas,
 
   strEquivalent,
+  areEquivalentShallow : strEquivalent,
   strsEquivalent,
 
   // converter

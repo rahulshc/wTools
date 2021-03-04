@@ -90,6 +90,24 @@ function noneAre( src )
   return _.none( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
+//
+
+function areEquivalentShallow( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.bool.like( src1 ) );
+  _.assert( _.bool.like( src2 ) );
+
+  if
+  (
+    ( _.bool.likeTrue( src1 ) && _.bool.likeTrue( src2 ) )
+    || ( ( _.bool.likeFalse( src1 ) && _.bool.likeFalse( src2 ) ) )
+  )
+  return true;
+
+  return false;
+}
+
 // --
 // extension
 // --
@@ -106,6 +124,11 @@ let ExtensionTools =
 
 //
 
+let Extension =
+{
+  areEquivalentShallow
+}
+
 let ExtensionS =
 {
 
@@ -117,6 +140,7 @@ let ExtensionS =
 }
 
 Object.assign( _, ExtensionTools );
+Object.assign( _.bool, Extension );
 Object.assign( _.bool.s, ExtensionS );
 
 // --

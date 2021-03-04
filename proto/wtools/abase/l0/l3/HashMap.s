@@ -96,6 +96,7 @@ let Extension =
   isEmpty,
   isPopulated,
   areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow,
 
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,

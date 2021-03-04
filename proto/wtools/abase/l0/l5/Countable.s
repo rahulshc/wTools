@@ -53,6 +53,7 @@ function exportStringShortDiagnostic( src )
 var Extension =
 {
   areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow,
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,
