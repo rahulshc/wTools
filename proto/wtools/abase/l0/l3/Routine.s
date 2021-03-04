@@ -1448,7 +1448,7 @@ function routineUnite_body( o )
         else
         _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
 
-        result = tail.call( this, result, o );
+        result = tail.call( this, result, o, unitedRoutine );
 
         return result;
       }
@@ -1468,7 +1468,7 @@ function routineUnite_body( o )
         else
         result = body.call( this, o );
 
-        result = tail.call( this, result, o ); /* xxx qqq for Dmytro : 3rd argument is unitedRoutine */
+        result = tail.call( this, result, o, unitedRoutine ); /* xxx aaa for Dmytro : 3rd argument is unitedRoutine */ /* Dmytro : added, covered */
 
         return result;
       }
