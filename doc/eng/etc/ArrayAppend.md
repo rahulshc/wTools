@@ -103,3 +103,19 @@ array{Append}{ed}{Array}{Once}
   ```
 
   For more information on these patterns, please see [ ArrayRoutines.md ](ArrayRoutines.md).
+
+| **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+| :------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+| mapHasNoneFor BASI   | 1.3931s            | 1.9093s           | 1.7917s            | 1.8383s            | 2.0569s           |
+| mapHasNoneForOf BASI | 3.5931s            | 2.0025s           | 1.9753s            | 2.0242s            | 2.1874s           |
+| mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
+| mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
+| -                    | -                  | -                 | -                  | -                  | -                 |
+| _mapOnlyFor BASI     | 12.0337s           |                   |                    |                    |                   |
+| _mapOnlyForOf BASI   | 6.9514s            |                   |                    |                    |                   |
+| _mapOnlyFor SABI     | 0.0000882s         |                   |                    |                    |                   |
+| _mapOnlyForOf SABI   | 0.0000797s         |                   |                    |                    |                   |
+
+
+BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
+SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )

@@ -15704,13 +15704,14 @@ function measureMapHasNonePerformance( test )
     | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
 
     BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
-    SABI = small array ( length : 5e2 ), big amount of iterations ( 1e5 )
+    SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
   */
 
   test.case = 'long array, 10 iterations';
   var times = 1e1;
   var size = 5e7;
   var array = new Array( size );
+  var arrayOfObjects = new Array( size ).fill({ b : 2 });
 
   var counter = 0;
   var took = 0;
@@ -15718,7 +15719,9 @@ function measureMapHasNonePerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    mapHasNoneFor( { a : 1 }, array );
+    /* Routine for testing */
+    // mapHasNoneFor( { a : 1 }, array );
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfObjects });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15735,13 +15738,16 @@ function measureMapHasNonePerformance( test )
   var times = 1e4;
   var size = 5e2;
   var array = new Array( size );
+  var arrayOfObjects = new Array( size ).fill({ b : 2 });
   var counter = 0;
   var took = 0;
 
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    mapHasNoneFor( { a : 1 }, array );
+    /* Routine for testing */
+    // mapHasNoneFor( { a : 1 }, array );
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfObjects });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15768,7 +15774,7 @@ function measureMapHasNonePerformance( test )
         {
           if( screen[ s ] in src )
           return false;
-          counter++;
+          counter++; /* check */
         }
       }
       else
@@ -15813,9 +15819,217 @@ function measureMapHasNonePerformance( test )
     return true;
   }
 
+  //
+
+  function _mapOnlyFor( o )
+  {
+    let self = this;
+
+    o.dstMap = o.dstMap || Object.create( null );
+    o.filter = o.filter || _.property.mapper.bypass();
+
+    _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+    _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+    _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+    _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
+    // _.map.assertHasOnly( o, _mapOnlyFor.defaults );
+
+    /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
+    if( _.vector.is( o.srcMaps ) )
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
+
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( srcMap );
+      else
+      filterSrcMap( srcMap );
+    }
+    else
+    {
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( o.srcMaps );
+      else
+      filterSrcMap( o.srcMaps );
+    }
+
+    return o.dstMap;
+
+    /* */
+
+    function filterSrcMapWithVectorScreenMap( srcMap )
+    {
+      for( let key in srcMap )
+      {
+        let screenKey = screenKeySearch( key );
+        if( screenKey )
+        o.filter.call( self, o.dstMap, srcMap, screenKey );
+      }
+    }
+
+    /* */
+
+    function screenKeySearch( key )
+    {
+      let m;
+      if( _.arrayLike( o.screenMaps ) )
+      {
+        for( m = 0 ; m < o.screenMaps.length ; m++ )
+        {
+          counter++;
+          if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+          return key;
+          else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+          return key;
+          else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+          return key;
+          else if( key === String( m ) )
+          return key;
+        }
+      }
+      else
+      {
+        for( m of o.screenMaps )
+        if( _.vector.is( m ) && key in m )
+        return key;
+        else if( _.aux.is( m ) && key in m )
+        return key;
+        else if( _.primitive.is( m ) && m === key )
+        return key;
+      }
+    }
+
+    /* */
+
+    function filterSrcMap( srcMap )
+    {
+      for( let key in o.screenMaps )
+      {
+        if( o.screenMaps[ key ] === undefined )
+        continue;
+
+        if( key in srcMap )
+        o.filter.call( this, o.dstMap, srcMap, key );
+      }
+    }
+  }
+
+  _mapOnlyFor.defaults =
+  {
+    dstMap : null,
+    srcMaps : null,
+    screenMaps : null,
+    filter : null,
+  }
+
+  //
+
+  function _mapOnlyForOf( o )
+  {
+    let self = this;
+
+    o.dstMap = o.dstMap || Object.create( null );
+    o.filter = o.filter || _.property.mapper.bypass();
+
+    _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+    _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+    _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+    _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
+    // _.map.assertHasOnly( o, _mapOnlyForOf.defaults );
+
+    /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
+    if( _.vector.is( o.srcMaps ) )
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
+
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( srcMap );
+      else
+      filterSrcMap( srcMap );
+    }
+    else
+    {
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( o.srcMaps );
+      else
+      filterSrcMap( o.srcMaps );
+    }
+
+    return o.dstMap;
+
+    /* */
+
+    function filterSrcMapWithVectorScreenMap( srcMap )
+    {
+      for( let key in srcMap )
+      {
+        let screenKey = screenKeySearch( key );
+        if( screenKey )
+        o.filter.call( self, o.dstMap, srcMap, screenKey );
+      }
+    }
+
+    /* */
+
+    function screenKeySearch( key )
+    {
+      let m;
+      // if( _.arrayLike( o.screenMaps ) )
+      // {
+      //   for( m = 0 ; m < o.screenMaps.length ; m++ )
+      //   if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+      //   return key;
+      //   else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+      //   return key;
+      //   else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+      //   return key;
+      //   else if( key === String( m ) )
+      //   return key;
+      // }
+      // else
+      // {
+        for( m of o.screenMaps )
+        {
+          counter++
+          if( _.vector.is( m ) && key in m )
+          return key;
+          else if( _.aux.is( m ) && key in m )
+          return key;
+          else if( _.primitive.is( m ) && m === key )
+          return key;
+        }
+      // }
+    }
+
+    /* */
+
+    function filterSrcMap( srcMap )
+    {
+      for( let key in o.screenMaps )
+      {
+        if( o.screenMaps[ key ] === undefined )
+        continue;
+
+        if( key in srcMap )
+        o.filter.call( this, o.dstMap, srcMap, key );
+      }
+    }
+  }
+
+  _mapOnlyForOf.defaults =
+  {
+    dstMap : null,
+    srcMaps : null,
+    screenMaps : null,
+    filter : null,
+  }
+
 }
 
-measureMapHasNonePerformance.timeOut = 1e6;
+measureMapHasNonePerformance.timeOut = 1e7;
 
 // --
 // define test suite
