@@ -241,7 +241,7 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please */
     let key2 = Object.keys( container )[ key ];
     return [ key2, container[ key2 ] ];
   }
-  else if( _.hashMapIs( container ) )
+  else if( _.hashMap.is( container ) )
   {
     return [ ... container ][ key ];
   }

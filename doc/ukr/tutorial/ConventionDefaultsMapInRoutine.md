@@ -20,7 +20,7 @@ function nameFull( path )
   _.assert( _.strIs( path ), 'Expects strings {-path-}' );
 
   let o = { path : path };
-  _.routineOptions( nameFull, o );
+  _.routine.options( nameFull, o );
 
   let i = o.path.lastIndexOf( '/' );
   if( i !== -1 )
@@ -100,7 +100,7 @@ function name( o )
   _.assert( arguments.length === 1 );
   _.assert( _.mapIs( o ), 'Expects map' );
 
-  _.routineOptions( name, o );
+  _.routine.options( name, o );
 
   let i = o.path.lastIndexOf( '/' );
   if( i !== -1 )

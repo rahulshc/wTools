@@ -669,7 +669,7 @@ function transformerRegister( test )
   test.case = 'existing mapper with custom name';
   var src = _.property.mapper[ 'assigning' ];
   var srcName = 'existingMapper';
-  test.true( _.routineIs( _.property.mapper[ 'assigning' ] ) );
+  test.true( _.routine.is( _.property.mapper[ 'assigning' ] ) );
   _.property.transformerRegister( src, srcName );
   test.true( _.property.mapperIs( src ) );
   test.true( _.property.mapperIs( _.property.mapper[ srcName ] ) );
@@ -677,7 +677,7 @@ function transformerRegister( test )
   test.case = 'existing filter with custom name';
   var src = _.property.filter[ 'dstAndSrcOwn' ];
   var srcName = 'existingFilter';
-  test.true( test.true( _.routineIs( _.property.filter[ 'dstAndSrcOwn' ] ) ) );
+  test.true( test.true( _.routine.is( _.property.filter[ 'dstAndSrcOwn' ] ) ) );
   _.property.transformerRegister( src, srcName );
   test.true( _.property.filterIs( src ) );
   test.true( _.property.filterIs( _.property.filter[ srcName ] ) );
@@ -1116,7 +1116,7 @@ function transformerUnregister( test )
   test.case = 'existing mapper with custom name';
   var src = _.property.mapper[ 'assigning' ];
   var srcName = 'existingMapper';
-  test.true( _.routineIs( _.property.mapper[ 'assigning' ] ) );
+  test.true( _.routine.is( _.property.mapper[ 'assigning' ] ) );
   _.property.transformerRegister( src, srcName );
   test.true( _.property.mapperIs( _.property.mapper[ srcName ] ) );
   _.property.transformerUnregister( srcName, 'mapper' );
@@ -1125,7 +1125,7 @@ function transformerUnregister( test )
   test.case = 'existing filter with custom name';
   var src = _.property.filter[ 'dstAndSrcOwn' ];
   var srcName = 'existingFilter';
-  test.true( test.true( _.routineIs( _.property.filter[ 'dstAndSrcOwn' ] ) ) );
+  test.true( test.true( _.routine.is( _.property.filter[ 'dstAndSrcOwn' ] ) ) );
   _.property.transformerRegister( src, srcName );
   test.true( _.property.filterIs( _.property.filter[ srcName ] ) );
   test.true( _.property.mapperIs( _.property.mapper[ srcName ] ) );

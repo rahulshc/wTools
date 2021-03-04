@@ -15,7 +15,7 @@ function mapperFromFilter( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
   _.assert( !!routine.identity );
 
   if( routine.identity.propertyFilter )
@@ -70,7 +70,7 @@ function mapperFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {
@@ -95,7 +95,7 @@ function filterFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.entity.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {
@@ -194,7 +194,7 @@ function transformersUnregister( transformerNames, transformerType )
 
 function transformerIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
   if( !_.object.is( transformer.identity ) )
   return false;
@@ -213,7 +213,7 @@ function transformerIs( transformer )
 
 function mapperIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
   if( !_.object.is( transformer.identity ) )
   return false;
@@ -224,7 +224,7 @@ function mapperIs( transformer )
 
 function filterIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
   if( !_.object.is( transformer.identity ) )
   return false;

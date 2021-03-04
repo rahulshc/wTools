@@ -361,12 +361,12 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
@@ -392,12 +392,12 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -433,12 +433,12 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -475,12 +475,12 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -868,12 +868,12 @@ function onceCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
@@ -899,12 +899,12 @@ function onceCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -940,12 +940,12 @@ function onceCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -982,12 +982,12 @@ function onceCheckDescriptor( test )
   test.identical( descriptor.event.enabled, true );
   test.identical( descriptor.event.first, 0 );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event.off ) );
+  test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.mapKeys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
   test.identical( descriptor.event2.first, 0 );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
-  test.true( _.routineIs( descriptor.event2.off ) );
+  test.true( _.routine.is( descriptor.event2.off ) );
 
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -1036,7 +1036,7 @@ function onceWithChain( test )
   test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
-  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
+  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   test.identical( ehandler.events.event2, [] );
@@ -1063,7 +1063,7 @@ function onceWithChain( test )
   test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
-  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
+  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   test.identical( ehandler.events.event2, [] );
@@ -1087,7 +1087,7 @@ function onceWithChain( test )
   test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
-  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
+  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   test.identical( ehandler.events.event2, [] );
@@ -1114,7 +1114,7 @@ function onceWithChain( test )
   test.identical( ehandler.events.event2, [] );
   _.event.eventGive( ehandler, 'event3' );
   test.identical( result, [] );
-  test.true( _.routineIs( ehandler.events.event2[ 0 ] ) );
+  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   test.identical( ehandler.events.event2, [] );

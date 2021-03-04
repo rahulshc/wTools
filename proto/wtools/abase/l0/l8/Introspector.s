@@ -15,7 +15,7 @@ let _diagnosticCodeExecuting = 0;
 function code( o )
 {
 
-  _.routineOptions( code, o );
+  _.routine.options( code, o );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
   if( _diagnosticCodeExecuting )
