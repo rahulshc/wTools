@@ -51,10 +51,20 @@ function longIs( src )
 
   if( _.primitive.is( src ) )
   return false;
+
   if( _.bufferTypedIs( src ) )
   return true;
   if( _.arrayLike( src ) )
   return true;
+
+  // if( _.routine.is( src ) )
+  // return false;
+  // if( _.object.is( src ) )
+  // return false;
+  // if( _.strIs( src ) )
+  // return false;
+  // if( _.bufferNodeIs( src ) )
+  // return false;
 
   // if( _.routineIs( src ) )
   // return false;
@@ -148,9 +158,9 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
   _.assert( _.longLike( arr ), 'Expect a Long' );
   _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator1 || _.routine.is( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
+  _.assert( !evaluator2 || _.routine.is( evaluator2 ) );
 
   if( !evaluator1 )
   {
@@ -213,9 +223,9 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.number.is( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator1 || _.routine.is( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
+  _.assert( !evaluator2 || _.routine.is( evaluator2 ) );
 
   if( !evaluator1 )
   {
@@ -494,11 +504,11 @@ function appender( src )
 {
   _.assert( _.longLike( src ) );
 
-  if( 'append' in src && _.routineIs( src.append ) )
+  if( 'append' in src && _.routine.is( src.append ) )
   return appendWithAppend;
-  else if( 'push' in src && _.routineIs( src.push ) )
+  else if( 'push' in src && _.routine.is( src.push ) )
   return appendWithPush;
-  else if( 'add' in src && _.routineIs( src.add ) )
+  else if( 'add' in src && _.routine.is( src.add ) )
   return appendWithAdd;
 
   function appendWithAppend( e )
@@ -524,11 +534,11 @@ function prepender( src )
 {
   _.assert( _.longLike( src ) );
 
-  if( 'prepend' in src && _.routineIs( src.prepend ) )
+  if( 'prepend' in src && _.routine.is( src.prepend ) )
   return prependWithAppend;
-  else if( 'push' in src && _.routineIs( src.push ) )
+  else if( 'push' in src && _.routine.is( src.push ) )
   return prependWithPush;
-  else if( 'add' in src && _.routineIs( src.add ) )
+  else if( 'add' in src && _.routine.is( src.add ) )
   return prependWithAdd;
 
   function prependWithAppend( e )

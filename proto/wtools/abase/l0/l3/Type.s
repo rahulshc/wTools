@@ -102,7 +102,7 @@ function promiseLike( src )
   return false;
   // if( !_.object.is( src ) )
   // return false;
-  return _.routineIs( src.then ) && _.routineIs( src.catch ) && ( src.constructor ) && ( src.constructor.name !== 'wConsequence' );
+  return _.routine.is( src.then ) && _.routine.is( src.catch ) && ( src.constructor ) && ( src.constructor.name !== 'wConsequence' );
 }
 
 //
@@ -126,7 +126,7 @@ function typeOf( src, constructor )
   }
   else if( src.constructor )
   {
-    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
+    _.assert( _.routine.is( src.constructor ) && src instanceof src.constructor );
     return src.constructor;
   }
   else
@@ -162,7 +162,7 @@ function typeOf( src, constructor )
 function constructorIs( cls )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  return _.routineIs( cls ) && !instanceIs( cls );
+  return _.routine.is( cls ) && !instanceIs( cls );
 }
 
 //
@@ -195,7 +195,7 @@ function instanceIs( src )
   // return false;
   if( prototype === Object.prototype )
   return false;
-  if( _.routineIs( prototype ) )
+  if( _.routine.is( prototype ) )
   return false;
 
   // return Object.hasOwnProperty.call( prototype, 'constructor' );
@@ -227,7 +227,7 @@ function workerIs( src )
 function streamIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  return _.object.is( src ) && _.routineIs( src.pipe )
+  return _.object.is( src ) && _.routine.is( src.pipe )
 }
 
 //

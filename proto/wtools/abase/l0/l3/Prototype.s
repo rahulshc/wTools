@@ -34,7 +34,7 @@ function each( proto, onEach )
 {
   let result = [];
 
-  _.assert( _.routineIs( onEach ) || !onEach );
+  _.assert( _.routine.is( onEach ) || !onEach );
   _.assert( !_.primitive.is( proto ) || proto === null );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -139,7 +139,7 @@ function is( src ) /* xxx : move */
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.primitive.is( src ) )
   return false;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   return false;
   return Object.hasOwnProperty.call( src, 'constructor' );
 }

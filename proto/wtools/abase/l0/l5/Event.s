@@ -23,7 +23,7 @@ function _chainGenerate( args )
 
   chain.push([ _.event.nameValueFrom( args[ args.length-2 ] ), args[ args.length-1 ] ]);
 
-  _.assert( _.routineIs( args[ args.length-1 ] ) );
+  _.assert( _.routine.is( args[ args.length-1 ] ) );
 
   return chain;
 
@@ -38,7 +38,7 @@ function _chainGenerate( args )
       let self = this;
       let next = chain[ a + 1 ];
 
-      if( _.routineIs( self.on ) )
+      if( _.routine.is( self.on ) )
       {
         /*
             Dmytro : it is strange code because the owners of ehandler can be classes like Process.
@@ -81,7 +81,7 @@ function _chainValidate( chain )
   {
     _.assert( _.event.nameIs( chain[ i ] ) );
   }
-  _.assert( _.routineIs( chain[ chain.length - 1 ] ) );
+  _.assert( _.routine.is( chain[ chain.length - 1 ] ) );
 
   return true;
 }
@@ -95,8 +95,8 @@ function _callbackMapValidate( callbackMap )
   for( let k in callbackMap )
   {
     let callback = callbackMap[ k ];
-    _.assert( _.routineIs( callback ) || _.longIs( callback ) );
-    if( _.routineIs( callback ) )
+    _.assert( _.routine.is( callback ) || _.longIs( callback ) );
+    if( _.routine.is( callback ) )
     continue;
     _.event._chainValidate( callback );
   }
@@ -244,7 +244,7 @@ function on_head( routine, args )
 
   if( args.length === 2 )
   {
-    _.assert( _.routineIs( args[ 1 ] ) );
+    _.assert( _.routine.is( args[ 1 ] ) );
 
     o = Object.create( null );
     o.callbackMap = Object.create( null );
@@ -296,7 +296,7 @@ function on( ehandler, o )
   // if( _.longIs( o.callbackMap ) )
   // o.callbackMap = callbackMapFromChain( o.callbackMap );
 
-  _.routineOptions( on, o );
+  _.routine.options( on, o );
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
@@ -313,7 +313,7 @@ function on( ehandler, o )
     if( _.longIs( callback ) )
     callback = _.event._chainToCallback([ c, ... callback ]);
 
-    _.assert( _.routineIs( callback ) );
+    _.assert( _.routine.is( callback ) );
 
     callback = callbackOn_functor.call( descriptors[ c ], callback );
     descriptors[ c ].off = _.event.off_functor.call( descriptors[ c ], ehandler, { callbackMap : { [ c ] : callback } } );
@@ -436,7 +436,7 @@ on.defaults =
 function once( ehandler, o )
 {
 
-  _.routineOptions( once, o );
+  _.routine.options( once, o );
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
@@ -453,7 +453,7 @@ function once( ehandler, o )
     if( _.longIs( callback ) )
     {
       let length = callback.length;
-      _.assert( _.routineIs( callback[ length - 1 ] ), 'Expects routine to execute.' );
+      _.assert( _.routine.is( callback[ length - 1 ] ), 'Expects routine to execute.' );
 
       let name = callback[ length - 2 ] || c;
       name = name.value !== undefined ? name.value : name;
@@ -466,7 +466,7 @@ function once( ehandler, o )
     }
     descriptors[ c ].off = _.event.off_functor.call( descriptors[ c ], ehandler, { callbackMap : { [ c ] : callback } } );
 
-    _.assert( _.routineIs( callback ) );
+    _.assert( _.routine.is( callback ) );
 
     callbackAdd( ehandler, c, callback );
   }
@@ -590,7 +590,7 @@ function off_head( routine, args )
 function off( ehandler, o )
 {
 
-  _.routineOptions( off, o );
+  _.routine.options( off, o );
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.object.is( ehandler ) );
   _.assert( _.object.is( ehandler.events ) );
@@ -668,9 +668,9 @@ function eventHasHandler_head( routine, args )
 function eventHasHandler( ehandler, o )
 {
 
-  _.routineOptions( eventHasHandler, o );
+  _.routine.options( eventHasHandler, o );
   _.assert( _.strIs( o.eventName ) );
-  _.assert( _.routineIs( o.eventHandler ) );
+  _.assert( _.routine.is( o.eventHandler ) );
   _.assert( _.mapIs( ehandler ) );
   _.assert( _.mapIs( ehandler.events ) );
   _.assert( arguments.length === 2 );
@@ -699,7 +699,7 @@ function eventGive( ehandler, o )
   if( _.strIs( o ) )
   o = { event : o }
 
-  _.routineOptions( eventGive, o );
+  _.routine.options( eventGive, o );
 
   if( o.onError === null )
   o.onError = onError;

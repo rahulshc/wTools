@@ -28681,7 +28681,7 @@ Besides the aforementioned difference, routineBind method accepts function as ar
      var f1 = function(){ console.log( this ) };
      var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
      f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineJoin( undefined,f1 ); // new function.
+     var f3 = _.routine.join( undefined,f1 ); // new function.
      f3.call( o ) // print  { z: 5 }</code></pre>
 
 

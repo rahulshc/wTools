@@ -376,7 +376,7 @@ function entityEach( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -415,7 +415,7 @@ function entityEachOwn( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -456,7 +456,7 @@ function entityEachOwn( src, onEach )
 //   _.assert( arguments.length === 2 );
 //   _.assert( onEach.length <= 3 );
 //   // _.assert( onEach.length <= 2 );
-//   _.assert( _.routineIs( onEach ) );
+//   _.assert( _.routine.is( onEach ) );
 //
 //   /* */
 //
@@ -492,7 +492,7 @@ function entityEachOwn( src, onEach )
 //   // if( arguments.length === 2 )
 //   // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 //   //
-//   // _.routineOptions( eachKey, o );
+//   // _.routine.options( eachKey, o );
 //   // _.assert( arguments.length === 1 || arguments.length === 2 );
 //   // _.assert( o.onUp && o.onUp.length <= 3 );
 //   //
@@ -625,7 +625,7 @@ function entityOnly( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -639,7 +639,7 @@ function entityOnly( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
@@ -659,7 +659,7 @@ function entityOnly( dst, src, onEach )
   // if( dst === src )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -682,7 +682,7 @@ function entityOnly( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -1184,7 +1184,7 @@ function entityBut( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -1198,14 +1198,14 @@ function entityBut( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -1228,7 +1228,7 @@ function entityBut( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -1646,7 +1646,7 @@ function entityBut( dst, src, onEach )
 //   if( _.strIs( onEach ) )
 //   {
 //     let selector = onEach;
-//     _.assert( _.routineIs( _.select ) );
+//     _.assert( _.routine.is( _.select ) );
 //     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
 //     selector = _.strRemoveBegin( selector, '*/' );
 //     onEach = function( e, k )
@@ -1656,11 +1656,11 @@ function entityBut( dst, src, onEach )
 //   }
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+//   _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 //
 //   /* */
 //
-//   if( _.routineIs( onEach ) )
+//   if( _.routine.is( onEach ) )
 //   {
 //
 //     if( _.longIs( src ) )
@@ -1820,7 +1820,7 @@ function entityAnd( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -1834,14 +1834,14 @@ function entityAnd( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -1864,7 +1864,7 @@ function entityAnd( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -2267,7 +2267,7 @@ function entityOr( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -2281,14 +2281,14 @@ function entityOr( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -2311,7 +2311,7 @@ function entityOr( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -2757,7 +2757,7 @@ function entityXor( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -2771,14 +2771,14 @@ function entityXor( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -2801,7 +2801,7 @@ function entityXor( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -3190,11 +3190,11 @@ function entityAll( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
     if( _.set.like( src ) )
@@ -3315,11 +3315,11 @@ function entityAny( src, onEach )
   let result = false;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
     if( _.set.like( src ) )
@@ -3441,11 +3441,11 @@ function entityNone( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
     if( _.set.like( src ) )
@@ -3585,7 +3585,7 @@ function _filter_functor( condition, levels )
   let result;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( condition ) || _.object.is( condition ) );
+  _.assert( _.routine.is( condition ) || _.object.is( condition ) );
 
   if( _.object.is( condition ) )
   {
@@ -3668,7 +3668,7 @@ function entityMap( src, onEach )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   let result;
 
@@ -3723,7 +3723,7 @@ function entityMap_( dst, src, onEach )
   {
     _.assert( arguments.length === 3, 'Expects two or three arguments' );
   }
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -3827,7 +3827,7 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -3895,7 +3895,7 @@ function entityFilter_( dst, src, onEach )
   }
   onEach = _._filter_functor( onEach, 1 );
 
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -4007,7 +4007,7 @@ function entityFirst( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -4054,7 +4054,7 @@ function entityLast( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
   // _.assert( src !== undefined, 'Expects src' );
 
   /* */
@@ -4138,7 +4138,7 @@ function _entityMost( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.mapIs( o ), 'Expect map, but got ' + _.entity.strType( o ) );
-  _.routineOptions( _entityMost, o );
+  _.routine.options( _entityMost, o );
 
   if( !o.onEvaluate )
   {

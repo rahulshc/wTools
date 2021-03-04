@@ -164,6 +164,7 @@ let Extension =
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
   areIdenticalShallow : setsAreIdenticalShallow,
+  areEquivalentShallow : setsAreIdenticalShallow,
 
   // set
 

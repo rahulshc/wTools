@@ -136,7 +136,7 @@ function strEquivalent( src1, src2 )
 
   if( strIs1 && strIs2 )
   {
-    return src1 === src2;
+    return src1.trim() === src2.trim();
   }
   else if( strIs1 )
   {
@@ -305,14 +305,15 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.regexpIs( src ) )
     {
-      result += _.regexp.exportString( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
     }
-    else if( _.routineIs( src ) )
+    else if( _.routine.is( src ) )
     {
-      if( src.name )
-      result += `{- routine ${src.name} -}`;
-      else
-      result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      result += _.routine.exportStringShortDiagnostic( src );
+      // if( src.name )
+      // result += `{- routine ${src.name} -}`;
+      // else
+      // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
     }
     else if( _.aux.like( src ) )
     {
@@ -418,7 +419,7 @@ function strShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strShort, o );
+  _.routine.options( strShort, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
@@ -822,7 +823,7 @@ function _strParseType( src )
 function strConcat( srcs, o )
 {
 
-  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  o = _.routine.options( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
 
@@ -836,7 +837,7 @@ function strConcat( srcs, o )
 
   o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
 
-  if( _.routineIs( srcs ) )
+  if( _.routine.is( srcs ) )
   srcs = srcs();
 
   if( !_.arrayLike( srcs ) )
@@ -1365,6 +1366,7 @@ let ExtensionTools =
   strHas,
 
   strEquivalent,
+  areEquivalentShallow : strEquivalent,
   strsEquivalent,
 
   // converter

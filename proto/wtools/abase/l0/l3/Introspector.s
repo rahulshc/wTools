@@ -889,7 +889,7 @@ function stackFilter( stack, onEach )
 {
   let result = [];
 
-  if( _.routineIs( stack ) )
+  if( _.routine.is( stack ) )
   {
     onEach = stack;
     stack = undefined;
@@ -899,7 +899,7 @@ function stackFilter( stack, onEach )
   stack = _.introspector.stack( stack, undefined ); // Dmytro : missed second argument, which has influence on the result
 
   _.assert( _.strIs( stack ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   stack = stack.split( '\n' );

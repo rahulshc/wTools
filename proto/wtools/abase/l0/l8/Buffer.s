@@ -165,7 +165,7 @@ function buffersAreIdentical( src1, src2 )
 
 function _bufferMake_functor( onMake )
 {
-  _.assert( _.routineIs( onMake ) );
+  _.assert( _.routine.is( onMake ) );
 
   return function _bufferMake( src, ins )
   {
@@ -213,7 +213,7 @@ function _bufferMake_functor( onMake )
         length = src;
         src = null;
       }
-      else if( _.routineIs( src ) )
+      else if( _.routine.is( src ) )
       {
         _.assert( 0, 'Unknown length of buffer' );
       }
@@ -259,7 +259,7 @@ function _bufferMake_functor( onMake )
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
-    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
+    _.assert( _.routine.is( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
 
@@ -354,7 +354,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
   /* */
 
   let resultTyped;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   resultTyped = new src( length );
   else if( _.bufferNodeIs( src ) )
   resultTyped = BufferNode.alloc( length );
@@ -386,7 +386,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //   if( _.argumentsArray.is( src ) )
 //   src = _.arrayMake( src );
 //
-//   if( _.routineIs( src ) )
+//   if( _.routine.is( src ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( ins === undefined )
@@ -409,11 +409,11 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
+//   _.assert( _.routine.is( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 //
 //   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
 //   {
-//     if( _.routineIs( src ) )
+//     if( _.routine.is( src ) )
 //     {
 //       result = new src( length );
 //       for( let i = 0 ; i < length ; i++ )
@@ -444,7 +444,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     insert = src;
 //
 //     let resultTyped;
-//     if( _.routineIs( src ) )
+//     if( _.routine.is( src ) )
 //     resultTyped = new src( length );
 //     else if( _.bufferNodeIs( src ) )
 //     resultTyped = BufferNode.alloc( length );
@@ -473,7 +473,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 // {
 //   let result, length;
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( _.argumentsArray.is( ins ) )
@@ -496,7 +496,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -505,7 +505,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
 //     }
-//     else if( _.routineIs( ins ) )
+//     else if( _.routine.is( ins ) )
 //     {
 //       if( ins.prototype.constructor.name === 'Array' )
 //       result = _ArraySlice.call( src );
@@ -518,7 +518,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //   }
 //   else
 //   {
-//     if( _.routineIs( ins ) )
+//     if( _.routine.is( ins ) )
 //     result = new ins( length );
 //     else
 //     result = new ins.constructor( length );
@@ -611,7 +611,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
   /* */
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   result = new src( length );
   else if( _.bufferNodeIs( src ) )
   result = BufferNode.alloc( length );
@@ -629,7 +629,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 // {
 //   let result, length;
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( src === undefined )
@@ -652,9 +652,9 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.bufferNodeIs( ins ) )
 //   result = BufferNode.alloc( length );
@@ -676,7 +676,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   throw _.err( 'not tested' );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( src === undefined )
@@ -699,7 +699,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -708,7 +708,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
 //     }
-//     else if( _.routineIs( ins ) )
+//     else if( _.routine.is( ins ) )
 //     {
 //       if( ins.prototype.constructor.name === 'Array' )
 //       result = _ArraySlice.call( src );
@@ -721,7 +721,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //   }
 //   else
 //   {
-//     if( _.routineIs( ins ) )
+//     if( _.routine.is( ins ) )
 //     result = new ins( length );
 //     else
 //     result = new ins.constructor( length );
@@ -784,7 +784,7 @@ function bufferFrom( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
+  _.assert( _.routine.is( o.bufferConstructor ), 'Expects bufferConstructor' );
   _.map.assertHasOnly( o, bufferFrom.defaults );
 
   if( o.src === null || _.number.is( o.src ) )
@@ -840,7 +840,7 @@ function bufferFrom( o )
 //
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.object.is( o ) );
-//   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
+//   _.assert( _.routine.is( o.bufferConstructor ), 'Expects bufferConstructor' );
 //   _.map.assertHasOnly( o, bufferFrom.defaults );
 //
 //   /* same */
@@ -2232,7 +2232,7 @@ function bufferReusing4Arguments_head( routine, args )
 
   /* */
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.bufferAnyIs( o.src ) || _.longIs( o.src ) );
   _.assert( _.intervalIs( o.cinterval ) || _.numberIs( o.cinterval ) || o.cinterval === null );
   _.assert( _.intIs( o.minSize ) && o.minSize >= 0 );
@@ -2622,7 +2622,7 @@ bufferReusingBut_body.defaults =
 
 //
 
-let bufferReusingBut = _.routineUnite( bufferReusing4Arguments_head, bufferReusingBut_body );
+let bufferReusingBut = _.routine.unite( bufferReusing4Arguments_head, bufferReusingBut_body );
 
 //
 
@@ -2719,7 +2719,7 @@ let bufferReusingBut = _.routineUnite( bufferReusing4Arguments_head, bufferReusi
 //
 //   o.cinterval = cintervalClamp();
 //
-//   _.routineOptions( bufferReusingOnly, o );
+//   _.routine.options( bufferReusingOnly, o );
 //   o.growFactor = 1;
 //   o.bufferFill = dstBufferFill;
 //
@@ -2876,7 +2876,7 @@ bufferReusingOnly_body.defaults =
 
 //
 
-let bufferReusingOnly = _.routineUnite( bufferReusing3Arguments_head, bufferReusingOnly_body );
+let bufferReusingOnly = _.routine.unite( bufferReusing3Arguments_head, bufferReusingOnly_body );
 
 //
 
@@ -2969,7 +2969,7 @@ let bufferReusingOnly = _.routineUnite( bufferReusing3Arguments_head, bufferReus
 //   srcLength = o.src.length;
 //   o.cinterval = cintervalClamp();
 //
-//   _.routineOptions( bufferReusingGrow, o );
+//   _.routine.options( bufferReusingGrow, o );
 //
 //   o.bufferFill = dstBufferFill;
 //
@@ -3150,7 +3150,7 @@ bufferReusingGrow_body.defaults =
 
 //
 
-let bufferReusingGrow = _.routineUnite( bufferReusing4Arguments_head, bufferReusingGrow_body );
+let bufferReusingGrow = _.routine.unite( bufferReusing4Arguments_head, bufferReusingGrow_body );
 
 //
 
@@ -3247,7 +3247,7 @@ let bufferReusingGrow = _.routineUnite( bufferReusing4Arguments_head, bufferReus
 //   srcLength = o.src.length;
 //   o.cinterval = cintervalClamp();
 //
-//   _.routineOptions( bufferReusingRelength, o );
+//   _.routine.options( bufferReusingRelength, o );
 //
 //   o.bufferFill = dstBufferFill;
 //
@@ -3436,7 +3436,7 @@ bufferReusingRelength_body.defaults =
 
 //
 
-let bufferReusingRelength = _.routineUnite( bufferReusing4Arguments_head, bufferReusingRelength_body );
+let bufferReusingRelength = _.routine.unite( bufferReusing4Arguments_head, bufferReusingRelength_body );
 
 //
 
@@ -3542,7 +3542,7 @@ let bufferReusingRelength = _.routineUnite( bufferReusing4Arguments_head, buffer
 //   let left, right;
 //   o.cinterval = cintervalClamp();
 //
-//   _.routineOptions( bufferReusingResize, o );
+//   _.routine.options( bufferReusingResize, o );
 //
 //   o.bufferSizeCount = bufferSizeCount;
 //   o.bufferFill = dstBufferFill;
@@ -3752,7 +3752,7 @@ bufferReusingResize_body.defaults =
 
 //
 
-let bufferReusingResize = _.routineUnite( bufferReusing3Arguments_head, bufferReusingResize_body );
+let bufferReusingResize = _.routine.unite( bufferReusing3Arguments_head, bufferReusingResize_body );
 
 //
 
@@ -4250,7 +4250,7 @@ function bufferIsolate_head( routine, args )
     _.assert( args.length === 1, 'Expects single argument' );
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( 1 <= args.length && args.length <= 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.bufferAnyIs( o.src ) || _.strIs( o.src ) );
@@ -4264,7 +4264,7 @@ function bufferIsolate_head( routine, args )
 
 function bufferIsolate_body( o )
 {
-  _.assertRoutineOptions( bufferIsolate_body, arguments );
+  _.routine.assertOptions( bufferIsolate_body, arguments );
 
   let src = o.src;
   if( _.strIs( o.src ) )
@@ -4419,7 +4419,7 @@ bufferIsolate_body.defaults =
 
 //
 
-let bufferIsolate = _.routineUnite( bufferIsolate_head, bufferIsolate_body );
+let bufferIsolate = _.routine.unite( bufferIsolate_head, bufferIsolate_body );
 
 //
 
@@ -4438,7 +4438,7 @@ bufferIsolateLeftOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrNone_body );
+let bufferIsolateLeftOrNone = _.routine.unite( bufferIsolate_head, bufferIsolateLeftOrNone_body );
 
 //
 
@@ -4457,7 +4457,7 @@ bufferIsolateLeftOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrAll_body );
+let bufferIsolateLeftOrAll = _.routine.unite( bufferIsolate_head, bufferIsolateLeftOrAll_body );
 
 //
 
@@ -4476,7 +4476,7 @@ bufferIsolateRightOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrNone_body );
+let bufferIsolateRightOrNone = _.routine.unite( bufferIsolate_head, bufferIsolateRightOrNone_body );
 
 //
 
@@ -4495,7 +4495,7 @@ bufferIsolateRightOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrAll_body );
+let bufferIsolateRightOrAll = _.routine.unite( bufferIsolate_head, bufferIsolateRightOrAll_body );
 
 // --
 // routines
@@ -4512,6 +4512,7 @@ let Routines =
   buffersAreEquivalent,
   buffersAreIdentical,
   buffersAreIdenticalShallow : buffersAreIdentical,
+  buffersAreEquivalentShallow : buffersAreEquivalent,
 
   _bufferMake_functor,
   bufferMake,

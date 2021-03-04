@@ -39,7 +39,7 @@ function name_head( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
@@ -111,7 +111,7 @@ function name_head( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
@@ -140,9 +140,9 @@ name_body.defaults =
   full : 0,
 }
 
-let name = _.routineUnite( name_head, name_body );
+let name = _.routine.unite( name_head, name_body );
 
-let nameFull = _.routineUnite( name_head, name_body );
+let nameFull = _.routine.unite( name_head, name_body );
 nameFull.defaults.full = 1;
 
 console.log( name( './a/b/c/File.js' ) );
@@ -173,9 +173,9 @@ Use the `npm install` command to install dependencies. After installing, the mod
 You will find lines with a definition of routines `name` and `nameFull` at the end of the code in file `Name.js`. They specified as ordinary variables assigned to the result of the `routineUnite` execution:
 
 ```js
-let name = _.routineUnite( name_head, name_body );
+let name = _.routine.unite( name_head, name_body );
 
-let nameFull = _.routineUnite( name_head, name_body );
+let nameFull = _.routine.unite( name_head, name_body );
 ```
 
 The first argument of routine `routineUnite` is the routine `head` and the other - `body`.
@@ -230,13 +230,13 @@ The console displays a string created by dropping a postfix from `name_body`. If
 Replace line
 
 ```js
-let nameFull = _.routineUnite( name_head, name_body);
+let nameFull = _.routine.unite( name_head, name_body);
 ```
 
 by
 
 ```js
-let nameFull = _.routineUnite({ head : name_head, body : name_body, name : 'nameFull' });
+let nameFull = _.routine.unite({ head : name_head, body : name_body, name : 'nameFull' });
 ```
 
 After saving the file, run the execution of file `Name.js`. Compare the console output with the next

@@ -31,7 +31,7 @@ function make( src )
   }
   else if( arguments.length === 1 )
   {
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       if( src === Array )
       result = new src( undefined, undefined );
