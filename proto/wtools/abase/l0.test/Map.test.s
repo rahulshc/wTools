@@ -15708,7 +15708,7 @@ function mapHasNonePerformance( test )
     | _mapOnlyFor SABI     | 0.0000781s         | 0.0000744s        | 0.0000638s         | 0.0000591s         | 0.00008s          |
     | _mapOnlyForOf SABI   | 0.0000864s         | 0.0000646s        | 0.0000633s         | 0.0000493s         | 0.000058s         |
 
-
+    _mapOnlyFor has additional branch
     BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
     SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
   */
