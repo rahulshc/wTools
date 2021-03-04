@@ -25,7 +25,7 @@ function areIdenticalShallow( src1, src2 )
 
   if( _.longLike( src1 ) && _.longLike( src2 ) )
   {
-    return _.longAreIdenticalShallow( src1, src2 );
+    return _.longIdenticalShallow( src1, src2 );
   }
 
   /*
