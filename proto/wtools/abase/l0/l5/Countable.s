@@ -35,6 +35,17 @@ function areIdenticalShallow( src1, src2 )
   return _.mapsAreIdentical( src1, src2 )
 }
 
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.countable.is( src ) );
+
+  if( _.vector.is( src ) )
+  return _.vector.exportStringShortDiagnostic( src );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+}
+
 // --
 // extension
 // --
@@ -42,7 +53,13 @@ function areIdenticalShallow( src1, src2 )
 var Extension =
 {
   areIdenticalShallow,
-  areEquivalentShallow : areIdenticalShallow
+  areEquivalentShallow : areIdenticalShallow,
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 }
 
 //

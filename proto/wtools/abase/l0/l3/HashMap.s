@@ -65,6 +65,16 @@ function areIdenticalShallow( src1, src2 )
   return true;
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.hashMap.is( src ) );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+}
+
 // --
 // extension
 // --
@@ -86,7 +96,14 @@ let Extension =
   isEmpty,
   isPopulated,
   areIdenticalShallow,
-  areEquivalentShallow : areIdenticalShallow
+  areEquivalentShallow : areIdenticalShallow,
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic
 }
 
 Object.assign( _, ToolsExtension );
