@@ -22,7 +22,7 @@ function onSuiteBegin()
 {
   let self = this;
 
-  self.suiteTempPath = path.tempOpen( path.join( __dirname, '../..'  ), 'err' );
+  self.suiteTempPath = path.tempOpen( path.join( __dirname, '../..' ), 'err' );
   self.assetsOriginalPath = path.join( __dirname, '_asset' );
 
 }
@@ -54,7 +54,7 @@ function errArgumentObject( test )
   var errStr = String( err );
   console.log( errStr );
   test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
-  test.identical( _.strCount( errStr, /\* \d+ :   var err = _\._err\({ args }\);/ ), 1 );
+  test.identical( _.strCount( errStr, /\* \d+ :\s+var err = _\._err\({ args }\);/ ), 1 );
 
 }
 
@@ -129,6 +129,106 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
   test.identical( _.strCount( got, '= Beautified calls stack' ), 1 );
   test.identical( _.strCount( got, '= Throws stack' ), 1 );
 
+}
+
+//
+
+function _errWithArgsIncludedRoutine( test )
+{
+  let self = this;
+  let a = test.assetFor( false );
+  a.fileProvider.dirMake( a.abs( '.' ) );
+  let locals = { toolsPath : _.module.resolve( 'wTools' ) };
+  let programPath1 = a.program( testRoutineWithStrLinesSelect );
+  let programPath2 = a.program( testRoutineWithoutStrLinesSelect );
+
+  a.shellNonThrowing( `node ${ programPath1 }` );
+  a.ready.then( ( op ) =>
+  {
+    test.case = 'formatting routine throws error';
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'one' ), 1 );
+    test.identical( _.strCount( op.output, 'two' ), 1 );
+    test.identical( _.strCount( op.output, 'three' ), 1 );
+    test.identical( _.strCount( op.output, 'four' ), 1 );
+    test.identical( _.strCount( op.output, '1 : function msgRoutine()' ), 1 );
+    test.identical( _.strCount( op.output, '2 :     {' ), 1 );
+    test.identical( _.strCount( op.output, 'Error throwen by callback for formatting of error string' ), 1 );
+    test.identical( _.strCount( op.output, 'at testRoutineWithStrLinesSelect' ), 2 );
+    return null;
+  });
+
+  a.shellNonThrowing( `node ${ programPath2 }` );
+  a.ready.then( ( op ) =>
+  {
+    console.log( op.output );
+    test.case = 'formatting routine throws error';
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'one' ), 2 );
+    test.identical( _.strCount( op.output, 'two' ), 2 );
+    test.identical( _.strCount( op.output, 'three' ), 2 );
+    test.identical( _.strCount( op.output, 'four' ), 2 );
+    test.identical( _.strCount( op.output, 'function msgRoutine()' ), 1 );
+    test.identical( _.strCount( op.output, 'let message =' ), 1 );
+    test.identical( _.strCount( op.output, '`;' ), 1 );
+    test.identical( _.strCount( op.output, 'throw message;' ), 1 );
+    test.identical( _.strCount( op.output, 'Error throwen by callback for formatting of error string' ), 1 );
+    test.identical( _.strCount( op.output, 'at testRoutineWithoutStrLinesSelect' ), 2 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function testRoutineWithStrLinesSelect()
+  {
+    let _ = require( toolsPath );
+
+    throw _._err( { args : [ msgRoutine ] } );
+
+    /* */
+
+    function msgRoutine()
+    {
+      let message =
+  `
+  one
+  two
+  three
+  four
+
+  `;
+      throw message;
+    }
+  }
+
+  /* */
+
+  function testRoutineWithoutStrLinesSelect()
+  {
+    let _ = require( toolsPath );
+    _.strLinesSelect = null;
+
+    throw _._err( { args : [ msgRoutine ] } );
+
+    /* */
+
+    function msgRoutine()
+    {
+      let message =
+  `
+  one
+  two
+  three
+  four
+
+  `;
+      throw message;
+    }
+  }
 }
 
 //
@@ -454,7 +554,7 @@ function _errArgsHasRoutine( test )
 {
   test.case = 'empty args';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ] } );
+  var err = _._err( { args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ] } );
   test.true( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
@@ -466,7 +566,7 @@ function _errArgsHasRoutine( test )
 
   test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - undefined, level - 2';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], level : 2 } );
+  var err = _._err( { args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ], level : 2 } );
   test.true( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
@@ -478,7 +578,7 @@ function _errArgsHasRoutine( test )
 
   test.case = 'empty args, throwCallsStack - string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], throwCallsStack : 'at program\nat _errTrowsError' } );
+  var err = _._err( { args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ], throwCallsStack : 'at program\nat _errTrowsError' } );
   test.true( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
@@ -491,7 +591,7 @@ function _errArgsHasRoutine( test )
 
   test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : 'at program\nat _errTrowsError' } );
+  var err = _._err( { args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : 'at program\nat _errTrowsError' } );
   test.true( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
@@ -504,7 +604,7 @@ function _errArgsHasRoutine( test )
 
   test.case = 'empty args, throwCallsStack - empty string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var o = { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : '' };
+  var o = { args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : '' };
   var err = _._err( o );
   test.true( _.errIs( err ) );
   var errStr = String( err );
@@ -521,7 +621,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     stackRemovingBeginIncluding : /program1/
   });
@@ -539,7 +639,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     stackRemovingBeginExcluding : /_errTrowsError/
   });
@@ -557,7 +657,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     stackRemovingBeginIncluding : /program1/,
     stackRemovingBeginExcluding : /_errTrowsError/,
@@ -579,7 +679,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ]
   });
@@ -597,7 +697,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ]
   });
@@ -615,7 +715,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ]
   });
@@ -633,7 +733,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ]
   });
@@ -651,7 +751,7 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    args : [ unroll, new Error( 'Sample' ), new Error( 'next' ) ],
     throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
     stackCondensing : 0
@@ -1026,10 +1126,10 @@ function _errOriginalMessageForm( test )
   test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  test.identical( _.strCount( err.originalMessage, "{- routine.anonymous -}" ), 1 );
+  test.identical( _.strCount( err.originalMessage, '{- routine.anonymous -}' ), 1 );
   console.log( err.originalMessage );
   // Dmytro : affects in group testing but has no reason for it
-  // qqq : for Dmytro : ?
+  // aaa : for Dmytro : ? /* Dmytro : it is comment for check, which was commented. Maybe, the utility Testing had older version and affected result */
 
   test.case = 'args - different, routine returns map with toStr';
   var a = () =>
@@ -3432,6 +3532,7 @@ let Self =
 
     errArgumentObject,
     errFromStringedError, /* qqq : extend the test routine. low priority problem */
+    _errWithArgsIncludedRoutine,
     _errTrowsError,
     _errEmptyArgs,
     _errArgsWithMap,
