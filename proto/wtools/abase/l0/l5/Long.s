@@ -3173,6 +3173,25 @@ function longIdentical( src1, src2 )
 
 //
 
+function _longIdentical( src1, src2 )
+{
+  let result = true;
+
+  if( src1.length !== src2.length )
+  return false;
+
+  for( let s = 0 ; s < src1.length ; s++ )
+  {
+    result = src1[ s ] === src2[ s ];
+    if( result === false )
+    return false;
+  }
+
+  return result;
+}
+
+//
+
 function longHas( /* array, element, evaluator1, evaluator2 */ )
 {
   let array = arguments[ 0 ];
@@ -3761,6 +3780,7 @@ let Extension =
 
   // longCompare,
   longIdentical,
+  _longIdentical,
   longAreIdenticalShallow : longIdentical,
 
   longHas,
