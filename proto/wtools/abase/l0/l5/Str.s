@@ -766,7 +766,7 @@ function strRight_( src, ins, cinterval )
 //     _.assert( args.length === 1, 'Expects single argument' );
 //   }
 //
-//   _.routineOptions( routine, o );
+//   _.routine.options( routine, o );
 //   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //   _.assert( _.strIs( o.src ) );
@@ -846,7 +846,7 @@ function strInsideOf_head( routine, args )
     _.assert( args.length === 3, 'Expects exactly three arguments' );
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
 
   // if( _.longIs( o.begin ) && o.begin.length === 1 )
@@ -903,7 +903,7 @@ strInsideOf_body.defaults =
 
 //
 
-let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
 
 //
 
@@ -978,7 +978,7 @@ function strInsideOf__head( routine, args )
   }
 
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   o.begin = _.arrayAs( o.begin );
   o.end = _.arrayAs( o.end );
@@ -1025,7 +1025,7 @@ strInsideOf__body.defaults =
   pairing : 1, /* xxx : set to 1 */
 }
 
-let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
+let strInsideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
 
 //
 
@@ -1506,7 +1506,7 @@ function strStrip( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip, o );
+  _.routine.options( strStrip, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.arrayIs( o.src ) )
@@ -1595,7 +1595,7 @@ function strStripLeft( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStripLeft, o );
+  _.routine.options( strStripLeft, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
@@ -1628,7 +1628,7 @@ function strStripRight( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStripRight, o );
+  _.routine.options( strStripRight, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
@@ -1735,7 +1735,7 @@ function strSplitsCoupledGroup( o )
   if( _.arrayIs( o ) )
   o = { splits : o }
 
-  o = _.routineOptions( strSplitsCoupledGroup, o );
+  o = _.routine.options( strSplitsCoupledGroup, o );
 
   o.prefix = _.arrayAs( o.prefix );
   o.postfix = _.arrayAs( o.postfix );
@@ -1800,7 +1800,7 @@ function strSplitsUngroupedJoin( o )
 
   if( _.arrayIs( o ) )
   o = { splits : o }
-  o = _.routineOptions( strSplitsUngroupedJoin, o );
+  o = _.routine.options( strSplitsUngroupedJoin, o );
 
   let s = o.splits.length-1;
   let l = null;
@@ -1852,7 +1852,7 @@ function strSplitsQuotedRejoin_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1, 'Expects one or two arguments' );
   _.assert( _.object.is( o ) );
@@ -1990,7 +1990,7 @@ strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routineUnite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
+let strSplitsQuotedRejoin = _.routine.unite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
 
 // --
 //
@@ -2000,7 +2000,7 @@ function strSplitsDropDelimeters_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   if( _.strIs( o.delimeter ) )
   o.delimeter = [ o.delimeter ];
@@ -2051,7 +2051,7 @@ strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routineUnite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routine.unite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
 
 // --
 //
@@ -2061,7 +2061,7 @@ function strSplitsStrip_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   if( o.stripping && _.bool.like( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
@@ -2108,7 +2108,7 @@ strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routineUnite( strSplitsStrip_head, strSplitsStrip_body );
+let strSplitsStrip = _.routine.unite( strSplitsStrip_head, strSplitsStrip_body );
 
 // --
 //
@@ -2118,7 +2118,7 @@ function strSplitsDropEmpty_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
@@ -2159,7 +2159,7 @@ strSplitsDropEmpty_body.defaults =
 
 //
 
-let strSplitsDropEmpty = _.routineUnite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routine.unite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
 
 // --
 //
@@ -2174,7 +2174,7 @@ function strSplitFast_head( routine, args )
   else if( _.strIs( args[ 0 ] ) )
   o = { src : args[ 0 ] }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'Expects one or two arguments' );
@@ -2414,7 +2414,7 @@ strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routineUnite( strSplitFast_head, strSplitFast_body );
+let strSplitFast = _.routine.unite( strSplitFast_head, strSplitFast_body );
 
 _.assert( strSplitFast.head === strSplitFast_head );
 _.assert( strSplitFast.body === strSplitFast_body );
@@ -2579,16 +2579,16 @@ let head =
   strSplitsStrip.head,
   strSplitsDropEmpty.head
 ];
-let strSplit = _.routineUnite( head, strSplit_body );
+let strSplit = _.routine.unite( head, strSplit_body );
 
 _.assert( strSplit.head !== strSplitFast.head );
-_.assert( _.routineIs( strSplit.head ) );
+_.assert( _.routine.is( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
 _.assert( _.object.is( strSplit.defaults ) );
 
 //
 
-let strSplitNonPreserving = _.routineUnite( strSplit.head, strSplit.body );
+let strSplitNonPreserving = _.routine.unite( strSplit.head, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -2732,7 +2732,7 @@ _strSplitInlined_body.defaults =
 
 //
 
-let strSplitInlined = _.routineUnite( strSplitFast_head, _strSplitInlined_body );
+let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
 //
 
@@ -2795,7 +2795,7 @@ function strSplitInlinedStereo( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( strSplitInlinedStereo, o );
+  _.routine.options( strSplitInlinedStereo, o );
 
   let result = [];
   let splitted = o.src.split( o.prefix );
@@ -2918,7 +2918,7 @@ function strSplitInlinedStereo_( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( strSplitInlinedStereo_, o );
+  _.routine.options( strSplitInlinedStereo_, o );
 
   if( o.prefix === o.postfix )
   {

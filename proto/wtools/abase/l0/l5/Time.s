@@ -134,8 +134,8 @@ function _periodic( delay, onTime, onCancel )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   // _.assert( _.number.is( delay ) );
-  // _.assert( _.routineIs( onTime ) );
-  // _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+  // _.assert( _.routine.is( onTime ) );
+  // _.assert( _.routine.is( onCancel ) || onCancel === undefined || onCancel === null );
 
   let native = setInterval( time, delay );
 
@@ -529,8 +529,8 @@ function begin( /* delay, procedure, onTime, onCancel */ )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
   _.assert( _.number.is( delay ) );
-  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+  _.assert( _.routine.is( onTime ) || onTime === undefined || onTime === null );
+  _.assert( _.routine.is( onCancel ) || onCancel === undefined || onCancel === null );
 
   return this._begin( delay, onTime, onCancel );
 }
@@ -579,7 +579,7 @@ function finally_( delay, procedure, onTime )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.number.is( delay ) );
-  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+  _.assert( _.routine.is( onTime ) || onTime === undefined || onTime === null );
 
   return this._finally( delay, onTime );
 }
@@ -658,8 +658,8 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
   _.assert( _.number.is( delay ) );
-  _.assert( _.routineIs( onTime ) );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+  _.assert( _.routine.is( onTime ) );
+  _.assert( _.routine.is( onCancel ) || onCancel === undefined || onCancel === null );
 
   return this._periodic( delay, onTime, onCancel );
 }
@@ -752,7 +752,7 @@ function sleep( delay )
  *
  * @example
  * let now = _.time.now_functor();
- * console.log( _.routineIs( now ) );
+ * console.log( _.routine.is( now ) );
  * // log : true
  * console.log( now() );
  * // log : 1603172830154
@@ -768,9 +768,9 @@ function now_functor()
   let now;
 
   if( typeof performance !== 'undefined' && performance.now !== undefined )
-  now = _.routineJoin( performance, performance.now );
+  now = _.routine.join( performance, performance.now );
   else if( Date.now )
-  now = _.routineJoin( Date, Date.now );
+  now = _.routine.join( Date, Date.now );
   else
   now = function(){ return Date().getTime() };
 

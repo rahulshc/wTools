@@ -642,7 +642,7 @@ function strRandom( o )
   if( !_.mapIs( o ) )
   o = { length : o }
 
-  o = _.routineOptions( strRandom, o );
+  o = _.routine.options( strRandom, o );
 
   if( _.number.is( o.length ) )
   o.length = [ o.length, o.length+1 ];
@@ -1057,7 +1057,7 @@ function strEscape( o )
   o = { src : o }
 
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, but got', _.entity.strType( o.src ) );
-  _.routineOptions( strEscape, o );
+  _.routine.options( strEscape, o );
 
   let result = '';
   let stringWrapperCode = o.stringWrapper.charCodeAt( 0 );
@@ -1290,7 +1290,7 @@ function strSplitChunks( o )
     o = { src : arguments[ 0 ] };
   }
 
-  _.routineOptions( strSplitChunks, o );
+  _.routine.options( strSplitChunks, o );
   _.assert( _.strIs( o.src ), 'Expects string (-o.src-), but got', _.entity.strType( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
@@ -1896,7 +1896,7 @@ function strUnjoin( srcStr, maskArray )
 }
 
 strUnjoin.any = _.any;
-_.assert( _.routineIs( strUnjoin.any ) );
+_.assert( _.routine.is( strUnjoin.any ) );
 
 // --
 // joiner
@@ -1996,7 +1996,7 @@ function strJoin_head( routine, args )
   if( args[ 1 ] !== undefined || _.arrayLike( args[ 0 ] ) )
   o = { srcs : args[ 0 ], join : args[ 1 ] };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2, () => 'Expects an array of string and optional join, but got ' + args.length + ' arguments' );
   _.assert( _.arrayLike( o.srcs ), () => 'Expects an array of strings, but got ' + _.entity.strType( o.srcs ) );
@@ -2014,7 +2014,7 @@ function strJoin_body( o )
   // let arrayEncountered = 0;
   let arrayLength;
 
-  _.assertRoutineOptions( strJoin_body, arguments );
+  _.routine.assertOptions( strJoin_body, arguments );
 
   let delimeter = o.join || '';
   if( o.join === null || _.strIs( o.join ) )
@@ -2130,7 +2130,7 @@ strJoin_body.defaults =
   str : _.entity.strPrimitive,
 }
 
-let strJoin = _.routineUnite( strJoin_head, strJoin_body );
+let strJoin = _.routine.unite( strJoin_head, strJoin_body );
 
 //
 
@@ -2707,7 +2707,7 @@ function strLinesNumber( o )
   if( !_.object.is( o ) )
   o = { src : arguments[ 0 ], zeroLine : arguments[ 1 ] };
 
-  _.routineOptions( strLinesNumber, o );
+  _.routine.options( strLinesNumber, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( o.src ) || _.strsAreAll( o.src ), 'Expects string or strings {-o.src-}' );
 
@@ -2939,7 +2939,7 @@ function strLinesSelect( o )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ], arguments[ 2 ] ] };
   }
 
-  _.routineOptions( strLinesSelect, o );
+  _.routine.options( strLinesSelect, o );
   _.assert( arguments.length <= 3 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.bool.like( o.highlighting ) || _.longHas( [ '*' ], o.highlighting ) );
@@ -3145,7 +3145,7 @@ function strLinesNearest_head( routine, args )
   if( args[ 1 ] !== undefined )
   o = { src : args[ 0 ], charsRangeLeft : args[ 1 ] };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   if( _.number.is( o.charsRangeLeft ) )
   o.charsRangeLeft = [ o.charsRangeLeft, o.charsRangeLeft+1 ];
@@ -3241,7 +3241,7 @@ strLinesNearest_body.defaults =
   // outputFormat : 'map',
 }
 
-let strLinesNearest = _.routineUnite( strLinesNearest_head, strLinesNearest_body );
+let strLinesNearest = _.routine.unite( strLinesNearest_head, strLinesNearest_body );
 
 //
 
@@ -3367,7 +3367,7 @@ strLinesNearestLog_body.defaults =
   gray : 0,
 }
 
-let strLinesNearestLog = _.routineUnite( strLinesNearest_head, strLinesNearestLog_body );
+let strLinesNearestLog = _.routine.unite( strLinesNearest_head, strLinesNearestLog_body );
 
 //
 
@@ -3413,7 +3413,7 @@ function strLinesSize( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( o.src ) || _.arrayLike( o.src ) );
-  _.routineOptions( strLinesSize, o );
+  _.routine.options( strLinesSize, o );
   if( o.onLength === null )
   o.onLength = ( src ) => src.length;
 
@@ -3458,7 +3458,7 @@ function strLinesRangeWithCharRange_head( routine, args )
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( _.intervalIs( o.charsRangeLeft ) );
   _.assert( _.strIs( o.src ) );
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   return o;
 }
@@ -3484,7 +3484,7 @@ strLinesRangeWithCharRange_body.defaults =
   charsRangeLeft : null,
 }
 
-let strLinesRangeWithCharRange = _.routineUnite( strLinesRangeWithCharRange_head, strLinesRangeWithCharRange_body );
+let strLinesRangeWithCharRange = _.routine.unite( strLinesRangeWithCharRange_head, strLinesRangeWithCharRange_body );
 
 // --
 // declare

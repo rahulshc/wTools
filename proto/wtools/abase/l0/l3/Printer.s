@@ -19,7 +19,7 @@ function is( src )
   if( !src )
   return false;
 
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   return false;
 
   let prototype = Object.getPrototypeOf( src );

@@ -51,7 +51,7 @@ function objectLike( src ) /* xxx qqq : optimize */
   if( _.vector.is( src ) )
   return false;
 
-  if( _.routineIsTrivial( src ) )
+  if( _.routine.isTrivial( src ) )
   return false;
 
   if( _.set.is( src ) )
@@ -80,7 +80,7 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
   return false;
   if( _.vector.is( src ) )
   return false;
-  if( _.routineIsTrivial( src ) )
+  if( _.routine.isTrivial( src ) )
   return false;
   if( _.set.is( src ) )
   return false;

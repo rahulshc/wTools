@@ -17,7 +17,7 @@ function rarely_functor( perTime, routine )
 
   _.assert( arguments.length === 2 );
   _.assert( _.number.is( perTime ) );
-  _.assert( _.routineIs( routine ) );
+  _.assert( _.routine.is( routine ) );
 
   return function fewer()
   {
@@ -61,8 +61,8 @@ function once( delay, onBegin, onEnd )
 
   // _.assert( 0, 'not tested' );
   _.assert( delay >= 0 );
-  _.assert( _.primitive.is( onBegin ) || _.routineIs( onBegin ) || _.object.is( onBegin ) );
-  _.assert( _.primitive.is( onEnd ) || _.routineIs( onEnd ) || _.object.is( onEnd ) );
+  _.assert( _.primitive.is( onBegin ) || _.routine.is( onBegin ) || _.object.is( onBegin ) );
+  _.assert( _.primitive.is( onEnd ) || _.routine.is( onEnd ) || _.object.is( onEnd ) );
 
   return function once()
   {
@@ -76,7 +76,7 @@ function once( delay, onBegin, onEnd )
 
     if( onBegin )
     {
-      if( _.routineIs( onBegin ) ) onBegin.apply( this, arguments );
+      if( _.routine.is( onBegin ) ) onBegin.apply( this, arguments );
       else if( _.object.is( onBegin ) ) onBegin.take( arguments );
       if( con )
       con.take( null );
@@ -87,7 +87,7 @@ function once( delay, onBegin, onEnd )
 
       if( onEnd )
       {
-        if( _.routineIs( onEnd ) ) onEnd.apply( this, arguments );
+        if( _.routine.is( onEnd ) ) onEnd.apply( this, arguments );
         else if( _.object.is( onEnd ) ) onEnd.take( arguments );
         if( con )
         con.take( null );
@@ -117,9 +117,9 @@ function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? 
     }
   }
 
-  _.routineOptions( debounce, o  );
+  _.routine.options( debounce, o  );
 
-  _.assert( _.routineIs( o.routine ) );
+  _.assert( _.routine.is( o.routine ) );
   _.assert( _.number.is( o.delay ) );
 
   let timer, lastCallTime, routine, result;
@@ -131,7 +131,7 @@ function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? 
   function debounced()
   {
     lastCallTime = _.time.now();
-    routine = _.routineJoin( this, o.routine, arguments );
+    routine = _.routine.join( this, o.routine, arguments );
     let execNow = o.immediate && !timer
     if( !timer )
     timer = setTimeout( onDelay, o.delay );

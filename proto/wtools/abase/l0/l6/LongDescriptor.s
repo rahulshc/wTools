@@ -18,7 +18,7 @@ _.assert( !_.withDefaultLong );
 function is_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
@@ -38,7 +38,7 @@ function is_functor( name, cls )
 function make_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   // let r = /* Dmytro : maybe, it's better Implementation, it takes into account quantity of arguments and its type */
   // {
@@ -68,7 +68,7 @@ function make_functor( name, cls )
 function from_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
@@ -102,10 +102,10 @@ function _longDeclare( o )
   _.assert( _.strDefined( o.name ) );
   _.assert( _.strDefined( o.secondName ) || o.secondName === null );
   _.assert( _.strDefined( o.aliasName ) || o.aliasName === null );
-  _.assert( _.routineIs( o.type ) );
-  _.assert( _.routineIs( o.make ) || o.make === null );
-  _.assert( _.routineIs( o.from ) || o.from === null );
-  _.assert( _.routineIs( o.is ) || o.make === null );
+  _.assert( _.routine.is( o.type ) );
+  _.assert( _.routine.is( o.make ) || o.make === null );
+  _.assert( _.routine.is( o.from ) || o.from === null );
+  _.assert( _.routine.is( o.is ) || o.make === null );
   _.assert( _.bool.is( o.isTyped ) );
   _.assert( LongDescriptors[ o.name ] === undefined );
 
@@ -154,8 +154,8 @@ function _argumentsArrayMake()
 let LongTypeToDescriptorsHash = new HashMap();
 let LongDescriptors = Object.create( null );
 
-_.assert( _.routineIs( _.arrayMake ) );
-_.assert( _.routineIs( _.unrollMake ) );
+_.assert( _.routine.is( _.arrayMake ) );
+_.assert( _.routine.is( _.unrollMake ) );
 
 // _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMake, is : _.arrayIs, isTyped : false });
 _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayFrom, is : _.arrayIs, isTyped : false });
