@@ -800,7 +800,7 @@ function assertRoutineOptions_( defaults, options )
 /* aaa for Dmytro : forbid 3rd argument */ /* Dmytro : forbidden */
 /* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
 /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
-/* qqq for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */
+/* aaa for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */ /* Dmytro : implemented similar routine */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -924,30 +924,6 @@ function routineOptionsPreservingUndefines_( defaults, options )
 
 //
 
-function routineOptionsReplacingUndefines( routine, args, defaults )
-{
-
-  if( !_.arrayLike( args ) )
-  args = [ args ];
-  let options = args[ 0 ];
-  if( options === undefined )
-  options = Object.create( null );
-  defaults = defaults || routine.defaults;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
-
-  _.map.assertHasOnly( options, defaults );
-  _.mapComplementReplacingUndefines( options, defaults );
-
-  return options;
-}
-
-//
-
 function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -966,6 +942,69 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
   _.map.assertHasAll( options, defaults );
 
   return options;
+}
+
+//
+
+function assertRoutineOptionsPreservingUndefines_( defaults, options )
+{
+
+  _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+  _.assert( _.routineIs( defaults ) || _.aux.is( defaults ) || defaults === null, 'Expects an object with options' );
+
+  if( _.arrayLike( options ) )
+  {
+    _.assert
+    (
+      options.length === 0 || options.length === 1,
+      'routineOptionsPreservingUndefines : expects single options map, but got', options.length, 'arguments'
+    );
+    options = options[ 0 ];
+  }
+
+  if( options === undefined )
+  options = Object.create( null );
+  if( defaults === null )
+  defaults = Object.create( null );
+
+  defaults = ( _.routineIs( defaults ) && defaults.defaults ) ? defaults.defaults : defaults;
+  _.assert( _.aux.is( defaults ), 'Expects defined defaults' );
+
+  /* */
+
+  if( Config.debug )
+  {
+    let extraOptionsKeys = mapButKeys( options, defaults );
+    _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ keysQuote( extraOptionsKeys ) }` );
+
+    let extraDefaultsKeys = mapButKeys( defaults, options );
+    _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ keysQuote( extraDefaultsKeys ) }` );
+  }
+
+  return options;
+
+  /* */
+
+  function mapButKeys( srcMap, butMap )
+  {
+    let result = [];
+
+    for( let key in srcMap )
+    if( !( key in butMap ) )
+    result.push( key );
+
+    return result;
+  }
+
+  /* */
+
+  function keysQuote( keys )
+  {
+    let result = `"${ keys[ 0 ] }"`;
+    for( let i = 1 ; i < keys.length ; i++ )
+    result += `, "${ keys[ i ] }"`;
+    return result.trim();
+  }
 }
 
 //
@@ -2730,6 +2769,7 @@ let Extension =
   routineOptionsPreservingUndefines,
   routineOptionsPreservingUndefines_,
   assertRoutineOptionsPreservingUndefines,
+  assertRoutineOptionsPreservingUndefines_,
   routineOptionsFromThis,
 
   routinesCompose, /* xxx : deprecate */
