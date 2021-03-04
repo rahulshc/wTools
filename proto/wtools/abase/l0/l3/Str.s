@@ -299,9 +299,13 @@ function exportStringShortDiagnostic( src )
     {
       result += _.primitive.exportStringShortDiagnostic( src );
     }
-    else if( _.set.like( src ) || _.hashMap.like( src ) )
+    else if( _.set.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+      result += _.set.exportStringShortDiagnostic( src );
+    }
+    else if( _.hashMap.like( src ) )
+    {
+      result += _.hashMap.exportStringShortDiagnostic( src );
     }
     else if( _.vector.like( src ) )
     {
@@ -324,7 +328,7 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.aux.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+      result = _.aux.exportStringShortDiagnostic( src );
     }
     else if( _.object.like( src ) )
     {
