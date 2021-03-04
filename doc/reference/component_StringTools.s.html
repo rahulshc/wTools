@@ -273,7 +273,7 @@ var _toStrFine = function _toStrFine( src,options )
 
   //
 
-  if( !isAtomic &amp;&amp; _.routineIs( src.toStr ) &amp;&amp; !src.toStr.notMethod )
+  if( !isAtomic &amp;&amp; _.routine.is( src.toStr ) &amp;&amp; !src.toStr.notMethod )
   {
     var r = src.toStr( options );
     if( _.object.is( r ) )
@@ -302,7 +302,7 @@ var _toStrFine = function _toStrFine( src,options )
     result += src.toString();
     /*result += src.message;*/
   }
-  else if( _.routineIs( src ) )
+  else if( _.routine.is( src ) )
   {
     if( options.noRoutine )
     return;
@@ -339,7 +339,7 @@ var _toStrFine = function _toStrFine( src,options )
     result += r.text;
     simple = r.simple;
   }
-  else if( !isAtomic &amp;&amp; _.routineIs( src.toString ) )
+  else if( !isAtomic &amp;&amp; _.routine.is( src.toString ) )
   {
     /*throw _.err( 'not tested' );*/
     result += src.toString();
@@ -366,7 +366,7 @@ var _toStrShort = function( src,options )
   {
     result += _ObjectToString.call( src );
   }
-  else if( _.routineIs( src ) )
+  else if( _.routine.is( src ) )
   {
     result += _ObjectToString.call( src );
   }
@@ -1592,7 +1592,7 @@ var strUnjoin = function( srcStr,maskArray )
   var checkMask = function( mask )
   {
 
-    _.assert( _.strIs( mask ) || _.routineIs( mask ) )
+    _.assert( _.strIs( mask ) || _.routine.is( mask ) )
 
     if( _.strIs( mask ) )
     {
@@ -1607,7 +1607,7 @@ var strUnjoin = function( srcStr,maskArray )
       index += mask.length;
 
     }
-    else if( _.routineIs( mask ) )
+    else if( _.routine.is( mask ) )
     {
       rindex = index;
     }

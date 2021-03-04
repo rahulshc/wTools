@@ -9,8 +9,8 @@ let _ = _global_.wTools;
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
 
-_.assert( _.routineIs( _.containerAdapter.Abstract ) );
-_.assert( _.routineIs( _.longLeft ) );
+_.assert( _.routine.is( _.containerAdapter.Abstract ) );
+_.assert( _.routine.is( _.longLeft ) );
 
 // --
 // implementation
@@ -69,7 +69,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
+    if( _.routine.is( onEvaluate1 ) || _.routine.is( onEvaluate2 ) )
     {
       if( _.longLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
       return true;

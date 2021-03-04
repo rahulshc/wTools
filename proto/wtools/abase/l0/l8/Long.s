@@ -105,7 +105,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
   }
   else if( arguments.length === 2 )
   {
-    if( _.routineIs( srcLong ) )
+    if( _.routine.is( srcLong ) )
     {
       onEvaluate = arguments[ 1 ];
       srcLong = arguments[ 0 ];
@@ -580,7 +580,7 @@ function longRandom( o )
   else if( _.number.is( o ) || _.intervalIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
-  _.routineOptions( longRandom, o );
+  _.routine.options( longRandom, o );
 
   if( o.onEach === null )
   o.onEach = ( value ) => _.number.random( value );
@@ -675,7 +675,7 @@ function longFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   debugger;
 
@@ -701,7 +701,7 @@ function longFromRangeWithStep( range, step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
   return new this.longDescriptor.make();
@@ -761,7 +761,7 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   if( numberOfSteps === 0 )
   return new this.longDescriptor.from();
@@ -1282,14 +1282,14 @@ function longExtendScreening( screenArray, dstArray )
 function longSort( dstLong, srcLong, onEvaluate )
 {
 
-  if( _.routineIs( arguments[ 1 ] ) )
+  if( _.routine.is( arguments[ 1 ] ) )
   {
     onEvaluate = arguments[ 1 ];
     srcLong = dstLong;
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
+  _.assert( onEvaluate === undefined || _.routine.is( onEvaluate ) );
   _.assert( _.longIs( srcLong ) );
   _.assert( dstLong === null || _.longIs( dstLong ) );
 
@@ -1338,7 +1338,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   debugger;
 //   throw _.err( 'not tested' );
 //
-//   comparator = _._comparatorFromEvaluator( comparator );
+//   comparator = _.routine._comparatorFromEvaluator( comparator );
 //
 //   function rcomparator( a, b )
 //   {
@@ -1400,7 +1400,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   if( onEvaluate === undefined )
 //   onEvaluate = function( e ){ return e; };
 //
-//   _.assert( _.routineIs( onEvaluate ) );
+//   _.assert( _.routine.is( onEvaluate ) );
 //
 //   for( let i = 0 ; i < src.length ; i++ )
 //   {

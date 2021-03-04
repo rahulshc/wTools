@@ -30,7 +30,7 @@ but                 -                +         negative
 function _longMake_functor( onMake )
 {
 
-  _.assert( _.routineIs( onMake ) );
+  _.assert( _.routine.is( onMake ) );
 
   return function _longMake( src, ins )
   {
@@ -58,7 +58,7 @@ function _longMake_functor( onMake )
         length = src;
         src = null;
       }
-      else if( _.routineIs( src ) )
+      else if( _.routine.is( src ) )
       {
         length = 0;
       }
@@ -115,7 +115,7 @@ function _longMake_functor( onMake )
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
-    _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
+    _.assert( _.routine.is( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
 
@@ -217,7 +217,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
   let minLength = arguments[ 3 ];
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   {
     if( ins && ins.length === length )
     {
@@ -336,9 +336,9 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
+//   _.assert( _.routine.is( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
-//   if( _.routineIs( src ) )
+//   if( _.routine.is( src ) )
 //   {
 //     if( ins.length === length )
 //     {
@@ -432,8 +432,8 @@ function longMakeEmpty( src )
   {
     return new src.constructor();
   }
-  // else if( _.routineIs( src ) ) /* aaa : it was covered badly! */ /* Dmytro : coverage is extended */
-  else if( _.routineIs( src.constructor ) )
+  // else if( _.routine.is( src ) ) /* aaa : it was covered badly! */ /* Dmytro : coverage is extended */
+  else if( _.routine.is( src.constructor ) )
   {
     let result = new src();
     // let result = new src.onstructor(); /* Dmytro : src is a class, it calls without constructor property */
@@ -474,7 +474,7 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
   let minLength = arguments[ 3 ];
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   {
     result = new src( length );
   }
@@ -552,9 +552,9 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( len ) );
-//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
+//   _.assert( _.routine.is( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.entity.strType( src ) );
 //
-//   if( _.routineIs( src ) )
+//   if( _.routine.is( src ) )
 //   {
 //     result = new src( len );
 //   }
@@ -687,7 +687,7 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
   let minLength = arguments[ 3 ];
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   result = new src( length );
   else if( _.unrollIs( src ) )
   result = _.unrollMake( length );
@@ -738,9 +738,9 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.entity.strType( ins ) );
+//   _.assert( _.routine.is( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.unrollIs( ins ) )
 //   result = _.unrollMake( length );
@@ -768,7 +768,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
   let minLength = arguments[ 3 ];
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   result = new src( length );
   else if( _.unrollIs( src ) )
   result = _.unrollMake( length );
@@ -790,7 +790,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 // {
 //   let result, length;
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( src === undefined )
@@ -811,9 +811,9 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.entity.strType( ins ) );
+//   _.assert( _.routine.is( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.entity.strType( ins ) );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.unrollIs( ins ) )
 //   result = _.unrollMake( length );
@@ -860,7 +860,7 @@ function longMakeFilling( type, value, length )
 
   _.assert( value !== undefined );
   _.assert( _.number.is( length ) );
-  _.assert( type === null || _.routineIs( type ) || _.longIs( type ) );
+  _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
 
   result = this.longMake( type, length );
   for( let i = 0 ; i < length ; i++ )
@@ -1029,7 +1029,7 @@ function longFill( src, value, range )
     range[ 0 ] = 0;
   }
 
-  if( _.routineIs( src.fill ) )
+  if( _.routine.is( src.fill ) )
   {
     src.fill( value, range[ 0 ], range[ 1 ] + offset );
   }
@@ -1069,7 +1069,7 @@ function longFill_( src, ins, cinterval )
     cinterval[ 0 ] = 0;
   }
 
-  if( _.routineIs( src.fill ) )
+  if( _.routine.is( src.fill ) )
   {
     src.fill( ins, cinterval[ 0 ], cinterval[ 1 ] + 1 + offset );
   }
@@ -1148,7 +1148,7 @@ function longDuplicate( o ) /* xxx : review interface */
   else
   o.nScalarsPerElement = o.src.length;
 
-  _.routineOptions( longDuplicate, o );
+  _.routine.options( longDuplicate, o );
   _.assert( _.number.is( o.nDupsPerElement ) );
   _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
   _.assert( _.intIs( o.src.length / o.nScalarsPerElement ) );
@@ -1369,9 +1369,9 @@ function longRepresent( src, begin, end )
 
   _.assert( arguments.length <= 3 );
   _.assert( _.longLike( src ), 'Unknown type of (-src-) argument' );
-  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
+  _.assert( _.routine.is( src.slice ) || _.routine.is( src.subarray ) );
 
-  if( _.routineIs( src.subarray ) )
+  if( _.routine.is( src.subarray ) )
   return src.subarray( begin, end );
 
   return src.slice( begin, end );
@@ -3125,24 +3125,24 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 //
 
 /**
- * The longIdentical() routine checks the equality of two arrays.
+ * The longIdenticalShallow() routine checks the equality of two arrays.
  *
  * @param { longLike } src1 - The first array.
  * @param { longLike } src2 - The second array.
  *
  * @example
- * _.longIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * _.longIdenticalShallow( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns true
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function longIdentical
+ * @function longIdenticalShallow
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @namespace Tools
  */
 
 /* xxx : vector? */
 /* qqq : extend test */
-function longIdentical( src1, src2 )
+function longIdenticalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   // _.assert( _.longLike( src1 ) );
@@ -3686,7 +3686,7 @@ function longCountUnique( src, onEvaluate )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.longLike( src ), 'longCountUnique :', 'Expects ArrayLike' );
-  _.assert( _.routineIs( onEvaluate ) );
+  _.assert( _.routine.is( onEvaluate ) );
   _.assert( onEvaluate.length === 1 );
 
   for( let i1 = 0 ; i1 < src.length ; i1++ )
@@ -3760,8 +3760,8 @@ let Extension =
   // array checker
 
   // longCompare,
-  longIdentical,
-  longAreIdenticalShallow : longIdentical,
+  longIdenticalShallow,
+  longIdentical : longIdenticalShallow,
 
   longHas,
   longHasAny,

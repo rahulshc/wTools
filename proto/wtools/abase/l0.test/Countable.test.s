@@ -1035,6 +1035,114 @@ function countablesAreIdenticalShallow( test )
   }
 }
 
+//
+
+function exportStringShortDiagnostic( test )
+{
+  test.case = 'array empty';
+  var src = [];
+  var expected = '{- Array with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'array non-empty';
+  var src = [ 1, 2, 3 ];
+  var expected = '{- Array with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'unroll empty';
+  var src = _.unrollMake([]);
+  var expected = '{- Array.unroll with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'unroll non-empty';
+  var src = _.unrollMake([ 1, 2, 3 ]);
+  var expected = '{- Array.unroll with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var expected = '{- countableConstructor.countable with 2 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = `object countable - empty, non-vector`;
+  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var expected = '{- Object.countable with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var expected = '{- Object.countable with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic() );
+
+  test.case = 'too many args';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( [], [] ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( {} ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+}
+
 // --
 // declaration
 // --
@@ -1052,6 +1160,7 @@ var Self =
     /* xxx qqq : write test routine typingObject and use _.object.forTesting() */
     typingExtended,
     countablesAreIdenticalShallow,
+    exportStringShortDiagnostic
 
   }
 
