@@ -2730,6 +2730,17 @@ function elementThGet( test )
 
   /* */
 
+  test.case = 'string';
+  var src = 'abc';
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 'a' ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 'b' ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, 'c' ] );
+  var got4 = _.container.elementThGet( src, 3 );
+  test.identical( got4, [ 3, undefined ] );
+
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.container.elementThGet( src, 0 );
@@ -2928,10 +2939,10 @@ function elementThGet( test )
   test.shouldThrowErrorSync( () => _.container.elementThGet() );
 
   test.case = 'to many args'
-  test.shouldThrowErrorSync( () => _.container.elementThGet( {}, 'a', 'b' ) );
+  test.shouldThrowErrorSync( () => _.container.elementThGet( [ 1, 2, 3 ], 1, 2 ) );
 
   test.case = 'container = primitive'
-  test.shouldThrowErrorSync( () => _.container.elementThGet( 'hello', 'h' ) );
+  test.shouldThrowErrorSync( () => _.container.elementThGet( 1, 0 ) );
 
   /* - */
 
