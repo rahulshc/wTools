@@ -3293,8 +3293,8 @@ let Self =
 
     empty, /* qqq : implement test routine `empty` | Dmytro : implemented */
 
-    elementThGet, /* qqq for Yevhen : cover */
-    elementGet, /* qqq for Yevhen : cover */
+    elementThGet, /* qqq for Yevhen : cover | aaa : Done. */
+    elementGet, /* qqq for Yevhen : cover | aaa : Done. */
 
   }
 
