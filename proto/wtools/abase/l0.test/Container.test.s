@@ -2730,6 +2730,264 @@ function elementThGet( test )
 
   /* */
 
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 2 ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, 3 ] );
+  var got4 = _.container.elementThGet( src, 3 );
+  test.identical( got4, [ 3, undefined ] );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 1, 2, 3 ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 2 ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, 3 ] );
+  var got4 = _.container.elementThGet( src, 3 );
+  test.identical( got4, [ 3, undefined ] );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2, 3 ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 2 ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, 3 ] );
+  var got4 = _.container.elementThGet( src, 3 );
+  test.identical( got4, [ 3, undefined ] );
+
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, '1' ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, '10' ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, undefined ] );
+
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, '1' ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, '10' ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, undefined ] );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'Global & GlobalReal';
+  // var src = global;
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, true );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'Global & GlobalDerived';
+  // var src = Object.create( global );
+  // var got = _.container.elementThGet( src, 1 );
+  // test.identical( _.object.is( got ), true );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'Object & ObjectLike & Container & ContainerLike';
+  // var src = { [ Symbol.iterator ] : 1, a : 1 };
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, [ 0, 1 ] );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'a', 1 ] );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  src.a = 1;
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'a', 1 ] );
+
+  test.case = 'HashMap';
+  var objRef = { a : 1 };
+  var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'a', 1 ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ true, false ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ objRef, { a : 2 } ] );
+
+  test.case = 'Set & SetLike';
+  var objRef = { a : 1 };
+  var src = new Set([ 'a', 1, true, objRef ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 'a' ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 1 ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, true ] );
+  var got4 = _.container.elementThGet( src, 3 );
+  test.identical( got4, [ 3, objRef ] );
+
+  test.case = 'BufferNode';
+  var src = BufferNode.from( 'str' );
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 115 ] );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'BufferRaw';
+  // var src = new BufferRaw( 10 );
+  // var got = _.container.elementThGet( src, 1 );
+  // test.identical( got, 10 );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'BufferRawShared';
+  // var src = new BufferRawShared( 15 );
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, 15 );
+
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 0 ] );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'BufferView';
+  // var src = new BufferView( new BufferRaw( 20 ) )
+  // var got = _.container.elementThGet( src, 1 );
+  // test.identical( got, 20 );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'err';
+  // var src = _.err( 'error' );
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( _.strIs( got ), true );
+
+  test.case = 'pair';
+  var src = _.pair.make([ 1, 2 ]);
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 0, 1 ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 1, 2 ] );
+  var got3 = _.container.elementThGet( src, 2 );
+  test.identical( got3, [ 2, undefined ] );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'propertyTransformer & filter';
+  // var src = _.property.filter[ 'dstAndSrcOwn' ];
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true } );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'propertyTransformer & mapper';
+  // var src = _.property.mapper[ 'assigning' ];
+  // var got = _.container.elementThGet( src, 1 );
+  // test.identical( got, { 'propertyMapper' : true, 'propertyTransformer' : true, 'functor' : true } );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'routine & routineLike';
+  // var src = routine;
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, 'routine' );
+
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );
+  var got = _.container.elementThGet( src, 0 );
+  test.identical( got, [ 'onTime', undefined ] );
+  var got2 = _.container.elementThGet( src, 1 );
+  test.identical( got2, [ 'onCancel', undefined ] );
+  _.time.cancel( src );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'date & objectLike';
+  // var src = new Date( 1000 );
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, true );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'stream';
+  // var src = require( 'stream' ).Readable();
+  // var got = _.container.elementThGet( src, 1 );
+  // test.identical( got, true );
+
+  /* else _.assert( 0 ); */
+  // test.case = 'process';
+  // var src = process;
+  // var got = _.container.elementThGet( src, 0 );
+  // test.identical( got, undefined );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args'
+  test.shouldThrowErrorSync( () => _.container.elementThGet() );
+
+  test.case = 'to many args'
+  test.shouldThrowErrorSync( () => _.container.elementThGet( {}, 'a', 'b' ) );
+
+  test.case = 'container = primitive'
+  test.shouldThrowErrorSync( () => _.container.elementThGet( 'hello', 'h' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  /* */
+
+  function routine () {}
+
+  /* */
+
+  function Obj1( o )
+  {
+    _.mapExtend( this, o );
+    return this;
+  }
+
 }
 
 //
@@ -2922,12 +3180,8 @@ function elementGet( test )
 
   test.case = 'process';
   var src = process;
-  var got = _.container.elementGet( src, '' );
-  test.identical( got, true );
-
-  // test.case = '';
-  // var src = process;
-  // var got = _.container.elementGet( src );
+  var got = _.container.elementGet( src, 'cwd' );
+  test.identical( _.routine.is( got ), true );
 
   /* */
 

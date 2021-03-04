@@ -230,7 +230,7 @@ function empty( dstContainer )
 
 //
 
-function elementThGet( container, key ) /* qqq for Yevhen : cover please */
+function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
@@ -255,7 +255,7 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please */
 
 //
 
-function elementGet( container, key ) /* qqq for Yevhen : cover please */
+function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
