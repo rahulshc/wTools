@@ -704,7 +704,8 @@ function eachPermutation_( o )
   const last = length - 1;
   const plast = length - 2;
   const slast = length - 3;
-  const onEach = o.onEach || onEachDefault; /* qqq for Dmytro : optimize */
+  // const onEach = o.onEach;
+  const iterateAll = o.onEach === null ? iterateWithoutCallback : iterateWithCallback;
   let left = last;
   let swaps = 0;
   let iteration = 0;
@@ -713,7 +714,9 @@ function eachPermutation_( o )
   {
     if( length === 1 )
     {
-      onEach( sets, iteration, left, last, swaps );
+      // onEach( sets, iteration, left, last, swaps );
+      if( o.onEach )
+      o.onEach( sets, iteration, left, last, swaps );
       add();
     }
     return;
@@ -731,20 +734,20 @@ function eachPermutation_( o )
   counter[ i ] = last-i;
 
   _.assert( _.longIs( sets ) );
-  _.assert( _.routineIs( onEach ) );
+  // _.assert( _.routineIs( onEach ) );
   _.assert( length >= 0 );
   _.assert( length <= 30 );
 
-  while( iteration < iterations ) /* qqq for Dmytro : optimize */
-  {
-
-    onEach( sets, iteration, left, last, swaps );
-    add();
-    left = plast;
-    nextCounter();
-    reverse();
-    iteration += 1;
-  }
+  // while( iteration < iterations )
+  // {
+  //   onEach( sets, iteration, left, last, swaps );
+  //   add();
+  //   left = plast;
+  //   nextCounter();
+  //   reverse();
+  //   iteration += 1;
+  // }
+  iterateAll();
 
   return dst;
 
@@ -799,6 +802,34 @@ function eachPermutation_( o )
 
   function onEachDefault()
   {
+  }
+
+  function iterateWithoutCallback()
+  {
+
+    while( iteration < iterations )
+    {
+      add();
+      left = plast;
+      nextCounter();
+      reverse();
+      iteration += 1;
+    }
+  }
+
+  function iterateWithCallback()
+  {
+    _.assert( _.routineIs( o.onEach ), 'Expects routine {-o.onEach-}' );
+
+    while( iteration < iterations )
+    {
+      o.onEach( sets, iteration, left, last, swaps );
+      add();
+      left = plast;
+      nextCounter();
+      reverse();
+      iteration += 1;
+    }
   }
 
 }
