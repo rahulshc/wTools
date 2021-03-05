@@ -45,7 +45,7 @@ function identicalShallow( src1, src2 )
       - BufferView
       - BufferBytes
     */
-    return _.buffersidenticalShallow( src1, src2 );
+    return _.buffersIdenticalShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {
@@ -166,7 +166,7 @@ function equivalentShallow( src1, src2, options )
       - BufferView
       - BufferBytes
     */
-    return _.buffersAreEquivalentShallow( src1, src2 );
+    return _.buffersEquivalentShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {

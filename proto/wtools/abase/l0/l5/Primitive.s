@@ -11,7 +11,7 @@ let Self = _.primitive = _.primitive || Object.create( null );
 // primitive
 // --
 
-function areIdenticalShallow( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.primitive.is( src1 ) );
@@ -22,7 +22,7 @@ function areIdenticalShallow( src1, src2 )
 
 //
 
-function areEquivalentShallow( src1, src2, accuracy )
+function equivalentShallow( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.primitive.is( src1 ) );
@@ -92,8 +92,8 @@ let ExtensionTools =
 
 let Extension =
 {
-  areIdenticalShallow,
-  areEquivalentShallow,
+  identicalShallow,
+  equivalentShallow,
 
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,

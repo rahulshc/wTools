@@ -18,7 +18,7 @@ function is( src )
 
 //
 
-function areIdentical( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -27,6 +27,13 @@ function areIdentical( src1, src2 )
   if( !_.date.is( src2 ) )
   return false;
 
+  return _.date._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
   src1 = src1.getTime();
   src2 = src2.getTime();
 
@@ -40,7 +47,7 @@ function areIdentical( src1, src2 )
 let ToolsExtension =
 {
   dateIs : is,
-  datesAreIdentical : areIdentical,
+  datesAreIdentical : identicalShallow,
 }
 
 //
@@ -48,9 +55,10 @@ let ToolsExtension =
 let Extension =
 {
   is,
-  areIdentical,
-  identicalShallow : areIdentical,
-  equivalentShallow : areIdentical
+  identicalShallow,
+  _identicalShallow,
+  areIdentical : identicalShallow,
+  equivalentShallow : identicalShallow
 }
 
 //
