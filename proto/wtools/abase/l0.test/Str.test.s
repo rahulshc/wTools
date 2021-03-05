@@ -3559,8 +3559,6 @@ function exportStringShortDiagnostic( test )
 function exportStringShortCode( test )
 {
 
-  /* xxx qqq : for Yevhen : countable, non-vector cases? */
-
   test.case = 'number';
   var src = 1;
   var expected = '1';
