@@ -3332,7 +3332,7 @@ function exportStringShort( src, opts )
 
 //
 
-function _exportStringShortDiagnostic_head( routine, args )
+function _exportStringShort_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -3354,7 +3354,7 @@ function _exportStringShortDiagnostic_head( routine, args )
 }
 //
 
-function _exportStringShortDiagnostic_body( o )
+function _exportStringShort_body( o )
 {
   let result = '';
   let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
@@ -3413,7 +3413,7 @@ function _exportStringShortDiagnostic_body( o )
   return result;
 }
 
-_exportStringShortDiagnostic_body.defaults =
+_exportStringShort_body.defaults =
 {
   src : null,
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
@@ -3421,21 +3421,21 @@ _exportStringShortDiagnostic_body.defaults =
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
-let _exportStringShortDiagnostic = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
 
-let _exportStringShortCode = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+let _exportStringShortCode = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
 _exportStringShortCode.defaults.format = 'string.code';
 
 //
 
 /* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShortDiagnostic( src )
+function exportStringShortDiagnostic( src, o ) /* */
 {
 
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   /* qqq : don't produce options-map when possible that here */
 
-  return _.entity._exportStringShortDiagnostic({ src });
+  return _.entity._exportStringShort({ src });
 
   // let result = '';
 

@@ -359,9 +359,9 @@ function strShort( o )
 strShort.defaults =
 {
   src : null,
-  limit : 40,
-  prefix : null,
-  postfix : null,
+  limit : 40, // width
+  prefix : null, // '{- '
+  postfix : null, // ' -}'
   infix : null,
   onLength : null, /* xxx : investigate */
   cutting : 'center',
