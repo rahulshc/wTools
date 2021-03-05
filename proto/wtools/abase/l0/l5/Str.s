@@ -3379,16 +3379,15 @@ function _exportStringShortDiagnostic_body( o )
     }
     else if( _.date.is( o.src ) )
     {
-      result = _.date[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+      result = _.date[ method ]( o.src );
     }
     else if( _.regexpIs( o.src ) )
     {
-      result = _.regexp[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+      result = _.regexp[ method ]( o.src );
     }
     else if( _.routine.is( o.src ) )
     {
-      /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
-      result = _.routine[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+      result = _.routine[ method ]( o.src );
     }
     else if( _.aux.like( o.src ) )
     {
