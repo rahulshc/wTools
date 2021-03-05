@@ -18,6 +18,13 @@ function identicalShallow( src1, src2 )
   _.assert( _.aux.is( src1 ) );
   _.assert( _.aux.is( src2 ) );
 
+  return _.aux._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
   return false;
 
@@ -47,6 +54,7 @@ function exportStringShortDiagnostic( src )
 var AuxiliaryExtension =
 {
   identicalShallow,
+  _identicalShallow,
   equivalentShallow : identicalShallow,
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,

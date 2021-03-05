@@ -47,6 +47,14 @@ function identicalShallow( src1, src2 )
   _.assert( _.hashMap.like( src1 ) );
   _.assert( _.hashMap.like( src2 ) );
 
+  return _.hashMap._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
+
   let testVal;
 
   if( src1.size !== src2.size )
@@ -96,6 +104,7 @@ let Extension =
   isEmpty,
   isPopulated,
   identicalShallow,
+  _identicalShallow,
   equivalentShallow : identicalShallow,
 
   exportString : exportStringShortDiagnostic,
