@@ -2678,7 +2678,7 @@ function empty( test )
 
 //
 
-function elementThGet( test ) /* qqq : types that cause error marked with - 'else _.assert( 0 );' and commented */
+function elementThGet( test ) /* xxx : types that cause error marked with - 'else _.assert( 0 );' and commented */
 {
 
   /* */
