@@ -8411,7 +8411,7 @@ function mapOnly( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { c : 33, a  : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -8441,7 +8441,7 @@ function mapOnly( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
@@ -8535,7 +8535,7 @@ function mapOnly( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -8565,7 +8565,7 @@ function mapOnly( test )
   var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
@@ -8748,7 +8748,7 @@ function mapOnlyScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -8768,7 +8768,7 @@ function mapOnlyScreenMapIsVector( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
@@ -8815,7 +8815,7 @@ function mapOnlyScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -8835,7 +8835,7 @@ function mapOnlyScreenMapIsVector( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
