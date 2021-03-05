@@ -1691,6 +1691,8 @@ function routineErFor( routine, erhead )
 function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
 {
   let self = this;
+  let head = routine.head;
+  let body = routine.body;
   let defaults = routine.defaults;
   erhead = erhead || routine.erhead || routine.head;
 
