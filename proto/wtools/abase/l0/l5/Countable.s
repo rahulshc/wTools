@@ -12,7 +12,7 @@ _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 // --
 
 /* qqq2 : for Yevhen : bad! */
-function areIdenticalShallow( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.countable.is( src1 ) );
@@ -55,8 +55,8 @@ function exportStringShortDiagnostic( src )
 
 var Extension =
 {
-  areIdenticalShallow,
-  areEquivalentShallow : areIdenticalShallow,
+  identicalShallow,
+  equivalentShallow : identicalShallow,
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,
