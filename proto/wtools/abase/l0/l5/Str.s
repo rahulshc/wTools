@@ -3336,6 +3336,8 @@ function _exportStringShortDiagnostic_head( routine, args )
 {
 
   let o = args[ 0 ];
+  let isUndefined = o.src === undefined; /* if o.src === undefined, it shouldn't be replaced with default : null */
+
   _.routine.options( routine, o );
   _.assert
   (
@@ -3344,6 +3346,9 @@ function _exportStringShortDiagnostic_head( routine, args )
   );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
+
+  if( isUndefined )
+  o.src = undefined;
 
   return o;
 }

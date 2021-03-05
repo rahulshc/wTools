@@ -3440,11 +3440,9 @@ function exportStringShortDiagnostic( test )
   var expected = 'null';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
-  /* when src = undefined, it becomes default value for srs -> null */
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  debugger;
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'Symbol null';
@@ -3818,11 +3816,9 @@ function exportStringShortCode( test )
   var expected = 'null';
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
-  /* when src = undefined, it becomes default value for srs -> null */
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  debugger;
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
   test.case = 'Symbol null';
