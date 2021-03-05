@@ -163,8 +163,8 @@ let Extension =
   adapterLike : setAdapterLike,
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
-  areIdenticalShallow : setsAreIdenticalShallow,
-  areEquivalentShallow : setsAreIdenticalShallow,
+  identicalShallow : setsAreIdenticalShallow,
+  equivalentShallow : setsAreIdenticalShallow,
 
   // set
 
