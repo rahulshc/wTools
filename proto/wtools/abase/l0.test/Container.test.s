@@ -3015,6 +3015,20 @@ function elementGet( test )
 
   /* */
 
+  test.case = 'string';
+  var src = 'abc';
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, 'a' );
+  var got2 = _.container.elementGet( src, '1' );
+  test.identical( got2, 'b' );
+  var got3 = _.container.elementGet( src, '2' );
+  test.identical( got3, 'c' );
+
+  test.case = 'number';
+  var src = 100;
+  var got = _.container.elementGet( src, '0' );
+  test.identical( got, undefined );
+
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.container.elementGet( src, '0' );
@@ -3205,8 +3219,8 @@ function elementGet( test )
   test.case = 'to many args'
   test.shouldThrowErrorSync( () => _.container.elementGet( {}, 'a', 'b' ) );
 
-  test.case = 'container = primitive'
-  test.shouldThrowErrorSync( () => _.container.elementGet( 'hello', 'h' ) );
+  // test.case = 'container = primitive'
+  // test.shouldThrowErrorSync( () => _.container.elementGet( 1, 'h' ) );
 
   /* - */
 

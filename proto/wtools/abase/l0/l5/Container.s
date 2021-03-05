@@ -259,7 +259,6 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( !_.primitive.is( container ) );
 
   if( container )
   {
