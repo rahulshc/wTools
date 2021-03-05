@@ -39,7 +39,7 @@ function name_head( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
@@ -111,7 +111,7 @@ function name_head( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
@@ -140,9 +140,9 @@ name_body.defaults =
   full : 0,
 }
 
-let name = _.routineUnite( name_head, name_body );
+let name = _.routine.unite( name_head, name_body );
 
-let nameFull = _.routineUnite( name_head, name_body );
+let nameFull = _.routine.unite( name_head, name_body );
 nameFull.defaults.full = 1;
 
 console.log( name( './a/b/c/File.js' ) );
@@ -173,9 +173,9 @@ console.log( nameFull( './a/b/c/File.js' ) );
 В кінці коду файла `Name.js`, ви знайдете рядки з об'явленням рутин `name` i `nameFull`. Вони вказуються як звичайні змінні, яким присвоєно результат виконання рутини `routineUnite`:
 
 ```js
-let name = _.routineUnite( name_head, name_body );
+let name = _.routine.unite( name_head, name_body );
 
-let nameFull = _.routineUnite( name_head, name_body );
+let nameFull = _.routine.unite( name_head, name_body );
 ```
 
 Рутина `routineUnite` першим аргументом приймає рутину `head`, а другим - `body`.
@@ -230,13 +230,13 @@ name
 Замініть рядок
 
 ```js
-let nameFull = _.routineUnite( name_head, name_body);
+let nameFull = _.routine.unite( name_head, name_body);
 ```
 
 на
 
 ```js
-let nameFull = _.routineUnite({ head : name_head, body : name_body, name : 'nameFull' });
+let nameFull = _.routine.unite({ head : name_head, body : name_body, name : 'nameFull' });
 ```
 
 Після збереження файла, запустіть виконання файла `Name.js`. Звірте вивід консолі з приведеним

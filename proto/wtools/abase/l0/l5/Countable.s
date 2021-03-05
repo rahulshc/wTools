@@ -11,6 +11,7 @@ _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 // implementation
 // --
 
+/* qqq2 : for Yevhen : bad! */
 function areIdenticalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -25,7 +26,7 @@ function areIdenticalShallow( src1, src2 )
 
   if( _.longLike( src1 ) && _.longLike( src2 ) )
   {
-    return _.longAreIdenticalShallow( src1, src2 );
+    return _.longIdenticalShallow( src1, src2 );
   }
 
   /*
@@ -34,6 +35,8 @@ function areIdenticalShallow( src1, src2 )
   */
   return _.mapsAreIdentical( src1, src2 )
 }
+
+//
 
 function exportStringShortDiagnostic( src )
 {
@@ -53,6 +56,7 @@ function exportStringShortDiagnostic( src )
 var Extension =
 {
   areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow,
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,

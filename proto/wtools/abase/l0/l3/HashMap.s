@@ -96,13 +96,15 @@ let Extension =
   isEmpty,
   isPopulated,
   areIdenticalShallow,
+  areEquivalentShallow : areIdenticalShallow,
 
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,
   exportStringShortCode : exportStringShortDiagnostic,
   exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic
+  exportStringCode : exportStringShortDiagnostic,
+
 }
 
 Object.assign( _, ToolsExtension );

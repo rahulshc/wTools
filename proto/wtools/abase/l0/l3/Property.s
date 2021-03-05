@@ -15,7 +15,7 @@ function _ofAct( o )
 {
   let result = Object.create( null );
 
-  _.routineOptions( _ofAct, o );
+  _.routine.options( _ofAct, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !_.primitive.is( o.srcMap ) );
   _.assert( this === _.property );
@@ -83,7 +83,7 @@ function _of( srcMap, o )
 {
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( _of, o );
+  o = _.routine.options( _of, o );
 
   o.srcMap = srcMap;
 
@@ -141,7 +141,7 @@ function onlyOwn( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyOwn, o );
+  o = _.routine.options( onlyOwn, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -191,7 +191,7 @@ function onlyExplicit( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyExplicit, o );
+  o = _.routine.options( onlyExplicit, o );
 
   o.srcMap = srcMap;
   let result = _.property._ofAct( o );
@@ -251,13 +251,13 @@ function routines( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this === _.property );
-  o = _.routineOptions( routines, o );
+  o = _.routine.options( routines, o );
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
-    if( _.routineIs( srcMap[ k ] ) )
+    if( _.routine.is( srcMap[ k ] ) )
     return k;
     debugger;
   }
@@ -316,14 +316,14 @@ function onlyOwnRoutines( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyOwnRoutines, o );
+  o = _.routine.options( onlyOwnRoutines, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
   o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
-    if( _.routineIs( srcMap[ k ] ) )
+    if( _.routine.is( srcMap[ k ] ) )
     return k;
     debugger;
   }
@@ -373,7 +373,7 @@ function onlyExplicitRoutines( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyExplicitRoutines, o );
+  o = _.routine.options( onlyExplicitRoutines, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -381,7 +381,7 @@ function onlyExplicitRoutines( srcMap, o )
   o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
-    if( _.routineIs( srcMap[ k ] ) )
+    if( _.routine.is( srcMap[ k ] ) )
     return k;
   }
 
@@ -439,12 +439,12 @@ function fields( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( fields, o );
+  o = _.routine.options( fields, o );
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )
   {
-    if( !_.routineIs( srcMap[ k ] ) )
+    if( !_.routine.is( srcMap[ k ] ) )
     return k;
   }
 
@@ -501,13 +501,13 @@ function onlyOwnFields( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyOwnFields, o );
+  o = _.routine.options( onlyOwnFields, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
   o.selectFilter = function selectRoutine( srcMap, k )
   {
-    if( !_.routineIs( srcMap[ k ] ) )
+    if( !_.routine.is( srcMap[ k ] ) )
     return k;
   }
 
@@ -561,23 +561,23 @@ function onlyExplicitFields( srcMap, o )
 
   _.assert( this === _.property );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( onlyExplicitFields, o );
+  o = _.routine.options( onlyExplicitFields, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
   o.onlyEnumerable = 0;
   o.selectFilter = function selectRoutine( srcMap, k )
   {
-    if( !_.routineIs( srcMap[ k ] ) )
+    if( !_.routine.is( srcMap[ k ] ) )
     return k;
   }
 
-  if( _.routineIs( srcMap ) )
+  if( _.routine.is( srcMap ) )
   o.selectFilter = function selectRoutine( srcMap, k )
   {
     if( _.longHas( [ 'arguments', 'conlyExpliciter' ], k ) )
     return;
-    if( !_.routineIs( srcMap[ k ] ) )
+    if( !_.routine.is( srcMap[ k ] ) )
     return k;
   }
 

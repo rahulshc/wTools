@@ -328,6 +328,7 @@ let Extension =
   isFinite : numberIsFinite,
   defined : numberIsFinite,
   isInfinite : numberIsInfinite,
+  areEquivalentShallow : numbersAreEquivalent,
 
   intIs,
 

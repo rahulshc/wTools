@@ -575,7 +575,7 @@ function dstNotHasSrcOwnRoutines()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
     if( key in dstContainer )
     return false;
@@ -913,7 +913,7 @@ function srcOwnRoutines()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/

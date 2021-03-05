@@ -50,123 +50,123 @@ var context3 = new contextConstructor3();
 function routineIs( test )
 {
   test.case = 'without argument';
-  var got = _.routineIs();
+  var got = _.routine.is();
   test.identical( got, false );
 
   test.case = 'check null';
-  var got = _.routineIs( null );
+  var got = _.routine.is( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.routineIs( undefined );
+  var got = _.routine.is( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.routineIs( _.nothing );
+  var got = _.routine.is( _.nothing );
   test.identical( got, false );
 
   test.case = 'false';
-  var got = _.routineIs( false );
+  var got = _.routine.is( false );
   test.identical( got, false );
 
   test.case = 'NaN';
-  var got = _.routineIs( NaN );
+  var got = _.routine.is( NaN );
   test.identical( got, false );
 
   test.case = 'Symbol';
-  var got = _.routineIs( Symbol( 'a' ) );
+  var got = _.routine.is( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'array';
-  var got = _.routineIs( [] );
+  var got = _.routine.is( [] );
   test.identical( got, false );
 
   test.case = 'arguments array';
-  var got = _.routineIs( _.argumentsArray.make( [] ) );
+  var got = _.routine.is( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'unroll';
-  var got = _.routineIs( _.unrollMake( [] ) );
+  var got = _.routine.is( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'pure map';
-  var got = _.routineIs( Object.create( null ) );
+  var got = _.routine.is( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'Set';
-  var got = _.routineIs( new Set( [] ) );
+  var got = _.routine.is( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routineIs( new Map( [] ) );
+  var got = _.routine.is( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
-  var got = _.routineIs( new BufferRaw() );
+  var got = _.routine.is( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check BufferTyped';
-  var got = _.routineIs( new U8x() );
+  var got = _.routine.is( new U8x() );
   test.identical( got, false );
 
   test.case = 'number';
-  var got = _.routineIs( 3 );
+  var got = _.routine.is( 3 );
   test.identical( got, false );
 
   test.case = 'bigInt';
-  var got = _.routineIs( 1n );
+  var got = _.routine.is( 1n );
   test.identical( got, false );
 
   test.case = 'string';
-  var got = _.routineIs( 'str' );
+  var got = _.routine.is( 'str' );
   test.identical( got, false );
 
   test.case = 'array';
-  var got = _.routineIs( [ null ] );
+  var got = _.routine.is( [ null ] );
   test.identical( got, false );
 
   test.case = 'map';
-  var got = _.routineIs( { '' : null } );
+  var got = _.routine.is( { '' : null } );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
   function Constr(){ this.x = 1; return this };
   var src = new Constr();
-  var got = _.routineIs( src );
+  var got = _.routine.is( src );
   test.identical( got, false );
 
   test.case = 'check instance constructor';
   function Constr1(){ this.x = 1; return this };
   var src = new Constr1();
-  var got = _.routineIs( src.constructor );
+  var got = _.routine.is( src.constructor );
   test.identical( got, true );
 
   test.case = 'Object';
-  var got = _.routineIs( Object );
+  var got = _.routine.is( Object );
   test.identical( got, true )
 
   test.case = 'arrow routine';
-  var got = _.routineIs( () => {} );
+  var got = _.routine.is( () => {} );
   test.identical( got, true )
 
   test.case = 'unnamed routine';
-  var got = _.routineIs( function (){} );
+  var got = _.routine.is( function (){} );
   test.identical( got, true )
 
   test.case = 'named routine';
-  var got = _.routineIs( function a(){} );
+  var got = _.routine.is( function a(){} );
   test.identical( got, true )
 
   test.case = 'async arrow routine';
-  var got = _.routineIs( async () => {} );
+  var got = _.routine.is( async () => {} );
   test.identical( got, true )
 
   test.case = 'async unnamed routine';
-  var got = _.routineIs( async function (){} );
+  var got = _.routine.is( async function (){} );
   test.identical( got, true )
 
   test.case = 'async named routine';
-  var got = _.routineIs( async function a(){} );
+  var got = _.routine.is( async function a(){} );
   test.identical( got, true )
 }
 
@@ -175,123 +175,123 @@ function routineIs( test )
 function routineLike( test )
 {
   test.case = 'without argument';
-  var got = _.routineLike();
+  var got = _.routine.like();
   test.identical( got, false );
 
   test.case = 'check null';
-  var got = _.routineLike( null );
+  var got = _.routine.like( null );
   test.identical( got, false );
 
   test.case = 'check undefined';
-  var got = _.routineLike( undefined );
+  var got = _.routine.like( undefined );
   test.identical( got, false );
 
   test.case = 'check _.nothing';
-  var got = _.routineLike( _.nothing );
+  var got = _.routine.like( _.nothing );
   test.identical( got, false );
 
   test.case = 'false';
-  var got = _.routineLike( false );
+  var got = _.routine.like( false );
   test.identical( got, false );
 
   test.case = 'NaN';
-  var got = _.routineLike( NaN );
+  var got = _.routine.like( NaN );
   test.identical( got, false );
 
   test.case = 'Symbol';
-  var got = _.routineLike( Symbol( 'a' ) );
+  var got = _.routine.like( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'array';
-  var got = _.routineLike( [] );
+  var got = _.routine.like( [] );
   test.identical( got, false );
 
   test.case = 'arguments array';
-  var got = _.routineLike( _.argumentsArray.make( [] ) );
+  var got = _.routine.like( _.argumentsArray.make( [] ) );
   test.identical( got, false );
 
   test.case = 'unroll';
-  var got = _.routineLike( _.unrollMake( [] ) );
+  var got = _.routine.like( _.unrollMake( [] ) );
   test.identical( got, false );
 
   test.case = 'pure map';
-  var got = _.routineLike( Object.create( null ) );
+  var got = _.routine.like( Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'Set';
-  var got = _.routineLike( new Set( [] ) );
+  var got = _.routine.like( new Set( [] ) );
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routineLike( new Map( [] ) );
+  var got = _.routine.like( new Map( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
-  var got = _.routineLike( new BufferRaw() );
+  var got = _.routine.like( new BufferRaw() );
   test.identical( got, false );
 
   test.case = 'check BufferTyped';
-  var got = _.routineLike( new U8x() );
+  var got = _.routine.like( new U8x() );
   test.identical( got, false );
 
   test.case = 'number';
-  var got = _.routineLike( 3 );
+  var got = _.routine.like( 3 );
   test.identical( got, false );
 
   test.case = 'bigInt';
-  var got = _.routineLike( 1n );
+  var got = _.routine.like( 1n );
   test.identical( got, false );
 
   test.case = 'string';
-  var got = _.routineLike( 'str' );
+  var got = _.routine.like( 'str' );
   test.identical( got, false );
 
   test.case = 'array';
-  var got = _.routineLike( [ null ] );
+  var got = _.routine.like( [ null ] );
   test.identical( got, false );
 
   test.case = 'map';
-  var got = _.routineLike( { '' : null } );
+  var got = _.routine.like( { '' : null } );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
   function Constr(){ this.x = 1; return this };
   var src = new Constr();
-  var got = _.routineLike( src );
+  var got = _.routine.like( src );
   test.identical( got, false );
 
   test.case = 'check instance constructor';
   function Constr1(){ this.x = 1; return this };
   var src = new Constr1();
-  var got = _.routineLike( src.constructor );
+  var got = _.routine.like( src.constructor );
   test.identical( got, true );
 
   test.case = 'Object';
-  var got = _.routineLike( Object );
+  var got = _.routine.like( Object );
   test.identical( got, true );
 
   test.case = 'arrow routine';
-  var got = _.routineLike( () => {} );
+  var got = _.routine.like( () => {} );
   test.identical( got, true );
 
   test.case = 'unnamed routine';
-  var got = _.routineLike( function (){} );
+  var got = _.routine.like( function (){} );
   test.identical( got, true );
 
   test.case = 'named routine';
-  var got = _.routineLike( function a(){} );
+  var got = _.routine.like( function a(){} );
   test.identical( got, true );
 
   test.case = 'async arrow routine';
-  var got = _.routineLike( async () => {} );
+  var got = _.routine.like( async () => {} );
   test.identical( got, true );
 
   test.case = 'async unnamed routine';
-  var got = _.routineLike( async function (){} );
+  var got = _.routine.like( async function (){} );
   test.identical( got, true )
 
   test.case = 'async named routine';
-  var got = _.routineLike( async function a(){} );
+  var got = _.routine.like( async function a(){} );
   test.identical( got, true )
 }
 
@@ -300,65 +300,65 @@ function routineLike( test )
 function routineIsTrivial( test )
 {
 
-  var got = _.routineIsTrivial( 1 );
+  var got = _.routine.isTrivial( 1 );
   test.identical( got, false )
 
-  var got = _.routineIsTrivial( '' );
+  var got = _.routine.isTrivial( '' );
   test.identical( got, false )
 
-  var got = _.routineIsTrivial( {} );
+  var got = _.routine.isTrivial( {} );
   test.identical( got, false )
 
-  var got = _.routineIsTrivial( [] );
+  var got = _.routine.isTrivial( [] );
   test.identical( got, false )
 
-  var got = _.routineIsTrivial( () => {} );
+  var got = _.routine.isTrivial( () => {} );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( Object );
+  var got = _.routine.isTrivial( Object );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( function () {} );
+  var got = _.routine.isTrivial( function () {} );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( function a() {} );
+  var got = _.routine.isTrivial( function a() {} );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( async function () {} );
+  var got = _.routine.isTrivial( async function () {} );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( async () => {} );
+  var got = _.routine.isTrivial( async () => {} );
   test.identical( got, true )
 
-  var got = _.routineIsTrivial( async function a() {} );
+  var got = _.routine.isTrivial( async function a() {} );
   test.identical( got, true )
 
   function sync1(){}
-  var got = _.routineIsTrivial( sync1 );
+  var got = _.routine.isTrivial( sync1 );
   test.identical( got, true )
 
   function sync2(){}
   sync2.map = {};
-  var got = _.routineIsTrivial( sync2 );
+  var got = _.routine.isTrivial( sync2 );
   test.identical( got, true )
 
   function async1(){}
-  var got = _.routineIsTrivial( async1 );
+  var got = _.routine.isTrivial( async1 );
   test.identical( got, true )
 
   function async2(){}
   async2.map = {};
-  var got = _.routineIsTrivial( async2 );
+  var got = _.routine.isTrivial( async2 );
   test.identical( got, true )
 
   test.case = 'map';
   var src = Object.create( null );
-  var got = _.routineIsTrivial( src );
+  var got = _.routine.isTrivial( src );
   test.identical( got, false )
 
   test.case = 'prototyped';
   var src = Object.create( Object.create( null ) );
-  var got = _.routineIsTrivial( src );
+  var got = _.routine.isTrivial( src );
   test.identical( got, false )
 
 }
@@ -375,49 +375,49 @@ function routineIsSync( test )
   function async2(){}
   async2.map = {};
 
-  var got = _.routineIsSync( 1 );
+  var got = _.routine.isSync( 1 );
   test.identical( got, false )
 
-  var got = _.routineIsSync( '' );
+  var got = _.routine.isSync( '' );
   test.identical( got, false )
 
-  var got = _.routineIsSync( {} );
+  var got = _.routine.isSync( {} );
   test.identical( got, false )
 
-  var got = _.routineIsSync( [] );
+  var got = _.routine.isSync( [] );
   test.identical( got, false )
 
-  var got = _.routineIsSync( Object );
+  var got = _.routine.isSync( Object );
   test.identical( got, true )
 
-  var got = _.routineIsSync( () => {} );
+  var got = _.routine.isSync( () => {} );
   test.identical( got, true )
 
-  var got = _.routineIsSync( function () {} );
+  var got = _.routine.isSync( function () {} );
   test.identical( got, true )
 
-  var got = _.routineIsSync( function a() {} );
+  var got = _.routine.isSync( function a() {} );
   test.identical( got, true )
 
-  var got = _.routineIsSync( async function () {} );
+  var got = _.routine.isSync( async function () {} );
   test.identical( got, false )
 
-  var got = _.routineIsSync( async () => {} );
+  var got = _.routine.isSync( async () => {} );
   test.identical( got, false )
 
-  var got = _.routineIsSync( async function a() {} );
+  var got = _.routine.isSync( async function a() {} );
   test.identical( got, false )
 
-  var got = _.routineIs( sync1 );
+  var got = _.routine.is( sync1 );
   test.identical( got, true )
 
-  var got = _.routineIs( sync2 );
+  var got = _.routine.is( sync2 );
   test.identical( got, true )
 
-  var got = _.routineIs( async1 );
+  var got = _.routine.is( async1 );
   test.identical( got, true )
 
-  var got = _.routineIs( async2 );
+  var got = _.routine.is( async2 );
   test.identical( got, true )
 
 }
@@ -434,49 +434,49 @@ function routineIsAsync( test )
   function async2(){}
   async2.map = {};
 
-  var got = _.routineIsAsync( 1 );
+  var got = _.routine.isAsync( 1 );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( '' );
+  var got = _.routine.isAsync( '' );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( {} );
+  var got = _.routine.isAsync( {} );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( [] );
+  var got = _.routine.isAsync( [] );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( () => {} );
+  var got = _.routine.isAsync( () => {} );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( Object );
+  var got = _.routine.isAsync( Object );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( function () {} );
+  var got = _.routine.isAsync( function () {} );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( function a() {} );
+  var got = _.routine.isAsync( function a() {} );
   test.identical( got, false )
 
-  var got = _.routineIsAsync( async function () {} );
+  var got = _.routine.isAsync( async function () {} );
   test.identical( got, true )
 
-  var got = _.routineIsAsync( async () => {} );
+  var got = _.routine.isAsync( async () => {} );
   test.identical( got, true )
 
-  var got = _.routineIsAsync( async function a() {} );
+  var got = _.routine.isAsync( async function a() {} );
   test.identical( got, true )
 
-  var got = _.routineIs( sync1 );
+  var got = _.routine.is( sync1 );
   test.identical( got, true )
 
-  var got = _.routineIs( sync2 );
+  var got = _.routine.is( sync2 );
   test.identical( got, true )
 
-  var got = _.routineIs( async1 );
+  var got = _.routine.is( async1 );
   test.identical( got, true )
 
-  var got = _.routineIs( async2 );
+  var got = _.routine.is( async2 );
   test.identical( got, true )
 
 }
@@ -553,39 +553,39 @@ function _routineJoin( test )
   var expected5 = 21;
 
   test.case = 'simple function without context with arguments bind without seal : result check';
-  var gotfn = _._routineJoin( options1 );
+  var gotfn = _.routine._join( options1 );
   var got = gotfn( testParam1 );
   test.identical( got, expected1 );
 
   test.case = 'simple function without context and seal : context test';
-  var gotfn = _._routineJoin(options2);
+  var gotfn = _.routine._join(options2);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
   test.case = 'simple function with context and arguments : result check';
-  var gotfn = _._routineJoin(options3);
+  var gotfn = _.routine._join(options3);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
   test.case = 'simple function with context and arguments : context check';
-  var gotfn = _._routineJoin(options4);
+  var gotfn = _.routine._join(options4);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
   test.case = 'simple function with context and arguments : result check, seal == true ';
-  var gotfn = _._routineJoin(options5);
+  var gotfn = _.routine._join(options5);
   var got = gotfn( testParam1 );
   test.identical( got, expected5 );
 
   test.case = 'simple function with context and arguments : result check, seal == true ';
-  var gotfn = _._routineJoin(options5);
+  var gotfn = _.routine._join(options5);
   var got = gotfn( 0, 0 );
   test.identical( got, expected5 );
 
   test.case = 'extending';
   function srcRoutine(){}
   srcRoutine.defaults = { a : 10 };
-  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  var gotfn = _.routine.join( undefined, srcRoutine, [] );
   test.identical( gotfn.defaults, srcRoutine.defaults );
 
   /**/
@@ -596,25 +596,25 @@ function _routineJoin( test )
   test.case = 'missed argument';
   test.shouldThrowErrorSync( function()
   {
-    _._routineJoin();
+    _.routine._join();
   });
 
   test.case = 'extra argument';
   test.shouldThrowErrorSync( function()
   {
-    _._routineJoin( options1, options2 );
+    _.routine._join( options1, options2 );
   });
 
   test.case = 'passed non callable object';
   test.shouldThrowErrorSync( function()
   {
-    _._routineJoin( wrongOpt1 );
+    _.routine._join( wrongOpt1 );
   });
 
   test.case = 'passed arguments as primitive value';
   test.shouldThrowErrorSync( function()
   {
-    _._routineJoin( wrongOpt2 );
+    _.routine._join( wrongOpt2 );
   });
 
 };
@@ -698,7 +698,7 @@ function constructorJoin( test )
 
   test.case = 'without args';
   var got = _.constructorJoin( srcRoutine );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -708,7 +708,7 @@ function constructorJoin( test )
 
   test.case = 'args - undefined';
   var got = _.constructorJoin( srcRoutine, undefined );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -718,7 +718,7 @@ function constructorJoin( test )
 
   test.case = 'args - null';
   var got = _.constructorJoin( srcRoutine, null );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -729,7 +729,7 @@ function constructorJoin( test )
   test.case = 'args - empty array';
   var args = [];
   var got = _.constructorJoin( srcRoutine, args );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = new got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -740,7 +740,7 @@ function constructorJoin( test )
   test.case = 'args - array with map, returned routine exexute without arguments';
   var args = [ { a : 1 } ];
   var got = _.constructorJoin( srcRoutine, args );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -751,7 +751,7 @@ function constructorJoin( test )
   test.case = 'args - array with map, returned routine exexute with arguments';
   var args = [ { a : 1 } ];
   var got = _.constructorJoin( srcRoutine, args );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = got({ b : 1 });
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
@@ -762,7 +762,7 @@ function constructorJoin( test )
   test.case = 'Array contructor, args = U8x buffer, execute without arguments';
   var args = new U8x( [ 1, 2, 3, 4 ] );
   var got = _.constructorJoin( Array, args );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = new got();
   test.identical( _.mapKeys( got ), [] );
   test.identical( result, [ 1, 2, 3, 4 ] );
@@ -770,7 +770,7 @@ function constructorJoin( test )
   test.case = 'Array contructor, args = U8x buffer, exexute with number';
   var args = new U8x( [ 1, 2, 3, 4 ] );
   var got = _.constructorJoin( Array, args );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   var result = new got( 1 );
   test.identical( _.mapKeys( got ), [] );
   test.identical( result, [ 1, 2, 3, 4, 1 ] );
@@ -808,7 +808,7 @@ function routineJoin( test )
   test.open( 'context - undefined, args - undefined' );
 
   test.case = 'named function without context, check context';
-  var gotfn = _.routineJoin( undefined, testFunction1, undefined );
+  var gotfn = _.routine.join( undefined, testFunction1, undefined );
   test.identical( gotfn.name, 'testFunction1' );
   test.identical( gotfn.originalRoutine, testFunction1 );
   test.identical( gotfn.boundArguments, undefined );
@@ -816,7 +816,7 @@ function routineJoin( test )
   test.identical( got, undefined );
 
   test.case = 'named function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, testFunction2, undefined );
+  var gotfn = _.routine.join( undefined, testFunction2, undefined );
   test.identical( gotfn.name, 'testFunction2' );
   test.identical( gotfn.originalRoutine, testFunction2 );
   test.identical( gotfn.boundArguments, undefined );
@@ -824,7 +824,7 @@ function routineJoin( test )
   test.identical( got, 5 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, testFunction3, undefined );
+  var gotfn = _.routine.join( undefined, testFunction3, undefined );
   test.identical( gotfn.name, 'testFunction3' );
   test.identical( gotfn.originalRoutine, testFunction3 );
   test.identical( gotfn.boundArguments, undefined );
@@ -832,7 +832,7 @@ function routineJoin( test )
   test.identical( got, 6 );
 
   test.case = 'unnamed function without context, check context';
-  var gotfn = _.routineJoin( undefined, ( x, y ) => x + y, undefined );
+  var gotfn = _.routine.join( undefined, ( x, y ) => x + y, undefined );
   test.identical( gotfn.name, '' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
   test.identical( gotfn.boundArguments, undefined );
@@ -840,7 +840,7 @@ function routineJoin( test )
   test.identical( got, 5 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, ( x, y ) => Math.pow( x, y ), undefined );
+  var gotfn = _.routine.join( undefined, ( x, y ) => Math.pow( x, y ), undefined );
   test.identical( gotfn.name, '' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
   test.identical( gotfn.boundArguments, undefined );
@@ -854,7 +854,7 @@ function routineJoin( test )
   test.open( 'context - undefined, args - long' );
 
   test.case = 'named function without context, check context';
-  var gotfn = _.routineJoin( undefined, testFunction1, [ 4 ] );
+  var gotfn = _.routine.join( undefined, testFunction1, [ 4 ] );
   test.identical( gotfn.name, 'testFunction1' );
   test.identical( gotfn.originalRoutine, testFunction1 );
   test.identical( gotfn.boundArguments, [ 4 ] );
@@ -862,7 +862,7 @@ function routineJoin( test )
   test.identical( got, undefined );
 
   test.case = 'named function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, testFunction2, [ 4 ] );
+  var gotfn = _.routine.join( undefined, testFunction2, [ 4 ] );
   test.identical( gotfn.name, 'testFunction2' );
   test.identical( gotfn.originalRoutine, testFunction2 );
   test.identical( gotfn.boundArguments, [ 4 ] );
@@ -870,7 +870,7 @@ function routineJoin( test )
   test.identical( got, 6 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, testFunction3, [ 4 ] );
+  var gotfn = _.routine.join( undefined, testFunction3, [ 4 ] );
   test.identical( gotfn.name, 'testFunction3' );
   test.identical( gotfn.originalRoutine, testFunction3 );
   test.identical( gotfn.boundArguments, [ 4 ] );
@@ -878,7 +878,7 @@ function routineJoin( test )
   test.identical( got, 10 );
 
   test.case = 'unnamed function without context, check context';
-  var gotfn = _.routineJoin( undefined, ( x, y ) => x + y, [ 4 ] );
+  var gotfn = _.routine.join( undefined, ( x, y ) => x + y, [ 4 ] );
   test.identical( gotfn.name, '__joinedArguments' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
   test.identical( gotfn.boundArguments, [ 4 ] );
@@ -886,7 +886,7 @@ function routineJoin( test )
   test.identical( got, 6 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, ( x, y ) => Math.pow( x, y ), [ 4 ] );
+  var gotfn = _.routine.join( undefined, ( x, y ) => Math.pow( x, y ), [ 4 ] );
   test.identical( gotfn.name, '__joinedArguments' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
   test.identical( gotfn.boundArguments, [ 4 ] );
@@ -900,7 +900,7 @@ function routineJoin( test )
   test.open( 'context - exists, args - undefined' );
 
   test.case = 'named function without context, check context';
-  var gotfn = _.routineJoin( context, testFunction1, undefined );
+  var gotfn = _.routine.join( context, testFunction1, undefined );
   test.identical( gotfn.name, 'bound testFunction1' );
   test.identical( gotfn.originalRoutine, testFunction1 );
   test.identical( gotfn.boundContext, context );
@@ -909,7 +909,7 @@ function routineJoin( test )
   test.identical( got instanceof Constr, true );
 
   test.case = 'named function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, testFunction2, undefined );
+  var gotfn = _.routine.join( context, testFunction2, undefined );
   test.identical( gotfn.name, 'bound testFunction2' );
   test.identical( gotfn.originalRoutine, testFunction2 );
   test.identical( gotfn.boundContext, context );
@@ -918,7 +918,7 @@ function routineJoin( test )
   test.identical( got, 5 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, testFunction3, undefined );
+  var gotfn = _.routine.join( context, testFunction3, undefined );
   test.identical( gotfn.name, 'bound testFunction3' );
   test.identical( gotfn.originalRoutine, testFunction3 );
   test.identical( gotfn.boundContext, context );
@@ -927,7 +927,7 @@ function routineJoin( test )
   test.identical( got, 20 );
 
   test.case = 'unnamed function without context, check context';
-  var gotfn = _.routineJoin( context, ( x, y ) => x + y, undefined );
+  var gotfn = _.routine.join( context, ( x, y ) => x + y, undefined );
   test.identical( gotfn.name, 'bound ' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
   test.identical( gotfn.boundContext, context );
@@ -936,7 +936,7 @@ function routineJoin( test )
   test.identical( got, 5 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, ( x, y ) => Math.pow( x, y ), undefined );
+  var gotfn = _.routine.join( context, ( x, y ) => Math.pow( x, y ), undefined );
   test.identical( gotfn.name, 'bound ' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
   test.identical( gotfn.boundContext, context );
@@ -951,7 +951,7 @@ function routineJoin( test )
   test.open( 'context - exists, args - long' );
 
   test.case = 'named function without context, check context';
-  var gotfn = _.routineJoin( context, testFunction1, [ 4 ] );
+  var gotfn = _.routine.join( context, testFunction1, [ 4 ] );
   test.identical( gotfn.name, 'bound testFunction1' );
   test.identical( gotfn.originalRoutine, testFunction1 );
   test.identical( gotfn.boundContext, context );
@@ -960,7 +960,7 @@ function routineJoin( test )
   test.identical( got instanceof Constr, true );
 
   test.case = 'named function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, testFunction2, [ 4 ] );
+  var gotfn = _.routine.join( context, testFunction2, [ 4 ] );
   test.identical( gotfn.name, 'bound testFunction2' );
   test.identical( gotfn.originalRoutine, testFunction2 );
   test.identical( gotfn.boundContext, context );
@@ -969,7 +969,7 @@ function routineJoin( test )
   test.identical( got, 6 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, testFunction3, [ 4 ] );
+  var gotfn = _.routine.join( context, testFunction3, [ 4 ] );
   test.identical( gotfn.name, 'bound testFunction3' );
   test.identical( gotfn.originalRoutine, testFunction3 );
   test.identical( gotfn.boundContext, context );
@@ -978,7 +978,7 @@ function routineJoin( test )
   test.identical( got, 24 );
 
   test.case = 'unnamed function without context, check context';
-  var gotfn = _.routineJoin( context, ( x, y ) => x + y, [ 4 ] );
+  var gotfn = _.routine.join( context, ( x, y ) => x + y, [ 4 ] );
   test.identical( gotfn.name, 'bound ' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
   test.identical( gotfn.boundContext, context );
@@ -987,7 +987,7 @@ function routineJoin( test )
   test.identical( got, 6 );
 
   test.case = 'unnamed function with arguments bind : result check';
-  var gotfn = _.routineJoin( context, ( x, y ) => Math.pow( x, y ), [ 4 ] );
+  var gotfn = _.routine.join( context, ( x, y ) => Math.pow( x, y ), [ 4 ] );
   test.identical( gotfn.name, 'bound ' );
   test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
   test.identical( gotfn.boundContext, context );
@@ -1002,7 +1002,7 @@ function routineJoin( test )
   test.case = 'extending'
   var srcRoutine = () => {};
   srcRoutine.defaults = { a : 10 };
-  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  var gotfn = _.routine.join( undefined, srcRoutine, [] );
   test.identical( gotfn.defaults, srcRoutine.defaults );
 
   /* - */
@@ -1011,18 +1011,18 @@ function routineJoin( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.routineJoin() );
+  test.shouldThrowErrorSync( () => _.routine.join() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, [ 4 ], [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.routine.join( undefined, testFunction4, [ 4 ], [ 2 ] ) );
 
   test.case = 'wrong type of routine';
-  test.shouldThrowErrorSync( () => _.routineJoin( undefined, 1, [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.routineJoin( undefined, {}, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.routine.join( undefined, 1, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.routine.join( undefined, {}, [ 4 ] ) );
 
   test.case = 'wrong type of args';
-  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, 4 ) );
-  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, null ) );
+  test.shouldThrowErrorSync( () => _.routine.join( undefined, testFunction4, 4 ) );
+  test.shouldThrowErrorSync( () => _.routine.join( undefined, testFunction4, null ) );
 }
 
 //
@@ -1037,34 +1037,34 @@ function routineSeal( test )
   var expected3 = 21;
 
   test.case = 'simple function with seal arguments : result check';
-  var gotfn = _.routineSeal(undefined, testFunction1, [ testParam1, testParam2 ]);
+  var gotfn = _.routine.seal(undefined, testFunction1, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected1 );
 
   test.case = 'simple function with seal arguments : context check';
-  var gotfn = _.routineSeal(undefined, testFunction2, [ testParam1, testParam2 ]);
+  var gotfn = _.routine.seal(undefined, testFunction2, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
   test.case = 'simple function with seal context and arguments : result check';
-  var gotfn = _.routineSeal(context3, testFunction3, [ testParam1, testParam2 ]);
+  var gotfn = _.routine.seal(context3, testFunction3, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
   test.case = 'simple function with seal context and arguments : context check';
-  var gotfn = _.routineSeal(context3, testFunction4, [ testParam1, testParam2 ]);
+  var gotfn = _.routine.seal(context3, testFunction4, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
   test.case = 'simple function with seal context and arguments : result check';
-  var gotfn = _.routineSeal(context3, testFunction3, [ testParam1, testParam2 ]);
+  var gotfn = _.routine.seal(context3, testFunction3, [ testParam1, testParam2 ]);
   var got = gotfn( 0, 0 );
   test.identical( got, expected3 );
 
   test.case = 'extending';
   function srcRoutine(){}
   srcRoutine.defaults = { a : 10 };
-  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  var gotfn = _.routine.join( undefined, srcRoutine, [] );
   test.identical( gotfn.defaults, srcRoutine.defaults );
 
   if( !Config.debug )
@@ -1073,25 +1073,25 @@ function routineSeal( test )
   test.case = 'missed argument';
   test.shouldThrowErrorSync( function()
   {
-    _.routineSeal();
+    _.routine.seal();
   });
 
   test.case = 'extra argument';
   test.shouldThrowErrorSync( function()
   {
-    _.routineSeal( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
+    _.routine.seal( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
   });
 
   test.case = 'passed non callable object';
   test.shouldThrowErrorSync( function()
   {
-    _.routineSeal( context3, {}, [ testParam1, testParam2 ] );
+    _.routine.seal( context3, {}, [ testParam1, testParam2 ] );
   });
 
   test.case = 'passed arguments as primitive value';
   test.shouldThrowErrorSync( function()
   {
-    _.routineSeal( context3, testFunction4, testParam2 );
+    _.routine.seal( context3, testFunction4, testParam2 );
   });
 
 }
@@ -1104,7 +1104,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = {};
   var options = {};
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, {} );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1113,7 +1113,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = {};
   var options = [];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, {} );
   test.identical( options, [] );
   test.true( got !== defaults );
@@ -1122,7 +1122,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = {};
   var options = [ {} ];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, {} );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1132,7 +1132,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = {};
   var options = {};
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, {} );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1141,7 +1141,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = {};
   var options = [];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, {} );
   test.identical( options, [] );
   test.true( got !== testRoutine.defaults );
@@ -1150,7 +1150,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = {};
   var options = [ {} ];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, {} );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1162,7 +1162,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = {};
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : null, b : 1 } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1171,7 +1171,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options, [] );
   test.true( got !== defaults );
@@ -1180,7 +1180,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ {} ];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1190,7 +1190,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = {};
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : null, b : 1 } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1199,7 +1199,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options, [] );
   test.true( got !== testRoutine.defaults );
@@ -1208,7 +1208,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ {} ];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1220,7 +1220,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = { a : undefined, b : undefined };
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : null, b : 1 } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1229,7 +1229,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ { a : undefined, b : undefined } ];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1239,7 +1239,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = { a : undefined, b : undefined };
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : null, b : 1 } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1248,7 +1248,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ { a : undefined, b : undefined } ];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : null, b : 1 } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1260,7 +1260,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = { a : 0, b : '' };
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : 0, b : '' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1269,7 +1269,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ { a : 0, b : '' } ];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : 0, b : '' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1279,7 +1279,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = { a : 0, b : '' };
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : 0, b : '' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1288,7 +1288,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ { a : 0, b : '' } ];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : 0, b : '' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1300,7 +1300,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = { a : true, b : 'b' };
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1309,7 +1309,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.routineOptions( testRoutine, options, defaults );
+  var got = _.routine.options( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1319,7 +1319,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = { a : true, b : 'b' };
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1328,7 +1328,7 @@ function routineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.routineOptions( testRoutine, options );
+  var got = _.routine.options( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1340,36 +1340,36 @@ function routineOptions( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.routineOptions() );
+  test.shouldThrowErrorSync( () => _.routine.options() );
 
   test.case = 'not enough arguments';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine ) );
 
   test.case = 'extra arguments';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, {}, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, {}, {} ) );
 
   test.case = 'wrong type of routine';
-  test.shouldThrowErrorSync( () => _.routineOptions( 'wrong', {}, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( 'wrong', {}, {} ) );
 
   test.case = 'wrong type of args';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, 'wrong', {} ) );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ 'wrong' ], {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, [ 'wrong' ], {} ) );
 
   test.case = 'wrong type of defaults';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, 'wrong' ) );
 
   test.case = 'wrong type of defaults';
   var testRoutine = () => true;
   testRoutine.defaults = 'wrong';
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {} ) );
 
   test.case = 'args.length > 1';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ {}, {} ], {} ) );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, [ {}, {} ], {} ) );
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
@@ -1380,10 +1380,10 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } ), errCallback );
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
@@ -1395,8 +1395,8 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, { unknown : true } ), errCallback );
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, [ { unknown : true } ] ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, { unknown : true } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, [ { unknown : true } ] ), errCallback );
 
   test.case = 'defaults has objectLike value';
   var testRoutine = () => true;
@@ -1407,7 +1407,7 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : { objectLike : true } } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, { known : { objectLike : true } } ), errCallback );
 
   test.case = 'defaults has objectLike value';
   var testRoutine = () => true;
@@ -1419,7 +1419,7 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {} ), errCallback );
 
   test.case = 'defaults has value `undefined`';
   var testRoutine = () => true;
@@ -1430,7 +1430,7 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {}, { known : undefined } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, { known : undefined } ), errCallback );
 
   test.case = 'defaults has value `undefined`';
   var testRoutine = () => true;
@@ -1442,7 +1442,7 @@ function routineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.routineOptions( testRoutine, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {} ), errCallback );
 }
 
 //
@@ -1707,7 +1707,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = {};
   var options = {};
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, {} );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1716,7 +1716,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = {};
   var options = [ {} ];
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, {} );
   test.true( got === options[ 0 ] );
   test.true( got !== defaults );
@@ -1725,7 +1725,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = {};
   var options = {};
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, {} );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1734,7 +1734,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = {};
   var options = [ {} ];
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, {} );
   test.true( got === options[ 0 ] );
   test.true( got !== defaults );
@@ -1745,7 +1745,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = { a : 0, b : '' };
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : 0, b : '' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1754,7 +1754,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ { a : 0, b : '' } ];
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : 0, b : '' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1764,7 +1764,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = { a : 0, b : '' };
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : 0, b : '' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1773,7 +1773,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ { a : 0, b : '' } ];
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : 0, b : '' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1785,7 +1785,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1794,7 +1794,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : null, b : 1 };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1804,7 +1804,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1813,7 +1813,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : null, b : 1 };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1825,7 +1825,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : undefined, b : undefined };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1834,7 +1834,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : undefined, b : undefined };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1844,7 +1844,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : undefined, b : undefined };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1853,7 +1853,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : undefined, b : undefined };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1865,7 +1865,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : { c : 'c' }, b : [ 'b' ] };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== defaults );
@@ -1874,7 +1874,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   var defaults = { a : { c : 'c' }, b : [ 'b' ] };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options, defaults );
+  var got = _.routine.assertOptions( testRoutine, options, defaults );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1884,7 +1884,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : { c : 'c' }, b : [ 'b' ] };
   var options = { a : true, b : 'b' };
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.true( got === options );
   test.true( got !== testRoutine.defaults );
@@ -1893,7 +1893,7 @@ function assertRoutineOptions( test )
   var testRoutine = () => true;
   testRoutine.defaults = { a : { c : 'c' }, b : [ 'b' ] };
   var options = [ { a : true, b : 'b' } ];
-  var got = _.assertRoutineOptions( testRoutine, options );
+  var got = _.routine.assertOptions( testRoutine, options );
   test.identical( got, { a : true, b : 'b' } );
   test.identical( options.length, 1 );
   test.true( got === options[ 0 ] );
@@ -1905,36 +1905,36 @@ function assertRoutineOptions( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions() );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions() );
 
   test.case = 'not enough arguments';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine ) );
 
   test.case = 'extra arguments';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, {}, {}, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {}, {}, {} ) );
 
   test.case = 'wrong type of routine';
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( 'wrong', {}, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( 'wrong', {}, {} ) );
 
   test.case = 'wrong type of args';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, 'wrong', {} ) );
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ 'wrong' ], {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, [ 'wrong' ], {} ) );
 
   test.case = 'wrong type of defaults';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, {}, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {}, 'wrong' ) );
 
   test.case = 'wrong type of defaults';
   var testRoutine = () => true;
   testRoutine.defaults = 'wrong';
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {} ) );
 
   test.case = 'args.length > 1';
   var testRoutine = () => true;
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ {}, {} ], {} ) );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, [ {}, {} ], {} ) );
 
   test.case = 'options has unknown options';
   var testRoutine = () => true;
@@ -1945,12 +1945,12 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, [ { unknown : true, b : 1 } ], {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { unknown : true, b : 1 }, { known : 1 } ), errCallback );
   test.shouldThrowErrorSync( () =>
   {
-    return _.assertRoutineOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } );
+    return _.routine.assertOptions( testRoutine, [ { unknown : true, b : 1 } ], { known : 1 } );
   },
   errCallback );
 
@@ -1964,8 +1964,8 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { unknown : true } ), errCallback );
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, [ { unknown : true } ] ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { unknown : true } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, [ { unknown : true } ] ), errCallback );
 
   test.case = 'options has not all keys';
   var testRoutine = () => true;
@@ -1976,7 +1976,7 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, {}, { known : true, b : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {}, { known : true, b : 1 } ), errCallback );
 
   test.case = 'options has not all keys';
   var testRoutine = () => true;
@@ -1988,7 +1988,7 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, {} ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {} ), errCallback );
 
   test.case = 'options has value `undefined`';
   var testRoutine = () => true;
@@ -1999,7 +1999,7 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { known : undefined }, { known : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { known : undefined }, { known : 1 } ), errCallback );
 
   test.case = 'options has value `undefined`';
   var testRoutine = () => true;
@@ -2011,7 +2011,7 @@ function assertRoutineOptions( test )
     test.true( _.errIs( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
-  test.shouldThrowErrorSync( () => _.assertRoutineOptions( testRoutine, { known : undefined } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { known : undefined } ), errCallback );
 }
 
 //
@@ -2694,7 +2694,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [];
-  var composition = _.routinesCompose( routines );
+  var composition = _.routine.s.compose( routines );
   var got = composition( 1, 2, 3 );
   var expected = [];
   test.identical( got, expected );
@@ -2710,7 +2710,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
-  var composition = _.routinesCompose( routines );
+  var composition = _.routine.s.compose( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, 128 ];
   test.identical( got, expected );
@@ -2722,7 +2722,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
-  var composition = _.routinesCompose( routines, chainer1 );
+  var composition = _.routine.s.compose( routines, chainer1 );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
@@ -2734,7 +2734,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
-  var composition = _.routinesCompose( routines, chainer1 );
+  var composition = _.routine.s.compose( routines, chainer1 );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, _.dont ];
   test.identical( got, expected );
@@ -2754,7 +2754,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
-  var composition = _.routinesCompose( routines );
+  var composition = _.routine.s.compose( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ [ 1, 2, 3, 16 ], 128 ];
   test.identical( got, expected );
@@ -2766,7 +2766,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
-  var composition = _.routinesCompose( routines, chainer1 );
+  var composition = _.routine.s.compose( routines, chainer1 );
   var got = composition( 1, 2, 3 );
   var expected = [ [ 1, 2, 3, 16 ], 160 ];
   test.identical( got, expected );
@@ -2778,7 +2778,7 @@ function routinesCompose( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
-  var composition = _.routinesCompose( routines, chainer1 );
+  var composition = _.routine.s.compose( routines, chainer1 );
   var got = composition( 1, 2, 3 );
   var expected = [ [ 1, 2, 3, 16 ], _.dont ];
   test.identical( got, expected );
@@ -2795,8 +2795,8 @@ function routinesCompose( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
-  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll() );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){}, function(){} ) );
 
 }
 
@@ -2845,7 +2845,7 @@ function routinesComposeAll( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
-  var composition = _.routinesComposeAll( routines );
+  var composition = _.routine.s.composeAll( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, 128 ];
   test.identical( got, expected );
@@ -2855,7 +2855,7 @@ function routinesComposeAll( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
-  var composition = _.routinesComposeAll( routines );
+  var composition = _.routine.s.composeAll( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
@@ -2865,7 +2865,7 @@ function routinesComposeAll( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
-  var composition = _.routinesComposeAll( routines );
+  var composition = _.routine.s.composeAll( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ [ 1, 2, 3, 16 ] ];
   test.identical( got, expected );
@@ -2875,7 +2875,7 @@ function routinesComposeAll( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
-  var composition = _.routinesComposeAll( routines );
+  var composition = _.routine.s.composeAll( routines );
   var got = composition( 1, 2, 3 );
   var expected = false;
   test.identical( got, expected );
@@ -2886,9 +2886,9 @@ function routinesComposeAll( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
-  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll() );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){}, function(){} ) );
 
 }
 
@@ -2937,7 +2937,7 @@ function routinesComposeAllReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
-  var composition = _.routinesComposeAllReturningLast( routines );
+  var composition = _.routine.s.composeAllReturningLast( routines );
   var got = composition( 1, 2, 3 );
   var expected = 128;
   test.identical( got, expected );
@@ -2947,7 +2947,7 @@ function routinesComposeAllReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
-  var composition = _.routinesComposeAllReturningLast( routines );
+  var composition = _.routine.s.composeAllReturningLast( routines );
   var got = composition( 1, 2, 3 );
   var expected = 16;
   test.identical( got, expected );
@@ -2957,7 +2957,7 @@ function routinesComposeAllReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
-  var composition = _.routinesComposeAllReturningLast( routines );
+  var composition = _.routine.s.composeAllReturningLast( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
@@ -2967,7 +2967,7 @@ function routinesComposeAllReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
-  var composition = _.routinesComposeAllReturningLast( routines );
+  var composition = _.routine.s.composeAllReturningLast( routines );
   var got = composition( 1, 2, 3 );
   var expected = _.dont;
   test.identical( got, expected );
@@ -2978,9 +2978,9 @@ function routinesComposeAllReturningLast( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast() );
-  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAllReturningLast() );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAllReturningLast( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAllReturningLast( routines, function(){}, function(){} ) );
 
 }
 
@@ -3021,7 +3021,7 @@ function routinesChain( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
-  var composition = _.routinesChain( routines );
+  var composition = _.routine.s.chain( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
@@ -3033,7 +3033,7 @@ function routinesChain( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
-  var composition = _.routinesChain( routines );
+  var composition = _.routine.s.chain( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
@@ -3045,7 +3045,7 @@ function routinesChain( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, dontInclude, null, r2, null ];
-  var composition = _.routinesChain( routines );
+  var composition = _.routine.s.chain( routines );
   var got = composition( 1, 2, 3 );
   var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
@@ -3056,9 +3056,9 @@ function routinesChain( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
-  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll() );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){}, function(){} ) );
 
 }
 
@@ -3070,14 +3070,14 @@ function routinesChain( test )
 //   test.open( 'dst is null, src has head and body properties');
 //
 //   test.case = 'dst is null, src is routine maked by routineUnite';
-//   var got = _.routineExtend_old( null, _.routineUnite );
-//   test.identical( got.head, _.routineUnite.head );
-//   test.identical( got.body, _.routineUnite.body );
+//   var got = _.routine.extend_old( null, _.routine.unite );
+//   test.identical( got.head, _.routine.unite.head );
+//   test.identical( got.body, _.routine.unite.body );
 //   test.identical( typeof got, 'function' );
 //
-//   var got = _.routineExtend_old( null, _.routinesCompose );
-//   test.identical( got.head, _.routinesCompose.head );п
-//   test.identical( got.body, _.routinesCompose.body );
+//   var got = _.routine.extend_old( null, _.routine.s.compose );
+//   test.identical( got.head, _.routine.s.compose.head );п
+//   test.identical( got.body, _.routine.s.compose.body );
 //   test.identical( typeof got, 'function' );
 //
 //   function f1(){}
@@ -3089,7 +3089,7 @@ function routinesChain( test )
 //   f1.number = 13;
 //   f1.routine = function r(){};
 //
-//   var got = _.routineExtend_old( null, f1 );
+//   var got = _.routine.extend_old( null, f1 );
 //   test.equivalent( got.map1, f1.map1 );
 //   test.equivalent( got.map2, f1.map2 );
 //   test.equivalent( got.str, f1.str );
@@ -3097,48 +3097,48 @@ function routinesChain( test )
 //   test.equivalent( got.routine, f1.routine );
 //
 //   test.case = 'second arg has not head and body properties';
-//   var got = _.routineExtend_old( null, _.unrollIs );
-//   test.true( _.routineIs( got ) );
+//   var got = _.routine.extend_old( null, _.unrollIs );
+//   test.true( _.routine.is( got ) );
 //   test.true( got( _.unrollFrom( [] ) ) );
 //
 //   test.case = 'dst is null, src is map with head and body properties';
 //   var src =
 //   {
-//     head : _.routineUnite.head,
-//     body : _.routineUnite.body,
+//     head : _.routine.unite.head,
+//     body : _.routine.unite.body,
 //     map : { a : 2 },
 //   }
-//   var got = _.routineExtend_old( null, src );
-//   test.identical( got.head, _.routineUnite.head );
-//   test.identical( got.body, _.routineUnite.body );
+//   var got = _.routine.extend_old( null, src );
+//   test.identical( got.head, _.routine.unite.head );
+//   test.identical( got.body, _.routine.unite.body );
 //   test.equivalent( got.map, { a : 2 } );
 //   test.identical( typeof got, 'function' );
 //
 //   test.case = 'dst is null, src is map with head and body properties';
 //   var src =
 //   {
-//     head : _.routineUnite.head,
-//     body : _.routineUnite.body,
+//     head : _.routine.unite.head,
+//     body : _.routine.unite.body,
 //     map : { a : 2 },
 //   };
-//   var got = _.routineExtend_old( null, src );
-//   test.identical( got.head, _.routineUnite.head );
-//   test.identical( got.body, _.routineUnite.body );
+//   var got = _.routine.extend_old( null, src );
+//   test.identical( got.head, _.routine.unite.head );
+//   test.identical( got.body, _.routine.unite.body );
 //   test.equivalent( got.map, { a : 2 } );
 //   test.identical( typeof got, 'function' );
 //
 //   test.case = 'dst is null, src is map with head and body properties';
 //   var src =
 //   {
-//     head : _.routineUnite.head,
-//     body : _.routineUnite.body,
+//     head : _.routine.unite.head,
+//     body : _.routine.unite.body,
 //     a : [ 1 ],
 //     b : 'str',
 //     c : { str : 'str' }
 //   }
-//   var got = _.routineExtend_old( null, src );
-//   test.identical( got.head, _.routineUnite.head );
-//   test.identical( got.body, _.routineUnite.body );
+//   var got = _.routine.extend_old( null, src );
+//   test.identical( got.head, _.routine.unite.head );
+//   test.identical( got.body, _.routine.unite.body );
 //   test.identical( got.a, [ 1 ] );
 //   test.identical( got.b, 'str' );
 //   test.identical( got.c, Object.create( { str : 'str' } ) );
@@ -3154,7 +3154,7 @@ function routinesChain( test )
 //   var dst = ( o ) =>
 //   {
 //   }
-//   var got = _.routineExtend_old( dst );
+//   var got = _.routine.extend_old( dst );
 //   test.identical( got, dst );
 //   test.identical( typeof got, 'function' );
 //
@@ -3165,7 +3165,7 @@ function routinesChain( test )
 //   dst.a = 0;
 //   dst.b = 3;
 //   dst.c = 'c';
-//   var got = _.routineExtend_old( dst );
+//   var got = _.routine.extend_old( dst );
 //   test.identical( got, dst );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 0 );
@@ -3192,7 +3192,7 @@ function routinesChain( test )
 //     }
 //   };
 //   Object.defineProperties( dst, props );
-//   var got = _.routineExtend_old( dst );
+//   var got = _.routine.extend_old( dst );
 //   test.identical( got, dst );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 0 );
@@ -3208,7 +3208,7 @@ function routinesChain( test )
 //   };
 //   dst.a = 0;
 //   dst.b = 0;
-//   var got = _.routineExtend_old( dst, { c : 1, d : 1, e : { s : 1 } } );
+//   var got = _.routine.extend_old( dst, { c : 1, d : 1, e : { s : 1 } } );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 0 );
 //   test.identical( got.b, 0 );
@@ -3221,7 +3221,7 @@ function routinesChain( test )
 //   };
 //   dst.a = 0;
 //   dst.b = 0;
-//   var got = _.routineExtend_old( dst, { a : 1, b : 1 } );
+//   var got = _.routine.extend_old( dst, { a : 1, b : 1 } );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 1 );
 //   test.identical( got.b, 1 );
@@ -3248,7 +3248,7 @@ function routinesChain( test )
 //     }
 //   };
 //   Object.defineProperties( dst, props );
-//   var got = _.routineExtend_old( dst, { a : 3, b : 2 } );
+//   var got = _.routine.extend_old( dst, { a : 3, b : 2 } );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 0 );
 //   test.identical( got.b, 0 );
@@ -3276,7 +3276,7 @@ function routinesChain( test )
 //     }
 //   };
 //   Object.defineProperties( src, props );
-//   var got = _.routineExtend_old( dst, src );
+//   var got = _.routine.extend_old( dst, src );
 //   test.identical( typeof got, 'function' );
 //   test.identical( got.a, 3 );
 //   test.identical( got.b, 2 );
@@ -3287,7 +3287,7 @@ function routinesChain( test )
 //     var dst = ( o ) =>
 //     {
 //     };
-//     var got = _.routineExtend_old( dst, [ 'a', 1 ] );
+//     var got = _.routine.extend_old( dst, [ 'a', 1 ] );
 //     test.identical( typeof got, 'function' );
 //     test.identical( got[ 0 ], 'a' );
 //     test.identical( got[ 1 ], 1 );
@@ -3296,24 +3296,24 @@ function routinesChain( test )
 //   test.open( 'few extends');
 //
 //   test.case = 'null extends other routine, null extends result';
-//   var src = _.routineExtend_old( null, _.routinesCompose );
-//   var got = _.routineExtend_old( null, src );
-//   test.identical( got.head, _.routinesCompose.head );
-//   test.identical( got.body, _.routinesCompose.body );
+//   var src = _.routine.extend_old( null, _.routine.s.compose );
+//   var got = _.routine.extend_old( null, src );
+//   test.identical( got.head, _.routine.s.compose.head );
+//   test.identical( got.body, _.routine.s.compose.body );
 //   test.identical( typeof got, 'function' );
 //
 //   test.case = 'src extends routine, result extends map ';
 //   var src1 =
 //   {
-//     head : _.routineUnite.head,
-//     body : _.routineUnite.body,
+//     head : _.routine.unite.head,
+//     body : _.routine.unite.body,
 //     a : 'str',
 //     b : { b : 3 },
 //   };
-//   var src = _.routineExtend_old( null, _.routinesCompose );
-//   var got = _.routineExtend_old( src, src1 );
-//   test.identical( got.head, _.routineUnite.head );
-//   test.identical( got.body, _.routineUnite.body );
+//   var src = _.routine.extend_old( null, _.routine.s.compose );
+//   var got = _.routine.extend_old( src, src1 );
+//   test.identical( got.head, _.routine.unite.head );
+//   test.identical( got.body, _.routine.unite.body );
 //   test.identical( got.b, Object.create( { b : 3 } ) );
 //   test.true( got.a === 'str' );
 //   test.identical( typeof got, 'function' );
@@ -3324,15 +3324,15 @@ function routinesChain( test )
 //   };
 //   var src1 =
 //   {
-//     head : _.routinesCompose.head,
-//     body : _.routinesCompose.body,
+//     head : _.routine.s.compose.head,
+//     body : _.routine.s.compose.body,
 //     a : [ 'str' ],
 //     c : { d : 2 },
 //   };
-//   var src = _.routineExtend_old( dst, { c : {}, b : 'str' } );
-//   var got = _.routineExtend_old( dst, src1 );
-//   test.identical( got.head, _.routinesCompose.head );
-//   test.identical( got.body, _.routinesCompose.body );
+//   var src = _.routine.extend_old( dst, { c : {}, b : 'str' } );
+//   var got = _.routine.extend_old( dst, src1 );
+//   test.identical( got.head, _.routine.s.compose.head );
+//   test.identical( got.body, _.routine.s.compose.body );
 //   test.identical( got.a, [ 'str' ] );
 //   test.identical( got.b, 'str' );
 //   test.identical( got.c, Object.create( { d : 2 } ) );
@@ -3345,15 +3345,15 @@ function routinesChain( test )
 //   dst.map = { a : 'str' };
 //   var src1 =
 //   {
-//     head : _.routinesCompose.head,
-//     body : _.routinesCompose.body,
+//     head : _.routine.s.compose.head,
+//     body : _.routine.s.compose.body,
 //     a : [ 'str' ],
 //     map : { d : 2 },
 //   };
-//   var src = _.routineExtend_old( dst, { c : {} } );
-//   var got = _.routineExtend_old( dst, src1 );
-//   test.identical( got.head, _.routinesCompose.head );
-//   test.identical( got.body, _.routinesCompose.body );
+//   var src = _.routine.extend_old( dst, { c : {} } );
+//   var got = _.routine.extend_old( dst, src1 );
+//   test.identical( got.head, _.routine.s.compose.head );
+//   test.identical( got.body, _.routine.s.compose.body );
 //   test.identical( got.a, [ 'str' ] );
 //   var expectedMap = Object.create( { d : 2 } );
 //   expectedMap.a = 'str';
@@ -3383,9 +3383,9 @@ function routinesChain( test )
 //   };
 //   routine1.a = 2;
 //   routine1.c = 'str';
-//   var src1 = _.routineExtend_old( src, routine );
-//   var src2 = _.routineExtend_old( dst, routine1 );
-//   var got = _.routineExtend_old( src2, src1 )
+//   var src1 = _.routine.extend_old( src, routine );
+//   var src2 = _.routine.extend_old( dst, routine1 );
+//   var got = _.routine.extend_old( src2, src1 )
 //   test.identical( got.a, 0 );
 //   test.identical( got.b, [ 'str' ] );
 //   test.identical( got.c, 'str' );
@@ -3401,9 +3401,9 @@ function routinesChain( test )
 //   var src = () =>
 //   {
 //   };
-//   var src1 = _.routineExtend_old( src, { o1 : 1, o2 : 'str' } );
-//   var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map' } );
-//   var got = _.routineExtend_old( src2, src1 )
+//   var src1 = _.routine.extend_old( src, { o1 : 1, o2 : 'str' } );
+//   var src2 = _.routine.extend_old( dst, { o3 : 'o3', o1 : 'map' } );
+//   var got = _.routine.extend_old( src2, src1 )
 //   test.identical( got.o1, 1 );
 //   test.identical( got.o2, 'str' );
 //   test.identical( got.o3, 'o3' );
@@ -3423,7 +3423,7 @@ function routinesChain( test )
 //       writable : true,
 //     }
 //   });
-//   var got = _.routineExtend_old( dst );
+//   var got = _.routine.extend_old( dst );
 //   test.equivalent( got.b, { a : 2 } );
 //
 //   test.case = 'extend by map';
@@ -3431,7 +3431,7 @@ function routinesChain( test )
 //   {
 //   };
 //   dst.b = { map : 2 };
-//   var got = _.routineExtend_old( dst, { b : { map : 3 } } );
+//   var got = _.routine.extend_old( dst, { b : { map : 3 } } );
 //   test.equivalent( got.b, { map : 3 } );
 //
 //   test.close( 'few extends');
@@ -3442,47 +3442,47 @@ function routinesChain( test )
 //   test.case = 'no arguments';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old();
+//     _.routine.extend_old();
 //   });
 //
 //   test.case = 'three arguments';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( null, { a : 1 }, { b : 2 });
+//     _.routine.extend_old( null, { a : 1 }, { b : 2 });
 //   });
 //
 //   test.case = 'single dst is null';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( null );
+//     _.routine.extend_old( null );
 //   });
 //
 //   // test.case = 'second arg has not head and body properties';
 //   // test.shouldThrowErrorSync( function()
 //   // {
-//   //   _.routineExtend_old( null, _.unrollIs );
+//   //   _.routine.extend_old( null, _.unrollIs );
 //   // });
 //
 //   test.case = 'second arg is primitive';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( _.unrollIs, 'str' );
+//     _.routine.extend_old( _.unrollIs, 'str' );
 //   });
 //
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( _.unrollIs, 1 );
+//     _.routine.extend_old( _.unrollIs, 1 );
 //   });
 //
 //   test.case = 'dst is not routine or null';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( 1, { a : 1 } );
+//     _.routine.extend_old( 1, { a : 1 } );
 //   });
 //
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.routineExtend_old( 'str', { a : 1 } );
+//     _.routine.extend_old( 'str', { a : 1 } );
 //   });
 //
 // }
@@ -3494,14 +3494,14 @@ function routineExtend( test )
   test.open( 'dst is null, src has head and body properties');
 
   test.case = 'dst is null, src is routine maked by routineUnite';
-  var got = _.routineExtend( null, _.routineUnite );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
+  var got = _.routine.extend( null, _.routine.unite );
+  test.identical( got.head, _.routine.unite.head );
+  test.identical( got.body, _.routine.unite.body );
   test.identical( typeof got, 'function' );
 
-  var got = _.routineExtend( null, _.routinesCompose );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
+  var got = _.routine.extend( null, _.routine.s.compose );
+  test.identical( got.head, _.routine.s.compose.head );
+  test.identical( got.body, _.routine.s.compose.body );
   test.identical( typeof got, 'function' );
 
   function f1(){}
@@ -3513,7 +3513,7 @@ function routineExtend( test )
   f1.number = 13;
   f1.routine = function r(){};
 
-  var got = _.routineExtend( null, f1 );
+  var got = _.routine.extend( null, f1 );
   test.equivalent( got.map1, f1.map1 );
   test.identical( _.mapKeys( got.map2 ), [ 'a' ] );
   test.identical( got.map2.a, f1.map2.a );
@@ -3522,48 +3522,48 @@ function routineExtend( test )
   test.equivalent( got.routine, f1.routine );
 
   test.case = 'second arg has not head and body properties';
-  var got = _.routineExtend( null, _.unrollIs );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.extend( null, _.unrollIs );
+  test.true( _.routine.is( got ) );
   test.true( got( _.unrollFrom( [] ) ) );
 
   test.case = 'dst is null, src is map with head and body properties';
   var src =
   {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
+    head : _.routine.unite.head,
+    body : _.routine.unite.body,
     map : { a : 2 },
   }
-  var got = _.routineExtend( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
+  var got = _.routine.extend( null, src );
+  test.identical( got.head, _.routine.unite.head );
+  test.identical( got.body, _.routine.unite.body );
   test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst is null, src is map with head and body properties';
   var src =
   {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
+    head : _.routine.unite.head,
+    body : _.routine.unite.body,
     map : { a : 2 },
   };
-  var got = _.routineExtend( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
+  var got = _.routine.extend( null, src );
+  test.identical( got.head, _.routine.unite.head );
+  test.identical( got.body, _.routine.unite.body );
   test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst is null, src is map with head and body properties';
   var src =
   {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
+    head : _.routine.unite.head,
+    body : _.routine.unite.body,
     a : [ 1 ],
     b : 'str',
     c : { str : 'str' }
   }
-  var got = _.routineExtend( null, src );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
+  var got = _.routine.extend( null, src );
+  test.identical( got.head, _.routine.unite.head );
+  test.identical( got.body, _.routine.unite.body );
   test.identical( got.a, [ 1 ] );
   test.identical( got.b, 'str' );
   test.identical( got.c, { str : 'str' } );
@@ -3579,7 +3579,7 @@ function routineExtend( test )
   var dst = ( o ) =>
   {
   }
-  var got = _.routineExtend( dst );
+  var got = _.routine.extend( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
 
@@ -3590,7 +3590,7 @@ function routineExtend( test )
   dst.a = 0;
   dst.b = 3;
   dst.c = 'c';
-  var got = _.routineExtend( dst );
+  var got = _.routine.extend( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
@@ -3617,7 +3617,7 @@ function routineExtend( test )
     }
   };
   Object.defineProperties( dst, props );
-  var got = _.routineExtend( dst );
+  var got = _.routine.extend( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
@@ -3633,7 +3633,7 @@ function routineExtend( test )
   };
   dst.a = 0;
   dst.b = 0;
-  var got = _.routineExtend( dst, { c : 1, d : 1, e : { s : 1 } } );
+  var got = _.routine.extend( dst, { c : 1, d : 1, e : { s : 1 } } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
@@ -3646,7 +3646,7 @@ function routineExtend( test )
   };
   dst.a = 0;
   dst.b = 0;
-  var got = _.routineExtend( dst, { a : 1, b : 1 } );
+  var got = _.routine.extend( dst, { a : 1, b : 1 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 1 );
   test.identical( got.b, 1 );
@@ -3673,7 +3673,7 @@ function routineExtend( test )
     }
   };
   Object.defineProperties( dst, props );
-  var got = _.routineExtend( dst, { a : 3, b : 2 } );
+  var got = _.routine.extend( dst, { a : 3, b : 2 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
@@ -3701,7 +3701,7 @@ function routineExtend( test )
     }
   };
   Object.defineProperties( src, props );
-  var got = _.routineExtend( dst, src );
+  var got = _.routine.extend( dst, src );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 3 );
   test.identical( got.b, 2 );
@@ -3712,7 +3712,7 @@ function routineExtend( test )
     var dst = ( o ) =>
     {
     };
-    var got = _.routineExtend( dst, [ 'a', 1 ] );
+    var got = _.routine.extend( dst, [ 'a', 1 ] );
     test.identical( typeof got, 'function' );
     test.identical( got[ 0 ], 'a' );
     test.identical( got[ 1 ], 1 );
@@ -3721,24 +3721,24 @@ function routineExtend( test )
   test.open( 'few extends');
 
   test.case = 'null extends other routine, null extends result';
-  var src = _.routineExtend( null, _.routinesCompose );
-  var got = _.routineExtend( null, src );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
+  var src = _.routine.extend( null, _.routine.s.compose );
+  var got = _.routine.extend( null, src );
+  test.identical( got.head, _.routine.s.compose.head );
+  test.identical( got.body, _.routine.s.compose.body );
   test.identical( typeof got, 'function' );
 
   test.case = 'src extends routine, result extends map ';
   var src1 =
   {
-    head : _.routineUnite.head,
-    body : _.routineUnite.body,
+    head : _.routine.unite.head,
+    body : _.routine.unite.body,
     a : 'str',
     b : { b : 3 },
   };
-  var src = _.routineExtend( null, _.routinesCompose );
-  var got = _.routineExtend( src, src1 );
-  test.identical( got.head, _.routineUnite.head );
-  test.identical( got.body, _.routineUnite.body );
+  var src = _.routine.extend( null, _.routine.s.compose );
+  var got = _.routine.extend( src, src1 );
+  test.identical( got.head, _.routine.unite.head );
+  test.identical( got.body, _.routine.unite.body );
   test.identical( got.b, { b : 3 } );
   test.true( got.a === 'str' );
   test.identical( typeof got, 'function' );
@@ -3749,15 +3749,15 @@ function routineExtend( test )
   };
   var src1 =
   {
-    head : _.routinesCompose.head,
-    body : _.routinesCompose.body,
+    head : _.routine.s.compose.head,
+    body : _.routine.s.compose.body,
     a : [ 'str' ],
     c : { d : 2 },
   };
-  var src = _.routineExtend( dst, { c : {}, b : 'str' } );
-  var got = _.routineExtend( dst, src1 );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
+  var src = _.routine.extend( dst, { c : {}, b : 'str' } );
+  var got = _.routine.extend( dst, src1 );
+  test.identical( got.head, _.routine.s.compose.head );
+  test.identical( got.body, _.routine.s.compose.body );
   test.identical( got.a, [ 'str' ] );
   test.identical( got.b, 'str' );
   test.identical( got.c, { d : 2 } );
@@ -3770,15 +3770,15 @@ function routineExtend( test )
   dst.map = { a : 'str' };
   var src1 =
   {
-    head : _.routinesCompose.head,
-    body : _.routinesCompose.body,
+    head : _.routine.s.compose.head,
+    body : _.routine.s.compose.body,
     a : [ 'str' ],
     map : { d : 2 },
   };
-  var src = _.routineExtend( dst, { c : {} } );
-  var got = _.routineExtend( dst, src1 );
-  test.identical( got.head, _.routinesCompose.head );
-  test.identical( got.body, _.routinesCompose.body );
+  var src = _.routine.extend( dst, { c : {} } );
+  var got = _.routine.extend( dst, src1 );
+  test.identical( got.head, _.routine.s.compose.head );
+  test.identical( got.body, _.routine.s.compose.body );
   test.identical( got.a, [ 'str' ] );
   var expectedMap = { d : 2 };
   expectedMap.a = 'str';
@@ -3808,9 +3808,9 @@ function routineExtend( test )
   };
   routine1.a = 2;
   routine1.c = 'str';
-  var src1 = _.routineExtend( src, routine );
-  var src2 = _.routineExtend( dst, routine1 );
-  var got = _.routineExtend( src2, src1 )
+  var src1 = _.routine.extend( src, routine );
+  var src2 = _.routine.extend( dst, routine1 );
+  var got = _.routine.extend( src2, src1 )
   test.identical( got.a, 0 );
   test.identical( got.b, [ 'str' ] );
   test.identical( got.c, 'str' );
@@ -3826,9 +3826,9 @@ function routineExtend( test )
   var src = () =>
   {
   };
-  var src1 = _.routineExtend( src, { o1 : 1, o2 : 'str' } );
-  var src2 = _.routineExtend( dst, { o3 : 'o3', o1 : 'map' } );
-  var got = _.routineExtend( src2, src1 )
+  var src1 = _.routine.extend( src, { o1 : 1, o2 : 'str' } );
+  var src2 = _.routine.extend( dst, { o3 : 'o3', o1 : 'map' } );
+  var got = _.routine.extend( src2, src1 )
   test.identical( got.o1, 1 );
   test.identical( got.o2, 'str' );
   test.identical( got.o3, 'o3' );
@@ -3848,7 +3848,7 @@ function routineExtend( test )
       writable : true,
     }
   });
-  var got = _.routineExtend( dst );
+  var got = _.routine.extend( dst );
   test.equivalent( got.b, { a : 2 } );
 
   test.case = 'extend by map';
@@ -3856,7 +3856,7 @@ function routineExtend( test )
   {
   };
   dst.b = { map : 2 };
-  var got = _.routineExtend( dst, { b : { map : 3 } } );
+  var got = _.routine.extend( dst, { b : { map : 3 } } );
   test.equivalent( got.b, { map : 3 } );
 
   test.close( 'few extends');
@@ -3867,47 +3867,47 @@ function routineExtend( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend();
+    _.routine.extend();
   });
 
   test.case = 'three arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( null, { a : 1 }, { b : 2 });
+    _.routine.extend( null, { a : 1 }, { b : 2 });
   });
 
   test.case = 'single dst is null';
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( null );
+    _.routine.extend( null );
   });
 
   // test.case = 'second arg has not head and body properties';
   // test.shouldThrowErrorSync( function()
   // {
-  //   _.routineExtend( null, _.unrollIs );
+  //   _.routine.extend( null, _.unrollIs );
   // });
 
   test.case = 'second arg is primitive';
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( _.unrollIs, 'str' );
+    _.routine.extend( _.unrollIs, 'str' );
   });
 
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( _.unrollIs, 1 );
+    _.routine.extend( _.unrollIs, 1 );
   });
 
   test.case = 'dst is not routine or null';
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( 1, { a : 1 } );
+    _.routine.extend( 1, { a : 1 } );
   });
 
   test.shouldThrowErrorSync( function()
   {
-    _.routineExtend( 'str', { a : 1 } );
+    _.routine.extend( 'str', { a : 1 } );
   });
 }
 
@@ -3920,11 +3920,11 @@ function routineDefaults( test )
 
   function add1_head( routine, args )
   {
-    return _.routineOptions( routine, args );
+    return _.routine.options( routine, args );
   }
   function add1_body( o )
   {
-    o = _.assertRoutineOptions( add1, arguments );
+    o = _.routine.assertOptions( add1, arguments );
     return o.a + o.b;
   }
   add1_body.defaults =
@@ -3932,14 +3932,14 @@ function routineDefaults( test )
     a : 1,
     b : 3,
   }
-  let add1 = _.routineUnite( add1_head, add1_body );
+  let add1 = _.routine.unite( add1_head, add1_body );
 
   test.description = 'control call';
   var got = add1();
   test.identical( got, 4 );
 
   test.description = 'generate';
-  let add2 = _.routineDefaults( null, add1, { b : 5 } );
+  let add2 = _.routine.defaults( null, add1, { b : 5 } );
   test.true( add1 !== add2 );
   test.true( add1.defaults !== add2.defaults );
   test.true( _.aux.is( add1.defaults ) );
@@ -3957,11 +3957,11 @@ function routineDefaults( test )
 
   function add3_head( routine, args )
   {
-    return _.routineOptions( routine, args );
+    return _.routine.options( routine, args );
   }
   function add3_body( o )
   {
-    o = _.assertRoutineOptions( add1, arguments );
+    o = _.routine.assertOptions( add1, arguments );
     return o.a + o.b;
   }
   add3_body.defaults =
@@ -3969,14 +3969,14 @@ function routineDefaults( test )
     a : 1,
     b : 3,
   }
-  let add3 = _.routineUnite( add3_head, add3_body );
+  let add3 = _.routine.unite( add3_head, add3_body );
 
   test.description = 'control call';
   var got = add3();
   test.identical( got, 4 );
 
   test.description = 'generate';
-  let add4 = _.routineDefaults( add3, { b : 5 } );
+  let add4 = _.routine.defaults( add3, { b : 5 } );
   test.true( add3 === add4 );
   test.true( add3.defaults === add4.defaults );
   test.true( _.aux.is( add3.defaults ) );
@@ -4032,8 +4032,8 @@ function routineUnite( test )
   test.open( 'only body' );
 
   test.case = 'head - undefined, body expects map';
-  var routine = _.routineUnite( undefined, bodyObject );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( undefined, bodyObject );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
@@ -4041,8 +4041,8 @@ function routineUnite( test )
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - undefined, body expects unroll';
-  var routine = _.routineUnite( undefined, bodyUnroll );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( undefined, bodyUnroll );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4050,8 +4050,8 @@ function routineUnite( test )
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - null, body expects map';
-  var routine = _.routineUnite( null, bodyObject );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( null, bodyObject );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
@@ -4059,8 +4059,8 @@ function routineUnite( test )
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - null, body expects unroll';
-  var routine = _.routineUnite( null, bodyUnroll );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( null, bodyUnroll );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4070,8 +4070,8 @@ function routineUnite( test )
   /* */
 
   test.case = 'head - null';
-  var routine = _.routineUnite({ head : null, body : bodyUnroll });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : null, body : bodyUnroll });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4079,8 +4079,8 @@ function routineUnite( test )
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - undefined';
-  var routine = _.routineUnite({ head : undefined, body : bodyUnroll });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : undefined, body : bodyUnroll });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4094,16 +4094,16 @@ function routineUnite( test )
   test.open( 'head and body' );
 
   test.case = 'make from arguments, routine expects map';
-  var routine = _.routineUnite( headObject, bodyObject );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headObject, bodyObject );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'make from arguments, routine expects unroll';
-  var routine = _.routineUnite( headUnroll, bodyUnroll );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headUnroll, bodyUnroll );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4112,16 +4112,16 @@ function routineUnite( test )
   /* */
 
   test.case = 'make from map, routine expects map';
-  var routine = _.routineUnite({ head : headObject, body : bodyObject });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headObject, body : bodyObject });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'make from map, routine expects unroll';
-  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headUnroll, body : bodyUnroll });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4134,8 +4134,8 @@ function routineUnite( test )
   test.open( 'body and tail' );
 
   test.case = 'head - undefined, body expects map';
-  var routine = _.routineUnite( undefined, bodyObject, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( undefined, bodyObject, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
@@ -4143,8 +4143,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - undefined, body expects unroll';
-  var routine = _.routineUnite( undefined, bodyUnroll, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( undefined, bodyUnroll, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4152,8 +4152,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - null, body expects map';
-  var routine = _.routineUnite( null, bodyObject, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( null, bodyObject, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine({ args : _.argumentsArray.make([ 1, 2 ]) });
@@ -4161,8 +4161,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - null, body expects unroll';
-  var routine = _.routineUnite( null, bodyUnroll, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( null, bodyUnroll, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4172,8 +4172,8 @@ function routineUnite( test )
   /* */
 
   test.case = 'head - null';
-  var routine = _.routineUnite({ head : null, body : bodyUnroll, tail });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : null, body : bodyUnroll, tail });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4181,8 +4181,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - undefined';
-  var routine = _.routineUnite({ head : undefined, body : bodyUnroll, tail });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : undefined, body : bodyUnroll, tail });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( _.unrollMake([ 1, 2 ]) );
@@ -4199,8 +4199,8 @@ function routineUnite( test )
   }
 
   test.case = 'head - null, tail use options map';
-  var routine = _.routineUnite( null, bodyObject, tailUseOptions );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( null, bodyObject, tailUseOptions );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var o = { args : _.argumentsArray.make([ 1, 2 ]) };
@@ -4209,8 +4209,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2, o ] );
 
   test.case = 'head - null, tail use options map';
-  var routine = _.routineUnite({ head : null, body : bodyUnroll, tail : tailUseOptions });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : null, body : bodyUnroll, tail : tailUseOptions });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var o = _.unrollMake([ 1, 2 ]);
@@ -4254,16 +4254,16 @@ function routineUnite( test )
   test.open( 'head, body and tail' );
 
   test.case = 'head, body and tail, with map';
-  var routine = _.routineUnite( headObject, bodyObject, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headObject, bodyObject, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head, body and tail, with unroll';
-  var routine = _.routineUnite( headUnroll, bodyUnroll, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headUnroll, bodyUnroll, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4272,16 +4272,16 @@ function routineUnite( test )
   /* */
 
   test.case = 'head, body and tail, with map';
-  var routine = _.routineUnite({ head : headObject, body : bodyObject, tail });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headObject, body : bodyObject, tail });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
   test.case = 'head, body and tail, with unroll';
-  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headUnroll, body : bodyUnroll, tail });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4297,8 +4297,8 @@ function routineUnite( test )
   }
 
   test.case = 'head - null, tail use options map';
-  var routine = _.routineUnite( headObject, bodyObject, tailUseOptions );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headObject, bodyObject, tailUseOptions );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4306,8 +4306,8 @@ function routineUnite( test )
   test.identical( got, [ 2, 2, { args : _.argumentsArray.make([ 1, 2 ]) } ] );
 
   test.case = 'head - null, tail use options map';
-  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail : tailUseOptions });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headUnroll, body : bodyUnroll, tail : tailUseOptions });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyUnroll' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4349,16 +4349,16 @@ function routineUnite( test )
   test.open( 'names' );
 
   test.case = 'name defined by field, head and body';
-  var routine = _.routineUnite({ head : headObject, body : bodyObject, name : 'someName' });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headObject, body : bodyObject, name : 'someName' });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'someName' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'name defined by field, head, body and tail, with map';
-  var routine = _.routineUnite({ head : headObject, body : bodyObject, tail, name : 'someName' });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : headObject, body : bodyObject, tail, name : 'someName' });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'someName' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4373,8 +4373,8 @@ function routineUnite( test )
   }
   someRoutine_body.defaults = { args : null };
 
-  var routine = _.routineUnite( headObject, someRoutine_body );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( headObject, someRoutine_body );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'someRoutine' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4394,16 +4394,16 @@ function routineUnite( test )
   }
 
   test.case = 'compose head and body, with map';
-  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( [ headObject, headComposeObject ], bodyObject );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'compose head, body and tail, with map';
-  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject, tail );
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite( [ headObject, headComposeObject ], bodyObject, tail );
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4412,16 +4412,16 @@ function routineUnite( test )
   /* */
 
   test.case = 'compose head and body, with map';
-  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : [ headObject, headComposeObject ], body : bodyObject });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'compose head, body and tail, with map';
-  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
-  test.true( _.routineIs( routine ) );
+  var routine = _.routine.unite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
+  test.true( _.routine.is( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
@@ -4435,29 +4435,29 @@ function routineUnite( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.routineUnite() );
+  test.shouldThrowErrorSync( () => _.routine.unite() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.routineUnite( headObject ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject ) );
 
   test.case = 'wrong type of body routine';
-  test.shouldThrowErrorSync( () => _.routineUnite( headObject, null ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject, null ) );
 
   test.case = 'wrong type of head';
-  test.shouldThrowErrorSync( () => _.routineUnite( 1, bodyObject ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( 1, bodyObject ) );
 
   test.case = 'wrong type of tail routine';
-  test.shouldThrowErrorSync( () => _.routineUnite( headObject, bodyObject, 'tail' ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject, bodyObject, 'tail' ) );
 
   test.case = 'body routine without defaults';
   function bodyWithoutDefaults( o )
   {
     return o.args;
   }
-  test.shouldThrowErrorSync( () => _.routineUnite( headObject, bodyWithoutDefaults ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject, bodyWithoutDefaults ) );
 
   test.case = 'body routine has no name';
-  test.shouldThrowErrorSync( () => _.routineUnite( headObject, ( o ) => o.args ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject, ( o ) => o.args ) );
 }
 
 //
@@ -4475,7 +4475,7 @@ function routineEr( test )
       o = Object.create( null );
     }
 
-    _.routineOptions( routine, o );
+    _.routine.options( routine, o );
     return o;
   }
 
@@ -4490,16 +4490,16 @@ function routineEr( test )
   test.open( 'check work of erhead' );
 
   test.case = 'routine - no field erhead, erhead - undefined, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : null } );
 
@@ -4509,16 +4509,16 @@ function routineEr( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -4528,18 +4528,18 @@ function routineEr( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - erhead, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -4549,18 +4549,18 @@ function routineEr( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -4570,17 +4570,17 @@ function routineEr( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -4590,17 +4590,17 @@ function routineEr( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -4612,19 +4612,19 @@ function routineEr( test )
   /* - */
 
   test.case = 'routine - with field erhead, erhead - routine, routine should rewrite field';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   var erhead2 = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg2' } };
   routine.erhead = erhead;
 
-  var got = _.routineEr( routine, erhead2 );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead2 );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg2' } );
 
@@ -4635,17 +4635,17 @@ function routineEr( test )
 
   test.case = 'routine - without field erhead, erhead - routine, head return not a Map, not an Unroll';
   var head = () => 'head';
-  var routine = _.routineUnite( head, test_body );
+  var routine = _.routine.unite( head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -4658,17 +4658,17 @@ function routineEr( test )
   var head = ( r, a ) => { return _.unrollMake( a ) };
   var body = ( o ) => o;
   body.defaults = { arg : null };
-  var routine = _.routineUnite( head, body );
+  var routine = _.routine.unite( head, body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -4681,27 +4681,27 @@ function routineEr( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.routineEr() );
+  test.shouldThrowErrorSync( () => _.routine.er() );
 
   test.case = 'extra arguments';
-  var routine = _.routineUnite( test_head, test_body );
-  test.shouldThrowErrorSync( () => _.routineEr( routine, ( r, a ) => a[ 0 ], 'extra' ) );
+  var routine = _.routine.unite( test_head, test_body );
+  test.shouldThrowErrorSync( () => _.routine.er( routine, ( r, a ) => a[ 0 ], 'extra' ) );
 
   test.case = 'wrong type of routine';
-  test.shouldThrowErrorSync( () => _.routineEr( 'wrong', ( r, a ) => a[ 0 ] ) );
+  test.shouldThrowErrorSync( () => _.routine.er( 'wrong', ( r, a ) => a[ 0 ] ) );
 
   test.case = 'wrong type of erhead';
-  var routine = _.routineUnite( test_head, test_body );
-  test.shouldThrowErrorSync( () => _.routineEr( routine, 'wrong' ) );
+  var routine = _.routine.unite( test_head, test_body );
+  test.shouldThrowErrorSync( () => _.routine.er( routine, 'wrong' ) );
 
   test.case = 'wrong type of erhead';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   routine.erhead = 'wrong';
-  test.shouldThrowErrorSync( () => _.routineEr( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.er( routine ) );
 
   test.case = 'call with simple routine without defaults, head and body';
   var routine = () => 'routine';
-  test.shouldThrowErrorSync( () => _.routineEr( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.er( routine ) );
 
   test.case = 'call with simple routine, has fields, head has wrong type';
   var routine = () => 'routine';
@@ -4709,7 +4709,7 @@ function routineEr( test )
   routine.body = () => 'body';
   routine.erhead = () => {};
   routine.defaults = {};
-  test.shouldThrowErrorSync( () => _.routineEr( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.er( routine ) );
 
   test.case = 'call with simple routine, has fields, body has wrong type';
   var routine = () => 'routine';
@@ -4717,7 +4717,7 @@ function routineEr( test )
   routine.body = 'wrong';
   routine.erhead = () => {};
   routine.defaults = {};
-  test.shouldThrowErrorSync( () => _.routineEr( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.er( routine ) );
 
   test.case = 'call with simple routine, has fields, defaults has wrong type';
   var routine = () => 'routine';
@@ -4725,17 +4725,17 @@ function routineEr( test )
   routine.body = 'wrong';
   routine.erhead = () => {};
   routine.defaults = null;
-  test.shouldThrowErrorSync( () => _.routineEr( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.er( routine ) );
 
   test.case = 'functor should fail because erhead returns no map';
-  var routine = _.routineUnite( test_head, test_body );
-  var got = _.routineEr( routine, ( r, a ) => a );
+  var routine = _.routine.unite( test_head, test_body );
+  var got = _.routine.er( routine, ( r, a ) => a );
   test.shouldThrowErrorSync( () => got.er() );
 
   test.case = 'constructed routine will fails because erhead returns map with undefined';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : undefined } };
-  var got = _.routineEr( routine, erhead );
+  var got = _.routine.er( routine, erhead );
   var gotRoutine = got.er();
   test.identical( gotRoutine.defaults, { arg : undefined } );
   test.shouldThrowErrorSync( () => gotRoutine() );
@@ -4756,7 +4756,7 @@ function routineErShouldSupplementNotDefinedFields( test )
       o = Object.create( null );
     }
 
-    _.routineOptions( routine, o );
+    _.routine.options( routine, o );
     return o;
   }
 
@@ -4769,16 +4769,16 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* - */
 
   test.case = 'routine - no field erhead, erhead - undefined, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : null, arg2 : 'arg2' } );
 
@@ -4788,16 +4788,16 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -4807,18 +4807,18 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - erhead, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
 
@@ -4828,18 +4828,18 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var got = _.routineEr( routine );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -4849,17 +4849,17 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
 
@@ -4869,17 +4869,17 @@ function routineErShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var got = _.routineEr( routine, erhead );
-  test.true( _.routineIs( got ) );
+  var got = _.routine.er( routine, erhead );
+  test.true( _.routine.is( got ) );
   test.true( got === routine );
-  test.true( _.routineIs( got.er ) );
+  test.true( _.routine.is( got.er ) );
   test.identical( got.er.defaults, undefined );
 
   var gotRoutine = got.er( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -4902,7 +4902,7 @@ function routineErFor( test )
       o = Object.create( null );
     }
 
-    _.routineOptions( routine, o );
+    _.routine.options( routine, o );
     return o;
   }
 
@@ -4917,14 +4917,14 @@ function routineErFor( test )
   test.open( 'check work of erhead' );
 
   test.case = 'routine - no field erhead, erhead - undefined, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : null } );
 
@@ -4934,14 +4934,14 @@ function routineErFor( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -4951,16 +4951,16 @@ function routineErFor( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - erhead, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -4970,16 +4970,16 @@ function routineErFor( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -4989,15 +4989,15 @@ function routineErFor( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -5007,15 +5007,15 @@ function routineErFor( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1' } );
 
@@ -5027,17 +5027,17 @@ function routineErFor( test )
   /* - */
 
   test.case = 'routine - with field erhead, erhead - routine, routine should rewrite field';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   var erhead2 = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg2' } };
   routine.erhead = erhead;
 
-  var gotFunctor = _.routineErFor( routine, erhead2 );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead2 );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg2' } );
 
@@ -5048,15 +5048,15 @@ function routineErFor( test )
 
   test.case = 'routine - without field erhead, erhead - routine, head return not a Map, not an Unroll';
   var head = () => 'head';
-  var routine = _.routineUnite( head, test_body );
+  var routine = _.routine.unite( head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -5069,15 +5069,15 @@ function routineErFor( test )
   var head = ( r, a ) => { return _.unrollMake( a ) };
   var body = ( o ) => o;
   body.defaults = { arg : null };
-  var routine = _.routineUnite( head, body );
+  var routine = _.routine.unite( head, body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg' } );
 
@@ -5090,27 +5090,27 @@ function routineErFor( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.routineErFor() );
+  test.shouldThrowErrorSync( () => _.routine.erFor() );
 
   test.case = 'extra arguments';
-  var routine = _.routineUnite( test_head, test_body );
-  test.shouldThrowErrorSync( () => _.routineErFor( routine, ( r, a ) => a[ 0 ], 'extra' ) );
+  var routine = _.routine.unite( test_head, test_body );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine, ( r, a ) => a[ 0 ], 'extra' ) );
 
   test.case = 'wrong type of routine';
-  test.shouldThrowErrorSync( () => _.routineErFor( 'wrong', ( r, a ) => a[ 0 ] ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( 'wrong', ( r, a ) => a[ 0 ] ) );
 
   test.case = 'wrong type of erhead';
-  var routine = _.routineUnite( test_head, test_body );
-  test.shouldThrowErrorSync( () => _.routineErFor( routine, 'wrong' ) );
+  var routine = _.routine.unite( test_head, test_body );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine, 'wrong' ) );
 
   test.case = 'wrong type of erhead';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   routine.erhead = 'wrong';
-  test.shouldThrowErrorSync( () => _.routineErFor( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine ) );
 
   test.case = 'call with simple routine without defaults, head and body';
   var routine = () => 'routine';
-  test.shouldThrowErrorSync( () => _.routineErFor( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine ) );
 
   test.case = 'call with simple routine, has fields, head has wrong type';
   var routine = () => 'routine';
@@ -5118,7 +5118,7 @@ function routineErFor( test )
   routine.body = () => 'body';
   routine.erhead = () => {};
   routine.defaults = {};
-  test.shouldThrowErrorSync( () => _.routineErFor( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine ) );
 
   test.case = 'call with simple routine, has fields, body has wrong type';
   var routine = () => 'routine';
@@ -5126,7 +5126,7 @@ function routineErFor( test )
   routine.body = 'wrong';
   routine.erhead = () => {};
   routine.defaults = {};
-  test.shouldThrowErrorSync( () => _.routineErFor( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine ) );
 
   test.case = 'call with simple routine, has fields, defaults has wrong type';
   var routine = () => 'routine';
@@ -5134,17 +5134,17 @@ function routineErFor( test )
   routine.body = 'wrong';
   routine.erhead = () => {};
   routine.defaults = null;
-  test.shouldThrowErrorSync( () => _.routineErFor( routine ) );
+  test.shouldThrowErrorSync( () => _.routine.erFor( routine ) );
 
   test.case = 'functor should fail because erhead returns no map';
-  var routine = _.routineUnite( test_head, test_body );
-  var gotFunctor = _.routineErFor( routine, ( r, a ) => a );
+  var routine = _.routine.unite( test_head, test_body );
+  var gotFunctor = _.routine.erFor( routine, ( r, a ) => a );
   test.shouldThrowErrorSync( () => gotFunctor() );
 
   test.case = 'constructed routine will fails because erhead returns map with undefined';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : undefined } };
-  var gotFunctor = _.routineErFor( routine, erhead );
+  var gotFunctor = _.routine.erFor( routine, erhead );
   var gotRoutine = gotFunctor();
   test.identical( gotRoutine.defaults, { arg : undefined } );
   test.shouldThrowErrorSync( () => gotRoutine() );
@@ -5165,7 +5165,7 @@ function routineErForShouldSupplementNotDefinedFields( test )
       o = Object.create( null );
     }
 
-    _.routineOptions( routine, o );
+    _.routine.options( routine, o );
     return o;
   }
 
@@ -5178,14 +5178,14 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* - */
 
   test.case = 'routine - no field erhead, erhead - undefined, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : null, arg2 : 'arg2' } );
 
@@ -5195,14 +5195,14 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -5212,16 +5212,16 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - erhead, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
 
@@ -5231,16 +5231,16 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - with field erhead, erhead - undefined, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
   routine.erhead = erhead;
 
-  var gotFunctor = _.routineErFor( routine );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -5250,15 +5250,15 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call without argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor();
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg', arg2 : 'arg2' } );
 
@@ -5268,15 +5268,15 @@ function routineErForShouldSupplementNotDefinedFields( test )
   /* */
 
   test.case = 'routine - no field erhead, erhead - routine, call with argument';
-  var routine = _.routineUnite( test_head, test_body );
+  var routine = _.routine.unite( test_head, test_body );
   var erhead = ( r, a ) => { return { arg : a[ 0 ] !== undefined ? a[ 0 ] : 'arg' } };
 
-  var gotFunctor = _.routineErFor( routine, erhead );
-  test.true( _.routineIs( gotFunctor ) );
+  var gotFunctor = _.routine.erFor( routine, erhead );
+  test.true( _.routine.is( gotFunctor ) );
   test.identical( gotFunctor.defaults, undefined );
 
   var gotRoutine = gotFunctor( 'arg1' );
-  test.true( _.routineIs( gotRoutine ) );
+  test.true( _.routine.is( gotRoutine ) );
   test.identical( gotRoutine.name, 'er' );
   test.identical( gotRoutine.defaults, { arg : 'arg1', arg2 : 'arg2' } );
 
@@ -7022,7 +7022,7 @@ function vectorizeAll( test )
   test.identical( got.str, isOdd.str );
   test.identical( got.number, isOdd.number );
   test.identical( got.routine, isOdd.routine );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 0 );
   test.identical( got([ 0, 2 ]), 0 );
   test.identical( got([ 1, 3 ]), true );
@@ -7051,7 +7051,7 @@ function vectorizeAny( test )
   test.identical( got.str, isOdd.str );
   test.identical( got.number, isOdd.number );
   test.identical( got.routine, isOdd.routine );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), 1 );
   test.identical( got([ 0, 2 ]), false );
   test.identical( got([ 1, 3 ]), 1 );
@@ -7080,7 +7080,7 @@ function vectorizeNone( test )
   test.identical( got.str, isOdd.str );
   test.identical( got.number, isOdd.number );
   test.identical( got.routine, isOdd.routine );
-  test.true( _.routineIs( got ) );
+  test.true( _.routine.is( got ) );
   test.identical( got([ 0, 1, 2, 3 ]), false );
   test.identical( got([ 0, 2 ]), true );
   test.identical( got([ 1, 3 ]), false );
@@ -7299,7 +7299,7 @@ function vectorizeAccessSpecial( test )
 
   test.description = 'get';
   test.identical( vectorized.$, elements );
-  test.true( _.routineIs( vectorized.routine ) );
+  test.true( _.routine.is( vectorized.routine ) );
 
   test.description = 'does not exist';
   test.identical( vectorized.haveNo, undefined );
@@ -7314,7 +7314,7 @@ function vectorizeAccessSpecial( test )
   vectorized.name = 'new value';
   console.log( vectorized.$ );
   test.identical( vectorized.$, elements );
-  test.true( _.routineIs( vectorized.routine ) );
+  test.true( _.routine.is( vectorized.routine ) );
   var exp = [ 'new value', 'new value', 'new value' ];
   test.identical( vectorized.name.$, exp );
 
@@ -7323,6 +7323,74 @@ function vectorizeAccessSpecial( test )
   var got = vectorized.routine( 2 ).$;
   test.identical( got, exp );
 
+}
+
+//
+
+function routineExportStringShortDiagnostic( test )
+{
+
+  test.case = 'function';
+  var src = plain;
+  var expected = '{- routine plain -}';
+  var got = _.routine.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'async function';
+  var src = async;
+  var expected = '{- routine async -}';
+  var got = _.routine.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'arrow function';
+  var arrow = () => {};
+  var src = arrow;
+  var expected = '{- routine arrow -}';
+  var got = _.routine.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'anonymos function';
+  var expected = '{- routine.anonymous -}';
+  var got = _.routine.exportStringShortDiagnostic( function () {} );
+  test.identical( got, expected );
+
+  test.case = 'anonymos arrow function';
+  var expected = '{- routine.anonymous -}';
+  var got = _.routine.exportStringShortDiagnostic( () => {} );
+  test.identical( got, expected );
+
+  // test.case = 'func expression';
+  // var expr = function () {};
+  // var src = expr;
+  // var expected = '{- routine expr -}';
+  // var got = _.routine.exportStringShortDiagnostic( src );
+  // test.identical( got, expected );
+
+  // test.case = 'func expression with name';
+  // var expr = function expr2() {};
+  // var src = expr;
+  // var expected = '{- routine expr2 -}';
+  // var got = _.routine.exportStringShortDiagnostic( src );
+  // test.identical( got, expected );
+
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( () => {}, () => {} ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( {} ) );
+
+  /* - */
+
+  function plain() {};
+
+  async function async() {};
 }
 
 // --
@@ -7388,6 +7456,8 @@ var Self =
 
     vectorizeAccessBasic,
     vectorizeAccessSpecial,
+
+    routineExportStringShortDiagnostic,
 
   }
 
