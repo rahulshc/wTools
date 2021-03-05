@@ -13,11 +13,11 @@ let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.c
 // routine
 // --
 
-function routineCallButOnly( /* context, routine, o, but, only */ )
+function routineCallButOnly( /* context, routine, options, but, only */ )
 {
   let context = arguments[ 0 ];
   let routine = arguments[ 1 ];
-  let o = arguments[ 2 ];
+  let options = arguments[ 2 ];
   let but = arguments[ 3 ];
   let only = arguments[ 4 ];
 
@@ -25,7 +25,7 @@ function routineCallButOnly( /* context, routine, o, but, only */ )
   {
 
     _.assert( arguments.length === 3 || arguments.length === 4 || arguments.length === 5 );
-    _.assert( _.mapIs( o ) );
+    _.assert( _.mapIs( options ) );
 
     if( _.strIs( routine ) )
     routine = context[ routine ];
@@ -35,12 +35,12 @@ function routineCallButOnly( /* context, routine, o, but, only */ )
   {
 
     routine = arguments[ 0 ];
-    o = arguments[ 1 ];
+    options = arguments[ 1 ];
     but = arguments[ 2 ];
     only = arguments[ 3 ];
 
     _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
-    _.assert( _.mapIs( o ) );
+    _.assert( _.mapIs( options ) );
 
   }
 
@@ -50,11 +50,11 @@ function routineCallButOnly( /* context, routine, o, but, only */ )
   only = routine.defaults
 
   if( but )
-  o = _.mapBut( o, but )
+  options = _.mapBut( options, but )
   if( only )
-  o = _.mapOnly( o, only )
+  options = _.mapOnly( options, only )
 
-  return routine.call( context, o );
+  return routine.call( context, options );
 }
 
 //
