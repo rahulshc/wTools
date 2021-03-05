@@ -7809,7 +7809,7 @@ function mapOnlyOwnBut_ThreeArguments( test )
   srcMap.aa = 1;
   var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, butMap );
-  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -7829,7 +7829,7 @@ function mapOnlyOwnBut_ThreeArguments( test )
   srcMap.a = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( srcMap, butMap );
-  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  test.identical( _.mapKeys( got ), [ 'a', 'bb', 'cc' ] );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8002,7 +8002,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.aa = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { aa : 1 };
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8012,7 +8012,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.aa = 1;
   var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = {};
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -8032,7 +8032,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.a = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = {};
+  var expected = { a : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8094,13 +8094,13 @@ function mapOnlyOwnBut_DstMapNull( test )
   test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
+  var srcMap = [ 'a', 'b' ];
   var butMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { 2 : 'b', 3 : 1 };
+  var expected = { 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
   test.identical( butMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
@@ -8114,13 +8114,13 @@ function mapOnlyOwnBut_DstMapNull( test )
   test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
+  var srcMap = [ 'a', 'b' ];
   var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = {};
+  var expected = { 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
   test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
 
   test.close( 'srcMap - array' );
@@ -8189,7 +8189,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.aa = 2;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 2, bb : 2 };
+  var expected = { aa : 2, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8200,7 +8200,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.aa = 1;
   var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2 };
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -8222,7 +8222,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.a = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2 };
+  var expected = { a : 1, aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8290,13 +8290,13 @@ function mapOnlyOwnBut_DstMapIsMap( test )
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
-  var srcMap = [ 'a', 0, 'b', 1 ];
+  var srcMap = [ 'a', 'b' ];
   var butMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, 2 : 'b', 3 : 1 };
+  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
   test.identical( butMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
@@ -8312,13 +8312,13 @@ function mapOnlyOwnBut_DstMapIsMap( test )
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
-  var srcMap = [ 'a', 0, 'b', 1 ];
+  var srcMap = [ 'a','b' ];
   var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2 };
+  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
   test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
 
   test.close( 'srcMap - array' );
