@@ -177,9 +177,9 @@ Object.defineProperty( Escape.prototype, typeNameGetterSymbol,
 
 var Extension =
 {
-  is, /* qqq : cover | aaa : Done. Yevhen S. */
-  make, /* qqq : cover | aaa : Done. Yevhen S. */
-  from, /* qqq : cover | aaa : Done. Yevhen S. */
+  is,
+  make,
+  from,
 }
 
 //
