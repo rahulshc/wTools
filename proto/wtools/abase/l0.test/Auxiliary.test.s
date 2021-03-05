@@ -159,42 +159,42 @@ function auxsAreIdentical( test )
 {
 
   test.case = 'same values';
-  var got = _.aux.areIdenticalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
+  var got = _.aux.identicalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'same values with nested objects';
-  var got = _.aux.areIdenticalShallow( { a : 7, b : { c : 13 } }, { a : 7, b : { c : 13 } } );
+  var got = _.aux.identicalShallow( { a : 7, b : { c : 13 } }, { a : 7, b : { c : 13 } } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'not the same values in'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'different number of keys, more in the first argument'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'different number of keys, more in the second argument'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'empty maps, standrard'
-  var got = _.aux.areIdenticalShallow( {}, {} );
+  var got = _.aux.identicalShallow( {}, {} );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'empty maps, pure'
-  var got = _.aux.areIdenticalShallow( Object.create( null ), Object.create( null ) );
+  var got = _.aux.identicalShallow( Object.create( null ), Object.create( null ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'empty maps, one standard another pure'
-  var got = _.aux.areIdenticalShallow( {}, Object.create( null ) );
+  var got = _.aux.identicalShallow( {}, Object.create( null ) );
   var expected = true;
   test.identical( got, expected );
 
@@ -204,25 +204,25 @@ function auxsAreIdentical( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow();
+    _.aux.identicalShallow();
   });
 
   test.case = 'not object-like arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+    _.aux.identicalShallow( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
   });
 
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( {} );
+    _.aux.identicalShallow( {} );
   });
 
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( {}, {}, 'redundant argument' );
+    _.aux.identicalShallow( {}, {}, 'redundant argument' );
   });
 
 }

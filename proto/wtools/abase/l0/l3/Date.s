@@ -49,8 +49,8 @@ let Extension =
 {
   is,
   areIdentical,
-  areIdenticalShallow : areIdentical,
-  areEquivalentShallow : areIdentical
+  identicalShallow : areIdentical,
+  equivalentShallow : areIdentical
 }
 
 //
