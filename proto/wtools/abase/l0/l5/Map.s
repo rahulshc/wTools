@@ -2871,29 +2871,47 @@ function _mapOnly( o )
 
   function screenKeySearch( key )
   {
-    let m;
     if( _.arrayLike( o.screenMaps ) )
     {
-      for( m = 0 ; m < o.screenMaps.length ; m++ )
-      if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-      return key;
-      else if( key === String( m ) )
-      return key;
+      for( let m = 0 ; m < o.screenMaps.length ; m++ )
+      if( _.primitive.is( o.screenMaps[ m ] ) )
+      {
+        if( o.screenMaps[ m ] === key || String( m ) === key )
+        return key;
+      }
     }
     else
     {
-      for( m of o.screenMaps )
-      if( _.vector.is( m ) && key in m )
-      return key;
-      else if( _.aux.is( m ) && key in m )
-      return key;
-      else if( _.primitive.is( m ) && m === key )
-      return key;
+      for( let m of o.screenMaps )
+      if( _.primitive.is( m ) )
+      {
+        if( m === key || String( m ) === key )
+        return key;
+      }
     }
+    // let m;
+    // if( _.arrayLike( o.screenMaps ) )
+    // {
+    //   for( m = 0 ; m < o.screenMaps.length ; m++ )
+    //   if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+    //   return key;
+    //   else if( key === String( m ) )
+    //   return key;
+    // }
+    // else
+    // {
+    //   for( m of o.screenMaps )
+    //   if( _.vector.is( m ) && key in m )
+    //   return key;
+    //   else if( _.aux.is( m ) && key in m )
+    //   return key;
+    //   else if( _.primitive.is( m ) && m === key )
+    //   return key;
+    // }
   }
 
   /* */
