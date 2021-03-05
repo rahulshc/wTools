@@ -3417,7 +3417,7 @@ function _exportStringShortDiagnostic_body( o )
 _exportStringShortDiagnostic_body.defaults =
 {
   src : null,
-  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
@@ -3429,7 +3429,7 @@ _exportStringShortCode.defaults.format = 'string.code';
 
 //
 
-/* qqq for Yevhen : make head and body */
+/* qqq for Yevhen : make head and body | aaa : Done. */
 function exportStringShortDiagnostic( src )
 {
 
