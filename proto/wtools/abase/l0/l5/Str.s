@@ -3264,6 +3264,255 @@ function strFrom( src )
 }
 
 // --
+// entity
+// --
+
+/**
+ * Return in one string value of all arguments.
+ *
+ * @example
+ * let args = _.entity.exportStringSimple( 'test2' );
+ *
+ * @return {string}
+ * If no arguments return empty string
+ * @function exportStringSimple
+ * @namespace Tools
+ */
+
+function exportStringSimple()
+{
+  let result = '';
+  let line;
+
+  if( !arguments.length )
+  return result;
+
+  _.assert( arguments.length === 1 );
+
+  for( let a = 0 ; a < arguments.length ; a++ )
+  {
+    let src = arguments[ a ];
+
+    if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
+    {
+      line = src.toStr();
+    }
+    else try
+    {
+      line = String( src );
+    }
+    catch( err )
+    {
+      line = _.entity.strType( src );
+    }
+
+    result += line;
+    if( a < arguments.length-1 )
+    result += ' ';
+
+  }
+
+  return result;
+}
+
+//
+
+function exportStringShort( src, opts )
+{
+  let result = '';
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  result = _.entity.exportStringShortDiagnostic( src );
+  // result = _.entity.exportStringSimple( src );
+  // result = _.entity.exportStringShort( src ); xxx
+  return result;
+}
+
+// exportStringShort.fields = exportStringShort;
+// exportStringShort.routines = exportStringShort;
+
+//
+
+function _exportStringShortDiagnostic_head( routine, args )
+{
+
+  let o = args[ 0 ];
+  _.routine.options( routine, o );
+  _.assert
+  (
+    o.format === 'string.diagnostic' || o.format === 'string.code',
+    `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
+  );
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2 );
+
+  return o;
+}
+//
+
+function _exportStringShortDiagnostic_body( o )
+{
+  let result = '';
+  let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
+
+  try
+  {
+    if( _.primitive.is( o.src ) )
+    {
+      result = _.primitive[ method ]( o.src );
+    }
+    else if( _.set.like( o.src ) )
+    {
+      result = _.set[ method ]( o.src );
+    }
+    else if( _.hashMap.like( o.src ) )
+    {
+      result = _.hashMap[ method ]( o.src );
+    }
+    else if( _.vector.like( o.src ) )
+    {
+      result = _.vector[ method ]( o.src );
+    }
+    else if( _.date.is( o.src ) )
+    {
+      result = _.date[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.regexpIs( o.src ) )
+    {
+      result = _.regexp[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.routine.is( o.src ) )
+    {
+      /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      result = _.routine[ method ]( o.src ); /* qqq for Yevhen : no! | aaa : Fixed */
+    }
+    else if( _.aux.like( o.src ) )
+    {
+      result = _.aux[ method ]( o.src );
+    }
+    else if( _.object.like( o.src ) )
+    {
+      result = _.object[ method ]( o.src );
+    }
+    else
+    {
+      result += String( o.src );
+      result = _.strShort( result );
+    }
+
+  }
+  catch( err )
+  {
+    debugger;
+    throw err;
+  }
+
+  return result;
+}
+
+_exportStringShortDiagnostic_body.defaults =
+{
+  src : null,
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+let _exportStringShortDiagnostic = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+
+let _exportStringShortCode = _.routine.unite( _exportStringShortDiagnostic_head, _exportStringShortDiagnostic_body );
+_exportStringShortCode.defaults.format = 'string.code';
+
+//
+
+/* qqq for Yevhen : make head and body */
+function exportStringShortDiagnostic( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  /* qqq : don't produce options-map when possible that here */
+
+  return _.entity._exportStringShortDiagnostic({ src });
+
+  // let result = '';
+
+  // try
+  // {
+
+  //   if( _.primitive.is( src ) )
+  //   {
+  //     result += _.primitive.exportStringShortDiagnostic( src );
+  //   }
+  //   else if( _.set.like( src ) )
+  //   {
+  //     result += _.set.exportStringShortDiagnostic( src );
+  //   }
+  //   else if( _.hashMap.like( src ) )
+  //   {
+  //     result += _.hashMap.exportStringShortDiagnostic( src );
+  //   }
+  //   else if( _.vector.like( src ) )
+  //   {
+  //     result += _.vector.exportStringShortDiagnostic( src );
+  //   }
+  //   else if( _.date.is( src ) )
+  //   {
+  //     result += _.date.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+  //   }
+  //   else if( _.regexpIs( src ) )
+  //   {
+  //     result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+  //   }
+  //   else if( _.routine.is( src ) )
+  //   {
+  //     result += _.routine.exportStringShortDiagnostic( src );
+  //     // if( src.name )
+  //     // result += `{- routine ${src.name} -}`;
+  //     // else
+  //     // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+  //   }
+  //   else if( _.aux.like( src ) )
+  //   {
+  //     result = _.aux.exportStringShortDiagnostic( src );
+  //   }
+  //   else if( _.object.like( src ) )
+  //   {
+  //     result += _.object.exportStringShortDiagnostic( src );
+  //   }
+  //   else
+  //   {
+  //     result += String( src );
+  //     result = _.strShort( result );
+  //   }
+
+  // }
+  // catch( err )
+  // {
+  //   debugger;
+  //   throw err;
+  // }
+
+  // return result;
+}
+
+exportStringShortDiagnostic.defaults =
+{
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+//
+
+function exportStringShortCode( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  /* qqq : don't produce options-map when possible that here */
+
+  return _.entity._exportStringShortCode({ src });
+}
+
+// --
 // extension
 // --
 
@@ -3343,7 +3592,23 @@ let Extension =
 
 //
 
+let ExtensionEntity =
+{
+
+  exportStringSimple, /* xxx : deprecate? */
+  exportStringShort,
+  exportString : exportStringShort,
+  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
+  exportStringShortCode, /* qqq xxx : introduce | aaa : Done. */
+  _exportStringShortCode,
+  exportStringShortDiagnostic,
+  _exportStringShortDiagnostic,
+}
+
+//
+
 _.mapExtend( Self, Extension );
+_.mapExtend( _.entity, ExtensionEntity );
 
 // --
 // export
