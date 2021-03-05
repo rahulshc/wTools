@@ -2678,7 +2678,7 @@ function empty( test )
 
 //
 
-function elementThGet( test )
+function elementThGet( test ) /* qqq : types that cause error marked with - 'else _.assert( 0 );' and commented */
 {
 
   /* */
@@ -2792,19 +2792,19 @@ function elementThGet( test )
   var got3 = _.container.elementThGet( src, 2 );
   test.identical( got3, [ 2, undefined ] );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'Global & GlobalReal';
   // var src = global;
   // var got = _.container.elementThGet( src, 0 );
   // test.identical( got, 1 );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'Global & GlobalDerived';
   // var src = Object.create( global );
   // var got = _.container.elementThGet( src, 1 );
   // test.identical( _.object.is( got ), true );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'Object & ObjectLike & Container & ContainerLike';
   // var src = { [ Symbol.iterator ] : 1, a : 1 };
   // var got = _.container.elementThGet( src, 0 );
@@ -2848,13 +2848,13 @@ function elementThGet( test )
   var got = _.container.elementThGet( src, 0 );
   test.identical( got, [ 0, 115 ] );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'BufferRaw';
   // var src = new BufferRaw( 10 );
   // var got = _.container.elementThGet( src, 1 );
   // test.identical( got, 10 );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'BufferRawShared';
   // var src = new BufferRawShared( 15 );
   // var got = _.container.elementThGet( src, 0 );
@@ -2865,13 +2865,13 @@ function elementThGet( test )
   var got = _.container.elementThGet( src, 0 );
   test.identical( got, [ 0, 0 ] );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'BufferView';
   // var src = new BufferView( new BufferRaw( 20 ) )
   // var got = _.container.elementThGet( src, 1 );
   // test.identical( got, 20 );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'err';
   // var src = _.err( 'error' );
   // var got = _.container.elementThGet( src, 0 );
@@ -2886,19 +2886,19 @@ function elementThGet( test )
   var got3 = _.container.elementThGet( src, 2 );
   test.identical( got3, [ 2, undefined ] );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & filter';
   // var src = _.property.filter[ 'dstAndSrcOwn' ];
   // var got = _.container.elementThGet( src, 0 );
   // test.identical( got, { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true } );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & mapper';
   // var src = _.property.mapper[ 'assigning' ];
   // var got = _.container.elementThGet( src, 1 );
   // test.identical( got, { 'propertyMapper' : true, 'propertyTransformer' : true, 'functor' : true } );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'routine & routineLike';
   // var src = routine;
   // var got = _.container.elementThGet( src, 0 );
@@ -2912,19 +2912,19 @@ function elementThGet( test )
   test.identical( got2, [ 'onCancel', undefined ] );
   _.time.cancel( src );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'date & objectLike';
   // var src = new Date( 1000 );
   // var got = _.container.elementThGet( src, 0 );
   // test.identical( got, true );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'stream';
   // var src = require( 'stream' ).Readable();
   // var got = _.container.elementThGet( src, 1 );
   // test.identical( got, true );
 
-  /* qqq : else _.assert( 0 ); */
+  /* else _.assert( 0 ); */
   // test.case = 'process';
   // var src = process;
   // var got = _.container.elementThGet( src, 0 );
