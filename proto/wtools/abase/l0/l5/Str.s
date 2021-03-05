@@ -3336,9 +3336,9 @@ function _exportStringShort_head( routine, args )
 {
 
   let o = args[ 0 ];
-  let isUndefined = o.src === undefined; /* if o.src === undefined, it shouldn't be replaced with default : null */
+  // let isUndefined = o.src === undefined; /* if o.src === undefined, it shouldn't be replaced with default : null */
 
-  _.routine.options( routine, o );
+  _.routine.optionsPreservingUndefines( routine, o );
   _.assert
   (
     o.format === 'string.diagnostic' || o.format === 'string.code',
@@ -3347,8 +3347,8 @@ function _exportStringShort_head( routine, args )
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
 
-  if( isUndefined )
-  o.src = undefined;
+  // if( isUndefined )
+  // o.src = undefined;
 
   return o;
 }
@@ -3431,71 +3431,18 @@ _exportStringShortCode.defaults.format = 'string.code';
 /* qqq for Yevhen : make head and body | aaa : Done. */
 function exportStringShortDiagnostic( src, o ) /* */
 {
-
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
   /* qqq : don't produce options-map when possible that here */
 
-  return _.entity._exportStringShort({ src });
-
-  // let result = '';
-
-  // try
-  // {
-
-  //   if( _.primitive.is( src ) )
-  //   {
-  //     result += _.primitive.exportStringShortDiagnostic( src );
-  //   }
-  //   else if( _.set.like( src ) )
-  //   {
-  //     result += _.set.exportStringShortDiagnostic( src );
-  //   }
-  //   else if( _.hashMap.like( src ) )
-  //   {
-  //     result += _.hashMap.exportStringShortDiagnostic( src );
-  //   }
-  //   else if( _.vector.like( src ) )
-  //   {
-  //     result += _.vector.exportStringShortDiagnostic( src );
-  //   }
-  //   else if( _.date.is( src ) )
-  //   {
-  //     result += _.date.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
-  //   }
-  //   else if( _.regexpIs( src ) )
-  //   {
-  //     result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
-  //   }
-  //   else if( _.routine.is( src ) )
-  //   {
-  //     result += _.routine.exportStringShortDiagnostic( src );
-  //     // if( src.name )
-  //     // result += `{- routine ${src.name} -}`;
-  //     // else
-  //     // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
-  //   }
-  //   else if( _.aux.like( src ) )
-  //   {
-  //     result = _.aux.exportStringShortDiagnostic( src );
-  //   }
-  //   else if( _.object.like( src ) )
-  //   {
-  //     result += _.object.exportStringShortDiagnostic( src );
-  //   }
-  //   else
-  //   {
-  //     result += String( src );
-  //     result = _.strShort( result );
-  //   }
-
-  // }
-  // catch( err )
-  // {
-  //   debugger;
-  //   throw err;
-  // }
-
-  // return result;
+  if( o )
+  {
+    o.src = src;
+    return _.entity._exportStringShort( o );
+  }
+  else
+  {
+    return _.entity._exportStringShort({ src });
+  }
 }
 
 exportStringShortDiagnostic.defaults =
@@ -3507,13 +3454,19 @@ exportStringShortDiagnostic.defaults =
 
 //
 
-function exportStringShortCode( src )
+function exportStringShortCode( src, o )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  /* qqq : don't produce options-map when possible that here */
-
-  return _.entity._exportStringShortCode({ src });
+  if( o )
+  {
+    o.src = src;
+    return _.entity._exportStringShortCode( o );
+  }
+  else
+  {
+    return _.entity._exportStringShortCode({ src });
+  }
 }
 
 // --
@@ -3601,12 +3554,12 @@ let ExtensionEntity =
 
   exportStringSimple, /* xxx : deprecate? */
   exportStringShort,
+  _exportStringShort,
   exportString : exportStringShort,
   exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
   exportStringShortCode, /* qqq xxx : introduce | aaa : Done. */
   _exportStringShortCode,
   exportStringShortDiagnostic,
-  _exportStringShortDiagnostic,
 }
 
 //
