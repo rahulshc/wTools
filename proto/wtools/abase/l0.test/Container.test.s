@@ -3219,9 +3219,6 @@ function elementGet( test )
   test.case = 'to many args'
   test.shouldThrowErrorSync( () => _.container.elementGet( {}, 'a', 'b' ) );
 
-  // test.case = 'container = primitive'
-  // test.shouldThrowErrorSync( () => _.container.elementGet( 1, 'h' ) );
-
   /* - */
 
   function _iterate()
