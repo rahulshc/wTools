@@ -1571,7 +1571,8 @@ function strStrip( o )
 strStrip.defaults =
 {
   src : null,
-  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g,
+  // stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm, /* Dmytro : multiline replacing should be an option, not for single string */
 }
 
 //
