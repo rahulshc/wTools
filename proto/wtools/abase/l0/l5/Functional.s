@@ -380,6 +380,7 @@ function entityEach( src, onEach )
 
   /* */
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -419,6 +420,7 @@ function entityEachOwn( src, onEach )
 
   /* */
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -448,87 +450,6 @@ function entityEachOwn( src, onEach )
 
   return src;
 }
-
-// //
-//
-// function entityEachKey( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( onEach.length <= 3 );
-//   // _.assert( onEach.length <= 2 );
-//   _.assert( _.routine.is( onEach ) );
-//
-//   /* */
-//
-//   if( _.longIs( src ) )
-//   {
-//
-//     for( let index = 0 ; index < src.length ; index++ )
-//     {
-//       onEach( src[ index ], undefined, index, src );
-//     }
-//
-//   }
-//   else if( _.object.like( src ) )
-//   {
-//
-//     let index = 0;
-//     for( let k in src )
-//     {
-//       onEach( k, src[ k ], index, src );
-//       index += 1;
-//     }
-//
-//   }
-//   else
-//   {
-//     onEach( src, undefined, undefined, undefined );
-//   }
-//
-//   /* */
-//
-//   return src;
-//
-//   // if( arguments.length === 2 )
-//   // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-//   //
-//   // _.routine.options( eachKey, o );
-//   // _.assert( arguments.length === 1 || arguments.length === 2 );
-//   // _.assert( o.onUp && o.onUp.length <= 3 );
-//   //
-//   // /* */
-//   //
-//   // if( _.longIs( o.src ) )
-//   // {
-//   //
-//   //   for( let index = 0 ; index < o.src.length ; index++ )
-//   //   {
-//   //     o.onUp.call( o, o.src[ index ], undefined, index );
-//   //   }
-//   //
-//   // }
-//   // else if( _.object.like( o.src ) )
-//   // {
-//   //
-//   //   let index = 0;
-//   //   for( let k in o.src )
-//   //   {
-//   //     o.onUp.call( o, k, o.src[ k ], index );
-//   //     index += 1;
-//   //   }
-//   //
-//   // }
-//   // else _.assert( 0, 'not container' );
-//   //
-//   // /* */
-//   //
-//   // return src;
-// }
-//
-// var defaults = entityEachKey.defaults = Object.create( null );
-//
-// defaults.src = null;
-// defaults.onUp = function( e, k ){};
 
 //
 
@@ -709,18 +630,6 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
-  // function srcHasMap( e )
-  // {
-  // }
-  //
-  // /* */
-  //
-  // function srcHasSet( e )
-  // {
-  // }
-
-  /* */
-
   function setWithRoutine()
   {
     dst = new Set( src );
@@ -775,6 +684,7 @@ function entityOnly( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -815,6 +725,7 @@ function entityOnly( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -900,6 +811,7 @@ function entityOnly( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -931,68 +843,12 @@ function entityOnly( dst, src, onEach )
 
   }
 
-  // function withRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k ], k2, src );
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k2 ], k2, src );
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.aux.is( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( !res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( !res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
-
   /* */
 
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1022,63 +878,6 @@ function entityOnly( dst, src, onEach )
     }
 
   }
-
-  // function withoutRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k ];
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k2 ];
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.aux.is( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = src[ k ];
-  //       if( !res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( !res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
 
   function typeStr( e )
   {
@@ -1313,6 +1112,7 @@ function entityBut( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1353,6 +1153,7 @@ function entityBut( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1437,6 +1238,7 @@ function entityBut( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1468,68 +1270,12 @@ function entityBut( dst, src, onEach )
 
   }
 
-  // function withRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k ], k2, src );
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k2 ], k2, src );
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.aux.is( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( !res )
-  //     dst = dst;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
-
   /* */
 
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1563,63 +1309,7 @@ function entityBut( dst, src, onEach )
 
   }
 
-  // function withoutRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k ];
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k2 ];
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.aux.is( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = src[ k ];
-  //       if( res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
-
+  /* xxx */
   function typeStr( e )
   {
     let type;
@@ -1638,103 +1328,6 @@ function entityBut( dst, src, onEach )
   }
 
 }
-
-// function entityBut( src, onEach )
-// {
-//   let result;
-//
-//   if( _.strIs( onEach ) )
-//   {
-//     let selector = onEach;
-//     _.assert( _.routine.is( _.select ) );
-//     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
-//     selector = _.strRemoveBegin( selector, '*/' );
-//     onEach = function( e, k )
-//     {
-//       return _.select( e, selector );
-//     }
-//   }
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
-//
-//   /* */
-//
-//   if( _.routine.is( onEach ) )
-//   {
-//
-//     if( _.longIs( src ) )
-//     {
-//
-//       result = [];
-//       for( let k = 0 ; k < src.length ; k++ )
-//       {
-//         let res = onEach( src[ k ], k, src );
-//         if( !res )
-//         result.push( src[ k ] );
-//       }
-//
-//     }
-//     else if( _.aux.is( src ) )
-//     {
-//
-//       result = Object.create( null );
-//       for( let k in src )
-//       {
-//         let res = onEach( src[ k ], k, src );
-//         if( !res )
-//         result[ k ] = src[ k ];
-//       }
-//
-//     }
-//     else
-//     {
-//       let res = onEach( src, undefined, undefined );
-//       if( !res )
-//       result = src;
-//     }
-//
-//   }
-//   else
-//   {
-//
-//     if( _.longIs( src ) )
-//     {
-//
-//       result = [];
-//       for( let k = 0 ; k < src.length ; k++ )
-//       {
-//         let res = src[ k ];
-//         if( !res )
-//         result.push( src[ k ] );
-//       }
-//
-//     }
-//     else if( _.aux.is( src ) )
-//     {
-//
-//       result = Object.create( null );
-//       for( let k in src )
-//       {
-//         let res = src[ k ];
-//         if( !res )
-//         result[ k ] = src[ k ];
-//       }
-//
-//     }
-//     else
-//     {
-//       let res = src;
-//       if( !res )
-//       result = res;
-//     }
-//
-//   }
-//
-//   /* */
-//
-//   return result;
-// }
 
 //
 
@@ -1943,6 +1536,7 @@ function entityAnd( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1983,6 +1577,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2080,6 +1675,7 @@ function entityAnd( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2126,6 +1722,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2390,6 +1987,7 @@ function entityOr( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2430,6 +2028,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2539,6 +2138,7 @@ function entityOr( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2600,6 +2200,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2886,6 +2487,7 @@ function entityXor( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -3057,6 +2659,7 @@ function entityXor( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -3112,6 +2715,7 @@ function entityXor( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -3197,6 +2801,7 @@ function entityAll( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -3222,6 +2827,7 @@ function entityAll( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -3230,7 +2836,6 @@ function entityAll( src, onEach )
       }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.aux.is( src ) )
     {
 
@@ -3253,6 +2858,7 @@ function entityAll( src, onEach )
   else
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -3262,15 +2868,8 @@ function entityAll( src, onEach )
         if( !result )
         return result;
       }
-      // for( let k = 0 ; k < src.length ; k++ )
-      // {
-      //   result = src[ k ];
-      //   if( !result )
-      //   return result;
-      // }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.hashMap.is( src ) )
     {
 
@@ -3322,6 +2921,7 @@ function entityAny( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -3349,6 +2949,7 @@ function entityAny( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, undefined );
@@ -3357,7 +2958,6 @@ function entityAny( src, onEach )
       }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.aux.is( src ) )
     {
 
@@ -3380,6 +2980,7 @@ function entityAny( src, onEach )
   else
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -3389,15 +2990,8 @@ function entityAny( src, onEach )
         if( result )
         return result;
       }
-      // for( let k = 0 ; k < src.length ; k++ )
-      // {
-      //   result = src[ k ];
-      //   if( result )
-      //   return result;
-      // }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.hashMap.is( src ) )
     {
 
@@ -3448,6 +3042,7 @@ function entityNone( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -3473,6 +3068,7 @@ function entityNone( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -3481,7 +3077,6 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.aux.is( src ) )
     {
 
@@ -3504,6 +3099,7 @@ function entityNone( src, onEach )
   else
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -3515,7 +3111,6 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.object.like( src ) )
     else if( _.hashMap.is( src ) )
     {
 
@@ -3674,27 +3269,22 @@ function entityMap( src, onEach )
 
   if( _.longIs( src ) )
   {
-    // result = _.entity.makeUndefined( src );
     result = _.entity.make( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach( src[ s ], s, src );
       if( r !== undefined )
       result[ s ] = r;
-      // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
-  // else if( _.object.like( src ) )
   else if( _.aux.is( src ) )
   {
-    // result = _.entity.makeUndefined( src );
     result = _.entity.make( src );
     for( let s in src )
     {
       let r = onEach( src[ s ], s, src );
       if( r !== undefined )
       result[ s ] = r;
-      //_.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
   else
@@ -3703,7 +3293,6 @@ function entityMap( src, onEach )
     let r = onEach( src, undefined, undefined );
     if( r !== undefined )
     result = r;
-    // _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
 
   }
 
@@ -3733,6 +3322,7 @@ function entityMap_( dst, src, onEach )
   {
 
     result = src;
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
       for( let s = 0 ; s < src.length ; s++ )
@@ -3740,7 +3330,6 @@ function entityMap_( dst, src, onEach )
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else if( _.aux.is( src ) )
@@ -3750,7 +3339,6 @@ function entityMap_( dst, src, onEach )
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else
@@ -3759,7 +3347,6 @@ function entityMap_( dst, src, onEach )
       let r = onEach( src, undefined, undefined );
       if( r !== undefined )
       result = r;
-      // _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
 
   }
@@ -3774,12 +3361,12 @@ function entityMap_( dst, src, onEach )
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let s = 0 ; s < src.length ; s++ )
       {
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else if( _.aux.is( src ) )
@@ -3794,7 +3381,6 @@ function entityMap_( dst, src, onEach )
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else
@@ -3836,6 +3422,7 @@ function entityFilter( src, onEach )
 
     result = _.longMake( src, 0 );
     let s, d;
+    /* qqq for Yevhen : add branch for countable case */
     for( s = 0, d = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3854,7 +3441,6 @@ function entityFilter( src, onEach )
     result = _.arraySlice( result, 0, d );
 
   }
-  // else if( _.object.like( src ) )
   else if( _.aux.is( src ) )
   {
 
@@ -3907,6 +3493,8 @@ function entityFilter_( dst, src, onEach )
     result = src;
     if( _.longIs( src ) )
     {
+      /* qqq for Yevhen : add branch for countable case */
+      /* qqq : should be direct! check other cycles */
       for( let s = src.length - 1 ; s >= 0 ; s-- )
       {
         let r = onEach.call( src, src[ s ], s, src );
@@ -3947,6 +3535,7 @@ function entityFilter_( dst, src, onEach )
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
       let s, d;
+      /* qqq for Yevhen : add branch for countable case */
       for( s = 0, d = 0 ; s < src.length ; s++ )
       {
         let r = onEach.call( src, src[ s ], s, src );
@@ -4014,6 +3603,7 @@ function entityFirst( src, onEach )
   if( _.longIs( src ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -4062,6 +3652,7 @@ function entityLast( src, onEach )
   if( _.longIs( src ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     for( let s = src.length - 1 ; s >= 0 ; s-- )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -4155,6 +3746,7 @@ function _entityMost( o )
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( o.src ) )
   {
     if( o.src.length === 0 )
@@ -4178,6 +3770,7 @@ function _entityMost( o )
       result.value = o.onEach( o.src[ s ], s, o.src );
     }
 
+    /* qqq for Yevhen : add branch for countable case */
     for( ; s < o.src.length; s++ )
     resultValue( o.src[ s ], s, o.src );
     result.index = result.key;
