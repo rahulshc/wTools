@@ -103,3 +103,16 @@ array{Append}{ed}{Array}{Once}
   ```
 
   For more information on these patterns, please see [ ArrayRoutines.md ](ArrayRoutines.md).
+
+
+  | **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+  | :------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+  | mapHasNoneFor BASI   | 1.3931s            | 1.9093s           | 1.7917s            | 1.8383s            | 2.0569s           |
+  | mapHasNoneForOf BASI | 3.5931s            | 2.0025s           | 1.9753s            | 2.0242s            | 2.1874s           |
+  | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
+  | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
+  | -                    | -                  | -                 | -                  | -                  | -                 |
+  | _mapOnlyFor BASI     | 5.9452s?           | 1.9512s           | x                  |                    | x                 |
+  | _mapOnlyForOf BASI   | 1.7696s            | 2.2626s           |                    | x                  |                   |
+  | _mapOnlyFor SABI     | 0.000029s?         | 0.0000286s        | x                  |                    | x                 |
+  | _mapOnlyForOf SABI   | 0.0000335s         | 0.0000284s        |                    | x                  |                   |

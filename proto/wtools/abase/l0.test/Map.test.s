@@ -15714,7 +15714,7 @@ function mapHasNonePerformance( test )
   var times = 1e1;
   var size = 5e7;
   var array = new Array( size );
-  var arrayOfObjects = new Array( size ).fill({ b : 2 });
+  var arrayOfNumbers = new Array( size ).fill( 2 );
 
   var counter = 0;
   var took = 0;
@@ -15724,7 +15724,7 @@ function mapHasNonePerformance( test )
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfObjects });
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15741,7 +15741,7 @@ function mapHasNonePerformance( test )
   var times = 1e4;
   var size = 5e2;
   var array = new Array( size );
-  var arrayOfObjects = new Array( size ).fill({ b : 2 });
+  var arrayOfNumbers = new Array( size ).fill( 2 );
   var counter = 0;
   var took = 0;
 
@@ -15750,7 +15750,7 @@ function mapHasNonePerformance( test )
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfObjects });
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15836,9 +15836,8 @@ function mapHasNonePerformance( test )
     _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
     _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
     _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
-    // _.map.assertHasOnly( o, _mapOnlyFor.defaults );
+    // _.map.assertHasOnly( o, _mapOnly.defaults );
 
-    /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
     if( _.vector.is( o.srcMaps ) )
     for( let srcMap of o.srcMaps )
     {
@@ -15875,31 +15874,24 @@ function mapHasNonePerformance( test )
 
     function screenKeySearch( key )
     {
-      let m;
       if( _.arrayLike( o.screenMaps ) )
       {
-        for( m = 0 ; m < o.screenMaps.length ; m++ )
+        for( let m = 0 ; m < o.screenMaps.length ; m++ )
+        if( _.primitive.is( o.screenMaps[ m ] ) )
         {
           counter++;
-          if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-          return key;
-          else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-          return key;
-          else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-          return key;
-          else if( key === String( m ) )
+          if( o.screenMaps[ m ] === key || String( m ) === key )
           return key;
         }
       }
       else
       {
-        for( m of o.screenMaps )
-        if( _.vector.is( m ) && key in m )
-        return key;
-        else if( _.aux.is( m ) && key in m )
-        return key;
-        else if( _.primitive.is( m ) && m === key )
-        return key;
+        for( let m of o.screenMaps )
+        if( _.primitive.is( m ) )
+        {
+          if( m === key || String( m ) === key )
+          return key;
+        }
       }
     }
 
@@ -15918,15 +15910,7 @@ function mapHasNonePerformance( test )
     }
   }
 
-  _mapOnlyFor.defaults =
-  {
-    dstMap : null,
-    srcMaps : null,
-    screenMaps : null,
-    filter : null,
-  }
-
-  //
+  /* */
 
   function _mapOnlyForOf( o )
   {
@@ -15940,9 +15924,8 @@ function mapHasNonePerformance( test )
     _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
     _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
     _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
-    // _.map.assertHasOnly( o, _mapOnlyForOf.defaults );
+    // _.map.assertHasOnly( o, _mapOnly.defaults );
 
-    /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
     if( _.vector.is( o.srcMaps ) )
     for( let srcMap of o.srcMaps )
     {
@@ -15979,31 +15962,24 @@ function mapHasNonePerformance( test )
 
     function screenKeySearch( key )
     {
-      let m;
-      // if( _.arrayLike( o.screenMaps ) )
-      // {
-      //   for( m = 0 ; m < o.screenMaps.length ; m++ )
-      //   if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      //   return key;
-      //   else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      //   return key;
-      //   else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-      //   return key;
-      //   else if( key === String( m ) )
-      //   return key;
-      // }
+      if( _.arrayLike( o.screenMaps ) ) /* preserve checking */
+      {
+        // for( let m = 0 ; m < o.screenMaps.length ; m++ )
+        // if( _.primitive.is( o.screenMaps[ m ] ) )
+        // {
+        //   if( o.screenMaps[ m ] === key || String( m ) === key )
+        //   return key;
+        // }
+      }
       // else
       // {
-        for( m of o.screenMaps )
-        {
-          counter++
-          if( _.vector.is( m ) && key in m )
-          return key;
-          else if( _.aux.is( m ) && key in m )
-          return key;
-          else if( _.primitive.is( m ) && m === key )
-          return key;
-        }
+      for( let m of o.screenMaps )
+      if( _.primitive.is( m ) )
+      {
+        counter++;
+        if( m === key || String( m ) === key )
+        return key;
+      }
       // }
     }
 
@@ -16020,14 +15996,6 @@ function mapHasNonePerformance( test )
         o.filter.call( this, o.dstMap, srcMap, key );
       }
     }
-  }
-
-  _mapOnlyForOf.defaults =
-  {
-    dstMap : null,
-    srcMaps : null,
-    screenMaps : null,
-    filter : null,
   }
 
 }
