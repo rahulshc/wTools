@@ -115,6 +115,7 @@ function equivalentShallow( src1, src2, options )
     - | number1 - number2 | <= accuracy
     - strings that differ only in whitespaces at the start and/or at the end
     - regexp with same source and different flags
+    - countable with the same length and content
   */
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( options === undefined || _.objectLike( options ), 'Expects map of options as third argument' );
@@ -134,6 +135,18 @@ function equivalentShallow( src1, src2, options )
       - String
     */
     return _.primitive.equivalentShallow( src1, src2, accuracy );
+  }
+  else if( _.bufferAnyIs( src1 ) )
+  {
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersEquivalentShallow( src1, src2 );
   }
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
@@ -155,18 +168,6 @@ function equivalentShallow( src1, src2, options )
       - set
     */
     return _.set.equivalentShallow( src1, src2 );
-  }
-  else if( _.bufferAnyIs( src1 ) )
-  {
-    /*
-      - BufferNode
-      - BufferRaw
-      - BufferRawShared
-      - BufferTyped
-      - BufferView
-      - BufferBytes
-    */
-    return _.buffersEquivalentShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {
