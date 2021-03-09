@@ -3159,7 +3159,7 @@ function longIdenticalShallow( src1, src2 )
 
 //
 
-function _longIdenticalShallow( src1, src2 )
+function _longIdenticalShallow( src1, src2 ) /* */
 {
   let result = true;
 
