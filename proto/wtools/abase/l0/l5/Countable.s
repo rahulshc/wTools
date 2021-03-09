@@ -11,7 +11,7 @@ _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 // implementation
 // --
 
-/* qqq2 : for Yevhen : bad! */
+/* qqq2 : for Yevhen : bad! | aaa : Fixed. */
 function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
