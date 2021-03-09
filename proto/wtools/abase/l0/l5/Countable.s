@@ -21,7 +21,7 @@ function identicalShallow( src1, src2 )
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
 
-  if( _.longIs( src1 ) )
+  if( _.longIs( src1 ) && _.longIs( src2 ) )
   {
     return _.longIdenticalShallow( src1, src2 );
   }
@@ -62,7 +62,7 @@ function equivalentShallow( src1, src2 )
   _.assert( _.countable.is( src1 ) );
   _.assert( _.countable.is( src2 ) );
 
-  if( _.longIs( src1 ) )
+  if( _.longIs( src1 ) & _.longIs( src2 ) )
   {
     return _.longEquivalentShallow( src1, src2 );
   }

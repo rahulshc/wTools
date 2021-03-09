@@ -125,7 +125,7 @@ function equivalentShallow( src1, src2, options )
   if( options )
   accuracy = options.accuracy || undefined;
 
-  if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
+  if( _.primitiveIs( src1 ) && _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
   {
     /*
       - Symbol

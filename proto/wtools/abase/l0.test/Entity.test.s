@@ -2945,6 +2945,7 @@ function entityEquivalentNotIdentical( test )
   var src1 = new Set([ 1, 2, 3 ]);
   var src2 = [ 1, 2, 3 ];
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  debugger
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
   test.case = 'buffer typed and array';
