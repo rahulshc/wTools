@@ -4511,8 +4511,8 @@ let Routines =
   buffersNodeAreIdentical,
   buffersAreEquivalent,
   buffersAreIdentical,
-  buffersAreIdenticalShallow : buffersAreIdentical,
-  buffersAreEquivalentShallow : buffersAreEquivalent,
+  buffersIdenticalShallow : buffersAreIdentical,
+  buffersEquivalentShallow : buffersAreEquivalent,
 
   _bufferMake_functor,
   bufferMake,

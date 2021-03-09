@@ -41,11 +41,19 @@ function isPopulated()
 
 //
 
-function areIdenticalShallow( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.hashMap.like( src1 ) );
   _.assert( _.hashMap.like( src2 ) );
+
+  return _.hashMap._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
 
   let testVal;
 
@@ -95,8 +103,9 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
-  areIdenticalShallow,
-  areEquivalentShallow : areIdenticalShallow,
+  identicalShallow,
+  _identicalShallow,
+  equivalentShallow : identicalShallow,
 
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
