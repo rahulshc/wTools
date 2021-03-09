@@ -3404,7 +3404,7 @@ let Extension =
 
   // stripper
 
-  strStrip, /* qqq for Dmytro : does not look working. fix, please */
+  strStrip, /* aaa for Dmytro : does not look working. fix, please */ /* Dmytro : covered, fixed, optimized */
   strStripLeft,
   strStripRight,
   _strRemoveAllSpaces,
