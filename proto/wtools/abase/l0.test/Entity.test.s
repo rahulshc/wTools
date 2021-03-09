@@ -2752,11 +2752,6 @@ function entityEquivalentShallowAllTypes( test )
   var src2 = _.escape.make( 2 );
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
-  test.case = 'interval & BufferTyped';
-  var src1 = new F32x( 2 );
-  var src2 = new U8x( 2 );
-  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
-
   test.case = 'pair';
   var src1 = _.pair.make( 1, 2 );
   var src2 = _.pair.make( 1, 3 );
@@ -2937,6 +2932,12 @@ function entityEquivalentNotIdentical( test )
   test.case = 'both strings with whitespaces';
   var src1 = '     hello\n\n\n\n\t';
   var src2 = ' \n  \thello \n';
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+
+  test.case = 'BufferTyped F32x and U8x';
+  var src1 = new F32x( 2 );
+  var src2 = new U8x( 2 );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 }

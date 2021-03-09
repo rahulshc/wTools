@@ -135,6 +135,18 @@ function equivalentShallow( src1, src2, options )
     */
     return _.primitive.equivalentShallow( src1, src2, accuracy );
   }
+  else if( _.bufferAnyIs( src1 ) ) /* check before type comparison ( new F32x( 2 ) & new U8x( 2 ) are equivalent ) */
+  {
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersEquivalentShallow( src1, src2 );
+  }
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
@@ -155,18 +167,6 @@ function equivalentShallow( src1, src2, options )
       - set
     */
     return _.set.equivalentShallow( src1, src2 );
-  }
-  else if( _.bufferAnyIs( src1 ) )
-  {
-    /*
-      - BufferNode
-      - BufferRaw
-      - BufferRawShared
-      - BufferTyped
-      - BufferView
-      - BufferBytes
-    */
-    return _.buffersEquivalentShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {
