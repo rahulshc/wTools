@@ -124,7 +124,7 @@ function _mapKeys( o )
 {
   let result = [];
 
-  _.routineOptions( _mapKeys, o );
+  _.routine.options( _mapKeys, o );
 
   let srcMap = o.srcMap;
   let selectFilter = o.selectFilter;
@@ -133,7 +133,7 @@ function _mapKeys( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.object.like( o ) );
   _.assert( !( srcMap instanceof Map ), 'not implemented' );
-  _.assert( selectFilter === null || _.routineIs( selectFilter ) );
+  _.assert( selectFilter === null || _.routine.is( selectFilter ) );
 
   /* */
 
@@ -250,7 +250,7 @@ function mapKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapKeys, o );
+  o = _.routine.options( mapKeys, o );
   _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
@@ -301,7 +301,7 @@ function mapOnlyOwnKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnKeys, o );
+  o = _.routine.options( mapOnlyOwnKeys, o );
   _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
@@ -347,7 +347,7 @@ function mapAllKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllKeys, o );
+  o = _.routine.options( mapAllKeys, o );
   _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
@@ -373,9 +373,9 @@ mapAllKeys.defaults =
 function _mapVals( o )
 {
 
-  _.routineOptions( _mapVals, o );
+  _.routine.options( _mapVals, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
+  _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( o.selectFilter === null );
   _.assert( this === _ );
 
@@ -437,7 +437,7 @@ function mapVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapVals, o );
+  o = _.routine.options( mapVals, o );
   _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
@@ -493,7 +493,7 @@ function mapOnlyOwnVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnVals, o );
+  o = _.routine.options( mapOnlyOwnVals, o );
   _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
@@ -539,7 +539,7 @@ function mapAllVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllVals, o );
+  o = _.routine.options( mapAllVals, o );
   _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
@@ -562,9 +562,9 @@ mapAllVals.defaults =
 function _mapPairs( o )
 {
 
-  _.routineOptions( _mapPairs, o );
+  _.routine.options( _mapPairs, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
+  _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( !_.primitive.is( o.srcMap ) );
   _.assert( this === _ );
 
@@ -630,7 +630,7 @@ function mapPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapPairs, o );
+  o = _.routine.options( mapPairs, o );
 
   o.srcMap = srcMap;
 
@@ -687,7 +687,7 @@ function mapOnlyOwnPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnPairs, o );
+  o = _.routine.options( mapOnlyOwnPairs, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -737,7 +737,7 @@ function mapAllPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllPairs, o );
+  o = _.routine.options( mapAllPairs, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -894,9 +894,9 @@ function mapValWithIndex( srcMap, index )
 
 function mapKeyWithIndex( srcMap, index )
 {
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( srcMap ) );
+  _.assert( _.number.intIs( index ) );
 
   if( index < 0 )
   return;
@@ -908,7 +908,6 @@ function mapKeyWithIndex( srcMap, index )
     return s;
     i++;
   }
-
 }
 
 //
@@ -918,43 +917,44 @@ function mapKeyWithValue( srcMap, value )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( srcMap ) );
 
-  // Dmytro : maybe it is missed code
-
+  for( let s in srcMap )
+  if( srcMap[ s ] === value )
+  return s;
 }
 
 //
 
-function mapIndexWithKey( srcMap, key )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitive.is( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( s === key )
-    return s;
-  }
-
-  return;
-}
-
+// function mapIndexWithKey( srcMap, key )
+// {
 //
-
-function mapIndexWithValue( srcMap, value )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitive.is( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( srcMap[ s ] === value )
-    return s;
-  }
-
-  return;
-}
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( s === key )
+//     return s;
+//   }
+//
+//   return;
+// }
+//
+// //
+//
+// function mapIndexWithValue( srcMap, value )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( srcMap[ s ] === value )
+//     return s;
+//   }
+//
+//   return;
+// }
 
 //
 
@@ -1181,8 +1181,8 @@ let Extension =
   mapValWithIndex,
   mapKeyWithIndex,
   mapKeyWithValue,
-  mapIndexWithKey,
-  mapIndexWithValue,
+  // mapIndexWithKey,
+  // mapIndexWithValue,
 
   mapOnlyNulls,
   mapButNulls,

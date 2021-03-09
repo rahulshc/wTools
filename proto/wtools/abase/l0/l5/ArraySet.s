@@ -64,7 +64,7 @@ function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
   let onEvaluate1 = arguments[ 2 ];
   let onEvaluate2 = arguments[ 3 ];
 
-  _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
+  _.assert( onEvaluate2 === undefined || _.routine.is( onEvaluate2 ) );
 
   let fromIndex = 0;
   if( _.number.is( onEvaluate1 ) )
@@ -74,7 +74,7 @@ function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
     onEvaluate2 = undefined;
   }
 
-  if( _.routineIs( onEvaluate1 ) )
+  if( _.routine.is( onEvaluate1 ) )
   {
     if( onEvaluate1.length === 2 )
     {
@@ -144,13 +144,13 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
-  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routineIs( src2 ) || src2 === undefined );
+  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
 
 
   if( dst === null )
   dst = new src1.constructor();
 
-  if( _.routineIs( src2 ) || src2 === undefined )
+  if( _.routine.is( src2 ) || src2 === undefined )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
@@ -314,7 +314,7 @@ function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     _.assert( 0 );
   }
 
-  if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
+  if( ( dst === null && _.routine.is( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
     if( _.longLike( src1 ) )
     return _.longSlice( src1 )
@@ -326,13 +326,13 @@ function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
-  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routineIs( src2 ) || src2 === undefined );
+  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
 
 
   if( dst === null )
   dst = new src1.constructor();
 
-  if( _.routineIs( src2 ) || src2 === undefined )
+  if( _.routine.is( src2 ) || src2 === undefined )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
@@ -453,7 +453,7 @@ function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ 
     else
     _.assert( 0 );
   }
-  if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
+  if( ( dst === null && _.routine.is( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
     if( _.longIs( src1 ) )
     return _.longSlice( src1 )
@@ -465,13 +465,13 @@ function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ 
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
-  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routineIs( src2 ) || src2 === undefined );
+  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
 
 
   if( dst === null )
   dst = new src1.constructor();
 
-  if( _.routineIs( src2 ) || src2 === undefined )
+  if( _.routine.is( src2 ) || src2 === undefined )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
@@ -572,13 +572,13 @@ function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
-  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routineIs( src2 ) || src2 === undefined );
+  _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
 
 
   if( dst === null )
   dst = new src1.constructor();
 
-  if( _.routineIs( src2 ) || src2 === undefined )
+  if( _.routine.is( src2 ) || src2 === undefined )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
@@ -1111,7 +1111,7 @@ function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     let index = 0;
     let from = 0;
 
-    if( _.routineIs( fromIndex ) )
+    if( _.routine.is( fromIndex ) )
     {
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = fromIndex;
@@ -1169,7 +1169,7 @@ function arraySetRight( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     let to = arr.size;
     let index = 0;
 
-    if( _.routineIs( fromIndex ) )
+    if( _.routine.is( fromIndex ) )
     {
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = fromIndex;

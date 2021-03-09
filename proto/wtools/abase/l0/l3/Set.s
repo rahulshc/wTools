@@ -113,7 +113,17 @@ function setsAreIdenticalShallow( src1, src2 )
 
   let [ arr1, arr2 ] = _.setsToArrays([ src1, src2 ]);
 
-  return _.longAreIdenticalShallow( arr1, arr2 );
+  return _.longIdenticalShallow( arr1, arr2 );
+}
+
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.set.is( src ) );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }
 
 // --
@@ -153,12 +163,22 @@ let Extension =
   adapterLike : setAdapterLike,
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
-  areIdenticalShallow : setsAreIdenticalShallow,
+  identicalShallow : setsAreIdenticalShallow,
+  equivalentShallow : setsAreIdenticalShallow,
 
   // set
 
   from : setFrom,
   toArray : setToArray,
+
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic
 
 }
 

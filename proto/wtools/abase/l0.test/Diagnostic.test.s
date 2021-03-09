@@ -15,7 +15,6 @@ let _ = _global_.wTools;
 // tests
 //--
 
-
 function structureGenerate( test )
 {
 

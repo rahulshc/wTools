@@ -136,7 +136,7 @@ function strEquivalent( src1, src2 )
 
   if( strIs1 && strIs2 )
   {
-    return src1 === src2;
+    return src1.trim() === src2.trim();
   }
   else if( strIs1 )
   {
@@ -283,32 +283,21 @@ function exportStringShortDiagnostic( src )
   try
   {
 
-    // if( _.symbol.is( src ) )
-    // {
-    //   let text = src.toString().slice( 7, -1 );
-    //   let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
-    //   return result;
-    // }
-    // else if( _.primitive.is( src ) )
-    // {
-    //   if( _.bigInt.is( src ) )
-    //   return _.bigInt.exportStringShortDiagnostic( src ); /* qqq for Yevhen : no! | aaa : Fixed */
-    //   return String( src );
-    // }
     if( _.primitive.is( src ) )
     {
-      return _.primitive.exportStringShortDiagnostic( src );
+      result += _.primitive.exportStringShortDiagnostic( src );
     }
-    else if( _.set.like( src ) || _.hashMap.like( src ) )
+    else if( _.set.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+      result += _.set.exportStringShortDiagnostic( src );
+    }
+    else if( _.hashMap.like( src ) )
+    {
+      result += _.hashMap.exportStringShortDiagnostic( src );
     }
     else if( _.vector.like( src ) )
     {
-      if( _.unrollIs( src ) )
-      result += `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-      else
-      result += `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
+      result += _.vector.exportStringShortDiagnostic( src );
     }
     else if( _.date.is( src ) )
     {
@@ -316,33 +305,23 @@ function exportStringShortDiagnostic( src )
     }
     else if( _.regexpIs( src ) )
     {
-      result += _.regexp.exportString( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
     }
-    else if( _.routineIs( src ) )
+    else if( _.routine.is( src ) )
     {
-      if( src.name )
-      result += `{- routine ${src.name} -}`;
-      else
-      result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      result += _.routine.exportStringShortDiagnostic( src );
+      // if( src.name )
+      // result += `{- routine ${src.name} -}`;
+      // else
+      // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
     }
     else if( _.aux.like( src ) )
     {
-      result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+      result = _.aux.exportStringShortDiagnostic( src );
     }
     else if( _.object.like( src ) )
     {
-      if( _.routineIs( src.exportString ) )
-      {
-        result = src.exportString({ verbosity : 1, /*, ... o */ });
-        result = _.strShort( result );
-      }
-      else
-      {
-        if( _.countable.is( src ) )
-        result += `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
-        else
-        result += `{- ${_.entity.strType( src )} -}`;
-      }
+      result += _.object.exportStringShortDiagnostic( src );
     }
     else
     {
@@ -440,7 +419,7 @@ function strShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strShort, o );
+  _.routine.options( strShort, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
@@ -841,31 +820,10 @@ function _strParseType( src )
  * @namespace Tools
  */
 
-/*
-aaa : cover routine strConcat and extend it. ask how to
-Dmytro : routine covered and documented, not extended
-*/
-
-/*
-  aaa : does not work properly, remove indentation, but should not
-  srcs :
-[
-  'b',
-  `variant:: : #83
-  path::local
-  module::module-a
-`
-]
-
-
-  Dmytro : fixed, all comments below
-*/
-
-/* qqq for Dmytro : bad */
 function strConcat( srcs, o )
 {
 
-  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  o = _.routine.options( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
 
@@ -879,7 +837,7 @@ function strConcat( srcs, o )
 
   o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
 
-  if( _.routineIs( srcs ) )
+  if( _.routine.is( srcs ) )
   srcs = srcs();
 
   if( !_.arrayLike( srcs ) )
@@ -946,9 +904,8 @@ strConcat.defaults =
   linePrefix : '',
   linePostfix : '',
   lineDelimter : '\n',
-  // delimeter : ' ',
   optionsForToStr : null,
-  onToStr : null, /* Dmytro : maybe it should have name onEach */
+  onToStr : null,
   onPairWithDelimeter : null,
 }
 
@@ -1409,22 +1366,13 @@ let ExtensionTools =
   strHas,
 
   strEquivalent,
+  areEquivalentShallow : strEquivalent,
   strsEquivalent,
 
   // converter
 
-  // exportStringShort,
-  // exportString : exportStringShort,
-  // exportStringSimple,
-  // exportStringShortDiagnostic, /* qqq for Yevhen : perfect coverage required! */
   strStrShort : strShort, /* xxx : remove */
   strShort, /* qqq for Yevhen : cover */
-  // strPrimitive,
-  // strTypeSecondary,
-  // strPrimitiveType : strTypeSecondary, /* xxx : remove */
-  // strType : strTypeWithTraits,
-  // strTypeWithTraits,
-  // strTypeWithoutTraits,
   strConcat,
 
   //

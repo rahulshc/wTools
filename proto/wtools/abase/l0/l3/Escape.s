@@ -62,21 +62,21 @@ function equalAre( it )
 
   _.assert( arguments.length === 1 );
 
-  if( !it.srcEffective )
+  if( !it./*srcEffective*/src )
   return end( false );
-  if( !it.srcEffective2 )
+  if( !it./*srcEffective2*/src2 )
   return end( false );
-  if( !it.srcEffective instanceof _.Escape )
+  if( !it./*srcEffective*/src instanceof _.Escape )
   return end( false );
-  if( !it.srcEffective2 instanceof _.Escape )
+  if( !it./*srcEffective2*/src2 instanceof _.Escape )
   return end( false );
 
-  if( it.srcEffective.val === it.srcEffective2.val )
+  if( it./*srcEffective*/src.val === it./*srcEffective2*/src2.val )
   return end( true );
 
-  if( !( it.srcEffective.val instanceof _.Escape ) )
+  if( !( it./*srcEffective*/src.val instanceof _.Escape ) )
   return end( false );
-  if( !( it.srcEffective.val instanceof _.Escape ) )
+  if( !( it./*srcEffective*/src.val instanceof _.Escape ) )
   return end( false );
 
   function end( result )
@@ -177,9 +177,9 @@ Object.defineProperty( Escape.prototype, typeNameGetterSymbol,
 
 var Extension =
 {
-  is, /* qqq : cover | aaa : Done. Yevhen S. */
-  make, /* qqq : cover | aaa : Done. Yevhen S. */
-  from, /* qqq : cover | aaa : Done. Yevhen S. */
+  is,
+  make,
+  from,
 }
 
 //

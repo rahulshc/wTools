@@ -180,8 +180,6 @@ function likeTrue( src )
 let ExtensionTools =
 {
 
-  /* qqq : cover and document all that ( not Dmytro ) | Done. Yevhen S.  */
-
   fuzzyIs : is,
   fuzzyLike : like,
   fuzzyLikeFalse : likeFalse,

@@ -41,11 +41,19 @@ function isPopulated()
 
 //
 
-function areIdenticalShallow( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.hashMap.like( src1 ) );
   _.assert( _.hashMap.like( src2 ) );
+
+  return _.hashMap._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
 
   let testVal;
 
@@ -63,6 +71,16 @@ function areIdenticalShallow( src1, src2 )
     return false;
   }
   return true;
+}
+
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.hashMap.is( src ) );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }
 
 // --
@@ -85,7 +103,17 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
-  areIdenticalShallow
+  identicalShallow,
+  _identicalShallow,
+  equivalentShallow : identicalShallow,
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
+
 }
 
 Object.assign( _, ToolsExtension );

@@ -159,42 +159,42 @@ function auxsAreIdentical( test )
 {
 
   test.case = 'same values';
-  var got = _.aux.areIdenticalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
+  var got = _.aux.identicalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'same values with nested objects';
-  var got = _.aux.areIdenticalShallow( { a : 7, b : { c : 13 } }, { a : 7, b : { c : 13 } } );
+  var got = _.aux.identicalShallow( { a : 7, b : { c : 13 } }, { a : 7, b : { c : 13 } } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'not the same values in'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'different number of keys, more in the first argument'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'different number of keys, more in the second argument'
-  var got = _.aux.areIdenticalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
+  var got = _.aux.identicalShallow( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'empty maps, standrard'
-  var got = _.aux.areIdenticalShallow( {}, {} );
+  var got = _.aux.identicalShallow( {}, {} );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'empty maps, pure'
-  var got = _.aux.areIdenticalShallow( Object.create( null ), Object.create( null ) );
+  var got = _.aux.identicalShallow( Object.create( null ), Object.create( null ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'empty maps, one standard another pure'
-  var got = _.aux.areIdenticalShallow( {}, Object.create( null ) );
+  var got = _.aux.identicalShallow( {}, Object.create( null ) );
   var expected = true;
   test.identical( got, expected );
 
@@ -204,28 +204,125 @@ function auxsAreIdentical( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow();
+    _.aux.identicalShallow();
   });
 
   test.case = 'not object-like arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+    _.aux.identicalShallow( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
   });
 
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( {} );
+    _.aux.identicalShallow( {} );
   });
 
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.areIdenticalShallow( {}, {}, 'redundant argument' );
+    _.aux.identicalShallow( {}, {}, 'redundant argument' );
   });
 
 }
+
+//
+
+function exportStringShortDiagnostic( test )
+{
+
+  test.case = 'pure empty map';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 1 elements -}';
+  src.x = 1;
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'empty polluted map';
+  var src = {};
+  var expected = '{- Map.polluted with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'polluted map';
+  var src = { a : 7, b : 13 };
+  var expected = '{- Map.polluted with 2 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var expected = '{- Aux.pure.prototyped with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from pure map deep';
+  var prototype1 = Object.create( null );
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  var expected = '{- Aux.pure.prototyped with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from pure map deep with props';
+  var prototype1 = Object.create( null );
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  var expected = '{- Aux.pure.prototyped with 2 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from polluted map';
+  var prototype = {};
+  var src = Object.create( prototype );
+  var expected = '{- Aux.polluted.prototyped with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from polluted map deep';
+  var prototype1 = {};
+  var prototype2 = Object.create( prototype1 );
+  var src = Object.create( prototype1 );
+  var expected = '{- Aux.polluted.prototyped with 0 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'prototyped from polluted map deep with props';
+  var prototype1 = {};
+  prototype1.a = 1;
+  var prototype2 = Object.create( prototype1 );
+  prototype2.b = 1;
+  var src = Object.create( prototype1 );
+  src.c = 1;
+  var expected = '{- Aux.polluted.prototyped with 2 elements -}';
+  var got = _.aux.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args'
+  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic() );
+
+  test.case = 'redundant args'
+  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic( {}, {} ) );
+
+  test.case = 'not aux'
+  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic( [] ) );
+}
+
 
 // --
 // declaration
@@ -240,7 +337,8 @@ var Self =
   tests :
   {
     is,
-    auxsAreIdentical
+    auxsAreIdentical,
+    exportStringShortDiagnostic
   }
 
 }

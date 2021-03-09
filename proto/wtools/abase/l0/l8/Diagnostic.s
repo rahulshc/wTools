@@ -57,7 +57,7 @@ function watchFields( o )
 
   if( arguments[ 1 ] !== undefined )
   o = { target : arguments[ 0 ], names : arguments[ 1 ] }
-  o = _.routineOptions( watchFields, o );
+  o = _.routine.options( watchFields, o );
 
   if( o.names )
   o.names = o.names;
@@ -156,7 +156,7 @@ function proxyFields( o )
 
   if( arguments[ 1 ] !== undefined )
   o = { target : arguments[ 0 ], names : arguments[ 1 ] }
-  o = _.routineOptions( proxyFields, o );
+  o = _.routine.options( proxyFields, o );
 
   // if( o.names )
   // o.names = _.nameFielded( o.names );
@@ -203,9 +203,9 @@ function eachLongType( o )
 {
   let result = Object.create( null );
 
-  if( _.routineIs( o ) )
+  if( _.routine.is( o ) )
   o = { onEach : o }
-  o = _.routineOptions( eachLongType, o );
+  o = _.routine.options( eachLongType, o );
 
   if( o.onEach === null )
   o.onEach = function onEach( make, descriptor )
@@ -214,7 +214,7 @@ function eachLongType( o )
   }
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.routineIs( o.onEach ) )
+  _.assert( _.routine.is( o.onEach ) )
 
   // debugger;
 
@@ -242,10 +242,10 @@ function eachElementComparator( o )
 
   if( arguments[ 1 ] !== undefined )
   o = { onMake : arguments[ 0 ], onEach : arguments[ 1 ] }
-  else if( _.routineIs( arguments[ 0 ] ) )
+  else if( _.routine.is( arguments[ 0 ] ) )
   o = { onEach : arguments[ 1 ] }
 
-  o = _.routineOptions( eachElementComparator, o );
+  o = _.routine.options( eachElementComparator, o );
 
   if( o.onEach === null )
   o.onEach = function onEach( make, evaluate, description )
@@ -260,8 +260,8 @@ function eachElementComparator( o )
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) );
-  _.assert( _.routineIs( o.onMake ) );
+  _.assert( _.routine.is( o.onEach ) );
+  _.assert( _.routine.is( o.onMake ) );
 
   result.push( o.onEach( o.onMake, undefined, 'no evaluator' ) );
   result.push( o.onEach( make, evaluator, 'evaluator' ) );
@@ -318,7 +318,7 @@ function diagnosticStructureGenerate_head( routine, args )
   else
   o = Object.create( null );
 
-  o = _.routineOptions( structureGenerate, o );
+  o = _.routine.options( structureGenerate, o );
 
   if( o.arrayLength === null )
   o.arrayLength = o.defaultLength;
@@ -816,7 +816,7 @@ diagnosticStructureGenerate_body.defaults =
  * @namespace Tools
  */
 
-let structureGenerate = _.routineUnite( diagnosticStructureGenerate_head, diagnosticStructureGenerate_body );
+let structureGenerate = _.routine.unite( diagnosticStructureGenerate_head, diagnosticStructureGenerate_body );
 
 // --
 // extension
@@ -849,6 +849,7 @@ let Extension =
   eachElementComparator,
 
   structureGenerate, /* xxx : move */
+
 }
 
 //

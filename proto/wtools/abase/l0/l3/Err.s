@@ -291,7 +291,7 @@ function _errMake( o )
     if( o.sourceCode )
     if( _.strIs( o.sourceCode ) )
     sectionWrite( 'sourceCode', `Source code`, o.sourceCode );
-    else if( _.routineIs( o.sourceCode.read ) )
+    else if( _.routine.is( o.sourceCode.read ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.read );
     else if( _.strIs( o.sourceCode.code ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
@@ -620,7 +620,7 @@ function _err( o )
     {
       let arg = o.args[ a ];
 
-      if( !_.errIs( arg ) && _.routineIs( arg ) )
+      if( !_.errIs( arg ) && _.routine.is( arg ) )
       {
         if( arg.length === 0 )
         {
@@ -633,7 +633,7 @@ function _err( o )
             let original = arg;
             arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
             console.error( String( err ) );
-            if( _.strLinesSelect ) /* qqq xxx : make sure it works and cover */
+            if( _.strLinesSelect ) /* qqq : for Dmytro : make sure it works and cover */
             console.error( _.strLinesSelect
             ({
               src : original.toString(),
@@ -950,7 +950,6 @@ function _err( o )
 
   function originalMessageForm()
   {
-    let multiline = false; // Dmytro : this option is not used in code
     let result = [];
 
     if( o.message )
@@ -964,12 +963,7 @@ function _err( o )
       if( arg && !_.primitive.is( arg ) )
       {
 
-        // if( _.primitive.is( arg ) ) // Dmytro : unnecessary condition, see above
-        // {
-        //   str = String( arg );
-        // }
-        // else if( _.routineIs( arg.toStr ) )
-        if( _.routineIs( arg.toStr ) )
+        if( _.routine.is( arg.toStr ) )
         {
           str = arg.toStr();
         }
@@ -979,9 +973,6 @@ function _err( o )
         }
         else if( _.errIs( arg ) )
         {
-          // if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
-          // str = arg.originalMessage;
-          // else if( _.strIs( arg.message ) )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
@@ -1001,34 +992,9 @@ function _err( o )
         str = String( arg );
       }
 
-      let currentIsMultiline = _.strHas( str, '\n' );
-      if( currentIsMultiline )
-      multiline = true;
-
       result[ a ] = str;
 
     }
-
-    // for( let a = 0 ; a < result.length ; a++ )
-    // {
-    //   let str = result[ a ];
-    //
-    //   if( !o.message.replace( /\s*/m, '' ) )
-    //   {
-    //     o.message = str;
-    //   }
-    //   else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
-    //   {
-    //     // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
-    //     o.message += str;
-    //   }
-    //   else
-    //   {
-    //     o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
-    //     // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
-    //   }
-    //
-    // }
 
     let o2 =
     {
@@ -1074,54 +1040,6 @@ function _err( o )
         str = before + str.substring( notSpaceLikeSymbol.index );
       }
     }
-
-    // let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ ); /* aaa2 for Dmytro : cant use _.strIsolate* on this level */ /* Dmytro : strIsolateLeft not used, rewrote subroutines, simplified subroutines */
-
-    /*
-
-    _.strIsolateLeftOrAll is not a function
-    TypeError: _.strIsolateLeftOrAll is not a function
-        at Object.eachMessageFormat [as onToStr] (/wtools/abase/l0/l3/Err.s:1062:27)
-        at Object.strConcat (/wtools/abase/l0/l3/Str.s:723:13)
-        at originalMessageForm (/wtools/abase/l0/l3/Err.s:1034:19)
-        at Object._err (/wtools/abase/l0/l3/Err.s:577:5)
-        at Object.err (/wtools/abase/l0/l3/Err.s:1192:12)
-        at Function._load (/wtools/abase/l0/l8/gModule.s:872:17)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _wToolsLayer0_s_ (/wtools/abase/Layer0.s:90:3)
-        at Object.<anonymous> (/wtools/abase/Layer0.s:112:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _wToolsLayer1_s_ (/wtools/abase/Layer1.s:9:3)
-        at Object.<anonymous> (/wtools/abase/Layer1.s:28:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at Object.<anonymous> (/wtools/Tools.s:19:5)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Module.require (internal/modules/cjs/loader.js:830:19)
-        at require (internal/modules/cjs/helpers.js:68:18)
-        at _StringTools_test_s_ (/wtools/abase/l5.test/Dissector.test.s:8:11)
-        at Object.<anonymous> (/wtools/abase/l5.test/Dissector.test.s:2061:3)
-        at Module._compile (internal/modules/cjs/loader.js:936:30)
-        at Object.Module._extensions..js (internal/modules/cjs/loader.js:947:10)
-        at Module.load (internal/modules/cjs/loader.js:790:32)
-        at Function.Module._load (internal/modules/cjs/loader.js:703:12)
-        at Function.Module.runMain (internal/modules/cjs/loader.js:999:10)
-        at internal/main/run_main_module.js:17:11
-
-    */
 
     if( str && !strEndsWithRegular )
     {
@@ -1410,44 +1328,6 @@ function errWary( err, value )
   return _._errFields( err, { wary : value } );
 }
 
-// {
-//
-//   _.assert( arguments.length === 1 );
-//
-//   if( !_.errIsStandard( err ) )
-//   err = _._err
-//   ({
-//     args : arguments,
-//     level : 2,
-//   });
-//
-//   /* */
-//
-//   try
-//   {
-//
-//     let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-//     Object.defineProperty( err, 'logged',
-//     {
-//       enumerable : false,
-//       configurable : true,
-//       writable : true,
-//       value,
-//     });
-//
-//   }
-//   catch( err )
-//   {
-//     logger.warn( 'Cant assign logged property to error\n' + err.toString() );
-//   }
-//
-//   _.errAttend( err );
-//
-//   /* */
-//
-//   return err;
-// }
-
 //
 
 function errRestack( err, level )
@@ -1555,7 +1435,7 @@ function errFromStr( errStr )
 
     let throwLocation = _.introspector.locationFromStackFrame( throwCallsStack || dstError.stack );
 
-    let originalMessage = messages.join( '\n' ); /* xxx : implement routine for joining */
+    let originalMessage = messages.join( '\n' );
 
     let result = _._errMake
     ({
@@ -1588,7 +1468,7 @@ function _errLog( err, logger )
   if( err && err.debugging )
   debugger;
 
-  if( _.routineIs( err.toString ) )
+  if( _.routine.is( err.toString ) )
   {
     let str = err.toString();
     if( _.color && _.color.strFormat )
@@ -1682,7 +1562,7 @@ function errLogOnce( err )
 function tryCatch( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
   try
   {
     return routine();
@@ -1698,7 +1578,7 @@ function tryCatch( routine )
 function tryCatchBrief( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
 
   try
   {
@@ -1715,7 +1595,7 @@ function tryCatchBrief( routine )
 function tryCatchDebug( routine )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) )
+  _.assert( _.routine.is( routine ) )
   try
   {
     return routine();
@@ -1855,29 +1735,6 @@ function sureWithoutDebugger( condition )
 // --
 //
 // --
-
-// function breakpoint( condition )
-// {
-//
-//   if( Config.debug === false )
-//   return true;
-//
-//   if( !condition )
-//   {
-//     // let err = _err
-//     // ({
-//     //   args : Array.prototype.slice.call( arguments, 1 ),
-//     //   level : 2,
-//     // });
-//     logger.log( _.introspector.stack() );
-//
-//     return false;
-//   }
-//
-//   return true;
-// }
-
-//
 
 /**
  * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2.
@@ -2077,8 +1934,6 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    // if( val )
-    // debugger;
     return val;
   },
   get : function()
@@ -2119,7 +1974,7 @@ let ErrorExtension =
 let ToolsExtension =
 {
 
-  /* xxx : make migration of routines to namespace */
+  /* qqq : for Yevhen : make migration of routines to namespace _.error */
 
   // error
 
@@ -2168,28 +2023,12 @@ let ToolsExtension =
   sureBriefly,
   sureWithoutDebugger,
 
-  // sureInstanceOrClass,
-  // sureOwnNoConstructor,
-  //
-  // // checker
-  //
-  // _isInstanceOrClass,
-  // _ownNoConstructor,
-
   // assert
 
   assert,
   assertWithoutBreakpoint,
   assertNotTested,
   assertWarn,
-
-  // fields
-
-  // error : Object.create( null ),
-  // breakpointOnAssertEnabled : !!Config.debug,
-  //
-  // _errorCounter,
-  // _errorMaking,
 
 }
 
