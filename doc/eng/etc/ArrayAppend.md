@@ -112,7 +112,7 @@ array{Append}{ed}{Array}{Once}
   | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
   | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
   | -                    | -                  | -                 | -                  | -                  | -                 |
-  | _mapOnlyFor BASI     | 5.9452s?           | 1.9512s           | x                  |                    | x                 |
-  | _mapOnlyForOf BASI   | 1.7696s            | 2.2626s           |                    | x                  |                   |
-  | _mapOnlyFor SABI     | 0.000029s?         | 0.0000286s        | x                  |                    | x                 |
-  | _mapOnlyForOf SABI   | 0.0000335s         | 0.0000284s        |                    | x                  |                   |
+  | _mapOnlyFor BASI     | 5.9452s            | 5.3333s           | 5.6317s            | 5.6224s            | 3.8146s           |
+  | _mapOnlyForOf BASI   | 2.1911s            | 1.9438s           | 2.6383s            | 2.238s             | 2.1645s           |
+  | _mapOnlyFor SABI     | 0.000029s          | 0.0000286s        | 0.0000322s         | 0.0000304s         | 0.0000321s        |
+  | _mapOnlyForOf SABI   | 0.0000335s         | 0.0000284s        | 0.0000332s         | 0.000031s          | 0.0000335s        |

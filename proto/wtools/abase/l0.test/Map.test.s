@@ -15690,7 +15690,7 @@ function assertMapHasNoUndefine( test )
 
 //
 
-function mapHasNonePerformance( test )
+function mapHasNoneMapOnlyPerformance( test )
 {
   /*
     | **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
@@ -15700,12 +15700,11 @@ function mapHasNonePerformance( test )
     | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
     | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
     | -                    | -                  | -                 | -                  | -                  | -                 |
-    | _mapOnlyFor BASI     | 11.2114s           | 9.4113s           | 9.3383s            | 4.4493s            | 7.9273s           |
-    | _mapOnlyForOf BASI   | 6.8788s            | 5.4186s           | 5.4821s            | 3.6895s            | 5.1652s           |
-    | _mapOnlyFor SABI     | 0.0000781s         | 0.0000744s        | 0.0000638s         | 0.0000591s         | 0.00008s          |
-    | _mapOnlyForOf SABI   | 0.0000864s         | 0.0000646s        | 0.0000633s         | 0.0000493s         | 0.000058s         |
+    | _mapOnlyFor BASI     | 5.9452s            | 5.3333s           | 5.6317s            | 5.6224s            | 3.8146s           |
+    | _mapOnlyForOf BASI   | 2.1911s            | 1.9438s           | 2.6383s            | 2.238s             | 2.1645s           |
+    | _mapOnlyFor SABI     | 0.000029s          | 0.0000286s        | 0.0000322s         | 0.0000304s         | 0.0000321s        |
+    | _mapOnlyForOf SABI   | 0.0000335s         | 0.0000284s        | 0.0000332s         | 0.000031s          | 0.0000335s        |
 
-    _mapOnlyFor has additional branch
     BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
     SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
   */
@@ -15876,7 +15875,7 @@ function mapHasNonePerformance( test )
     {
       if( _.arrayLike( o.screenMaps ) )
       {
-        for( let m = 0 ; m < o.screenMaps.length ; m++ )
+        for( let m = 0 ; m < o.screenMaps.length ; m++ ) /* check for */
         if( _.primitive.is( o.screenMaps[ m ] ) )
         {
           counter++;
@@ -15962,7 +15961,7 @@ function mapHasNonePerformance( test )
 
     function screenKeySearch( key )
     {
-      if( _.arrayLike( o.screenMaps ) ) /* preserve checking */
+      if( _.arrayLike( o.screenMaps ) ) /* preserve _.arrayLike checking */
       {
         // for( let m = 0 ; m < o.screenMaps.length ; m++ )
         // if( _.primitive.is( o.screenMaps[ m ] ) )
@@ -15973,7 +15972,7 @@ function mapHasNonePerformance( test )
       }
       // else
       // {
-      for( let m of o.screenMaps )
+      for( let m of o.screenMaps ) /* check for of */
       if( _.primitive.is( m ) )
       {
         counter++;
@@ -16000,7 +15999,8 @@ function mapHasNonePerformance( test )
 
 }
 
-mapHasNonePerformance.timeOut = 1e7;
+mapHasNoneMapOnlyPerformance.timeOut = 1e7;
+mapHasNoneMapOnlyPerformance.experimental = true;
 
 // --
 // define test suite
@@ -16179,7 +16179,7 @@ let Self =
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
 
-    mapHasNonePerformance
+    mapHasNoneMapOnlyPerformance
 
   }
 
