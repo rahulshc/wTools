@@ -5227,43 +5227,44 @@ function routineErForShouldSupplementNotDefinedFields( test )
   test.identical( got, { arg : 'arg1', arg2 : 'arg2' } );
 }
 
+// //
 //
-
-function routineErJoinExperiment( test )
-{
-
-  function test_head1( routine, args )
-  {
-    let o = args[ 0 ]; /* head of routine expects map in args[ 0 ] */
-    return o;
-  }
-  function test_body1( o )
-  {
-    return o;
-  }
-  test_body1.defaults = { arg : null };
-
-  var routine = _.routineUnite( test_head1, test_body1 );
-  test.shouldThrowErrorSync( () => _.routineErJoin( routine ) ); // throws error
-
-  /* */
-
-  function test_head( routine, args )
-  {
-    let o = args[ 0 ].defaults; /* now, args[ 0 ] is united routine */
-    return o;
-  }
-  function test_body( o )
-  {
-    return o;
-  }
-  test_body.defaults = { arg : null };
-
-  var routine = _.routineUnite( test_head, test_body );
-  var routineErJoin = _.routineErJoin( routine ); // throws error
-  test.identical( routineErJoin.defaults, { arg : null } );
-}
-routineErJoinExperiment.experimental = 1;
+// function routineErJoinExperiment( test )
+// {
+//
+//   function test_head1( routine, args )
+//   {
+//     let o = args[ 0 ]; /* head of routine expects map in args[ 0 ] */
+//     return o;
+//   }
+//   function test_body1( o )
+//   {
+//     return o;
+//   }
+//   test_body1.defaults = { arg : null };
+//
+//   var routine = _.routineUnite( test_head1, test_body1 );
+//   test.shouldThrowErrorSync( () => _.routineErJoin( routine ) ); // throws error
+//
+//   /* */
+//
+//   function test_head( routine, args )
+//   {
+//     let o = args[ 0 ].defaults; /* now, args[ 0 ] is united routine */
+//     return o;
+//   }
+//   function test_body( o )
+//   {
+//     return o;
+//   }
+//   test_body.defaults = { arg : null };
+//
+//   var routine = _.routineUnite( test_head, test_body );
+//   var routineErJoin = _.routineErJoin( routine ); // throws error
+//   test.identical( routineErJoin.defaults, { arg : null } );
+// }
+//
+// routineErJoinExperiment.experimental = 1;
 
 //
 
@@ -7421,7 +7422,7 @@ var Self =
     routineErShouldSupplementNotDefinedFields,
     routineErFor,
     routineErForShouldSupplementNotDefinedFields,
-    routineErJoinExperiment,
+    // routineErJoinExperiment,
 
     vectorizeVectorizeArray,
     vectorizeOriginalRoutine,
