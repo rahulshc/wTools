@@ -11050,6 +11050,176 @@ function strStripStripperIsRegexp( test )
 
 //
 
+function strStripStripperIsArrayOfStrings( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = { src : '', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, 'bc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\tbc' );
+
+  test.case = 'src - string with only strip characters';
+  var src = { src : ' a', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, 'bc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : ' \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : 'a \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : 'a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\n\0b \n\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'bc', 'bc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\tbc', '\tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with only strip characters';
+  var src = { src : [ ' a', ' a' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'bc', 'bc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\0\0bc', '\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \t\n\0b', '\t\0\n  \n\t\n\0a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\n\0b \n\t\0\n  \n\t\n\0', '\t\n\0b \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+}
+
+//
+
 function strIsolateLeftOrNone( test )
 {
   var got, expected;
@@ -21713,6 +21883,7 @@ var Self =
     strStripStripperIsTrueLike,
     strStripStripperIsString,
     strStripStripperIsRegexp,
+    strStripStripperIsArrayOfStrings,
 
     strIsolateLeftOrNone,
     strIsolateLeftOrAll,
