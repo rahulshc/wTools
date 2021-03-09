@@ -111,9 +111,14 @@ function setsAreIdenticalShallow( src1, src2 )
   _.assert( _.setIs( src1 ) );
   _.assert( _.setIs( src2 ) );
 
-  let [ arr1, arr2 ] = _.setsToArrays([ src1, src2 ]);
+  if( src1.size !== src2.size)
+  return false;
 
-  return _.longIdenticalShallow( arr1, arr2 );
+  for( let el of src1 )
+  if( !src2.has( el ) )
+  return false;
+
+  return true;
 }
 
 //
