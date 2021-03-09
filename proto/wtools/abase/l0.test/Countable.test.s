@@ -1193,6 +1193,7 @@ function countablesAreEquivalentShallow( test )
   var src1 = new Set([ 1, 2, 3 ]);
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  debugger;
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 
   test.case = 'buffer typed and array';

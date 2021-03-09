@@ -25,11 +25,11 @@ function identicalShallow( src1, src2 )
   {
     return _.longIdenticalShallow( src1, src2 );
   }
-  else if( _.entity.methodIteratorOf( src1 ) || _.entity.methodIteratorOf( src2 ) )
+  else
   {
     /*
-      object with method iterator,
-      vector ( method iterator and length )
+      entity with method iterator,
+      entity with method iterator and length
     */
 
     let array1 = [];
@@ -54,31 +54,50 @@ function equivalentShallow( src1, src2 )
   _.assert( _.countable.is( src1 ) );
   _.assert( _.countable.is( src2 ) );
 
+  let result = true;
+
   if( _.longIs( src1 ) && _.longIs( src2 ) )
   {
     return _.longEquivalentShallow( src1, src2 );
   }
-  else if( _.entity.methodIteratorOf( src1 ) || _.entity.methodIteratorOf( src2 ) )
+  else
   {
     /*
-      object with method iterator,
-      vector ( method iterator and length )
+      entity with method iterator,
+      entity with method iterator and length
     */
 
-    let array1 = [];
-    for( let val of src1 )
-    array1.push( val );
+    /* don't create new array if one of arguments is array */
+    if( _.arrayLike( src1 ) )
+    {
+      result = isContain( src2, src1 );
+    }
+    else if( _.arrayLike( src2 ) )
+    {
+      result = isContain( src1, src2 );
+    }
+    else
+    {
+      let array1 = [];
+      for( let val of src1 )
+      array1.push( val );
 
-    for( let val of src2 )
-    if( array1.indexOf( val ) === -1 )
+      result = isContain( src2, array1 );
+    }
+
+    return result;
+  }
+
+  /* - */
+
+  function isContain( arrayLoop, arrayCheck )
+  {
+    for( let val of arrayLoop )
+    if( Array.prototype.indexOf.call( arrayCheck, val ) === -1 )
     return false
 
     return true;
-
   }
-
-  return false;
-
 }
 
 //
