@@ -1202,6 +1202,8 @@ function countablesAreEquivalentShallow( test )
 
   test.close( 'not identical' );
 
+  /* */
+
   test.open( 'not identical, equivalent' );
 
   test.case = 'BufferTyped F32x and U8x';
