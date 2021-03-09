@@ -1274,7 +1274,7 @@ function entityTimeExperiment( test )
   function entityAllLongsFor( src, onEach )
   {
     let result;
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       for( let k = 0 ; k < src.length ; k++ )
       {
@@ -1301,7 +1301,7 @@ function entityTimeExperiment( test )
   function entityAllLongsEvery( src, onEach )
   {
     let result;
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     result = src.every( onEach );
     else
     result = src.every();
@@ -1314,7 +1314,7 @@ function entityTimeExperiment( test )
   function entityAnyLongsFor( src, onEach )
   {
     let result;
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       for( let k = 0 ; k < src.length ; k++ )
       {
@@ -1341,7 +1341,7 @@ function entityTimeExperiment( test )
   function entityAnyLongsSome( src, onEach )
   {
     let result;
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     result = src.some( onEach );
     else
     result = src.some();

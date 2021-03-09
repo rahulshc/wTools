@@ -3406,6 +3406,8 @@ function entryProcedureStack( test )
 
 }
 
+entryProcedureStack.timeOut = 30000;
+
 // --
 // declare
 // --

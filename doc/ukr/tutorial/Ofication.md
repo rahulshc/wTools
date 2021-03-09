@@ -40,7 +40,7 @@ function mapToStr( src, keyValDelimeter, entryDelimeter)
 
 - Створити єдиний параметр `o`.
 - Додати мапу дефолтних опцій `mapToStr.defaults`.
-- Додати виклик `_.routineOptions( mapToStr, o );`.
+- Додати виклик `_.routine.options( mapToStr, o );`.
 - В тілі рутини працювати з параметрами через ключі `o`: `o.src` і т.д.
 
 **Офікована рутина:**
@@ -53,7 +53,7 @@ function mapToStr( o )
 
   if( _.strIs( o ) )
   o = { src : o }
-  _.routineOptions( mapToStr, o );
+  _.routine.options( mapToStr, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = '';
@@ -72,7 +72,7 @@ mapToStr.defaults =
 }
 ```
 
-Рутина `mapToStr` конвертує об'єкт `o.src` у рядок, розділяючи ключ та значення через `o.keyValDelimeter`, а пари ключ значення через `o.entryDelimeter`. Виклик до `_.routineOptions` виконує перевірку вхідних значень.
+Рутина `mapToStr` конвертує об'єкт `o.src` у рядок, розділяючи ключ та значення через `o.keyValDelimeter`, а пари ключ значення через `o.entryDelimeter`. Виклик до `_.routine.options` виконує перевірку вхідних значень.
 
 **Аргументи:**
 
@@ -98,10 +98,10 @@ mapToStr.defaults =
 
 **Перевірка вхідних значень**
 
-Рутина `_.routineOptions` окрім встановлення значень опцій виконує перевірку вхідних даних: перевіряє, що `mapToStr` є рутиною і у неї наявна мапа дефолтних значень `mapToStr.defaults`. А також перевіряє, що мапа опцій `o` є об'єктом і не містить `undefined` значень. Також, `_.routineOptions` може приймати масив аргументів замість мапи опцій.
+Рутина `_.routine.options` окрім встановлення значень опцій виконує перевірку вхідних даних: перевіряє, що `mapToStr` є рутиною і у неї наявна мапа дефолтних значень `mapToStr.defaults`. А також перевіряє, що мапа опцій `o` є об'єктом і не містить `undefined` значень. Також, `_.routine.options` може приймати масив аргументів замість мапи опцій.
 
 ```javascript
-_.routineOptions( mapToStr, arguments )
+_.routine.options( mapToStr, arguments )
 ```
 
 При помилці, повідомлення помилки відображає конкретну причину ( невідома опція, відсутність мапи дефолтних значень і тд ).

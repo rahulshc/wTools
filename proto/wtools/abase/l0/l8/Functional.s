@@ -364,9 +364,9 @@ function eachSample_( o )
     onEach : arguments[ 1 ],
   }
 
-  _.routineOptions( eachSample_, o );
+  _.routine.options( eachSample_, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) || o.onEach === null );
+  _.assert( _.routine.is( o.onEach ) || o.onEach === null );
   _.assert( _.longLike( o.sets ) || _.aux.is( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
@@ -510,23 +510,6 @@ function eachSample_( o )
 
     return 0;
   }
-  // function iterate()
-  // {
-  //
-  //   if( o.leftToRight )
-  //   for( let i = 0 ; i < l ; i++ )
-  //   {
-  //     if( nextSample( i ) )
-  //     return 1;
-  //   }
-  //   else for( let i = l - 1 ; i >= 0 ; i-- )
-  //   {
-  //     if( nextSample( i ) )
-  //     return 1;
-  //   }
-  //
-  //   return 0;
-  // }
 
 }
 
@@ -543,143 +526,12 @@ eachSample_.defaults =
 
 }
 
-// //
-//
-// function eachPermutation( o )
-// {
-//
-//   _.routineOptions( eachPermutation, arguments );
-//
-//   if( _.number.is( o.container ) )
-//   {
-//     if( o.container < 0 )
-//     o.container = 0;
-//     let container = Array( o.container );
-//     for( let i = o.container-1 ; i >= 0 ; i-- )
-//     container[ i ] = i;
-//     o.container = container;
-//   }
-//
-//   if( o.returning )
-//   if( o.dst === null )
-//   o.dst = [];
-//
-//   const add = o.returning ? append1 : append0;
-//   const dst = o.returning ? o.dst : undefined;
-//   const container = o.container;
-//   const length = o.container.length;
-//   const last = length - 1;
-//   const plast = length - 2;
-//   const slast = length - 3;
-//   const onEach = o.onEach;
-//   let left = last;
-//   let swaps = 0;
-//   let iteration = 0;
-//
-//   if( length <= 1 )
-//   {
-//     if( length === 1 )
-//     {
-//       onEach( container, iteration, left, last, swaps );
-//       add();
-//     }
-//     return;
-//   }
-//
-//   let iterations = 1;
-//   for( let i = plast-1 ; i >= 0 ; i-- )
-//   {
-//     iterations *= ( last - i );
-//   }
-//   iterations *= length;
-//
-//   let counter = [];
-//   for( let i = plast ; i >= 0 ; i-- )
-//   counter[ i ] = last-i;
-//
-//   _.assert( _.longIs( container ) );
-//   _.assert( _.routineIs( onEach ) );
-//   _.assert( length >= 0 );
-//   _.assert( length <= 30 );
-//
-//   while( iteration < iterations )
-//   {
-//
-//     onEach( container, iteration, left, last, swaps );
-//     add();
-//     left = plast;
-//     nextCounter();
-//     reverse();
-//     iteration += 1;
-//   }
-//
-//   return dst;
-//
-//   /* */
-//
-//   function append0()
-//   {
-//   }
-//
-//   function append1()
-//   {
-//     dst.push( container.slice() );
-//   }
-//
-//   function swap( left, right )
-//   {
-//     _.assert( container[ right ] !== undefined );
-//     _.assert( container[ left ] !== undefined );
-//     let ex = container[ right ];
-//     container[ right ] = container[ left ];
-//     container[ left ] = ex;
-//   }
-//
-//   function reverse()
-//   {
-//     if( left >= slast )
-//     {
-//       swaps = 1;
-//       swap( left, last );
-//       counter[ left ] -= 1;
-//     }
-//     else
-//     {
-//       swaps = last - left;
-//       if( swaps % 2 === 1 )
-//       swaps -= 1;
-//       swaps /= 2;
-//       for( let i = swaps ; i >= 0 ; i-- )
-//       swap( left + i, last - i );
-//       counter[ left ] -= 1;
-//       swaps += 1;
-//     }
-//   }
-//
-//   function nextCounter()
-//   {
-//     while( counter[ left ] === 0 && left !== 0 )
-//     left -= 1;
-//     for( let i = left + 1 ; i < counter.length ; i++ )
-//     counter[ i ] = last - i;
-//   }
-//
-// }
-//
-// eachPermutation.defaults =
-// {
-//   onEach : null,
-//   container : null,
-//   dst : null, /* aaa for Dmytro : instead of options::[ dst, returning ] use option::result, similarly routine::eachSample_ does */ /* Dmytro : implemented */
-//   returning : 0,
-// }
-
 //
 
 function eachPermutation_( o )
 {
 
-  _.routineOptions( eachPermutation_, arguments );
+  _.routine.options( eachPermutation_, arguments );
 
   if( o.result === null )
   o.result = o.onEach === null;
@@ -704,7 +556,7 @@ function eachPermutation_( o )
   const last = length - 1;
   const plast = length - 2;
   const slast = length - 3;
-  const onEach = o.onEach || onEachDefault; /* qqq for Dmytro : optimize */
+  const iterateAll = o.onEach === null ? iterateWithoutCallback : iterateWithCallback;
   let left = last;
   let swaps = 0;
   let iteration = 0;
@@ -713,7 +565,8 @@ function eachPermutation_( o )
   {
     if( length === 1 )
     {
-      onEach( sets, iteration, left, last, swaps );
+      if( o.onEach )
+      o.onEach( sets, iteration, left, last, swaps );
       add();
     }
     return;
@@ -731,20 +584,10 @@ function eachPermutation_( o )
   counter[ i ] = last-i;
 
   _.assert( _.longIs( sets ) );
-  _.assert( _.routineIs( onEach ) );
   _.assert( length >= 0 );
   _.assert( length <= 30 );
 
-  while( iteration < iterations ) /* qqq for Dmytro : optimize */
-  {
-
-    onEach( sets, iteration, left, last, swaps );
-    add();
-    left = plast;
-    nextCounter();
-    reverse();
-    iteration += 1;
-  }
+  iterateAll();
 
   return dst;
 
@@ -799,6 +642,34 @@ function eachPermutation_( o )
 
   function onEachDefault()
   {
+  }
+
+  function iterateWithoutCallback()
+  {
+
+    while( iteration < iterations )
+    {
+      add();
+      left = plast;
+      nextCounter();
+      reverse();
+      iteration += 1;
+    }
+  }
+
+  function iterateWithCallback()
+  {
+    _.assert( _.routineIs( o.onEach ), 'Expects routine {-o.onEach-}' );
+
+    while( iteration < iterations )
+    {
+      o.onEach( sets, iteration, left, last, swaps );
+      add();
+      left = plast;
+      nextCounter();
+      reverse();
+      iteration += 1;
+    }
   }
 
 }
@@ -1070,7 +941,7 @@ function _entityFilterDeep( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'entityFilter : expects objectLike or longIs src, but got', _.entity.strType( o.src ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -1149,7 +1020,7 @@ qqq2 : poor coverage and implementation was wrong!
 function _entityIndex_functor( fop )
 {
 
-  fop = _.routineOptions( _entityIndex_functor, fop );
+  fop = _.routine.options( _entityIndex_functor, fop );
 
   let extendRoutine = fop.extendRoutine;
 
@@ -1167,7 +1038,7 @@ function _entityIndex_functor( fop )
     else if( _.strIs( onEach ) )
     {
       let selector = onEach;
-      _.assert( _.routineIs( _.select ) );
+      _.assert( _.routine.is( _.select ) );
       _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
       selector = _.strRemoveBegin( selector, '*/' );
       onEach = function( e, k )
@@ -1182,7 +1053,7 @@ function _entityIndex_functor( fop )
     }
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.routineIs( onEach ) );
+    _.assert( _.routine.is( onEach ) );
     _.assert( src !== undefined, 'Expects {-src-}' );
 
     /* */
@@ -1563,7 +1434,7 @@ let entityIndexAppending = _entityIndex_functor({ extendRoutine : _.mapExtendApp
 function _entityRemap_functor( fop )
 {
 
-  fop = _.routineOptions( _entityRemap_functor, fop );
+  fop = _.routine.options( _entityRemap_functor, fop );
 
   let extendRoutine = fop.extendRoutine;
 
@@ -1581,7 +1452,7 @@ function _entityRemap_functor( fop )
     else if( _.strIs( onEach ) )
     {
       let selector = onEach;
-      _.assert( _.routineIs( _.select ) );
+      _.assert( _.routine.is( _.select ) );
       _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
       selector = _.strRemoveBegin( selector, '*/' );
       onEach = function( e, k )
@@ -1591,7 +1462,7 @@ function _entityRemap_functor( fop )
     }
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.routineIs( onEach ) );
+    _.assert( _.routine.is( onEach ) );
     _.assert( src !== undefined, 'Expects src' );
 
     /* */
@@ -1983,9 +1854,8 @@ let Fields =
 let Routines =
 {
 
-  eachSample_, /* aaa2 : does not work properly if set is empty! */ /* Dmytro : improved, if some set is empty, routine returns empty array. Improved subroutine iterate */
-  // eachPermutation, /* xxx : move out */
-  eachPermutation_,
+  eachSample_, /* xxx : review */
+  eachPermutation_, /* xxx : move out */
   swapsCount,
   _factorial,
   factorial,

@@ -159,9 +159,9 @@ function objectSatisfy( o )
   o = { template : arguments[ 0 ], src : arguments[ 1 ] };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( o.template ) || _.routineIs( o.template ) );
+  _.assert( _.object.is( o.template ) || _.routine.is( o.template ) );
   _.assert( o.src !== undefined );
-  _.routineOptions( objectSatisfy, o );
+  _.routine.options( objectSatisfy, o );
 
   return _objectSatisfy( o.template, o.src, o.src, o.levels, o.strict );
 
@@ -187,7 +187,7 @@ function objectSatisfy( o )
       (
         _.object.is( template )
         && _.object.is( src )
-        && _.routineIs( template.identicalWith )
+        && _.routine.is( template.identicalWith )
         && src.identicalWith === template.identicalWith
       )
       return template.identicalWith( src );
@@ -199,7 +199,7 @@ function objectSatisfy( o )
       return false;
     }
 
-    if( _.routineIs( template ) )
+    if( _.routine.is( template ) )
     return template( src );
 
     if( !_.object.is( src ) )
@@ -779,7 +779,7 @@ function mapCloneAssigning( o ) /* xxx : review */
   _.assert( _.mapIs( o ) );
   _.assert( arguments.length === 1, 'Expects {-srcMap-} as argument' );
   _.assert( !_.primitive.is( o.srcMap ), 'Expects {-srcMap-} as argument' );
-  _.routineOptions( mapCloneAssigning, o );
+  _.routine.options( mapCloneAssigning, o );
 
   if( !o.onField )
   o.onField = function onField( dstContainer, srcContainer, key )
@@ -904,7 +904,7 @@ function mapExtendConditional( filter, dstMap )
   // _.assert( filter.functionFamily === 'PropertyMapper' );
   _.assert( _.property.mapperIs( filter ) && !filter.identity.functor );
   _.assert( arguments.length >= 3, 'Expects more arguments' );
-  _.assert( _.routineIs( filter ), 'Expects filter' );
+  _.assert( _.routine.is( filter ), 'Expects filter' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 2 ; a < arguments.length ; a++ )
@@ -937,7 +937,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   // _.assert( filter.functionFamily === 'PropertyMapper' );
   _.assert( _.property.mapperIs( filter ) && !filter.identity.functor );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( _.routineIs( filter ), 'Expects filter' );
+  _.assert( _.routine.is( filter ), 'Expects filter' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
@@ -1270,7 +1270,7 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( this === Self );
 
-  if( _.routineIs( filters ) )
+  if( _.routine.is( filters ) )
   filters = { onUpFilter : filters, onField : filters }
 
   if( filters.onUpFilter === undefined )
@@ -1285,8 +1285,8 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   else if( filters.onField === false )
   filters.onField = _filterFalse;
 
-  _.assert( _.routineIs( filters.onUpFilter ) );
-  _.assert( _.routineIs( filters.onField ) );
+  _.assert( _.routine.is( filters.onUpFilter ) );
+  _.assert( _.routine.is( filters.onField ) );
   // _.assert( _.property.filterIs( filters.onUpFilter ) );
   _.assert( _.property.filterIs( ilters.onUpFilter ) && !ilters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.transformerIs( filters.onField ) );
@@ -1668,7 +1668,7 @@ mapInvert.defaults =
 
 function _mapInvert( o )
 {
-  _.routineOptions( _mapInvert, o );
+  _.routine.options( _mapInvert, o );
 
   o.dst = o.dst || Object.create( null );
 
@@ -1758,7 +1758,7 @@ function mapsFlatten( o )
   if( _.vector.is( o ) )
   o = { src : o };
 
-  _.routineOptions( mapsFlatten, o );
+  _.routine.options( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
   _.assert( _.vector.is( o.src ) || _.aux.is( o.src ) ); /* xxx */
@@ -1886,7 +1886,7 @@ function mapToStr( o )
   if( _.strIs( o ) )
   o = { src : o }
 
-  _.routineOptions( mapToStr, o );
+  _.routine.options( mapToStr, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = '';
@@ -2398,16 +2398,22 @@ function _mapBut_( o )
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
-      return;
+      if( _.primitive.is( o.butMap[ m ] ) )
+      {
+        if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+        return;
+      }
 
       o.dstMap[ key ] = o.srcMap[ key ];
     }
     else
     {
       for( let but of o.butMap )
-      if( !o.filter( but, o.srcMap, key ) )
-      return;
+      if( _.primitive.is( but ) )
+      {
+        if( !o.filter( but, o.srcMap, key ) )
+        return;
+      }
 
       o.dstMap[ key ] = o.srcMap[ key ];
     }
@@ -2420,14 +2426,20 @@ function _mapBut_( o )
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
-      delete o.dstMap[ key ];
+      if( _.primitive.is( o.butMap[ m ] ) )
+      {
+        if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+        delete o.dstMap[ key ];
+      }
     }
     else
     {
       for( let but of o.butMap )
-      if( !o.filter( but, o.srcMap, key ) )
-      delete o.dstMap[ key ];
+      if( _.primitive.is( but ) )
+      {
+        if( !o.filter( but, o.srcMap, key ) )
+        delete o.dstMap[ key ];
+      }
     }
   }
 
@@ -2887,29 +2899,47 @@ function _mapOnly( o )
 
   function screenKeySearch( key )
   {
-    let m;
     if( _.arrayLike( o.screenMaps ) )
     {
-      for( m = 0 ; m < o.screenMaps.length ; m++ )
-      if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-      return key;
-      else if( key === String( m ) )
-      return key;
+      for( let m = 0 ; m < o.screenMaps.length ; m++ )
+      if( _.primitive.is( o.screenMaps[ m ] ) )
+      {
+        if( o.screenMaps[ m ] === key || String( m ) === key )
+        return key;
+      }
     }
     else
     {
-      for( m of o.screenMaps )
-      if( _.vector.is( m ) && key in m )
-      return key;
-      else if( _.aux.is( m ) && key in m )
-      return key;
-      else if( _.primitive.is( m ) && m === key )
-      return key;
+      for( let m of o.screenMaps )
+      if( _.primitive.is( m ) )
+      {
+        if( m === key || String( m ) === key )
+        return key;
+      }
     }
+    // let m;
+    // if( _.arrayLike( o.screenMaps ) )
+    // {
+    //   for( m = 0 ; m < o.screenMaps.length ; m++ )
+    //   if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+    //   return key;
+    //   else if( key === String( m ) )
+    //   return key;
+    // }
+    // else
+    // {
+    //   for( m of o.screenMaps )
+    //   if( _.vector.is( m ) && key in m )
+    //   return key;
+    //   else if( _.aux.is( m ) && key in m )
+    //   return key;
+    //   else if( _.primitive.is( m ) && m === key )
+    //   return key;
+    // }
   }
 
   /* */
@@ -3077,25 +3107,43 @@ function _mapOnly_( o )
     if( _.arrayLike( o.screenMaps ) )
     {
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
-      if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
-      return key;
-      else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
-      return key;
-      else if( key === String( m ) )
-      return key;
+      if( _.primitive.is( o.screenMaps[ m ] ) )
+      {
+        if( o.screenMaps[ m ] === key || String( m ) === key )
+        return key;
+      }
     }
     else
     {
-      for( let e of o.screenMaps )
-      if( _.vector.is( e ) && key in e )
-      return key;
-      else if( _.aux.is( e ) && key in e )
-      return key;
-      else if( _.primitive.is( e ) && e === key )
-      return key;
+      for( let m of o.screenMaps )
+      if( _.primitive.is( m ) )
+      {
+        if( m === key || String( m ) === key )
+        return key;
+      }
     }
+    // if( _.arrayLike( o.screenMaps ) )
+    // {
+    //   for( let m = 0 ; m < o.screenMaps.length ; m++ )
+    //   if( _.vector.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.aux.is( o.screenMaps[ m ] ) && key in o.screenMaps[ m ] )
+    //   return key;
+    //   else if( _.primitive.is( o.screenMaps[ m ] ) && o.screenMaps[ m ] === key )
+    //   return key;
+    //   else if( key === String( m ) )
+    //   return key;
+    // }
+    // else
+    // {
+    //   for( let e of o.screenMaps )
+    //   if( _.vector.is( e ) && key in e )
+    //   return key;
+    //   else if( _.aux.is( e ) && key in e )
+    //   return key;
+    //   else if( _.primitive.is( e ) && e === key )
+    //   return key;
+    // }
   }
 
   /* */
@@ -3407,7 +3455,7 @@ function sureHasOnly( srcMap, screenMaps, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3512,7 +3560,7 @@ function sureOwnOnly( srcMap, screenMaps, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3615,7 +3663,7 @@ function sureHasAll( srcMap, all, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3717,7 +3765,7 @@ function sureOwnAll( srcMap, all, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3820,7 +3868,7 @@ function sureHasNone( srcMap, screenMaps, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3859,7 +3907,7 @@ function sureOwnNone( srcMap, screenMaps, msg )
       let arr = [];
       for( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -3959,7 +4007,7 @@ function sureHasNoUndefine( srcMap, msg )
       let arr = [];
       for( let i = 1; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) )
+        if( _.routine.is( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
@@ -4570,7 +4618,7 @@ function assertHasNoUndefine( srcMap, msg )
     let arr = [];
     for( let i = 1 ; i < args.length ; i++ )
     {
-      if( _.routineIs( args[ i ] ) )
+      if( _.routine.is( args[ i ] ) )
       args[ i ] = args[ i ]();
       arr.push( args[ i ] );
     }

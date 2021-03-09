@@ -289,7 +289,7 @@ function intRandomBut( range )
 
     let bad = false;
     for( let a = 1 ; a < arguments.length ; a++ )
-    if( _.routineIs( arguments[ a ] ) )
+    if( _.routine.is( arguments[ a ] ) )
     {
       if( !arguments[ a ]( result ) )
       bad = true;

@@ -9,8 +9,8 @@ let _ = _global_.wTools;
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
 
-_.assert( _.routineIs( _.containerAdapter.Abstract ) );
-_.assert( _.routineIs( _.longLeft ) );
+_.assert( _.routine.is( _.containerAdapter.Abstract ) );
+_.assert( _.routine.is( _.longLeft ) );
 
 // --
 // implementation
@@ -71,7 +71,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
-    _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
+    _.assert( onEvaluate2 === undefined || _.routine.is( onEvaluate2 ) );
 
     let fromIndex = 0;
     if( _.number.is( onEvaluate1 ) )
@@ -81,7 +81,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       onEvaluate2 = undefined;
     }
 
-    if( _.routineIs( onEvaluate1 ) )
+    if( _.routine.is( onEvaluate1 ) )
     {
       if( onEvaluate1.length === 2 )
       {
@@ -138,7 +138,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
+    if( _.routine.is( onEvaluate1 ) || _.routine.is( onEvaluate2 ) )
     {
       let from = 0;
       let result = 0;
@@ -235,7 +235,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
     {
       if( !this.has( e, onEvaluate1, onEvaluate2 ) )
       container.add( e );
@@ -251,7 +251,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
     {
       if( !this.has( e, onEvaluate1, onEvaluate2 ) )
       container.add( e );
@@ -286,7 +286,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   }
   appendContainerOnce( container, onEvaluate1, onEvaluate2 )
   {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
     {
       container = this.ToOriginal( container );
 
@@ -374,7 +374,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   }
   removed( e, onEvaluate1, onEvaluate2 )
   {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
     {
       let from = 0;
       let result = 0;
@@ -827,7 +827,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     [ dst, dst, onEvaluate1, onEvaluate2 ] = self._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
     if( self._same( dst ) )
     {
-      if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+      if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
       {
         let length = this.length;
         let startLength = length;
@@ -866,7 +866,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     [ dst, dst, onEvaluate1, onEvaluate2 ] = self._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
     if( self._same( dst ) )
     {
-      if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+      if( onEvaluate1 || _.routine.is( onEvaluate2 ) )
       {
         self.empty();
         for( let i = 0; i < temp.length; i++ )

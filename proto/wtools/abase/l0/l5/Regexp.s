@@ -129,6 +129,16 @@ function regexpsTestNone( regexps, strs )
   return regexps.every( ( regexp ) => _.regexpTestNone( regexp, strs ) );
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.regexp.is( src ) );
+
+  return `/${src.source}/${src.flags}`;
+}
+
 // --
 // extension
 // --
@@ -164,6 +174,13 @@ let Extension =
   testAll : regexpTestAll,
   testAny : regexpTestAny,
   testNone : regexpTestNone,
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 
 }
 

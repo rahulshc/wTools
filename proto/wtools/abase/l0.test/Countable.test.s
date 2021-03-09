@@ -834,13 +834,13 @@ function countablesAreIdenticalShallow( test )
   test.case = 'arrays empty';
   var src1 = [];
   var src2 = []
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'arrays non-empty with primitives';
   var src1 = [ 1, 'str', true, 10n, _.nothing ];
   var src2 = [ 1, 'str', true, 10n, _.nothing ]
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'arrays non-empty with non-primitives, same reference';
@@ -850,37 +850,37 @@ function countablesAreIdenticalShallow( test )
   var arrF = [ 1, 2, 3 ];
   var src1 = [ objE, objF, arrE, arrF ];
   var src2 = [ objE, objF, arrE, arrF ]
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'typed buffer';
   var src1 = new F32x( 5 );
   var src2 = new F32x( 5 );
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'argumentsArray';
   var src1 = _.argumentsArray.make([ 1, 2, 3 ]);
   var src2 = _.argumentsArray.make([ 1, 2, 3 ]);
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector & vectorLike with primitives';
   var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
   var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'countable & countableLike with primitives';
   var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
   var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = `object countable, non-vector with primitives`;
   var src1 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
   var src2 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
   test.close( 'identical' );
@@ -892,104 +892,212 @@ function countablesAreIdenticalShallow( test )
   test.case = 'arrays non-empty with num';
   var src1 = [ 1 ];
   var src2 = [ 2 ];
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with str';
   var src1 = [ 'str' ];
   var src2 = [ 'str2' ];
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with bool';
   var src1 = [ false ];
   var src2 = [ true ];
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with bigInt';
   var src1 = [ 10n ];
   var src2 = [ 11n ];
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with bigInt and same number';
   var src1 = [ 10n ];
   var src2 = [ 10 ]
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with Symbol';
   var src1 = [ _.nothing ];
   var src2 = [ _.null ]
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with empty objects, not the same reference';
-  var got = _.countable.areIdenticalShallow( [ {} ], [ {} ] );
+  var got = _.countable.identicalShallow( [ {} ], [ {} ] );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with non-empty objects, not the same reference';
-  var got = _.countable.areIdenticalShallow( [ { a : 1 } ], [ { a : 1 } ] );
+  var got = _.countable.identicalShallow( [ { a : 1 } ], [ { a : 1 } ] );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with empty arrays, not the same reference';
-  var got = _.countable.areIdenticalShallow( [ [] ], [ [] ] );
+  var got = _.countable.identicalShallow( [ [] ], [ [] ] );
   test.identical( got, false );
 
   test.case = 'arrays non-empty with non-empty arrays, not the same reference';
-  var got = _.countable.areIdenticalShallow( [ [ 1, 2 ] ], [ [ 1, 2 ] ] );
+  var got = _.countable.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2 ] ] );
   test.identical( got, false );
 
   test.case = 'typed buffer';
   var src1 = new F32x( 5 );
   var src2 = new F32x( 6 );
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'argumentsArray';
   var src1 = _.argumentsArray.make([ 1, 2, 3 ]);
   var src2 = _.argumentsArray.make([ 1, 2, 4 ]);
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike, not same primitives';
   var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
   var src2 = new countableConstructor({ element1 : 1, element2 : 3, withIterator : 1, length : 2 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike, not same primitives';
   var src1 = new countableConstructor({ element1 : 'str', element2 : 2, withIterator : 1 });
   var src1 = new countableConstructor({ element1 : 'str2', element2 : 2, withIterator : 1 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector, not same primitives`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var got = _.countable.areIdenticalShallow( src1, src2 );
+  var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.close( 'not identical' );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+}
+
+//
+
+function exportStringShortDiagnostic( test )
+{
+  test.case = 'array empty';
+  var src = [];
+  var expected = '{- Array with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'array non-empty';
+  var src = [ 1, 2, 3 ];
+  var expected = '{- Array with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'unroll empty';
+  var src = _.unrollMake([]);
+  var expected = '{- Array.unroll with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'unroll non-empty';
+  var src = _.unrollMake([ 1, 2, 3 ]);
+  var expected = '{- Array.unroll with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var expected = '{- countableConstructor.countable with 2 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = `object countable - empty, non-vector`;
+  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var expected = '{- Object.countable with 0 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var expected = '{- Object.countable with 3 elements -}';
+  var got = _.countable.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic() );
+
+  test.case = 'too many args';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( [], [] ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( {} ) );
 
   /* - */
 
@@ -1052,6 +1160,7 @@ var Self =
     /* xxx qqq : write test routine typingObject and use _.object.forTesting() */
     typingExtended,
     countablesAreIdenticalShallow,
+    exportStringShortDiagnostic
 
   }
 
