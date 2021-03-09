@@ -865,21 +865,27 @@ function countablesAreIdenticalShallow( test )
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'vector & vectorLike with primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
+  test.case = `object countable - non empty, non-vector`;
+  var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'countable & countableLike with primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
+  test.case = 'vector & vectorLike';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = `object countable, non-vector with primitives`;
-  var src1 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
-  var src2 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
+  test.case = 'countable & countableLike';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
@@ -953,39 +959,27 @@ function countablesAreIdenticalShallow( test )
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
-  test.case = 'vector & vectorLike, not same primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 3, withIterator : 1, length : 2 });
-  var got = _.countable.identicalShallow( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'countable & countableLike, not same primitives';
-  var src1 = new countableConstructor({ element1 : 'str', element2 : 2, withIterator : 1 });
-  var src1 = new countableConstructor({ element1 : 'str2', element2 : 2, withIterator : 1 });
-  var got = _.countable.identicalShallow( src1, src2 );
-  test.identical( got, false );
-
-  test.case = `object countable - non empty, non-vector, not same primitives`;
+  test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1, length : 2 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
@@ -1064,35 +1058,36 @@ function countablesAreEquivalentShallow( test )
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'typed buffer';
-  var src1 = new F32x( 5 );
-  var src2 = new F32x( 5 );
-  var got = _.countable.equivalentShallow( src1, src2 );
-  test.identical( got, true );
-
   test.case = 'argumentsArray';
   var src1 = _.argumentsArray.make([ 1, 2, 3 ]);
   var src2 = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'vector & vectorLike with primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
+  test.case = `object countable - non empty, non-vector, not same array`;
+  var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'countable & countableLike with primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1 });
+  test.case = 'vector & vectorLike';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = `object countable, non-vector with primitives`;
-  var src1 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
-  var src2 = countableMake( null, { element1 : 1, element2 : 2, withIterator : 1 } );
+  test.case = 'countable & countableLike';
+  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var got = _.countable.equivalentShallow( src1, src2 );
+  test.identical( got, true );
+
 
   test.close( 'identical' );
 
@@ -1164,39 +1159,27 @@ function countablesAreEquivalentShallow( test )
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
-  test.case = 'vector & vectorLike, not same primitives';
-  var src1 = new countableConstructor({ element1 : 1, element2 : 2, withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ element1 : 1, element2 : 3, withIterator : 1, length : 2 });
-  var got = _.countable.equivalentShallow( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'countable & countableLike, not same primitives';
-  var src1 = new countableConstructor({ element1 : 'str', element2 : 2, withIterator : 1 });
-  var src1 = new countableConstructor({ element1 : 'str2', element2 : 2, withIterator : 1 });
-  var got = _.countable.equivalentShallow( src1, src2 );
-  test.identical( got, false );
-
-  test.case = `object countable - non empty, non-vector, not same primitives`;
+  test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1, length : 2 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike';
   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-  var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector`;
   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
@@ -1205,12 +1188,6 @@ function countablesAreEquivalentShallow( test )
   /* */
 
   test.open( 'not identical, equivalent' );
-
-  test.case = 'BufferTyped F32x and U8x';
-  var src1 = new F32x( 2 );
-  var src2 = new U8x( 2 );
-  test.identical( _.countable.identicalShallow( src1, src2 ), false );
-  test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 
   test.case = 'set and array';
   var src1 = new Set([ 1, 2, 3 ]);

@@ -136,7 +136,11 @@ function equivalentShallow( src1, src2, options )
     */
     return _.primitive.equivalentShallow( src1, src2, accuracy );
   }
-  else if( _.bufferAnyIs( src1 ) )
+
+  if( src1 === src2 )
+  return true;
+
+  if( _.bufferAnyIs( src1 ) && _.bufferAnyIs( src2 ) )
   {
     /*
       - BufferNode
@@ -148,28 +152,21 @@ function equivalentShallow( src1, src2, options )
     */
     return _.buffersEquivalentShallow( src1, src2 );
   }
-
-  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
-  return false;
-
-  if( src1 === src2 )
-  return true;
-
-  if( _.hashMap.like( src1 ) )
+  else if( _.hashMap.like( src1 ) && _.hashMap.like( src1 ) )
   {
     /*
       - hashmap
     */
     return _.hashMap.equivalentShallow( src1, src2 )
   }
-  else if( _.set.like( src1 ) )
+  else if( _.set.like( src1 ) && _.set.like( src2 ) )
   {
     /*
       - set
     */
     return _.set.equivalentShallow( src1, src2 );
   }
-  else if( _.countable.is( src1 ) )
+  else if( _.countable.is( src1 ) && _.countable.is( src2 ) )
   {
     /*
       - countable
@@ -179,7 +176,11 @@ function equivalentShallow( src1, src2, options )
     */
     return _.countable.equivalentShallow( src1, src2 );
   }
-  else if( _.object.like( src1 ) )
+
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( _.object.like( src1 ) )
   {
     /*
       - objectLike

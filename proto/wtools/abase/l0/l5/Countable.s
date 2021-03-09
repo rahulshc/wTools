@@ -21,7 +21,7 @@ function identicalShallow( src1, src2 )
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
 
-  if( _.longIs( src1 ) && _.longIs( src2 ) )
+  if( _.longIs( src1 ) )
   {
     return _.longIdenticalShallow( src1, src2 );
   }
@@ -29,29 +29,21 @@ function identicalShallow( src1, src2 )
   {
     /*
       object with method iterator,
-      vector
+      vector ( method iterator and length )
     */
-    return _.mapsAreIdentical( src1, src2 );
+
+    let array1 = [];
+    for( let val of src1 )
+    array1.push( val );
+
+    for( let val of src2 )
+    if( array1.indexOf( val ) === -1 )
+    return false
+
+    return true;
   }
 
   return false;
-
-  // let length1 = src1.length || 0;
-  // let length2 = src2.length || 0;
-
-  // if( length1 !== length2 )
-  // return false;
-
-  // if( _.longLike( src1 ) && _.longLike( src2 ) )
-  // {
-  //   return _.longIdenticalShallow( src1, src2 );
-  // }
-
-  /*
-    object with method iterator,
-    vector
-  */
-  // return _.mapsAreIdentical( src1, src2 )
 }
 
 //
@@ -62,7 +54,7 @@ function equivalentShallow( src1, src2 )
   _.assert( _.countable.is( src1 ) );
   _.assert( _.countable.is( src2 ) );
 
-  if( _.longIs( src1 ) & _.longIs( src2 ) )
+  if( _.longIs( src1 ) && _.longIs( src2 ) )
   {
     return _.longEquivalentShallow( src1, src2 );
   }
@@ -70,9 +62,19 @@ function equivalentShallow( src1, src2 )
   {
     /*
       object with method iterator,
-      vector
+      vector ( method iterator and length )
     */
-    return _.mapsAreIdentical( src1, src2 );
+
+    let array1 = [];
+    for( let val of src1 )
+    array1.push( val );
+
+    for( let val of src2 )
+    if( array1.indexOf( val ) === -1 )
+    return false
+
+    return true;
+
   }
 
   return false;

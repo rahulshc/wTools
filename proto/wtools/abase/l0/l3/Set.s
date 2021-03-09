@@ -111,6 +111,13 @@ function setsAreIdenticalShallow( src1, src2 )
   _.assert( _.setIs( src1 ) );
   _.assert( _.setIs( src2 ) );
 
+  return _.set._setsAreIdenticalShallow( src1, src2 );
+}
+
+//
+
+function _setsAreIdenticalShallow( src1, src2 )
+{
   if( src1.size !== src2.size)
   return false;
 
@@ -145,6 +152,7 @@ let ToolsExtension =
   setAdapterLike,
   setIsEmpty,
   setIsPopulated,
+  _setsAreIdenticalShallow,
   setsAreIdenticalShallow,
 
   // set
@@ -168,6 +176,7 @@ let Extension =
   adapterLike : setAdapterLike,
   isEmpty : setIsEmpty,
   isPopulated : setIsPopulated,
+  _setsAreIdenticalShallow,
   identicalShallow : setsAreIdenticalShallow,
   equivalentShallow : setsAreIdenticalShallow,
 
