@@ -1506,64 +1506,75 @@ function strStrip( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routine.options( strStrip, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
+  _.routine.options( strStrip, o );
+
+  o.stripper = stripperNormalize();
+  let stripRoutine = _.regexpIs( o.stripper ) ? singleStripByRegexp : singleStripByArrayOfStrings;
 
   if( _.arrayIs( o.src ) )
   {
+    _.assert( _.strsAreAll( o.src ), 'Expects strings {-o.srs-}' );
+
     let result = [];
-    for( let s = 0 ; s < o.src.length ; s++ )
-    {
-      let optionsForStrip = _.mapExtend( null, o );
-      optionsForStrip.src = optionsForStrip.src[ s ];
-      result[ s ] = strStrip( optionsForStrip );
-    }
+    for( let i = 0 ; i < o.src.length ; i++ )
+    result[ i ] = stripRoutine( o.src[ i ] );
     return result;
   }
 
-  if( _.bool.likeTrue( o.stripper ) )
+  _.assert( _.strIs( o.src ) );
+  return stripRoutine( o.src );
+
+  /* */
+
+  function stripperNormalize()
   {
-    o.stripper = strStrip.defaults.stripper;
+    let stripper = o.stripper;
+    if( _.bool.likeTrue( o.stripper ) )
+    {
+      stripper = strStrip.defaults.stripper;
+    }
+    else if( _.arrayIs( o.stripper ) )
+    {
+      _.assert( _.strsAreAll( o.stripper ), 'Expects characters in container {-o.stripper-}' );
+    }
+    else if( _.strIs( o.stripper ) )
+    {
+      stripper = _.regexpEscape( o.stripper );
+      stripper = new RegExp( stripper, 'g' );
+    }
+    else if( !_.regexpIs( o.stripper ) )
+    {
+      _.assert( 0, 'Unexpected type of {-o.stripper-}. Expects either a String, an Array or a Regexp {-o.stripper-}' );
+    }
+    return stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
-  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+  /* */
 
-  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+  function singleStripByRegexp( src )
   {
-    let exp = o.stripper;
-    if( _.strIs( exp ) )
-    {
-      exp = _.regexpEscape( exp );
-      exp = new RegExp( exp, 'g' );
-    }
-    return o.src.replace( exp, '' );
+    return src.replace( o.stripper, '' );
   }
-  else
+
+  /* */
+
+  function singleStripByArrayOfStrings( src )
   {
-
-    _.assert( _.arrayIs( o.stripper ) );
-
-    if( Config.debug )
-    for( let s of o.stripper )
-    {
-      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
-    }
-
-    let b = 0;
-    for( ; b < o.src.length ; b++ )
-    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+    let begin = 0;
+    for( ; begin < src.length ; begin++ )
+    if( o.stripper.indexOf( src[ begin ] ) === -1 )
     break;
 
-    let e = o.src.length-1;
-    for( ; e >= 0 ; e-- )
-    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+    let end = src.length-1;
+    for( ; end >= 0 ; end-- )
+    if( o.stripper.indexOf( src[ end ] ) === -1 )
     break;
 
-    if( b >= e )
+    if( begin >= end )
     return '';
 
-    return o.src.substring( b, e+1 );
+    return src.substring( begin, end + 1 );
   }
 
 }
@@ -1574,6 +1585,80 @@ strStrip.defaults =
   stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g,
   // stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm, /* Dmytro : multiline replacing should be an option, not for single string */
 }
+
+// function strStrip( o )
+// {
+//
+//   if( _.strIs( o ) || _.arrayIs( o ) )
+//   o = { src : o };
+//
+//   _.routine.options( strStrip, o );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( _.arrayIs( o.src ) )
+//   {
+//     let result = [];
+//     for( let s = 0 ; s < o.src.length ; s++ )
+//     {
+//       let optionsForStrip = _.mapExtend( null, o );
+//       optionsForStrip.src = optionsForStrip.src[ s ];
+//       result[ s ] = strStrip( optionsForStrip );
+//     }
+//     return result;
+//   }
+//
+//   if( _.bool.likeTrue( o.stripper ) )
+//   {
+//     o.stripper = strStrip.defaults.stripper;
+//   }
+//
+//   _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
+//   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+//
+//   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+//   {
+//     let exp = o.stripper;
+//     if( _.strIs( exp ) )
+//     {
+//       exp = _.regexpEscape( exp );
+//       exp = new RegExp( exp, 'g' );
+//     }
+//     return o.src.replace( exp, '' );
+//   }
+//   else
+//   {
+//
+//     _.assert( _.arrayIs( o.stripper ) );
+//
+//     if( Config.debug )
+//     for( let s of o.stripper )
+//     {
+//       _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+//     }
+//
+//     let b = 0;
+//     for( ; b < o.src.length ; b++ )
+//     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+//     break;
+//
+//     let e = o.src.length-1;
+//     for( ; e >= 0 ; e-- )
+//     if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+//     break;
+//
+//     if( b >= e )
+//     return '';
+//
+//     return o.src.substring( b, e+1 );
+//   }
+//
+// }
+//
+// strStrip.defaults =
+// {
+//   src : null,
+//   stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+// }
 
 //
 
