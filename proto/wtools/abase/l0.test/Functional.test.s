@@ -17259,8 +17259,8 @@ function entityFilter_WithoutDst( test )
   test.case = 'not map like, not long like, cannot extend map';
   test.shouldThrowErrorSync( () => _.entityFilter_( {}, 1, ( e ) => e ) );
 
-  test.case = 'src is primitive, onEach return not compatible type';
-  test.shouldThrowErrorSync( () => _.entityFilter_( null, 1, ( e ) => new BufferRaw( 10 ) ) );
+  test.case = 'dst is vectorAdapter, onEach return not compatible type';
+  test.shouldThrowErrorSync( () => _.entityFilter_( _.vectorAdapter.make( [] ), 1, ( e ) => new BufferRaw( 10 ) ) );
 }
 
 //
