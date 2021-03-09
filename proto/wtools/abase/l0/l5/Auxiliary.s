@@ -11,13 +11,20 @@ let Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 // typing
 // --
 
-function areIdenticalShallow( src1, src2 )
+function identicalShallow( src1, src2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.aux.is( src1 ) );
   _.assert( _.aux.is( src2 ) );
 
+  return _.aux._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
   return false;
 
@@ -46,8 +53,9 @@ function exportStringShortDiagnostic( src )
 
 var AuxiliaryExtension =
 {
-  areIdenticalShallow,
-  areEquivalentShallow : areIdenticalShallow,
+  identicalShallow,
+  _identicalShallow,
+  equivalentShallow : identicalShallow,
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,
