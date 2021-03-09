@@ -1,4 +1,5 @@
-( function _Functional_test_s_( ) {
+( function _Functional_test_s_()
+{
 
 'use strict';
 
@@ -16750,7 +16751,7 @@ function entityFilter( test )
 
 //
 
-function entityFilterWithoutDst_( test )
+function entityFilter_WithoutDst( test )
 {
   test.open( 'onEach returns element' );
 
@@ -17257,19 +17258,47 @@ function entityFilterWithoutDst_( test )
 
   test.case = 'not map like, not long like, cannot extend map';
   test.shouldThrowErrorSync( () => _.entityFilter_( {}, 1, ( e ) => e ) );
+
+  test.case = 'src is primitive, onEach return not compatible type';
+  test.shouldThrowErrorSync( () => _.entityFilter_( null, 1, ( e ) => new BufferRaw( 10 ) ) );
 }
 
 //
 
-/* qqq for Dmytro : bad coverage
+/* aaa for Dmytro : bad coverage
 
 for example :
 commands = _.filter_( null, 'string', ( command ) => xxx )
 
 */
+/* Dmytro : extended coverage. An example works correctly. If some requirements are missed, then it will be added */
 
-function entityFilterDstNull_( test )
+function entityFilter_DstIsNull( test )
 {
+  test.open( 'element in callback - primitive' );
+
+  test.case = 'element - string, callback returns element';
+  var src = 'abc';
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, 'abc' );
+  test.true( got === src );
+
+  test.case = 'element - string, callback returns long with undefined';
+  var src = 'abc';
+  var got = _.entityFilter_( null, src, ( e ) => [ 1, undefined, e ] );
+  test.identical( got, [ 1, undefined, 'abc' ] );
+  test.true( got !== src );
+
+  test.case = 'element - string, callback returns aux like with undefined key';
+  var src = 'abc';
+  var got = _.entityFilter_( null, src, ( e ) => { return { 'a' : e, 'b' : undefined } } );
+  test.identical( got, { 'a' : 'abc', 'b' : undefined } );
+  test.true( got !== src );
+
+  test.close( 'element in callback - primitive' );
+
+  /* - */
+
   test.open( 'onEach returns element' );
 
   test.case = 'empty array';
@@ -17754,7 +17783,7 @@ function entityFilterDstNull_( test )
 
 //
 
-function entityFilterDstNotNull_( test )
+function entityFilter_DstIsNotNull( test )
 {
   test.open( 'onEach returns element' );
 
@@ -26118,9 +26147,9 @@ let Self =
 
     // entityFilter,  /* qqq2 for Dmytro : rewrite please */
 
-    entityFilterWithoutDst_,
-    entityFilterDstNull_,
-    entityFilterDstNotNull_,
+    entityFilter_WithoutDst,
+    entityFilter_DstIsNull,
+    entityFilter_DstIsNotNull,
 
     entityFilterDeep,
 
