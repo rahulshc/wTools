@@ -1467,37 +1467,46 @@ function strReplace( src, ins, sub )
 // --
 
 /**
- * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
- * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
- *
- * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
- * @param {string} [ o.src=null ]- Source string to strip.
- * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
- * @returns {string} Returns result of removement in a string.
+ * Routine strStrip() removes entries of leading and trailing characters in source string {-o.src-},
+ * which is found by mask {-o.stripper-}.
+ * If {-o.stripper-} is not defined function removes leading and trailing whitespaces and escaped
+ * characters from begin and end of source string {-o.src-}.
  *
  * @example
- * _.strStrip( { src : 'aabaa', stripper : 'a' } );
- * // returns 'b'
+ * _.strStrip( '  abc  ' );
+ * // returns 'abc'
  *
  * @example
- * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
- * // returns 'b'
+ * _.strStrip({ src : 'ababa', stripper : 'a' });
+ * // returns 'bb'
  *
  * @example
- * _.strStrip( { src : '   b  \n' } )
- * // returns 'b'
+ * _.strStrip({ src : '  abc  ', stripper : /^\s+/ });
+ * // returns 'abc  '
  *
- * @method strStrip
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @throws { Exception } Throw an exception if( o ) is not Map.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @example
+ * _.strStrip({ src : 'axc bb cxa', stripper : [ 'a', 'x' ] });
+ * // returns 'c bb c'
+ *
+ * @example
+ * _.strStrip({ src : '  abc  ', stripper : true });
+ * // returns 'abc'
+ *
+ * First parameter set :
+ * @param { String|Array } src - Source string(s) to strip.
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { String|Array } o.src - Source string(s) to strip.
+ * @param { String|RegExp|Array|BoolLike } o.stripper - Defines characters to remove.
+ * @returns { String|Array } - Returns stripped string. If source string was an Array of strings, then routine
+ * returns array with stripped strings.
+ * @function strStrip
+ * @throws { Exception } Throw an error if arguments.length is not equal 1.
+ * @throws { Exception } Throw an error if options map {-o-} has not valid type.
+ * @throws { Exception } Throw an error if options map {-o-} has unknown property.
+ * @throws { Exception } Throw an error if {-o.src-} is not a String or not an Array of strings.
+ * @throws { Exception } Throw an error if {-o.stripper-} has not valid type, or it has value `false`.
  * @namespace Tools
- *
  */
 
 function strStrip( o )
