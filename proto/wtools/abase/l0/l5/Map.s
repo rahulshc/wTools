@@ -397,6 +397,22 @@ function mapHasAny( src, screen )
 
   if( _.vector.is( screen ) )
   {
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( screen[ s ] in src )
+      return true;
+    }
+    else
+    {
+      for( let value of screen )
+      if( value in src )
+      return true;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return true;
   }
@@ -499,17 +515,31 @@ function mapHasNone( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.vector.is( screen ) )
   {
-    if( !Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
+      return false;
+    }
+    else
+    {
+      for( let value of screen )
+      if( !Object.hasOwnProperty.call( src, value ) )
+      return false;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( !Object.hasOwnProperty.call( src, k ) )
     return false;
   }
@@ -548,17 +578,31 @@ function mapOnlyOwnAll( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.vector.is( screen ) )
   {
-    if( Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+      return true;
+    }
+    else
+    {
+      for( let value of screen )
+      if( Object.hasOwnProperty.call( src, value ) )
+      return true;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( Object.hasOwnProperty.call( src, k ) )
     return true;
   }
@@ -597,7 +641,7 @@ function mapOnlyOwnAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done.*/
 /* xxx : move? */
 function mapOnlyOwnNone( src, screen )
 {
@@ -605,10 +649,24 @@ function mapOnlyOwnNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.vector.is( screen ) )
   {
-    if( Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    if( _.arrayLike( screen ) )
+    {
+      for( let s = 0 ; s < screen.length ; s++ )
+      if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+      return false;
+    }
+    else
+    {
+      for( let value of screen )
+      if( Object.hasOwnProperty.call( src, value ) )
+      return false;
+    }
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( Object.hasOwnProperty.call( src, k ) )
     return false;
   }
