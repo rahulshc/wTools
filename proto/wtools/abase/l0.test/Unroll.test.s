@@ -206,7 +206,7 @@ function unrollMake( test )
   test.true( src !== got );
 
   test.case = 'from empty arguments array';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollMake( src );
   test.equivalent( got, [] );
   test.true( _.arrayIs( got ) );
@@ -214,7 +214,7 @@ function unrollMake( test )
   test.true( src !== got );
 
   test.case = 'from arguments array';
-  var src = _.argumentsArrayMake( 3 );
+  var src = _.argumentsArray.make( 3 );
   var got = _.unrollMake( src );
   test.equivalent( got, [ undefined, undefined, undefined ] );
   test.true( _.arrayIs( got ) );
@@ -347,7 +347,7 @@ function unrollMakeLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'from empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollMake( src );
     test.equivalent( got, [] );
     test.true( _.arrayIs( got ) );
@@ -355,7 +355,7 @@ function unrollMakeLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'from arguments array';
-    var src = _.argumentsArrayMake( 3 );
+    var src = _.argumentsArray.make( 3 );
     var got = descriptor.unrollMake( src );
     test.equivalent( got, [ undefined, undefined, undefined ] );
     test.true( _.arrayIs( got ) );
@@ -702,66 +702,66 @@ function unrollMakeUndefined( test )
   /* */
 
   test.case = 'src - empty arguments array';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollMakeUndefined( src );
   var expected = _.unrollMake( [] );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - empty arguments array, length - null';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollMakeUndefined( src, null );
   var expected = _.unrollMake( 0 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - empty arguments array, length - number > 0';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollMakeUndefined( src, 2 );
   var expected = _.unrollMake( 2 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - arguments array, src.length - 1';
-  var src = _.argumentsArrayMake( [ {} ] );
+  var src = _.argumentsArray.make( [ {} ] );
   var got = _.unrollMakeUndefined( src );
   var expected = _.unrollMake( 1 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - arguments array, src.length - 1, length > src.length';
-  var src = _.argumentsArrayMake( [ {} ] );
+  var src = _.argumentsArray.make( [ {} ] );
   var got = _.unrollMakeUndefined( src, 2 );
   var expected = _.unrollMake( 2 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - arguments array, src.length > 1';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollMakeUndefined( src );
   var expected = _.unrollMake( 3 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   test.case = 'src - arguments array, src.length > 1, length < src.length';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollMakeUndefined( src, 1 );
   var expected = _.unrollMake( 1 );
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArrayIs( got ) );
+  test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
   /* */
@@ -1171,66 +1171,66 @@ function unrollMakeUndefinedLongDescriptor( test )
     /* */
 
     test.case = 'src - empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollMakeUndefined( src );
     var expected = _.unrollMake( [] );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - empty arguments array, length - null';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollMakeUndefined( src, null );
     var expected = _.unrollMake( 0 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - empty arguments array, length - number > 0';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollMakeUndefined( src, 2 );
     var expected = _.unrollMake( 2 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - arguments array, src.length - 1';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.unrollMakeUndefined( src );
     var expected = _.unrollMake( 1 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - arguments array, src.length - 1, length > src.length';
-    var src = _.argumentsArrayMake( [ {} ] );
+    var src = _.argumentsArray.make( [ {} ] );
     var got = descriptor.unrollMakeUndefined( src, 2 );
     var expected = _.unrollMake( 2 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - arguments array, src.length > 1';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollMakeUndefined( src );
     var expected = _.unrollMake( 3 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     test.case = 'src - arguments array, src.length > 1, length < src.length';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollMakeUndefined( src, 1 );
     var expected = _.unrollMake( 1 );
     test.equivalent( got, expected );
     test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArrayIs( got ) );
+    test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
     /* */
@@ -1416,7 +1416,7 @@ function unrollFrom( test )
   test.true( src !== got );
 
   test.case = 'src - empty argumentsArray';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollFrom( src );
   test.equivalent( got, [] );
   test.true( _.arrayIs( got ) );
@@ -1424,7 +1424,7 @@ function unrollFrom( test )
   test.true( src !== got );
 
   test.case = 'src - filled argumentsArray';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollFrom( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -1565,7 +1565,7 @@ function unrollFromLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'src - empty argumentsArray';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollFrom( src );
     test.equivalent( got, [] );
     test.true( _.arrayIs( got ) );
@@ -1573,7 +1573,7 @@ function unrollFromLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'src - filled argumentsArray';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollFrom( src );
     test.equivalent( got, [ 1, 2, 3 ] );
     test.true( _.arrayIs( got ) );
@@ -1685,7 +1685,7 @@ function unrollsFrom( test )
   test.true( [ src ] !== got );
 
   test.case = 'srcs - empty arguments array';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [ [] ] );
   test.true( _.arrayIs( got ) );
@@ -1694,7 +1694,7 @@ function unrollsFrom( test )
   test.true( [ src ] !== got );
 
   test.case = 'srcs - filled arguments array';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [ [ 1, 2, 3 ] ] );
   test.true( _.arrayIs( got ) );
@@ -1703,7 +1703,7 @@ function unrollsFrom( test )
   test.true( [ src ] !== got );
 
   test.case = 'srcs - several arguments with arguments array';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( [], 1, src );
   test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
   test.true( _.arrayIs( got ) );
@@ -1834,7 +1834,7 @@ function unrollsFromLongDescriptor( test )
     test.true( [ src ] !== got );
 
     test.case = 'srcs - empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollsFrom( src );
     test.equivalent( got, [ [] ] );
     test.true( _.arrayIs( got ) );
@@ -1843,7 +1843,7 @@ function unrollsFromLongDescriptor( test )
     test.true( [ src ] !== got );
 
     test.case = 'srcs - filled arguments array';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollsFrom( src );
     test.equivalent( got, [ [ 1, 2, 3 ] ] );
     test.true( _.arrayIs( got ) );
@@ -1852,7 +1852,7 @@ function unrollsFromLongDescriptor( test )
     test.true( [ src ] !== got );
 
     test.case = 'srcs - several arguments with arguments array';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollsFrom( [], 1, src );
     test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
     test.true( _.arrayIs( got ) );
@@ -1889,22 +1889,22 @@ function unrollFromMaybe( test )
   test.case = 'src - empty string';
   var got = _.unrollFromMaybe( '' );
   test.identical( got, '' );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - string';
   var got = _.unrollFromMaybe( 'str' );
   test.identical( got, 'str' );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - booleant - true';
   var got = _.unrollFromMaybe( true );
   test.identical( got, true );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - booleant - false';
   var got = _.unrollFromMaybe( false );
   test.identical( got, false );
-  test.true( _.primitiveIs( got ) );
+  test.true( _.primitive.is( got ) );
 
   test.case = 'src - empty map';
   var got = _.unrollFromMaybe( {} );
@@ -1933,32 +1933,32 @@ function unrollFromMaybe( test )
   var src = new Map();
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Map() );
-  test.true( _.hashMapIs( got ) );
+  test.true( _.hashMap.is( got ) );
 
   test.case = 'src - filled HashMap';
   var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
-  test.true( _.hashMapIs( got ) );
+  test.true( _.hashMap.is( got ) );
 
   test.case = 'src - empty Set';
   var src = new Set( [] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Set() );
-  test.true( _.setIs( got ) );
+  test.true( _.set.is( got ) );
 
   test.case = 'src - filled Set';
   var src = new Set( [ 1, 'abc' ] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Set( [ 1, 'abc' ] ) );
-  test.true( _.setIs( got ) );
+  test.true( _.set.is( got ) );
 
   test.case = 'src - instance of constructor';
   function Constr(){ this.x = 1; return this };
   var src = new Constr();
   var got = _.unrollFromMaybe( src );
   test.identical( got, src );
-  test.true( _.objectIs( got ) );
+  test.true( _.object.is( got ) );
 
   test.case = 'src - null';
   var got = _.unrollFromMaybe( null );
@@ -2024,7 +2024,7 @@ function unrollFromMaybe( test )
   test.true( src !== got );
 
   test.case = 'src - empty arguments array';
-  var src = _.argumentsArrayMake( [] );
+  var src = _.argumentsArray.make( [] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [] );
   test.true( _.arrayIs( got ) );
@@ -2032,7 +2032,7 @@ function unrollFromMaybe( test )
   test.true( src !== got );
 
   test.case = 'src - filled arguments array';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -2083,22 +2083,22 @@ function unrollFromMaybeLongDescriptor( test )
     test.case = 'src - empty string';
     var got = descriptor.unrollFromMaybe( '' );
     test.identical( got, '' );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - string';
     var got = descriptor.unrollFromMaybe( 'str' );
     test.identical( got, 'str' );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - booleant - true';
     var got = descriptor.unrollFromMaybe( true );
     test.identical( got, true );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - booleant - false';
     var got = descriptor.unrollFromMaybe( false );
     test.identical( got, false );
-    test.true( _.primitiveIs( got ) );
+    test.true( _.primitive.is( got ) );
 
     test.case = 'src - empty map';
     var got = descriptor.unrollFromMaybe( {} );
@@ -2127,32 +2127,32 @@ function unrollFromMaybeLongDescriptor( test )
     var src = new Map();
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Map() );
-    test.true( _.hashMapIs( got ) );
+    test.true( _.hashMap.is( got ) );
 
     test.case = 'src - filled HashMap';
     var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
-    test.true( _.hashMapIs( got ) );
+    test.true( _.hashMap.is( got ) );
 
     test.case = 'src - empty Set';
     var src = new Set( [] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Set() );
-    test.true( _.setIs( got ) );
+    test.true( _.set.is( got ) );
 
     test.case = 'src - filled Set';
     var src = new Set( [ 1, 'abc' ] );
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Set( [ 1, 'abc' ] ) );
-    test.true( _.setIs( got ) );
+    test.true( _.set.is( got ) );
 
     test.case = 'src - instance of constructor';
     function Constr1(){ this.x = 1; return this };
     var src = new Constr1();
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, src );
-    test.true( _.objectIs( got ) );
+    test.true( _.object.is( got ) );
 
     test.case = 'src - null';
     var got = descriptor.unrollFromMaybe( null );
@@ -2218,7 +2218,7 @@ function unrollFromMaybeLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'src - empty arguments array';
-    var src = _.argumentsArrayMake( [] );
+    var src = _.argumentsArray.make( [] );
     var got = descriptor.unrollFromMaybe( src );
     test.equivalent( got, [] );
     test.true( _.arrayIs( got ) );
@@ -2226,7 +2226,7 @@ function unrollFromMaybeLongDescriptor( test )
     test.true( src !== got );
 
     test.case = 'src - filled arguments array';
-    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
     var got = descriptor.unrollFromMaybe( src );
     test.equivalent( got, [ 1, 2, 3 ] );
     test.true( _.arrayIs( got ) );
@@ -2357,7 +2357,7 @@ function unrollSelect( test )
 
   let array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+  var argumentsArray = ( src ) => _.argumentsArray.make( src );
   function bufferTyped( buf )
   {
     let name = buf.name;
@@ -2589,7 +2589,7 @@ function unrollPrepend( test )
   test.false( _.unrollIs( got ) );
 
   test.case = 'dst is null, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollPrepend( null, src );
   test.identical( got, [ 1, 2, 'str' ] );
   test.true( _.arrayIs( got ) );
@@ -2631,7 +2631,7 @@ function unrollPrepend( test )
   test.false( _.unrollIs( got ) );
 
   test.case = 'dst is array, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollPrepend( [ 'str', 0 ], src );
   test.identical( got, [ 1, 2, 'str', 'str', 0 ] );
   test.true( _.arrayIs( got ) );
@@ -2677,7 +2677,7 @@ function unrollPrepend( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var dst = _.unrollMake( [ 'str', 0 ] );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 'str', 'str', 0 ] );
@@ -2725,7 +2725,7 @@ function unrollPrepend( test )
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 'str', 1, 2, 1, [], 'str', 'str2' ] );
   test.true( _.arrayIs( got ) );
@@ -2755,7 +2755,7 @@ function unrollPrepend( test )
 
   test.case = 'dst is null, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollPrepend( null, [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -2779,7 +2779,7 @@ function unrollPrepend( test )
 
   test.case = 'dst is unroll, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollPrepend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
@@ -2803,7 +2803,7 @@ function unrollPrepend( test )
 
   test.case = 'dst is array, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollPrepend( [ 0 ], [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
@@ -2926,7 +2926,7 @@ function unrollAppend( test )
   test.true( src !== got );
 
   test.case = 'dst is null, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollAppend( null, src );
   test.identical( got, [ 1, 2, 'str' ] );
   test.true( _.arrayIs( got ) );
@@ -2968,7 +2968,7 @@ function unrollAppend( test )
   test.false( _.unrollIs( got ) );
 
   test.case = 'dst is array, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollAppend( [ 'str', 0 ], src );
   test.identical( got, [ 'str', 0, 1, 2, 'str' ] );
   test.true( _.arrayIs( got ) );
@@ -3014,7 +3014,7 @@ function unrollAppend( test )
   test.true( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from argumentsArray';
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var dst = _.unrollMake( [ 'str', 0 ] );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 'str', 0, 1, 2, 'str' ] );
@@ -3062,7 +3062,7 @@ function unrollAppend( test )
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
-  var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
+  var src = _.unrollMake( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 'str' ] );
   test.true( _.arrayIs( got ) );
@@ -3092,7 +3092,7 @@ function unrollAppend( test )
 
   test.case = 'dst is null, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollAppend( null, [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -3116,7 +3116,7 @@ function unrollAppend( test )
 
   test.case = 'dst is unroll, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollAppend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -3140,7 +3140,7 @@ function unrollAppend( test )
 
   test.case = 'dst is array, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
-  var a2 = _.unrollFrom( _.argumentsArrayMake( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
+  var a2 = _.unrollFrom( _.argumentsArray.make( [ 3, 4, _.unrollMake( [ 5, 6 ] ) ] ) );
   var got = _.unrollAppend( [ 0 ], [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );

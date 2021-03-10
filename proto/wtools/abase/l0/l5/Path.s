@@ -86,7 +86,7 @@ function is( path )
 function isRefined( path )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( path ), 'Expects string {-path-}, but got', _.strType( path ) );
+  _.assert( _.strIs( path ), 'Expects string {-path-}, but got', _.entity.strType( path ) );
 
   if( path[ 1 ] === ':' && path[ 2 ] === '\\' )
   return false;
@@ -124,7 +124,7 @@ function isNormalized( filePath )
 function isAbsolute( filePath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.strType( filePath ) );
+  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.entity.strType( filePath ) );
   filePath = this.refine( filePath );
   return _.strBegins( filePath, this.upToken );
 }
@@ -134,7 +134,7 @@ function isAbsolute( filePath )
 function isRelative( filePath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.strType( filePath ) );
+  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.entity.strType( filePath ) );
   return !this.isAbsolute( filePath );
 }
 
@@ -152,7 +152,7 @@ function isGlobal( filePath )
 function isRoot( filePath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.strType( filePath ) );
+  _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.entity.strType( filePath ) );
   if( filePath === this.rootToken )
   return true;
   if( this.isRelative( filePath ) )
@@ -207,8 +207,8 @@ function isTrailed( srcPath )
 function begins( srcPath, beginPath )
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
-  _.assert( _.strIs( srcPath ), 'Expects string {-srcPath-}, but got', _.strType( srcPath ) );
-  _.assert( _.strIs( beginPath ), 'Expects string {-beginPath-}, but got', _.strType( beginPath ) );
+  _.assert( _.strIs( srcPath ), 'Expects string {-srcPath-}, but got', _.entity.strType( srcPath ) );
+  _.assert( _.strIs( beginPath ), 'Expects string {-beginPath-}, but got', _.entity.strType( beginPath ) );
   if( srcPath === beginPath )
   return true;
   return _.strBegins( srcPath, this.trail( beginPath ) );
@@ -305,7 +305,7 @@ function _normalize( o )
   // if( 0 )
   // debug = 1;
 
-  _.assertRoutineOptions( _normalize, arguments );
+  _.routine.assertOptions( _normalize, arguments );
   _.assert( _.strIs( o.src ), 'Expects string' );
 
   if( !o.src.length )
@@ -542,7 +542,7 @@ function _nativizeWindows( filePath )
 
   let result = filePath;
 
-  _.assert( _.routineIs( self.unescape ) );
+  _.assert( _.routine.is( self.unescape ) );
   result = self.unescape( result ); /* yyy */
 
   result = self._nativizeMinimalWindows( result );
@@ -567,7 +567,7 @@ function _nativizePosix( filePath )
   let self = this;
   let result = filePath;
   _.assert( _.strIs( filePath ), 'Expects string' );
-  _.assert( _.routineIs( self.unescape ) );
+  _.assert( _.routine.is( self.unescape ) );
   result = self.unescape( result ); /* yyy */
   return result;
 }
@@ -908,7 +908,7 @@ function dir_head( routine, args )
   if( _.strIs( o ) )
   o = { filePath : args[ 0 ], depth : args[ 1 ] };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( arguments.length === 2 );
   _.assert( _.intIs( o.depth ) );
@@ -922,7 +922,7 @@ function dir_body( o )
   let self = this;
   let isTrailed = this.isTrailed( o.filePath );
 
-  _.assertRoutineOptions( dir_body, arguments );
+  _.routine.assertOptions( dir_body, arguments );
 
   if( o.first )
   o.filePath = this.normalize( o.filePath );
@@ -1041,10 +1041,10 @@ dir_body.defaults =
   depth : 1,
 }
 
-let dir = _.routineUnite( dir_head, dir_body );
+let dir = _.routine.unite( dir_head, dir_body );
 dir.defaults.first = 0;
 
-let dirFirst = _.routineUnite( dir_head, dir_body );
+let dirFirst = _.routine.unite( dir_head, dir_body );
 dirFirst.defaults.first = 1;
 
 // --

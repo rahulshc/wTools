@@ -9,8 +9,8 @@ let _ = _global_.wTools;
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
 
-_.assert( _.routineIs( _.containerAdapter.Abstract ) );
-_.assert( _.routineIs( _.longLeft ) );
+_.assert( _.routine.is( _.containerAdapter.Abstract ) );
+_.assert( _.routine.is( _.longLeft ) );
 
 // --
 // implementation
@@ -43,7 +43,7 @@ function Make( src )
 {
   if( src === undefined || src === null )
   return this.MakeEmpty();
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   return new ContainerAdapterArray( new Array( src ) );
   else if( this.IsContainer( src ) )
   return new ContainerAdapterArray( [ ... src ] );
@@ -69,7 +69,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
+    if( _.routine.is( onEvaluate1 ) || _.routine.is( onEvaluate2 ) )
     {
       if( _.longLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
       return true;
@@ -127,7 +127,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     {
       _.arrayAppendArray( this.original, container );
     }
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     {
       for( let e of container )
       {
@@ -145,7 +145,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnce( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
@@ -155,7 +155,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, container, onEvaluate1, onEvaluate2 );
-    else if( _.setIs( container ) )
+    else if( _.set.is( container ) )
     _.arrayAppendArrayOnceStrictly( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
@@ -205,11 +205,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, () => 'Container has not element ' + _.toStrShort( e ) );
+    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
     container.splice( index, 1 );
-    if( _.numberIs( onEvaluate1 ) )
+    if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )

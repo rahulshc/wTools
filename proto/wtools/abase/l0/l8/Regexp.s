@@ -63,7 +63,7 @@ function regexpMaybeFrom( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( o.srcStr ) || _.regexpIs( o.srcStr ) );
-  _.routineOptions( regexpMaybeFrom, o );
+  _.routine.options( regexpMaybeFrom, o );
 
   let result = o.srcStr;
   let strips;
@@ -135,7 +135,7 @@ function regexpsSources( o )
   o.flags = null;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( regexpsSources, o );
+  _.routine.options( regexpsSources, o );
 
   /* */
 
@@ -180,7 +180,7 @@ function regexpsJoin( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsJoin, o );
+  _.routine.options( regexpsJoin, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let src = o.sources[ 0 ];
@@ -207,7 +207,7 @@ function regexpsJoinEscaping( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsJoinEscaping, o );
+  _.routine.options( regexpsJoinEscaping, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !!o.escaping );
 
@@ -226,7 +226,7 @@ function regexpsAtLeastFirst( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsAtLeastFirst, o );
+  _.routine.options( regexpsAtLeastFirst, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let src = o.sources[ 0 ];
@@ -273,7 +273,7 @@ function regexpsAtLeastFirstOnly( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsAtLeastFirst, o );
+  _.routine.options( regexpsAtLeastFirst, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let src = o.sources[ 0 ];
@@ -341,7 +341,7 @@ function regexpsNone( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsNone, o );
+  _.routine.options( regexpsNone, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   o = _.regexpsSources( o );
@@ -369,7 +369,7 @@ function regexpsAny( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsAny, o );
+  _.routine.options( regexpsAny, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.regexpIs( o.sources ) )
@@ -405,7 +405,7 @@ function regexpsAll( o )
   if( !_.mapIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsAll, o );
+  _.routine.options( regexpsAll, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.regexpIs( o.sources ) )
@@ -466,7 +466,7 @@ regexpsAll.defaults =
 function regexpArrayMake( src )
 {
 
-  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.strType( src ) );
+  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 
@@ -562,7 +562,7 @@ function regexpArrayAny( arr, ins, ifEmpty )
   arr = _.arrayAs( arr );
   for( let m = 0 ; m < arr.length ; m++ )
   {
-    _.assert( _.routineIs( arr[ m ].test ) );
+    _.assert( _.routine.is( arr[ m ].test ) );
     if( arr[ m ].test( ins ) )
     return m;
   }
@@ -624,7 +624,7 @@ function regexpArrayNone( arr, ins, ifEmpty )
   arr = _.arrayAs( arr );
   for( let m = 0 ; m < arr.length ; m++ )
   {
-    _.assert( _.routineIs( arr[ m ].test ) );
+    _.assert( _.routine.is( arr[ m ].test ) );
     if( arr[ m ].test( ins ) )
     return false;
   }

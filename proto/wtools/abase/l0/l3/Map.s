@@ -6,97 +6,11 @@
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
+_global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 // --
 // map checker
 // --
-
-// /**
-//  * Function objectIs checks incoming param whether it is object.
-//  * Returns "true" if incoming param is object. Othervise "false" returned.
-//  *
-//  * @example
-//  * let obj = { x : 100 };
-//  * _.objectIs(obj);
-//  * // returns true
-//  *
-//  * @example
-//  * _.objectIs( 10 );
-//  * // returns false
-//  *
-//  * @param { * } src.
-//  * @return { Boolean }.
-//  * @function objectIs
-//  * @namespace Tools
-//  */
-//
-// function objectIs( src )
-// {
-//   return Object.prototype.toString.call( src ) === '[object Object]';
-// }
-//
-// //
-//
-// function objectLike( src ) /* xxx qqq : optimize */
-// {
-//
-//   if( _.objectIs( src ) )
-//   return true;
-//
-//   if( _.primitiveIs( src ) )
-//   return false;
-//
-//   // if( _.longIs( src ) ) /* yyy */
-//   // return false;
-//   if( _.vectorIs( src ) )
-//   return false;
-//
-//   if( _.routineIsTrivial( src ) )
-//   return false;
-//
-//   // yyy
-//   // for( let k in src )
-//   // return true;
-//
-//   return false;
-// }
-//
-// //
-//
-// function constructibleIs( src ) /* xxx qqq : optimize */
-// {
-//   if( _.primitiveIs( src ) )
-//   return false;
-//
-//   let proto = Object.getPrototypeOf( src );
-//   if( proto === null )
-//   return false;
-//
-//   if( !Reflect.has( proto, 'constructor' ) )
-//   return false;
-//   if( proto.constructor === Object )
-//   return false;
-//
-//   if( _.mapLike( src ) ) /* xxx : remove? */
-//   return false;
-//   if( _.vectorIs( src ) )
-//   return false;
-//   if( _.setIs( src ) )
-//   return false;
-//   if( _.hashMapIs( src ) )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function constructibleLike( src )
-// {
-//   return _.constructibleIs( src );
-// }
-
-//
 
 /**
  * The mapIs() routine determines whether the passed value is an Object,
@@ -144,64 +58,6 @@ function mapIs( src )
   return false;
 }
 
-// function mapIs( src )
-// {
-//
-//   if( !_.objectIs( src ) )
-//   return false;
-//
-//   let proto = Object.getPrototypeOf( src );
-//
-//   if( proto === null )
-//   return true;
-//
-//   if( !proto.constructor )
-//   return false;
-//
-//   if( proto.constructor.name !== 'Object' )
-//   return false;
-//
-//   if( Object.getPrototypeOf( proto ) === null )
-//   return true;
-//
-//   _.assert( proto === null || !!proto, 'unexpected' );
-//
-//   return false;
-// }
-
-//
-
-// function mapLike( src )
-// {
-//   if( mapIs( src ) )
-//   return true;
-//   return false;
-// }
-
-function mapLike( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( proto === Object.prototype )
-  return true;
-
-  if( !_.primitiveIs( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
-
 //
 
 function mapIsPure( src )
@@ -242,66 +98,9 @@ function mapIsPolluted( src )
 
 //
 
-function mapLikePolluted( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto.constructor === Object )
-  return true;
-
-  return false;
-}
-
-//
-
-function mapIsPrototyped( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto === Object.prototype )
-  return false;
-
-  if( !_.primitiveIs( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
-
-//
-
 function mapIsEmpty( src )
 {
   if( !_.mapIs( src ) )
-  return false;
-  return Object.keys( src ).length === 0;
-}
-
-//
-
-function mapLikeEmpty( src )
-{
-  if( !_.mapLike( src ) )
   return false;
   return Object.keys( src ).length === 0;
 }
@@ -317,94 +116,6 @@ function mapIsPopulated( src )
 
 //
 
-function mapLikePopulated( src )
-{
-  if( !_.mapLike( src ) )
-  return false;
-  return Object.keys( src ).length > 0;
-}
-
-// //
-//
-// function mapIsHeritated( src ) /* xxx */
-// {
-//
-//   if( !_.objectIs( src ) )
-//   return false;
-//
-//   let proto = src;
-//
-//   do
-//   {
-//
-//     proto = Object.getPrototypeOf( proto );
-//
-//     if( proto === null )
-//     return true;
-//
-//     if( proto.constructor && proto.constructor.name !== 'Object' )
-//     return false;
-//
-//     src = proto;
-//   }
-//   while( proto );
-//
-//   if( proto === null )
-//   return true;
-//
-//   return false;
-// }
-
-// //
-//
-// function mapLike( src )
-// {
-//
-//   if( mapIs( src ) )
-//   return true;
-//
-//   if( !src )
-//   return false;
-//
-//   if( !_.objectLike( src ) )
-//   return false;
-//
-//   if( _.instanceIs( src ) )
-//   return false;
-//
-//   return true;
-// }
-
-//
-
-function hashMapIs( src )
-{
-  if( !src )
-  return false;
-  return src instanceof HashMap || src instanceof HashMapWeak;
-}
-
-//
-
-function hashMapLike( src )
-{
-  return _.hashMapIs( src );
-}
-
-//
-
-function hashMapIsEmpty()
-{
-  return !src.size;
-}
-
-//
-
-function hashMapIsPopulated()
-{
-  return !!src.size;
-}
-
 // --
 // map selector
 // --
@@ -413,16 +124,16 @@ function _mapKeys( o )
 {
   let result = [];
 
-  _.routineOptions( _mapKeys, o );
+  _.routine.options( _mapKeys, o );
 
   let srcMap = o.srcMap;
   let selectFilter = o.selectFilter;
 
   _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( o ) );
+  _.assert( _.object.like( o ) );
   _.assert( !( srcMap instanceof Map ), 'not implemented' );
-  _.assert( selectFilter === null || _.routineIs( selectFilter ) );
+  _.assert( selectFilter === null || _.routine.is( selectFilter ) );
 
   /* */
 
@@ -430,7 +141,7 @@ function _mapKeys( o )
   {
     let result1 = [];
 
-    _.assert( !_.primitiveIs( srcMap ) );
+    _.assert( !_.primitive.is( srcMap ) );
 
     if( o.onlyOwn )
     {
@@ -539,8 +250,8 @@ function mapKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapKeys, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapKeys, o );
+  _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
 
@@ -590,8 +301,8 @@ function mapOnlyOwnKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnKeys, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapOnlyOwnKeys, o );
+  _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -636,8 +347,8 @@ function mapAllKeys( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllKeys, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapAllKeys, o );
+  _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
   // o.onlyOwn = 0;
@@ -662,9 +373,9 @@ mapAllKeys.defaults =
 function _mapVals( o )
 {
 
-  _.routineOptions( _mapVals, o );
+  _.routine.options( _mapVals, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
+  _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( o.selectFilter === null );
   _.assert( this === _ );
 
@@ -726,8 +437,8 @@ function mapVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapVals, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapVals, o );
+  _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
   o.srcMap = srcMap;
@@ -782,8 +493,8 @@ function mapOnlyOwnVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnVals, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapOnlyOwnVals, o );
+  _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
   o.srcMap = srcMap;
@@ -815,7 +526,7 @@ mapOnlyOwnVals.defaults =
  *
  * @example
  * _.mapAllVals( { a : 7, b : 13 } );
- * // returns [ "7", "13", function __defineGetter__(), ... function prototypeIsPrototypeOf() ]
+ * // returns [ "7", "13", function __defineGetter__(), ... function prototype.isPrototypeFor() ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the onlyEnumerable property values found directly upon object.
@@ -828,8 +539,8 @@ function mapAllVals( srcMap, o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllVals, o );
-  _.assert( !_.primitiveIs( srcMap ) );
+  o = _.routine.options( mapAllVals, o );
+  _.assert( !_.primitive.is( srcMap ) );
   _.assert( this === _ );
 
   o.srcMap = srcMap;
@@ -851,10 +562,10 @@ mapAllVals.defaults =
 function _mapPairs( o )
 {
 
-  _.routineOptions( _mapPairs, o );
+  _.routine.options( _mapPairs, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
-  _.assert( !_.primitiveIs( o.srcMap ) );
+  _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
+  _.assert( !_.primitive.is( o.srcMap ) );
   _.assert( this === _ );
 
   let selectFilter = o.selectFilter;
@@ -919,7 +630,7 @@ function mapPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapPairs, o );
+  o = _.routine.options( mapPairs, o );
 
   o.srcMap = srcMap;
 
@@ -976,7 +687,7 @@ function mapOnlyOwnPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapOnlyOwnPairs, o );
+  o = _.routine.options( mapOnlyOwnPairs, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -1006,14 +717,14 @@ mapOnlyOwnPairs.defaults =
  *
  * @example
  * _.mapAllPairs( { a : 7, b : 13 } );
- * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ] ]
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function prototype.isPrototypeFor() ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototypeIsPrototypeOf() ]  ]
+ * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function prototype.isPrototypeFor() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
@@ -1026,7 +737,7 @@ function mapAllPairs( srcMap, o )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  o = _.routineOptions( mapAllPairs, o );
+  o = _.routine.options( mapAllPairs, o );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -1072,7 +783,7 @@ function mapFirstPair( srcMap )
 
   _.assert( this === _ );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.objectLike( srcMap ) );
+  _.assert( _.object.like( srcMap ) );
 
   for( let s in srcMap )
   {
@@ -1103,12 +814,12 @@ function mapSelect( srcMap, keys )
   let result = Object.create( null );
 
   _.assert( _.arrayLike( keys ) );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   for( let k = 0 ; k < keys.length ; k++ )
   {
     let key = keys[ k ];
-    _.assert( _.strIs( key ) || _.numberIs( key ) );
+    _.assert( _.strIs( key ) || _.number.is( key ) );
     result[ key ] = srcMap[ key ];
   }
 
@@ -1143,7 +854,7 @@ function mapValWithIndex( srcMap, index )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   if( index < 0 )
   return;
@@ -1183,9 +894,9 @@ function mapValWithIndex( srcMap, index )
 
 function mapKeyWithIndex( srcMap, index )
 {
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
+  _.assert( _.number.intIs( index ) );
 
   if( index < 0 )
   return;
@@ -1197,7 +908,6 @@ function mapKeyWithIndex( srcMap, index )
     return s;
     i++;
   }
-
 }
 
 //
@@ -1205,45 +915,46 @@ function mapKeyWithIndex( srcMap, index )
 function mapKeyWithValue( srcMap, value )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
-  // Dmytro : maybe it is missed code
-
+  for( let s in srcMap )
+  if( srcMap[ s ] === value )
+  return s;
 }
 
 //
 
-function mapIndexWithKey( srcMap, key )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( s === key )
-    return s;
-  }
-
-  return;
-}
-
+// function mapIndexWithKey( srcMap, key )
+// {
 //
-
-function mapIndexWithValue( srcMap, value )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
-
-  for( let s in srcMap )
-  {
-    if( srcMap[ s ] === value )
-    return s;
-  }
-
-  return;
-}
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( s === key )
+//     return s;
+//   }
+//
+//   return;
+// }
+//
+// //
+//
+// function mapIndexWithValue( srcMap, value )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitive.is( srcMap ) );
+//
+//   for( let s in srcMap )
+//   {
+//     if( srcMap[ s ] === value )
+//     return s;
+//   }
+//
+//   return;
+// }
 
 //
 
@@ -1252,7 +963,7 @@ function mapOnlyNulls( srcMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 1 );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   for( let s in srcMap )
   {
@@ -1270,7 +981,7 @@ function mapButNulls( srcMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 1 );
-  _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( !_.primitive.is( srcMap ) );
 
   for( let s in srcMap )
   {
@@ -1323,13 +1034,13 @@ function mapExtend( dstMap, srcMap )
   }
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
+  _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
+    _.assert( !_.primitive.is( srcMap ), 'Expects non primitive' );
 
     let srcProto = Object.getPrototypeOf( srcMap );
     if( srcProto === null || srcProto === Object.prototype )
@@ -1371,7 +1082,7 @@ function mapSupplement( dstMap, srcMap )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( !_.primitiveIs( dstMap ) );
+  _.assert( !_.primitive.is( dstMap ) );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1406,8 +1117,8 @@ function mapSupplementStructureless( dstMap, srcMap )
       continue;
 
       if( Config.debug )
-      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-      if( !_.regexpIs( srcMap[ s ] ) && !_.dateIs( srcMap[ s ] ) )
+      if( _.object.like( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      if( !_.regexpIs( srcMap[ s ] ) && !_.date.is( srcMap[ s ] ) )
       throw Error( `Source map should have only primitive elements, but ${ s } is ${ srcMap[ s ] }` );
 
       dstMap[ s ] = srcMap[ s ];
@@ -1423,9 +1134,9 @@ function mapOptionsApplyDefaults( options, defaults )
 {
 
   _.assert( arguments.length === 2 );
-  _.assertMapHasOnly( options, defaults, `Does not expect options:` );
+  _.map.assertHasOnly( options, defaults, `Does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
-  _.assertMapHasNoUndefine( options, `Options map should have no undefined fileds, but it does have` );
+  _.map.assertHasNoUndefine( options, `Options map should have no undefined fileds, but it does have` );
 
   return options;
 }
@@ -1439,28 +1150,12 @@ let Extension =
 
   // map checker
 
-  // objectIs, /* qqq : optimize */
-  // objectLike, /* qqq : optimize */
-  //
-  // constructibleIs, /* qqq : cover and move */
-  // constructibleLike, /* qqq : cover and move */
-
   mapIs,
-  mapLike,
   mapIsPure,
   mapIsPolluted,
-  mapLikePolluted,
-  mapIsPrototyped,
 
   mapIsEmpty,
-  mapLikeEmpty,
   mapIsPopulated,
-  mapLikePopulated,
-
-  hashMapIs,
-  hashMapLike,
-  hashMapIsEmpty,
-  hashMapIsPopulated,
 
   // map selector
 
@@ -1486,8 +1181,8 @@ let Extension =
   mapValWithIndex,
   mapKeyWithIndex,
   mapKeyWithValue,
-  mapIndexWithKey,
-  mapIndexWithValue,
+  // mapIndexWithKey,
+  // mapIndexWithValue,
 
   mapOnlyNulls,
   mapButNulls,
@@ -1505,7 +1200,13 @@ let Extension =
 
 //
 
+let ExtensionMap =
+{
+
+}
+
 Object.assign( Self, Extension );
+Object.assign( _.map, ExtensionMap );
 
 // --
 // export

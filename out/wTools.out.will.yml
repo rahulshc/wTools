@@ -3,8 +3,8 @@ root:
   - wTools.out
 consistency:
   wTools.out.will.yml: &ref_0
-    hash: cd67f1973bd25808d089bccf7572d24d
-    size: 46995
+    hash: bbed02bdc33a3da3e4a80211c606aae9
+    size: 49933
   ../.ex.will.yml: &ref_1
     hash: 349ff2e8b6504ea27d65b18daa7694d7
     size: 2099
@@ -76,20 +76,20 @@ module:
         criterion:
           predefined: 1
       repository:
-        path: git+https:///github.com/Wandalen/wTools.git
+        path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
         path:
-          - git+https:///github.com/Wandalen/wTools.git
-          - npm:///wtools.experiment
+          - 'git+https:///github.com/Wandalen/wTools.git'
+          - 'npm:///wtools.experiment'
       bugtracker:
-        path: https:///github.com/Wandalen/wTools/issues
+        path: 'https:///github.com/Wandalen/wTools/issues'
       in:
         path: .
       out:
         path: .
       temp:
         path:
-          - path::out
+          - 'path::out'
           - ../package-lock.json
           - ../package.json
           - ../node_modules
@@ -129,7 +129,7 @@ module:
         criterion:
           tests: no.tests
           content: proto
-        path: ../proto/{path::entry}
+        path: '../proto/{path::entry}'
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -184,17 +184,27 @@ module:
           - ../proto/wtools/abase/l0/l2
           - ../proto/wtools/abase/l0/l2/Setup.s
           - ../proto/wtools/abase/l0/l3
+          - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
+          - ../proto/wtools/abase/l0/l3/ArraySet.s
+          - ../proto/wtools/abase/l0/l3/Auxiliary.s
+          - ../proto/wtools/abase/l0/l3/BigInt.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
           - ../proto/wtools/abase/l0/l3/Constructible.s
           - ../proto/wtools/abase/l0/l3/Container.s
+          - ../proto/wtools/abase/l0/l3/Countable.s
           - ../proto/wtools/abase/l0/l3/Ct.s
+          - ../proto/wtools/abase/l0/l3/Date.s
+          - ../proto/wtools/abase/l0/l3/Diagnostic.s
           - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Err.s
           - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/Functional.s
+          - ../proto/wtools/abase/l0/l3/Fuzzy.s
+          - ../proto/wtools/abase/l0/l3/Global.s
+          - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Interval.s
           - ../proto/wtools/abase/l0/l3/Intervalc.s
           - ../proto/wtools/abase/l0/l3/Intervall.s
@@ -207,29 +217,46 @@ module:
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Pair.s
           - ../proto/wtools/abase/l0/l3/Path.s
+          - ../proto/wtools/abase/l0/l3/Primitive.s
+          - ../proto/wtools/abase/l0/l3/Printer.s
           - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Property.s
           - ../proto/wtools/abase/l0/l3/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l3/Prototype.s
           - ../proto/wtools/abase/l0/l3/Regexp.s
           - ../proto/wtools/abase/l0/l3/Routine.s
           - ../proto/wtools/abase/l0/l3/Set.s
           - ../proto/wtools/abase/l0/l3/Sorted.s
           - ../proto/wtools/abase/l0/l3/Str.s
+          - ../proto/wtools/abase/l0/l3/Symbol.s
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Type.s
+          - ../proto/wtools/abase/l0/l3/Units.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
+          - ../proto/wtools/abase/l0/l3/Vector.s
           - ../proto/wtools/abase/l0/l4
           - ../proto/wtools/abase/l0/l5
+          - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
+          - ../proto/wtools/abase/l0/l5/ArraySet.s
+          - ../proto/wtools/abase/l0/l5/Auxiliary.s
+          - ../proto/wtools/abase/l0/l5/BigInt.s
           - ../proto/wtools/abase/l0/l5/Bool.s
           - ../proto/wtools/abase/l0/l5/Buffer.s
+          - ../proto/wtools/abase/l0/l5/Constructible.s
           - ../proto/wtools/abase/l0/l5/Container.s
+          - ../proto/wtools/abase/l0/l5/Countable.s
           - ../proto/wtools/abase/l0/l5/Ct.s
+          - ../proto/wtools/abase/l0/l5/Date.s
+          - ../proto/wtools/abase/l0/l5/Diagnostic.s
           - ../proto/wtools/abase/l0/l5/Entity.s
           - ../proto/wtools/abase/l0/l5/Err.s
           - ../proto/wtools/abase/l0/l5/Escape.s
           - ../proto/wtools/abase/l0/l5/Event.s
           - ../proto/wtools/abase/l0/l5/Functional.s
+          - ../proto/wtools/abase/l0/l5/Fuzzy.s
+          - ../proto/wtools/abase/l0/l5/Global.s
+          - ../proto/wtools/abase/l0/l5/HashMap.s
           - ../proto/wtools/abase/l0/l5/Interval.s
           - ../proto/wtools/abase/l0/l5/Intervalc.s
           - ../proto/wtools/abase/l0/l5/Intervall.s
@@ -239,19 +266,26 @@ module:
           - ../proto/wtools/abase/l0/l5/Map.s
           - ../proto/wtools/abase/l0/l5/Module.s
           - ../proto/wtools/abase/l0/l5/Number.s
+          - ../proto/wtools/abase/l0/l5/Object.s
           - ../proto/wtools/abase/l0/l5/Pair.s
           - ../proto/wtools/abase/l0/l5/Path.s
+          - ../proto/wtools/abase/l0/l5/Primitive.s
+          - ../proto/wtools/abase/l0/l5/Printer.s
           - ../proto/wtools/abase/l0/l5/Process.s
           - ../proto/wtools/abase/l0/l5/Property.s
           - ../proto/wtools/abase/l0/l5/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l5/Prototype.s
           - ../proto/wtools/abase/l0/l5/Regexp.s
           - ../proto/wtools/abase/l0/l5/Routine.s
           - ../proto/wtools/abase/l0/l5/Set.s
           - ../proto/wtools/abase/l0/l5/Sorted.s
           - ../proto/wtools/abase/l0/l5/Str.s
+          - ../proto/wtools/abase/l0/l5/Symbol.s
           - ../proto/wtools/abase/l0/l5/Time.s
           - ../proto/wtools/abase/l0/l5/Type.s
+          - ../proto/wtools/abase/l0/l5/Units.s
           - ../proto/wtools/abase/l0/l5/Unroll.s
+          - ../proto/wtools/abase/l0/l5/Vector.s
           - ../proto/wtools/abase/l0/l6
           - ../proto/wtools/abase/l0/l6/ContainerAdapter.s
           - ../proto/wtools/abase/l0/l6/LongDescriptor.s
@@ -262,16 +296,27 @@ module:
           - ../proto/wtools/abase/l0/l7/LongContext.s
           - ../proto/wtools/abase/l0/l7/PropertyTransformers.s
           - ../proto/wtools/abase/l0/l8
+          - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l8/Array.s
+          - ../proto/wtools/abase/l0/l8/ArraySet.s
+          - ../proto/wtools/abase/l0/l8/Auxiliary.s
+          - ../proto/wtools/abase/l0/l8/BigInt.s
           - ../proto/wtools/abase/l0/l8/Bool.s
           - ../proto/wtools/abase/l0/l8/Buffer.s
+          - ../proto/wtools/abase/l0/l8/Constructible.s
           - ../proto/wtools/abase/l0/l8/Container.s
+          - ../proto/wtools/abase/l0/l8/Countable.s
           - ../proto/wtools/abase/l0/l8/Ct.s
+          - ../proto/wtools/abase/l0/l8/Date.s
+          - ../proto/wtools/abase/l0/l8/Diagnostic.s
           - ../proto/wtools/abase/l0/l8/Entity.s
           - ../proto/wtools/abase/l0/l8/Err.s
           - ../proto/wtools/abase/l0/l8/Escape.s
           - ../proto/wtools/abase/l0/l8/Event.s
           - ../proto/wtools/abase/l0/l8/Functional.s
+          - ../proto/wtools/abase/l0/l8/Fuzzy.s
+          - ../proto/wtools/abase/l0/l8/Global.s
+          - ../proto/wtools/abase/l0/l8/HashMap.s
           - ../proto/wtools/abase/l0/l8/Interval.s
           - ../proto/wtools/abase/l0/l8/Intervalc.s
           - ../proto/wtools/abase/l0/l8/Intervall.s
@@ -281,39 +326,53 @@ module:
           - ../proto/wtools/abase/l0/l8/Map.s
           - ../proto/wtools/abase/l0/l8/Module.s
           - ../proto/wtools/abase/l0/l8/Number.s
+          - ../proto/wtools/abase/l0/l8/Object.s
           - ../proto/wtools/abase/l0/l8/Pair.s
           - ../proto/wtools/abase/l0/l8/Path.s
+          - ../proto/wtools/abase/l0/l8/Primitive.s
+          - ../proto/wtools/abase/l0/l8/Printer.s
           - ../proto/wtools/abase/l0/l8/Process.s
           - ../proto/wtools/abase/l0/l8/Property.s
           - ../proto/wtools/abase/l0/l8/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l8/Prototype.s
           - ../proto/wtools/abase/l0/l8/Regexp.s
           - ../proto/wtools/abase/l0/l8/Routine.s
           - ../proto/wtools/abase/l0/l8/Set.s
           - ../proto/wtools/abase/l0/l8/Sorted.s
           - ../proto/wtools/abase/l0/l8/Str.s
+          - ../proto/wtools/abase/l0/l8/Symbol.s
           - ../proto/wtools/abase/l0/l8/Time.s
           - ../proto/wtools/abase/l0/l8/Type.s
+          - ../proto/wtools/abase/l0/l8/Units.s
           - ../proto/wtools/abase/l0/l8/Unroll.s
+          - ../proto/wtools/abase/l0/l8/Vector.s
           - ../proto/wtools/abase/l0/l9
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
+          - ../proto/wtools/abase/l0.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0.test/Array.test.s
           - ../proto/wtools/abase/l0.test/ArraySet.test.s
+          - ../proto/wtools/abase/l0.test/Auxiliary.test.s
+          - ../proto/wtools/abase/l0.test/BigInt.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
+          - ../proto/wtools/abase/l0.test/Countable.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
+          - ../proto/wtools/abase/l0.test/Date.test.s
+          - ../proto/wtools/abase/l0.test/Diagnostic.test.s
           - ../proto/wtools/abase/l0.test/Entity.test.s
           - ../proto/wtools/abase/l0.test/Err.test.s
           - ../proto/wtools/abase/l0.test/Escape.test.s
           - ../proto/wtools/abase/l0.test/Event.test.s
           - ../proto/wtools/abase/l0.test/Functional.test.s
+          - ../proto/wtools/abase/l0.test/Fuzzy.test.s
           - ../proto/wtools/abase/l0.test/Global.test.s
+          - ../proto/wtools/abase/l0.test/HashMap.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
-          - ../proto/wtools/abase/l0.test/IntervalOld.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
@@ -321,17 +380,24 @@ module:
           - ../proto/wtools/abase/l0.test/Minimal.test.s
           - ../proto/wtools/abase/l0.test/Module.test.s
           - ../proto/wtools/abase/l0.test/Number.test.s
+          - ../proto/wtools/abase/l0.test/Object.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
-          - ../proto/wtools/abase/l0.test/Partible.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
+          - ../proto/wtools/abase/l0.test/Primitive.test.s
+          - ../proto/wtools/abase/l0.test/Printer.test.s
           - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Property.test.s
+          - ../proto/wtools/abase/l0.test/PropertyTransformer.test.s
+          - ../proto/wtools/abase/l0.test/Prototype.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
           - ../proto/wtools/abase/l0.test/Routine.test.s
+          - ../proto/wtools/abase/l0.test/Set.test.s
           - ../proto/wtools/abase/l0.test/Sorted.test.s
           - ../proto/wtools/abase/l0.test/Str.test.s
+          - ../proto/wtools/abase/l0.test/Symbol.test.s
           - ../proto/wtools/abase/l0.test/Time.test.s
           - ../proto/wtools/abase/l0.test/Typing.test.s
+          - ../proto/wtools/abase/l0.test/Units.test.s
           - ../proto/wtools/abase/l0.test/Unroll.test.s
           - ../proto/wtools/abase/l0.test/Vector.test.s
           - ../proto/wtools/abase/l1
@@ -344,37 +410,37 @@ module:
           - ../proto/wtools/atop
     submodule:
       wFiles:
-        path: npm:///wFiles
+        path: 'npm:///wFiles'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wCloner:
-        path: npm:///wcloner
+        path: 'npm:///wcloner'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wStringer:
-        path: npm:///wstringer
+        path: 'npm:///wstringer'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wTesting:
-        path: npm:///wTesting
+        path: 'npm:///wTesting'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wSelector:
-        path: npm:///wselector
+        path: 'npm:///wselector'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wTools:
-        path: hd://..
+        path: 'hd://..'
         autoExporting: 0
         enabled: 0
         criterion:
@@ -383,7 +449,7 @@ module:
       reflect.proto.debug.raw:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -397,7 +463,7 @@ module:
       reflect.proto.release.raw:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -411,7 +477,7 @@ module:
       reflect.proto.debug.compiled:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -425,7 +491,7 @@ module:
       reflect.proto.release.compiled:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -439,7 +505,7 @@ module:
       transpile.proto.raw:
         src:
           filePath:
-            path::proto: '{path::out.raw.release}'
+            'path::proto': '{path::out.raw.release}'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -454,7 +520,7 @@ module:
           filePath:
             '**.test*': false
             '**.test/**': false
-            path::proto: '{path::out.*=1}/Main.s'
+            'path::proto': '{path::out.*=1}/Main.s'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -470,7 +536,7 @@ module:
           filePath:
             '**.test*': false
             '**.test/**': false
-            path::proto: '{path::out.*=1}/Main.s'
+            'path::proto': '{path::out.*=1}/Main.s'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -485,7 +551,7 @@ module:
         src:
           filePath:
             '**.test*': true
-            path::proto: '{path::out.*=1}/Tests.test.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -500,7 +566,7 @@ module:
         src:
           filePath:
             '**.test*': true
-            path::proto: '{path::out.*=1}/Tests.test.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
           prefixPath: ''
         dst:
           prefixPath: ''
@@ -526,9 +592,9 @@ module:
       exported.files.proto.export:
         src:
           filePath:
-            path::exported.files.proto.export: ''
+            'path::exported.files.proto.export': ''
           basePath: .
-          prefixPath: path::exported.dir.proto.export
+          prefixPath: 'path::exported.dir.proto.export'
           recursive: 0
         recursive: 0
         criterion:
@@ -538,7 +604,7 @@ module:
     step:
       proto.export:
         opts:
-          export: path::export
+          export: 'path::export'
           tar: 0
         criterion:
           content: proto
@@ -546,7 +612,7 @@ module:
           - module.export
       doc.export:
         opts:
-          export: path::doc
+          export: 'path::doc'
           tar: 0
         criterion:
           content: doc
@@ -565,7 +631,7 @@ module:
           shell: npm publish
       npm.generate.debug.raw:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -576,7 +642,7 @@ module:
           - npm.generate
       npm.generate.release.raw:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -587,7 +653,7 @@ module:
           - npm.generate
       npm.generate.debug.compiled:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -598,7 +664,7 @@ module:
           - npm.generate
       npm.generate.release.compiled:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -609,7 +675,7 @@ module:
           - npm.generate
       npm.generate.proto:
         opts:
-          entryPath: path::entry.proto.no.tests
+          entryPath: 'path::entry.proto.no.tests'
           packagePath: package.json
           filesPath: '{path::proto}/**'
         criterion:
@@ -778,7 +844,7 @@ module:
           - files.delete
       clean.out.npm:
         opts:
-          filePath: path::out.*=1
+          filePath: 'path::out.*=1'
         criterion:
           debug: debug
           raw: compiled
@@ -788,24 +854,24 @@ module:
           - files.delete
       tst.proto:
         opts:
-          shell: tst {path::proto}
+          shell: 'tst {path::proto}'
         criterion:
           content: proto
       tst.debug:
         opts:
-          shell: tst {path::out.*=1}
+          shell: 'tst {path::out.*=1}'
         criterion:
           content: prime
           debug: debug
       tst.release:
         opts:
-          shell: tst {path::out.*=1}
+          shell: 'tst {path::out.*=1}'
         criterion:
           content: prime
           debug: release
       reflect.proto.debug.raw:
         opts:
-          filePath: reflector::reflect.proto.debug.raw
+          filePath: 'reflector::reflect.proto.debug.raw'
         criterion:
           tests: no.tests
           debug: debug
@@ -815,7 +881,7 @@ module:
           - files.reflect
       reflect.proto.release.raw:
         opts:
-          filePath: reflector::reflect.proto.release.raw
+          filePath: 'reflector::reflect.proto.release.raw'
         criterion:
           tests: no.tests
           debug: release
@@ -825,7 +891,7 @@ module:
           - files.reflect
       reflect.proto.debug.compiled:
         opts:
-          filePath: reflector::reflect.proto.debug.compiled
+          filePath: 'reflector::reflect.proto.debug.compiled'
         criterion:
           tests: no.tests
           debug: debug
@@ -835,7 +901,7 @@ module:
           - files.reflect
       reflect.proto.release.compiled:
         opts:
-          filePath: reflector::reflect.proto.release.compiled
+          filePath: 'reflector::reflect.proto.release.compiled'
         criterion:
           tests: no.tests
           debug: release
@@ -845,8 +911,8 @@ module:
           - files.reflect
       transpile.proto.raw:
         opts:
-          entry: path::entry.proto.no.tests
-          filePath: reflector::transpile.proto.raw
+          entry: 'path::entry.proto.no.tests'
+          filePath: 'reflector::transpile.proto.raw'
         criterion:
           raw: raw
           debug: release
@@ -855,8 +921,8 @@ module:
           - files.transpile
       transpile.proto.no.tests.compiled.debug:
         opts:
-          entry: path::entry.proto.*=1
-          filePath: reflector::transpile.proto.no.tests.compiled.debug
+          entry: 'path::entry.proto.*=1'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.debug'
         criterion:
           tests: no.tests
           raw: compiled
@@ -866,8 +932,8 @@ module:
           - files.transpile
       transpile.proto.no.tests.compiled.release:
         opts:
-          entry: path::entry.proto.*=1
-          filePath: reflector::transpile.proto.no.tests.compiled.release
+          entry: 'path::entry.proto.*=1'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.release'
         criterion:
           tests: no.tests
           raw: compiled
@@ -877,9 +943,9 @@ module:
           - files.transpile
       transpile.proto.only.tests.compiled.debug:
         opts:
-          entry: path::entry.proto.*=1
+          entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: reflector::transpile.proto.only.tests.compiled.debug
+          filePath: 'reflector::transpile.proto.only.tests.compiled.debug'
         criterion:
           tests: only.tests
           raw: compiled
@@ -889,9 +955,9 @@ module:
           - files.transpile
       transpile.proto.only.tests.compiled.release:
         opts:
-          entry: path::entry.proto.*=1
+          entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: reflector::transpile.proto.only.tests.compiled.release
+          filePath: 'reflector::transpile.proto.only.tests.compiled.release'
         criterion:
           tests: only.tests
           raw: compiled
@@ -901,7 +967,7 @@ module:
           - files.transpile
       exported.proto.export:
         opts:
-          filePath: reflector::exported.proto.export
+          filePath: 'reflector::exported.proto.export'
         criterion:
           generated: 1
           content: proto
@@ -910,7 +976,7 @@ module:
           - files.reflect
       exported.files.proto.export:
         opts:
-          filePath: reflector::exported.files.proto.export
+          filePath: 'reflector::exported.files.proto.export'
         criterion:
           generated: 1
           content: proto
@@ -920,31 +986,31 @@ module:
     build:
       proto.export:
         steps:
-          - step::proto.export
+          - 'step::proto.export'
         criterion:
           content: proto
           export: 1
       doc.export:
         steps:
-          - step::doc.export
+          - 'step::doc.export'
         criterion:
           content: doc
           export: 1
       npm.export:
         steps:
-          - step::npm.publish
+          - 'step::npm.publish'
         criterion:
           content: npm
           export: 1
       export:
         steps:
-          - build::proto.export
+          - 'build::proto.export'
         criterion:
           default: 1
           export: 1
       debug:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - reflect.proto.*=1
         criterion:
           default: 1
@@ -953,7 +1019,7 @@ module:
           content: prime
       compiled.debug:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
         criterion:
@@ -962,7 +1028,7 @@ module:
           content: prime
       raw.release:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.raw
         criterion:
           debug: release
@@ -970,7 +1036,7 @@ module:
           content: prime
       release:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
         criterion:
@@ -1008,21 +1074,21 @@ module:
           conent: proto
       all:
         steps:
-          - build::debug
-          - build::compiled.debug
-          - build::raw.release
-          - build::release
-          - build::npm.*=5
+          - 'build::debug'
+          - 'build::compiled.debug'
+          - 'build::raw.release'
+          - 'build::release'
+          - 'build::npm.*=5'
     exported:
       proto.export:
         version: 0.9.0
         recursive: 0
         withIntegrated: 2
         tar: 0
-        exportedReflector: reflector::exported.proto.export
-        exportedFilesReflector: reflector::exported.files.proto.export
-        exportedDirPath: path::exported.dir.proto.export
-        exportedFilesPath: path::exported.files.proto.export
+        exportedReflector: 'reflector::exported.proto.export'
+        exportedFilesReflector: 'reflector::exported.files.proto.export'
+        exportedDirPath: 'path::exported.dir.proto.export'
+        exportedFilesPath: 'path::exported.files.proto.export'
         criterion:
           content: proto
           export: 1
@@ -1094,20 +1160,20 @@ module:
         criterion:
           predefined: 1
       repository:
-        path: git+https:///github.com/Wandalen/wTools.git
+        path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
         path:
-          - git+https:///github.com/Wandalen/wTools.git
-          - npm:///wtools.experiment
+          - 'git+https:///github.com/Wandalen/wTools.git'
+          - 'npm:///wtools.experiment'
       bugtracker:
-        path: https:///github.com/Wandalen/wTools/issues
+        path: 'https:///github.com/Wandalen/wTools/issues'
       in:
         path: .
       out:
         path: out
       temp:
         path:
-          - path::out
+          - 'path::out'
           - package-lock.json
           - package.json
           - node_modules
@@ -1147,7 +1213,7 @@ module:
         criterion:
           tests: no.tests
           content: proto
-        path: proto/{path::entry}
+        path: 'proto/{path::entry}'
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -1178,37 +1244,37 @@ module:
         path: '{path::out.*=}/source/Index.s'
     submodule:
       wFiles:
-        path: npm:///wFiles
+        path: 'npm:///wFiles'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wCloner:
-        path: npm:///wcloner
+        path: 'npm:///wcloner'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wStringer:
-        path: npm:///wstringer
+        path: 'npm:///wstringer'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wTesting:
-        path: npm:///wTesting
+        path: 'npm:///wTesting'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wSelector:
-        path: npm:///wselector
+        path: 'npm:///wselector'
         autoExporting: 0
         enabled: 0
         criterion:
           development: 1
       wTools:
-        path: hd://.
+        path: 'hd://.'
         autoExporting: 0
         enabled: 0
         criterion:
@@ -1217,7 +1283,7 @@ module:
       reflect.proto.debug.raw:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
         criterion:
           tests: no.tests
           debug: debug
@@ -1228,7 +1294,7 @@ module:
       reflect.proto.release.raw:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
         criterion:
           tests: no.tests
           debug: release
@@ -1239,7 +1305,7 @@ module:
       reflect.proto.debug.compiled:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
         criterion:
           tests: no.tests
           debug: debug
@@ -1250,7 +1316,7 @@ module:
       reflect.proto.release.compiled:
         src:
           filePath:
-            path::proto: '{path::out.*=1}/source'
+            'path::proto': '{path::out.*=1}/source'
         criterion:
           tests: no.tests
           debug: release
@@ -1261,7 +1327,7 @@ module:
       transpile.proto.raw:
         src:
           filePath:
-            path::proto: '{path::out.raw.release}'
+            'path::proto': '{path::out.raw.release}'
         criterion:
           raw: raw
           debug: release
@@ -1273,7 +1339,7 @@ module:
           filePath:
             '**.test*': 0
             '**.test/**': 0
-            path::proto: '{path::out.*=1}/Main.s'
+            'path::proto': '{path::out.*=1}/Main.s'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1286,7 +1352,7 @@ module:
           filePath:
             '**.test*': 0
             '**.test/**': 0
-            path::proto: '{path::out.*=1}/Main.s'
+            'path::proto': '{path::out.*=1}/Main.s'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1298,7 +1364,7 @@ module:
         src:
           filePath:
             '**.test*': 1
-            path::proto: '{path::out.*=1}/Tests.test.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1310,7 +1376,7 @@ module:
         src:
           filePath:
             '**.test*': 1
-            path::proto: '{path::out.*=1}/Tests.test.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1321,7 +1387,7 @@ module:
     step:
       proto.export:
         opts:
-          export: path::export
+          export: 'path::export'
           tar: 0
         criterion:
           content: proto
@@ -1329,7 +1395,7 @@ module:
           - module.export
       doc.export:
         opts:
-          export: path::doc
+          export: 'path::doc'
           tar: 0
         criterion:
           content: doc
@@ -1348,7 +1414,7 @@ module:
           shell: npm publish
       npm.generate.debug.raw:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -1359,7 +1425,7 @@ module:
           - npm.generate
       npm.generate.release.raw:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -1370,7 +1436,7 @@ module:
           - npm.generate
       npm.generate.debug.compiled:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -1381,7 +1447,7 @@ module:
           - npm.generate
       npm.generate.release.compiled:
         opts:
-          entryPath: path::entry.out.*=1
+          entryPath: 'path::entry.out.*=1'
           packagePath: '{path::out.*=1}/package.json'
           filesPath: '{path::out.*=1}/source/**'
         criterion:
@@ -1392,7 +1458,7 @@ module:
           - npm.generate
       npm.generate.proto:
         opts:
-          entryPath: path::entry.proto.no.tests
+          entryPath: 'path::entry.proto.no.tests'
           packagePath: package.json
           filesPath: '{path::proto}/**'
         criterion:
@@ -1561,7 +1627,7 @@ module:
           - files.delete
       clean.out.npm:
         opts:
-          filePath: path::out.*=1
+          filePath: 'path::out.*=1'
         criterion:
           debug: debug
           raw: compiled
@@ -1571,24 +1637,24 @@ module:
           - files.delete
       tst.proto:
         opts:
-          shell: tst {path::proto}
+          shell: 'tst {path::proto}'
         criterion:
           content: proto
       tst.debug:
         opts:
-          shell: tst {path::out.*=1}
+          shell: 'tst {path::out.*=1}'
         criterion:
           content: prime
           debug: debug
       tst.release:
         opts:
-          shell: tst {path::out.*=1}
+          shell: 'tst {path::out.*=1}'
         criterion:
           content: prime
           debug: release
       reflect.proto.debug.raw:
         opts:
-          filePath: reflector::reflect.proto.debug.raw
+          filePath: 'reflector::reflect.proto.debug.raw'
         criterion:
           tests: no.tests
           debug: debug
@@ -1598,7 +1664,7 @@ module:
           - files.reflect
       reflect.proto.release.raw:
         opts:
-          filePath: reflector::reflect.proto.release.raw
+          filePath: 'reflector::reflect.proto.release.raw'
         criterion:
           tests: no.tests
           debug: release
@@ -1608,7 +1674,7 @@ module:
           - files.reflect
       reflect.proto.debug.compiled:
         opts:
-          filePath: reflector::reflect.proto.debug.compiled
+          filePath: 'reflector::reflect.proto.debug.compiled'
         criterion:
           tests: no.tests
           debug: debug
@@ -1618,7 +1684,7 @@ module:
           - files.reflect
       reflect.proto.release.compiled:
         opts:
-          filePath: reflector::reflect.proto.release.compiled
+          filePath: 'reflector::reflect.proto.release.compiled'
         criterion:
           tests: no.tests
           debug: release
@@ -1628,8 +1694,8 @@ module:
           - files.reflect
       transpile.proto.raw:
         opts:
-          entry: path::entry.proto.no.tests
-          filePath: reflector::transpile.proto.raw
+          entry: 'path::entry.proto.no.tests'
+          filePath: 'reflector::transpile.proto.raw'
         criterion:
           raw: raw
           debug: release
@@ -1638,8 +1704,8 @@ module:
           - files.transpile
       transpile.proto.no.tests.compiled.debug:
         opts:
-          entry: path::entry.proto.*=1
-          filePath: reflector::transpile.proto.no.tests.compiled.debug
+          entry: 'path::entry.proto.*=1'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.debug'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1649,8 +1715,8 @@ module:
           - files.transpile
       transpile.proto.no.tests.compiled.release:
         opts:
-          entry: path::entry.proto.*=1
-          filePath: reflector::transpile.proto.no.tests.compiled.release
+          entry: 'path::entry.proto.*=1'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.release'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1660,9 +1726,9 @@ module:
           - files.transpile
       transpile.proto.only.tests.compiled.debug:
         opts:
-          entry: path::entry.proto.*=1
+          entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: reflector::transpile.proto.only.tests.compiled.debug
+          filePath: 'reflector::transpile.proto.only.tests.compiled.debug'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1672,9 +1738,9 @@ module:
           - files.transpile
       transpile.proto.only.tests.compiled.release:
         opts:
-          entry: path::entry.proto.*=1
+          entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: reflector::transpile.proto.only.tests.compiled.release
+          filePath: 'reflector::transpile.proto.only.tests.compiled.release'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1685,31 +1751,31 @@ module:
     build:
       proto.export:
         steps:
-          - step::proto.export
+          - 'step::proto.export'
         criterion:
           content: proto
           export: 1
       doc.export:
         steps:
-          - step::doc.export
+          - 'step::doc.export'
         criterion:
           content: doc
           export: 1
       npm.export:
         steps:
-          - step::npm.publish
+          - 'step::npm.publish'
         criterion:
           content: npm
           export: 1
       export:
         steps:
-          - build::proto.export
+          - 'build::proto.export'
         criterion:
           default: 1
           export: 1
       debug:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - reflect.proto.*=1
         criterion:
           default: 1
@@ -1718,7 +1784,7 @@ module:
           content: prime
       compiled.debug:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
         criterion:
@@ -1727,7 +1793,7 @@ module:
           content: prime
       raw.release:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.raw
         criterion:
           debug: release
@@ -1735,7 +1801,7 @@ module:
           content: prime
       release:
         steps:
-          - step::clean.out*=2
+          - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
         criterion:
@@ -1773,11 +1839,11 @@ module:
           conent: proto
       all:
         steps:
-          - build::debug
-          - build::compiled.debug
-          - build::raw.release
-          - build::release
-          - build::npm.*=5
+          - 'build::debug'
+          - 'build::compiled.debug'
+          - 'build::raw.release'
+          - 'build::release'
+          - 'build::npm.*=5'
     consistency:
       ../.ex.will.yml:
         hash: 349ff2e8b6504ea27d65b18daa7694d7

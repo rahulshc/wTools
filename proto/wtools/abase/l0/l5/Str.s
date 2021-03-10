@@ -18,7 +18,7 @@ function strQuote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
-  _.assertMapHasOnly( o, strQuote.defaults );
+  _.map.assertHasOnly( o, strQuote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -31,10 +31,10 @@ function strQuote( o )
 
   let src = o.src;
 
-  if( !_.primitiveIs( src ) )
-  src = _.toStr( src );
+  if( !_.primitive.is( src ) )
+  src = _.entity.exportString( src );
 
-  _.assert( _.primitiveIs( src ) );
+  _.assert( _.primitive.is( src ) );
 
   let result = o.quote + String( src ) + o.quote;
 
@@ -56,7 +56,7 @@ function strUnquote( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strUnquote.defaults.quote;
-  _.assertMapHasOnly( o, strUnquote.defaults );
+  _.map.assertHasOnly( o, strUnquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -87,9 +87,9 @@ strUnquote.defaults =
  * The routine `strQuotePairsNormalize` analyzes source String or Array and creates an Array of arrays of pairs of quotes.
  * Returns an array with arrays of pairs of quotes.
  *
- * @param { String|Array|_.boolLikeTrue } quote -
+ * @param { String|Array|_.bool.likeTrue } quote -
  * String : String to add matching pairs to.
- * _.boolLikeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
+ * _.bool.likeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
  * Array of strings : Creates matching quotes for strings.
  * Array of arrays of strings : Checks to be exactly 2 elements in array & adds them to the result array.
  *
@@ -151,7 +151,7 @@ strUnquote.defaults =
 function strQuotePairsNormalize( quote )
 {
 
-  if( ( _.boolLike( quote ) && quote ) )
+  if( ( _.bool.like( quote ) && quote ) )
   quote = strQuoteAnalyze.defaults.quote;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -224,7 +224,7 @@ function strQuoteAnalyze( o )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuoteAnalyze.defaults.quote;
-  _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
+  _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );
@@ -314,7 +314,7 @@ strQuoteAnalyze.defaults =
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -399,7 +399,7 @@ function _strLeftSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -502,7 +502,7 @@ aa_bb_bb|b|_cc_cc
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //   _.assert( _.strIs( src ) );
 //
-//   if( _.numberIs( range ) )
+//   if( _.number.is( range ) )
 //   range = [ range, src.length ];
 //   else if( range === undefined )
 //   range = [ 0, src.length ];
@@ -628,7 +628,7 @@ function _strRightSingle_( src, ins, cinterval )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) );
 
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ cinterval, src.length - 1 ];
   else if( cinterval === undefined )
   cinterval = [ 0, src.length - 1 ];
@@ -766,7 +766,7 @@ function strRight_( src, ins, cinterval )
 //     _.assert( args.length === 1, 'Expects single argument' );
 //   }
 //
-//   _.routineOptions( routine, o );
+//   _.routine.options( routine, o );
 //   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //   _.assert( _.strIs( o.src ) );
@@ -846,7 +846,7 @@ function strInsideOf_head( routine, args )
     _.assert( args.length === 3, 'Expects exactly three arguments' );
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
 
   // if( _.longIs( o.begin ) && o.begin.length === 1 )
@@ -903,7 +903,7 @@ strInsideOf_body.defaults =
 
 //
 
-let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
 
 //
 
@@ -978,7 +978,7 @@ function strInsideOf__head( routine, args )
   }
 
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   o.begin = _.arrayAs( o.begin );
   o.end = _.arrayAs( o.end );
@@ -1025,7 +1025,7 @@ strInsideOf__body.defaults =
   pairing : 1, /* xxx : set to 1 */
 }
 
-let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
+let strInsideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
 
 //
 
@@ -1450,7 +1450,7 @@ function strReplace( src, ins, sub )
   //   }
   //
   //   for( let j = 0 ; j < container.length ; j++ )
-  //   if( _.numberIs( container[ j ] ) )
+  //   if( _.number.is( container[ j ] ) )
   //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
   //
   //   result[ k ] = container.join( '' );
@@ -1506,7 +1506,7 @@ function strStrip( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip, o );
+  _.routine.options( strStrip, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.arrayIs( o.src ) )
@@ -1521,12 +1521,12 @@ function strStrip( o )
     return result;
   }
 
-  if( _.boolLikeTrue( o.stripper ) )
+  if( _.bool.likeTrue( o.stripper ) )
   {
     o.stripper = strStrip.defaults.stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
@@ -1595,7 +1595,7 @@ function strStripLeft( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStripLeft, o );
+  _.routine.options( strStripLeft, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
@@ -1628,7 +1628,7 @@ function strStripRight( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStripRight, o );
+  _.routine.options( strStripRight, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
@@ -1735,14 +1735,14 @@ function strSplitsCoupledGroup( o )
   if( _.arrayIs( o ) )
   o = { splits : o }
 
-  o = _.routineOptions( strSplitsCoupledGroup, o );
+  o = _.routine.options( strSplitsCoupledGroup, o );
 
   o.prefix = _.arrayAs( o.prefix );
   o.postfix = _.arrayAs( o.postfix );
 
   _.assert( arguments.length === 1 );
-  _.assert( _.regexpsLike( o.prefix ) );
-  _.assert( _.regexpsLike( o.postfix ) );
+  _.assert( _.regexpsLikeAll( o.prefix ) );
+  _.assert( _.regexpsLikeAll( o.postfix ) );
 
   let level = 0;
   let begins = [];
@@ -1800,7 +1800,7 @@ function strSplitsUngroupedJoin( o )
 
   if( _.arrayIs( o ) )
   o = { splits : o }
-  o = _.routineOptions( strSplitsUngroupedJoin, o );
+  o = _.routine.options( strSplitsUngroupedJoin, o );
 
   let s = o.splits.length-1;
   let l = null;
@@ -1852,15 +1852,15 @@ function strSplitsQuotedRejoin_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1, 'Expects one or two arguments' );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   if( o.quoting )
   {
 
-    if( _.boolLike( o.quoting ) )
+    if( _.bool.like( o.quoting ) )
     {
       if( !o.quotingPrefixes )
       o.quotingPrefixes = [ '"' ];
@@ -1887,7 +1887,7 @@ function strSplitsQuotedRejoin_head( routine, args )
     if( Config.debug )
     {
       _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
-      _.assert( _.boolLike( o.quoting ) );
+      _.assert( _.bool.like( o.quoting ) );
       o.quotingPrefixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
       o.quotingPostfixes.forEach( ( q ) => _.assert( _.strIs( q ) ) );
     }
@@ -1990,7 +1990,7 @@ strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routineUnite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
+let strSplitsQuotedRejoin = _.routine.unite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
 
 // --
 //
@@ -2000,14 +2000,14 @@ function strSplitsDropDelimeters_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   if( _.strIs( o.delimeter ) )
   o.delimeter = [ o.delimeter ];
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2051,7 +2051,7 @@ strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routineUnite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routine.unite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
 
 // --
 //
@@ -2061,14 +2061,14 @@ function strSplitsStrip_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
-  if( o.stripping && _.boolLike( o.stripping ) )
+  if( o.stripping && _.bool.like( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
 
   return o;
@@ -2108,7 +2108,7 @@ strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routineUnite( strSplitsStrip_head, strSplitsStrip_body );
+let strSplitsStrip = _.routine.unite( strSplitsStrip_head, strSplitsStrip_body );
 
 // --
 //
@@ -2118,11 +2118,11 @@ function strSplitsDropEmpty_head( routine, args )
 {
   let o = args[ 0 ];
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2159,7 +2159,7 @@ strSplitsDropEmpty_body.defaults =
 
 //
 
-let strSplitsDropEmpty = _.routineUnite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routine.unite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
 
 // --
 //
@@ -2174,12 +2174,12 @@ function strSplitFast_head( routine, args )
   else if( _.strIs( args[ 0 ] ) )
   o = { src : args[ 0 ] }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'Expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
 
   return o;
 }
@@ -2196,7 +2196,7 @@ function strSplitFast_body( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.delimeter ) );
-  _.assert( _.boolLike( o.preservingDelimeters ) );
+  _.assert( _.bool.like( o.preservingDelimeters ) );
 
   /* */
 
@@ -2414,11 +2414,11 @@ strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routineUnite( strSplitFast_head, strSplitFast_body );
+let strSplitFast = _.routine.unite( strSplitFast_head, strSplitFast_body );
 
 _.assert( strSplitFast.head === strSplitFast_head );
 _.assert( strSplitFast.body === strSplitFast_body );
-_.assert( _.objectIs( strSplitFast.defaults ) );
+_.assert( _.object.is( strSplitFast.defaults ) );
 
 //
 
@@ -2579,16 +2579,16 @@ let head =
   strSplitsStrip.head,
   strSplitsDropEmpty.head
 ];
-let strSplit = _.routineUnite( head, strSplit_body );
+let strSplit = _.routine.unite( head, strSplit_body );
 
 _.assert( strSplit.head !== strSplitFast.head );
-_.assert( _.routineIs( strSplit.head ) );
+_.assert( _.routine.is( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
-_.assert( _.objectIs( strSplit.defaults ) );
+_.assert( _.object.is( strSplit.defaults ) );
 
 //
 
-let strSplitNonPreserving = _.routineUnite( strSplit.head, strSplit.body );
+let strSplitNonPreserving = _.routine.unite( strSplit.head, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -2732,7 +2732,7 @@ _strSplitInlined_body.defaults =
 
 //
 
-let strSplitInlined = _.routineUnite( strSplitFast_head, _strSplitInlined_body );
+let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
 //
 
@@ -2793,9 +2793,9 @@ function strSplitInlinedStereo( o )
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( strSplitInlinedStereo, o );
+  _.routine.options( strSplitInlinedStereo, o );
 
   let result = [];
   let splitted = o.src.split( o.prefix );
@@ -2903,28 +2903,363 @@ strSplitInlinedStereo.defaults =
  *
  */
 
+ function strSplitInlinedStereo_( o )
+ {
+    /*
+      New delimiter.
+      was : 'this #background:red#is#background:default# text and is not'.
+      is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
+     */
+ 
+    if( _.strIs( o ) )
+    o = { src : o };
+ 
+    _.assert( this === _ );
+    _.assert( _.strIs( o.src ) );
+    _.assert( _.object.is( o ) );
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.routine.options( strSplitInlinedStereo_, o );
+ 
+    if( o.prefix === o.postfix )
+    {
+      o.delimeter = o.prefix;
+      delete o.prefix;
+      delete o.postfix;
+      return _.strSplitInlined( o );
+    }
+  
+    let result = [];
+    let splitted = [];
+    let sr   c = o.src.slice();
+    // let replacementForQuotes = '\u{20331}';
+    let replacementForPrefix = '\u{20330}';
+    let replacementForPostfix = '\u{20331}';
+    let positionsInlined = [];
+    let positionsPrefixes = [];
+    let positionsPostfixes = [];
+    let positionsQuotesPrefix = [];
+    let positionsQuotesPostfix = [];
+    // let positionsQuotes = [];
+    let delimLeftPosition = getNextPos( src, o.prefix );
+    let delimRightPosition = getNextPos( src, o.postfix );
+  
+    if( o.quoting )
+    handleQuoting();
+  
+    let end = handleTrivial();
+    if( end !== false )
+    return end;
+  
+    if( splitted[ 0 ] )
+    result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
+  
+    for( let i = 1; i < splitted.length; i++ )
+    {
+      let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+      // [ leftOfPostfix, postfix, rightOfPostfix ]
+      // console.log( 'splitted[ i ] : ', splitted[ i ] )
+      // console.log( 'halfs : ', halfs )
+      // console.log( '-----------------' )
+  
+      if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
+      {
+        if( result[ result.length - 1 ] === undefined )
+        {
+          result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
+        }
+        else
+        {
+          let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+  
+          if( _.arrayLike( result[ result.length - 1 ] ) )
+          {
+            result.push( o.prefix + tempStr );
+          }
+          else
+          {
+            result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+          }
+        }
+        continue;
+      }
+  
+      let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+      let ordinary = halfs[ 2 ];
+  
+      _.assert( halfs.length === 3 );
+  
+      if( strip === undefined )
+      {
+        if( result.length )
+        result[ result.length-1 ] += o.prefix + splitted[ i ];
+        else
+        result.push( o.prefix + splitted[ i ] );
+      }
+      else
+      {
+        handlePreservingDelimeters( strip );
+  
+        positionsInlined.push( result.length - 1 );
+  
+        if( ordinary )
+        {
+          if( o.stripping )
+          {
+            if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
+            {
+              result.push( ordinary.trim() );
+            }
+            else
+            {
+              splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
+            }
+          }
+          else
+          {
+            result.push( ordinary );
+          }
+        }
+      }
+    }
+  
+    // if( o.quoting )
+    // {
+    //   console.log( result )
+    //   result = _.strSplitsQuotedRejoin
+    //   ({
+    //     splits : result,
+    //     quoting : 1,
+    //     quotingPrefixes : [ o.quotingPrefix ],
+    //     quotingPostfixes : [ o.quotingPostfix ],
+    //     preservingQuoting : o.preservingQuoting,
+    //     inliningQuoting : 0,
+    //   });
+    // }
+    // handleQuoting();
+  
+    if( o.preservingOrdinary && o.onOrdinary )
+    handleOnOrdinary();
+  
+    if( !o.preservingInlined )
+    removeInlined();
+  
+    if( !o.preservingOrdinary )
+    removeOrdinary();
+  
+    if( o.preservingEmpty )
+    handleEmptyLines();
+  
+    // console.log( '=================' )
+    return result;
+  
+    /* - */
+  
+    function getNextPos( str, delim )
+    {
+      return str.indexOf( delim );
+    }
+  
+    /* */
+  
+    function handleTrivial()
+    {
+      if( delimLeftPosition === -1 || delimRightPosition === -1 )
+      {
+        if( o.preservingOrdinary )
+        return [ o.src ];
+        else
+        return [];
+      }
+  
+      if( !o.preservingOrdinary && !o.preservingInlined )
+      return [];
+  
+      splitted = src.split( o.prefix );
+  
+      if( splitted.length === 1 )
+      {
+        if( o.preservingOrdinary )
+        return [ o.src ];
+        else
+        return [];
+      }
+  
+      return false;
+    }
+  
+    /* */
+  
+    function findIndexes()
+    {
+      let isQuotesIdentical = o.quotingPrefix === o.quotingPostfix;
+  
+      for( let i = 0; i < o.src.length; i++ )
+      {
+        if( o.src[ i ] === o.prefix )
+        positionsPrefixes.push( i );
+        else if( o.src[ i ] === o.postfix )
+        positionsPostfixes.push( i );
+        else if( isQuotesIdentical && o.src[ i ] === o.quotingPrefix )
+        i % 2 === 0 ? positionsQuotesPrefix.push( i ) : positionsQuotesPostfix.push( i );
+        else if( o.src[ i ] === o.quotingPrefix )
+        positionsQuotesPrefix.push( i );
+        else if( o.src[ i ] === o.quotingPostfix )
+        positionsQuotesPostfix.push( i );
+        else
+        continue;
+      }
+    }
+  
+    /* */
+  
+    function handleQuoting()
+    {
+      if( o.src.indexOf( '"' ) === -1 )
+      return;
+  
+      findIndexes();
+  
+      console.log( 'pref : ', positionsPrefixes );
+      console.log( 'post : ', positionsPostfixes );
+      console.log( 'quotesPre : ', positionsQuotesPrefix );
+      console.log( 'quotesPost : ', positionsQuotesPostfix );
+      console.log( '=================' )
+  
+      /*      0               1            2              3                       4
+        [ 'this "', [ 'background:red], '"is', [ 'background:default' ], ' text and is not' ];
+        [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' text and is not' ];
+        [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' "text and is not' ];
+      */
+  
+    }
+  
+    /* */
+  
+    function handleOnOrdinary()
+    {
+      result = result.map( ( el ) =>
+      {
+        if( _.arrayLike( el ) )
+        {
+          return el;
+        }
+        else
+        {
+          let res = o.onOrdinary( el );
+          if( res === undefined )
+          return el;
+          else
+          return res;
+        }
+      })
+    }
+  
+    /* */
+  
+    function handleEmptyLines()
+    {
+      if( _.arrayLike( result[ 0 ] ) )
+      result.unshift( '' );
+      if( _.arrayLike( result[ result.length-1 ] ) )
+      result.push( '' );
+      let len = result.length;
+      for( let i = 0; i < len; i++ )
+      {
+        if( _.arrayLike( result[ i ] ) )
+        if( _.arrayLike( result[ i + 1 ] ) )
+        {
+          result.splice( i + 1, 0, '' );
+          len++;
+        }
+      }
+    }
+  
+    /* */
+  
+    function handlePreservingDelimeters( strip )
+    {
+      if( o.preservingDelimeters )
+      {
+        if( o.stripping )
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+        {
+          return o.prefix + el.trim() + o.postfix;
+        }) : o.prefix + strip + o.postfix );
+        else
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+        {
+          return o.prefix + el + o.postfix;
+        }) : o.prefix + strip + o.postfix );
+      }
+      else
+      {
+        if( o.stripping )
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+        else
+        result.push( strip );
+      }
+    }
+  
+    /* */
+  
+    function removeInlined()
+    {
+      result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
+    }
+  
+    /* */
+  
+    function removeOrdinary()
+    {
+      result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
+    }
+ }
+ 
+strSplitInlinedStereo_.defaults =
+{
+  src : null,
+  prefix : '❮',
+  postfix : '❯',
+  onInlined : ( e ) => [ e ],
+  onOrdinary : null,
+
+  stripping : 0,
+  quoting : 0,
+  quotingPrefix : '"',
+  quotingPostfix : '"',
+
+  preservingQuoting : 1,
+  preservingEmpty : 1,
+  preservingDelimeters : 0,
+  preservingOrdinary : 1,
+  preservingInlined : 1,
+ 
+  /* qqq for Yevhen : ? */
+ 
+}
+
 // function strSplitInlinedStereo_( o )
 // {
 //   /*
 //     New delimiter.
 //     was : 'this #background:red#is#background:default# text and is not'.
-//     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
-//   */
+  //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
+  // */
 
-//   if( _.strIs( o ) )
-//   o = { src : o };
+  //   if( _.strIs( o ) )
+  //   o = { src : o };
 
-//   _.assert( this === _ );
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.objectIs( o ) );
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.routineOptions( strSplitInlinedStereo_, o );
+  //   _.assert( this === _ );
+  //   _.assert( _.strIs( o.src ) );
+  //   _.assert( _.object.is( o ) );
+  //   _.assert( arguments.length === 1, 'Expects single argument' );
+  //   _.routine.options( strSplitInlinedStereo_, o );
 
-//   if( o.prefix === o.postfix )
-//   {
-//     o.delimeter = o.prefix;
-//     delete o.prefix;
-//     delete o.postfix;
+  // if( o.prefix === o.postfix )
+  // {
+  //   o.delimeter = o.prefix;
+  //   delete o.prefix;
+  //   delete o.postfix;
 //     return _.strSplitInlined( o );
 //   }
 
@@ -3321,7 +3656,7 @@ function strFrom( src )
   if( src === undefined )
   return src;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return String( src );
 
   if( _.bufferAnyIs( src ) )

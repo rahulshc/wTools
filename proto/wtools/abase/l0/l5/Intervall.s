@@ -42,7 +42,7 @@ function has( linterval, src )
     if( src[ 1 ] > linterval[ 1 ] )
     return false;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( src < linterval[ 0 ] )
     return false;
@@ -57,86 +57,9 @@ function has( linterval, src )
   return true;
 }
 
-// //
-//
-// function inInclusive( linterval, srcNumber )
-// {
-//
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inExclusive( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
-//
-//   if( srcNumber <= linterval[ 0 ] )
-//   return false;
-//   if( srcNumber > linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveLeft( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveRight( linterval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( linterval ) );
-//   _.assert( _.numberIs( srcNumber ) );
-//
-//   if( srcNumber < linterval[ 0 ] )
-//   return false;
-//   if( srcNumber >= linterval[ 0 ] + linterval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-
 //
 
-function sureInInterval( src, linterval )
+function sureIn( src, linterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -148,7 +71,7 @@ function sureInInterval( src, linterval )
 
 //
 
-function assertInInterval( src, linterval )
+function assertIn( src, linterval )
 {
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
@@ -166,7 +89,7 @@ function fromSingle( linterval )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( linterval ) )
+  if( _.number.is( linterval ) )
   return [ linterval, 1 ];
 
   _.assert( _.longIs( linterval ) );
@@ -181,12 +104,12 @@ function fromSingle( linterval )
     return [ 0, 1 ];
   }
 
-  _.assert( _.numberIs( linterval[ 0 ] ) );
+  _.assert( _.number.is( linterval[ 0 ] ) );
 
   if( linterval[ 1 ] === undefined )
   return [ linterval[ 0 ], 1 ];
 
-  _.assert( _.numberIs( linterval[ 1 ] ) );
+  _.assert( _.number.is( linterval[ 1 ] ) );
 
   return linterval;
 }
@@ -199,7 +122,7 @@ function clamp( dstRange, clampRange )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.intervalIs( dstRange ) );
 
-  if( _.numberIs( clampRange ) )
+  if( _.number.is( clampRange ) )
   {
     dstRange[ 0 ] = clampRange;
     dstRange[ 1 ] = 0;
@@ -233,7 +156,7 @@ function countElements( linterval, increment )
   if( increment === undefined )
   increment = 1;
 
-  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+  _.assert( _.number.is( increment ), 'Increment should has a number value' );
 
   if( increment )
   {
@@ -268,7 +191,7 @@ function lastGet( linterval, options )
 
   if( options )
   {
-    _.assert( _.objectLike( options ) );
+    _.assert( _.object.like( options ) );
     if( options.increment === undefined )
     options.increment = 1;
   }
@@ -282,7 +205,7 @@ function lastGet( linterval, options )
   {
     return linterval.last;
   }
-  _.assert( 0, 'unexpected type of linterval', _.strType( linterval ) );
+  _.assert( 0, 'unexpected type of linterval', _.entity.strType( linterval ) );
 
 }
 
@@ -324,15 +247,10 @@ let Extension =
   isEmpty,
   isPopulated,
 
-  // inInclusive,
-  // inExclusive,
-  // inInclusiveLeft,
-  // inInclusiveRight,
-  // has : inInclusiveLeft,
   has,
 
-  sureInInterval,
-  assertInInterval,
+  sureIn,
+  assertIn,
 
   // maker
 
@@ -352,7 +270,6 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-// _.assert( _.linterval === undefined ); /* aaa2 for Dmytro : rename in documentation */ /* Dmytro : renamed */
 _.assert( _.linterval !== undefined );
 _.mapSupplement( Self, _.linterval );
 _.linterval = Self;

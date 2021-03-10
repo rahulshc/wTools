@@ -11,11 +11,216 @@ let Self = _.entity = _.entity || Object.create( null );
 //
 // --
 
+function identicalShallow( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'Expects 2 arguments' );
+
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( src1 === src2 )
+  return true;
+
+  if( _.hashMap.like( src1 ) )
+  {
+    /*
+      - hashmap
+    */
+    return _.hashMap.identicalShallow( src1, src2 )
+  }
+  else if( _.set.like( src1 ) )
+  {
+    /*
+      - set
+    */
+    return _.set.identicalShallow( src1, src2 );
+  }
+  else if( _.bufferAnyIs( src1 ) )
+  {
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersIdenticalShallow( src1, src2 );
+  }
+  else if( _.countable.is( src1 ) )
+  {
+    /*
+      - countable
+      - vector
+      - long
+      - array
+    */
+    return _.countable.identicalShallow( src1, src2 );
+  }
+  else if( _.object.like( src1 ) )
+  {
+    /*
+      - objectLike
+      - object
+
+      - Map
+      - Auxiliary
+      - MapPure
+      - MapPolluted
+      - AuxiliaryPolluted
+      - MapPrototyped
+      - AuxiliaryPrototyped
+    */
+    if( _.date.is( src1 ) )
+    {
+      return _.date.identicalShallow( src1, src2 );
+    }
+    else if( _.regexp.is( src1 ) )
+    {
+      return _.regexp.identicalShallow( src1, src2 );
+    }
+    else if( _.aux.is( src1 ) )
+    {
+      return _.aux.identicalShallow( src1, src2 );
+    }
+
+    /* non-identical objects */
+    return false;
+  }
+  else if( _.primitiveIs( src1 ) )
+  {
+    /*
+      - Symbol
+      - Number
+      - BigInt
+      - Boolean
+      - String
+    */
+
+    return _.primitive.identicalShallow( src1, src2 );
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//
+
+function equivalentShallow( src1, src2, options )
+{
+  /*
+    - boolLikeTrue and boolLikeTrue - ( true, 1 )
+    - boolLikeFalse and boolLikeFalse - ( false, 0 )
+    - | number1 - number2 | <= accuracy
+    - strings that differ only in whitespaces at the start and/or at the end
+    - regexp with same source and different flags
+  */
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+  _.assert( options === undefined || _.objectLike( options ), 'Expects map of options as third argument' );
+
+  let accuracy;
+
+  if( options )
+  accuracy = options.accuracy || undefined;
+
+  if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
+  {
+    /*
+      - Symbol
+      - Number
+      - BigInt
+      - Boolean
+      - String
+    */
+    return _.primitive.equivalentShallow( src1, src2, accuracy );
+  }
+
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( src1 === src2 )
+  return true;
+
+  if( _.hashMap.like( src1 ) )
+  {
+    /*
+      - hashmap
+    */
+    return _.hashMap.equivalentShallow( src1, src2 )
+  }
+  else if( _.set.like( src1 ) )
+  {
+    /*
+      - set
+    */
+    return _.set.equivalentShallow( src1, src2 );
+  }
+  else if( _.bufferAnyIs( src1 ) )
+  {
+    /*
+      - BufferNode
+      - BufferRaw
+      - BufferRawShared
+      - BufferTyped
+      - BufferView
+      - BufferBytes
+    */
+    return _.buffersEquivalentShallow( src1, src2 );
+  }
+  else if( _.countable.is( src1 ) )
+  {
+    /*
+      - countable
+      - vector
+      - long
+      - array
+    */
+    return _.countable.equivalentShallow( src1, src2 );
+  }
+  else if( _.object.like( src1 ) )
+  {
+    /*
+      - objectLike
+      - object
+
+      - Map
+      - Auxiliary
+      - MapPure
+      - MapPolluted
+      - AuxiliaryPolluted
+      - MapPrototyped
+      - AuxiliaryPrototyped
+    */
+    if( _.date.is( src1 ) )
+    {
+      return _.date.equivalentShallow( src1, src2 );
+    }
+    else if( _.regexp.is( src1 ) )
+    {
+      return _.regexp.equivalentShallow( src1, src2 );
+    }
+    else if( _.aux.is( src1 ) )
+    {
+      return _.aux.equivalentShallow( src1, src2 );
+    }
+
+    /* non-identical objects */
+    return false;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//
+
 function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -29,15 +234,15 @@ function makeEmpty( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeEmpty( src );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.hashMapIs( src ) )
+  else if( _.hashMap.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
     return Object.create( null );
   }
@@ -49,15 +254,15 @@ function makeEmpty( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeEmpty()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
 
 }
 
@@ -67,7 +272,7 @@ function makeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -81,15 +286,15 @@ function makeUndefined( src, length )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMakeUndefined( src, length );
   }
-  else if( _.setIs( src ) )
+  else if( _.set.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.hashMapIs( src ) )
+  else if( _.hashMap.is( src ) )
   {
     return new src.constructor();
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
     return Object.create( null );
   }
@@ -101,15 +306,15 @@ function makeUndefined( src, length )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor();
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.makeUndefined()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
 }
 
 // //
@@ -126,11 +331,11 @@ function makeUndefined( src, length )
 //   {
 //     return this.tools.longMake( src );
 //   }
-//   else if( _.hashMapLike( src ) || _.setLike( src ) )
+//   else if( _.hashMap.like( src ) || _.set.like( src ) )
 //   {
 //     return new src.constructor( src );
 //   }
-//   else if( _.mapLike( src ) )
+//   else if( _.aux.is( src ) )
 //   {
 //     return _.mapShallowClone( src )
 //   }
@@ -142,11 +347,11 @@ function makeUndefined( src, length )
 //   {
 //     return undefined;
 //   }
-//   else if( !src || _.primitiveIs( src ) )
+//   else if( !src || _.primitive.is( src ) )
 //   {
 //     return src;
 //   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.make()\`` );
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
 //
 // }
 
@@ -156,7 +361,7 @@ function cloneShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -169,11 +374,11 @@ function cloneShallow( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
     return _.mapShallowClone( src )
   }
@@ -185,23 +390,23 @@ function cloneShallow( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ shallowCloneSymbol ]();
   }
-  else if( _.routineIs( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
+  else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
     return src.cloneShallow();
   }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneShallow()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
 
 }
 
@@ -211,7 +416,7 @@ function cloneDeep( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( !src || _.primitiveIs( src ) )
+  if( !src || _.primitive.is( src ) )
   {
     return src;
   }
@@ -219,11 +424,11 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routineIs( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
   {
     return src[ deepCloneSymbol ]();
   }
-  else if( _.routineIs( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
+  else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
     return src.cloneDeep();
   }
@@ -236,11 +441,11 @@ function cloneDeep( src )
     let toolsNamespace = this.tools ? this.tools : this;
     return toolsNamespace.longMake( src );
   }
-  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
     return new src.constructor( src );
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
     return _.mapShallowClone( src );
   }
@@ -252,15 +457,15 @@ function cloneDeep( src )
   // {
   //   return undefined;
   // }
-  // else if( !src || _.primitiveIs( src ) )
+  // else if( !src || _.primitive.is( src ) )
   // {
   //   return src;
   // }
-  else if( _.routineIs( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.strType( src )}\` with \`_.entity.cloneDeep()\`` );
+  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneDeep()\`` );
 
 }
 
@@ -391,7 +596,7 @@ function assign2( dst, src, onRecursive )
   let result;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length < 3 || _.routineIs( onRecursive ) );
+  _.assert( arguments.length < 3 || _.routine.is( onRecursive ) );
 
   if( src === null )
   {
@@ -399,13 +604,13 @@ function assign2( dst, src, onRecursive )
     result = src;
 
   }
-  else if( dst && _.routineIs( dst.copy ) )
+  else if( dst && _.routine.is( dst.copy ) )
   {
 
     dst.copy( src );
 
   }
-  else if( src && _.routineIs( src.clone ) )
+  else if( src && _.routine.is( src.clone ) )
   {
 
     if( dst instanceof src.constructor )
@@ -413,26 +618,26 @@ function assign2( dst, src, onRecursive )
       throw _.err( 'not tested' );
       result = src.clone( dst );
     }
-    else if( _.primitiveIs( dst ) || _.longIs( dst ) )
+    else if( _.primitive.is( dst ) || _.longIs( dst ) )
     {
       result = src.clone();
     }
     else _.assert( 0, 'unknown' );
 
   }
-  else if( src && _.routineIs( src.slice ) )
+  else if( src && _.routine.is( src.slice ) )
   {
 
     result = src.slice();
 
   }
-  else if( dst && _.routineIs( dst.set ) )
+  else if( dst && _.routine.is( dst.set ) )
   {
 
     dst.set( src );
 
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
 
     if( onRecursive )
@@ -440,7 +645,7 @@ function assign2( dst, src, onRecursive )
       result = _.mapCloneAssigning
       ({
         srcMap : src,
-        dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst,
+        dstMap : _.primitive.is( dst ) ? Object.create( null ) : dst,
         onField : onRecursive
       });
     }
@@ -509,7 +714,7 @@ function assign2FieldFromContainer( /* dstContainer, srcContainer, name, onRecur
 
   let result;
 
-  _.assert( _.strIs( name ) || _.symbolIs( name ) );
+  _.assert( _.strIs( name ) || _.symbol.is( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   let dstValue = Object.hasOwnProperty.call( dstContainer, name ) ? dstContainer[ name ] : undefined;
@@ -561,7 +766,7 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
   let result;
 
-  _.assert( _.strIs( name ) || _.symbolIs( name ) );
+  _.assert( _.strIs( name ) || _.symbol.is( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   let dstValue = dstContainer[ name ];
@@ -588,6 +793,7 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
 let ToolsExtension =
 {
+  entityIdenticalShallow : identicalShallow,
 
   makeEmpty,
   entityMakeEmpty : makeEmpty,
@@ -619,6 +825,8 @@ const deepCloneSymbol = _.entity.deepCloneSymbol;
 
 let EntityExtension =
 {
+  identicalShallow,
+  equivalentShallow,
 
   makeEmpty,
   makeUndefined,

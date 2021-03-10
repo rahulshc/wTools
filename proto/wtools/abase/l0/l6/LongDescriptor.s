@@ -18,7 +18,7 @@ _.assert( !_.withDefaultLong );
 function is_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
@@ -38,7 +38,7 @@ function is_functor( name, cls )
 function make_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   // let r = /* Dmytro : maybe, it's better Implementation, it takes into account quantity of arguments and its type */
   // {
@@ -49,7 +49,7 @@ function make_functor( name, cls )
   //     if( src === undefined || src === null )
   //     src = 0;
   //
-  //     _.assert( _.numberIs( src ) || _.longIs( src ) );
+  //     _.assert( _.number.is( src ) || _.longIs( src ) );
   //     return new cls( src );
   //   }
   // }
@@ -68,14 +68,14 @@ function make_functor( name, cls )
 function from_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
+  _.assert( _.routine.is( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
     [ name ] : function( src )
     {
       // _.assert( arguments.length === 1 ); /* Dmytro : assertion for single argument is better for from routine */
-      // _.assert( _.longIs( src ) || _.numberIs( src ) || src === undefined || src === null ); /* Dmytro : maybe, it is missed, if src is any map, then returns empty buffer */
+      // _.assert( _.longIs( src ) || _.number.is( src ) || src === undefined || src === null ); /* Dmytro : maybe, it is missed, if src is any map, then returns empty buffer */
       _.assert( arguments.length === 0 || arguments.length === 1 );
       if( src === undefined )
       return new cls()
@@ -102,11 +102,11 @@ function _longDeclare( o )
   _.assert( _.strDefined( o.name ) );
   _.assert( _.strDefined( o.secondName ) || o.secondName === null );
   _.assert( _.strDefined( o.aliasName ) || o.aliasName === null );
-  _.assert( _.routineIs( o.type ) );
-  _.assert( _.routineIs( o.make ) || o.make === null );
-  _.assert( _.routineIs( o.from ) || o.from === null );
-  _.assert( _.routineIs( o.is ) || o.make === null );
-  _.assert( _.boolIs( o.isTyped ) );
+  _.assert( _.routine.is( o.type ) );
+  _.assert( _.routine.is( o.make ) || o.make === null );
+  _.assert( _.routine.is( o.from ) || o.from === null );
+  _.assert( _.routine.is( o.is ) || o.make === null );
+  _.assert( _.bool.is( o.isTyped ) );
   _.assert( LongDescriptors[ o.name ] === undefined );
 
   if( !o.is )
@@ -154,14 +154,14 @@ function _argumentsArrayMake()
 let LongTypeToDescriptorsHash = new HashMap();
 let LongDescriptors = Object.create( null );
 
-_.assert( _.routineIs( _.arrayMake ) );
-_.assert( _.routineIs( _.unrollMake ) );
+_.assert( _.routine.is( _.arrayMake ) );
+_.assert( _.routine.is( _.unrollMake ) );
 
 // _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMake, is : _.arrayIs, isTyped : false });
 _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayFrom, is : _.arrayIs, isTyped : false });
 _longDeclare({ name : 'Unroll', type : Array, make : _.unrollMake, from : _.unrollFrom, is : _.unrollIs, isTyped : false });
-_longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayMake, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false });
-// _longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayFrom, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false }); /* Dmytro : wrong function make */
+_longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArray.make, from : _.argumentsArray.from, is : _.argumentsArray.is, isTyped : false });
+// _longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArray.from, from : _.argumentsArray.from, is : _.argumentsArray.is, isTyped : false }); /* Dmytro : wrong function make */
 
 _longDeclare({ name : 'U32x', secondName : 'Uint32', type : _global.U32x, isTyped : true });
 _longDeclare({ name : 'U16x', secondName : 'Uint16', type : _global.U16x, isTyped : true });

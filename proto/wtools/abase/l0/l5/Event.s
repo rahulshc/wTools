@@ -23,7 +23,7 @@ function _chainGenerate( args )
 
   chain.push([ _.event.nameValueFrom( args[ args.length-2 ] ), args[ args.length-1 ] ]);
 
-  _.assert( _.routineIs( args[ args.length-1 ] ) );
+  _.assert( _.routine.is( args[ args.length-1 ] ) );
 
   return chain;
 
@@ -32,14 +32,13 @@ function _chainGenerate( args )
   function chainMake( a )
   {
     let e1 = _.event.nameValueFrom( args[ a ] );
-    // let e2 = _.event.nameValueFrom( args[ a+1 ] ); /* Dmytro : the variable is not used in scope */
     chain.push([ e1, on ]);
     function on()
     {
       let self = this;
       let next = chain[ a + 1 ];
 
-      if( _.routineIs( self.on ) )
+      if( _.routine.is( self.on ) )
       {
         /*
             Dmytro : it is strange code because the owners of ehandler can be classes like Process.
@@ -60,11 +59,6 @@ function _chainGenerate( args )
         _.event.off( self, { callbackMap : { [ e1 ] : on } } );
       }
 
-      // this.on( next[ 0 ], next[ 1 ] ); /* Dmytro : previous implementation, use routines of _.process */
-      // if( this.eventHasHandler( e1, on ) )
-      // {
-      //   this.off( e1, on );
-      // }
     }
   }
 }
@@ -87,7 +81,7 @@ function _chainValidate( chain )
   {
     _.assert( _.event.nameIs( chain[ i ] ) );
   }
-  _.assert( _.routineIs( chain[ chain.length - 1 ] ) );
+  _.assert( _.routine.is( chain[ chain.length - 1 ] ) );
 
   return true;
 }
@@ -101,8 +95,8 @@ function _callbackMapValidate( callbackMap )
   for( let k in callbackMap )
   {
     let callback = callbackMap[ k ];
-    _.assert( _.routineIs( callback ) || _.longIs( callback ) );
-    if( _.routineIs( callback ) )
+    _.assert( _.routine.is( callback ) || _.longIs( callback ) );
+    if( _.routine.is( callback ) )
     continue;
     _.event._chainValidate( callback );
   }
@@ -156,13 +150,13 @@ function chainIs( src )
 
 //
 
-/* xxx aaa for Dmytro : introduce mini-class _.event.Chain() // Dmytro : introduced, covered
+/*
 _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
 ->
 _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
-aaa for Dmytro : restrict routines _.*.on() to accept 2 arguments // Dmytro : restricted for _.event before I'd seen this task, improved routine on_head for another namespaces
 */
 
+/* qqq for Dmytro : remove the class */
 function Name( name )
 {
   if( !( this instanceof Name ) )
@@ -248,18 +242,9 @@ function on_head( routine, args )
   _.assert( _.longIs( args ) );
   _.assert( arguments.length === 2 );
 
-  // _.assert( args.length >= 1 );
-
-  // if( args.length > 1 ) /* Dmytro : deprecated feature, should be deleted */
-  // {
-  //   _.assert( _.strIs( args[ 0 ] ) );
-  //   o = Object.create( null );
-  //   o.callbackMap = Object.create( null );
-  //   o.callbackMap[ args[ 0 ] ] = _.longOnly( args, 1 );
-  // }
   if( args.length === 2 )
   {
-    _.assert( _.routineIs( args[ 1 ] ) );
+    _.assert( _.routine.is( args[ 1 ] ) );
 
     o = Object.create( null );
     o.callbackMap = Object.create( null );
@@ -267,8 +252,6 @@ function on_head( routine, args )
     if( _.event.chainIs( args[ 0 ] ) )
     {
       let chain = args[ 0 ].chain;
-      // debugger; /* xxx aaa for Dmytro : check */ /* Dmytro : vector of events should be sliced from first argument */
-      // o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, 1 );
       o.callbackMap[ chain[ 0 ].value ] = _.longOnly_( null, chain, [ 1, chain.length - 1 ] );
       o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
     }
@@ -313,11 +296,11 @@ function on( ehandler, o )
   // if( _.longIs( o.callbackMap ) )
   // o.callbackMap = callbackMapFromChain( o.callbackMap );
 
-  _.routineOptions( on, o );
+  _.routine.options( on, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -330,7 +313,7 @@ function on( ehandler, o )
     if( _.longIs( callback ) )
     callback = _.event._chainToCallback([ c, ... callback ]);
 
-    _.assert( _.routineIs( callback ) );
+    _.assert( _.routine.is( callback ) );
 
     callback = callbackOn_functor.call( descriptors[ c ], callback );
     descriptors[ c ].off = _.event.off_functor.call( descriptors[ c ], ehandler, { callbackMap : { [ c ] : callback } } );
@@ -373,7 +356,6 @@ function on( ehandler, o )
     descriptor.enabled = true;
     descriptor.first = o.first; /* Dmytro : please, explain, does it need to save original value? */
     descriptor.callbackMap = o.callbackMap; /* Dmytro : please, explain, does it need to save link to original callback map? */
-
     return descriptor;
   }
 }
@@ -433,12 +415,12 @@ on.defaults =
  * // log : []
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Array with callbacks.
  * @param { Boolean|BoolLike } o.first - If it has value `true`, then callback prepends to callback queue.
  * Otherwise, callback appends to callback queue.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function once
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.
@@ -454,11 +436,11 @@ on.defaults =
 function once( ehandler, o )
 {
 
-  _.routineOptions( once, o );
+  _.routine.options( once, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   let descriptors = Object.create( null );
@@ -471,7 +453,7 @@ function once( ehandler, o )
     if( _.longIs( callback ) )
     {
       let length = callback.length;
-      _.assert( _.routineIs( callback[ length - 1 ] ), 'Expects routine to execute.' );
+      _.assert( _.routine.is( callback[ length - 1 ] ), 'Expects routine to execute.' );
 
       let name = callback[ length - 2 ] || c;
       name = name.value !== undefined ? name.value : name;
@@ -484,7 +466,7 @@ function once( ehandler, o )
     }
     descriptors[ c ].off = _.event.off_functor.call( descriptors[ c ], ehandler, { callbackMap : { [ c ] : callback } } );
 
-    _.assert( _.routineIs( callback ) );
+    _.assert( _.routine.is( callback ) );
 
     callbackAdd( ehandler, c, callback );
   }
@@ -543,16 +525,6 @@ once.defaults =
   first : 0,
 };
 
-//  aaa for Dmytro : implement /* Dmytro : implemented */
-// let descriptor = _.procedure.on( 'terminationBegin', _handleProcedureTerminationBegin );
-// descriptor.off();
-// descriptor.enabled = false;
-// _.procedure.eventHas( descriptor ); /* true */
-// _.procedure.eventHas( descriptor.callback ); /* true */
-// descriptoro.enabled = true;
-// _.procedure.eventHas( descriptor ); /* true */
-// _.procedure.eventHas( descriptor.callback ); /* true */
-
 //
 
 /**
@@ -577,10 +549,10 @@ once.defaults =
  * // log : 0
  *
  * @param { Object } ehandler - The events handler with map of available events.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
  * [ callback ] can be a Function or Null. If null is provided, routine removes all callbacks.
- * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @returns { Map|Aux } - Returns options map {-o-}.
  * @function off
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-ehandler-} is not an Object.
@@ -618,11 +590,11 @@ function off_head( routine, args )
 function off( ehandler, o )
 {
 
-  _.routineOptions( off, o );
+  _.routine.options( off, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.objectIs( ehandler ) );
-  _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( _.object.is( ehandler ) );
+  _.assert( _.object.is( ehandler.events ) );
+  _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   for( let c in o.callbackMap )
@@ -696,9 +668,9 @@ function eventHasHandler_head( routine, args )
 function eventHasHandler( ehandler, o )
 {
 
-  _.routineOptions( eventHasHandler, o );
+  _.routine.options( eventHasHandler, o );
   _.assert( _.strIs( o.eventName ) );
-  _.assert( _.routineIs( o.eventHandler ) );
+  _.assert( _.routine.is( o.eventHandler ) );
   _.assert( _.mapIs( ehandler ) );
   _.assert( _.mapIs( ehandler.events ) );
   _.assert( arguments.length === 2 );
@@ -727,7 +699,7 @@ function eventGive( ehandler, o )
   if( _.strIs( o ) )
   o = { event : o }
 
-  _.routineOptions( eventGive, o );
+  _.routine.options( eventGive, o );
 
   if( o.onError === null )
   o.onError = onError;
@@ -754,7 +726,6 @@ function eventGive( ehandler, o )
       visited.push( callback );
       try
       {
-        // callback.apply( _.process, o.args ); /* Dmytro : it allows use different handlers instead of _.process._ehandler */
         callback.apply( ehandler, o.args );
       }
       catch( err )

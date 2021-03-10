@@ -86,8 +86,8 @@ function _of( test )
   var got = _.property.of( new Date(), { onlyEnumerable : 0, onlyOwn : 0 } );
   test.true( Object.keys( got ).length !== 0 );
   test.true( got.constructor.name === 'Date' );
-  test.true( _.routineIs( got.getDate ) );
-  test.true( _.routineIs( got.toString ) );
+  test.true( _.routine.is( got.getDate ) );
+  test.true( _.routine.is( got.toString ) );
 
   /**/
 
@@ -236,7 +236,7 @@ function onlyExplicit( test )
   test.identical( got.a, 1 );
 
   var got = _.property.onlyExplicit( new Date() );
-  test.true( _.routineIs( got.getDate ) );
+  test.true( _.routine.is( got.getDate ) );
   test.identical( got.constructor.name, 'Date' );
 
   /* */
@@ -323,13 +323,13 @@ function routines( test )
 
   var got = _.property.routines( { a : 1, b : function(){} } );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.b ) );
+  test.true( _.routine.is( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.property.routines( a );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.a ) );
+  test.true( _.routine.is( got.a ) );
 
   var got = _.property.routines( new Date() );
   test.identical( got, {} );
@@ -345,14 +345,14 @@ function routines( test )
 
   var got = _.property.routines( a );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.c ) );
+  test.true( _.routine.is( got.c ) );
 
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.property.routines( a );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.c ) );
+  test.true( _.routine.is( got.c ) );
 
   /* enumerable : 0 */
 
@@ -360,16 +360,16 @@ function routines( test )
   var o = { onlyEnumerable : 0 };
   var got = _.property.routines( a, o );
   test.true( Object.keys( got ).length > 1 )
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.c ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
 
   /**/
 
   a.y = function(){}
   var got = _.property.routines( a, { onlyOwn : 1 } );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.y ) );
+  test.true( _.routine.is( got.y ) );
 
   /* onlyOwn : 0 */
 
@@ -378,8 +378,8 @@ function routines( test )
   Object.setPrototypeOf( a, b );
   var got = _.property.routines( a, { onlyOwn : 0 } );
   test.true( Object.keys( got ).length === 2 )
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.c ) );
+  test.true( _.routine.is( got.y ) );
+  test.true( _.routine.is( got.c ) );
 
   /* onlyOwn : 0, enumerable : 0 */
 
@@ -390,11 +390,11 @@ function routines( test )
   var o = { onlyOwn : 0, onlyEnumerable : 0 };
   var got = _.property.routines( a, o );
   test.true( Object.keys( got ).length > 3 )
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.k ) );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.y ) );
+  test.true( _.routine.is( got.c ) );
+  test.true( _.routine.is( got.k ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
 
   /* */
 
@@ -445,13 +445,13 @@ function ownRoutines( test )
 
   var got = _.property.onlyOwnRoutines( { a : 1, b : function(){} } );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.b ) );
+  test.true( _.routine.is( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.property.onlyOwnRoutines( a );
   test.true( Object.keys( got ).length === 1 )
-  test.true( _.routineIs( got.a ) );
+  test.true( _.routine.is( got.a ) );
 
   var got = _.property.routines( new Date() );
   test.identical( got, {} );
@@ -496,7 +496,7 @@ function ownRoutines( test )
   Object.defineProperty( a, 'k', { enumerable : 0, value : function(){} } );
   var got = _.property.onlyOwnRoutines( a, { onlyEnumerable : 0 } );
   test.identical( got.k, a.k );
-  test.true( _.routineIs( got.k ) );
+  test.true( _.routine.is( got.k ) );
 
   /* */
 
@@ -537,13 +537,13 @@ function onlyExplicitRoutines( test )
 
   var got = _.property.onlyExplicitRoutines( {} );
   test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
 
   var got = _.property.onlyExplicitRoutines( [] );
   test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
 
   /* */
 
@@ -551,22 +551,22 @@ function onlyExplicitRoutines( test )
 
   var got = _.property.onlyExplicitRoutines( { a : 1, b : function(){} } );
   test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-  test.true( _.routineIs( got.b ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length !== 0 );
-  test.true( _.routineIs( got.__defineGetter__ ) );
-  test.true( _.routineIs( got.__defineSetter__ ) );
-  test.true( _.routineIs( got.a ) );
+  test.true( _.routine.is( got.__defineGetter__ ) );
+  test.true( _.routine.is( got.__defineSetter__ ) );
+  test.true( _.routine.is( got.a ) );
 
   var got = _.property.onlyExplicitRoutines( new Date() );
   test.true( Object.keys( got ).length !== 0 );
   test.identical( got.constructor.name, 'Date' );
-  test.true( _.routineIs( got.getDate ) );
+  test.true( _.routine.is( got.getDate ) );
 
   /* */
 
@@ -579,14 +579,14 @@ function onlyExplicitRoutines( test )
 
   var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 1 );
-  test.true( _.routineIs( got.c ) );
+  test.true( _.routine.is( got.c ) );
 
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 1 );
-  test.true( _.routineIs( got.c ) );
+  test.true( _.routine.is( got.c ) );
 
   /**/
 
@@ -594,9 +594,9 @@ function onlyExplicitRoutines( test )
   Object.defineProperty( b, 'y', { enumerable : 0, value : function(){} } );
   var got = _.property.onlyExplicitRoutines( a );
   test.true( Object.keys( got ).length > 2 );
-  test.true( _.routineIs( got.c ) );
-  test.true( _.routineIs( got.y ) );
-  test.true( _.routineIs( got.z ) );
+  test.true( _.routine.is( got.c ) );
+  test.true( _.routine.is( got.y ) );
+  test.true( _.routine.is( got.z ) );
 
   /* */
 
@@ -1015,7 +1015,7 @@ function onlyImplicit( test )
   /* */
 
   test.case = 'arguments array';
-  var src = _.argumentsArrayMake();
+  var src = _.argumentsArray.make();
   src.a = '1';
   src[ Symbol.for( 'a' ) ] = '1';
   var exp = new HashMap();

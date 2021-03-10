@@ -15,7 +15,7 @@ function mapperFromFilter( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
   _.assert( !!routine.identity );
 
   if( routine.identity.propertyFilter )
@@ -40,7 +40,7 @@ function mapperFromFilter( routine )
   function mapper( dstContainer, srcContainer, key )
   {
     let result = routine( dstContainer, srcContainer, key );
-    _.assert( _.boolIs( result ) );
+    _.assert( _.bool.is( result ) );
     if( result === false )
     return;
     dstContainer[ key ] = srcContainer[ key ];
@@ -55,7 +55,7 @@ function mapperFromFilter( routine )
     function mapper( dstContainer, srcContainer, key )
     {
       let result = routine2( dstContainer, srcContainer, key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return;
       dstContainer[ key ] = srcContainer[ key ];
@@ -70,7 +70,7 @@ function mapperFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {
@@ -95,7 +95,7 @@ function filterFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strType( routine ) );
+  _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
 
   if( routine.identity )
   {
@@ -122,7 +122,7 @@ function transformerRegister( fi, name )
   name = fi.name;
 
   _.assert( _.strDefined( name ) );
-  _.assert( _.objectIs( fi.identity ), 'Not property transformer' );
+  _.assert( _.object.is( fi.identity ), 'Not property transformer' );
 
   if( fi.identity.propertyMapper )
   {
@@ -167,11 +167,36 @@ function transformersRegister( transformers )
 
 //
 
+function transformerUnregister( transformerName, transformerType )
+{
+  transformerType = transformerType || 'mapper';
+
+  _.assert( _.strIs( transformerName ) );
+  _.assert( _.strIs( transformerType ) );
+  _.assert( _.property[ transformerType ][ transformerName ] !== undefined, 'Transformer must be registered' );
+
+  delete _.property[ transformerType ][ transformerName ];
+  return;
+}
+
+//
+
+function transformersUnregister( transformerNames, transformerType )
+{
+  _.assert( _.arrayIs( transformerNames ) );
+  _.assert( _.strIs( transformerType ) );
+
+  transformerNames.forEach( ( transformerName ) => _.property.transformerUnregister( transformerName, transformerType ) )
+  return;
+}
+
+//
+
 function transformerIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
-  if( !_.objectIs( transformer.identity ) )
+  if( !_.object.is( transformer.identity ) )
   return false;
 
   let result =
@@ -188,9 +213,9 @@ function transformerIs( transformer )
 
 function mapperIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
-  if( !_.objectIs( transformer.identity ) )
+  if( !_.object.is( transformer.identity ) )
   return false;
   return !!transformer.identity.propertyMapper;
 }
@@ -199,9 +224,9 @@ function mapperIs( transformer )
 
 function filterIs( transformer )
 {
-  if( !_.routineIs( transformer ) )
+  if( !_.routine.is( transformer ) )
   return false;
-  if( !_.objectIs( transformer.identity ) )
+  if( !_.object.is( transformer.identity ) )
   return false;
   return !!transformer.identity.propertyFilter;
 }
@@ -216,14 +241,16 @@ let Extension =
   mapper : Object.create( null ),
   filter : Object.create( null ),
 
-  mapperFromFilter, /* qqq : light coverage required */
-  mapperFrom, /* qqq : light coverage required */
-  filterFrom, /* qqq : light coverage required */
-  transformerRegister, /* qqq : light coverage required */
-  transformersRegister, /* qqq : light coverage required */
+  mapperFromFilter, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  transformerRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  transformersRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  transformerUnregister,
+  transformersUnregister,
   transformerIs,
-  mapperIs, /* qqq : light coverage required */
-  filterIs, /* qqq : light coverage required */
+  mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  filterIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
 
 }
 

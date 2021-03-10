@@ -17,11 +17,11 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
  *
  * @example
  * let obj = { x : 100 };
- * _.objectIs(obj);
+ * _.object.is(obj);
  * // returns true
  *
  * @example
- * _.objectIs( 10 );
+ * _.object.is( 10 );
  * // returns false
  *
  * @param { * } src.
@@ -40,24 +40,24 @@ function objectIs( src )
 function objectLike( src ) /* xxx qqq : optimize */
 {
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return true;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   // if( _.longIs( src ) ) /* yyy */
   // return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
 
-  if( _.routineIsTrivial( src ) )
+  if( _.routine.isTrivial( src ) )
   return false;
 
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
 
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
   // yyy
@@ -73,26 +73,28 @@ function objectLike( src ) /* xxx qqq : optimize */
 function objectLikeStandard( src ) /* xxx qqq : optimize */
 {
 
-  if( _.objectIs( src ) )
-  return true;
+  // if( _.object.is( src ) )
+  // return true;
 
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
-  if( _.routineIsTrivial( src ) )
+  if( _.routine.isTrivial( src ) )
   return false;
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
-  if( _.dateIs( src ) )
+  if( _.date.is( src ) )
   return true
   if( _.regexpIs( src ) )
   return true
+  if( _.bufferAnyIs( src ) )
+  return true
 
-  return true;
+  return false;
 }
 
 //
@@ -102,18 +104,18 @@ function objectForTesting( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  partiableConstructorPure.prototype = Object.create( null );
+  countableConstructorPure.prototype = Object.create( null );
   if( o.withConstructor )
-  partiableConstructorPure.prototype.constructor = partiableConstructorPure;
+  countableConstructorPure.prototype.constructor = countableConstructorPure;
 
-  /* xxx : replace partiableMake */
+  /* xxx : replace countableMake */
 
   if( o.new )
   {
     if( o.pure )
-    result = new partiableConstructorPure( o );
+    result = new countableConstructorPure( o );
     else
-    result = new partiableConstructorPolluted( o );
+    result = new countableConstructorPolluted( o );
   }
   else
   {
@@ -151,14 +153,14 @@ function objectForTesting( o )
 
   /* */
 
-  function partiableConstructorPure( o )
+  function countableConstructorPure( o )
   {
     return _objectMake( this, o );
   }
 
   /* */
 
-  function partiableConstructorPolluted( o )
+  function countableConstructorPolluted( o )
   {
     let result = _objectMake( this, o );
     if( !o.withConstructor )
@@ -214,9 +216,25 @@ let ToolsExtension =
 
 }
 
+let Extension =
+{
+
+  // typing
+
+  is : objectIs,
+  like : objectLike,
+  likeStandard : objectLikeStandard,
+
+  //
+
+  forTesting : objectForTesting,
+
+}
+
 //
 
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export

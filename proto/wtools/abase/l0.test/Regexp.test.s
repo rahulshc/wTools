@@ -12,9 +12,147 @@ if( typeof module !== 'undefined' )
 let _global = _global_;
 let _ = _global_.wTools;
 
+/* qqq xxx : implement test routine _.regexp.isEmpty()
+
+- among other values should check /(?:)/
+
+*/
+
 // --
 // routines
 // --
+
+function regexpLike( test )
+{
+
+  test.case = 'undefined';
+  var got = _.regexp.like( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.regexp.like( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.regexp.like( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.regexp.like( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.regexp.like( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.regexp.like( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.regexp.like( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  function Constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.regexp.like( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.regexp.like( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.regexp.like( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Set';
+  var got = _.regexp.like( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.regexp.like( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.regexp.like( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.regexp.like( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.regexp.like( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.regexp.like( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.regexp.like( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'regexp';
+  var got = _.regexp.like( /a/ );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'regexp with flags';
+  var got = _.regexp.like( /a/g );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'regexp complex';
+  var got = _.regexp.like( /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.regexp.like( '' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.regexp.like( 'str' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'a string object';
+  var got = _.regexp.like( new String( 'str' ) );
+  var expected = true;
+  test.identical( got, expected );
+
+}
+
+//
 
 function regexpIdentical( test )
 {
@@ -2033,6 +2171,40 @@ function regexpsTestNone( test )
 
 }
 
+function exportStringShortDiagnostic( test )
+{
+
+  test.case = 'regexp without flags';
+  var src = /regexp/;
+  var expected = '/regexp/';
+  var got = _.regexp.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'regexp with flags';
+  var src = /regexp/gi;
+  var expected = '/regexp/gi';
+  var got = _.regexp.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  test.case = 'regexp complex';
+  var src = /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}1\d{4}/gi;
+  var expected = '/(?:\\d{3}|\\(\\d{3}\\))([-\\/\\.])\\d{3}1\\d{4}/gi';
+  var got = _.regexp.exportStringShortDiagnostic( src );
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( /hello/, /hello/ ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( {} ) );
+}
+
 // --
 // suite definition
 // --
@@ -2045,6 +2217,7 @@ let Self =
 
   tests :
   {
+    regexpLike,
 
     regexpIdentical,
     regexpEquivalent,
@@ -2069,6 +2242,8 @@ let Self =
     regexpsTestAll,
     regexpsTestAny,
     regexpsTestNone,
+
+    exportStringShortDiagnostic
 
   }
 

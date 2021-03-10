@@ -103,10 +103,10 @@ function _handleUncaught2( o )
 
   function errLogFields()
   {
-    if( !o.err.originalMessage && _.objectLike && _.objectLike( o.err ) )
+    if( !o.err.originalMessage && _.object.like && _.object.like( o.err ) )
     try
     {
-      let serr = _.toStr && _.property ? _.toStr.fields( o.err, { errorAsMap : 1 } ) : o.err;
+      let serr = _.entity.exportString && _.property ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
       o.logger.error( serr );
     }
     catch( err2 )
@@ -140,7 +140,6 @@ function _handleUncaught2( o )
     result = _.process;
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.process && _realGlobal_.wTools.process.exitReason )
     result = _realGlobal_.wTools.process;
-    // xxx : use _globals_
     if
     (
       !result
@@ -164,7 +163,6 @@ function _handleUncaught2( o )
     result = _.Logger;
     if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.Logger && _realGlobal_.wTools.Logger.ConsoleBar )
     result = _realGlobal_.wTools.Logger;
-    // xxx : use _globals_
     if
     (
       !result
@@ -212,7 +210,6 @@ function _handleUncaught2( o )
     try
     {
       process0.exitCode( -1 );
-      // if( rewriting || !process0.exitReason() )
       if( !process0.exitReason() )
       process0.exitReason( err );
       set = true;
@@ -321,7 +318,7 @@ function _setupUncaughtErrorHandler9()
 
   /* */
 
-  if( _global.process && _.routineIs( _global.process.on ) )
+  if( _global.process && _.routine.is( _global.process.on ) )
   {
     _.error._handleUncaughtHead = _errHeadNode;
   }

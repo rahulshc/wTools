@@ -13,7 +13,7 @@ let Self = _global_.wTools.constructible = _global_.wTools.constructible || Obje
 
 function constructibleIs( src ) /* xxx qqq : optimize */
 {
-  if( _.primitiveIs( src ) )
+  if( _.primitive.is( src ) )
   return false;
 
   let proto = Object.getPrototypeOf( src );
@@ -25,13 +25,13 @@ function constructibleIs( src ) /* xxx qqq : optimize */
   if( proto.constructor === Object )
   return false;
 
-  if( _.mapLike( src ) ) /* xxx : remove? */
+  if( _.aux.is( src ) ) /* xxx : remove? */
   return false;
-  if( _.vectorIs( src ) )
+  if( _.vector.is( src ) )
   return false;
-  if( _.setIs( src ) )
+  if( _.set.is( src ) )
   return false;
-  if( _.hashMapIs( src ) )
+  if( _.hashMap.is( src ) )
   return false;
 
   return true;
@@ -60,7 +60,20 @@ let ToolsExtension =
 
 //
 
+let Extension =
+{
+
+  // typing
+
+  is : constructibleIs, /* qqq : cover and move */
+  like : constructibleLike, /* qqq : cover and move */
+
+}
+
+//
+
 Object.assign( _, ToolsExtension );
+Object.assign( Self, Extension );
 
 // --
 // export

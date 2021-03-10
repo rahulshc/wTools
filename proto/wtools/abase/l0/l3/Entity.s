@@ -43,9 +43,9 @@ let Self = _.entity = _.entity || Object.create( null );
 // {
 //   if( !src )
 //   return false;
-//   if( _.mapLike( src ) )
+//   if( _.aux.is( src ) )
 //   return true;
-//   if( _.routineIs( src[ Symbol.iterator ] ) )
+//   if( _.routine.is( src[ Symbol.iterator ] ) )
 //   return true;
 //   return false;
 // }
@@ -56,7 +56,7 @@ function methodIteratorOf( src )
 {
   if( !src )
   return false;
-  if( _.routineIs( src[ iteratorSymbol ] ) )
+  if( _.routine.is( src[ iteratorSymbol ] ) )
   return src[ iteratorSymbol ];
   return false;
 }
@@ -67,7 +67,7 @@ function methodEqualOf( src )
 {
   if( !src )
   return false;
-  if( _.routineIs( src[ equalAreSymbol ] ) )
+  if( _.routine.is( src[ equalAreSymbol ] ) )
   return src[ equalAreSymbol ];
   return false;
 }
@@ -109,16 +109,26 @@ function lengthOf( src )
 {
   if( src === undefined )
   return 0;
-  if( _.mapLike( src ) )
-  return _.mapOnlyOwnKeys( src ).length;
-  if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
-  return [ ... src ].length;
-  if( _.longLike( src ) )
+  if( src === null )
+  return 1;
+
+  // if( _.routine.is( src[ Symbol.iterator ] ) )
+  // return [ ... src ].length;
+
+  if( _.vectorLike( src ) )
   return src.length;
-  if( _.setLike( src ) )
+  if( _.set.like( src ) )
   return src.size;
-  if( _.hashMapLike( src ) )
+  if( _.hashMap.like( src ) )
   return src.size;
+  if( _.countableIs( src ) )
+  return [ ... src ].length;
+
+  if( _.aux.is( src ) )
+  return _.mapKeys( src ).length;
+  // if( _.aux.is( src ) )
+  // return _.mapOnlyOwnKeys( src ).length;
+
   return 1;
 }
 

@@ -5,7 +5,7 @@
 * `make`
   * `_.arrayMake`
   * `_.arrayMakeUndefined`
-  * `_.argumentsArrayMake`
+  * `_.argumentsArray.make`
   * `_.unrollMake`
   * `_.bufferMake`
   * `_.longDescriptor.make`
@@ -24,8 +24,8 @@
 
 * `from`
   * `_.locationFromStackFrame`
-  * `_.setFrom`
-  * `_.setsFrom`
+  * `_.set.from`
+  * `_.set.s.from`
   * `_.arrayFrom`
   * `_.arrayFromCoercing`
   * `_.arrayFromStr`
@@ -35,8 +35,8 @@
   * `_.cinterval.fromLeft`
   * `_.cinterval.fromRight`
   * `_.cinterval.fromSingle`
-  * `_.bigIntFrom`
-  * `_.bigIntsFrom`
+  * `_.bigInt.from`
+  * `_.bigInt.s.from`
   * `_.property.mapperFromFilter`
   * `_.property.mapperFrom`
   * `_.property.filterFrom`
@@ -47,9 +47,9 @@
   * `_.unrollFromMaybe`
   * `_.containerAdapter.from`
   * `_.entity.assign2FieldFromContainer`
-  * `_.boolFrom`
-  * `_.boolFromMaybe`
-  * `_.boolFromForce`
+  * `_.bool.from`
+  * `_.bool.fromMaybe`
+  * `_.bool.fromForce`
   * `_.bufferFromArrayOfArray`
   * `_.bufferFrom`
   * `_.bufferRawFromTyped`
@@ -63,12 +63,12 @@
   * `_.longFromProgressionArithmetic`
   * `_.longFromRangeWithStep`
   * `_.longFromRangeWithNumberOfSteps`
-  * `_.numberFrom`
-  * `_.numbersFrom`
-  * `_.numberFromStr`
-  * `_.numberFromStrMaybe`
-  * `_.numbersFromNumber`
-  * `_.numbersFromInt`
+  * `_.number.from`
+  * `_.number.s.from`
+  * `_.number.fromStr`
+  * `_.number.fromStrMaybe`
+  * `_.number.s.fromNumber`
+  * `_.number.s.fromInt`
   * `_.arrayFrom`
   * `_.arrayFromLongDescriptor`
   * `_.arrayFromCoercing`
@@ -141,7 +141,7 @@ console.log( got === src ); /* log : true */</code></pre>
   if( src === null || src === undefined )
   return new Array();
 
-  if( _.numberIs( src ) )
+  if( _.number.is( src ) )
   return new Array( src );
 
   if( src.length === 1 )

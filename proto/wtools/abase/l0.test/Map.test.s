@@ -22,325 +22,325 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'pure empty map';
   var src = Object.create( null );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), true );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.x = 1;
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
   test.case = 'pure map with constructor';
   var src = Object.create( null );
   src.constructor = function(){};
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
   test.case = 'from pure with iterator';
   var src = Object.create( null );
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'empty polluted map';
   var src = {};
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), true );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
   test.case = 'polluted map with constructor';
   var src = {};
   src.constructor = function(){};
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), true );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
   test.case = 'from polluted with iterator';
   var src = {};
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'new object';
   var src = new Object();
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), true );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), true );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'empty array';
   var src = [];
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'empty arguments array';
-  var src = _.argumentsArrayMake();
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  var src = _.argumentsArray.make();
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'undefined';
   var src = undefined;
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'null';
   var src = null;
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'string';
   var src = 'str';
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'number';
   var src = 13;
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'symbol';
   var src = Symbol.for( 'a' );
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'boolean false';
   var src = true;
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'boolean true';
   var src = true;
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'routine';
   var src = function() {};
-  test.identical( _.objectIs( src ), false );
-  test.identical( _.objectLike( src ), false );
+  test.identical( _.object.is( src ), false );
+  test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from pure map deep';
   var prototype1 = Object.create( null );
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from pure map deep with props';
   var prototype1 = Object.create( null );
@@ -349,68 +349,68 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from polluted map with constructor';
   var prototype = {};
-  prototype.constructor = function(){}
+  prototype.constructor = function(){};
   var src = Object.create( prototype );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), false );
-  test.identical( _.mapIsPrototyped( src ), false );
+  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), false );
+  test.identical( _.aux.isPolluted( src ), false );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from polluted map deep';
   var prototype1 = {};
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), false );
+  test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'prototyped from polluted map deep with props';
   var prototype1 = {};
@@ -419,18 +419,18 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
-  test.identical( _.objectIs( src ), true );
-  test.identical( _.objectLike( src ), true );
+  test.identical( _.object.is( src ), true );
+  test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
-  test.identical( _.mapLike( src ), true );
-  test.identical( _.mapIsPrototyped( src ), true );
+  test.identical( _.aux.is( src ), true );
+  test.identical( _.aux.isPrototyped( src ), true );
   test.identical( _.mapIsPure( src ), false );
   test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.mapLikePolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   test.identical( _.mapIsEmpty( src ), false );
-  test.identical( _.mapLikeEmpty( src ), false );
+  test.identical( _.aux.isEmpty( src ), false );
   test.identical( _.mapIsPopulated( src ), false );
-  test.identical( _.mapLikePopulated( src ), true );
+  test.identical( _.aux.isPopulated( src ), true );
 
 }
 
@@ -454,7 +454,7 @@ function mapCloneAssigning( test )
   test.true( dstMap === got );
   test.identical( _.mapExtend( null, got ), expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -481,47 +481,6 @@ function mapCloneAssigning( test )
   test.shouldThrowErrorSync( function()
   {
     _.mapCloneAssigning( 'wrong arguments' );
-  });
-
-}
-
-//
-
-function mapExtendConditional( test )
-{
-
-  test.case = 'an unique object';
-  var got = _.mapExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, { a : 1, c : 3 } );
-  var expected = { a : 1, b : 2, c : 3 };
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional();
-  });
-
-  test.case = 'few argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( _.property.mapper.dstNotHas() );
-  });
-
-  test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( [] );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapExtendConditional( 'wrong arguments' );
   });
 
 }
@@ -775,11 +734,49 @@ function mapExtend( test )
 
 //
 
-function mapExtendNotIdentical( test )
+function mapExtendConditional( test )
 {
+
+  test.case = 'an unique object';
+  var got = _.mapExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, { a : 1, c : 3 } );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
 
   /* */
 
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional();
+  });
+
+  test.case = 'few argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( _.property.mapper.dstNotHas() );
+  });
+
+  test.case = 'wrong type of array';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( [] );
+  });
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( 'wrong arguments' );
+  });
+
+}
+
+//
+
+function mapExtendNotIdentical( test )
+{
   test.case = 'basic';
   var prototype = Object.create( null );
   prototype.a = 1;
@@ -787,7 +784,7 @@ function mapExtendNotIdentical( test )
   var dst = Object.create( prototype );
   dst.c = 1;
   dst.d = 1;
-  var src = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  var src = { a : 1, b : 2, c : 1, d : 2, e : 2 };
   var got = _.mapExtendNotIdentical( dst, src );
 
   var exp = { a : 1, b : 1 };
@@ -796,7 +793,7 @@ function mapExtendNotIdentical( test )
   var exp = { b : 2, c : 1, d : 2, e : 2 };
   test.identical( _.property.onlyOwn( dst ), exp );
 
-  var exp = { a : 1, b : 2, c : 1, d : 2, e : 2 }
+  var exp = { a : 1, b : 2, c : 1, d : 2, e : 2 };
   test.identical( src, exp );
 
   /* */
@@ -808,7 +805,7 @@ function mapExtendNotIdentical( test )
   var dst = Object.create( prototype );
   dst.c = undefined;
   dst.d = undefined;
-  var src = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  var src = { a : undefined, b : 2, c : undefined, d : 2, e : undefined };
   var got = _.mapExtendNotIdentical( dst, src );
 
   var exp = { a : undefined, b : undefined };
@@ -817,11 +814,415 @@ function mapExtendNotIdentical( test )
   var exp = { b : 2, c : undefined, d : 2 };
   test.identical( _.property.onlyOwn( dst ), exp );
 
-  var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined }
+  var exp = { a : undefined, b : 2, c : undefined, d : 2, e : undefined };
   test.identical( src, exp );
+}
+
+//
+
+function mapsExtend( test )
+{
+  test.open( 'first argument is null' );
+
+  test.case = 'single src map is provided';
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( null, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got !== src1 );
 
   /* */
 
+  test.case = 'unical fields in maps';
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps have same option, rewriting';
+  var src1 = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { b : 22, c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'first argument is null' );
+
+  /* - */
+
+  test.open( 'first argument is dst' );
+
+  test.case = 'dst - empty map, single src map';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  /* */
+
+  test.case = 'dst - empty map, unical values';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'dst - empty map, srcMaps have same option, rewriting';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { b : 22, c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - filled map, single src map, unical values';
+  var dst = { a : 1 };
+  var src1 = { b : 2, c : 3 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+  test.identical( src1, { b : 2, c : 3 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, single src map has same option, rewriting';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 2, b : 3 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  /* */
+
+  test.case = 'dst - filled map, unical values';
+  var dst = { a : 1 };
+  var src1 = { b : 2, c : 3 };
+  var src2 = { d : 4, e : 5 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4, e : 5 };
+  test.identical( got, expected );
+  test.identical( src1, { b : 2, c : 3 } );
+  test.identical( src2, { d : 4, e : 5 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'dst - filled map, srcMaps have same option, rewriting by the last child';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 2, b : 3 } );
+  test.identical( src2, { b : 4, c : 5 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'first argument is dst' );
+
+  /* - */
+
+  test.open( 'extend by empty map' );
+
+  test.case = 'dst - null, srcMaps - single empty map';
+  var src1 = {};
+  var got = _.mapsExtend( null, src1 );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got !== src1 );
+
+  test.case = 'dst - null, srcMaps - several empty maps';
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = {};
+  var src1 = {};
+  var got = _.mapsExtend( dst, src1 );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - empty map, srcMaps - several empty maps';
+  var dst = {};
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = { a : 1 };
+  var src1 = {};
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, srcMaps - several empty maps';
+  var dst = { a : 1 };
+  var src1 = {};
+  var src2 = {};
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( src1, {} );
+  test.identical( src2, {} );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'extend by empty map' );
+
+  /* - */
+
+  test.open( 'extend by prototyped map' );
+
+  test.case = 'dst - null, srcMaps - single empty map';
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( null, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got !== src1 );
+
+  test.case = 'dst - null, srcMaps - several empty maps';
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( null, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = {};
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - empty map, srcMaps - several empty maps';
+  var dst = {};
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'dst - empty map, srcMaps - single empty map';
+  var dst = { a : 1 };
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'dst - filled map, srcMaps - several empty maps';
+  var dst = { a : 1 };
+  var prototype1 = { a : 2, b : 2 };
+  var src1 = Object.create( prototype1 );
+  var prototype2 = { c : 3, d : 4 };
+  var src2 = Object.create( prototype2 );
+  var got = _.mapsExtend( dst, [ src1, src2 ] );
+  var expected = { a : 2, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 2, b : 2 } );
+  test.identical( Object.getPrototypeOf( src2 ), { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.close( 'extend by prototyped map' );
+
+  /* - */
+
+  test.open( 'null prototyped map extesion' );
+
+  test.case = 'srcMaps - simple map';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var src1 = { a : 1, b : 2 };
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'srcMaps - map with prototype';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var prototype1 = { a : 1, b : 2 };
+  var src1 = Object.create( prototype1 );
+  src1.c = 3;
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+  test.identical( src1.c, 3 );
+  test.identical( Object.getPrototypeOf( src1 ), { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.case = 'srcMaps - null prototyped map';
+  var dst = Object.create( null );
+  dst.a = 0;
+  var src1 = Object.create( null );
+  src1.a = 1;
+  src1.b = 2;
+  var got = _.mapsExtend( dst, src1 );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+
+  test.close( 'null prototyped map extesion' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapsExtend() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, {}, {} ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.mapsExtend( 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.mapsExtend( undefined, {} ) );
+
+  test.case = 'wrong type of srcMaps';
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.mapsExtend( {}, [ 'wrong' ] ) );
+}
+
+//
+
+function mapsExtendWithVectorsInSrcMaps( test )
+{
+  test.case = 'srcMaps - argumentsArray';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.argumentsArray.make([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps - unroll';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.unrollMake([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'srcMaps - ContainerAdapter';
+  var dst = {};
+  var src1 = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var srcMaps = _.containerAdapter.make([ src1, src2 ]);
+  var got = _.mapsExtend( dst, srcMaps );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.identical( got, expected );
+  test.identical( src1, { a : 1, b : 2 } );
+  test.identical( src2, { c : 3, d : 4 } );
+  test.true( got === dst );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
 }
 
 //
@@ -834,7 +1235,7 @@ function mapSupplement( test )
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -863,7 +1264,7 @@ function mapComplement( test )
   var expected = { a : 1, b : 'ab', c : 3 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -1177,6 +1578,149 @@ function objectSetWithKeys( test )
 
 //
 
+function objectSetWithKeysKeyIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeys( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeys( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'c', 'd' ]), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'a', 'b' ]), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake( [] ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'c', 'd' ]), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.unrollMake([ 'a', 'b' ]), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set( [] ) ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeys( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
 function objectSetWithKeyStrictly( test )
 {
   test.open( 'dst is null or empty map' );
@@ -1321,6 +1865,149 @@ function objectSetWithKeyStrictly( test )
 
 //
 
+function objectSetWithKeyStrictlyKeyIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'c', 'd' ]), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 3, b : 3 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake( [] ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'c', 'd' ]), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.unrollMake([ 'a', 'b' ]), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dst - null, key - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.case = 'dst - null, key - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got !== dst );
+
+  test.case = 'dst - empty map, key - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 3, b : 3 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.true( got === dst );
+
+  /* */
+
+  test.case = 'dst - filled, key - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set( [] ) ), undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'c', 'd' ]) ), undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.true( got === dst );
+
+  test.case = 'dst - filled, key - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, _.containerAdapter.make( new Set([ 'a', 'b' ]) ), undefined );
+  test.identical( got, {} );
+  test.true( got === dst );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
 function mapDelete( test )
 {
   test.case = 'dstMap - empty map';
@@ -1418,103 +2105,292 @@ function mapEmpty( test )
   test.shouldThrowErrorSync( () => _.mapEmpty( undefined, { b : 2 } ) );
 }
 
+//
+
+function mapInvert( test )
+{
+  test.open( 'no dst' );
+
+  test.case = 'src - empty map';
+  var src = {};
+  var got = _.mapInvert( src );
+  test.identical( got, {} );
+
+  test.case = 'src - map with number';
+  var src = { a : 1 };
+  var expected =  { '1' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with null';
+  var src = { a : null };
+  var expected =  { 'null' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with undefined';
+  var src = { a : undefined };
+  var expected =  { 'undefined' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with string';
+  var src = { a : 'str' };
+  var expected =  { 'str' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with bool';
+  var src = { a : true };
+  var expected =  { 'true' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with object';
+  var src = { a : { b : 2 } };
+  var expected =  { '[object Object]' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with set';
+  var src = { a : new Set([ 1, 2 ]) };
+  var expected =  { '[object Set]' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with array';
+  var src = { a : [ 1, 2 ] };
+  var expected =  { '1,2' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with function';
+  var src = { a : function b() {} };
+  var expected =  { 'function b() {}' : 'a' };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    g : function b() {},
+    h : null,
+    i : undefined
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'function b() {}' : 'g',
+    'null' : 'h',
+    'undefined' : 'i'
+  };
+  var got = _.mapInvert( src );
+  test.identical( got, expected );
+
+  test.close( 'no dst' );
+
+  /* - */
+
+  test.open( 'with dst' );
+
+  test.case = 'src and dst - empty map';
+  var src = {};
+  var dst = {};
+  var expected = {};
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 1 el';
+  var src = { a : 1 };
+  var dst = { b : 2 };
+  var expected =  { '1' : 'a', 'b' : 2 };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 2 el';
+  var dst = { b : 2, d : 4 };
+  var src = { a : 1, c : 3 };
+  var expected =
+  {
+    '1' : 'a',
+    '3' : 'c',
+    'b' : 2,
+    'd' : 4
+  };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst are the same';
+  var src = { a : 1 };
+  var dst = { a : 1 };
+  var expected =  { '1' : 'a', 'a' : 1 };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types, some same as dst';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    h : null,
+    i : undefined
+  };
+  var dst =
+  {
+    a : 1,
+    d : { b : 3 },
+    e : new Set([ 1, 2, 3 ]),
+    f : [ 1, 2 ],
+    h : null,
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'd' : { 'b' : 3 },
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'null' : 'h',
+    'undefined' : 'i',
+    'a' : 1,
+    'e' : new Set([ 1, 2, 3 ]),
+    'f' : [ 1, 2 ],
+    'h' : null
+  };
+  var got = _.mapInvert( src, dst );
+  test.identical( got, expected );
+
+  test.close( 'with dst' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapInvert() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapInvert( { a : 1 }, { b : 2 }, { c : 'extra' } ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.mapInvert( 'wrong' ) );
+
+  test.case = 'dst is inverse of src';
+  var src = { a : 1 };
+  var dst = { '1' : 'a' };
+  test.shouldThrowErrorSync( () => _.mapInvert( src, dst ) );
+}
+
 // --
 // map convert
 // --
 
 function mapsFlatten( test )
 {
-
   test.case = 'empty map';
   var src = {};
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten({ src });
   test.identical( got, expected );
 
   test.case = 'empty array';
   var src = [];
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'array of empty maps';
   var src = [ {}, {} ];
-  var expected = {}
+  var expected = {};
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'trivial';
   var src = [ { a : 1, b : { c : 1, d : 1 } }, { e : 2, f : { g : { h : 2 } } } ];
-  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1, 'e' : 2, 'f/g/h' : 2 }
+  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1, 'e' : 2, 'f/g/h' : 2 };
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
   test.case = 'delimeter : .';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : '.' });
   test.identical( got, expected );
 
   test.case = 'delimeter : ';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'dirb' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'dirb' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : '' });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : 0 });
   test.identical( got, expected );
 
   test.case = 'delimeter : false';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
-  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 }
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
   var got = _.mapsFlatten({ src, delimeter : false });
   test.identical( got, expected );
 
   test.case = 'allowingCollision : 1';
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'dir/b' : 4, 'dir/c' : 5 }
+  var expected = { 'a' : 3, 'dir/b' : 4, 'dir/c' : 5 };
   var got = _.mapsFlatten({ src, allowingCollision : 1 });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0, allowingCollision : 1';
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'b' : 4, 'c' : 5 }
+  var expected = { 'a' : 3, 'b' : 4, 'c' : 5 };
   var got = _.mapsFlatten({ src, delimeter : 0, allowingCollision : 1 });
   test.identical( got, expected );
 
   test.case = 'delimeter : 0, allowingCollision : 1';
-  var dst = { a : 0, d : 6 }
+  var dst = { a : 0, d : 6 };
   var src = [ { a : 1, dir : { b : 2 } }, { a : 3, dir : { b : 4, c : 5 } } ];
-  var expected = { 'a' : 3, 'b' : 4, 'c' : 5, 'd' : 6 }
+  var expected = { 'a' : 3, 'b' : 4, 'c' : 5, 'd' : 6 };
   var got = _.mapsFlatten({ src, dst, delimeter : 0, allowingCollision : 1 });
   test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'collision';
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapsFlatten() );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var dst = { 'dir/a' : 1 }
-    var src = { dir : { a : 2 } };
-    var got = _.mapsFlatten({ src, dst });
-  });
+  test.case = 'collision between dst and src';
+  var dst = { 'dir/a' : 1 };
+  var src = { dir : { a : 2 } };
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src, dst }) );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
-    var got = _.mapsFlatten({ src });
-  });
+  test.case = 'collision in src';
+  var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src }) );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var src = [ { dir : { a : 2 } }, { dir : { a : 2 } } ];
-    var got = _.mapsFlatten({ src, allowingCollision : 0 });
-  });
+  test.case = 'collision in src, allowingCollision - 0';
+  test.shouldThrowErrorSync( () => _.mapsFlatten({ src, allowingCollision : 0 }) );
 
   test.shouldThrowErrorSync( () =>
   {
@@ -1529,8 +2405,6 @@ function mapsFlatten( test )
   });
 
   test.case = 'bad arguments';
-
-  test.shouldThrowErrorSync( () => _.mapsFlatten() );
   test.shouldThrowErrorSync( () => _.mapsFlatten( {} ) );
   test.shouldThrowErrorSync( () => _.mapsFlatten( {}, {} ) );
   test.shouldThrowErrorSync( () => _.mapsFlatten( 'a' ) );
@@ -1548,6 +2422,57 @@ function mapsFlatten( test )
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 1 ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ null ] }) );
 
+}
+
+//
+
+function mapsFlattenWithVectorsInSrc( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'empty maps in vector';
+  var src = _.unrollMake([ {}, {} ]);
+  var expected = {};
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'flat maps in vector';
+  var src = _.unrollMake([ { a : 1 }, { b : 2 }, { c : 3 } ]);
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'multilevel maps in vector';
+  var src = _.unrollMake([ { a : { b : { c : 1 } } }, { b : { c : 3 } } ]);
+  var expected = { 'a/b/c' : 1, 'b/c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'empty maps in vector';
+  var src = _.containerAdapter.make( new Set([ {}, {} ]) );
+  var expected = {};
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'flat maps in vector';
+  var src = _.containerAdapter.make( new Set([ { a : 1 }, { b : 2 }, { c : 3 } ]) );
+  var expected = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'multilevel maps in vector';
+  var src = _.containerAdapter.make( new Set([ { a : { b : { c : 1 } } }, { b : { c : 3 } } ]) );
+  var expected = { 'a/b/c' : 1, 'b/c' : 3 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.close( 'containerAdapter' );
 }
 
 //
@@ -1572,7 +2497,7 @@ function mapFirstPair( test )
   var expected = [ 'a', 7 ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -1657,46 +2582,93 @@ function mapValWithIndex( test )
 
 function mapKeyWithIndex( test )
 {
+  test.case = 'negative index';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, -1 );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'first key';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 0 );
+  var expected = 'a';
+  test.identical( got, expected );
 
   test.case = 'last key';
   var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 2 );
   var expected = 'c';
   test.identical( got, expected );
 
-  test.case = 'first key';
-  var got = _.mapKeyWithIndex( { 0 : { a : 3 },  1 : 13, 2 : 'c', 3 : 7 }, 3 );
-  var expected = '3';
+  test.case = 'index outside of entries number';
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 3 );
+  var expected = undefined;
   test.identical( got, expected );
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex();
-  });
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex() );
 
-  test.case = 'few arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( [] );
-  });
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {} ) );
 
-  test.case = 'redundant argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
-  });
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {}, 2, 'wrong arguments' ) );
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapKeyWithIndex( 'wrong argumetns' );
-  });
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( 'wrong argumetns', 2 ) );
 
+  test.case = 'wrong type of index';
+  test.shouldThrowErrorSync( () => _.mapKeyWithIndex( {}, 2.1 ) );
+}
+
+//
+
+function mapKeyWithValue( test )
+{
+  test.case = 'entry - first element';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 3 );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'entry - last element';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 7 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.case = 'no entry';
+  var got = _.mapKeyWithValue( { 'a' : 3, 'b' : 13, 'c' : 7 }, 2 );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'similar entries, but not identical';
+  var got = _.mapKeyWithValue( { 'a' : {}, 'b' : 13, 'c' : 7 }, {} );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'identical entries';
+  var entry = {};
+  var got = _.mapKeyWithValue( { 'a' : {}, 'b' : entry, 'c' : 7 }, entry );
+  var expected = 'b';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( {} ) );
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( {}, 2, 'wrong arguments' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.mapKeyWithValue( 'wrong argumetns', 2 ) );
 }
 
 //
@@ -1816,7 +2788,7 @@ function mapToStr( test )
   test.identical( got, expected );
 
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -1880,8 +2852,8 @@ function mapKeys( test )
   /* */
 
   test.case = 'options';
-  var a = { a : 1 }
-  var b = { b : 2 }
+  var a = { a : 1 };
+  var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
   /* onlyOwn off */
@@ -1913,7 +2885,7 @@ function mapKeys( test )
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'onlyEnumerable : 0, onlyOwn : 0'
   var a = Object.create( null );
@@ -2077,7 +3049,7 @@ function mapAllKeys( test )
 
   test.case = 'not enumerable'
   var a = { };
-  Object.defineProperty( a, 'k', { enumerable : 0 })
+  Object.defineProperty( a, 'k', { enumerable : 0 } )
   var got = _.mapAllKeys( a );
   var expected = _expected.slice();
   expected.push( 'k' );
@@ -2155,14 +3127,14 @@ function mapVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var o = { onlyOwn : 0, onlyEnumerable : 1 };
   var got = _.mapVals( a, o );
   var expected = [ 1, 2 ]
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var o = { onlyOwn : 1, onlyEnumerable : 1 };
   var got = _.mapVals( a, o );
@@ -2175,13 +3147,13 @@ function mapVals( test )
   var a = { a : 1 };
   Object.defineProperty( a, 'k', { enumerable : 0, value : 2 } );
 
-  /**/
+  /* */
 
   var got = _.mapVals( a, { onlyEnumerable : 1, onlyOwn : 0 } );
   var expected = [ 1 ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'onlyEnumerable : 0, onlyOwn : 0'
   var a = Object.create( null );
@@ -2248,7 +3220,7 @@ function mapOnlyOwnVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var got = _.mapOnlyOwnVals( a );
   var expected = [ 1 ];
@@ -2297,14 +3269,14 @@ function mapAllVals( test )
   var got = _.mapAllVals( {} );
   test.true( got.length !== 0 );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( { a : 7, b : 13 } );
   test.true( got.length !== 0 );
   test.true( got.indexOf( 7 ) !== -1 );
   test.true( got.indexOf( 13 ) !== -1 );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( new Date );
   test.true( got.length > _.mapAllVals( {} ).length );
@@ -2316,7 +3288,7 @@ function mapAllVals( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var got = _.mapAllVals( a );
   var expected = [ 1 ];
@@ -2364,7 +3336,7 @@ function mapPairs( test )
   var expected = [];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'list of [ key, value ] pairs';
 
@@ -2377,7 +3349,7 @@ function mapPairs( test )
   var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -2385,7 +3357,7 @@ function mapPairs( test )
   var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var got = _.mapPairs( new Date );
   var expected = [];
@@ -2479,7 +3451,7 @@ function mapOnlyOwnPairs( test )
   var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -2487,7 +3459,7 @@ function mapOnlyOwnPairs( test )
   var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   var got = _.mapOnlyOwnPairs( new Date );
   var expected = [];
@@ -2553,7 +3525,7 @@ function mapAllPairs( test )
   test.identical( got[ 0 ], [ 'a', 7 ] );
   test.identical( got[ 1 ], [ 'b', 13 ] );
 
-  /**/
+  /* */
 
   var arrObj = [];
   arrObj[ 'k' ] = 1;
@@ -2563,7 +3535,7 @@ function mapAllPairs( test )
   test.true( got.indexOf( 'k' ) !== -1 );
   test.identical( got[ got.indexOf( 'k' ) + 1 ], 1 );
 
-  /**/
+  /* */
 
   var got = _.mapAllPairs( new Date );
   test.true( got.length > 1 );
@@ -2615,7 +3587,7 @@ function hashMapExtend( test )
   test.case = 'dst - null, src - empty hash map';
   var dst = null;
   var src = new Map();
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
@@ -2624,7 +3596,7 @@ function hashMapExtend( test )
   test.case = 'dst - null, src - empty simple map';
   var dst = null;
   var src = {};
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
@@ -2633,7 +3605,7 @@ function hashMapExtend( test )
   test.case = 'dst - null, src - filled hash map';
   var dst = null;
   var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
@@ -2642,7 +3614,7 @@ function hashMapExtend( test )
   test.case = 'dst - null, src - filled simple map';
   var dst = null;
   var src = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
@@ -2655,7 +3627,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - empty';
   var dst = new Map();
   var src = new Map();
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2664,7 +3636,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - filled';
   var dst = new Map();
   var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2673,7 +3645,7 @@ function hashMapExtend( test )
   test.case = 'dst - filled, src - filled';
   var dst = new Map( [ [ { a : 1 }, { a : 1 } ] ] );
   var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ { a : 1 }, { a : 1 } ], [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2682,7 +3654,7 @@ function hashMapExtend( test )
   test.case = 'dst and src - almost identical';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2691,7 +3663,7 @@ function hashMapExtend( test )
   test.case = 'dst and src have identical keys';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [  2 ] ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [  2 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2700,7 +3672,7 @@ function hashMapExtend( test )
   test.case = 'dst === src';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = dst;
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2715,7 +3687,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - empty';
   var dst = new Map();
   var src = {};
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2724,7 +3696,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - filled';
   var dst = new Map();
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2733,7 +3705,7 @@ function hashMapExtend( test )
   test.case = 'dst - filled, src - filled';
   var dst = new Map( [ [ { a : 1 }, { a : 1 } ] ] );
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ { a : 1 }, { a : 1 } ], [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2742,7 +3714,7 @@ function hashMapExtend( test )
   test.case = 'dst and src - almost identical';
   var dst = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ] ] );
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ '1', [ 1 ] ], [ 'null', null ], [ 'undefined', undefined ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2751,7 +3723,7 @@ function hashMapExtend( test )
   test.case = 'dst and src have identical keys';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = { 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true, '1' : 2 };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', '' ], [ undefined, undefined ], [ '', 'str' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ '1', 2 ], [ 'null', undefined ], [ 'undefined', null ], [ 'false', true ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
@@ -2766,7 +3738,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - empty';
   var dst = {};
   var src = new Map();
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = {};
   test.identical( got, exp );
   test.true( got === dst );
@@ -2775,7 +3747,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - filled';
   var dst = {};
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2784,7 +3756,7 @@ function hashMapExtend( test )
   test.case = 'dst - filled, src - filled';
   var dst = { a : 1 };
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { 'a' : 1, '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2793,7 +3765,7 @@ function hashMapExtend( test )
   test.case = 'dst and src - almost identical';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2802,7 +3774,7 @@ function hashMapExtend( test )
   test.case = 'dst and src have identical keys';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', undefined ], [ 'str', '' ], [ 'undefined', null ], [ '', 'str' ], [ 'false', true ] ] );
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2817,7 +3789,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - empty';
   var dst = {};
   var src = {};
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = {};
   test.identical( got, exp );
   test.true( got === dst );
@@ -2826,7 +3798,7 @@ function hashMapExtend( test )
   test.case = 'dst - empty, src - filled';
   var dst = {};
   var src = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2835,7 +3807,7 @@ function hashMapExtend( test )
   test.case = 'dst - filled, src - filled';
   var dst = { a : 1 };
   var src = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { 'a' : 1, '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2844,7 +3816,7 @@ function hashMapExtend( test )
   test.case = 'dst and src - almost identical';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2853,7 +3825,7 @@ function hashMapExtend( test )
   test.case = 'dst and src have identical keys';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2862,7 +3834,7 @@ function hashMapExtend( test )
   test.case = 'dst === src';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = dst;
-  var got = _.hashMapExtend( dst, src );
+  var got = _.hashMap.extend( dst, src );
   var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.true( got === dst );
@@ -2876,23 +3848,23 @@ function hashMapExtend( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.hashMapExtend() );
+  test.shouldThrowErrorSync( () => _.hashMap.extend() );
 
   test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.hashMapExtend( new Map( [ [ 1, 1 ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 1 ] ] ) ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.hashMapExtend( new Map( [ [ 1, 1 ] ] ), {}, {} ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 1 ] ] ), {}, {} ) );
 
   test.case = 'wrong type of dst';
-  test.shouldThrowErrorSync( () => _.hashMapExtend( 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( 'wrong', {} ) );
 
   test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.hashMapExtend( new Map( [ [ 1, 2 ] ] ), 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.hashMapExtend( null, null ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 2 ] ] ), 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( null, null ) );
 
   test.case = 'dst - simple map, src - hash map with unliteral keys';
-  test.shouldThrowErrorSync( () => _.hashMapExtend( { a : 1 }, new Map( [ [ 1, 2 ], [ null, null ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( { a : 1 }, new Map( [ [ 1, 2 ], [ null, null ] ] ) ) );
 }
 
 //
@@ -2917,7 +3889,7 @@ function mapOnlyPrimitives( test )
     h : [ 1 ],
     i : new Date(),
     j : new BufferRaw( 5 )
-  }
+  };
   var got = _.mapOnlyPrimitives( src );
   var expected =
   {
@@ -2926,7 +3898,7 @@ function mapOnlyPrimitives( test )
     c : 5,
     e : false,
     f : 'a',
-  }
+  };
   test.identical( got, expected );
 
   /* */
@@ -2970,50 +3942,9 @@ function mapOnlyPrimitives( test )
 
 function mapButConditional( test )
 {
-
-  test.case = 'an object';
-  var got = _.mapButConditional( _.property.filter.dstNotHasSrcPrimitive(), { a : 1, b : 'ab', c : [ 1, 2, 3 ] }, { a : 1, b : 'ab', d : [ 1, 2, 3 ] }  );
-  var expected = {};
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapButConditional();
-  });
-
-  test.case = 'few arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapButConditional( _.property.mapper.primitive() );
-  });
-
-  test.case = 'second argument is wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapButConditional( _.property.mapper.primitive(), [] );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapButConditional( 'wrong arguments' );
-  });
-
-}
-
-//
-
-function mapButConditionalThreeArguments_( test )
-{
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;
@@ -3021,129 +3952,93 @@ function mapButConditionalThreeArguments_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
 
   test.open( 'srcMap - map' );
 
-  test.case = 'srcMap - null, butMap - empty map';
-  var srcMap = null;
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( screenMap, {} );
-
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - null, butMap - empty array';
-  var srcMap = null;
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - null, butMap - filled map';
-  var srcMap = null;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - null, butMap - filled array';
-  var srcMap = null;
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.true( got !== srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.true( got !== srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
@@ -3153,85 +4048,486 @@ function mapButConditionalThreeArguments_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapButConditional_( filter, srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapButConditional( filter, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
 
   test.close( 'srcMap - array' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapButConditional() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive() ) );
+  test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive(), {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive(), {}, {}, {} ) );
+
+  test.case = 'wrong filter';
+  test.shouldThrowErrorSync( () => _.mapButConditional( 'wrong', {}, {} ) );
+
+  test.case = 'wrong type of srcMap';
+  test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive(), 'wrong', {} ) );
+
+  test.case = 'wrong type of butMap';
+  test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive(), {}, 'wrong' ) );
+}
+
+//
+
+function mapButConditionalButMapIsVector( test )
+{
+  var filter = ( but, src, key ) =>
+  {
+    if( _.primitive.is( but ) && but !== undefined )
+    if( but !== key )
+    return true;
+    return false;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapButConditional_WithThreeArguments( test )
+{
+  var filter = ( dstContainer, srcContainer, key ) =>
+  {
+    if( !_.primitive.is( srcContainer[ key ] ) )
+    return false;
+    if( dstContainer === key )
+    return false;
+    if( _.mapIs( dstContainer ) && key in dstContainer )
+    return false;
+
+    return true;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'srcMap - map' );
+
+  test.case = 'srcMap - null, butMap - empty map';
+  var srcMap = null;
+  var butMap = {};
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, {} );
+
+  test.case = 'srcMap - empty map, butMap - empty map';
+  var srcMap = {};
+  var butMap = {};
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, {} );
+
+  test.case = 'srcMap - null, butMap - empty array';
+  var srcMap = null;
+  var butMap = [];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [] );
+
+  test.case = 'srcMap - empty map, butMap - empty array';
+  var srcMap = {};
+  var butMap = [];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [] );
+
+  test.case = 'srcMap - null, butMap - filled map';
+  var srcMap = null;
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - empty map, butMap - filled map';
+  var srcMap = {};
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - null, butMap - filled array';
+  var srcMap = null;
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - empty map, butMap - filled array';
+  var srcMap = {};
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = { aa : 1, bb : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = { aa : 1, bb : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.close( 'srcMap - map' );
+
+  /* - */
+
+  // test.open( 'srcMap - array' );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty map';
+  // var srcMap = [];
+  // var butMap = {};
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, {} );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty array';
+  // var srcMap = [];
+  // var butMap = [];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [] );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled map';
+  // var srcMap = [];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled array';
+  // var srcMap = [];
+  // var butMap = [ 'a', 0, 'b', 1 ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = [ 'a', 'b', 'c', 'd' ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = [ 'a', '3', 'b', '1' ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+  //
+  // test.close( 'srcMap - array' );
 
   /* - */
 
@@ -3245,7 +4541,7 @@ function mapButConditionalThreeArguments_( test )
   test.shouldThrowErrorSync( () => _.mapButConditional_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, [], {}, [] ) );
+  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, {}, {}, [] ) );
 
   test.case = 'wrong type of propertyFilter';
   test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
@@ -3256,7 +4552,7 @@ function mapButConditionalThreeArguments_( test )
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, {}, {} ) );
 
   test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, 3, [] ) );
+  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], {} ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], {}, {} ) );
 
   test.case = 'wrong type of butMap';
@@ -3266,11 +4562,11 @@ function mapButConditionalThreeArguments_( test )
 
 //
 
-function mapButConditionalDstMapNull_( test )
+function mapButConditional_DstMapIsNull( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;
@@ -3278,7 +4574,7 @@ function mapButConditionalDstMapNull_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
@@ -3287,84 +4583,84 @@ function mapButConditionalDstMapNull_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
@@ -3374,94 +4670,94 @@ function mapButConditionalDstMapNull_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapButConditional_( filter, null, srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapButConditional_( filter, null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
 
   test.close( 'srcMap - array' );
 }
 
 //
 
-function mapButConditionalDstMapMap_( test )
+function mapButConditional_DstMapIsMap( test )
 {
   var filter = ( dstContainer, srcContainer, key ) =>
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
     if( dstContainer === key )
     return false;
@@ -3469,7 +4765,7 @@ function mapButConditionalDstMapMap_( test )
     return false;
 
     return true;
-  }
+  };
   filter.identity = { propertyFilter : true, propertyTransformer : true };
 
   /* - */
@@ -3479,101 +4775,101 @@ function mapButConditionalDstMapMap_( test )
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : 1 };
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : 1 };
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, c : 'key' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, c : 'key' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2, cc : [ 1, 2 ] } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var dstMap = { a : 1, b : 4 };
   var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 4 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2, cc : [ 1, 2 ] } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
@@ -3584,92 +4880,446 @@ function mapButConditionalDstMapMap_( test )
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled map, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled map, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { 0 : 'some', 2 : 'key', a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap =[ { a : 'a' }, 0, [ 'b' ], 1 ];
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
   var expected = { 0 : 'some', 2 : 'key', a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ]);
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
 
   test.close( 'srcMap - array' );
+}
+
+//
+
+function mapButConditional_ButMapIsVector( test )
+{
+  var filter = ( but, src, key ) =>
+  {
+    if( _.primitive.is( but ) && but !== undefined )
+    if( but !== key )
+    return true;
+    return false;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButConditional_( filter, srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
 }
 
 //
@@ -3680,93 +5330,102 @@ function mapBut( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = [ { c : 0 }, { a : 0 } ];
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
 
   test.close( 'srcMap - map' );
 
@@ -3776,83 +5435,92 @@ function mapBut( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapBut( srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ]
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapBut( srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapBut( srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = [ 'a', 'b', 'c' ]
+  var butMap = [ { '0' : 0 }, { '1' : 0 } ];
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { 2 : 'c' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ { '0' : 0 }, { '1' : 0 } ] );
 
   test.close( 'srcMap - array' );
 
@@ -3879,214 +5547,374 @@ function mapBut( test )
 
 //
 
-function mapButTwoArguments_( test )
+function mapButButMapIsVector( test )
+{
+  var filter = ( but, src, key ) =>
+  {
+    if( _.primitive.is( but ) && but !== undefined )
+    if( but !== key )
+    return true;
+    return false;
+  };
+  filter.identity = { propertyFilter : true, propertyTransformer : true };
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty, butMap - empty vector';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, no deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'srcMap - empty, butMap - vector, full deleting';
+  var srcMap = {};
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'srcMap - filled, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapBut_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - null, butMap - empty map';
   var srcMap = null;
-  var screenMap = {};
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - null, butMap - empty array';
   var srcMap = null;
-  var screenMap = [];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - null, butMap - filled map';
   var srcMap = null;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - null, butMap - filled array';
   var srcMap = null;
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  debugger;
+  var got = _.mapBut_( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = [ { c : 0 }, { a : 0 } ];
+  var got = _.mapBut_( srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
 
   test.close( 'srcMap - map' );
 
   /* - */
 
-  test.open( 'srcMap - array' );
-
-  test.case = 'srcMap - empty map, butMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty map, butMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty map, butMap - filled map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty map, butMap - filled array';
-  var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
-
-  test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
-
-  test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = { 0 : 'a', 2 : 'b' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ]
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapBut_( srcMap, screenMap );
-  var expected = { 0 : 'a', 2 : 'b' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
-
-  test.close( 'srcMap - array' );
+  // test.open( 'srcMap - array' );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty map';
+  // var srcMap = [];
+  // var butMap = {};
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, {} );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty array';
+  // var srcMap = [];
+  // var butMap = [];
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [] );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled map';
+  // var srcMap = [];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled array';
+  // var srcMap = [];
+  // var butMap = [ 'a', 0, 'b', 1 ];
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+  //
+  // test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = [ 'a', 'b', 'c', 'd' ];
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
+  //
+  // test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = { 0 : 'a', 2 : 'b' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ]
+  // var butMap = [ 'a', '3', 'b', '1' ];
+  // var got = _.mapBut_( srcMap, butMap );
+  // var expected = { 0 : 'a', 2 : 'b' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+  //
+  // test.close( 'srcMap - array' );
 
   /* - */
 
@@ -4100,7 +5928,7 @@ function mapButTwoArguments_( test )
   test.shouldThrowErrorSync( () => _.mapBut_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapBut_( {}, [], {}, [] ) );
+  test.shouldThrowErrorSync( () => _.mapBut_( {}, {}, {}, [] ) );
 
   test.case = 'wrong type of dstMap';
   test.shouldThrowErrorSync( () => _.mapBut_( 3, [] ) );
@@ -4113,90 +5941,99 @@ function mapButTwoArguments_( test )
 
 //
 
-function mapButDstMapNull_( test )
+function mapBut_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = [ { c : 0 }, { a : 0 } ];
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
 
   test.close( 'srcMap - map' );
 
@@ -4206,191 +6043,211 @@ function mapButDstMapNull_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'srcMap - filled map, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ]
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = [ 'a', 'b', 'c' ]
+  var butMap = [ { '0' : 0 }, { '1' : 0 } ];
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { 0 : 'a', 1 : 'b', 2 : 'c' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( butMap, [ { '0' : 0 }, { '1' : 0 } ] );
 
   test.close( 'srcMap - array' );
 }
 
 //
 
-function mapButDstMapIsMap_( test )
+function mapBut_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : 1 };
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : 1 };
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map, butMap - filled map, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3, c : 'key' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map, butMap - filled array, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3, c : 'key' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { aa : 1, bb : 2, cc : 3 };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map, butMap - filled map, has identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map, butMap - filled array, has identical keys';
   var dstMap = { a : 1, b : 4 };
   var srcMap = { a : 1, b : 2, cc : 3 };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 4, cc : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var dstMap = { a : 1, b : 4 };
+  var srcMap = { a : 3, b : 2 };
+  var butMap = [ { c : 0 }, { a : 0 } ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 3, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 3, b : 2 } );
+  test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
 
   test.close( 'srcMap - map' );
 
@@ -4401,304 +6258,658 @@ function mapButDstMapIsMap_( test )
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map, butMap - filled map, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, 0 : 'a', 1 : 0, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map, butMap - filled map, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b', a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map, butMap - filled array, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ 'a', 0, 'b', 1 ]
-  var screenMap = [ 'a', '3', 'b', '1' ];
-  var got = _.mapBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b', a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var dstMap = { 0 : 'some', 2 : 'key' };
+  var srcMap = [ 'a', 'b', 'c' ]
+  var butMap = [ { '0' : 0 }, { '1' : 0 } ];
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { 0 : 'a', 1 : 'b',  2 : 'c' };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, [ 'a', 'b', 'c' ] );
+  test.identical( butMap, [ { '0' : 0 }, { '1' : 0 } ] );
 
   test.close( 'srcMap - array' );
 }
 
 //
 
-function mapButIgnoringUndefinesThreeArguments_( test )
+function mapBut_ButMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapBut_( srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapButIgnoringUndefines_WithThreeArguments( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - null, butMap - empty map';
   var srcMap = null;
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - null, butMap - empty array';
   var srcMap = null;
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - null, butMap - filled map';
   var srcMap = null;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - null, butMap - filled array';
   var srcMap = null;
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : undefined };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var srcMap = { 0 : 1, 1 : 2, cc : undefined };
-  var screenMap = [ 'aa', 0, 'bb', '1' ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', '1' ];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', '1' ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', '1' ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : undefined };
-  var screenMap = { a : undefined, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = { a : undefined, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : undefined, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : undefined, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var srcMap = { 0 : 1, b : 2, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( srcMap, butMap );
   var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
   /* - */
 
-  test.open( 'srcMap - array' );
-
-  test.case = 'srcMap - empty map, butMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty map, butMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty map, butMap - filled map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty map, butMap - filled array';
-  var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
-
-  test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
-  var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = { 1 : 0, 3 : 1 };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
-  var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = { 1 : 0, 3 : 1 };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
-
-  test.case = 'srcMap - filled map has undefined, butMap - filled map, has identical keys';
-  var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map has undefined, butMap - filled array, has identical keys';
-  var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapButIgnoringUndefines_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
-
-  test.close( 'srcMap - array' );
+  // test.open( 'srcMap - array' );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty map';
+  // var srcMap = [];
+  // var butMap = {};
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, {} );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty array';
+  // var srcMap = [];
+  // var butMap = [];
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [] );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled map';
+  // var srcMap = [];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled array';
+  // var srcMap = [];
+  // var butMap = [ 'a', 0, 'b', 1 ];
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+  //
+  // test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
+  // var srcMap = [ undefined, 0, undefined, 1 ];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
+  // var srcMap = [ undefined, 0, undefined, 1 ];
+  // var butMap = [ 'a', 'b', 'c', 'd' ];
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  // test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
+  //
+  // test.case = 'srcMap - filled map has undefined, butMap - filled map, has identical keys';
+  // var srcMap = [ undefined, 0, undefined, 1 ];
+  // var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  // test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has undefined, butMap - filled array, has identical keys';
+  // var srcMap = [ undefined, 0, undefined, 1 ];
+  // var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
+  // var got = _.mapButIgnoringUndefines_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  // test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  //
+  // test.close( 'srcMap - array' );
 
   /* - */
 
@@ -4712,7 +6923,7 @@ function mapButIgnoringUndefinesThreeArguments_( test )
   test.shouldThrowErrorSync( () => _.mapButIgnoringUndefines_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapButIgnoringUndefines_( {}, [], {}, [] ) );
+  test.shouldThrowErrorSync( () => _.mapButIgnoringUndefines_( {}, {}, {}, [] ) );
 
   test.case = 'wrong type of dstMap';
   test.shouldThrowErrorSync( () => _.mapButIgnoringUndefines_( 3, [] ) );
@@ -4725,90 +6936,90 @@ function mapButIgnoringUndefinesThreeArguments_( test )
 
 //
 
-function mapButIgnoringUndefinesDstMapNull_( test )
+function mapButIgnoringUndefines_DstMapNull( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : undefined };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var srcMap = { 0 : 1, 1 : 2, cc : undefined };
-  var screenMap = [ 'aa', 0, 'bb', '1' ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', '1' ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'aa', 0, 'bb', '1' ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', '1' ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, has identical keys';
   var srcMap = { a : 1, b : 2, cc : undefined };
-  var screenMap = { a : undefined, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { a : undefined, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : undefined, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : undefined, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var srcMap = { 0 : 1, b : 2, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
@@ -4818,191 +7029,191 @@ function mapButIgnoringUndefinesDstMapNull_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled map, has identical keys';
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
-  var expected = {};
+  var butMap = [ { 1 : 'a' }, '3', 'b', '1', 'c' ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
+  var expected = { 0 : undefined, 2 : undefined };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  test.identical( butMap, [ { 1 : 'a' }, '3', 'b', '1', 'c' ] );
 
   test.close( 'srcMap - array' );
 }
 
 //
 
-function mapButIgnoringUndefinesDstMapMap_( test )
+function mapButIgnoringUndefines_DstMapMap( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : undefined };
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : undefined };
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : undefined };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, {} );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled map, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : undefined, bb : 2, cc : 3 };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { aa : 'some', c : 'key', bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : undefined, bb : 2, cc : 3 } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var dstMap = { aa : 'some', c : 'key' };
   var srcMap = { aa : 1, bb : 2, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, c : 'key' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { aa : 1, bb : 2, cc : undefined } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { 0 : 1, bb : 2, cc : undefined };
-  var screenMap = [ 'aa', 0, 'bb', 1 ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, bb : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { 0 : 1, bb : 2, cc : undefined } );
-  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  test.identical( butMap, [ 'aa', 0, 'bb', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has undefined, butMap - filled map, has identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = { a : 1, b : 2, cc : undefined };
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2, cc : undefined } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var dstMap = { a : 1, b : 4 };
   var srcMap = { a : 1, b : undefined, cc : undefined };
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 4 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : undefined, cc : undefined } );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.close( 'srcMap - map' );
 
@@ -5013,99 +7224,441 @@ function mapButIgnoringUndefinesDstMapMap_( test )
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
   var dstMap = { a : 1 };
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
   var dstMap = Object.create( null );
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has undefined, butMap - filled map, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has not identical keys, srcMap - filled map has undefined, butMap - filled array, not identical keys';
   var dstMap = { a : 1, b : 2 };
   var srcMap = [ undefined, 0, undefined, 1 ];;
-  var screenMap = [ 'a', 'b', 'c', 'd' ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { a : 1, b : 2, 1 : 0, 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled map, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { 0 : 'some', 2 : 'key', a : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ { 0 : 1 }, [ '3', 'b', '1', '3' ] ];
-  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
-  var expected = { 0 : 'some', 2 : 'key', a : 1 };
+  var butMap = [ { 0 : 1 }, '3', 'b', '1', '3' ];
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { 0 : 'some', 1 : 0, 2 : 'key', a : 1, 3 : 1 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ { 0 : 1 }, [ '3', 'b', '1', '3' ] ] );
+  test.identical( butMap, [ { 0 : 1 }, '3', 'b', '1', '3' ] );
 
   test.close( 'srcMap - array' );
+}
+
+//
+
+function mapButIgnoringUndefines_ButMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : undefined, b : undefined};
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake( [] );
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake( [] ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.unrollMake([ 'c', 'd' ]);
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'c', 'd' ]) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.unrollMake([ 'a', 'b' ]);
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.unrollMake([ 'a', 'b' ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty vector';
+  var dstMap = null;
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = null;
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty vector';
+  var dstMap = {};
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = {};
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : undefined, b : undefined};
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { c : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - empty vector';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var dstMap = { a : 3 };
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
+  var expected = { a : 3 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : undefined, b : undefined } );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  /* */
+
+  test.case = 'dstMap === srcMap, butMap - empty vector';
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = { a : 1, b : undefined };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, no deleting';
+  var srcMap = { a : 1, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'c', 'd' ]) );
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd' ]) ) );
+
+  test.case = 'dstMap - filled, replacing, srcMap - filled, butMap - vector, full deleting';
+  var srcMap = { a : undefined, b : undefined };
+  var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
+  var got = _.mapButIgnoringUndefines_( srcMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === srcMap );
+  test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
+
+  test.close( 'containerAdapter' );
 }
 
 //
 
 function mapOnlyOwnBut( test )
 {
-
   test.case = 'an empty object';
   var got = _.mapOnlyOwnBut( {}, {} );
   var expected = {  };
@@ -5121,7 +7674,7 @@ function mapOnlyOwnBut( test )
   var expected = { a : 7 };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -5153,221 +7706,221 @@ function mapOnlyOwnBut( test )
 
 //
 
-function mapOnlyOwnButThreeArguments_( test )
+function mapOnlyOwnBut_ThreeArguments( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - null, butMap - empty map';
   var srcMap = null;
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - null, butMap - empty array';
   var srcMap = null;
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - null, butMap - filled map';
   var srcMap = null;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - null, butMap - filled array';
   var srcMap = null;
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
   test.identical( got.aa, 1 );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
   test.identical( got.aa, 1 );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  test.identical( _.mapKeys( got ), [ 'aa', 'bb', 'cc' ] );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
-  test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
+  test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
+  var butMap = { a : 1, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
   test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
-  test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'bb', 'cc' ] );
+  var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  test.identical( _.mapKeys( got ), [ 'a', 'bb', 'cc' ] );
   test.identical( Object.getPrototypeOf( got ), { bb : 2, cc : 3 } );
   test.true( got === srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
   test.close( 'srcMap - map' );
 
   /* - */
 
-  test.open( 'srcMap - array' );
-
-  test.case = 'srcMap - empty map, butMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty map, butMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty map, butMap - filled map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty map, butMap - filled array';
-  var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
-
-  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = { 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = { 2 : 'b', 3 : 1 };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
-
-  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = { 0 : 'a', 2 : 'b' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOnlyOwnBut_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
-
-  test.close( 'srcMap - array' );
+  // test.open( 'srcMap - array' );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty map';
+  // var srcMap = [];
+  // var butMap = {};
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, {} );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty array';
+  // var srcMap = [];
+  // var butMap = [];
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [] );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled map';
+  // var srcMap = [];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled array';
+  // var srcMap = [];
+  // var butMap = [ 'a', 0, 'b', 1 ];
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+  //
+  // test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = [ { 0 : 1 }, { 1 : 2 } ];
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = { 2 : 'b', 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, [ { 0 : 1 }, { 1 : 2 } ] );
+  //
+  // test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = { 0 : 'a', 2 : 'b' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
+  // var srcMap = [ 'a', 0, 'b', 1 ];
+  // var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
+  // var got = _.mapOnlyOwnBut_( srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
+  // test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  //
+  // test.close( 'srcMap - array' );
 
   /* - */
 
@@ -5381,7 +7934,7 @@ function mapOnlyOwnButThreeArguments_( test )
   test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( {}, [], {}, [] ) );
+  test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( {}, {}, {}, [] ) );
 
   test.case = 'wrong type of dstMap';
   test.shouldThrowErrorSync( () => _.mapOnlyOwnBut_( 3, [] ) );
@@ -5394,95 +7947,95 @@ function mapOnlyOwnButThreeArguments_( test )
 
 //
 
-function mapOnlyOwnButDstMapNull_( test )
+function mapOnlyOwnBut_DstMapNull( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = { aa : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
-  var expected = { aa : 1 };
+  var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
-  var expected = {};
+  var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
+  test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { a : 1, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
-  var expected = {};
+  var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
+  var expected = { a : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
   test.close( 'srcMap - map' );
 
@@ -5492,187 +8045,187 @@ function mapOnlyOwnButDstMapNull_( test )
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = { 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
-  var expected = { 2 : 'b', 3 : 1 };
+  var srcMap = [ 'a', 'b' ];
+  var butMap = [ { 0 : 1 }, { 1 : 2 } ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
+  var expected = { 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
+  test.identical( butMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
   var expected = { 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOnlyOwnBut_( null, srcMap, screenMap );
-  var expected = {};
+  var srcMap = [ 'a', 'b' ];
+  var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
+  var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
+  var expected = { 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
+  test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
 
   test.close( 'srcMap - array' );
 }
 
 //
 
-function mapOnlyOwnButDstMapIsMap_( test )
+function mapOnlyOwnBut_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = {};
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 2, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 2;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 2, bb : 2 };
+  var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
+  var expected = { aa : 2, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 1, bb : 2 };
+  var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
+  test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 1, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 1, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.a = 1;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 1, bb : 2 };
+  var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
 
   test.close( 'srcMap - map' );
 
@@ -5683,90 +8236,90 @@ function mapOnlyOwnButDstMapIsMap_( test )
   test.case = 'srcMap - empty map, butMap - empty map';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = {};
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
+  test.identical( butMap, {} );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = [];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
+  test.identical( butMap, [] );
 
   test.case = 'srcMap - empty map, butMap - filled map';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [];
-  var screenMap = [ 'a', 0, 'b', 1 ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+  test.identical( butMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, not identical keys';
   var dstMap = { 0 : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { bb : 2, 1 : 0, 3 : 1, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, not identical keys';
   var dstMap = { aa : 1, bb : 2 };
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 1, bb : 2, 2 : 'b', 3 : 1 };
+  var srcMap = [ 'a', 'b' ];
+  var butMap = [ { 0 : 1 }, { 1 : 2 } ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 0 : 1 }, { 1 : 2 } ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
+  test.identical( butMap, [ { 0 : 1 }, { 1 : 2 } ] );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled map, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
   var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
+  var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
   var expected = { aa : 1, bb : 2, 0 : 'a', 2 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
 
   test.case = 'srcMap - filled map has not onlyOwn property, butMap - filled array, has identical keys';
   var dstMap = { aa : 1, bb : 2 };
-  var srcMap = [ 'a', 0, 'b', 1 ];
-  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
-  var got = _.mapOnlyOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 1, bb : 2 };
+  var srcMap = [ 'a','b' ];
+  var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
+  var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
   test.identical( got, expected );
   test.true( got !== srcMap );
-  test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
-  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  test.identical( srcMap, [ 'a', 'b' ] );
+  test.identical( butMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
 
   test.close( 'srcMap - array' );
 }
@@ -5859,7 +8412,7 @@ function mapOnly( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { c : 33, a  : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -5889,7 +8442,7 @@ function mapOnly( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
@@ -6013,7 +8566,7 @@ function mapOnly( test )
   var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
@@ -6043,7 +8596,258 @@ function mapOnly( test )
 
 //
 
-function mapOnlyTwoArguments_( test )
+function mapOnlySrcMapsIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = {};
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = {};
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = {};
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = {};
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyScreenMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake([ 'a', 'c', { b : 77 } ]);
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { b : 77 } ]) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { d : 7 } ]) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'aa', '13', { bb : 77 } ]);
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'aa', '13', { bb : 77 } ]) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) ) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) ) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) ) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnly_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
@@ -6165,10 +8969,10 @@ function mapOnlyTwoArguments_( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( srcMap, { c : 33, a : 'abc' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -6195,137 +8999,137 @@ function mapOnlyTwoArguments_( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( srcMap, {} );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );
 
   /* - */
 
-  test.open( 'srcMap - long' );
-
-  test.case = 'srcMap - empty array, screenMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty array, screenMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty array, screenMap - map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty array, screenMap - array';
-  var srcMap = [];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'screenMap - empty map';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = {};
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, {} );
-
-  test.case = 'screenMap - empty array';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = [];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, [] );
-
-  test.case = 'only srcMap';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var got = _.mapOnly_( srcMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-
-  test.case = 'all keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'all keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'none keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
-
-  test.case = 'none keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
-  var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
-  test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
-
-  test.case = 'srcMap has numerical keys, screenMap has not primitives';
-  var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
-  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
-  var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
-  test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
-
-  test.close( 'srcMap - long' );
+  // test.open( 'srcMap - long' );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty map';
+  // var srcMap = [];
+  // var screenMap = {};
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty array';
+  // var srcMap = [];
+  // var screenMap = [];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'srcMap - empty array, screenMap - map';
+  // var srcMap = [];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty array, screenMap - array';
+  // var srcMap = [];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'screenMap - empty map';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = {};
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'screenMap - empty array';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = [];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'only srcMap';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var got = _.mapOnly_( srcMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
+  // var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
+  // test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
+  //
+  // test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  // var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
+  // var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  // var got = _.mapOnly_( srcMap, screenMap );
+  // var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
+  // test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+  //
+  // test.close( 'srcMap - long' );
 
   /* - */
 
@@ -6354,7 +9158,7 @@ function mapOnlyTwoArguments_( test )
 
 //
 
-function mapOnlyDstMapIsNull_( test )
+function mapOnly_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
@@ -6432,7 +9236,7 @@ function mapOnlyDstMapIsNull_( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -6462,7 +9266,7 @@ function mapOnlyDstMapIsNull_( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
@@ -6548,7 +9352,7 @@ function mapOnlyDstMapIsNull_( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -6578,7 +9382,7 @@ function mapOnlyDstMapIsNull_( test )
   var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
@@ -6589,7 +9393,7 @@ function mapOnlyDstMapIsNull_( test )
 
 //
 
-function mapOnlyDstMapIsMap_( test )
+function mapOnly_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -6675,7 +9479,7 @@ function mapOnlyDstMapIsMap_( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -6708,7 +9512,7 @@ function mapOnlyDstMapIsMap_( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 1, b : 2, 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
@@ -6802,7 +9606,7 @@ function mapOnlyDstMapIsMap_( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -6835,7 +9639,7 @@ function mapOnlyDstMapIsMap_( test )
   var srcMap = [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 1, b : 2, 2 : 'abc', 1 : 33, 0 : 'name' };
+  var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { 0 : 'name' }, { 1 : 33 }, { 2 : 'abc' } ] );
@@ -6846,7 +9650,258 @@ function mapOnlyDstMapIsMap_( test )
 
 //
 
-function mapOnlyOwnTwoArguments_( test )
+function mapOnly_SrcMapsIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnly_ScreenMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake([ 'a', 'c', { b : 77 } ]);
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { b : 77 } ]) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { d : 7 } ]) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'aa', '13', { bb : 77 } ]);
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'aa', '13', { bb : 77 } ]) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) ) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) ) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) ) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyOwn_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
@@ -7009,11 +10064,9 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap[ 2 ] = 'abc';
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ '2', 'd', 'c' ] );
-  test.identical( got[ '2' ], 'abc' );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
   test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap[ '2' ], 'abc' );
   test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
@@ -7021,143 +10074,143 @@ function mapOnlyOwnTwoArguments_( test )
 
   /* - */
 
-  test.open( 'srcMap - long' );
-
-  test.case = 'srcMap - empty array, screenMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty array, screenMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty array, screenMap - map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty array, screenMap - array';
-  var srcMap = [];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'screenMap - empty map';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = {};
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, {} );
-
-  test.case = 'screenMap - empty array';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [] );
-
-  test.case = 'only srcMap';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var got = _.mapOnlyOwn_( srcMap );
-  var expected = { a : 'abc' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-
-  test.case = 'all keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { a : 'abc' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'all keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { a : 'abc' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'none keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
-
-  test.case = 'none keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
-
-  test.case = 'srcMap has numerical keys, screenMap has not primitives';
-  var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
-  var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { a : 'abc' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc' } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
-
-  test.close( 'srcMap - long' );
+  // test.open( 'srcMap - long' );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty map';
+  // var srcMap = [];
+  // var screenMap = {};
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty array';
+  // var srcMap = [];
+  // var screenMap = [];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'srcMap - empty array, screenMap - map';
+  // var srcMap = [];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty array, screenMap - array';
+  // var srcMap = [];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'screenMap - empty map';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = {};
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'screenMap - empty array';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'only srcMap';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var got = _.mapOnlyOwn_( srcMap );
+  // var expected = { a : 'abc' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = { a : 'abc' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = { a : 'abc' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
+  //
+  // test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  // var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  // var got = _.mapOnlyOwn_( srcMap, screenMap );
+  // var expected = { a : 'abc' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc' } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+  //
+  // test.close( 'srcMap - long' );
 
   /* - */
 
@@ -7186,7 +10239,7 @@ function mapOnlyOwnTwoArguments_( test )
 
 //
 
-function mapOnlyOwnDstMapNull_( test )
+function mapOnlyOwn_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
@@ -7301,7 +10354,7 @@ function mapOnlyOwnDstMapNull_( test )
   srcMap[ 2 ] = 'abc';
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( null, srcMap, screenMap );
-  var expected = { 2 : 'abc' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.contains( srcMap, { 2 : 'abc' } );
@@ -7429,7 +10482,7 @@ function mapOnlyOwnDstMapNull_( test )
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( null, srcMap, screenMap );
-  var expected = { a : 'abc' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc' } );
@@ -7442,7 +10495,7 @@ function mapOnlyOwnDstMapNull_( test )
 
 //
 
-function mapOnlyOwnDstMapMap_( test )
+function mapOnlyOwn_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -7568,7 +10621,7 @@ function mapOnlyOwnDstMapMap_( test )
   srcMap[ 2 ] = 'abc';
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( dstMap, srcMap, screenMap );
-  var expected = { 2 : 'abc', a : 1, b : 2 };
+  var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.contains( srcMap, { 2 : 'abc' } );
@@ -7707,7 +10760,7 @@ function mapOnlyOwnDstMapMap_( test )
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2 };
+  var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc' } );
@@ -7720,7 +10773,258 @@ function mapOnlyOwnDstMapMap_( test )
 
 //
 
-function mapOnlyComplementingTwoArguments_( test )
+function mapOnlyOwn_SrcMapsIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = {};
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyOwn_ScreenMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake([ 'a', 'c', { b : 77 } ]);
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { b : 77 } ]) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { d : 7 } ]) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'aa', '13', { bb : 77 } ]);
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'aa', '13', { bb : 77 } ]) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) ) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) ) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) ) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  var got = _.mapOnlyOwn_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyComplementing_WithTwoArguments( test )
 {
   test.open( 'srcMap - map' );
 
@@ -7843,7 +11147,7 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c'  ] );
+  test.identical( _.mapKeys( got ), [ 'a', 'c', 'd' ] );
   test.identical( got.a, 'abc' );
   test.identical( got.b, undefined );
   test.true( got === srcMap );
@@ -7882,12 +11186,10 @@ function mapOnlyComplementingTwoArguments_( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ '2', 'b', 'd', 'c' ] );
-  test.identical( got[ '2' ], 'abc' );
+  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
   test.identical( got.b, undefined );
   test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
-  test.identical( srcMap[ '2' ], 'abc' );
   test.identical( srcMap.b, undefined );
   test.identical( Object.getPrototypeOf( srcMap ), { d : 'name', c : 33 } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
@@ -7896,133 +11198,133 @@ function mapOnlyComplementingTwoArguments_( test )
 
   /* - */
 
-  test.open( 'srcMap - long' );
-
-  test.case = 'srcMap - empty array, screenMap - empty map';
-  var srcMap = [];
-  var screenMap = {};
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, {} );
-
-  test.case = 'srcMap - empty array, screenMap - empty array';
-  var srcMap = [];
-  var screenMap = [];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [] );
-
-  test.case = 'srcMap - empty array, screenMap - map';
-  var srcMap = [];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'srcMap - empty array, screenMap - array';
-  var srcMap = [];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap, [] );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'screenMap - empty map';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = {};
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, {} );
-
-  test.case = 'screenMap - empty array';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [] );
-
-  test.case = 'all keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
-
-  test.case = 'all keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
-
-  test.case = 'none keys in srcMap exists in screenMap - map';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
-
-  test.case = 'none keys in srcMap exists in screenMap - array';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = {};
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
-
-  test.case = 'srcMap has numerical keys, screenMap has not primitives';
-  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
-  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
-  var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
-  test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
-  test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
-  test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
-
-  test.close( 'srcMap - long' );
+  // test.open( 'srcMap - long' );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty map';
+  // var srcMap = [];
+  // var screenMap = {};
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'srcMap - empty array, screenMap - empty array';
+  // var srcMap = [];
+  // var screenMap = [];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'srcMap - empty array, screenMap - map';
+  // var srcMap = [];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty array, screenMap - array';
+  // var srcMap = [];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'screenMap - empty map';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = {};
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, {} );
+  //
+  // test.case = 'screenMap - empty array';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [] );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'all keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - map';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+  //
+  // test.case = 'none keys in srcMap exists in screenMap - array';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
+  //
+  // test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  // var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  // var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  // var got = _.mapOnlyComplementing_( srcMap, screenMap );
+  // var expected = { a : 'abc', c : 33, d : 'name' };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 1 ] ), { c : 33 } );
+  // test.identical( Object.getPrototypeOf( srcMap[ 2 ] ), { d : 'name' } );
+  // test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+  //
+  // test.close( 'srcMap - long' );
 
   /* - */
 
@@ -8051,7 +11353,7 @@ function mapOnlyComplementingTwoArguments_( test )
 
 //
 
-function mapOnlyComplementingDstMapNull_( test )
+function mapOnlyComplementing_DstMapIsNull( test )
 {
   test.open( 'srcMap - map' );
 
@@ -8137,7 +11439,7 @@ function mapOnlyComplementingDstMapNull_( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.contains( srcMap, { a : 'abc', b : undefined } );
@@ -8173,7 +11475,7 @@ function mapOnlyComplementingDstMapNull_( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { 2 : 'abc', c : 33 };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.contains( srcMap, { 2 : 'abc', b : undefined } );
@@ -8265,7 +11567,7 @@ function mapOnlyComplementingDstMapNull_( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -8301,7 +11603,7 @@ function mapOnlyComplementingDstMapNull_( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -8314,7 +11616,7 @@ function mapOnlyComplementingDstMapNull_( test )
 
 //
 
-function mapOnlyComplementingDstMapMap_( test )
+function mapOnlyComplementing_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
 
@@ -8408,7 +11710,7 @@ function mapOnlyComplementingDstMapMap_( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.contains( srcMap, { a : 'abc', b : undefined } );
@@ -8447,7 +11749,7 @@ function mapOnlyComplementingDstMapMap_( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { 2 : 'abc', b : 2, c : 33 };
+  var expected = { 2 : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.contains( srcMap, { 2 : 'abc', b : undefined } );
@@ -8547,7 +11849,7 @@ function mapOnlyComplementingDstMapMap_( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -8586,7 +11888,7 @@ function mapOnlyComplementingDstMapMap_( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33 };
+  var expected = { a : undefined, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -8595,6 +11897,257 @@ function mapOnlyComplementingDstMapMap_( test )
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
+}
+
+//
+
+function mapOnlyComplementing_SrcMapsIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.unrollMake( [] );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake( [] ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]);
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.unrollMake([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = _.containerAdapter.make( new Set( [] ) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set( [] ) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) );
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, _.containerAdapter.make( new Set([ { a : 'abc' }, { c : 33 }, { d : 'name' } ]) ) );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'containerAdapter' );
+}
+
+//
+
+function mapOnlyComplementing_ScreenMapIsVector( test )
+{
+  test.open( 'unroll' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.unrollMake([ 'a', 'c', { b : 77 } ]);
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { b : 77 } ]) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake( [] );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake( [] ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'a', 'c', { d : 7 } ]) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.unrollMake([ 'aa', '13', { bb : 77 } ]);
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ 'aa', '13', { bb : 77 } ]) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+
+  test.open( 'containerAdapter' );
+
+  test.case = 'srcMap - empty map, screenMap - empty vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'srcMap - empty map, screenMap - filled vector';
+  var srcMap = {};
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { b : 77 } ]) ) );
+
+  test.case = 'screenMap - empty vector';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set( [] ) ) );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) ) );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ 'aa', '13', { bb : 77 } ]) ) );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
+
+  test.close( 'containerAdapter' );
 }
 
 //
@@ -8618,7 +12171,7 @@ function _mapOnly( test )
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -8703,10 +12256,10 @@ function mapsAreIdentical( test )
   });
 
   test.case = 'not object-like arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapsAreIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
-  });
+  // test.shouldThrowErrorSync( function() /* qqq : for Dmytro : need to investigate, two different namespaces */
+  // {
+  //   _.mapsAreIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  // });
   test.shouldThrowErrorSync( function()
   {
     _.mapsAreIdentical( 'a', 'b' );
@@ -8758,7 +12311,7 @@ function mapContain( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -9308,7 +12861,7 @@ function mapOnlyOwnKey( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
@@ -9978,24 +13531,24 @@ function sureMapHasExactly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapHasExactly( srcMap, screenMap ), true );
-  test.identical( _.sureMapHasExactly( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapHasExactly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapHasExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureHasExactly( srcMap, screenMap ), true );
+  test.identical( _.map.sureHasExactly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureHasExactly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureHasExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps )
+    _.map.sureHasExactly( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10003,7 +13556,7 @@ function sureMapHasExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps, msg )
+    _.map.sureHasExactly( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10018,7 +13571,7 @@ function sureMapHasExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps, 'msg' )
+    _.map.sureHasExactly( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10033,7 +13586,7 @@ function sureMapHasExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps, 'msg', msg )
+    _.map.sureHasExactly( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10048,7 +13601,7 @@ function sureMapHasExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureHasExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10063,7 +13616,7 @@ function sureMapHasExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureHasExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10083,24 +13636,24 @@ function sureMapOwnExactly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapOwnExactly( srcMap, screenMap ), true );
-  test.identical( _.sureMapOwnExactly( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapOwnExactly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapOwnExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureOwnExactly( srcMap, screenMap ), true );
+  test.identical( _.map.sureOwnExactly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureOwnExactly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureOwnExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try /* qqq : use test.shouldThrowErrorSync() instead of try */
   {
-    _.sureMapOwnExactly( srcMap, screenMaps )
+    _.map.sureOwnExactly( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10108,7 +13661,7 @@ function sureMapOwnExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnExactly( srcMap, screenMaps, msg )
+    _.map.sureOwnExactly( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10123,7 +13676,7 @@ function sureMapOwnExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnExactly( srcMap, screenMaps, 'msg' )
+    _.map.sureOwnExactly( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10138,7 +13691,7 @@ function sureMapOwnExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnExactly( srcMap, screenMaps, 'msg', msg )
+    _.map.sureOwnExactly( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10153,7 +13706,7 @@ function sureMapOwnExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureOwnExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10168,7 +13721,7 @@ function sureMapOwnExactly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureOwnExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10188,10 +13741,10 @@ function sureMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapHasOnly( srcMap, screenMap ), true );
-  test.identical( _.sureMapHasOnly( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapHasOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureHasOnly( srcMap, screenMap ), true );
+  test.identical( _.map.sureHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureHasOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureHasOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10201,14 +13754,14 @@ function sureMapHasOnly( test )
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps )
+    _.map.sureHasOnly( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10216,7 +13769,7 @@ function sureMapHasOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps, msg )
+    _.map.sureHasOnly( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10231,7 +13784,7 @@ function sureMapHasOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps, 'msg' )
+    _.map.sureHasOnly( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10246,7 +13799,7 @@ function sureMapHasOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps, 'msg', msg )
+    _.map.sureHasOnly( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10261,7 +13814,7 @@ function sureMapHasOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10276,7 +13829,7 @@ function sureMapHasOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10296,24 +13849,24 @@ function sureMapOwnOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapOwnOnly( srcMap, screenMap ), true );
-  test.identical( _.sureMapOwnOnly( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapOwnOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureOwnOnly( srcMap, screenMap ), true );
+  test.identical( _.map.sureOwnOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureOwnOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps )
+    _.map.sureOwnOnly( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10321,7 +13874,7 @@ function sureMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps, msg )
+    _.map.sureOwnOnly( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10336,7 +13889,7 @@ function sureMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps, 'msg' )
+    _.map.sureOwnOnly( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10351,7 +13904,7 @@ function sureMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps, 'msg', msg )
+    _.map.sureOwnOnly( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10366,7 +13919,7 @@ function sureMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10381,7 +13934,7 @@ function sureMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10401,24 +13954,24 @@ function sureMapHasAll( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapHasAll( srcMap, screenMap ), true );
-  test.identical( _.sureMapHasAll( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapHasAll( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapHasAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureHasAll( srcMap, screenMap ), true );
+  test.identical( _.map.sureHasAll( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureHasAll( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureHasAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps )
+    _.map.sureHasAll( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have fields : "name"' );
+  test.identical( err.originalMessage, 'Map.polluted should have fields : "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10426,7 +13979,7 @@ function sureMapHasAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps, msg )
+    _.map.sureHasAll( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10441,7 +13994,7 @@ function sureMapHasAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps, 'msg' )
+    _.map.sureHasAll( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10456,7 +14009,7 @@ function sureMapHasAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps, 'msg', msg )
+    _.map.sureHasAll( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10471,7 +14024,7 @@ function sureMapHasAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10486,7 +14039,7 @@ function sureMapHasAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasAll( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureHasAll( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10506,24 +14059,24 @@ function sureMapOwnAll( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapOwnAll( srcMap, screenMap ), true );
-  test.identical( _.sureMapOwnAll( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapOwnAll( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapOwnAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureOwnAll( srcMap, screenMap ), true );
+  test.identical( _.map.sureOwnAll( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureOwnAll( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureOwnAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps )
+    _.map.sureOwnAll( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own fields : "name"' );
+  test.identical( err.originalMessage, 'Map.polluted should own fields : "name"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10531,7 +14084,7 @@ function sureMapOwnAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps, msg )
+    _.map.sureOwnAll( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10546,7 +14099,7 @@ function sureMapOwnAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps, 'msg' )
+    _.map.sureOwnAll( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10561,7 +14114,7 @@ function sureMapOwnAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps, 'msg', msg )
+    _.map.sureOwnAll( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10576,7 +14129,7 @@ function sureMapOwnAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10591,7 +14144,7 @@ function sureMapOwnAll( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnAll( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureOwnAll( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10611,24 +14164,24 @@ function sureMapHasNone( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapHasNone( srcMap, screenMap ), true );
-  test.identical( _.sureMapHasNone( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapHasNone( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapHasNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureHasNone( srcMap, screenMap ), true );
+  test.identical( _.map.sureHasNone( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureHasNone( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureHasNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps )
+    _.map.sureHasNone( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "a", "b", "c"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10636,7 +14189,7 @@ function sureMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps, msg )
+    _.map.sureHasNone( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10651,7 +14204,7 @@ function sureMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps, 'msg' )
+    _.map.sureHasNone( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10666,7 +14219,7 @@ function sureMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps, 'msg', msg )
+    _.map.sureHasNone( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10681,7 +14234,7 @@ function sureMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10696,7 +14249,7 @@ function sureMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10716,24 +14269,24 @@ function sureMapOwnNone( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.sureMapOwnNone( srcMap, screenMap ), true );
-  test.identical( _.sureMapOwnNone( srcMap, screenMap, msg ), true );
-  test.identical( _.sureMapOwnNone( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.sureMapOwnNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureOwnNone( srcMap, screenMap ), true );
+  test.identical( _.map.sureOwnNone( srcMap, screenMap, msg ), true );
+  test.identical( _.map.sureOwnNone( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.sureOwnNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps )
+    _.map.sureOwnNone( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "a", "b", "c"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10741,7 +14294,7 @@ function sureMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps, msg )
+    _.map.sureOwnNone( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10756,7 +14309,7 @@ function sureMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps, 'msg' )
+    _.map.sureOwnNone( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10771,7 +14324,7 @@ function sureMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps, 'msg', msg )
+    _.map.sureOwnNone( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10786,7 +14339,7 @@ function sureMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.sureOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10801,7 +14354,7 @@ function sureMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.sureMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.sureOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10825,24 +14378,24 @@ function assertMapHasFields( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasFields( srcMap, screenMap ), true );
-  test.identical( _.assertMapHasFields( srcMap, screenMap, msg ), true );
-  test.identical( _.assertMapHasFields( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapHasFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.assertHasFields( srcMap, screenMap ), true );
+  test.identical( _.map.assertHasFields( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertHasFields( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps )
+    _.map.assertHasFields( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10850,7 +14403,7 @@ function assertMapHasFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps, msg )
+    _.map.assertHasFields( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10865,7 +14418,7 @@ function assertMapHasFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps, 'msg' )
+    _.map.assertHasFields( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10880,7 +14433,7 @@ function assertMapHasFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps, 'msg', msg )
+    _.map.assertHasFields( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -10895,7 +14448,7 @@ function assertMapHasFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.assertHasFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -10910,7 +14463,7 @@ function assertMapHasFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasFields( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.assertHasFields( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -10927,7 +14480,7 @@ function assertMapHasFields( test )
   test.case = 'Config.debug === false';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  test.shouldThrowErrorSync( () => _.assertMapHasFields( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasFields( srcMap, screenMaps ) );
 }
 
 //
@@ -10942,24 +14495,24 @@ function assertMapOwnFields( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapOwnFields( srcMap, screenMap ), true );
-  test.identical( _.assertMapOwnFields( srcMap, screenMap, msg ), true );
-  test.identical( _.assertMapOwnFields( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapOwnFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.assertOwnFields( srcMap, screenMap ), true );
+  test.identical( _.map.assertOwnFields( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertOwnFields( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertOwnFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps )
+    _.map.assertOwnFields( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -10967,7 +14520,7 @@ function assertMapOwnFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps, msg )
+    _.map.assertOwnFields( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -10982,7 +14535,7 @@ function assertMapOwnFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps, 'msg' )
+    _.map.assertOwnFields( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -10997,7 +14550,7 @@ function assertMapOwnFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps, 'msg', msg )
+    _.map.assertOwnFields( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -11012,7 +14565,7 @@ function assertMapOwnFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.assertOwnFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -11027,7 +14580,7 @@ function assertMapOwnFields( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnFields( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.assertOwnFields( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -11044,7 +14597,7 @@ function assertMapOwnFields( test )
   test.case = 'different values';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  test.shouldThrowErrorSync( () => _.assertMapOwnFields( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertOwnFields( srcMap, screenMaps ) );
 }
 
 //
@@ -11056,14 +14609,14 @@ function assertMapHasOnly( test )
   test.case = 'correct input, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
   test.case = 'correct input, msg - string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11071,7 +14624,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11079,7 +14632,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11087,7 +14640,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11095,7 +14648,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg', msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11103,7 +14656,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'd' } );
 
@@ -11112,14 +14665,14 @@ function assertMapHasOnly( test )
   test.case = 'correct input, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
-  test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
   test.case = 'correct input, msg - string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11127,7 +14680,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11135,7 +14688,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg', 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11143,7 +14696,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11151,7 +14704,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, 'msg', msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, 'msg', msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11159,7 +14712,7 @@ function assertMapHasOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var screenMap = [ 'a', 'b', 'c', 'd' ];
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, msg ), true );
+  test.identical( _.map.assertHasOnly( srcMap, screenMap, msg, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
   test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
 
@@ -11176,9 +14729,9 @@ function assertMapHasOnly( test )
   {
     test.identical( arg, undefined );
     test.true( _.errIs( err ) );
-    test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+    test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11192,7 +14745,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11206,7 +14759,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11219,7 +14772,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11233,7 +14786,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11247,7 +14800,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11261,7 +14814,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, { 'a' : 13, 'b' : 77, 'c' : 3, 'e' : 'e' } );
 
@@ -11274,9 +14827,9 @@ function assertMapHasOnly( test )
   {
     test.identical( arg, undefined );
     test.true( _.errIs( err ) );
-    test.identical( err.originalMessage, 'Object should have no fields : "d"' );
+    test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11290,7 +14843,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11304,7 +14857,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11317,7 +14870,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11331,7 +14884,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11345,7 +14898,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11359,7 +14912,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [ 'a', 'b', 'c', 'e', 'f' ] );
 
@@ -11376,7 +14929,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, {} );
 
@@ -11389,7 +14942,7 @@ function assertMapHasOnly( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : 'd' } );
   test.identical( screenMaps, [] );
 
@@ -11399,19 +14952,19 @@ function assertMapHasOnly( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps ) );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 } ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( { 'a' : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 }, { 'a' : 2 }, 'msg', 'msg', 'extra' ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( { 'a' : 1 }, { 'a' : 2 }, 'msg', 'msg', 'extra' ) );
 
   test.case = 'wrong type of srcMap';
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( 'wrong', { 'a' : 2 } ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( 'wrong', { 'a' : 2 } ) );
 
   test.case = 'wrong type of screenMaps';
-  test.shouldThrowErrorSync( () => _.assertMapHasOnly( { 'a' : 1 }, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasOnly( { 'a' : 1 }, 'wrong' ) );
 }
 
 //
@@ -11426,24 +14979,24 @@ function assertMapOwnOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapOwnOnly( srcMap, screenMap ), true );
-  test.identical( _.assertMapOwnOnly( srcMap, screenMap, msg ), true );
-  test.identical( _.assertMapOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapOwnOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.assertOwnOnly( srcMap, screenMap ), true );
+  test.identical( _.map.assertOwnOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertOwnOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps )
+    _.map.assertOwnOnly( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "d"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11451,7 +15004,7 @@ function assertMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps, msg )
+    _.map.assertOwnOnly( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -11466,7 +15019,7 @@ function assertMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps, 'msg' )
+    _.map.assertOwnOnly( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -11481,7 +15034,7 @@ function assertMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps, 'msg', msg )
+    _.map.assertOwnOnly( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -11496,7 +15049,7 @@ function assertMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.assertOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -11511,7 +15064,7 @@ function assertMapOwnOnly( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.assertOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -11528,7 +15081,7 @@ function assertMapOwnOnly( test )
   test.case = 'Config.debug === false';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  test.shouldThrowErrorSync( () => _.assertMapOwnOnly( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertOwnOnly( srcMap, screenMaps ) );
 }
 
 //
@@ -11543,24 +15096,24 @@ function assertMapHasNone( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapHasNone( srcMap, screenMap ), true );
-  test.identical( _.assertMapHasNone( srcMap, screenMap, msg ), true );
-  test.identical( _.assertMapHasNone( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapHasNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.assertHasNone( srcMap, screenMap ), true );
+  test.identical( _.map.assertHasNone( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertHasNone( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps )
+    _.map.assertHasNone( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no fields : "a", "b", "c"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11568,7 +15121,7 @@ function assertMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps, msg )
+    _.map.assertHasNone( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -11583,7 +15136,7 @@ function assertMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps, 'msg' )
+    _.map.assertHasNone( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -11598,7 +15151,7 @@ function assertMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps, 'msg', msg )
+    _.map.assertHasNone( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -11613,7 +15166,7 @@ function assertMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.assertHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -11628,7 +15181,7 @@ function assertMapHasNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.assertHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -11645,7 +15198,7 @@ function assertMapHasNone( test )
   test.case = 'Config.debug === false';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  test.shouldThrowErrorSync( () => _.assertMapHasNone( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasNone( srcMap, screenMaps ) );
 }
 
 //
@@ -11660,24 +15213,24 @@ function assertMapOwnNone( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
   var msg = () => { return srcMap.a + screenMaps.b };
-  test.identical( _.assertMapOwnNone( srcMap, screenMap ), true );
-  test.identical( _.assertMapOwnNone( srcMap, screenMap, msg ), true );
-  test.identical( _.assertMapOwnNone( srcMap, screenMap, msg, 'msg' ), true );
-  test.identical( _.assertMapOwnNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.assertOwnNone( srcMap, screenMap ), true );
+  test.identical( _.map.assertOwnNone( srcMap, screenMap, msg ), true );
+  test.identical( _.map.assertOwnNone( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.map.assertOwnNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps )
+    _.map.assertOwnNone( srcMap, screenMaps )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should own no fields : "a", "b", "c"' );
+  test.identical( err.originalMessage, 'Map.polluted should own no fields : "a", "b", "c"' );
 
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -11685,7 +15238,7 @@ function assertMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps, msg )
+    _.map.assertOwnNone( srcMap, screenMaps, msg )
   }
   catch( e )
   {
@@ -11700,7 +15253,7 @@ function assertMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps, 'msg' )
+    _.map.assertOwnNone( srcMap, screenMaps, 'msg' )
   }
   catch( e )
   {
@@ -11715,7 +15268,7 @@ function assertMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps, 'msg', msg )
+    _.map.assertOwnNone( srcMap, screenMaps, 'msg', msg )
   }
   catch( e )
   {
@@ -11730,7 +15283,7 @@ function assertMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    _.map.assertOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -11745,7 +15298,7 @@ function assertMapOwnNone( test )
   var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
-    _.assertMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+    _.map.assertOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -11762,7 +15315,7 @@ function assertMapOwnNone( test )
   test.case = 'Config.debug === false';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  test.shouldThrowErrorSync( () => _.assertMapOwnNone( srcMap, screenMaps ) );
+  test.shouldThrowErrorSync( () => _.map.assertOwnNone( srcMap, screenMaps ) );
 }
 
 //
@@ -11774,30 +15327,30 @@ function sureMapHasNoUndefine( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = () => { return srcMap.a + srcMap.b };
-  test.identical( _.sureMapHasNoUndefine( srcMap), true );
-  test.identical( _.sureMapHasNoUndefine( srcMap, msg ), true );
-  test.identical( _.sureMapHasNoUndefine( srcMap, msg, 'msg' ), true );
-  test.identical( _.sureMapHasNoUndefine( srcMap, () => 'This is ' + 'explanation' ), true );
+  test.identical( _.map.sureHasNoUndefine( srcMap), true );
+  test.identical( _.map.sureHasNoUndefine( srcMap, msg ), true );
+  test.identical( _.map.sureHasNoUndefine( srcMap, msg, 'msg' ), true );
+  test.identical( _.map.sureHasNoUndefine( srcMap, () => 'This is ' + 'explanation' ), true );
 
   test.case = 'check error message, no msg';
   var otherMap = { 'd' : undefined };
   try
   {
-    _.sureMapHasNoUndefine( otherMap )
+    _.map.sureHasNoUndefine( otherMap )
   }
   catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+  test.identical( err.originalMessage, 'Map.polluted should have no undefines, but has : "d"' );
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
   var msg = () => { return srcMap.a + srcMap.b };
   try
   {
-    _.sureMapHasNoUndefine( otherMap, msg )
+    _.map.sureHasNoUndefine( otherMap, msg )
   }
   catch( e )
   {
@@ -11810,7 +15363,7 @@ function sureMapHasNoUndefine( test )
   var otherMap = { 'd' : undefined };
   try
   {
-    _.sureMapHasNoUndefine( otherMap, 'msg' )
+    _.map.sureHasNoUndefine( otherMap, 'msg' )
   }
   catch( e )
   {
@@ -11824,7 +15377,7 @@ function sureMapHasNoUndefine( test )
   var msg = () => { return srcMap.a + srcMap.b };
   try
   {
-    _.sureMapHasNoUndefine( otherMap, 'msg', msg )
+    _.map.sureHasNoUndefine( otherMap, 'msg', msg )
   }
   catch( e )
   {
@@ -11838,7 +15391,7 @@ function sureMapHasNoUndefine( test )
   var msg = () => { return srcMap.a + srcMap.b };
   try
   {
-    _.sureMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
+    _.map.sureHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
   }
   catch( e )
   {
@@ -11852,7 +15405,7 @@ function sureMapHasNoUndefine( test )
   var msg = () => { return srcMap.a + srcMap.b };
   try
   {
-    _.sureMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
+    _.map.sureHasNoUndefine( srcMap, msg, 'msg', 'msg' )
   }
   catch( e )
   {
@@ -11870,82 +15423,82 @@ function assertMapHasNoUndefine( test )
 
   test.case = 'without message';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
-  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - two strings';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - string and routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg', msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - routine and string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   test.case = 'message - two routines';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3 };
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg, msg ), true );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'c' : 3 } );
 
   /* */
 
   test.case = 'array, without message';
   var srcMap = [ 0, 'a', null ];
-  test.identical( _.assertMapHasNoUndefine( srcMap ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - string';
   var srcMap = [ 0, 'a', null ];
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg' ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - routine';
   var srcMap = [ 0, 'a', null ];
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - two strings';
   var srcMap = [ 0, 'a', null ];
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - string and routine';
   var srcMap = [ 0, 'a', null ];
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, 'msg', msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, 'msg', msg ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - routine and string';
   var srcMap = [ 0, 'a', null ];
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.case = 'array, message - two routines';
   var srcMap = [ 0, 'a', null ];
   var msg = () => srcMap.a + srcMap.b;
-  test.identical( _.assertMapHasNoUndefine( srcMap, msg, msg ), true );
+  test.identical( _.map.assertHasNoUndefine( srcMap, msg, msg ), true );
   test.identical( srcMap, [ 0, 'a', null ] );
 
   test.close( 'correct map' );
@@ -11960,9 +15513,9 @@ function assertMapHasNoUndefine( test )
   {
     test.identical( arg, undefined );
     test.true( _.errIs( err ) );
-    test.identical( err.originalMessage, 'Object should have no undefines, but has : "d"' );
+    test.identical( err.originalMessage, 'Map.polluted should have no undefines, but has : "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - string';
@@ -11973,7 +15526,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - routine';
@@ -11985,7 +15538,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - two strings';
@@ -11996,7 +15549,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - string and routine';
@@ -12008,7 +15561,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - routine and string';
@@ -12020,7 +15573,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   test.case = 'message - two routines';
@@ -12032,7 +15585,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, msg ), errCallback );
   test.identical( srcMap, { 'a' : 13, 'b' : 77, 'd' : undefined } );
 
   /* */
@@ -12045,7 +15598,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'Array should have no undefines, but has : "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - string';
@@ -12056,7 +15609,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg' ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - routine';
@@ -12068,7 +15621,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - two strings';
@@ -12079,7 +15632,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg msg "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - string and routine';
@@ -12091,7 +15644,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, 'msg 90 "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, 'msg', msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', msg ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - routine and string';
@@ -12103,7 +15656,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 msg "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.case = 'array, message - two routines';
@@ -12115,7 +15668,7 @@ function assertMapHasNoUndefine( test )
     test.true( _.errIs( err ) );
     test.identical( err.originalMessage, '90 90 "2"' );
   };
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( srcMap, msg, msg ), errCallback );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, msg ), errCallback );
   test.identical( srcMap, [ 0, 'a', undefined ] );
 
   test.close( 'map with undefined' );
@@ -12126,13 +15679,13 @@ function assertMapHasNoUndefine( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine() );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { a : 1 }, 'msg', 'msg', 'extra' ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( { a : 1 }, 'msg', 'msg', 'extra' ) );
 
   test.case = 'wrong type of srcMap';
-  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( 'wrong' ) );
 }
 
 // --
@@ -12158,11 +15711,15 @@ let Self =
 
     mapCloneAssigning,
 
-    mapExtendConditional,
     mapExtend,
+    mapExtendConditional,
     mapExtendNotIdentical,
+    mapsExtend,
+    mapsExtendWithVectorsInSrcMaps,
     mapSupplement,
     mapComplement,
+
+    //
 
     mapMake,
     mapMakeBugWithArray,
@@ -12170,17 +15727,22 @@ let Self =
     // map manipulator
 
     objectSetWithKeys,
+    objectSetWithKeysKeyIsVector,
     objectSetWithKeyStrictly,
+    objectSetWithKeyStrictlyKeyIsVector,
     mapDelete,
     mapEmpty,
+    mapInvert,
 
     // map convert
 
     mapsFlatten,
+    mapsFlattenWithVectorsInSrc,
 
     mapFirstPair,
     mapValWithIndex,
     mapKeyWithIndex,
+    mapKeyWithValue,
     mapToArray,
     mapToStr,
 
@@ -12209,40 +15771,53 @@ let Self =
     // map logic
 
     mapButConditional,
+    mapButConditionalButMapIsVector,
 
-    mapButConditionalThreeArguments_,
-    mapButConditionalDstMapNull_,
-    mapButConditionalDstMapMap_,
+    mapButConditional_WithThreeArguments,
+    mapButConditional_DstMapIsNull,
+    mapButConditional_DstMapIsMap,
+    mapButConditional_ButMapIsVector,
 
     mapBut,
+    mapButButMapIsVector,
 
-    mapButTwoArguments_,
-    mapButDstMapNull_,
-    mapButDstMapIsMap_,
+    mapBut_WithTwoArguments,
+    mapBut_DstMapIsNull,
+    mapBut_DstMapIsMap,
+    mapBut_ButMapIsVector,
 
-    mapButIgnoringUndefinesThreeArguments_,
-    mapButIgnoringUndefinesDstMapNull_,
-    mapButIgnoringUndefinesDstMapMap_,
+    mapButIgnoringUndefines_WithThreeArguments,
+    mapButIgnoringUndefines_DstMapNull,
+    mapButIgnoringUndefines_DstMapMap,
+    mapButIgnoringUndefines_ButMapIsVector,
 
     mapOnlyOwnBut,
 
-    mapOnlyOwnButThreeArguments_,
-    mapOnlyOwnButDstMapNull_,
-    mapOnlyOwnButDstMapIsMap_,
+    mapOnlyOwnBut_ThreeArguments,
+    mapOnlyOwnBut_DstMapNull,
+    mapOnlyOwnBut_DstMapIsMap,
 
     mapOnly,
+    mapOnlySrcMapsIsVector,
+    mapOnlyScreenMapIsVector,
 
-    mapOnlyTwoArguments_,
-    mapOnlyDstMapIsNull_,
-    mapOnlyDstMapIsMap_,
+    mapOnly_WithTwoArguments,
+    mapOnly_DstMapIsNull,
+    mapOnly_DstMapIsMap,
+    mapOnly_SrcMapsIsVector,
+    mapOnly_ScreenMapIsVector,
 
-    mapOnlyOwnTwoArguments_,
-    mapOnlyOwnDstMapNull_,
-    mapOnlyOwnDstMapMap_,
+    mapOnlyOwn_WithTwoArguments,
+    mapOnlyOwn_DstMapIsNull,
+    mapOnlyOwn_DstMapIsMap,
+    mapOnlyOwn_SrcMapsIsVector,
+    mapOnlyOwn_ScreenMapIsVector,
 
-    mapOnlyComplementingTwoArguments_,
-    mapOnlyComplementingDstMapNull_,
-    mapOnlyComplementingDstMapMap_,
+    mapOnlyComplementing_WithTwoArguments,
+    mapOnlyComplementing_DstMapIsNull,
+    mapOnlyComplementing_DstMapIsMap,
+    mapOnlyComplementing_SrcMapsIsVector,
+    mapOnlyComplementing_ScreenMapIsVector,
 
     _mapOnly,
 

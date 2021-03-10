@@ -137,7 +137,7 @@ var enityExtend = function( dst,src )
     dst = src;
 
   }
-  else if( _.objectIs( src ) || _.hasLength( src ) )
+  else if( _.object.is( src ) || _.hasLength( src ) )
   {
 
     _.each( src,function( e,k,i ){
@@ -163,7 +163,7 @@ var entityClone = function( src,options )
 
   //throw 'not stable';
 
-  if( options !== undefined &amp;&amp; !_.objectIs( options ) )
+  if( options !== undefined &amp;&amp; !_.object.is( options ) )
   throw _.err( 'wTools.entityClone :','need options' );
 
   var options = options || {};
@@ -186,7 +186,7 @@ var entityClone = function( src,options )
 
   if( !src ) return src;
 
-  if( options.useClone &amp;&amp; _.routineIs( src.clone ) )
+  if( options.useClone &amp;&amp; _.routine.is( src.clone ) )
   {
     result = src.clone();
   }
@@ -199,7 +199,7 @@ var entityClone = function( src,options )
     });
 
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
 
     result = {};
@@ -223,7 +223,7 @@ var entityClone = function( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
+      var good = _.strIs( src ) || _.number.is( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -235,9 +235,9 @@ var entityClone = function( src,options )
     }
     else
     {
-      if( _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) )
+      if( _.strIs( src ) || _.number.is( src ) || _.date.is( src ) || _.bool.is( src ) || _.regexpIs( src ) )
       result = src.constructor( src );
-      else if( _.routineIs( src ) )
+      else if( _.routine.is( src ) )
       result = src;
       else
       result = new src.constructor( src );
@@ -269,7 +269,7 @@ var _entityCloneAct = function( o )
 
   /* routine */
 
-  if( _.routineIs( o.src ) )
+  if( _.routine.is( o.src ) )
   {
     if( o.onRoutine )
     return o.onRoutine( o.src );
@@ -316,7 +316,7 @@ var _entityCloneAct = function( o )
 
   /* map */
 
-  if( _.objectIs( o.src ) )
+  if( _.object.is( o.src ) )
   {
 
     var mapIs = _.mapIs( o.src );
@@ -329,7 +329,7 @@ var _entityCloneAct = function( o )
       (
         'Complex objets should have ' +
         ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
-        ', but object ' + _.strTypeOf( o.src ) + ' \n' +
+        ', but object ' + _.entity.strTypeOf( o.src ) + ' \n' +
         'at ' + ( o.path || '.' ) + '\ndoes not have ',o.src
       );
     }
@@ -413,7 +413,7 @@ var _entityCloneAct = function( o )
     return result;
   }
 
-  throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
+  throw _.err( 'unexpected type of src : ' + _.entity.strTypeOf( o.src ) );
 }
 
 //
@@ -424,7 +424,7 @@ var _entityClone = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapHasOnly( o,_entityClone.defaults );
+  _.map.assertHasOnly( o,_entityClone.defaults );
 
   return _entityCloneAct( o );
 }
@@ -463,7 +463,7 @@ var entityCloneObject = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapHasOnly( o,entityCloneObject.defaults );
+  _.map.assertHasOnly( o,entityCloneObject.defaults );
   _.mapSupplement( o,entityCloneObject.defaults );
 
   var result = _entityClone( o );
@@ -492,10 +492,10 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapHasOnly( o,entityCloneObjectMergingBuffers.defaults );
+  _.map.assertHasOnly( o,entityCloneObjectMergingBuffers.defaults );
   _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
 
-  _.assert( _.objectIs( o.src.descriptorsMap ) );
+  _.assert( _.object.is( o.src.descriptorsMap ) );
   _.assert( _.bufferRawIs( o.src.buffer ) );
   _.assert( o.src.data !== undefined );
 
@@ -550,7 +550,7 @@ var entityCloneData = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapHasOnly( o,entityCloneData.defaults );
+  _.map.assertHasOnly( o,entityCloneData.defaults );
   _.mapSupplement( o,entityCloneData.defaults );
 
   var result = _entityClone( o );
@@ -580,7 +580,7 @@ var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapHasOnly( o,entityCloneDataSeparatingBuffers.defaults );
+  _.map.assertHasOnly( o,entityCloneDataSeparatingBuffers.defaults );
   _.mapSupplement( o,entityCloneDataSeparatingBuffers.defaults );
 
   /* onBuffer */
@@ -666,7 +666,7 @@ var entityCopy = function( dst,src,onRecursive )
   var result;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( arguments.length &lt; 3 || _.routineIs( onRecursive ) );
+  _.assert( arguments.length &lt; 3 || _.routine.is( onRecursive ) );
 
   if( src === null )
   {
@@ -674,13 +674,13 @@ var entityCopy = function( dst,src,onRecursive )
     result = src;
 
   }
-  else if( dst &amp;&amp; _.routineIs( dst.copy ) )
+  else if( dst &amp;&amp; _.routine.is( dst.copy ) )
   {
 
     dst.copy( src );
 
   }
-  else if( src &amp;&amp; _.routineIs( src.clone ) )
+  else if( src &amp;&amp; _.routine.is( src.clone ) )
   {
 
     if( dst instanceof src.constructor )
@@ -695,19 +695,19 @@ var entityCopy = function( dst,src,onRecursive )
     else throw _.err( 'unexpected' );
 
   }
-  else if( src &amp;&amp; _.routineIs( src.slice ) )
+  else if( src &amp;&amp; _.routine.is( src.slice ) )
   {
 
     result = src.slice( 0 );
 
   }
-  else if( dst &amp;&amp; _.routineIs( dst.set ) )
+  else if( dst &amp;&amp; _.routine.is( dst.set ) )
   {
 
     dst.set( src );
 
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
 
     if( onRecursive )
@@ -781,7 +781,7 @@ var entityHasNan = function( src )
   {
     return true;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     return isNaN( src );
   }
@@ -793,7 +793,7 @@ var entityHasNan = function( src )
       return true;
     }
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     for( s in src )
     if( _.numberHasNan( src[s] ) )
@@ -823,7 +823,7 @@ var entityHasUndef = function( src )
       return true;
     }
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     for( s in src )
     if( _.hasUndef( src[s] ) )
@@ -898,10 +898,10 @@ var _entitySame = function _entitySame( src1,src2,o )
       o.path = path;
     }
   }
-  else if( _.objectLike( src1 ) )
+  else if( _.object.like( src1 ) )
   {
 
-    if( _.routineIs( src1.isSame ) )
+    if( _.routine.is( src1.isSame ) )
     {
       _.assert( src1.isSame.length === 3 );
       if( !src1.isSame( src1,src2,o ) )
@@ -923,7 +923,7 @@ var _entitySame = function _entitySame( src1,src2,o )
 
     }
   }
-  else if( _.numberIs( src1 ) )
+  else if( _.number.is( src1 ) )
   {
     return o.onSameNumbers( src1,src2 );
   }
@@ -978,10 +978,10 @@ var entitySame = function entitySame()
   {
 
     _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+    _assert( o === undefined || _.object.is( o ), '_.entity.exportStringFine :','options must be object' );
     var o = o || {};
 
-    _.assertMapHasOnly( o,def );
+    _.map.assertHasOnly( o,def );
     _.mapSupplement( o,def );
 
     return _entitySame( src1,src2,o );
@@ -1014,10 +1014,10 @@ var entityDiff = function entityDiff( src1,src2,o )
   var result = '';
 
   if( !_.atomicIs( src1 ) )
-  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+  src1 = _.entity.exportString( _.entitySelect( src1,o.path ) );
 
   if( !_.atomicIs( src2 ) )
-  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+  src2 = _.entity.exportString( _.entitySelect( src2,o.path ) );
 
   result += _.str
   (
@@ -1168,7 +1168,7 @@ var entityLength = function( src )
   if( src === undefined ) return 0;
   if( _.arrayLike( src ) )
   return src.length;
-  else if( _.objectLike( src ) )
+  else if( _.object.like( src ) )
   return _.mapOwnKeys( src ).length;
   else return 1;
 }
@@ -1210,7 +1210,7 @@ var entityValueWithIndex = function( src,index )
   {
     return src[ index ];
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     var i = 0;
     for( var s in src )
@@ -1237,7 +1237,7 @@ var entityKeyWithValue = function( src,value )
   {
     result = src.indexOf( value );
   }
-  else if( _.objectIs( src ) )
+  else if( _.object.is( src ) )
   {
     var i = 0;
     for( var s in src )
@@ -1308,7 +1308,7 @@ var _entitySelectOptions = function( o )
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.routineOptions( _entitySelectOptions,o );
+  _.routine.options( _entitySelectOptions,o );
   _.assert( _.strIs( o.query ) || _.arrayIs( o.query ) );
 
   /* makeQarrey */
@@ -1398,7 +1398,7 @@ var __entitySelectAct = function __entitySelectAct( o )
     if( o.undefinedForNone )
     return undefined;
     else
-    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
+    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.entity.strTypeOf( container ) );
   }
 
   var o = _.mapExtend( {},o );
@@ -1511,8 +1511,8 @@ var entityMap = function( src,onEach )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.object.like( src ) || _.arrayLike( src ) );
+  _.assert( _.routine.is( onEach ) );
 
   var result;
 
@@ -1568,12 +1568,12 @@ var entityFilter = function( src,onEach )
   var result;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
-  _.assert( _.routineIs( onEach ) || _.objectIs( onEach ) );
+  _.assert( _.object.like( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.entity.strTypeOf( src ) );
+  _.assert( _.routine.is( onEach ) || _.object.is( onEach ) );
 
   /**/
 
-  if( _.objectIs( onEach ) )
+  if( _.object.is( onEach ) )
   {
     var template = onEach;
     onEach = function( e )
@@ -1658,11 +1658,11 @@ var entityGroup = function( o )
 
   /* */
 
-  var o = _.routineOptions( entityGroup,o );
+  var o = _.routine.options( entityGroup,o );
 
   _assert( arguments.length === 1 );
   _assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
-  _assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+  _assert( _.object.like( o.src ) || _.arrayLike( o.src ) );
   _assert( _.arrayIs( o.src ),'not tested' );
 
   /* */
@@ -1895,10 +1895,10 @@ var entityCoerceTo = function( src,ins )
 
   _.assert( arguments.length === 2 );
 
-  if( _.numberIs( ins ) )
+  if( _.number.is( ins ) )
   {
 
-    return _.numberFrom( src );
+    return _.number.from( src );
 
   }
   else if( _.strIs( ins ) )
@@ -1907,13 +1907,13 @@ var entityCoerceTo = function( src,ins )
     return _.strFrom( src );
 
   }
-  else if( _.boolIs( ins ) )
+  else if( _.bool.is( ins ) )
   {
 
-    return _.boolFrom( src );
+    return _.bool.from( src );
 
   }
-  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+  else throw _.err( 'unknown type to coerce to : ' + _.entity.strTypeOf( ins ) );
 
 }
 
@@ -1928,7 +1928,7 @@ var entitySearch = function( o )
     o = { src : arguments[ 0 ], ins : arguments[ 1 ] };
   }
 
-  _.routineOptions( entitySearch,o );
+  _.routine.options( entitySearch,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( !o.searchingCaseinsensitive,'not implemented' );
 
@@ -2062,7 +2062,7 @@ var __eachAct = function( o )
     }
 
   }
-  else if( _.objectLike( src ) )
+  else if( _.object.like( src ) )
   {
 
     for( var k in src )
@@ -2101,8 +2101,8 @@ var _each = function( o )
   if( o.root === undefined )
   o.root = o.src;
 
-  _.routineOptions( _each,o );
-  _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
+  _.routine.options( _each,o );
+  _.assert( _.routine.is( o.onUp ) || _.routine.is( o.onDown ),'each : expects routine o.onUp or o.onDown' );
 
   o.onUp = o.onUp || function(){};
   o.onDown = o.onDown || function(){};
@@ -2191,7 +2191,7 @@ var until = function()
   var found = 0;
 
   var onEach = arguments[ arguments.length-1 ];
-  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
+  if( !_.routine.is( onEach ) ) throw '_.each : onEach is not routine';
 
   for( var arg = 0, l = arguments.length-1 ; arg &lt; l ; arg++ )
   {
@@ -2208,7 +2208,7 @@ var until = function()
       }
 
     }
-    else if( _.objectIs( src ) )
+    else if( _.object.is( src ) )
     {
 
       for( var a in src )
@@ -2247,14 +2247,14 @@ var eachSample = function( o )
     }
   }
 
-  _.assertMapHasOnly( o,eachSample.defaults );
+  _.map.assertHasOnly( o,eachSample.defaults );
   if( o.direct === undefined )
   o.direct = true;
 
   /**/
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
+  _.assert( _.routine.is( o.onEach ) || o.onEach === undefined );
   _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
 
   /**/
@@ -2398,9 +2398,9 @@ eachSample.defaults =
 var dup = function( times,ins,result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.arrayLike( times ),'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -2449,7 +2449,7 @@ var _err = function _err( o )
   if( !_.arrayLike( o.args ) )
   throw '_err : o.args should be array like';
 
-  if( !_.numberIs( o.level ) )
+  if( !_.number.is( o.level ) )
   o.level = _err.defaults.level;
 
   if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
@@ -2479,15 +2479,15 @@ var _err = function _err( o )
 
     if( argument )
     {
-      if( _.routineIs( argument.toStr ) ) str = argument.toStr();
+      if( _.routine.is( argument.toStr ) ) str = argument.toStr();
       else if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
       else if( _.strIs( argument.message ) ) str = argument.message;
-      else if( !_.atomicIs( argument ) &amp;&amp; _.routineIs( argument.toString ) ) str = argument.toString();
+      else if( !_.atomicIs( argument ) &amp;&amp; _.routine.is( argument.toString ) ) str = argument.toString();
       else str = String( argument );
     }
     else str = String( argument );
 
-    if( _.objectLike( argument ) &amp;&amp; !fileName )
+    if( _.object.like( argument ) &amp;&amp; !fileName )
     {
 
       if( !fileName )
@@ -2635,7 +2635,7 @@ var errLog = function errLog()
   err.attentionNeeded = 0;
   err.attentionGiven = 1;
 
-  if( _.routineIs( err.toString ) )
+  if( _.routine.is( err.toString ) )
   {
 
     var messageWas = err.message;
@@ -3059,19 +3059,19 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
 
 /*
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : _global_,`
   names : 'Uniforms',
 });
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : state,
   names : 'filterColor',
 });
 
-_.diagnosticWatchFields
+_.diagnostic.watchFields
 ({
   dst : _global_,
   names : 'Config',
@@ -3089,7 +3089,7 @@ var diagnosticWatchFields = function( options )
   options.names = options.dst;
 
   _assert( arguments.length === 1 );
-  _.assertMapHasOnly( options,diagnosticWatchFields.defaults );
+  _.map.assertHasOnly( options,diagnosticWatchFields.defaults );
   _.mapComplement( options,diagnosticWatchFields.defaults );
   _assert( options.dst );
   _assert( options.names );
@@ -3107,7 +3107,7 @@ var diagnosticWatchFields = function( options )
     {
       var result = options.dst[ fieldSymbol ];
       if( options.printValue )
-      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
+      console.log( 'reading ' + fieldName + ' ' + _.entity.exportString( result ) );
       else
       console.log( 'reading ' + fieldName );
       return result;
@@ -3118,7 +3118,7 @@ var diagnosticWatchFields = function( options )
     var write = function write( src )
     {
       if( options.printValue )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
+      console.log( 'writing ' + fieldName + ' ' + _.entity.exportString( src ) );
       else
       console.log( 'writing ' + fieldName );
       debugger;
@@ -3226,7 +3226,7 @@ var objectLike = function( src )
 var mapIs = function( src )
 {
 
-  if( !_.objectIs( src ) )
+  if( !_.object.is( src ) )
   return false;
 
   _.assert( Object.getPrototypeOf( src ) === null || Object.getPrototypeOf( src ),'unexpected' );
@@ -3305,11 +3305,11 @@ var arrayLike = function( src )
 {
   if( atomicIs( src ) ) return false;
 
-  if( _.routineIs( src ) ) return false;
-  if( _.objectIs( src ) ) return false;
+  if( _.routine.is( src ) ) return false;
+  if( _.object.is( src ) ) return false;
   if( _.strIs( src ) ) return false;
 
-  if( !_.numberIs( src.length ) ) return false;
+  if( !_.number.is( src.length ) ) return false;
 
   return true;
 }
@@ -3355,7 +3355,7 @@ var arrayLike = function( src )
 var hasLength = function( src )
 {
   if( src === undefined || src === null ) return false;
-  if( _.numberIs( src.length ) ) return true;
+  if( _.number.is( src.length ) ) return true;
   return false;
 }
 
@@ -3437,7 +3437,7 @@ var boolIs = function( src )
 
 var numberIsRegular = function( src )
 {
-  return _.numberIs( src ) &amp;&amp; !isNaN( src ) &amp;&amp; src !== +Infinity &amp;&amp; src !== -Infinity;
+  return _.number.is( src ) &amp;&amp; !isNaN( src ) &amp;&amp; src !== +Infinity &amp;&amp; src !== -Infinity;
 }
 
 //
@@ -3453,7 +3453,7 @@ var numbersAreInt = function numbersAreInt( src )
     return true;
   }
 
-  if( !_.numberIs( src ) )
+  if( !_.number.is( src ) )
   return false;
 
   return Math.floor( src ) === src;
@@ -3653,7 +3653,7 @@ var typeOf = function( src )
   return src.constructor;
   else
   {
-    _assert( _.routineIs( src.constructor ) &amp;&amp; src instanceof src.constructor );
+    _assert( _.routine.is( src.constructor ) &amp;&amp; src instanceof src.constructor );
     return src.constructor;
   }
 }
@@ -3663,7 +3663,7 @@ var typeOf = function( src )
 var typeIsBuffer = function( src )
 {
   if( !src ) return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) ) return false;
+  if( !_.number.is( src.BYTES_PER_ELEMENT ) ) return false;
   if( !_.strIs( src.name ) ) return false;
   return src.name.indexOf( 'Array' ) !== -1;
 
@@ -3769,10 +3769,10 @@ var numberRandomInRange = function( range )
 var numberRandomInt = function( range )
 {
 
-  _assert( _.arrayIs( range ) || _.numberIs( range ) );
+  _assert( _.arrayIs( range ) || _.number.is( range ) );
   _assert( range.length === 2 );
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = range >= 0 ? [ 0,range ] : [ range,0 ];
   else if( _.arrayIs( range ) )
   range = range;
@@ -3790,7 +3790,7 @@ var numberRandomIntBut = function( range )
   var result;
   var attempts = 10;
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0,range ];
   else if( _.arrayIs( range ) )
   range = range;
@@ -3798,12 +3798,12 @@ var numberRandomIntBut = function( range )
 
   for( var attempt = 0 ; attempt &lt; attempts ; attempt++ )
   {
-    /*result = _.numberRandomInt( range ); */
+    /*result = _.number.randomInt( range ); */
     var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
     var bad = false;
     for( var a = 1 ; a &lt; arguments.length ; a++ )
-    if( _.routineIs( arguments[ a ] ) )
+    if( _.routine.is( arguments[ a ] ) )
     {
       if( !arguments[ a ]( result ) )
       bad = true;
@@ -3831,7 +3831,7 @@ var numberRandomIntBut = function( range )
 /**
   * Return type of src.
   * @example
-      var str = _.strTypeOf( 'testing' );
+      var str = _.entity.strTypeOf( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
@@ -4198,9 +4198,9 @@ var regexpBut_ = function( options )
 {
   var args = arguments;
   var atLeastOnce = regexpBut_.defaults.atLeastOnce;
-  if( arguments.length === 1 &amp;&amp; _.objectIs( options ) )
+  if( arguments.length === 1 &amp;&amp; _.object.is( options ) )
   {
-    _.assertMapHasOnly( options,regexpBut_.defaults );
+    _.map.assertHasOnly( options,regexpBut_.defaults );
     _.mapComplement( options,regexpBut_.defaults );
     args = options.but;
     atLeastOnce = options.atLeastOnce;
@@ -4250,7 +4250,7 @@ regexpBut_.defaults =
 var regexpArrayMake = function( src )
 {
 
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
+  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.entity.strTypeOf( src ) );
 
   src = _.arrayFlatten( src );
 
@@ -4451,8 +4451,8 @@ var _routineBind = function _routineBind( options )
 {
 
   _assert( arguments.length === 1 );
-  _assert( _.boolIs( options.seal ) );
-  _assert( _.routineIs( options.routine ),'_routineBind :','expects routine' );
+  _assert( _.bool.is( options.seal ) );
+  _assert( _.routine.is( options.routine ),'_routineBind :','expects routine' );
   _assert( _.arrayIs( options.args ) || _.argumentsIs( options.args ) || options.args === undefined );
 
   var routine = options.routine;
@@ -4553,7 +4553,7 @@ var _routineBind = function _routineBind( options )
 var routineBind = function routineBind( routine, context, args )
 {
 
-  _assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
+  _assert( _.routine.is( routine ),'routineBind :','first argument must be a routine' );
   _assert( arguments.length &lt;= 3,'routineBind :','expects 3 or less arguments' );
 
   return _routineBind
@@ -4588,7 +4588,7 @@ var routineBind = function routineBind( routine, context, args )
      var f1 = function(){ console.log( this ) };
      var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
      f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineJoin( undefined,f1 ); // new function.
+     var f3 = _.routine.join( undefined,f1 ); // new function.
      f3.call( o ) // print  { z: 5 }
 
    * @param {Object} context The value that will be set as 'this' keyword in new function
@@ -4606,7 +4606,7 @@ var routineBind = function routineBind( routine, context, args )
 var routineJoin = function routineJoin( context, routine, args )
 {
 
-  _assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
+  _assert( _.routine.is( routine ),'routineJoin :','second argument must be a routine' );
   _assert( arguments.length &lt;= 3,'routineJoin :','expects 3 or less arguments' );
 
   return _routineBind
@@ -4645,7 +4645,7 @@ var routineJoin = function routineJoin( context, routine, args )
 var routineSeal = function routineSeal( context, routine, args )
 {
 
-  _assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
+  _assert( _.routine.is( routine ),'routineSeal :','second argument must be a routine' );
   _assert( arguments.length &lt;= 3,'routineSeal :','expects 3 or less arguments' );
 
   return _routineBind
@@ -4676,13 +4676,13 @@ var routineDelayed = function routineDelayed( delay,routine )
 {
 
   _.assert( arguments.length >= 2 );
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( routine ) );
+  _.assert( _.number.is( delay ) );
+  _.assert( _.routine.is( routine ) );
 
   if( arguments.length > 2 )
   {
     _assert( arguments.length &lt;= 4 );
-    routine = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+    routine = _.routine.join.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
   return function delayed()
@@ -4731,7 +4731,7 @@ var routinesCall = function routinesCall()
   {
 
     var routines = arguments[ 0 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
+    _.assert( _.arrayIs( routines ) || _.routine.is( routines ) );
     var routines = _.arrayAs( routines );
     for( var r = 0 ; r &lt; routines.length ; r++ )
     {
@@ -4743,7 +4743,7 @@ var routinesCall = function routinesCall()
   {
     var context = arguments[ 0 ];
     var routines = arguments[ 1 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
+    _.assert( _.arrayIs( routines ) || _.routine.is( routines ) );
     var routines = _.arrayAs( routines );
     for( var r = 0 ; r &lt; routines.length ; r++ )
     {
@@ -4755,7 +4755,7 @@ var routinesCall = function routinesCall()
     var context = arguments[ 0 ];
     var routines = arguments[ 1 ];
     var args = arguments[ 2 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
+    _.assert( _.arrayIs( routines ) || _.routine.is( routines ) );
     _.assert( _.arrayLike( args ) );
     var routines = _.arrayAs( routines );
     for( var r = 0 ; r &lt; routines.length ; r++ )
@@ -4776,12 +4776,12 @@ var routineOptions = function routineOptions( routine,options )
   options = {};
 
   _.assert( arguments.length === 2,'routineOptions : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
-  _.assert( _.objectIs( options ),'routineOptions : expects object' );
+  _.assert( _.routine.is( routine ),'routineOptions : expects routine' );
+  _.assert( _.object.is( routine.defaults ),'routineOptions : expects routine with defined defaults' );
+  _.assert( _.object.is( options ),'routineOptions : expects object' );
 
   _.assertMapNoUndefine( options );
-  _.assertMapHasOnly( options,routine.defaults );
+  _.map.assertHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
 
   return options;
@@ -4794,7 +4794,7 @@ var routineOptions = function routineOptions( routine,options )
 var timeReady = function( onReady )
 {
   _assert( arguments.length === 1 );
-  _assert( _.routineIs( onReady ) );
+  _assert( _.routine.is( onReady ) );
 
   if( typeof window !== 'undefined' &amp;&amp; typeof document !== 'undefined' &amp;&amp; document.readyState != 'complete' )
   {
@@ -4822,11 +4822,11 @@ var timeOnce = function( delay,onBegin,onEnd )
     onEnd : null,
   }
 
-  if( _.objectIs( delay ) )
+  if( _.object.is( delay ) )
   {
     options = delay;
     _assert( arguments.length === 1 );
-    _.assertMapHasOnly( options,optionsDefault );
+    _.map.assertHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
     onEnd = options.onEnd;
@@ -4837,8 +4837,8 @@ var timeOnce = function( delay,onBegin,onEnd )
   }
 
   _assert( delay >= 0 );
-  _assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
-  _assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
+  _assert( _.atomicIs( onBegin ) || _.routine.is( onBegin ) || _.object.is( onBegin ) );
+  _assert( _.atomicIs( onEnd ) || _.routine.is( onEnd ) || _.object.is( onEnd ) );
 
   return function timeOnce()
   {
@@ -4852,8 +4852,8 @@ var timeOnce = function( delay,onBegin,onEnd )
 
     if( onBegin )
     {
-      if( _.routineIs( onBegin ) ) onBegin.apply( this,arguments );
-      else if( _.objectIs( onBegin ) ) onBegin.give( arguments );
+      if( _.routine.is( onBegin ) ) onBegin.apply( this,arguments );
+      else if( _.object.is( onBegin ) ) onBegin.give( arguments );
       con.give();
     }
 
@@ -4862,8 +4862,8 @@ var timeOnce = function( delay,onBegin,onEnd )
 
       if( onEnd )
       {
-        if( _.routineIs( onEnd ) ) onEnd.apply( this,arguments );
-        else if( _.objectIs( onEnd ) ) onEnd.give( arguments );
+        if( _.routine.is( onEnd ) ) onEnd.apply( this,arguments );
+        else if( _.object.is( onEnd ) ) onEnd.give( arguments );
         con.give();
       }
       taken = false;
@@ -4882,15 +4882,15 @@ var timeOut = function( delay,onReady )
   var con = new wConsequence();
 
   if( arguments.length > 2 )
-  if( !_.routineIs( arguments[ 2 ] ) )
+  if( !_.routine.is( arguments[ 2 ] ) )
   debugger;
 
-  _assert( _.numberIs( delay ) );
+  _assert( _.number.is( delay ) );
 
   if( arguments.length === 2 )
-  _assert( _.routineIs( onReady ) || onReady instanceof wConsequence );
+  _assert( _.routine.is( onReady ) || onReady instanceof wConsequence );
   else if( arguments.length > 2 )
-  _assert( _.routineIs( arguments[ 2 ] ) );
+  _assert( _.routine.is( arguments[ 2 ] ) );
 
   var onEnd = function()
   {
@@ -4902,7 +4902,7 @@ var timeOut = function( delay,onReady )
     con.give();
 
 /*
-    if( _.routineIs( onReady ) )
+    if( _.routine.is( onReady ) )
     {
       result = onReady();
       if( result instanceof wConsequence )
@@ -4926,7 +4926,7 @@ var timeOut = function( delay,onReady )
   if( arguments.length > 2 )
   {
     _assert( arguments.length &lt;= 4 );
-    onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+    onReady = _.routine.join.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
   setTimeout( onEnd,delay );
@@ -4945,10 +4945,10 @@ var timePeriodic = function( delay,onReady )
   {
     throw _.err( 'Not tested' );
     _assert( arguments.length &lt;= 4 );
-    onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
+    onReady = _.routine.join( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   }
 
-  _assert( _.numberIs( delay ) );
+  _assert( _.number.is( delay ) );
 
   var handlePeriodicCon = function( err )
   {
@@ -4957,7 +4957,7 @@ var timePeriodic = function( delay,onReady )
 
   var _onReady = null;
 
-  if( _.routineIs( onReady ) )
+  if( _.routine.is( onReady ) )
   _onReady = function()
   {
     var result = onReady.call();
@@ -4997,9 +4997,9 @@ var _timeNow_gen = function()
   _assert( arguments.length === 0 );
 
   if( typeof performance !== 'undefined' &amp;&amp; performance.now !== undefined )
-  now = _.routineJoin( performance,performance.now );
+  now = _.routine.join( performance,performance.now );
   else if( Date.now )
-  now = _.routineJoin( Date,Date.now );
+  now = _.routine.join( Date,Date.now );
   else
   now = function(){ return Date().getTime() };
 
@@ -5019,7 +5019,7 @@ var timeSpent = function( description,time )
   }
 
   _assert( 1 &lt;= arguments.length &amp;&amp; arguments.length &lt;= 2 );
-  _assert( _.numberIs( time ) );
+  _assert( _.number.is( time ) );
   _assert( _.strIs( description ) );
 
   if( description &amp;&amp; description !== ' ' )
@@ -5086,7 +5086,7 @@ var bufferRelen = function( src,len )
 
   _.assert( _.bufferTypedIs( src ) );
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( len ) );
+  _.assert( _.number.is( len ) );
 
   var result = src;
 
@@ -5218,7 +5218,7 @@ var bufferMove = function( dst,src )
   {
 
     var options = arguments[ 0 ];
-    _.assertMapHasOnly( options,bufferMove.defaults );
+    _.map.assertHasOnly( options,bufferMove.defaults );
 
     var src = options.src;
     var dst = options.dst;
@@ -5351,7 +5351,7 @@ var bufferLeftBufferIndex = function( src,ins )
 
 var bufferFromArrayOfArray = function( array,options ){
 
-  if( _.objectIs( array ) )
+  if( _.object.is( array ) )
   {
     options = array;
     array = options.buffer;
@@ -5368,9 +5368,9 @@ var bufferFromArrayOfArray = function( array,options ){
 
   if( !array.length ) return new options.BufferType();
 
-  var atomsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+  var atomsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
+  if( !_.number.is( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
 
   var length = array.length * atomsPerElement;
   var result = new options.BufferType( length );
@@ -5401,9 +5401,9 @@ var bufferFrom = function( o )
   var result;
 
   _assert( arguments.length === 1 );
-  _assert( _.objectIs( o ) );
-  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
-  _.assertMapHasOnly( o,bufferFrom.defaults );
+  _assert( _.object.is( o ) );
+  _assert( _.routine.is( o.bufferConstructor ),'expects bufferConstructor' );
+  _.map.assertHasOnly( o,bufferFrom.defaults );
 
   /* buffer */
 
@@ -5420,17 +5420,17 @@ var bufferFrom = function( o )
 
   /* number */
 
-  if( _.numberIs( o.src ) )
+  if( _.number.is( o.src ) )
   o.src = [ o.src ];
 
   /* midverification */
 
-  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
+  _.assert( _.object.like( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
 
   /* length */
 
   var length = o.src.length;
-  if( !_.numberIs( length ) )
+  if( !_.number.is( length ) )
   {
 
     var length = 0;
@@ -5563,9 +5563,9 @@ var buffersSerialize = function buffersSerialize( o )
   var o = o || {};
 
   _.assertMapNoUndefine( o );
-  _.assertMapHasOnly( o,buffersSerialize.defaults );
+  _.map.assertHasOnly( o,buffersSerialize.defaults );
   _.mapComplement( o,buffersSerialize.defaults );
-  _.assert( _.objectIs( o.store ) );
+  _.assert( _.object.is( o.store ) );
 
   var store = o.store;
   var storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || {};
@@ -5581,7 +5581,7 @@ var buffersSerialize = function buffersSerialize( o )
     var attribute = attributes[ a ][ 1 ];
     var buffer = o.onBufferGet.call( o.context,attribute );
 
-    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.entity.strTypeOf( buffer ) );
 
     var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
@@ -5697,9 +5697,9 @@ var buffersDeserialize = function( o )
   var commonBuffer = store[ 'buffer' ];
 
   _.assertMapNoUndefine( o );
-  _.assertMapHasOnly( o,buffersDeserialize.defaults );
+  _.map.assertHasOnly( o,buffersDeserialize.defaults );
   _.mapComplement( o,buffersDeserialize.defaults );
-  _.assert( _.objectIs( o.store ) );
+  _.assert( _.object.is( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
   commonBuffer = _.bufferRawFromBuffer( commonBuffer );
@@ -5714,10 +5714,10 @@ var buffersDeserialize = function( o )
     var sizeOfAtom = attribute[ 'sizeOfAtom' ];
     var fields = attribute[ 'fields' ];
 
-    _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
-    _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
-    _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
-    _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
+    _.assert( _.routine.is( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
+    _.assert( _.number.is( offset ),'unknown attribute\' offset in common buffer :',offset )
+    _.assert( _.number.is( size ),'unknown attribute\' size of buffer :',size )
+    _.assert( _.number.is( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
 
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
@@ -5829,10 +5829,10 @@ var arraySub = function( src,begin,end )
   if( _.atomicIs( src ) )
   throw _.err( 'arraySub','Unknown argument type' );
 
-  if( _.routineIs( src.subarray ) )
+  if( _.routine.is( src.subarray ) )
   return src.subarray( begin,end );
 
-  if( !_.routineIs( src.slice ) )
+  if( !_.routine.is( src.slice ) )
   throw _.err( 'arraySub','Unknown argument type' );
 
   return src.slice( begin,end );
@@ -5860,7 +5860,7 @@ var arraySub = function( src,begin,end )
  * @throws { Error } If the passed arguments is less than two.
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If the (length === undefined) and (_.number.is(ins.length)) is not a number.
  * @memberof wTools
  */
 
@@ -5869,11 +5869,11 @@ var arrayNew = function( ins,length )
   var result;
 
   _.assert( arguments.length &lt;= 2); // _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.number.is( length ) );
 
   if( length === undefined )
   {
-    _assert( _.numberIs( ins.length ) );
+    _assert( _.number.is( ins.length ) );
     length = ins.length;
   }
 
@@ -5951,10 +5951,10 @@ var arrayNewOfSameLength = function( ins )
 var arrayOrNumber = function( dst,length )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+  _.assert( _.number.is( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
-  if( _.numberIs( dst ) )
+  if( _.number.is( dst ) )
   dst = arrayFill({ times : length , value : dst });
   else if( dst.length !== length )
   throw _.err( 'expects array of length',length,'but got',dst );
@@ -5990,7 +5990,7 @@ var arrayShrink = function( srcArray,indicesArray )
 {
   var atomsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
+  if( _.object.is( indicesArray ) )
   {
     atomsPerElement = indicesArray.atomsPerElement || 1;
     indicesArray = indicesArray.indices;
@@ -6131,7 +6131,7 @@ var arrayFlattenToMapUnique = function()
 
     if( !_.arrayLike( src ) )
     {
-      _.assert( _.objectIs( src ) );
+      _.assert( _.object.is( src ) );
       if( src !== undefined )
       extend( result, src );
       continue;
@@ -6141,7 +6141,7 @@ var arrayFlattenToMapUnique = function()
     {
       if( _.arrayIs( src[ s ] ) )
       _.arrayFlattenToMapUnique.call( result,src[ s ] );
-      else if( _.objectIs( src[ s ] ) )
+      else if( _.object.is( src[ s ] ) )
       extend( result, src );
       else
       throw _.err( 'array should have only maps' );
@@ -6514,7 +6514,7 @@ var arrayFrom = function( src )
   if( _.arrayIs( src ) )
   return src;
 
-  if( _.objectIs( src ) )
+  if( _.object.is( src ) )
   return _.mapToArray( src );
 
   if( _.strIs( src ) )
@@ -6526,7 +6526,7 @@ var arrayFrom = function( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+  throw _.err( 'arrayFrom : unknown source : ' + _.entity.strTypeOf( src ) ); //???
 }
 
 //
@@ -6646,7 +6646,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
   else if( arguments.length === 3 )
   {
 
-    _.assert( _.routineIs( onEqual ) );
+    _.assert( _.routine.is( onEqual ) );
     for( var i = 0 ; i &lt; insArray.length ; i++ )
     {
       index = arrayLeftIndexOf( dstArray,insArray[ i ],onEqual );
@@ -6724,7 +6724,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   else if( arguments.length === 3 )
   {
 
-    _.assert( _.routineIs( onEqual ) );
+    _.assert( _.routine.is( onEqual ) );
     _.assert( onEqual.length === 1 || onEqual.length === 2 );
     index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
@@ -6834,7 +6834,7 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( arguments.length === 3 )
-  _.assert( _.routineIs( onEqual ) );
+  _.assert( _.routine.is( onEqual ) );
 
   var result = 0;
 
@@ -7167,8 +7167,8 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
   _.assert( arguments.length === 4 );
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayIs( srcArray ) );
-  _.assert( _.numberIs( first ) );
-  _.assert( _.numberIs( replace ) );
+  _.assert( _.number.is( first ) );
+  _.assert( _.number.is( replace ) );
 
   var args = [ first,replace ];
   args.push.apply( args,srcArray );
@@ -7213,8 +7213,8 @@ var arraySlice = function arraySlice( array,a,b )
   var a = a !== undefined ? a : 0;
   var b = b !== undefined ? b : array.length;
 
-  _.assert( _.numberIs( a ) );
-  _.assert( _.numberIs( b ) );
+  _.assert( _.number.is( a ) );
+  _.assert( _.number.is( b ) );
 
   if( b &lt; a )
   b = a;
@@ -7293,7 +7293,7 @@ var arrayUniqueIs = function arrayUniqueIs( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( o.src ) );
-  _.assertMapHasOnly( o,arrayUniqueIs.defaults );
+  _.map.assertHasOnly( o,arrayUniqueIs.defaults );
 
   /**/
 
@@ -7474,7 +7474,7 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
 {
   _.assert( arguments.length >= 1 );
   _.assert( _.arrayLike( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
+  _.assert( _.number.is( dstOffset ) );
 
   dstOffset = dstOffset || 0;
 
@@ -7555,7 +7555,7 @@ var arrayMask = function arrayMask( srcArray, mask )
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.toStr({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.entity.exportString({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
 
   var preserve = 0;
   for( var m = 0 ; m &lt; mask.length ; m++ )
@@ -7593,7 +7593,7 @@ var arrayUnmask = function arrayUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapHasOnly( o,arrayUnmask.defaults );
+  _.map.assertHasOnly( o,arrayUnmask.defaults );
   _.assert( _.arrayLike( o.src ),'arrayUnmask : expects o.src as ArrayLike' );
 
   debugger;
@@ -7607,7 +7607,7 @@ var arrayUnmask = function arrayUnmask( o )
 
   var length = o.src.length / atomsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.entity.exportString({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
 
   var dstArray = new o.src.constructor( atomsPerElement*length );
 
@@ -7690,7 +7690,7 @@ arrayUnmask.defaults =
 var arrayDuplicate = function arrayDuplicate( srcArray, options )
 {
 
-  if( _.objectIs( srcArray ) )
+  if( _.object.is( srcArray ) )
   {
     options = srcArray;
     srcArray = options.src;
@@ -7700,7 +7700,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   if( options.numberOfAtomsPerElement === undefined ) options.numberOfAtomsPerElement = 1;
   if( options.numberOfDuplicatesPerElement === undefined ) options.numberOfDuplicatesPerElement = 2;
 
-  _.assertMapHasOnly( options,
+  _.map.assertHasOnly( options,
   {
     src : 'src',
     result : 'result',
@@ -7771,7 +7771,7 @@ var arrayFill = function arrayFill( o )
 
   if( arguments.length === 1 )
   {
-    if( _.numberIs( o ) )
+    if( _.number.is( o ) )
     o = { times : o };
     else if( _.arrayIs( o ) )
     o = { result : o };
@@ -7782,14 +7782,14 @@ var arrayFill = function arrayFill( o )
   }
 
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  _.map.assertHasOnly( o,arrayFill.defaults );
+  _assert( _.object.is( o ) || _.number.is( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   var result = o.result || [];
   var times = o.times !== undefined ? o.times : result.length;
   var value = o.value !== undefined ? o.value : 0;
 
-  if( _.routineIs( result.fill ) )
+  if( _.routine.is( result.fill ) )
   {
     if( result.length &lt; times )
     result.length = times;
@@ -7963,7 +7963,7 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( equalizer.length === 1 || equalizer.length === 2 );
-  _.assert( _.routineIs( equalizer ) );
+  _.assert( _.routine.is( equalizer ) );
 
   if( equalizer.length === 2 )
   for( var a = 0 ; a &lt; arr.length ; a++ )
@@ -8200,7 +8200,7 @@ var arrayCountSame = function( src,onElement )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
-  _.assert( _.routineIs( onElement ) );
+  _.assert( _.routine.is( onElement ) );
   _.assert( onElement.length === 1 );
 
   for( var i1 = 0 ; i1 &lt; src.length ; i1++ )
@@ -8264,7 +8264,7 @@ var arraySum = function( src,onElement )
   if( onElement === undefined )
   onElement = function( e ){ return e; };
 
-  _.assert( _.routineIs( onElement ) );
+  _.assert( _.routine.is( onElement ) );
 
   for( var i = 0 ; i &lt; src.length ; i++ )
   {
@@ -8317,7 +8317,7 @@ var arraySupplement = function arraySupplement( dstArray )
   result = [];
 
   var length = result.length;
-  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
+  _assert( _.arrayLike( result ) || _.number.is( result ),'expects object as argument' );
 
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -8325,7 +8325,7 @@ var arraySupplement = function arraySupplement( dstArray )
     length = Math.max( length,arguments[ a ].length );
   }
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = arrayFill
   ({
     value : result,
@@ -8445,7 +8445,7 @@ var arrayRandom = function( options )
 {
   var result = [];
 
-  if( _.numberIs( options ) )
+  if( _.number.is( options ) )
   {
     options = { length : options };
   }
@@ -8497,7 +8497,7 @@ var arrayRandom = function( options )
 var arrayRange = function( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0,range ];
 
   _.assert( arguments.length === 1 );
@@ -9157,15 +9157,15 @@ var mapExtendFiltering = function( filter,dstObject )
   if( result === null ) result = {};
 
   _assert( arguments.length >= 3 );
-  _assert( _.routineIs( filter ) );
-  _assert( _.objectLike( result ),'mapExtendFiltering :','expects object as argument' );
+  _assert( _.routine.is( filter ) );
+  _assert( _.object.like( result ),'mapExtendFiltering :','expects object as argument' );
 
   for( var a = 2 ; a &lt; arguments.length ; a++ )
   {
 
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
+    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.entity.strTypeOf( argument ) );
 
     for( var k in argument )
     {
@@ -9268,7 +9268,7 @@ var mapSupplement = function( dst )
   if( result === null ) result = {};
 
   _assert( arguments.length >= 2 );
-  _assert( _.objectLike( result ),'mapSupplement :','expects object as argument' );
+  _assert( _.object.like( result ),'mapSupplement :','expects object as argument' );
 
   for( var a = 1 ; a &lt; arguments.length ; a++ )
   {
@@ -9359,10 +9359,10 @@ var mapSatisfy = function mapSatisfy( o )
   o = { template : arguments[ 0 ], src : arguments[ 1 ] };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
+  _.assert( _.object.is( o.template ) || _.routine.is( o.template ) );
   _.assert( o.src !== undefined );
 
-  _.routineOptions( mapSatisfy,o );
+  _.routine.options( mapSatisfy,o );
 
   return _mapSatisfy( o.template,o.src,o.src,o.levels );
 }
@@ -9382,7 +9382,7 @@ var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
   if( levels &lt;= 0 )
   throw _.err( '_mapSatisfy : too deep structure' );
 
-  if( _.routineIs( template ) )
+  if( _.routine.is( template ) )
   return template( src );
 
   if( objectIs( template ) )
@@ -9425,7 +9425,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( srcObject ) );
+  _.assert( _.object.like( srcObject ) );
 
   for( var s in srcObject )
   {
@@ -9461,7 +9461,7 @@ var mapToArray = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( src ) );
+  _.assert( _.object.is( src ) );
 
   for( var s in src )
   {
@@ -9502,7 +9502,7 @@ var mapValWithIndex = function( src,index )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
 
   if( index &lt; 0 ) return;
@@ -9543,7 +9543,7 @@ var mapKeyWithIndex = function( src,index )
 {
 
    _.assert( arguments.length === 2 );
-   _.assert( _.objectLike( src ) );
+   _.assert( _.object.like( src ) );
 
   if( index &lt; 0 ) return;
 
@@ -9634,10 +9634,10 @@ var mapOwnKeys = function mapOwnKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   if( arguments.length === 1 )
-  if( _.objectIs( src ) &amp;&amp; Object.keys )
+  if( _.object.is( src ) &amp;&amp; Object.keys )
   return Object.keys( src );
 
   for( var s in src )
@@ -9686,7 +9686,7 @@ var mapKeys = function mapKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push( s );
@@ -9694,7 +9694,7 @@ var mapKeys = function mapKeys( src )
   for( var a = 1 ; a &lt; arguments.length ; a++ )
   {
     var src = arguments[ a ];
-    _.assert( _.objectLike( src ) );
+    _.assert( _.object.like( src ) );
     for( var s in src )
     _.arrayAppendOnce( result,s );
   }
@@ -9709,7 +9709,7 @@ var mapOwnValues = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   {
@@ -9750,7 +9750,7 @@ var mapValues = function( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push( src[ s ] );
@@ -9784,7 +9784,7 @@ var mapPairs = function( src )
 {
   var result = [];
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   result.push([ s, src[ s ] ]);
@@ -9798,7 +9798,7 @@ var mapInvertKeyValue = function( src )
 {
   var result = {};
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.object.like( src ) );
 
   for( var s in src )
   {
@@ -9816,7 +9816,7 @@ var mapsPluck = function( srcMaps,filterName )
   var result = new srcMaps.constructor();
   var filterName = _.nameUnfielded( filterName ).coded;
 
-  _assert( _.arrayIs( srcMaps ) || _.objectIs( srcMaps ) );
+  _assert( _.arrayIs( srcMaps ) || _.object.is( srcMaps ) );
 
   _.each( srcMaps,function( e,k )
   {
@@ -9975,10 +9975,10 @@ var mapOwn = function( object,name )
   return _ObjectHasOwnProperty.call( object, name );
   else if( _.mapIs( name ) )
   return _ObjectHasOwnProperty.call( object, _.nameUnfielded( name ).coded );
-  else if( _.symbolIs( name ) )
+  else if( _.symbol.is( name ) )
   return _ObjectHasOwnProperty.call( object, name );
 
-  _.assert( 0,'mapOwn :','unknown type of name :',_.strTypeOf( name ) );
+  _.assert( 0,'mapOwn :','unknown type of name :',_.entity.strTypeOf( name ) );
 }
 
 //
@@ -10032,7 +10032,7 @@ var mapBut = function( srcMap )
   var result = {};
   var a,k;
 
-  _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _assert( _.object.like( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -10040,7 +10040,7 @@ var mapBut = function( srcMap )
     {
       var argument = arguments[ a ];
 
-      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _assert( _.object.like( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       break;
@@ -10212,8 +10212,8 @@ var mapScreens = function( srcObject,screenObject )
 {
 
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _assert( _.objectLike( srcObject ),'mapScreens :','expects object as argument' );
-  _assert( _.objectLike( screenObject ),'mapScreens :','expects object as screenObject' );
+  _assert( _.object.like( srcObject ),'mapScreens :','expects object as argument' );
+  _assert( _.object.like( screenObject ),'mapScreens :','expects object as screenObject' );
 
   if( arguments.length > 2 )
   {
@@ -10348,13 +10348,13 @@ var _mapScreen = function( options )
   options.filter = _.filter.makeMapper( options.filter );
 
   _.assert( arguments.length === 1 );
-  _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
-  _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
+  _assert( _.object.like( dstObject ),'_mapScreen :','expects object as argument' );
+  _assert( _.object.like( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
-  _.assertMapHasOnly( options,_mapScreen.defaults );
+  _.map.assertHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLike( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
+  _assert( _.object.like( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
 
   for( var k in screenObject )
   {
@@ -10429,7 +10429,7 @@ var ownRoutines = function()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -10449,7 +10449,7 @@ var supplementaryOwnRoutines = function()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
     if( !dstContainer[ key ] !== undefined )
     return false;
@@ -10699,7 +10699,7 @@ var recursiveClonning = function()
 var drop = function( dropContainer )
 {
 
-  _.assert( _.objectIs( dropContainer ) );
+  _.assert( _.object.is( dropContainer ) );
 
   var routine = function drop( dstContainer,srcContainer,key )
   {
@@ -10724,7 +10724,7 @@ var and = function()
   for( var a = 0 ; a &lt; arguments.length ; a++ )
   {
     var routine = arguments[ a ];
-    _.assert( _.routineIs( routine ) );
+    _.assert( _.routine.is( routine ) );
     _.assert( _.strIs( routine.functionKind ) );
     if( routine.functionKind === 'field-filter' )
     filters.push( routine );
@@ -10744,7 +10744,7 @@ var and = function()
       var filter = filters[ f ];
 
       var result = filter( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return mappers.length ? undefined : false;
     }
@@ -10771,7 +10771,7 @@ var makeMapper = function( routine )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) );
+  _.assert( _.routine.is( routine ) );
   _.assert( _.strIs( routine.functionKind ) );
 
   if( routine.functionKind === 'field-filter' )
@@ -10779,7 +10779,7 @@ var makeMapper = function( routine )
     var r = function( dstContainer,srcContainer,key )
     {
       var result = routine( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
+      _.assert( _.bool.is( result ) );
       if( result === false )
       return;
       dstContainer[ key ] = srcContainer[ key ];

@@ -26,25 +26,25 @@ function extendReplacing( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
-    else if( _.setLike( src ) )
-    dst = _.arraySetUnion_( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
+    else if( _.set.like( src ) )
+    dst = _.arraySet.union_( null, src );
     else
     dst = src;
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
-    if( _.mapLike( dst ) )
+    if( _.aux.is( dst ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -63,20 +63,20 @@ function extendReplacing( dst, src )
     }
 
   }
-  else if( _.hashMapLike( src ) )
+  else if( _.hashMap.like( src ) )
   {
 
-    if( _.hashMapLike( dst ) || _.mapLike( dst ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( dst ) || _.aux.is( dst ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
   }
-  else if( _.setLike( src ) )
+  else if( _.set.like( src ) )
   {
 
-    if( _.setLike( dst ) || _.longLike( dst ) )
-    dst = _.arraySetUnion_( dst, src );
+    if( _.set.like( dst ) || _.longLike( dst ) )
+    dst = _.arraySet.union_( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -101,25 +101,25 @@ function extendAppending( dst, src )
   if( dst === null || dst === undefined )
   {
 
-    if( _.mapLike( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
     dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( null, src );
-    else if( _.setLike( src ) )
-    dst = _.arraySetUnion_( null, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( null, src );
+    else if( _.set.like( src ) )
+    dst = _.arraySet.union_( null, src );
     else
     dst = src;
 
   }
-  else if( _.mapLike( dst ) )
+  else if( _.aux.is( dst ) )
   {
 
-    if( _.mapLike( src ) )
+    if( _.aux.is( src ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( src ) )
-    dst = _.hashMapExtend( dst, src );
+    else if( _.hashMap.like( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -130,20 +130,20 @@ function extendAppending( dst, src )
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.hashMapLike( dst ) )
+  else if( _.hashMap.like( dst ) )
   {
 
-    if( _.hashMapLike( src ) || _.mapLike( src ) )
-    dst = _.hashMapExtend( dst, src );
+    if( _.hashMap.like( src ) || _.aux.is( src ) )
+    dst = _.hashMap.extend( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.setLike( dst ) )
+  else if( _.set.like( dst ) )
   {
 
-    if( _.setLike( src ) || _.longLike( src ) )
-    dst = _.arraySetUnion_( dst, src );
+    if( _.set.like( src ) || _.longLike( src ) )
+    dst = _.arraySet.union_( dst, src );
     else
     dst = _.arrayExtendAppending( dst, src );
 
@@ -163,7 +163,7 @@ function extendAppending( dst, src )
 /**
  * The routine empty() clears provided container {-dstContainer-}.
  *
- * @param { Long|Set|HashMap|MapLike } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
  *
  * @example
  * let dst = [];
@@ -205,10 +205,10 @@ function extendAppending( dst, src )
  * console.log( got === dst );
  * // log true
  *
- * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
+ * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
  * @function empty
  * @throws { Error } If arguments.length is less than one.
- * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
  * @namespace Tools
  */
@@ -217,96 +217,69 @@ function empty( dstContainer )
 {
   if( _.longLike( dstContainer ) )
   _.longEmpty( dstContainer );
-  else if( _.setLike( dstContainer ) )
+  else if( _.set.like( dstContainer ) )
   dstContainer.clear();
-  else if( _.hashMapLike( dstContainer ) )
+  else if( _.hashMap.like( dstContainer ) )
   dstContainer.clear();
-  else if( _.mapLike( dstContainer ) )
+  else if( _.aux.is( dstContainer ) )
   _.mapEmpty( dstContainer );
   else
-  _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+  _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
   return dstContainer;
 }
 
 //
 
-function typeOf( src )
+function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
-  _.assert( arguments.length === 1 );
-  for( let t in this.types )
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( key ) );
+
+  if( _.mapIs( container ) )
   {
-    let type = this.types[ t ];
-    if( type._is( src ) )
-    {
-      return type;
-    }
+    let key2 = Object.keys( container )[ key ];
+    return [ key2, container[ key2 ] ];
   }
+  else if( _.hashMap.is( container ) )
+  {
+    return [ ... container ][ key ];
+  }
+  else if( _.entity.methodIteratorOf( container ) )
+  {
+    return [ key, [ ... container ][ key ] ];
+  }
+  else _.assert( 0 );
+
 }
 
 //
 
-function typeDeclare( type )
+function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
-  _.assertMapHasOnly( type, this.knownTypeFields );
-  _.assert( arguments.length === 1 );
-  _.assert( _.strDefined( type.name ) );
-  _.assert( _.routineIs( type._is ) );
-  _.assert( this.types[ type.name ] === undefined || this.types[ type.name ] === type );
-
-  this.types[ type.name ] = type;
-
-  return type;
-}
-
-//
-
-function typeUndeclare( type )
-{
-
-  if( !_.strIs( type ) )
-  {
-    _.assert( _.longHas( _.mapVals( this.types ), type ), () => `Container type::${type.name} is not registered` );
-    type = type.name;
-  }
-
-  let result = this.types[ type ];
-
-  _.assert( arguments.length === 1 );
-  _.assert( result !== undefined );
-
-  delete this.types[ type ];
-
-  return result;
-}
-
-//
-
-function elementGet( container, key, type )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( type !== false )
-  {
-    type = _.container.typeOf( container );
-    if( type && type._elementGet )
-    return type._elementGet( container, key );
-  }
+  _.assert( arguments.length === 2 );
 
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       return container.get( key );
     }
-    else if( _.setLike( container ) )
+    else if( _.set.like( container ) )
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.entity.methodIteratorOf( container ) )
+    else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
     {
       return [ ... container ][ key ];
+    }
+    else if( _.escape.is( key ) )
+    {
+      debugger;
+      if( key.val === prototypeSymbol )
+      return _.prototype.of( container );
+      else _.assert( 0, 'Unknown implicit field' );
     }
     else
     {
@@ -327,20 +300,16 @@ function elementSet( container, key, value )
 
   _.assert( arguments.length === 3 ); debugger;
 
-  let type = _.container.typeOf( container );
-  if( type && type._elementSet )
-  return type._elementSet( container, key, value );
-
   if( container )
   {
-    if( _.hashMapLike( container ) )
+    if( _.hashMap.like( container ) )
     {
       container.set( key, value );
       return value;
     }
     else
     {
-      _.assert( !_.setLike( container ), 'not implemented' );
+      _.assert( !_.set.like( container ), 'not implemented' );
       container[ key ] = value;
       return container[ key ];
     }
@@ -356,23 +325,23 @@ function elementSet( container, key, value )
 // structure
 // --
 
-let knownTypeFields =
-{
-  name : null,
-  _elementSet : null,
-  _elementGet : null,
-  _lengthGet : null,
-  _is : null,
-  _identicalTypes : null, /* qqq : cover please. ask how */
-  _while : null,
-  _coerce : null, /* qqq : cover this callback */
-}
+// let knownTypeFields =
+// {
+//   name : null,
+//   _elementSet : null,
+//   _elementGet : null,
+//   _lengthGet : null,
+//   _is : null,
+//   _identicalTypes : null, /* qqq : cover please. ask how */
+//   _while : null,
+//   _coerce : null, /* qqq : cover this callback */
+// }
 
 // --
 // extension
 // --
 
-let types = _realGlobal_.wTools.container.types;
+const prototypeSymbol = Symbol.for( 'prototype' );
 
 let Extension =
 {
@@ -380,24 +349,19 @@ let Extension =
   extendReplacing,
   extendAppending,
 
-  // extendAppendingRecursive,
-
   empty,
 
-  typeOf,
-  typeDeclare, /* qqq : cover please */
-  typeUndeclare,
+  elementThGet,
   elementGet, /* qqq : cover please */
   elementSet,
 
   // fields
 
-  knownTypeFields,
+  // knownTypeFields,
 
 }
 
 _.mapSupplement( Self, Extension );
-_.container.types = types;
 
 // --
 // export

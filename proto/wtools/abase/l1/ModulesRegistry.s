@@ -197,7 +197,7 @@ let wSelectorExtra =
 let wResolverExtra =
 {
   sourcePath : sourcePath( 'abase/l7/ResolverExtra.s', 'wresolverextra' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver && !!_global.wTools.resolveQualified; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.resolver2 && !!_global.wTools.resolver2.resolve; },
 }
 
 // base / l7_mixin
@@ -514,15 +514,15 @@ let wNameMapper =
 
 let wTemplateTreeResolver =
 {
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeAresolver.s', 'wtemplatetreeresolver' ),
+  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeResolver.s', 'wtemplatetreeresolver' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver },
 }
 
-let wTemplateTreeResolver2 =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeResolver2.s', 'wtemplatetreeresolver2' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver2 },
-}
+// let wTemplateTreeResolver2 =
+// {
+//   sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeResolver2.s', 'wtemplatetreeresolver2' ),
+//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver2 },
+// }
 
 let wTemplateTreeEnvironment =
 {
@@ -883,7 +883,7 @@ let Modules =
   wPathTranslator,
   wNameMapper,
   wTemplateTreeResolver,
-  wTemplateTreeResolver2,
+  // wTemplateTreeResolver2,
   wTemplateTreeEnvironment,
   wTemplateFileWriter,
 

@@ -51,7 +51,7 @@ function primitive()
 
   function primitive( dstContainer, srcContainer, key )
   {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -210,7 +210,7 @@ function notPrimitiveAssigning()
 
   function notPrimitiveAssigning( dstContainer, srcContainer, key )
   {
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
     _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
@@ -244,7 +244,7 @@ function drop( dropContainer )
 
   debugger;
 
-  _.assert( _.objectIs( dropContainer ) );
+  _.assert( _.object.is( dropContainer ) );
 
   let routine = drop;
 
@@ -508,7 +508,7 @@ function dstNotHasSrcPrimitive()
     if( key in dstContainer )
     return false;
 
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     return true;
@@ -575,7 +575,7 @@ function dstNotHasSrcOwnRoutines()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
     if( key in dstContainer )
     return false;
@@ -913,7 +913,7 @@ function srcOwnRoutines()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
+    if( !_.routine.is( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -956,7 +956,7 @@ function srcOwnPrimitive()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.primitiveIs( srcContainer[ key ] ) )
+    if( !_.primitive.is( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -979,7 +979,7 @@ function srcOwnNotPrimitiveAssigning()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
     _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key );
@@ -1001,7 +1001,7 @@ function srcOwnNotPrimitiveAssigningRecursive()
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
+    if( _.primitive.is( srcContainer[ key ] ) )
     return;
 
     _.entity.assign2FieldFromContainer( dstContainer, srcContainer, key, _.entity.assign2FieldFromContainer );

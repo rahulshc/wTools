@@ -8,7 +8,7 @@ function name_pre( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
@@ -37,9 +37,9 @@ name_body.defaults =
   full : 0,
 }
 
-let name = _.routineUnite( name_pre, name_body );
+let name = _.routine.unite( name_pre, name_body );
 
-let nameFull = _.routineUnite( name_pre, name_body );
+let nameFull = _.routine.unite( name_pre, name_body );
 nameFull.defaults.full = 1;
 
 console.log( name( './a/b/c/File.js' ) );

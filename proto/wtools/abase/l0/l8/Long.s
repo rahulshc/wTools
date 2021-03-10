@@ -105,7 +105,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
   }
   else if( arguments.length === 2 )
   {
-    if( _.routineIs( srcLong ) )
+    if( _.routine.is( srcLong ) )
     {
       onEvaluate = arguments[ 1 ];
       srcLong = arguments[ 0 ];
@@ -201,7 +201,7 @@ function longHasUniques( o )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( o.src ) );
-  _.assertMapHasOnly( o, longHasUniques.defaults );
+  _.map.assertHasOnly( o, longHasUniques.defaults );
 
   /* */
 
@@ -385,7 +385,7 @@ function longMask( srcArray, mask )
   (
     _.intIs( length ),
     'longMask :', 'Expects mask that has component for each atom of srcArray',
-    _.toStr
+    _.entity.exportString
     ({
       scalarsPerElement,
       'srcArray.length' : srcArray.length,
@@ -429,7 +429,7 @@ function longUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapHasOnly( o, longUnmask.defaults );
+  _.map.assertHasOnly( o, longUnmask.defaults );
   _.assert( _.longIs( o.src ), 'Expects o.src as ArrayLike' );
 
   let scalarsPerElement = o.mask.length;
@@ -445,7 +445,7 @@ function longUnmask( o )
   (
     'longMask :',
     'Expects mask that has component for each atom of o.src',
-    _.toStr({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
+    _.entity.exportString({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
   );
 
   let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );
@@ -577,17 +577,17 @@ function longRandom( o )
 
   if( arguments[ 2 ] !== undefined )
   o = { dst : arguments[ 0 ], value : arguments[ 1 ], length : arguments[ 2 ] }
-  else if( _.numberIs( o ) || _.intervalIs( o ) )
+  else if( _.number.is( o ) || _.intervalIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
-  _.routineOptions( longRandom, o );
+  _.routine.options( longRandom, o );
 
   if( o.onEach === null )
-  o.onEach = ( value ) => _.numberRandom( value );
+  o.onEach = ( value ) => _.number.random( value );
 
   if( o.value === null )
   o.value = [ 0, 1 ];
-  if( _.numberIs( o.value ) )
+  if( _.number.is( o.value ) )
   o.value = [ 0, o.value ]
   // o.value = [ o.value, o.value ]
 
@@ -650,7 +650,7 @@ longRandom.defaults =
 function longFromRange( range )
 {
 
-  if( _.numberIs( range ) )
+  if( _.number.is( range ) )
   range = [ 0, range ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -675,7 +675,7 @@ function longFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   debugger;
 
@@ -701,7 +701,7 @@ function longFromRangeWithStep( range, step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
   return new this.longDescriptor.make();
@@ -761,7 +761,7 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( _.routineIs( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.longDescriptor.from ) );
 
   if( numberOfSteps === 0 )
   return new this.longDescriptor.from();
@@ -918,7 +918,7 @@ function longOnlyWithIndices( srcArray, indicesArray )
 {
   let scalarsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
+  if( _.object.is( indicesArray ) )
   {
     scalarsPerElement = indicesArray.scalarsPerElement || 1;
     indicesArray = indicesArray.indices;
@@ -1058,7 +1058,7 @@ function longPut( dstArray, dstOffset )
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
+  _.assert( _.number.is( dstOffset ) );
 
   dstOffset = dstOffset || 0;
 
@@ -1124,7 +1124,7 @@ function longSupplement( dstArray )
   result = [];
 
   let length = result.length;
-  _.assert( _.longIs( result ) || _.numberIs( result ), 'Expects object as argument' );
+  _.assert( _.longIs( result ) || _.number.is( result ), 'Expects object as argument' );
 
   for( let a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -1132,7 +1132,7 @@ function longSupplement( dstArray )
     length = Math.max( length, arguments[ a ].length );
   }
 
-  if( _.numberIs( result ) )
+  if( _.number.is( result ) )
   result = arrayFill
   ({
     value : result,
@@ -1282,20 +1282,20 @@ function longExtendScreening( screenArray, dstArray )
 function longSort( dstLong, srcLong, onEvaluate )
 {
 
-  if( _.routineIs( arguments[ 1 ] ) )
+  if( _.routine.is( arguments[ 1 ] ) )
   {
     onEvaluate = arguments[ 1 ];
     srcLong = dstLong;
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
+  _.assert( onEvaluate === undefined || _.routine.is( onEvaluate ) );
   _.assert( _.longIs( srcLong ) );
   _.assert( dstLong === null || _.longIs( dstLong ) );
 
   if( dstLong === null )
   dstLong = _.arrayMake( srcLong );
-  if( _.argumentsArrayIs( dstLong ) ) // Dmytro : missed
+  if( _.argumentsArray.is( dstLong ) ) // Dmytro : missed
   dstLong = this.longDescriptor.from( dstLong );
 
   if( onEvaluate === undefined )
@@ -1338,7 +1338,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   debugger;
 //   throw _.err( 'not tested' );
 //
-//   comparator = _._comparatorFromEvaluator( comparator );
+//   comparator = _.routine._comparatorFromEvaluator( comparator );
 //
 //   function rcomparator( a, b )
 //   {
@@ -1400,7 +1400,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   if( onEvaluate === undefined )
 //   onEvaluate = function( e ){ return e; };
 //
-//   _.assert( _.routineIs( onEvaluate ) );
+//   _.assert( _.routine.is( onEvaluate ) );
 //
 //   for( let i = 0 ; i < src.length ; i++ )
 //   {

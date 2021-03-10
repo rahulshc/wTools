@@ -261,7 +261,7 @@ function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  // _.assert( _.number.is( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( dst !== undefined, 'Expects array or scalar' );
   _.assert( length >= 0 );
 
@@ -307,9 +307,9 @@ function scalarFromOrNull( src )
 function dup( ins, times, result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ), 'dup expects times as number or array' );
+  _.assert( _.number.is( times ) || _.longIs( times ), 'dup expects times as number or array' );
 
-  if( _.numberIs( times ) )
+  if( _.number.is( times ) )
   {
     if( !result )
     result = new Array( times );
@@ -376,10 +376,11 @@ function entityEach( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -389,7 +390,7 @@ function entityEach( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let k in src )
@@ -415,10 +416,11 @@ function entityEachOwn( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -428,7 +430,7 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) || _.objectLike( src ) )
+  else if( _.aux.is( src ) || _.object.like( src ) )
   {
 
     for( let k in src )
@@ -449,92 +451,11 @@ function entityEachOwn( src, onEach )
   return src;
 }
 
-// //
-//
-// function entityEachKey( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( onEach.length <= 3 );
-//   // _.assert( onEach.length <= 2 );
-//   _.assert( _.routineIs( onEach ) );
-//
-//   /* */
-//
-//   if( _.longIs( src ) )
-//   {
-//
-//     for( let index = 0 ; index < src.length ; index++ )
-//     {
-//       onEach( src[ index ], undefined, index, src );
-//     }
-//
-//   }
-//   else if( _.objectLike( src ) )
-//   {
-//
-//     let index = 0;
-//     for( let k in src )
-//     {
-//       onEach( k, src[ k ], index, src );
-//       index += 1;
-//     }
-//
-//   }
-//   else
-//   {
-//     onEach( src, undefined, undefined, undefined );
-//   }
-//
-//   /* */
-//
-//   return src;
-//
-//   // if( arguments.length === 2 )
-//   // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-//   //
-//   // _.routineOptions( eachKey, o );
-//   // _.assert( arguments.length === 1 || arguments.length === 2 );
-//   // _.assert( o.onUp && o.onUp.length <= 3 );
-//   //
-//   // /* */
-//   //
-//   // if( _.longIs( o.src ) )
-//   // {
-//   //
-//   //   for( let index = 0 ; index < o.src.length ; index++ )
-//   //   {
-//   //     o.onUp.call( o, o.src[ index ], undefined, index );
-//   //   }
-//   //
-//   // }
-//   // else if( _.objectLike( o.src ) )
-//   // {
-//   //
-//   //   let index = 0;
-//   //   for( let k in o.src )
-//   //   {
-//   //     o.onUp.call( o, k, o.src[ k ], index );
-//   //     index += 1;
-//   //   }
-//   //
-//   // }
-//   // else _.assert( 0, 'not container' );
-//   //
-//   // /* */
-//   //
-//   // return src;
-// }
-//
-// var defaults = entityEachKey.defaults = Object.create( null );
-//
-// defaults.src = null;
-// defaults.onUp = function( e, k ){};
-
 //
 
 /*
 
-LongLike / MapLike / HashMapLike / SetLike
+LongLike / Aux / HashMapLike / SetLike
 
 
 _.only( Array::dst, Map::src );
@@ -625,7 +546,7 @@ function entityOnly( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -639,7 +560,7 @@ function entityOnly( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
@@ -659,7 +580,7 @@ function entityOnly( dst, src, onEach )
   // if( dst === src )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -682,7 +603,7 @@ function entityOnly( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -706,18 +627,6 @@ function entityOnly( dst, src, onEach )
   /* */
 
   return dst;
-
-  /* */
-
-  // function srcHasMap( e )
-  // {
-  // }
-  //
-  // /* */
-  //
-  // function srcHasSet( e )
-  // {
-  // }
 
   /* */
 
@@ -775,6 +684,7 @@ function entityOnly( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -787,7 +697,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -815,6 +725,7 @@ function entityOnly( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -827,7 +738,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -900,6 +811,7 @@ function entityOnly( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -911,7 +823,7 @@ function entityOnly( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -931,68 +843,12 @@ function entityOnly( dst, src, onEach )
 
   }
 
-  // function withRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k ], k2, src );
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k2 ], k2, src );
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( !res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( !res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
-
   /* */
 
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1003,7 +859,7 @@ function entityOnly( dst, src, onEach )
         dst.splice( k, 1 );
       }
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1023,73 +879,16 @@ function entityOnly( dst, src, onEach )
 
   }
 
-  // function withoutRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k ];
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k2 ];
-  //         if( !res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = src[ k ];
-  //       if( !res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( !res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
-
   function typeStr( e )
   {
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -1184,7 +983,7 @@ function entityBut( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -1198,14 +997,14 @@ function entityBut( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -1228,7 +1027,7 @@ function entityBut( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -1313,6 +1112,7 @@ function entityBut( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1325,7 +1125,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1353,6 +1153,7 @@ function entityBut( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1365,7 +1166,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1437,6 +1238,7 @@ function entityBut( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1448,7 +1250,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1468,68 +1270,12 @@ function entityBut( dst, src, onEach )
 
   }
 
-  // function withRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k ], k2, src );
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = onEach( src[ k2 ], k2, src );
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( !res )
-  //     dst = dst;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
-
   /* */
 
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1541,7 +1287,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -1563,73 +1309,17 @@ function entityBut( dst, src, onEach )
 
   }
 
-  // function withoutRoutineDeleting()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     if( src === dst )
-  //     {
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k ];
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       debugger;
-  //       let k2 = 0;
-  //       for( let k = 0 ; k < dst.length ; k++, k2++ )
-  //       {
-  //         let res = src[ k2 ];
-  //         if( res )
-  //         {
-  //           dst.splice( k, 1 );
-  //           k -= 1;
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     for( let k in dst )
-  //     {
-  //       let res = src[ k ];
-  //       if( res )
-  //       delete dst[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( res )
-  //     dst = undefined;
-  //     else
-  //     dst = dst;
-  //   }
-  //
-  // }
-
+  /* xxx */
   function typeStr( e )
   {
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -1638,103 +1328,6 @@ function entityBut( dst, src, onEach )
   }
 
 }
-
-// function entityBut( src, onEach )
-// {
-//   let result;
-//
-//   if( _.strIs( onEach ) )
-//   {
-//     let selector = onEach;
-//     _.assert( _.routineIs( _.select ) );
-//     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
-//     selector = _.strRemoveBegin( selector, '*/' );
-//     onEach = function( e, k )
-//     {
-//       return _.select( e, selector );
-//     }
-//   }
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
-//
-//   /* */
-//
-//   if( _.routineIs( onEach ) )
-//   {
-//
-//     if( _.longIs( src ) )
-//     {
-//
-//       result = [];
-//       for( let k = 0 ; k < src.length ; k++ )
-//       {
-//         let res = onEach( src[ k ], k, src );
-//         if( !res )
-//         result.push( src[ k ] );
-//       }
-//
-//     }
-//     else if( _.mapLike( src ) )
-//     {
-//
-//       result = Object.create( null );
-//       for( let k in src )
-//       {
-//         let res = onEach( src[ k ], k, src );
-//         if( !res )
-//         result[ k ] = src[ k ];
-//       }
-//
-//     }
-//     else
-//     {
-//       let res = onEach( src, undefined, undefined );
-//       if( !res )
-//       result = src;
-//     }
-//
-//   }
-//   else
-//   {
-//
-//     if( _.longIs( src ) )
-//     {
-//
-//       result = [];
-//       for( let k = 0 ; k < src.length ; k++ )
-//       {
-//         let res = src[ k ];
-//         if( !res )
-//         result.push( src[ k ] );
-//       }
-//
-//     }
-//     else if( _.mapLike( src ) )
-//     {
-//
-//       result = Object.create( null );
-//       for( let k in src )
-//       {
-//         let res = src[ k ];
-//         if( !res )
-//         result[ k ] = src[ k ];
-//       }
-//
-//     }
-//     else
-//     {
-//       let res = src;
-//       if( !res )
-//       result = res;
-//     }
-//
-//   }
-//
-//   /* */
-//
-//   return result;
-// }
 
 //
 
@@ -1820,7 +1413,7 @@ function entityAnd( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -1834,14 +1427,14 @@ function entityAnd( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -1864,7 +1457,7 @@ function entityAnd( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -1943,6 +1536,7 @@ function entityAnd( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1955,7 +1549,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -1983,6 +1577,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1995,7 +1590,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2080,6 +1675,7 @@ function entityAnd( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2095,7 +1691,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2126,6 +1722,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2139,7 +1736,7 @@ function entityAnd( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2166,11 +1763,11 @@ function entityAnd( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2267,7 +1864,7 @@ function entityOr( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -2281,14 +1878,14 @@ function entityOr( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -2311,7 +1908,7 @@ function entityOr( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -2390,6 +1987,7 @@ function entityOr( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2402,7 +2000,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2430,6 +2028,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2442,7 +2041,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2539,6 +2138,7 @@ function entityOr( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2559,7 +2159,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2600,6 +2200,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2618,7 +2219,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in dst )
@@ -2657,11 +2258,11 @@ function entityOr( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -2757,7 +2358,7 @@ function entityXor( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
-    _.assert( _.routineIs( _.select ) );
+    _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
     onEach = function( e, k )
@@ -2771,14 +2372,14 @@ function entityXor( dst, src, onEach )
 
   _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
   if( dst !== null )
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutineDeleting();
@@ -2801,7 +2402,7 @@ function entityXor( dst, src, onEach )
   else
   {
 
-    if( _.routineIs( onEach ) )
+    if( _.routine.is( onEach ) )
     {
       if( srcTypeStr === 'set' )
       setWithRoutine();
@@ -2886,6 +2487,7 @@ function entityXor( dst, src, onEach )
   function withRoutine()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2900,7 +2502,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       dst = Object.create( null );
@@ -2938,7 +2540,7 @@ function entityXor( dst, src, onEach )
       if( e )
       dst.push( e );
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       dst = Object.assign( Object.create( null ), src );
       let  unnecessaries = [ null, 0, undefined, false, '' ];
@@ -3057,6 +2659,7 @@ function entityXor( dst, src, onEach )
   function withRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -3075,7 +2678,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in src )
@@ -3112,6 +2715,7 @@ function entityXor( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -3130,7 +2734,7 @@ function entityXor( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.aux.is( dst ) )
     {
 
       for( let k in src )
@@ -3169,11 +2773,11 @@ function entityXor( dst, src, onEach )
     let type;
     if( _.longIs( e ) )
     type = 'long';
-    else if( _.mapLike( e ) )
+    else if( _.aux.is( e ) )
     type = 'map';
-    else if( _.setIs( e ) )
+    else if( _.set.is( e ) )
     type = 'set';
-    else if( _.hashMapIs( e ) )
+    else if( _.hashMap.is( e ) )
     type = 'hashMap';
     else
     type = 'primitive';
@@ -3190,14 +2794,15 @@ function entityAll( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3208,7 +2813,7 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3222,6 +2827,7 @@ function entityAll( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -3230,8 +2836,7 @@ function entityAll( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3253,7 +2858,8 @@ function entityAll( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3262,16 +2868,9 @@ function entityAll( src, onEach )
         if( !result )
         return result;
       }
-      // for( let k = 0 ; k < src.length ; k++ )
-      // {
-      //   result = src[ k ];
-      //   if( !result )
-      //   return result;
-      // }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3282,7 +2881,7 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3315,14 +2914,15 @@ function entityAny( src, onEach )
   let result = false;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3334,7 +2934,7 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3349,6 +2949,7 @@ function entityAny( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, undefined );
@@ -3357,8 +2958,7 @@ function entityAny( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3380,7 +2980,8 @@ function entityAny( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3389,16 +2990,9 @@ function entityAny( src, onEach )
         if( result )
         return result;
       }
-      // for( let k = 0 ; k < src.length ; k++ )
-      // {
-      //   result = src[ k ];
-      //   if( result )
-      //   return result;
-      // }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3409,7 +3003,7 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3441,14 +3035,15 @@ function entityNone( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
 
   /* */
 
-  if( _.routineIs( onEach ) )
+  if( _.routine.is( onEach ) )
   {
 
-    if( _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3459,7 +3054,7 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3473,6 +3068,7 @@ function entityNone( src, onEach )
     else if( _.longIs( src ) )
     {
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -3481,8 +3077,7 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3504,7 +3099,8 @@ function entityNone( src, onEach )
   else
   {
 
-    if( _.longIs( src ) || _.setLike( src ) )
+    /* qqq for Yevhen : add branch for countable case */
+    if( _.longIs( src ) || _.set.like( src ) )
     {
 
       for( let e of src )
@@ -3515,8 +3111,7 @@ function entityNone( src, onEach )
       }
 
     }
-    // else if( _.objectLike( src ) )
-    else if( _.hashMapIs( src ) )
+    else if( _.hashMap.is( src ) )
     {
 
       for( let [ key, value ] of src )
@@ -3527,7 +3122,7 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
 
       for( let k in src )
@@ -3585,9 +3180,9 @@ function _filter_functor( condition, levels )
   let result;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+  _.assert( _.routine.is( condition ) || _.object.is( condition ) );
 
-  if( _.objectIs( condition ) )
+  if( _.object.is( condition ) )
   {
     let template = condition;
     condition = function condition( e, k, src )
@@ -3595,7 +3190,7 @@ function _filter_functor( condition, levels )
       _.assert( arguments.length === 3 );
       if( e === template )
       return e;
-      if( !_.objectLike( e ) )
+      if( !_.object.like( e ) )
       return;
       let satisfied = _.objectSatisfy
       ({
@@ -3668,33 +3263,28 @@ function entityMap( src, onEach )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   let result;
 
   if( _.longIs( src ) )
   {
-    // result = _.entity.makeUndefined( src );
     result = _.entity.make( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach( src[ s ], s, src );
       if( r !== undefined )
       result[ s ] = r;
-      // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
-  // else if( _.objectLike( src ) )
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
-    // result = _.entity.makeUndefined( src );
     result = _.entity.make( src );
     for( let s in src )
     {
       let r = onEach( src[ s ], s, src );
       if( r !== undefined )
       result[ s ] = r;
-      //_.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
   }
   else
@@ -3703,7 +3293,6 @@ function entityMap( src, onEach )
     let r = onEach( src, undefined, undefined );
     if( r !== undefined )
     result = r;
-    // _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
 
   }
 
@@ -3723,7 +3312,7 @@ function entityMap_( dst, src, onEach )
   {
     _.assert( arguments.length === 3, 'Expects two or three arguments' );
   }
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -3733,6 +3322,7 @@ function entityMap_( dst, src, onEach )
   {
 
     result = src;
+    /* qqq for Yevhen : add branch for countable case */
     if( _.longIs( src ) )
     {
       for( let s = 0 ; s < src.length ; s++ )
@@ -3740,17 +3330,15 @@ function entityMap_( dst, src, onEach )
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       for( let s in src )
       {
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else
@@ -3759,7 +3347,6 @@ function entityMap_( dst, src, onEach )
       let r = onEach( src, undefined, undefined );
       if( r !== undefined )
       result = r;
-      // _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
     }
 
   }
@@ -3774,27 +3361,26 @@ function entityMap_( dst, src, onEach )
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
+      /* qqq for Yevhen : add branch for countable case */
       for( let s = 0 ; s < src.length ; s++ )
       {
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       if( dst === null )
       result = _.entity.makeUndefined( src );
       else
-      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+      _.assert( _.aux.is( dst ), '{-dst-} container should be map like' );
 
       for( let s in src )
       {
         let r = onEach( src[ s ], s, src );
         if( r !== undefined )
         result[ s ] = r;
-        // _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able to return undefined to delete element use ( entityFilter )' )
       }
     }
     else
@@ -3805,9 +3391,9 @@ function entityMap_( dst, src, onEach )
 
       if( _.longIs( dst ) )
       result = _.arrayAppendElement( dst, r );
-      else if( _.mapLike( dst ) )
+      else if( _.aux.is( dst ) )
       result = _.mapExtend( dst, r );
-      else if( _.primitiveIs( dst ) )
+      else if( _.primitive.is( dst ) )
       result = r;
       else
       _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
@@ -3827,7 +3413,7 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -3836,6 +3422,7 @@ function entityFilter( src, onEach )
 
     result = _.longMake( src, 0 );
     let s, d;
+    /* qqq for Yevhen : add branch for countable case */
     for( s = 0, d = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3854,8 +3441,7 @@ function entityFilter( src, onEach )
     result = _.arraySlice( result, 0, d );
 
   }
-  // else if( _.objectLike( src ) )
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     result = _.entity.makeUndefined( src );
@@ -3895,7 +3481,7 @@ function entityFilter_( dst, src, onEach )
   }
   onEach = _._filter_functor( onEach, 1 );
 
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
@@ -3907,6 +3493,8 @@ function entityFilter_( dst, src, onEach )
     result = src;
     if( _.longIs( src ) )
     {
+      /* qqq for Yevhen : add branch for countable case */
+      /* qqq : should be direct! check other cycles */
       for( let s = src.length - 1 ; s >= 0 ; s-- )
       {
         let r = onEach.call( src, src[ s ], s, src );
@@ -3918,7 +3506,7 @@ function entityFilter_( dst, src, onEach )
         result.splice( s, 1 );
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       for( let s in src )
       {
@@ -3947,6 +3535,7 @@ function entityFilter_( dst, src, onEach )
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
       let s, d;
+      /* qqq for Yevhen : add branch for countable case */
       for( s = 0, d = 0 ; s < src.length ; s++ )
       {
         let r = onEach.call( src, src[ s ], s, src );
@@ -3962,12 +3551,12 @@ function entityFilter_( dst, src, onEach )
         }
       }
     }
-    else if( _.mapLike( src ) )
+    else if( _.aux.is( src ) )
     {
       if( dst === null )
       result = _.entity.makeUndefined( src );
       else
-      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+      _.assert( _.aux.is( dst ), '{-dst-} container should be map like' );
 
       for( let s in src )
       {
@@ -3984,9 +3573,9 @@ function entityFilter_( dst, src, onEach )
       {
         if( _.longIs( dst ) )
         result = _.arrayAppendElement( dst, r );
-        else if( _.mapLike( dst ) )
+        else if( _.aux.is( dst ) )
         result = _.mapExtend( dst, r );
-        else if( _.primitiveIs( dst ) )
+        else if( _.primitive.is( dst ) )
         result = r;
         else
         _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
@@ -4007,13 +3596,14 @@ function entityFirst( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
 
   /* */
 
   if( _.longIs( src ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -4022,7 +3612,7 @@ function entityFirst( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let s in src )
@@ -4054,7 +3644,7 @@ function entityLast( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routine.is( onEach ) );
   // _.assert( src !== undefined, 'Expects src' );
 
   /* */
@@ -4062,6 +3652,7 @@ function entityLast( src, onEach )
   if( _.longIs( src ) )
   {
 
+    /* qqq for Yevhen : add branch for countable case */
     for( let s = src.length - 1 ; s >= 0 ; s-- )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -4070,7 +3661,7 @@ function entityLast( src, onEach )
     }
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.aux.is( src ) )
   {
 
     for( let s in src )
@@ -4137,8 +3728,8 @@ function entityLast( src, onEach )
 function _entityMost( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
-  _.routineOptions( _entityMost, o );
+  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.entity.strType( o ) );
+  _.routine.options( _entityMost, o );
 
   if( !o.onEvaluate )
   {
@@ -4155,6 +3746,7 @@ function _entityMost( o )
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
 
+  /* qqq for Yevhen : add branch for countable case */
   if( _.longIs( o.src ) )
   {
     if( o.src.length === 0 )
@@ -4178,12 +3770,13 @@ function _entityMost( o )
       result.value = o.onEach( o.src[ s ], s, o.src );
     }
 
+    /* qqq for Yevhen : add branch for countable case */
     for( ; s < o.src.length; s++ )
     resultValue( o.src[ s ], s, o.src );
     result.index = result.key;
     result.element = o.src[ result.key ];
   }
-  else if( _.mapLike( o.src ) )
+  else if( _.aux.is( o.src ) )
   {
     let index = 0;
     if( o.onEvaluate.length === 1 )

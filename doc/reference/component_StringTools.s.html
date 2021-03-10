@@ -51,7 +51,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-var strTypeOf = _.strTypeOf;
+var strTypeOf = _.entity.strTypeOf;
 
 //
 
@@ -120,15 +120,15 @@ var toStrFields = function( src,options )
  *
  * @example
  * //returns { routine add }
- * _.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
+ * _.entity.exportStringFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
  *
  *  @example
  * //returns { Object with 1 elements }
- * _.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
+ * _.entity.exportStringFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
  *
  * @example
  * //returns a : 1 | b : 2
- * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
+ * _.entity.exportStringFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
  *
  * @method toStrFine
  * @throws { Exception } Throw an exception if( options ) is not a Object.
@@ -208,12 +208,12 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,options )
   {
 
-    if( options !== undefined &amp;&amp; !_.objectIs( options ) )
-    throw _.err( '_.toStrFine :','options must be object' );
+    if( options !== undefined &amp;&amp; !_.object.is( options ) )
+    throw _.err( '_.entity.exportStringFine :','options must be object' );
 
     var options = options || {};
 
-    _.assertMapHasOnly( options,composes,primeFilter,optional );
+    _.map.assertHasOnly( options,composes,primeFilter,optional );
     options = _.mapSupplement( {},options,composes,restricts );
 
     if( options.onlyRoutines )
@@ -257,7 +257,7 @@ var _toStrFine = function _toStrFine( src,options )
 
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
-  var isObject = !isArray &amp;&amp; _.objectLike( src );
+  var isObject = !isArray &amp;&amp; _.object.like( src );
 
   if( options.noAtomic )
   if( _.atomicIs( src ) )
@@ -273,10 +273,10 @@ var _toStrFine = function _toStrFine( src,options )
 
   //
 
-  if( !isAtomic &amp;&amp; _.routineIs( src.toStr ) &amp;&amp; !src.toStr.notMethod )
+  if( !isAtomic &amp;&amp; _.routine.is( src.toStr ) &amp;&amp; !src.toStr.notMethod )
   {
     var r = src.toStr( options );
-    if( _.objectIs( r ) )
+    if( _.object.is( r ) )
     {
       _assert( r.simple !== undefined &amp;&amp; r.text !== undefined );
       simple = r.simple;
@@ -302,13 +302,13 @@ var _toStrFine = function _toStrFine( src,options )
     result += src.toString();
     /*result += src.message;*/
   }
-  else if( _.routineIs( src ) )
+  else if( _.routine.is( src ) )
   {
     if( options.noRoutine )
     return;
     result += '{ routine ' + ( src.name || 'noname' ) + ' }';
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     if( options.noNumber )
     return;
@@ -339,7 +339,7 @@ var _toStrFine = function _toStrFine( src,options )
     result += r.text;
     simple = r.simple;
   }
-  else if( !isAtomic &amp;&amp; _.routineIs( src.toString ) )
+  else if( !isAtomic &amp;&amp; _.routine.is( src.toString ) )
   {
     /*throw _.err( 'not tested' );*/
     result += src.toString();
@@ -366,11 +366,11 @@ var _toStrShort = function( src,options )
   {
     result += _ObjectToString.call( src );
   }
-  else if( _.routineIs( src ) )
+  else if( _.routine.is( src ) )
   {
     result += _ObjectToString.call( src );
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     result += _toStrFromNumber( src,options );
   }
@@ -386,13 +386,13 @@ var _toStrShort = function( src,options )
     else
     result += '"' + src + '"';
   }
-  else if( src &amp;&amp; !_.objectIs( src ) &amp;&amp; _.numberIs( src.length ) )
+  else if( src &amp;&amp; !_.object.is( src ) &amp;&amp; _.number.is( src.length ) )
   {
 
     result += '[ ' + strTypeOf( src ) + ' with ' + src.length + ' elements ]';
 
   }
-  else if( _.objectIs( src ) || _.objectLike( src ) )
+  else if( _.object.is( src ) || _.object.like( src ) )
   {
 
     result += '{ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' }';
@@ -435,9 +435,9 @@ var _toStrFromNumber = function( src,options )
 {
   var result = '';
 
-  if( _.numberIs( options.precision ) )
+  if( _.number.is( options.precision ) )
   result += src.toPrecision( options.precision );
-  else if( _.numberIs( options.fixed ) )
+  else if( _.number.is( options.fixed ) )
   result += src.toFixed( options.fixed );
   else
   result += String( src );
@@ -490,7 +490,7 @@ var _toStrFromArray = function( src,options )
 {
   var result = '';
 
-  _assert( src &amp;&amp; _.numberIs( src.length ) );
+  _assert( src &amp;&amp; _.number.is( src.length ) );
 
   if( options.level >= options.levels )
   {
@@ -544,7 +544,7 @@ var _toStrFromObject = function( src,options )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) );
+  _assert( _.object.is( src ) || _.object.like( src ) );
 
   if( options.level >= options.levels )
   {
@@ -721,9 +721,9 @@ var _toStrIsSimpleElement = function( element )
 {
   if( _.strIs( element ) )
   return element.length &lt; 40;
-  else if( element &amp;&amp; !_.objectIs( element ) &amp;&amp; _.numberIs( element.length ) )
+  else if( element &amp;&amp; !_.object.is( element ) &amp;&amp; _.number.is( element.length ) )
   return !element.length;
-  else if( _.objectIs( element ) || _.objectLike( element ) )
+  else if( _.object.is( element ) || _.object.like( element ) )
   return !_.entityLength( element );
   else
   return _.atomicIs( element );
@@ -750,7 +750,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
   var result = nameOfRoutine + '( ';
   var first = true;
 
-  _assert( _.arrayIs( args ) || _.objectIs( args ) );
+  _assert( _.arrayIs( args ) || _.object.is( args ) );
   _assert( arguments.length &lt;= 4 );
 
   _.each( args,function( e,k )
@@ -759,10 +759,10 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
     if( first === false )
     result += ', ';
 
-    if( _.objectIs( e ) )
-    result += k + ' :' + _.toStr( e,options );
+    if( _.object.is( e ) )
+    result += k + ' :' + _.entity.exportString( e,options );
     else
-    result += _.toStr( e,options );
+    result += _.entity.exportString( e,options );
 
     first = false;
 
@@ -771,7 +771,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
   result += ' )';
 
   if( arguments.length >= 3 )
-  result += ' -> ' + _.toStr( ret,options );
+  result += ' -> ' + _.entity.exportString( ret,options );
 
   return result;
 }
@@ -844,7 +844,7 @@ var strTimes = function( s,times )
   var result = '';
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( times ) );
+  _.assert( _.number.is( times ) );
 
   for( var t = 0 ; t &lt; times ; t++ )
   result += s;
@@ -920,7 +920,7 @@ var strSplitStrNumber = function( src )
   {
     var mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
-    result.number = _.numberFrom( mnumber[0] );
+    result.number = _.number.from( mnumber[0] );
   }
   else
   {
@@ -950,7 +950,7 @@ var strSplitChunks = function( o )
   }
 
   _.mapSupplement( o,strSplitChunks.defaults );
-  _.assertMapHasOnly( o,strSplitChunks.defaults );
+  _.map.assertHasOnly( o,strSplitChunks.defaults );
   _.assert( _.strIs( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
@@ -1073,7 +1073,7 @@ var _strInhalf = function( o )
 {
   var result = [];
 
-  _.assertMapHasOnly( o,_strInhalf.defaults );
+  _.map.assertHasOnly( o,_strInhalf.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -1154,7 +1154,7 @@ var strInhalfLeft = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapHasOnly( o,strInhalfLeft.defaults );
+  _.map.assertHasOnly( o,strInhalfLeft.defaults );
 
   o.left = 1;
 
@@ -1183,7 +1183,7 @@ var strInhalfRight = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapHasOnly( o,strInhalfRight.defaults );
+  _.map.assertHasOnly( o,strInhalfRight.defaults );
 
   o.left = 0;
 
@@ -1230,7 +1230,7 @@ var strSplit = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strSplit.defaults );
-  _.assertMapHasOnly( o,strSplit.defaults );
+  _.map.assertHasOnly( o,strSplit.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -1288,9 +1288,9 @@ var strStrip = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strStrip.defaults );
-  _.assertMapHasOnly( o,strStrip.defaults );
+  _.map.assertHasOnly( o,strStrip.defaults );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.entity.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
 
   //logger.log( 'strStrip.src :',o.src ); debugger;
@@ -1424,7 +1424,7 @@ var strIron = function()
 
     var argument = arguments[ a ];
 
-    if( !_.strIs( argument ) &amp;&amp; !_.objectIs( argument ) &amp;&amp; !_.arrayIs( argument ) )
+    if( !_.strIs( argument ) &amp;&amp; !_.object.is( argument ) &amp;&amp; !_.arrayIs( argument ) )
     throw _.err( '_.strIron :','argument could be string, array or object' );
 
     if( _.strIs( argument ) )
@@ -1526,7 +1526,7 @@ var strJoin = function()
   {
     var src = arguments[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.number.is( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -1592,7 +1592,7 @@ var strUnjoin = function( srcStr,maskArray )
   var checkMask = function( mask )
   {
 
-    _.assert( _.strIs( mask ) || _.routineIs( mask ) )
+    _.assert( _.strIs( mask ) || _.routine.is( mask ) )
 
     if( _.strIs( mask ) )
     {
@@ -1607,7 +1607,7 @@ var strUnjoin = function( srcStr,maskArray )
       index += mask.length;
 
     }
-    else if( _.routineIs( mask ) )
+    else if( _.routine.is( mask ) )
     {
       rindex = index;
     }
@@ -2082,7 +2082,7 @@ var strMetricFormat = function( number,options )
   var options = options || {};
 
   if( _.strIs( number ) ) number = parseFloat( number );
-  if( !_.numberIs( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
+  if( !_.number.is( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
 
   if( options.divisor === undefined ) options.divisor = 3;
   if( options.thousand === undefined ) options.thousand = 1000;

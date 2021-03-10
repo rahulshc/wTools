@@ -44,7 +44,7 @@ eventGive.defaults =
  * @param { Number } timeOut - The time delay.
  * @param { Function } onReady - Callback to execute.
  * Second parameter set :
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Number } o.timeOut - The time delay.
  * @param { Function } o.onReady - Callback to execute.
  * @returns { Undefined } - Returns not a value, executes code when a web-page is ready.
@@ -73,14 +73,14 @@ function ready_head( routine, args )
     }
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
 
   if( !o.timeOut )
   o.timeOut = 0;
 
   _.assert( 0 <= args.length || args.length <= 2 );
   _.assert( _.intIs( o.timeOut ) );
-  _.assert( _.routineIs( o.onReady ) || o.onReady === null || o.onReady === undefined );
+  _.assert( _.routine.is( o.onReady ) || o.onReady === null || o.onReady === undefined );
 
   return o;
 }
@@ -111,7 +111,7 @@ ready_body.defaults =
 
 //
 
-let ready = _.routineUnite( ready_head, ready_body );
+let ready = _.routine.unite( ready_head, ready_body );
 
 // --
 // declaration

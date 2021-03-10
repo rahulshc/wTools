@@ -34,31 +34,56 @@ function regexpLike( src )
   return false;
 }
 
+// //
+//
+// function regexpsLike( srcs )
+// {
+//   if( !_.arrayIs( srcs ) )
+//   return false;
+//   for( let s = 0 ; s < srcs.length ; s++ )
+//   if( !_.regexpLike( srcs[ s ] ) )
+//   return false;
+//   return true;
+// }
+
 //
 
-function regexpsLike( srcs )
+function regexpsLikeAll( src )
 {
-  if( !_.arrayIs( srcs ) )
-  return false;
-  for( let s = 0 ; s < srcs.length ; s++ )
-  if( !_.regexpLike( srcs[ s ] ) )
-  return false;
-  return true;
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( let s = 0 ; s < src.length ; s++ )
+    if( !_.regexpLike( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return _.regexpLike( src );
 }
 
 //
 
-function regexpIdentical( src1, src2 )
+function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
   return false;
+
+  return _.regexp._identicalShallow( src1, src2 );
+}
+
+//
+
+function _identicalShallow( src1, src2 )
+{
   return src1.source === src2.source && src1.flags === src2.flags;
 }
 
 //
 
-function regexpEquivalent( src1, src2 )
+function equivalentShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
@@ -98,11 +123,12 @@ let ExtensionTools =
   regexpIs,
   regexpObjectIs,
   regexpLike,
-  regexpsLike,
-  regexpIdentical, /* qqq : cover please */
-  regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
+  regexpsLikeAll,
+  regexpIdentical : identicalShallow, /* qqq : cover please */
+  regexpEquivalent : equivalentShallow, /* qqq : cover please | Done. Yevhen S. */
 
   regexpEscape,
+
 }
 
 //
@@ -115,8 +141,11 @@ let Extension =
   is : regexpIs,
   objectIs : regexpObjectIs,
   like : regexpLike,
-  identical : regexpIdentical,
-  equivalent : regexpEquivalent,
+  identical : identicalShallow,
+  equivalent : equivalentShallow,
+  equivalentShallow,
+  identicalShallow,
+  _identicalShallow,
 
   escape : regexpEscape,
 }
@@ -125,9 +154,11 @@ let Extension =
 
 let ExtensionS =
 {
+
   // regexps
 
-  regexpsLike
+  likeAll : regexpsLikeAll,
+
 }
 
 

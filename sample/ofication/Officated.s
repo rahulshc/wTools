@@ -8,7 +8,7 @@ function mapToStr( o )
 {
   if( _.strIs( o ) )
   o = { src : o }
-  _.routineOptions( mapToStr, o );
+  _.routine.options( mapToStr, o );
   let result = '';
   for( let s in o.src )
   result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;

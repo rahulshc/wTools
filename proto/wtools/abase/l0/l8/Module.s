@@ -129,7 +129,7 @@ function _usePathGloballyChildren( _module, paths, visited )
 function declare( o )
 {
 
-  _.routineOptions( declare, arguments );
+  _.routine.options( declare, arguments );
   _.assert( _.strIs( o.name ) );
   _.assert( !_.module.knownModulesByName.has( o.name ), () => `Module ${o.name} was already registered as known` );
   _.assert( _.strDefined( o.basePath ), '{-o.basePath-} is mandatory' );
@@ -144,7 +144,7 @@ function declare( o )
     (
       !was || was === o, () => `Module ${o.name} is trying to register path registered by ${was.name}\nPath : ${sourcePath}`
     );
-    _.assert( _.strIs( sourcePath ), `Expects string, but got ${_.strType( sourcePath )}` );
+    _.assert( _.strIs( sourcePath ), `Expects string, but got ${_.entity.strType( sourcePath )}` );
   }
 
   for( let i = 0 ; i < o.sourcePath.length ; i++ )
@@ -185,7 +185,7 @@ function declareAll( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.mapIs( o.modules ) );
-  _.routineOptions( declareAll, arguments );
+  _.routine.options( declareAll, arguments );
 
   for( let k in o.modules )
   {
@@ -216,9 +216,15 @@ function _sourceFileIncludeSingle( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ), 'Expects string' );
 
-  if( typeof module !== 'undefined' )
+  if( typeof module === 'undefined' )
+  throw _.err( 'Cant include, routine "require" does not exist.' );
+  else
   return _.module.__nativeInclude( _.path.nativize( src ) );
-  else throw _.err( 'Cant include, routine "require" does not exist.' );
+
+  // if( typeof module !== 'undefined' )
+  // return _.module.__nativeInclude( _.path.nativize( src ) );
+  // else
+  // throw _.err( 'Cant include, routine "require" does not exist.' );
 
 }
 
@@ -264,7 +270,7 @@ function isIncluded( src )
 
 function _includedRegister( o )
 {
-  _.assertRoutineOptionsPreservingUndefines( _includedRegister, arguments );
+  _.routine.assertOptionsPreservingUndefines( _includedRegister, arguments );
   try
   {
 
@@ -389,7 +395,7 @@ function _resolveFirst( o )
 
   if( !_.mapIs( o ) )
   o = { moduleNames : arguments }
-  _.routineOptions( _resolveFirst, o );
+  _.routine.options( _resolveFirst, o );
 
   if( o.basePath === null )
   o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
@@ -484,7 +490,7 @@ function _sourceFileResolve( o )
   if( !_.mapIs( arguments[ 0 ] ) )
   o = { sourcePaths : arguments[ 0 ] }
 
-  _.routineOptions( _sourceFileResolve, o );
+  _.routine.options( _sourceFileResolve, o );
   _.assert( arguments.length === 1 );
   _.assert( _.longIs( o.sourcePaths ) );
 

@@ -72,8 +72,6 @@ function buffersRawAreIdentical( src1, src2 )
   if( !_.bufferRawIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -97,8 +95,6 @@ function buffersViewAreIdentical( src1, src2 )
   if( !_.bufferViewIs( src2 ) )
   return false;
 
-  // if( src1.byteLength !== src2.byteLength )
-  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -169,7 +165,7 @@ function buffersAreIdentical( src1, src2 )
 
 function _bufferMake_functor( onMake )
 {
-  _.assert( _.routineIs( onMake ) );
+  _.assert( _.routine.is( onMake ) );
 
   return function _bufferMake( src, ins )
   {
@@ -212,18 +208,18 @@ function _bufferMake_functor( onMake )
         ins = new U8x( src.buffer );
         // src = null;
       }
-      else if( _.numberIs( src ) )
+      else if( _.number.is( src ) )
       {
         length = src;
         src = null;
       }
-      else if( _.routineIs( src ) )
+      else if( _.routine.is( src ) )
       {
         _.assert( 0, 'Unknown length of buffer' );
       }
       else _.assert( 0 );
     }
-    else if( !_.numberIs( length ) )
+    else if( !_.number.is( length ) )
     {
       _.assert( 0, 'Unknown length of buffer' );
     }
@@ -233,7 +229,7 @@ function _bufferMake_functor( onMake )
 
     /* */
 
-    if( _.numberIs( ins ) )
+    if( _.number.is( ins ) )
     {
       if( _.bufferRawIs( src ) )
       ins = new U8x( src );
@@ -255,15 +251,15 @@ function _bufferMake_functor( onMake )
 
     /* */
 
-    if( _.argumentsArrayIs( src ) )
+    if( _.argumentsArray.is( src ) )
     src = this.longDescriptor.make;
 
     if( src === null )
     src = this.longDescriptor.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.numberIsFinite( length ) );
-    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+    _.assert( _.number.isFinite( length ) );
+    _.assert( _.routine.is( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 
     result = onMake.call( this, src, ins, length, minLength );
 
@@ -358,7 +354,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
   /* */
 
   let resultTyped;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   resultTyped = new src( length );
   else if( _.bufferNodeIs( src ) )
   resultTyped = BufferNode.alloc( length );
@@ -387,10 +383,10 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 // {
 //   let result, length;
 //
-//   if( _.argumentsArrayIs( src ) )
+//   if( _.argumentsArray.is( src ) )
 //   src = _.arrayMake( src );
 //
-//   if( _.routineIs( src ) )
+//   if( _.routine.is( src ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( ins === undefined )
@@ -406,18 +402,18 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //       length = ins.byteLength;
 //       ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
 //     }
-//     else if( _.numberIs( ins ) )
+//     else if( _.number.is( ins ) )
 //     length = ins;
 //     else _.assert( 0 );
 //   }
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.routine.is( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 //
 //   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
 //   {
-//     if( _.routineIs( src ) )
+//     if( _.routine.is( src ) )
 //     {
 //       result = new src( length );
 //       for( let i = 0 ; i < length ; i++ )
@@ -448,7 +444,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     insert = src;
 //
 //     let resultTyped;
-//     if( _.routineIs( src ) )
+//     if( _.routine.is( src ) )
 //     resultTyped = new src( length );
 //     else if( _.bufferNodeIs( src ) )
 //     resultTyped = BufferNode.alloc( length );
@@ -477,10 +473,10 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 // {
 //   let result, length;
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   if( src === undefined )
@@ -493,14 +489,14 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -509,7 +505,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
 //     }
-//     else if( _.routineIs( ins ) )
+//     else if( _.routine.is( ins ) )
 //     {
 //       if( ins.prototype.constructor.name === 'Array' )
 //       result = _ArraySlice.call( src );
@@ -522,7 +518,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //   }
 //   else
 //   {
-//     if( _.routineIs( ins ) )
+//     if( _.routine.is( ins ) )
 //     result = new ins( length );
 //     else
 //     result = new ins.constructor( length );
@@ -615,7 +611,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
   /* */
 
   let result;
-  if( _.routineIs( src ) )
+  if( _.routine.is( src ) )
   result = new src( length );
   else if( _.bufferNodeIs( src ) )
   result = BufferNode.alloc( length );
@@ -633,7 +629,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 // {
 //   let result, length;
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( src === undefined )
@@ -646,19 +642,19 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.bufferNodeIs( ins ) )
 //   result = BufferNode.alloc( length );
@@ -680,7 +676,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //
 //   throw _.err( 'not tested' );
 //
-//   if( _.routineIs( ins ) )
+//   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
 //   if( src === undefined )
@@ -693,17 +689,17 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     length = src.length;
 //     else if( _.bufferRawIs( src ) )
 //     length = src.byteLength;
-//     else if( _.numberIs( src ) )
+//     else if( _.number.is( src ) )
 //     length = src;
 //     else _.assert( 0 );
 //   }
 //
-//   if( _.argumentsArrayIs( ins ) )
+//   if( _.argumentsArray.is( ins ) )
 //   ins = [];
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.routine.is( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.entity.strType( ins ) );
 //
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
@@ -712,7 +708,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
 //     }
-//     else if( _.routineIs( ins ) )
+//     else if( _.routine.is( ins ) )
 //     {
 //       if( ins.prototype.constructor.name === 'Array' )
 //       result = _ArraySlice.call( src );
@@ -725,7 +721,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //   }
 //   else
 //   {
-//     if( _.routineIs( ins ) )
+//     if( _.routine.is( ins ) )
 //     result = new ins( length );
 //     else
 //     result = new ins.constructor( length );
@@ -739,7 +735,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 function bufferFromArrayOfArray( array, options )
 {
 
-  if( _.objectIs( array ) )
+  if( _.object.is( array ) )
   {
     options = array;
     array = options.buffer;
@@ -758,9 +754,9 @@ function bufferFromArrayOfArray( array, options )
   if( !array.length )
   return new options.BufferType();
 
-  let scalarsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+  let scalarsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( scalarsPerElement ) )
+  if( !_.number.is( scalarsPerElement ) )
   throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
 
   let length = array.length * scalarsPerElement;
@@ -788,10 +784,10 @@ function bufferFrom( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
-  _.assertMapHasOnly( o, bufferFrom.defaults );
+  _.assert( _.routine.is( o.bufferConstructor ), 'Expects bufferConstructor' );
+  _.map.assertHasOnly( o, bufferFrom.defaults );
 
-  if( o.src === null || _.numberIs( o.src ) )
+  if( o.src === null || _.number.is( o.src ) )
   {
     if( o.bufferConstructor.name === 'Buffer' )
     return o.bufferConstructor.alloc( o.src ? o.src : 0 );
@@ -843,9 +839,9 @@ function bufferFrom( o )
 //   let result;
 //
 //   _.assert( arguments.length === 1 );
-//   _.assert( _.objectIs( o ) );
-//   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
-//   _.assertMapHasOnly( o, bufferFrom.defaults );
+//   _.assert( _.object.is( o ) );
+//   _.assert( _.routine.is( o.bufferConstructor ), 'Expects bufferConstructor' );
+//   _.map.assertHasOnly( o, bufferFrom.defaults );
 //
 //   /* same */
 //
@@ -855,7 +851,7 @@ function bufferFrom( o )
 //
 //   /* number */
 //
-//   if( _.numberIs( o.src ) )
+//   if( _.number.is( o.src ) )
 //   o.src = [ o.src ];
 //
 //   if( o.bufferConstructor.name === 'BufferRaw' )
@@ -882,12 +878,12 @@ function bufferFrom( o )
 //
 //   /* verification */
 //
-//   _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
+//   _.assert( _.object.like( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
 //
 //   /* length */
 //
 //   let length = o.src.length;
-//   if( !_.numberIs( length ) )
+//   if( !_.number.is( length ) )
 //   {
 //
 //     let length = 0;
@@ -1023,7 +1019,7 @@ function bufferRawFrom( buffer )
     result = fileReader.readAsArrayBuffer( buffer );
     _.assert( 0, 'not tested' );
   }
-  else _.assert( 0, () => 'Unknown type of source ' + _.strType( buffer ) );
+  else _.assert( 0, () => 'Unknown type of source ' + _.entity.strType( buffer ) );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -1064,8 +1060,6 @@ function bufferBytesFrom( buffer )
   else if( _.bufferViewIs( buffer ) )
   {
 
-    debugger;
-    // _.assert( 0, 'not tested' );
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
   }
@@ -1098,23 +1092,7 @@ function bufferNodeFrom( buffer )
   return buffer;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.bufferAnyIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects buffer, string of array, but got', _.strType( buffer ) );
-  // _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got', _.strType( buffer ) );
-
-  // if( _.bufferNodeIs( buffer ) )
-  // return buffer;
-
-  /* */
-
-  // if( toBuffer === null )
-  // try
-  // {
-  //   toBuffer = require( 'typedarray-to-buffer' );
-  // }
-  // catch( err )
-  // {
-  //   toBuffer = false;
-  // }
+  _.assert( _.bufferAnyIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects buffer, string of array, but got', _.entity.strType( buffer ) );
 
   /* */
 
@@ -1122,13 +1100,10 @@ function bufferNodeFrom( buffer )
 
   if( buffer.length === 0 || buffer.byteLength === 0 )
   {
-    // _.assert( 0, 'not tested' );
-    // result = new BufferNode([]);
     result = BufferNode.from([]);
   }
   else if( _.strIs( buffer ) )
   {
-    // debugger;
     result = _.bufferNodeFrom( _.bufferRawFrom( buffer ) );
   }
   else if( buffer.buffer )
@@ -1137,242 +1112,13 @@ function bufferNodeFrom( buffer )
   }
   else
   {
-    // _.assert( 0, 'not tested' );
     result = BufferNode.from( buffer );
   }
-
-  // if( !buffer.length && !buffer.byteLength )
-  // {
-  //   buffer = new BufferNode([]);
-  // }
-  // else if( toBuffer )
-  // try
-  // {
-  //   buffer = toBuffer( buffer );
-  // }
-  // catch( err )
-  // {
-  //   debugger;
-  //   buffer = toBuffer( buffer );
-  // }
-  // else
-  // {
-  //   if( _.bufferTypedIs( buffer ) )
-  //   buffer = BufferNode.from( buffer.buffer );
-  //   else
-  //   buffer = BufferNode.from( buffer );
-  // }
 
   _.assert( _.bufferNodeIs( result ) );
 
   return result;
 }
-
-//
-
-// function bufferBut( dstArray, range, srcArray )
-// {
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longBut( dstArray, range, srcArray );
-//
-//   if( range === undefined )
-//   range = [ 0, 0 ];
-//   if( _.numberIs( range ) )
-//   range = [ range, range + 1 ];
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.intervalIs( range ) );
-//   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//   let result;
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length)
-//   first = length;
-//   if( last > length)
-//   last = length;
-//   if( last < first )
-//   last = first;
-//
-//   let newLength = length - last + first;
-//   let srcArrayLength = 0;
-//
-//   if( srcArray )
-//   {
-//     srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
-//     newLength += srcArrayLength;
-//   }
-//
-//   if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
-//   {
-//     result = new U8x( newLength );
-//   }
-//   else
-//   {
-//     result = _.longMakeUndefined( dstArray, newLength );
-//   }
-//
-//   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
-//
-//   if( first > 0 )
-//   {
-//     for( let i = 0; i < first; ++i )
-//     result[ i ] = dstArrayTyped[ i ];
-//   }
-//
-//   if( srcArray )
-//   {
-//     for( let i = first, j = 0; j < srcArrayLength; )
-//     result[ i++ ] = srcArray[ j++ ];
-//   }
-//
-//   for( let j = last, i = first + srcArrayLength; j < length; )
-//   result[ i++ ] = dstArrayTyped[ j++ ];
-//
-//   //
-//
-//   if( _.bufferRawIs( dstArray ) )
-//   return result.buffer;
-//   if( _.bufferNodeIs( dstArray ) )
-//   return BufferNode.from( result );
-//   if( _.bufferViewIs( dstArray ) )
-//   return new BufferView( result.buffer );
-//   else
-//   return result;
-// }
-
-// function bufferBut( dstArray, range, srcArray )
-// {
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longBut( dstArray, range, srcArray );
-//
-//   if( _.numberIs( range ) )
-//   range = [ range, range + 1 ];
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.intervalIs( range ) );
-//   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
-//   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//   let result;
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length)
-//   first = length;
-//   if( last > length)
-//   last = length;
-//   if( last < first )
-//   last = first;
-//
-//   // if( _.bufferAnyIs( dstArray ) )
-//   // {
-//
-//     // if( first === last )
-//     // return _.bufferMake( dstArray );
-//
-//     // if( first === last )
-//     // return dstArray;
-//
-//     // if( first === last )
-//     // debugger;
-//
-//     let newLength = length - last + first;
-//     let srcArrayLength = 0;
-//
-//     if( srcArray )
-//     {
-//       srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
-//       newLength += srcArrayLength;
-//     }
-//
-//     if( _.bufferRawIs( dstArray ) )
-//     {
-//       result = new BufferRaw( newLength );
-//     }
-//     else if( _.bufferNodeIs( dstArray ) )
-//     {
-//       result = BufferNode.alloc( newLength );
-//     }
-//     else
-//     {
-//       result = _.longMakeUndefined( dstArray, newLength );
-//     }
-//
-//     if( first > 0 )
-//     for( let i = 0; i < first; ++i )
-//     result[ i ] = dstArray[ i ];
-//
-//     if( srcArray )
-//     for( let i = first, j = 0; j < srcArrayLength; )
-//     result[ i++ ] = srcArray[ j++ ];
-//
-//     for( let j = last, i = first + srcArrayLength; j < length; )
-//     result[ i++ ] = dstArray[ j++ ];
-//
-//     return result;
-//
-//   // }
-//   // else
-//   // {
-//   //
-//   //   return _.longBut( srcArray,  );
-//   //
-//   //   let args = srcArray ? srcArray.slice() : [];
-//   //   args.unshift( last-first );
-//   //   args.unshift( first );
-//   //
-//   //   result = dstArray.splice.apply( dstArray, args );
-//   // }
-//
-//   return result;
-// }
-//
-// //
-//
-// function bufferButInplace( dstArray, range, srcArray )
-// {
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longButInplace( dstArray, range, srcArray );
-//
-//   if( range === undefined )
-//   return dstArray;
-//   if( _.numberIs( range ) )
-//   range = [ range, range + 1 ];
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length)
-//   first = length;
-//   if( last > length)
-//   last = length;
-//   if( last < first )
-//   last = first;
-//
-//   if( last === first && srcArray === undefined )
-//   return dstArray;
-//   else
-//   return _.bufferBut( dstArray, range, srcArray );
-//
-// }
 
 //
 
@@ -1393,7 +1139,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
   _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ), '{-dst-} should be Long or buffer' );
   else
   {
-    if( arguments.length > 1 && !_.intervalIs( src ) && !_.numberIs( src ) )
+    if( arguments.length > 1 && !_.intervalIs( src ) && !_.number.is( src ) )
     _.assert( _.longIs( dst ) || _.bufferAnyIs( dst ) );
     else
     {
@@ -1412,7 +1158,7 @@ function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
 function _returnDst( dst, src )
 {
   let dstLength;
-  if( !_.boolIs( dst ) )
+  if( !_.bool.is( dst ) )
   dstLength = dst.length === undefined ? dst.byteLength : dst.length;
 
   if( dstLength !== undefined )
@@ -1421,7 +1167,7 @@ function _returnDst( dst, src )
 
     if( _.arrayLikeResizable( dst ) )
     dst.length = srcLength;
-    else if( _.argumentsArrayIs( dst ) )
+    else if( _.argumentsArray.is( dst ) )
     dst = new Array( srcLength );
     else if( dstLength !== srcLength )
     dst = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( srcLength ) ) : new dst.constructor( srcLength );
@@ -1443,6 +1189,63 @@ function _returnDst( dst, src )
     return dst;
   }
   return dst === true ? _.bufferMake( src ) : src;
+}
+
+//
+
+/**
+ * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
+ *
+ * It creates the variable (result) checks, if (len) is more than (src.length),
+ * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(longMakeUndefined(src, len))
+ * and copies each element from the {-srcMap-} into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
+ * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
+ * Otherwise, it returns an initial typed array.
+ *
+ * @see {@link wTools.longMakeUndefined} - See for more information.
+ *
+ * @param { typedArray } src - The source typed array.
+ * @param { Number } len - The length of a typed array.
+ *
+ * @example
+ * let ints = new I8x( [ 3, 7, 13 ] );
+ * _.bufferRelen( ints, 4 );
+ * // returns [ 3, 7, 13, 0 ]
+ *
+ * @example
+ * let ints2 = new I16x( [ 3, 7, 13, 33, 77 ] );
+ * _.bufferRelen( ints2, 3 );
+ * // returns [ 3, 7, 13 ]
+ *
+ * @example
+ * let ints3 = new I32x( [ 3, 7, 13, 33, 77 ] );
+ * _.bufferRelen( ints3, 6 );
+ * // returns [ 3, 0, 13, 0, 77, 0 ]
+ *
+ * @returns { typedArray } - Returns a new or the same typed array {-srcMap-} with a new or the same length (len).
+ * @function bufferRelen
+ * @namespace Tools
+ */
+
+function bufferRelen( src, len )
+{
+  let result = src;
+
+  _.assert( _.bufferTypedIs( src ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.number.is( len ) );
+
+  if( len > src.length )
+  {
+    result = _.longMakeUndefined( src, len );
+    result.set( src );
+  }
+  else if( len < src.length )
+  {
+    result = src.subarray( 0, len );
+  }
+
+  return result;
 }
 
 //
@@ -1568,15 +1371,15 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
 
   let dstLength = 0;
   if( dst !== null )
-  dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-  let srcLength = src.length !== undefined ? src.length : src.byteLength;
+  dstLength = dst.length === undefined ? dst.byteLength : dst.length;
+  let srcLength = src.length === undefined ? src.byteLength : src.length;
 
   if( cinterval === undefined )
   {
     cinterval = [ 0, -1 ];
     ins = undefined;
   }
-  else if( _.numberIs( cinterval ) )
+  else if( _.number.is( cinterval ) )
   {
     cinterval = [ cinterval, cinterval ];
   }
@@ -1586,8 +1389,8 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
   _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
   _.assert( _.longIs( ins ) || _.bufferNodeIs( ins ) || ins === undefined || ins === null, 'Expects iterable buffer {-ins-}' );
 
-  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
-  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  let last = cinterval[ 1 ] = cinterval[ 1 ] === undefined ? srcLength - 1 : cinterval[ 1 ];
 
   if( first < 0 )
   first = 0;
@@ -1602,7 +1405,7 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
   let delta = last - first + 1;
   let insLength = 0
   if( ins )
-  insLength = ins.length !== undefined ? ins.length : ins.byteLength;
+  insLength = ins.length === undefined ? ins.byteLength : ins.length;
   let delta2 = delta - insLength;
   let resultLength = srcLength - delta2;
 
@@ -1622,7 +1425,7 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
       ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
@@ -1657,102 +1460,6 @@ function bufferBut_( /* dst, src, cinterval, ins */ )
 
   return result;
 }
-
-// //
-//
-// function bufferOnly( dstArray, range, srcArray )
-// {
-//
-//   let result;
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longOnly( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   else if( _.numberIs( range ) )
-//   range = [ range, length ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.intervalIs( range ) );
-//   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length)
-//   first = length;
-//   if( last > length)
-//   last = length;
-//   if( last < first )
-//   last = first;
-//
-//   let newLength = last - first;
-//
-//   if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
-//   {
-//     result = new U8x( newLength );
-//   }
-//   else
-//   {
-//     result = _.longMakeUndefined( dstArray, newLength );
-//   }
-//
-//   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
-//
-//   let first2 = Math.max( first, 0 );
-//   let last2 = Math.min( length, last );
-//   for( let r = first2 ; r < last2 ; r++ )
-//   result[ r-first2 ] = dstArrayTyped[ r ];
-//
-//   //
-//   if( _.bufferRawIs( dstArray ) )
-//   return result.buffer;
-//   if( _.bufferNodeIs( dstArray ) )
-//   return BufferNode.from( result );
-//   if( _.bufferViewIs( dstArray ) )
-//   return new BufferView( result.buffer );
-//   else
-//   return result;
-// }
-
-// //
-//
-// function bufferOnlyInplace( dstArray, range, srcArray )
-// {
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longOnlyInplace( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   if( _.numberIs( range ) )
-//   range = [ range, length ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( last > length)
-//   last = length;
-//
-//   if( first === 0 && last === length )
-//   return dstArray;
-//   else
-//   return _.bufferOnly( dstArray, range, srcArray );
-//
-// }
 
 //
 
@@ -1870,20 +1577,20 @@ function bufferOnly_( dst, src, cinterval )
 
   let dstLength = 0;
   if( dst !== null )
-  dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-  let srcLength = src.length !== undefined ? src.length : src.byteLength;
+  dstLength = dst.length === undefined ? dst.byteLength : dst.length;
+  let srcLength = src.length === undefined ? src.byteLength : src.length;
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
   _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
-  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  let last = cinterval[ 1 ] = cinterval[ 1 ] === undefined ? srcLength - 1 : cinterval[ 1 ];
 
   if( first < 0 )
   first = 0;
@@ -1919,17 +1626,17 @@ function bufferOnly_( dst, src, cinterval )
       dst.splice( 0, first2 );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
   }
   else if( dstLength !== resultLength )
   {
-    if( !_.arrayLikeResizable( result ) )
-    result = _.bufferMakeUndefined( dst, resultLength );
-    else
+    if( _.arrayLikeResizable( result ) )
     result.splice( resultLength );
+    else
+    result = _.bufferMakeUndefined( dst, resultLength );
   }
 
   let resultTyped = result;
@@ -1948,117 +1655,6 @@ function bufferOnly_( dst, src, cinterval )
 
   return result;
 }
-
-// //
-//
-// function bufferGrow( dstArray, range, srcArray )
-// {
-//
-//   let result;
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longGrow( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   if( _.numberIs( range ) )
-//   range = [ 0, range ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
-//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   {
-//     last -= first;
-//     first -= first;
-//   }
-//   if( last < first )
-//   last = first;
-//   if( first > 0 )
-//   first = 0;
-//   if( last < length )
-//   last = length;
-//
-//   let newLength = last - first;
-//
-//   if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
-//   {
-//     result = new U8x( newLength );
-//   }
-//   else
-//   {
-//     result = _.longMakeUndefined( dstArray, newLength );
-//   }
-//
-//   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
-//
-//   let first2 = Math.max( first, 0 );
-//   let last2 = Math.min( length, last );
-//   for( let r = first2 ; r < last2 ; r++ )
-//   result[ r-first2 ] = dstArrayTyped[ r ];
-//
-//   if( srcArray !== undefined )
-//   {
-//     for( let r = last2; r < newLength ; r++ )
-//     {
-//       result[ r ] = srcArray;
-//     }
-//   }
-//
-//   //
-//   if( _.bufferRawIs( dstArray ) )
-//   return result.buffer;
-//   if( _.bufferNodeIs( dstArray ) )
-//   return BufferNode.from( result );
-//   if( _.bufferViewIs( dstArray ) )
-//   return new BufferView( result.buffer );
-//   else
-//   return result;
-// }
-//
-// //
-//
-// function bufferGrowInplace( dstArray, range, srcArray )
-// {
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longGrowInplace( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   if( _.numberIs( range ) )
-//   range = [ 0, range ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   {
-//     last -= first;
-//     first -= first;
-//   }
-//   if( first > 0 )
-//   first = 0;
-//   if( last < length )
-//   last = length;
-//
-//   if( first === 0 && last === length )
-//   return dstArray;
-//   else
-//   return _.bufferGrow( dstArray, range, srcArray );
-//
-// }
 
 //
 
@@ -2181,20 +1777,20 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
 
   let dstLength = 0;
   if( dst !== null )
-  dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-  let srcLength = src.length !== undefined ? src.length : src.byteLength;
+  dstLength = dst.length === undefined ? dst.byteLength : dst.length;
+  let srcLength = src.length === undefined ? src.byteLength : src.length;
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval - 1 ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
   _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
-  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  let last = cinterval[ 1 ] = cinterval[ 1 ] === undefined ? srcLength - 1 : cinterval[ 1 ];
 
   if( first > 0 )
   first = 0;
@@ -2233,17 +1829,17 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
       dst.splice( last2 + 1, 0, ... _.dup( ins, resultLength <= last2 ? 0 : resultLength - last2 - 1 ) );
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
   }
   else if( dstLength !== resultLength )
   {
-    if( !_.arrayLikeResizable( result ) )
-    result = _.bufferMakeUndefined( dst, resultLength );
-    else
+    if( _.arrayLikeResizable( result ) )
     result.splice( resultLength );
+    else
+    result = _.bufferMakeUndefined( dst, resultLength );
   }
 
   let resultTyped = result;
@@ -2271,187 +1867,6 @@ function bufferGrow_( /* dst, src, cinterval, ins */ )
 
   return result;
 }
-
-// function bufferGrow_( dst, dstArray, range, srcArray )
-// {
-//
-//   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
-//
-//   if( _.arrayLikeResizable( dstArray ) )
-//   return _.arrayGrow_.apply( this, arguments );
-//
-//   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   return _returnDst( dst, dstArray );
-//
-//   if( _.numberIs( range ) )
-//   range = [ 0, range ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   {
-//     last -= first;
-//     first -= first;
-//   }
-//   if( last < first )
-//   last = first;
-//   if( first > 0 )
-//   first = 0;
-//   if( last < length )
-//   last = length;
-//
-//   if( first === 0 && last === length )
-//   return _returnDst( dst, dstArray );
-//
-//   let newLength = last - first;
-//   let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-//
-//   let result;
-//   if( _.boolIs( dst ) )
-//   result = _.bufferMakeUndefined( dstArray, newLength );
-//   else if( _.arrayLikeResizable( dst ) )
-//   {
-//     result = dst;
-//     result.length = newLength;
-//   }
-//   else if( _.argumentsArrayIs( dst ) )
-//   result = new Array( newLength );
-//   else if( dstLength !== newLength )
-//   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
-//   else
-//   result = dst;
-//
-//   let resultTyped = result;
-//   if( _.bufferRawIs( result ) )
-//   resultTyped = new U8x( result );
-//   else if( _.bufferViewIs( result ) )
-//   resultTyped = new U8x( result.buffer );
-//   let dstArrayTyped = dstArray;
-//   if( _.bufferRawIs( dstArray ) )
-//   dstArrayTyped = new U8x( dstArray );
-//   else if( _.bufferViewIs( dstArray ) )
-//   dstArrayTyped = new U8x( dstArray.buffer );
-//
-//   let first2 = Math.max( first, 0 );
-//   let last2 = Math.min( length, last );
-//   for( let r = first2 ; r < last2 ; r++ )
-//   resultTyped[ r-first2 ] = dstArrayTyped[ r ];
-//
-//   if( srcArray !== undefined )
-//   {
-//     for( let r = last2; r < newLength; r++ )
-//     resultTyped[ r ] = srcArray;
-//   }
-//
-//   return result;
-// }
-
-// //
-//
-// function bufferRelength( dstArray, range, srcArray )
-// {
-//
-//   let result;
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longRelength( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   if( _.numberIs( range ) )
-//   range = [ range, length ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
-//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length )
-//   first = length;
-//   if( last < first )
-//   last = first;
-//
-//   let newLength = last - first;
-//
-//   if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
-//   {
-//     result = new U8x( newLength );
-//   }
-//   else
-//   {
-//     result = _.longMakeUndefined( dstArray, newLength );
-//   }
-//
-//   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
-//
-//   let first2 = Math.max( first, 0 );
-//   let last2 = Math.min( length, last );
-//   for( let r = first2 ; r < last2 ; r++ )
-//   result[ r-first2 ] = dstArrayTyped[ r ];
-//
-//   if( srcArray !== undefined )
-//   {
-//     for( let r = last2 -first2; r < newLength ; r++ )
-//     {
-//       result[ r ] = srcArray;
-//     }
-//   }
-//
-//   if( _.bufferRawIs( dstArray ) )
-//   return result.buffer;
-//   if( _.bufferNodeIs( dstArray ) )
-//   return BufferNode.from( result );
-//   if( _.bufferViewIs( dstArray ) )
-//   return new BufferView( result.buffer );
-//   else
-//   return result;
-// }
-
-// //
-//
-// function bufferRelengthInplace( dstArray, range, srcArray )
-// {
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( !_.bufferAnyIs( dstArray ) )
-//   return _.longRelengthInplace( dstArray, range, srcArray );
-//
-//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-//
-//   if( range === undefined )
-//   range = [ 0, length ];
-//   if( _.numberIs( range ) )
-//   range = [ range, length ];
-//
-//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-//
-//   _.assert( _.intervalIs( range ) );
-//
-//   if( first < 0 )
-//   first = 0;
-//   if( first > length )
-//   first = length;
-//   if( last < first )
-//   last = first;
-//
-//   if( first === 0 && last === length )
-//   return dstArray;
-//   else
-//   return _.bufferRelength( dstArray, range, srcArray );
-//
-// }
 
 //
 
@@ -2573,20 +1988,20 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
 
   let dstLength = 0;
   if( dst !== null )
-  dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-  let srcLength = src.length !== undefined ? src.length : src.byteLength;
+  dstLength = dst.length === undefined ? dst.byteLength : dst.length;
+  let srcLength = src.length === undefined ? src.byteLength : src.length;
 
   if( cinterval === undefined )
   cinterval = [ 0, srcLength - 1 ];
-  if( _.numberIs( cinterval ) )
+  if( _.number.is( cinterval ) )
   cinterval = [ 0, cinterval-1 ];
 
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.bufferAnyIs( src ) || _.longIs( src ), 'Expects {-src-} of any buffer type or long' );
   _.assert( _.intervalIs( cinterval ), 'Expects cinterval {-cinterval-}' );
 
-  let first = cinterval[ 0 ] = cinterval[ 0 ] !== undefined ? cinterval[ 0 ] : 0;
-  let last = cinterval[ 1 ] = cinterval[ 1 ] !== undefined ? cinterval[ 1 ] : srcLength - 1;
+  let first = cinterval[ 0 ] = cinterval[ 0 ] === undefined ? 0 : cinterval[ 0 ];
+  let last = cinterval[ 1 ] = cinterval[ 1 ] === undefined ? srcLength - 1 : cinterval[ 1 ];
 
   if( last < first )
   last = first - 1;
@@ -2631,17 +2046,17 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
       }
       return dst;
     }
-    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    else if( dstLength !== resultLength || _.argumentsArray.is( dst ) )
     {
       result = _.bufferMakeUndefined( dst, resultLength );
     }
   }
   else if( dstLength !== resultLength )
   {
-    if( !_.arrayLikeResizable( result ) )
-    result = _.bufferMakeUndefined( dst, resultLength );
-    else
+    if( _.arrayLikeResizable( result ) )
     result.splice( resultLength );
+    else
+    result = _.bufferMakeUndefined( dst, resultLength );
   }
 
   let resultTyped = result;
@@ -2687,154 +2102,6 @@ function bufferRelength_( /* dst, src, cinterval, ins */ )
 
 //
 
-/**
- * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
- *
- * It creates the variable (result) checks, if (len) is more than (src.length),
- * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(longMakeUndefined(src, len))
- * and copies each element from the {-srcMap-} into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
- * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
- * Otherwise, it returns an initial typed array.
- *
- * @see {@link wTools.longMakeUndefined} - See for more information.
- *
- * @param { typedArray } src - The source typed array.
- * @param { Number } len - The length of a typed array.
- *
- * @example
- * let ints = new I8x( [ 3, 7, 13 ] );
- * _.bufferRelen( ints, 4 );
- * // returns [ 3, 7, 13, 0 ]
- *
- * @example
- * let ints2 = new I16x( [ 3, 7, 13, 33, 77 ] );
- * _.bufferRelen( ints2, 3 );
- * // returns [ 3, 7, 13 ]
- *
- * @example
- * let ints3 = new I32x( [ 3, 7, 13, 33, 77 ] );
- * _.bufferRelen( ints3, 6 );
- * // returns [ 3, 0, 13, 0, 77, 0 ]
- *
- * @returns { typedArray } - Returns a new or the same typed array {-srcMap-} with a new or the same length (len).
- * @function bufferRelen
- * @namespace Tools
- */
-
-function bufferRelen( src, len )
-{
-  let result = src;
-
-  _.assert( _.bufferTypedIs( src ) );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( len ) );
-
-  if( len > src.length )
-  {
-    result = _.longMakeUndefined( src, len );
-    result.set( src );
-  }
-  else if( len < src.length )
-  {
-    result = src.subarray( 0, len );
-  }
-
-  return result;
-}
-
-// //
-//
-// function bufferResize( srcBuffer, size )
-// {
-//   let result = srcBuffer;
-//
-//   let range = _.intervalIs( size ) ? size : [ 0, size ];
-//   size = range[ 1 ] - range[ 0 ];
-//
-//   if( range[ 1 ] < range[ 0 ] )
-//   range[ 1 ] = range[ 0 ];
-//
-//   _.assert( _.bufferAnyIs( srcBuffer ) );
-//   _.assert( srcBuffer.byteLength >= 0 );
-//   _.assert( _.intervalIs( range ) );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   var newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
-//
-//   if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
-//   {
-//     if( srcBuffer.constructor.name === 'Buffer' )
-//     result = BufferNode.from( srcBuffer.buffer, newOffset, size );
-//     if( srcBuffer.constructor.name === 'DataView' )
-//     result = new BufferView( srcBuffer.buffer, newOffset, size );
-//     else
-//     result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
-//   }
-//   else
-//   {
-//     let resultTyped = new U8x( size );
-//     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
-//
-//     let first = Math.max( newOffset, 0 );
-//     let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
-//     newOffset = newOffset < 0 ? -newOffset : 0;
-//     for( let r = first ; r < last ; r++ )
-//     resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
-//
-//     if( srcBuffer.constructor.name === 'Buffer' )
-//     result = BufferNode.from( resultTyped.buffer );
-//     if( srcBuffer.constructor.name === 'DataView' )
-//     result = new BufferView( resultTyped.buffer );
-//     if( srcBuffer.constructor.name === 'ArrayBuffer' )
-//     result = resultTyped.buffer;
-//     else
-//     result = new srcBuffer.constructor( resultTyped.buffer );
-//   }
-//
-//   return result;
-// }
-
-// function bufferResize( srcBuffer, size )
-// {
-//   let result = srcBuffer;
-//
-//   _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
-//   _.assert( srcBuffer.byteLength >= 0 );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( size > srcBuffer.byteLength )
-//   {
-//     result = _.longMakeUndefined( srcBuffer, size );
-//     let resultTyped = new U8x( result, 0, result.byteLength );
-//     let srcTyped = new U8x( srcBuffer, 0, srcBuffer.byteLength );
-//     resultTyped.set( srcTyped );
-//   }
-//   else if( size < srcBuffer.byteLength )
-//   {
-//     result = srcBuffer.slice( 0, size );
-//   }
-//
-//   return result;
-// }
-
-// //
-//
-// function bufferResizeInplace( srcBuffer, size )
-// {
-//   _.assert( _.bufferAnyIs( srcBuffer ) );
-//   _.assert( srcBuffer.byteLength >= 0 );
-//   _.assert( _.numberIs( size ) || _.intervalIs( size ) );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   let range = _.intervalIs( size ) ? size : [ 0, size ];
-//   if( range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
-//   return srcBuffer;
-//   else
-//   return bufferResize( srcBuffer, range );
-// }
-
-//
-
 function bufferResize_( dst, srcBuffer, size )
 {
   if( dst === null )
@@ -2862,7 +2129,21 @@ function bufferResize_( dst, srcBuffer, size )
   let result;
   let newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
 
-  if( dst !== _.nothing )
+  if( dst === _.nothing )
+  {
+    _.assert( dst === _.nothing );
+
+    result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT || size );
+    let resultTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
+    let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
+
+    let first = Math.max( newOffset, 0 );
+    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
+    newOffset = newOffset < 0 ? -newOffset : 0;
+    for( let r = first ; r < last ; r++ )
+    resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
+  }
+  else
   {
     _.assert( _.bufferAnyIs( dst ) );
 
@@ -2900,187 +2181,433 @@ function bufferResize_( dst, srcBuffer, size )
     dstTyped[ r - first ] = srcBufferToU8x[ r ];
     dstTyped.fill( 0, last - first, dstTyped.length );
   }
-  else
-  {
-    _.assert( dst === _.nothing );
-
-    result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT || size );
-    let resultTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
-    let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
-
-    let first = Math.max( newOffset, 0 );
-    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
-    newOffset = newOffset < 0 ? -newOffset : 0;
-    for( let r = first ; r < last ; r++ )
-    resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
-  }
 
   return result;
 }
 
 //
 
-function _bufferReusing( o )
+function bufferReusing4Arguments_head( routine, args )
 {
-  _.assert( arguments.length === 1 );
-  _.routineOptions( _bufferReusing, o );
+  _.assert( arguments.length === 2 );
+  _.assert( args.length, 'Expects arguments' );
+
+  let o = Object.create( null );
+  if( args.length === 1 )
+  {
+    if( _.mapIs( args[ 0 ] ) )
+    {
+      o = args[ 0 ];
+    }
+    else
+    {
+      o.dst = null;
+      o.src = args[ 0 ];
+    }
+  }
+  else if( args.length === 2 )
+  {
+    o.dst = null;
+    o.src = args[ 0 ];
+    o.cinterval = args[ 1 ];
+  }
+  else if( args.length === 3 )
+  {
+    o.dst = null;
+    o.src = args[ 0 ];
+    o.cinterval = args[ 1 ];
+    o.ins = args[ 2 ];
+  }
+  else if( args.length === 4 )
+  {
+    o.dst = args[ 0 ];
+    o.src = args[ 1 ];
+    o.cinterval = args[ 2 ];
+    o.ins = args[ 3 ];
+  }
+  else
+  {
+    _.assert( 0, 'Expects less then 4 arguments' );
+  }
+
+  /* */
+
+  _.routine.options( routine, o );
   _.assert( _.bufferAnyIs( o.src ) || _.longIs( o.src ) );
-  _.assert( _.intervalIs( o.cinterval ) );
-  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
-  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
+  _.assert( _.intervalIs( o.cinterval ) || _.numberIs( o.cinterval ) || o.cinterval === null );
   _.assert( _.intIs( o.minSize ) && o.minSize >= 0 );
 
   o.growFactor = o.growFactor === 0 ? 1 : o.growFactor;
   o.shrinkFactor = o.shrinkFactor === 0 ? 1 : o.shrinkFactor;
 
-  if( o.ins === undefined )
-  o.ins = 0;
-
   if( o.dst === _.self )
   o.dst = o.src;
 
-  let newBufferCreate = o.dst === null || o.dst === undefined;
+  return o;
+}
 
-  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+//
 
-  let resultElementLength = resultElementLengthCount();
-  let resultSize = resultSizeCount();
-  let resultLength = resultSize / resultElementLength;
-  _.assert( _.intIs( resultLength ) );
+function bufferReusing3Arguments_head( routine, args )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( 1 <= args.length && args.length <= 3 );
 
-  let resultBuffer = resultBufferMake();
-  let result = resultBufferFill( resultBuffer, o.src );
-
-  return result;
-
-  /* */
-
-  function resultElementLengthCount()
+  let o;
+  if( args.length === 3 )
   {
-    if( newBufferCreate )
-    return o.src.BYTES_PER_ELEMENT ? o.src.BYTES_PER_ELEMENT : 1;
-    return o.dst.BYTES_PER_ELEMENT ? o.dst.BYTES_PER_ELEMENT : 1;
+    o = Object.create( null );
+    o.dst = args[ 0 ];
+    o.src = args[ 1 ];
+    o.cinterval = args[ 2 ];
+    o = _.bufferReusing4Arguments_head.call( this, routine, [ o ] );
+  }
+  else
+  {
+    o = _.bufferReusing4Arguments_head.apply( this, arguments );
   }
 
-  /* */
+  return o;
+}
 
-  function resultSizeCount()
+//
+
+function _bufferElementSizeGet( src )
+{
+  if( src.BYTES_PER_ELEMENT )
+  return src.BYTES_PER_ELEMENT;
+  else if( src.byteLength === undefined )
+  return 8;
+  else
+  return 1;
+}
+
+//
+
+function _dstBufferSizeRecount( o )
+{
+  if( !_.numberIs( o.dstSize ) )
+  o.dstSize = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * o.dstElementSize;
+
+  if( o.growFactor > 1 && o.reusing && o.dst !== null )
   {
-    let result;
-    if( o.bufferLengthCount )
-    result = o.bufferLengthCount() * resultElementLength;
-    else
-    result = ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) * resultElementLength;
-
-    if( o.growFactor > 1 && o.resizing && !newBufferCreate )
+    let dstSize = o.dst.length ? o.dst.length * o.dstElementSize : o.dst.byteLength;
+    if( dstSize < o.dstSize )
     {
-      let dstSize = o.dst.length ? o.dst.length * resultElementLength : o.dst.byteLength;
-      if( dstSize < result )
-      {
-        let growed = dstSize * o.growFactor;
-        result = growed > result ? growed : result;
-      }
+      let growed = dstSize * o.growFactor;
+      o.dstSize = growed > o.dstSize ? growed : o.dstSize;
     }
-
-    result = o.minSize > result ? o.minSize : result;
-    return result;
   }
 
-  /* */
+  o.dstSize = o.minSize > o.dstSize ? o.minSize : o.dstSize;
+  return o.dstSize;
+}
 
-  function resultBufferMake()
+//
+
+function _bufferTypedViewMake( src )
+{
+  let srcTyped = src;
+  if( _.bufferRawIs( src ) )
+  srcTyped = new U8x( src );
+  if( _.bufferViewIs( src ) )
+  srcTyped = new U8x( src.buffer );
+
+  return srcTyped;
+}
+
+//
+
+function _resultBufferReusedMaybe( o )
+{
+  let buffer;
+
+  let dstOffset = 0;
+  let dstSize = o.dst.length ? o.dst.length * o.dstElementSize : o.dst.byteLength;
+
+  if( o.offsetting && !_.bufferNodeIs( o.dst ) && _.bufferAnyIs( o.dst ) )
   {
-    let buffer;
+    dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
+    dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
+  }
 
-    if( o.reusing && !newBufferCreate )
+  let shouldReuse = insideBufferBounds( dstOffset, dstSize, o.dstSize );
+  let shouldShrink = shrinkFactorCheck( dstSize, o.dstSize );
+
+  if( shouldReuse && !shouldShrink )
+  {
+    buffer = o.dst;
+    let leftOffset = dstOffset + o.cinterval[ 0 ];
+    let bufferLength = buffer.buffer && !_.bufferViewIs( buffer ) ? buffer.length : buffer.byteLength;
+
+    if( leftOffset !== dstOffset || o.dstSize !== bufferLength )
     {
+      if( !o.offsetting )
+      leftOffset += buffer.byteOffset ? buffer.byteOffset : 0;
 
-      let dstOffset = 0;
-      let dstSize = o.dst.length ? o.dst.length * resultElementLength : o.dst.byteLength;
-
-      if( o.offsetting && _.bufferAnyIs( o.dst ) )
-      {
-        dstOffset = o.dst.byteOffset ? o.dst.byteOffset : dstOffset;
-        dstSize = o.dst.buffer ? o.dst.buffer.byteLength : dstSize;
-      }
-
-      let leftOffset = dstOffset + o.cinterval[ 0 ];
-      let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
-      let rightBound = leftOffset + resultSize;
-      let insideRightBound = rightBound < dstSize;
-
-      let shouldShrink = false;
-      if( o.shrinkFactor > 1 )
-      shouldShrink = ( dstSize / resultSize ) >= o.shrinkFactor;
-
-      if( insideLeftBound && insideRightBound && !shouldShrink )
-      {
-        buffer = o.dst;
-        if( buffer.buffer )
-        buffer = new buffer.constructor( buffer.buffer, leftOffset, resultSize );
-      }
-      else
-      {
-        buffer = _.bufferMakeUndefined( o.dst, resultLength );
-      }
+      if( _.bufferNodeIs( buffer ) )
+      buffer = BufferNode.from( buffer.buffer, leftOffset, o.dstSize );
+      else if( buffer.buffer )
+      buffer = new buffer.constructor( buffer.buffer, leftOffset, o.dstSize );
     }
-    else
-    {
-      if( newBufferCreate )
-      buffer = _.bufferMakeUndefined( o.src, resultLength );
-      else if( o.dst.byteLength && o.dst.byteLength > resultSize )
-      buffer = o.dst;
-      else if( o.dst.length && ( o.dst.length * resultElementLength ) > resultSize )
-      buffer = o.dst;
-      else
-      buffer = _.bufferMakeUndefined( o.dst, resultLength );
-    }
-
-    return buffer;
   }
+  else
+  {
+    buffer = _resultBufferMake( o );
+  }
+
+  return buffer;
 
   /* */
 
-  function resultBufferFill( dst, src )
+  function shrinkFactorCheck( dstSize, resultSize )
   {
-    if( o.bufferFill )
-    return o.bufferFill( dst, src, o.cinterval, o.ins );
-    else
-    return bufferFill( dst, src, o.cinterval, o.ins );
+    if( o.shrinkFactor > 1 )
+    return ( dstSize / resultSize ) >= o.shrinkFactor;
+    return false;
   }
 
   /* */
-
-  function bufferFill( dst, src, cinterval, ins )
+  function insideBufferBounds( dstOffset, dstSize, resultSize )
   {
-    let dstTyped = dst;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
-    let srcTyped = src;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
-
-    let offset = Math.max( 0, -cinterval[ 0 ] );
-    for( let i = 0 ; i < offset ; i++ )
-    dstTyped[ i ] = o.ins;
-
-    let rightBound = Math.min( resultLength, srcTyped.length );
-    for( let i = offset ; i < rightBound ; i++ )
-    dstTyped[ offset + i ] = src[ i ];
-
-    for( let i = rightBound ; i < resultLength ; i++ )
-    dstTyped[ rightBound + i ] = o.ins;
-
-    return dst;
+    let leftOffset = dstOffset + o.cinterval[ 0 ];
+    let insideLeftBound = leftOffset >= 0 && leftOffset < dstSize;
+    let rightBound = leftOffset + resultSize;
+    let insideRightBound = rightBound <= dstSize;
+    return insideLeftBound && insideRightBound;
   }
 }
 
-_bufferReusing.defaults =
+//
+
+function _resultBufferMake( o )
+{
+  let buffer;
+  let dstResultedLength = o.dstSize / o.dstElementSize;
+  _.assert( _.intIs( dstResultedLength ) );
+
+  if( o.dst === null )
+  {
+    buffer = _.bufferMakeUndefined( o.src, dstResultedLength );
+  }
+  else if( o.dst.length === dstResultedLength )
+  {
+    buffer = o.dst;
+  }
+  else if( o.dst.byteLength === o.dstSize )
+  {
+    buffer = o.dst;
+  }
+  else if( _.arrayLikeResizable( o.dst ) )
+  {
+    buffer = o.dst;
+    buffer.length = dstResultedLength;
+  }
+  else
+  {
+    buffer = _.bufferMakeUndefined( o.dst, dstResultedLength );
+  }
+
+  return buffer;
+}
+
+//
+
+/**
+ * Routine bufferReusingBut() copies elements from source buffer {-src-} to destination buffer {-dst-}.
+ * Routine copies all elements excluding elements in interval {-cinterval-}, its elements replace by elements
+ * from insertion buffer {-ins-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingBut( buffer, [ 1, 1 ], [ 5 ] );
+ * console.log( got );
+ * // log Float64Array[ 1, 5, 3, 4, 0, 0, 0, 0 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingBut
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 1, 1 ],
+ *   ins : [ 5 ],
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 5, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then start index sets to 0.
+ * If cinterval[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { BufferAny|Long|Undefined } ins - The container with elements for insertion. Inserting begins at start index.
+ *
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BufferAny|Long|Undefined } o.ins - The container with elements for insertion. Inserting begins at start index.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingBut
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If {-ins-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+function bufferReusingBut_body( o )
+{
+  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
+  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
+
+  /* */
+
+  let bufferLength = 0;
+  if( o.dst )
+  bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+  else
+  bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+
+  let _cinterval;
+  o.cinterval = cintervalClamp();
+
+  if( o.ins === null )
+  o.ins = [];
+
+  _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
+
+  /* */
+
+  let newBufferCreate = o.dst === null;
+
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = bufferSizeCount( _cinterval, o.dstElementSize );
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
+
+  /* */
+
+  function cintervalClamp()
+  {
+    if( o.cinterval === null )
+    o.cinterval = [ 0, -1 ];
+    else if( _.number.is( o.cinterval ) )
+    o.cinterval = [ o.cinterval, o.cinterval ];
+
+    if( o.cinterval[ 0 ] < 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+    _cinterval = o.cinterval;
+    return [ 0, o.cinterval[ 1 ] ];
+  }
+
+  function bufferSizeCount( cinterval, elementSize )
+  {
+    let length = bufferLength - ( cinterval[ 1 ] - cinterval[ 0 ] + 1 ) + o.ins.length;
+    return length * elementSize;
+  }
+
+  /* */
+
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  {
+    let dstTyped = arguments[ 0 ];
+    let srcTyped = arguments[ 1 ];
+    let cinterval = arguments[ 2 ];
+    let ins = arguments[ 3 ];
+
+    /* */
+
+    cinterval = _cinterval;
+
+    let left = Math.max( 0, cinterval[ 0 ] );
+    let right = left + ins.length
+    let start = cinterval[ 1 ] + 1;
+
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      let val = srcTyped[ srcTyped.length - 1 ];
+      /* qqq for Dmytro : not optimal */
+      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+      {
+        let temp = srcTyped[ i - 1 ];
+        dstTyped[ right + i - start ] = val;
+        val = temp;
+      }
+    }
+    else
+    {
+      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+      dstTyped[ right + i - start ] = srcTyped[ i ];
+    }
+
+    for( let i = 0 ; i < left ; i++ )
+    dstTyped[ i ] = srcTyped[ i ];
+
+    for( let i = left ; i < right ; i++ )
+    dstTyped[ i ] = ins[ i - left ];
+
+    return dstTyped;
+  }
+}
+
+bufferReusingBut_body.defaults =
 {
   dst : null,
   src : null,
@@ -3091,102 +2618,810 @@ _bufferReusing.defaults =
   growFactor : 2,
   shrinkFactor : 0,
   minSize : 64,
-
-  bufferLengthCount : null,
-  bufferFill : null,
 };
 
 //
 
-function bufferReusingBut( /* dst, src, cinterval, ins */ )
+let bufferReusingBut = _.routine.unite( bufferReusing4Arguments_head, bufferReusingBut_body );
+
+//
+
+/**
+ * Routine bufferReusingOnly() gets the part of source buffer {-src-} and copies it to destination buffer {-dst-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly( buffer, [ 1, 1 ] );
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingOnly
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 1, 1 ],
+ *   minSize : 1,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 2 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then start index sets to 0.
+ * If cinterval[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer of minimal size and fills by data.
+ *
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingOnly
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+// function bufferReusingOnly( /* dst, src, cinterval */ )
+// {
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   let o;
+//   if( arguments.length === 3 )
+//   {
+//     o = Object.create( null );
+//     o.dst = arguments[ 0 ];
+//     o.src = arguments[ 1 ];
+//     o.cinterval = arguments[ 2 ];
+//   }
+//   else
+//   {
+//     o = _._bufferReusing_head.apply( this, arguments );
+//   }
+//   _.assert( o.ins === undefined, 'Expects no argument {-ins-}' );
+//
+//   o.cinterval = cintervalClamp();
+//
+//   _.routine.options( bufferReusingOnly, o );
+//   o.growFactor = 1;
+//   o.bufferFill = dstBufferFill;
+//
+//   return _._bufferReusing( o );
+//
+//   /* */
+//
+//   function cintervalClamp()
+//   {
+//     let bufferLength = 0;
+//     if( o.dst )
+//     bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+//     else
+//     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+//
+//     if( o.cinterval === undefined )
+//     o.cinterval = [ 0, bufferLength - 1 ];
+//     else if( _.numberIs( o.cinterval ) )
+//     o.cinterval = [ 0, o.cinterval ];
+//
+//     if( o.cinterval[ 0 ] < 0 )
+//     o.cinterval[ 0 ] = 0;
+//     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+//     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+//     if( o.cinterval[ 1 ] > bufferLength - 1 )
+//     o.cinterval[ 1 ] = bufferLength - 1;
+//
+//     return o.cinterval;
+//   }
+//
+//   /* */
+//
+//   function dstBufferFill( /* dstTyped, srcTyped, cinterval */ )
+//   {
+//     let dstTyped = arguments[ 0 ];
+//     let srcTyped = arguments[ 1 ];
+//     let cinterval = arguments[ 2 ];
+//
+//     /* */
+//
+//     let left = Math.max( 0, cinterval[ 0 ] );
+//     let right = Math.min( cinterval[ 1 ], srcTyped.length - 1 );
+//     let i;
+//     for( i = left ; i < right + 1 ; i++ )
+//     dstTyped[ i - left ] = srcTyped[ i ];
+//
+//     if( _.arrayLikeResizable( dstTyped ) && i - left < dstTyped.length )
+//     for( ; i - left < dstTyped.length; i++ )
+//     dstTyped[ i - left ] = undefined;
+//   }
+// }
+//
+// bufferReusingOnly.defaults =
+// {
+//   dst : null,
+//   src : null,
+//   cinterval : null,
+//   offsetting : 1,
+//   reusing : 1,
+//   shrinkFactor : 0,
+//   minSize : 64,
+// };
+
+function bufferReusingOnly_body( o )
 {
-  let o = Object.create( null );
-  if( arguments.length === 1 )
-  {
-    _.assert( _.mapIs( arguments[ 0 ] ) );
-   o = arguments[ 0 ];
-  }
-  else if( arguments.length === 2 )
-  {
-    o.dst = null;
-    o.src = arguments[ 0 ];
-    o.cinterval = arguments[ 1 ];
-  }
-  else
-  {
-    o.dst = arguments[ 0 ];
-    o.src = arguments[ 1 ];
-    o.cinterval = arguments[ 2 ];
-    o.ins = arguments[ 3 ];
-  }
+  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
 
-  let bufferLength = 0;
-  if( o.dst )
-  bufferLength = o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
-  else
-  bufferLength = o.src.length !== undefined ? o.src.length : o.src.byteLength;
-
-  if( o.cinterval === undefined )
-  o.cinterval = [ 0, -1 ];
-  else if( _.numberIs( o.cinterval ) )
-  o.cinterval = [ o.cinterval, o.cinterval ];
-
-  if( o.cinterval[ 0 ] < 0 )
-  o.cinterval[ 0 ] = 0;
-  if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
-  o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
-
-  if( o.ins === undefined )
-  o.ins = [];
-
-  _.routineOptions( bufferReusingBut, o );
-  _.assert( _.longIs( o.ins ) );
-
-  o.bufferLengthCount = bufferLengthCount;
-  o.bufferFill = dstBufferFill;
-
-  return _._bufferReusing( o );
+  o.cinterval = cintervalClamp();
+  o.growFactor = 1;
 
   /* */
 
-  function bufferLengthCount()
+  let newBufferCreate = o.dst === null;
+
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
+
+  /* */
+
+  function cintervalClamp()
   {
-    return bufferLength - ( o.cinterval[ 1 ] - o.cinterval[ 0 ] + 1 ) + o.ins.length;
+    let bufferLength = 0;
+    if( o.dst )
+    bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+    else
+    bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+
+    if( o.cinterval === null )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.number.is( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval ];
+
+    if( o.cinterval[ 0 ] < 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+    if( o.cinterval[ 1 ] > bufferLength - 1 )
+    o.cinterval[ 1 ] = bufferLength - 1;
+
+    return o.cinterval;
   }
 
   /* */
 
-  function dstBufferFill( dst, src, cinterval, ins )
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval */ )
   {
-    let dstTyped = dst;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
+    let dstTyped = arguments[ 0 ];
+    let srcTyped = arguments[ 1 ];
+    let cinterval = arguments[ 2 ];
 
-    let srcTyped = src;
-    if( _.bufferRawIs( dst ) )
-    dstTyped = new U8x( dst );
-    if( _.bufferViewIs( dst ) )
-    dstTyped = new U8x( dst.buffer );
+    /* */
 
     let left = Math.max( 0, cinterval[ 0 ] );
-    for( let i = 0 ; i < left ; i++ )
-    dstTyped[ i ] = srcTyped[ i ];
+    let right = Math.min( cinterval[ 1 ], srcTyped.length - 1 );
+    let i;
+    for( i = left ; i < right + 1 ; i++ )
+    dstTyped[ i - left ] = srcTyped[ i ];
 
-    let right = left + ins.length
-    for( let i = left ; i < right ; i++ )
-    dstTyped[ i ] = ins[ i - left ];
-
-    let start = cinterval[ 1 ] + 1;
-    for( let i = start ; i < srcTyped.length ; i++ )
-    dstTyped[ right + i - start ] = srcTyped[ i ];
-
-    return dst;
+    if( _.arrayLikeResizable( dstTyped ) && i - left < dstTyped.length )
+    for( ; i - left < dstTyped.length; i++ )
+    dstTyped[ i - left ] = undefined;
   }
 }
 
-bufferReusingBut.defaults =
+bufferReusingOnly_body.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  offsetting : 1,
+  reusing : 1,
+  shrinkFactor : 0,
+  minSize : 64,
+};
+
+//
+
+let bufferReusingOnly = _.routine.unite( bufferReusing3Arguments_head, bufferReusingOnly_body );
+
+//
+
+/**
+ * Routine bufferReusingGrow() copies elements from source buffer {-src-} to grow destination buffer {-dst-}.
+ * All original source buffer will contains in destination buffer.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingGrow( buffer, [ -1, 3 ], 7 );
+ * console.log( got );
+ * // log Float64Array[ 7, 1, 2, 3, 4, 7, 7, 7 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingGrow
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 3 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then insertion element prepends to buffer.
+ * If cinterval[ 0 ] > 0, then cinterval[ 0 ] sets to 0.
+ * If cinterval[ 1 ] < src.length, then cinterval[ 1 ] sets to ( src.length - 1 ).
+ * If cinterval[ 1 ] > src.length, then insertion element appends to buffer.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine change not source buffer.
+ * @param { * } ins - Insertion element with compatible type to destination buffer.
+ *
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { * } o.ins - Insertion element with compatible type to destination buffer.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingGrow
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If {-ins-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+// function bufferReusingGrow( /* dst, src, cinterval, ins */ )
+// {
+//   let o = _._bufferReusing_head.apply( this, arguments );
+//
+//   let srcLength = o.src.byteLength;
+//   if( o.src.length !== undefined )
+//   srcLength = o.src.length;
+//   o.cinterval = cintervalClamp();
+//
+//   _.routine.options( bufferReusingGrow, o );
+//
+//   o.bufferFill = dstBufferFill;
+//
+//   return _._bufferReusing( o );
+//
+//   /* */
+//
+//   function cintervalClamp()
+//   {
+//     let bufferLength = 0;
+//     if( o.dst )
+//     bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+//     else
+//     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+//
+//     if( o.cinterval === undefined )
+//     o.cinterval = [ 0, bufferLength - 1 ];
+//     else if( _.numberIs( o.cinterval ) )
+//     o.cinterval = [ 0, o.cinterval - 1 ];
+//
+//     if( o.cinterval[ 0 ] > 0 )
+//     o.cinterval[ 0 ] = 0;
+//     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+//     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+//     if( o.cinterval[ 1 ] < bufferLength - 1 )
+//     o.cinterval[ 1 ] = bufferLength - 1;
+//
+//     return o.cinterval;
+//   }
+//
+//   /* */
+//
+//   function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+//   {
+//     let dstTyped = arguments[ 0 ];
+//     let srcTyped = arguments[ 1 ];
+//     let cinterval = arguments[ 2 ];
+//     let ins = arguments[ 3 ];
+//
+//     /* */
+//
+//     let offset = Math.max( 0, -cinterval[ 0 ] );
+//     let rightBound = Math.min( dstTyped.length, srcLength );
+//     let length = dstTyped.length;
+//
+//     if( dstTyped !== srcTyped )
+//     {
+//       for( let i = offset ; i < rightBound + offset ; i++ )
+//       dstTyped[ i ] = srcTyped[ i - offset ];
+//     }
+//
+//     for( let i = 0 ; i < offset ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     for( let i = offset + rightBound ; i < length ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     return dstTyped;
+//
+//   }
+// }
+//
+// bufferReusingGrow.defaults =
+// {
+//   dst : null,
+//   src : null,
+//   cinterval : null,
+//   ins : null,
+//   offsetting : 1,
+//   reusing : 1,
+//   growFactor : 2,
+//   minSize : 64,
+// };
+
+function bufferReusingGrow_body( o )
+{
+  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
+
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
+  o.cinterval = cintervalClamp();
+
+  /* */
+
+  let newBufferCreate = o.dst === null;
+
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
+
+  /* */
+
+  function cintervalClamp()
+  {
+    let bufferLength = 0;
+    if( o.dst )
+    bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+    else
+    bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+
+    if( o.cinterval === null )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.number.is( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval - 1 ];
+
+    if( o.cinterval[ 0 ] > 0 )
+    o.cinterval[ 0 ] = 0;
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+    if( o.cinterval[ 1 ] < bufferLength - 1 )
+    o.cinterval[ 1 ] = bufferLength - 1;
+
+    return o.cinterval;
+  }
+
+  /* */
+
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  {
+    let dstTyped = arguments[ 0 ];
+    let srcTyped = arguments[ 1 ];
+    let cinterval = arguments[ 2 ];
+    let ins = arguments[ 3 ];
+
+    /* */
+
+    let offset = Math.max( 0, -cinterval[ 0 ] );
+    let rightBound = Math.min( dstTyped.length, srcLength );
+    let length = dstTyped.length;
+
+    if( dstTyped !== srcTyped )
+    {
+      for( let i = offset ; i < rightBound + offset ; i++ )
+      dstTyped[ i ] = srcTyped[ i - offset ];
+    }
+
+    for( let i = 0 ; i < offset ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    for( let i = offset + rightBound ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    return dstTyped;
+
+  }
+}
+
+bufferReusingGrow_body.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  ins : null,
+  offsetting : 1,
+  reusing : 1,
+  growFactor : 2,
+  minSize : 64,
+};
+
+//
+
+let bufferReusingGrow = _.routine.unite( bufferReusing4Arguments_head, bufferReusingGrow_body );
+
+//
+
+/**
+ * Routine bufferReusingRelength() copies elements from source buffer {-src-} to destination buffer {-dst-}.
+ * Routine applies any offsets from Interval {-cinterval-}.
+ *
+ * Data in buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination
+ * container is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingRelength( buffer, [ -1, 3 ], 7 );
+ * console.log( got );
+ * // log Float64Array[ 7, 1, 2, 3, 4, 7, 7, 7 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingRelength
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 3 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then insertion element prepends to buffer.
+ * If cinterval[ 0 ] > 0, then routine skips elements until index cinterval[ 0 ].
+ * If cinterval[ 1 ] < src.length, routine shrinks buffer on right side.
+ * If cinterval[ 1 ] > src.length, then insertion element appends to buffer.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer with minimal size.
+ * @param { * } ins - Insertion element with compatible type to destination buffer.
+ *
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { * } o.ins - Insertion element with compatible type to destination buffer.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingRelength
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If {-ins-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+// function bufferReusingRelength( /* dst, src, cinterval, ins */ )
+// {
+//   let o = _._bufferReusing_head.apply( this, arguments );
+//
+//   let left, right;
+//   let srcLength = o.src.byteLength;
+//   if( o.src.length !== undefined )
+//   srcLength = o.src.length;
+//   o.cinterval = cintervalClamp();
+//
+//   _.routine.options( bufferReusingRelength, o );
+//
+//   o.bufferFill = dstBufferFill;
+//
+//   return _._bufferReusing( o );
+//
+//   /* */
+//
+//   function cintervalClamp()
+//   {
+//
+//     let bufferLength = 0;
+//     if( o.dst )
+//     bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+//     else
+//     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+//
+//     if( o.cinterval === undefined )
+//     o.cinterval = [ 0, bufferLength - 1 ];
+//     else if( _.numberIs( o.cinterval ) )
+//     o.cinterval = [ 0, o.cinterval - 1 ];
+//
+//     left = o.cinterval[ 0 ];
+//     right = o.cinterval[ 1 ];
+//
+//     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+//     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+//
+//     return o.cinterval;
+//   }
+//
+//   /* */
+//
+//   function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+//   {
+//     let dstTyped = arguments[ 0 ];
+//     let srcTyped = arguments[ 1 ];
+//     let cinterval = arguments[ 2 ];
+//     let ins = arguments[ 3 ];
+//
+//     /* */
+//
+//     let offset = left < 0 ? Math.max( 0, -left ) : 0;
+//     left = left < 0 ? 0 : left;
+//     let rightBound = Math.min( srcTyped.length, right - left + 1 );
+//     rightBound = Math.min( rightBound, srcLength );
+//     let length = dstTyped.length;
+//
+//     let i;
+//     for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
+//     dstTyped[ i ] = srcTyped[ i - offset + left ];
+//
+//     if( i > srcLength + offset - left )
+//     i = srcLength + offset - left;
+//
+//     for( ; i < length ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     for( let i = 0 ; i < offset ; i++ )
+//     dstTyped[ i ] = o.ins;
+//
+//     return dstTyped;
+//
+//   }
+// }
+//
+// bufferReusingRelength.defaults =
+// {
+//   dst : null,
+//   src : null,
+//   cinterval : null,
+//   ins : null,
+//   offsetting : 1,
+//   reusing : 1,
+//   growFactor : 2,
+//   shrinkFactor : 0,
+//   minSize : 64,
+// };
+
+function bufferReusingRelength_body( o )
+{
+  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
+  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
+
+  let left, right;
+  let srcLength = o.src.byteLength;
+  if( o.src.length !== undefined )
+  srcLength = o.src.length;
+  o.cinterval = cintervalClamp();
+
+  let newBufferCreate = o.dst === null;
+
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
+
+  /* */
+
+  function cintervalClamp()
+  {
+
+    let bufferLength = 0;
+    if( o.dst )
+    bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+    else
+    bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+
+    if( o.cinterval === null )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.number.is( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval - 1 ];
+
+    left = o.cinterval[ 0 ];
+    right = o.cinterval[ 1 ];
+
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+    return o.cinterval;
+  }
+
+  /* */
+
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  {
+    let dstTyped = arguments[ 0 ];
+    let srcTyped = arguments[ 1 ];
+    let cinterval = arguments[ 2 ];
+    let ins = arguments[ 3 ];
+
+    /* */
+
+    let offset = left < 0 ? Math.max( 0, -left ) : 0;
+    left = left < 0 ? 0 : left;
+    let rightBound = Math.min( srcTyped.length, right - left + 1 );
+    rightBound = Math.min( rightBound, srcLength );
+    let length = dstTyped.length;
+
+    let i;
+    for( i = offset ; i < rightBound + offset && i - offset + left < srcTyped.length ; i++ )
+    dstTyped[ i ] = srcTyped[ i - offset + left ];
+
+    if( i > srcLength + offset - left )
+    i = srcLength + offset - left;
+
+    for( ; i < length ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    for( let i = 0 ; i < offset ; i++ )
+    dstTyped[ i ] = o.ins;
+
+    return dstTyped;
+
+  }
+}
+
+bufferReusingRelength_body.defaults =
 {
   dst : null,
   src : null,
@@ -3198,6 +3433,326 @@ bufferReusingBut.defaults =
   shrinkFactor : 0,
   minSize : 64,
 };
+
+//
+
+let bufferReusingRelength = _.routine.unite( bufferReusing4Arguments_head, bufferReusingRelength_body );
+
+//
+
+/**
+ * Routine bufferReusingResize() resizes raw buffer of source buffer {-src-} in interval {-cinterval-}.
+ *
+ * If destination buffer {-dst-} is provided, then routine copies data to the buffer byte per byte. Data in
+ * buffer {-dst-} overwrites. If {-dst-} container is not resizable and resulted length of destination container
+ * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If buffer {-dst-} and {-src-} are the same buffer, then routine tries to change container {-src-} inplace and
+ * reuse original raw buffer.
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingResize( buffer, buffer, [ 8, 32 ] );
+ * console.log( got );
+ * // log Float64Array[ 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log false
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * @example
+ * let buffer = new F64x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferReusingResize
+ * ({
+ *   dst : buffer,
+ *   src : buffer,
+ *   cinterval : [ 0, 32 ],
+ *   ins : 7,
+ *   minSize : 2,
+ * });
+ * console.log( got );
+ * // log Float64Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ * console.log( got.buffer === buffer.buffer );
+ * // log true
+ *
+ * First parameter set :
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Interval|Number } cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * If {-cinterval-} is a Number, then it defines the index of removed element.
+ * If cinterval[ 0 ] < 0, then routine resizes buffer left.
+ * If cinterval[ 0 ] > 0, then routine skips bytes until index cinterval[ 0 ].
+ * If cinterval[ 1 ] < src size, routine shrinks buffer on right side.
+ * If cinterval[ 1 ] > src size, then routine resizes buffer right.
+ * If cinterval[ 1 ] < cinterval[ 0 ], then routine makes buffer with minimal size.
+ *
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { BufferAny|Long|Null } o.dst - The destination container.
+ * @param { BufferAny|Long } o.src - The container from which makes a shallow copy.
+ * @param { Interval|Number } o.cinterval - The closed interval that defines the start index and the end index for removing elements.
+ * The behavior same to first parameter set.
+ * @param { BoolLike } o.reusing - Allows routine to reuse original raw buffer. Default is true.
+ * @param { BoolLike } o.offsetting - Allows routine to change offset in destination buffer {-o.dst-}. Default is true.
+ * @param { Number } o.minSize - Minimal size of resulted buffer. If resulted buffer size is less than {-o.minSize-}, routine makes
+ * new buffer. Default is 64.
+ * @param { Number } o.growFactor - If routine needs to make new container that is bigger than {-o.minSize-}, then routine multiplies
+ * {-o.growFactor-} on resulted buffer size. If {-o.growFactor-} <= 1, routine does not grow size of resulted buffer. Default is 2.
+ * @param { Number } o.shrinkFactor - If resulted buffer in {-o.shrinkFactor-} times less than its raw buffer, than routine makes
+ * new buffer. If {-o.shrinkFactor-} <= 1, then routine not change original raw buffer. Default is 0.
+ *
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
+ * Routine tries to save original raw buffer.
+ * @function bufferReusingResize
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} has not valid type.
+ * @throws { Error } If {-src-} has not valid type.
+ * @throws { Error } If {-cinterval-} has not valid type.
+ * @throws { Error } If options map {-o-} has not valid type.
+ * @throws { Error } If options map {-o-} has not known options.
+ * @throws { Error } If {-o.minSize-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.growFactor-} has not valid type or is not an Integer.
+ * @throws { Error } If {-o.shrinkFactor-} has not valid type or is not an Integer.
+ * @namespace Tools
+ */
+
+// function bufferReusingResize( /* dst, src, cinterval */ )
+// {
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   let o;
+//   if( arguments.length === 3 )
+//   {
+//     o = Object.create( null );
+//     o.dst = arguments[ 0 ];
+//     o.src = arguments[ 1 ];
+//     o.cinterval = arguments[ 2 ];
+//   }
+//   else
+//   {
+//     o = _._bufferReusing_head.apply( this, arguments );
+//   }
+//
+//   _.assert( _.bufferAnyIs( o.src ), 'Expects buffer {-src-}' );
+//
+//   let left, right;
+//   o.cinterval = cintervalClamp();
+//
+//   _.routine.options( bufferReusingResize, o );
+//
+//   o.bufferSizeCount = bufferSizeCount;
+//   o.bufferFill = dstBufferFill;
+//
+//   return _._bufferReusing( o );
+//
+//   /* */
+//
+//   function cintervalClamp()
+//   {
+//     let bufferLength = 0;
+//     if( o.dst )
+//     bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+//     else
+//     bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+//
+//     if( o.cinterval === undefined )
+//     o.cinterval = [ 0, bufferLength - 1 ];
+//     else if( _.numberIs( o.cinterval ) )
+//     o.cinterval = [ 0, o.cinterval - 1 ];
+//
+//     left = o.cinterval[ 0 ];
+//     right = o.cinterval[ 1 ];
+//
+//     if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+//     o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+//
+//     return o.cinterval;
+//   }
+//
+//   /* */
+//
+//   function bufferSizeCount( cinterval, elementSize )
+//   {
+//     return cinterval[ 1 ] - cinterval[ 0 ] + 1;
+//   }
+//
+//   /* */
+//
+//   function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+//   {
+//     let dstTyped = arguments[ 0 ];
+//     let srcTyped = arguments[ 1 ];
+//     let cinterval = arguments[ 2 ];
+//     let ins = arguments[ 3 ];
+//
+//     /* */
+//
+//     if( srcTyped === dstTyped )
+//     return dstTyped;
+//
+//     if( _.bufferAnyIs( dstTyped ) )
+//     dstTyped = _.bufferBytesFrom( dstTyped.buffer ? dstTyped.buffer : dstTyped );
+//
+//     let srcBytesView = srcTyped;
+//     if( _.bufferAnyIs( srcTyped ) )
+//     srcBytesView = _.bufferBytesFrom( srcTyped.buffer ? srcTyped.buffer : srcTyped );
+//
+//     let offset = srcTyped.byteOffset ? srcTyped.byteOffset : 0;
+//     offset += left;
+//
+//     let length = right - left + 1;
+//     if( dstTyped.buffer === srcTyped.buffer )
+//     {
+//       dstTyped = new dstTyped.constructor( dstTyped.buffer, offset, length );
+//     }
+//     else
+//     {
+//       for( let i = 0; i < dstTyped.length && i < length ; i++ )
+//       dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+//     }
+//
+//     return dstTyped;
+//
+//   }
+// }
+//
+// bufferReusingResize.defaults =
+// {
+//   dst : null,
+//   src : null,
+//   cinterval : null,
+//   offsetting : 1,
+//   reusing : 1,
+//   growFactor : 2,
+//   shrinkFactor : 0,
+//   minSize : 64,
+// };
+
+
+function bufferReusingResize_body( o )
+{
+  _.assert( _.intIs( o.shrinkFactor ) && o.shrinkFactor >= 0 );
+  _.assert( _.intIs( o.growFactor ) && o.growFactor >= 0 );
+  _.assert( _.bufferAnyIs( o.src ), 'Expects buffer {-src-}' );
+
+  let left, right;
+  o.cinterval = cintervalClamp();
+
+  let newBufferCreate = o.dst === null;
+
+  _.assert( newBufferCreate || _.bufferAnyIs( o.dst ) || _.longIs( o.dst ) );
+
+  let dstElementSize;
+  if( newBufferCreate )
+  o.dstElementSize = _._bufferElementSizeGet( o.src );
+  else
+  o.dstElementSize = _._bufferElementSizeGet( o.dst );
+
+  o.dstSize = bufferSizeCount( o.cinterval );
+  o.dstSize = _._dstBufferSizeRecount( o );
+
+  let dstBuffer
+  if( o.reusing && !newBufferCreate )
+  dstBuffer = _resultBufferReusedMaybe( o );
+  else
+  dstBuffer = _resultBufferMake( o );
+
+  let dstTyped = _bufferTypedViewMake( dstBuffer );
+  let srcTyped = _bufferTypedViewMake( o.src );
+  let result = dstBufferFill( dstTyped, srcTyped, o.cinterval, o.ins );
+
+  return dstBuffer;
+
+  /* */
+
+  function cintervalClamp()
+  {
+    let bufferLength = 0;
+    if( o.dst )
+    bufferLength = o.dst && o.dst.length !== undefined ? o.dst.length : o.dst.byteLength;
+    else
+    bufferLength = o.src.length === undefined ? o.src.byteLength : o.src.length;
+
+    if( o.cinterval === null )
+    o.cinterval = [ 0, bufferLength - 1 ];
+    else if( _.number.is( o.cinterval ) )
+    o.cinterval = [ 0, o.cinterval - 1 ];
+
+    left = o.cinterval[ 0 ];
+    right = o.cinterval[ 1 ];
+
+    if( o.cinterval[ 1 ] < o.cinterval[ 0 ] - 1 )
+    o.cinterval[ 1 ] = o.cinterval[ 0 ] - 1;
+
+    return o.cinterval;
+  }
+
+  /* */
+
+  function bufferSizeCount( cinterval )
+  {
+    return cinterval[ 1 ] - cinterval[ 0 ] + 1;
+  }
+
+  /* */
+
+  function dstBufferFill( /* dstTyped, srcTyped, cinterval, ins */ )
+  {
+    let dstTyped = arguments[ 0 ];
+    let srcTyped = arguments[ 1 ];
+    let cinterval = arguments[ 2 ];
+    let ins = arguments[ 3 ];
+
+    /* */
+
+    if( srcTyped === dstTyped )
+    return dstTyped;
+
+    if( _.bufferAnyIs( dstTyped ) )
+    dstTyped = _.bufferBytesFrom( dstTyped.buffer ? dstTyped.buffer : dstTyped );
+
+    let srcBytesView = srcTyped;
+    if( _.bufferAnyIs( srcTyped ) )
+    srcBytesView = _.bufferBytesFrom( srcTyped.buffer ? srcTyped.buffer : srcTyped );
+
+    let offset = srcTyped.byteOffset ? srcTyped.byteOffset : 0;
+    offset += left;
+
+    let length = right - left + 1;
+    if( dstTyped.buffer === srcTyped.buffer )
+    {
+      dstTyped = new dstTyped.constructor( dstTyped.buffer, offset, length );
+    }
+    else
+    {
+      for( let i = 0; i < dstTyped.length && i < length ; i++ )
+      dstTyped[ i ] = srcBytesView[ offset + i ] ? srcBytesView[ offset + i ] : 0;
+    }
+
+    return dstTyped;
+
+  }
+}
+
+bufferReusingResize_body.defaults =
+{
+  dst : null,
+  src : null,
+  cinterval : null,
+  offsetting : 1,
+  reusing : 1,
+  growFactor : 2,
+  shrinkFactor : 0,
+  minSize : 64,
+};
+
+//
+
+let bufferReusingResize = _.routine.unite( bufferReusing3Arguments_head, bufferReusingResize_body );
 
 //
 
@@ -3340,16 +3895,13 @@ function bufferJoin()
       srcs.push( new U8x( src.buffer, src.byteOffset, src.byteLength ) );
     }
 
-    _.assert( src.byteLength >= 0, 'Expects buffers, but got', _.strType( src ) );
+    _.assert( src.byteLength >= 0, 'Expects buffers, but got', _.entity.strType( src ) );
 
     size += src.byteLength;
   }
 
   if( srcs.length === 0 )
   return null;
-
-  // if( srcs.length < 2 )
-  // return firstSrc || null;
 
   /* */
 
@@ -3399,7 +3951,7 @@ function bufferMove( dst, src )
     }
     else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
     {
-      dst.set( _.bigIntsFrom( src ) );
+      dst.set( _.bigInt.s.from( src ) );
     }
     else if( dst.set )
     {
@@ -3416,7 +3968,7 @@ function bufferMove( dst, src )
   {
 
     let options = arguments[ 0 ];
-    _.assertMapHasOnly( options, bufferMove.defaults );
+    _.map.assertHasOnly( options, bufferMove.defaults );
 
     src = options.src;
     dst = options.dst;
@@ -3440,7 +3992,7 @@ function bufferMove( dst, src )
     }
     else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
     {
-      dst.set( _.bigIntsFrom( src ), options.dstOffset );
+      dst.set( _.bigInt.s.from( src ), options.dstOffset );
     }
     else if( dst.set )
     {
@@ -3698,12 +4250,12 @@ function bufferIsolate_head( routine, args )
     _.assert( args.length === 1, 'Expects single argument' );
   }
 
-  _.routineOptions( routine, o );
+  _.routine.options( routine, o );
   _.assert( 1 <= args.length && args.length <= 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.bufferAnyIs( o.src ) || _.strIs( o.src ) );
   _.assert( _.bufferAnyIs( o.delimeter ) || _.strIs( o.delimeter ) );
-  _.assert( _.numberIs( o.times ) );
+  _.assert( _.number.is( o.times ) );
 
   return o;
 }
@@ -3712,7 +4264,7 @@ function bufferIsolate_head( routine, args )
 
 function bufferIsolate_body( o )
 {
-  _.assertRoutineOptions( bufferIsolate_body, arguments );
+  _.routine.assertOptions( bufferIsolate_body, arguments );
 
   let src = o.src;
   if( _.strIs( o.src ) )
@@ -3747,7 +4299,14 @@ function bufferIsolate_body( o )
 
     if( times === 0 )
     {
-      if( o.src.constructor !== src.constructor )
+      if( o.src.constructor === src.constructor )
+      {
+        let del = delimeter;
+        result.push( o.src.subarray( 0, index ) );
+        result.push( new o.src.constructor( del.buffer, del.byteOffset, del.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
+        result.push( o.src.subarray( index + delimeter.length ) );
+      }
+      else
       {
         if( o.src.constructor === BufferRaw )
         {
@@ -3763,13 +4322,6 @@ function bufferIsolate_body( o )
           let secondOffset = src.byteOffset + index * ( o.src.BYTES_PER_ELEMENT || 1 ) + delimeter.length;
           result.push( new o.src.constructor( o.src.buffer, secondOffset, o.src.byteOffset + src.byteLength - secondOffset ) );
         }
-      }
-      else
-      {
-        let del = delimeter;
-        result.push( o.src.subarray( 0, index ) );
-        result.push( new o.src.constructor( del.buffer, del.byteOffset, del.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
-        result.push( o.src.subarray( index + delimeter.length ) );
       }
       return result;
     }
@@ -3867,7 +4419,7 @@ bufferIsolate_body.defaults =
 
 //
 
-let bufferIsolate = _.routineUnite( bufferIsolate_head, bufferIsolate_body );
+let bufferIsolate = _.routine.unite( bufferIsolate_head, bufferIsolate_body );
 
 //
 
@@ -3886,7 +4438,7 @@ bufferIsolateLeftOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrNone_body );
+let bufferIsolateLeftOrNone = _.routine.unite( bufferIsolate_head, bufferIsolateLeftOrNone_body );
 
 //
 
@@ -3905,7 +4457,7 @@ bufferIsolateLeftOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrAll_body );
+let bufferIsolateLeftOrAll = _.routine.unite( bufferIsolate_head, bufferIsolateLeftOrAll_body );
 
 //
 
@@ -3924,7 +4476,7 @@ bufferIsolateRightOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrNone_body );
+let bufferIsolateRightOrNone = _.routine.unite( bufferIsolate_head, bufferIsolateRightOrNone_body );
 
 //
 
@@ -3943,194 +4495,7 @@ bufferIsolateRightOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrAll_body );
-
-//
-//
-// function buffersSerialize( o )
-// {
-//   let self = this;
-//   let size = 0;
-//   o = o || Object.create( null );
-//
-//   _.assertMapHasNoUndefine( o );
-//   _.assertMapHasOnly( o, buffersSerialize.defaults );
-//   _.mapComplement( o, buffersSerialize.defaults );
-//   _.assert( _.objectIs( o.store ) );
-//
-//   let store = o.store;
-//   let storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || Object.create( null );
-//   let attributes = o.onAttributesGet.call( o.context );
-//   let buffers = [];
-//
-//   /* eval size */
-//
-//   for( let a = 0 ; a < attributes.length ; a++ )
-//   {
-//
-//     let name = attributes[ a ][ 0 ];
-//     let attribute = attributes[ a ][ 1 ];
-//     let buffer = o.onBufferGet.call( o.context, attribute );
-//
-//     _.assert( _.bufferTypedIs( buffer ) || buffer === null, 'Expects buffer or null, got : ' + _.strType( buffer ) );
-//
-//     let bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
-//
-//     if( o.dropAttribute && o.dropAttribute[ name ] )
-//     continue;
-//
-//     let descriptor = Object.create( null );
-//     descriptor.attribute = attribute;
-//     descriptor.name = name;
-//     descriptor.buffer = buffer;
-//     descriptor.bufferSize = bufferSize;
-//     descriptor.sizeOfScalar = buffer ? buffer.BYTES_PER_ELEMENT : 0;
-//     buffers.push( descriptor );
-//
-//     size += bufferSize;
-//
-//   }
-//
-//   /* make buffer */
-//
-//   if( !store[ 'buffer' ] )
-//   store[ 'buffer' ] = new BufferRaw( size );
-//
-//   let dstBuffer = _.bufferBytesGet( store[ 'buffer' ] );
-//
-//   _.assert( store[ 'buffer' ].byteLength === size );
-//   if( store[ 'buffer' ].byteLength < size )
-//   throw _.err( 'buffersSerialize :', 'buffer does not have enough space' );
-//
-//   /* sort by atom size */
-//
-//   buffers.sort( function( a, b )
-//   {
-//     return b.sizeOfScalar - a.sizeOfScalar;
-//   });
-//
-//   /* store into single buffer */
-//
-//   let offset = 0;
-//   for( let b = 0 ; b < buffers.length ; b++ )
-//   {
-//
-//     let name = buffers[ b ].name;
-//     let attribute = buffers[ b ].attribute;
-//     let buffer = buffers[ b ].buffer;
-//     let bytes = buffer ? _.bufferBytesGet( buffer ) : new U8x();
-//     let bufferSize = buffers[ b ].bufferSize;
-//
-//     if( o.dropAttribute && o.dropAttribute[ name ] )
-//     continue;
-//
-//     _.bufferMove( dstBuffer.subarray( offset, offset+bufferSize ), bytes );
-//
-//     let serialized = store[ 'attributes' ][ name ] =
-//     {
-//       'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
-//       'sizeOfScalar' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
-//       'offsetInCommonBuffer' : offset,
-//       'size' : bytes.length,
-//     }
-//
-//     if( attribute.copyCustom )
-//     serialized[ 'fields' ] = attribute.copyCustom
-//     ({
-//
-//       dst : Object.create( null ),
-//       src : attribute,
-//
-//       copyingComposes : 3,
-//       copyingAggregates : 3,
-//       copyingAssociates : 1,
-//
-//       technique : 'data',
-//
-//     });
-//
-//     offset += bufferSize;
-//
-//   }
-//
-//   /* return */
-//
-//   return store;
-// }
-//
-// buffersSerialize.defaults =
-// {
-//
-//   context : null,
-//   store : null,
-//
-//   dropAttribute : {},
-//
-//   onAttributesGet : function()
-//   {
-//     return _.mapPairs( this.attributes );
-//   },
-//   onBufferGet : function( attribute )
-//   {
-//     return attribute.buffer;
-//   },
-//
-// }
-//
-// //
-//
-// function buffersDeserialize( o )
-// {
-//   o = o || Object.create( null );
-//   let store = o.store;
-//   let commonBuffer = store[ 'buffer' ];
-//
-//   _.assertMapHasNoUndefine( o );
-//   _.assertMapHasOnly( o, buffersDeserialize.defaults );
-//   _.mapComplement( o, buffersDeserialize.defaults );
-//   _.assert( _.objectIs( o.store ) );
-//   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
-//
-//   commonBuffer = _.bufferRawFromTyped( commonBuffer );
-//
-//   for( let a in store[ 'attributes' ] )
-//   {
-//     let attribute = store[ 'attributes' ][ a ];
-//
-//     let bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global[ attribute[ 'bufferConstructorName' ] ];
-//     let offset = attribute[ 'offsetInCommonBuffer' ];
-//     let size = attribute[ 'size' ];
-//     let sizeOfScalar = attribute[ 'sizeOfScalar' ];
-//     let fields = attribute[ 'fields' ];
-//
-//     _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null, 'unknown attribute\' constructor :', attribute[ 'bufferConstructorName' ] )
-//     _.assert( _.numberIs( offset ), 'unknown attribute\' offset in common buffer :', offset )
-//     _.assert( _.numberIs( size ), 'unknown attribute\' size of buffer :', size )
-//     _.assert( _.numberIs( sizeOfScalar ), 'unknown attribute\' sizeOfScalar of buffer :', sizeOfScalar )
-//
-//     if( attribute.offset+size > commonBuffer.byteLength )
-//     throw _.err( 'cant deserialize attribute', '"'+a+'"', 'it is out of common buffer' );
-//
-//     /* logger.log( 'bufferConstructor( ' + commonBuffer + ', ' + offset + ', ' + size / sizeOfScalar + ' )' ); */
-//
-//     let buffer = bufferConstructor ? new bufferConstructor( commonBuffer, offset, size / sizeOfScalar ) : null;
-//
-//     o.onAttribute.call( o.context, fields, buffer, a );
-//
-//   }
-//
-// }
-//
-// buffersDeserialize.defaults =
-// {
-//   store : null,
-//   context : null,
-//   onAttribute : function( attributeOptions, buffer )
-//   {
-//     attributeOptions.buffer = buffer;
-//     new this.AttributeOfGeometry( attributeOptions ).addTo( this );
-//   },
-// }
+let bufferIsolateRightOrAll = _.routine.unite( bufferIsolate_head, bufferIsolateRightOrAll_body );
 
 // --
 // routines
@@ -4146,6 +4511,8 @@ let Routines =
   buffersNodeAreIdentical,
   buffersAreEquivalent,
   buffersAreIdentical,
+  buffersIdenticalShallow : buffersAreIdentical,
+  buffersEquivalentShallow : buffersAreEquivalent,
 
   _bufferMake_functor,
   bufferMake,
@@ -4158,32 +4525,32 @@ let Routines =
   bufferBytesFrom,
   bufferBytesFromNode,
   bufferNodeFrom,
+  bufferRelen, /* xxx : investigate */
 
-  // bufferBut,
-  // bufferButInplace, /* !!! : use instead of bufferBut, bufferButInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
   bufferBut_,
-  // bufferOnly,
-  // bufferOnlyInplace, /* !!! : use instead of bufferOnly, bufferOnlyInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
   bufferOnly_,
-  // bufferGrow,
-  // bufferGrowInplace, /* !!! : use instead of bufferGrow, bufferGrowInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
   bufferGrow_,
-
-  // bufferRelength, /* qqq for Dmytro : don't understand. explain how what it does. ask */
-  // bufferRelengthInplace, /* !!! : use instead of bufferRelength, bufferRelengthInplace */ /* Dmytro : coverage of the alternative split into parts and extended */
   bufferRelength_,
-
-  bufferRelen,
-  // bufferResize,
-  // bufferResizeInplace, /* !!! : use instead of bufferResize, bufferResizeInplace */
   bufferResize_,
 
-  _bufferReusing,
-  bufferReusingBut, /* qqq for Dmytro : implement */
-  // bufferReusingOnly, /* qqq for Dmytro : implement */
-  // bufferReusingGrow, /* qqq for Dmytro : implement */
-  // bufferReusingRelength, /* qqq for Dmytro : implement */
-  // bufferReusingResize, /* qqq for Dmytro : implement */
+  //
+
+  // _bufferReusing_head,
+  // _bufferReusing,
+  bufferReusing4Arguments_head,
+  bufferReusing3Arguments_head,
+  _bufferElementSizeGet,
+  _dstBufferSizeRecount,
+  _bufferTypedViewMake,
+  _resultBufferReusedMaybe,
+  _resultBufferMake,
+  bufferReusingBut,
+  bufferReusingOnly,
+  bufferReusingGrow,
+  bufferReusingRelength,
+  bufferReusingResize, 
+
+  //
 
   bufferBytesGet,
   bufferRetype,
@@ -4207,30 +4574,6 @@ let Routines =
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
-
-  /*
-
-  bufferAnyIs,
-  bufferBytesIs,
-  constructorIsBuffer,
-
-  bufferBytesGet,
-  bufferRetype,
-
-  bufferMove,
-  bufferToStr,
-  bufferToDom,
-
-  bufferSplit,
-  bufferCutOffLeft,
-
-  bufferIsolate : _.routineUnite( bufferIsolate_head, bufferIsolate_body ), // Dmytro : implemented, covered
-  bufferIsolateLeftOrNone, // Dmytro : implemented, covered
-  bufferIsolateLeftOrAll, // Dmytro : implemented
-  bufferIsolateRightOrNone, // Dmytro : implemented
-  bufferIsolateRightOrAll, // Dmytro : implemented
-
-  */
 
   // to replace
 

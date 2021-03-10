@@ -1,11 +1,11 @@
-( function _Bool_s_()
+( function _l8_Bool_s_()
 {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.bool = _.bool || Object.create( null );
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
@@ -23,10 +23,10 @@ let _ObjectToString = Object.prototype.toString;
  * @throws Exception if cannot convert.
  */
 
-function boolFrom( src )
+function from( src )
 {
-  let result = _.boolFromMaybe( src );
-  _.assert( _.boolIs( result ), `Cant convert ${_.strType( src )} to boolean` );
+  let result = _.bool.fromMaybe( src );
+  _.assert( _.boolIs( result ), `Cant convert ${_.entity.strType( src )} to boolean` );
   return result;
 }
 
@@ -39,13 +39,13 @@ function boolFrom( src )
  * @namespace Tools
  */
 
-function boolFromMaybe( src )
+function fromMaybe( src )
 {
-  if( _.boolIs( src ) )
+  if( _.bool.is( src ) )
   {
     return src;
   }
-  else if( _.numberIs( src ) )
+  else if( _.number.is( src ) )
   {
     return !!src;
   }
@@ -77,7 +77,7 @@ function boolFromMaybe( src )
  * @namespace Tools
  */
 
-function boolFromForce( src )
+function fromForce( src )
 {
   if( _.strIs( src ) )
   {
@@ -98,30 +98,33 @@ function boolFromForce( src )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let ExtensionTools =
 {
 
-  boolFrom, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFrom : from, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromMaybe : fromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromForce : fromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+let Extension =
+{
+
+  from,
+  fromMaybe,
+  fromForce,
+
+}
+
+//
+
+Object.assign( _, ExtensionTools );
+Object.assign( Self, Extension );
 
 // --
 // export

@@ -56,7 +56,7 @@ var _arraySlice = _.arraySlice;
 var nameFielded = function nameFielded( nameString )
 {
 
-  if( _.objectIs( nameString ) )
+  if( _.object.is( nameString ) )
   {
     return nameString;
   }
@@ -96,7 +96,7 @@ var nameUnfielded = function nameUnfielded( nameObject )
     name.raw = nameObject;
     name.coded = nameObject;
   }
-  else if( _.symbolIs( nameObject ) )
+  else if( _.symbol.is( nameObject ) )
   {
     name.raw = nameObject;
     name.coded = nameObject;
@@ -104,8 +104,8 @@ var nameUnfielded = function nameUnfielded( nameObject )
   else throw _.err( 'nameUnfielded :','Unknown arguments' );
 
   _assert( arguments.length === 1 );
-  _assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
-  _assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  _assert( _.strIs( name.raw ) || _.symbol.is( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  _assert( _.strIs( name.coded ) || _.symbol.is( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
 
   return name;
 }
@@ -127,7 +127,7 @@ var namesCoded = function namesCoded( namesMap )
   if( _assert )
   _assert( arguments.length === 1 );
   if( _assert )
-  _assert( _.objectIs( namesMap ) );
+  _assert( _.object.is( namesMap ) );
 
   for( var n in namesMap )
   result[ n ] = n;
