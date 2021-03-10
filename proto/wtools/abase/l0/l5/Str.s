@@ -2979,8 +2979,8 @@ function strSplitInlinedStereo_( o )
   let indexesPrefix = indexesOf( o.src, o.prefix );
   let indexesPostfix = indexesOf( o.src, o.postfix );
 
-  console.log( 'ipr', indexesPrefix );
-  console.log( 'ipo', indexesPostfix );
+  // console.log( 'ipr', indexesPrefix );
+  // console.log( 'ipo', indexesPostfix );
 
   console.log( result )
   let result2 = _.strSplitsQuotedRejoin
