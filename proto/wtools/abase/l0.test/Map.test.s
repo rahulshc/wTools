@@ -2329,6 +2329,12 @@ function mapsFlatten( test )
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
+  test.case = 'trivial, src - map';
+  var src = { src : { a : 1, b : { c : 1, d : 1 } } }
+  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1 };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
   test.case = 'delimeter : .';
   var src = [ { a : 1, dir : { b : 2 } }, { c : 3 } ];
   var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
