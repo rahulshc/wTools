@@ -2330,6 +2330,12 @@ function mapsFlatten( test )
   test.identical( got, expected );
 
   test.case = 'trivial, src - map';
+  var src = { src : { a : 1, b : 'c' } };
+  var expected = { 'a' : 1, 'b' : 'c' };
+  var got = _.mapsFlatten( src );
+  test.identical( got, expected );
+
+  test.case = 'trivial, src - map with submap';
   var src = { src : { a : 1, b : { c : 1, d : 1 } } }
   var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1 };
   var got = _.mapsFlatten( src );
