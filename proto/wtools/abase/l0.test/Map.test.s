@@ -465,6 +465,12 @@ function mapCloneAssigning( test )
     _.mapCloneAssigning();
   });
 
+  test.case = 'src primitive';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapCloneAssigning({ srcMap : 1 });
+  });
+
   test.case = 'redundant argument';
   test.shouldThrowErrorSync( function()
   {
@@ -753,6 +759,18 @@ function mapExtendConditional( test )
     _.mapExtendConditional();
   });
 
+  test.case = 'primitive dst';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( _.property.mapper.dstNotHas(), 'hello' );
+  });
+
+  test.case = 'primitive src';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapExtendConditional( _.property.mapper.dstNotHas(), { 'a' : 1 }, 'hello' );
+  });
+
   test.case = 'few argument';
   test.shouldThrowErrorSync( function()
   {
@@ -769,6 +787,59 @@ function mapExtendConditional( test )
   test.shouldThrowErrorSync( function()
   {
     _.mapExtendConditional( 'wrong arguments' );
+  });
+
+}
+
+//
+
+function mapsExtendConditional( test )
+{
+
+  test.case = 'an unique object';
+  var got = _.mapsExtendConditional( _.property.mapper.dstNotHas(), { a : 1, b : 2 }, [ { a : 1, c : 3 } ] );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional();
+  });
+
+  test.case = 'primitive dst';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional( _.property.mapper.dstNotHas(), 'hello' );
+  });
+
+  test.case = 'primitive src';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional( _.property.mapper.dstNotHas(), { 'a' : 1 }, 'hello' );
+  });
+
+  test.case = 'few argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional( _.property.mapper.dstNotHas() );
+  });
+
+  test.case = 'wrong type of array';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional( [] );
+  });
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.mapsExtendConditional( 'wrong arguments' );
   });
 
 }
@@ -2291,12 +2362,203 @@ function mapInvert( test )
   test.shouldThrowErrorSync( () => _.mapInvert( { a : 1 }, { b : 2 }, { c : 'extra' } ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.mapInvert( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.mapInvert( 'wrong', { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _.mapInvert( { a : 1 }, 'wrong' ) );
 
   test.case = 'dst is inverse of src';
   var src = { a : 1 };
   var dst = { '1' : 'a' };
   test.shouldThrowErrorSync( () => _.mapInvert( src, dst ) );
+}
+
+//
+
+function mapInvertDroppingDuplicates( test )
+{
+  test.open( 'no dst' );
+
+  test.case = 'src - empty map';
+  var src = {};
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, {} );
+
+  test.case = 'src - map with number';
+  var src = { a : 1 };
+  var expected =  { '1' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with null';
+  var src = { a : null };
+  var expected =  { 'null' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with undefined';
+  var src = { a : undefined };
+  var expected =  { 'undefined' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with string';
+  var src = { a : 'str' };
+  var expected =  { 'str' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with bool';
+  var src = { a : true };
+  var expected =  { 'true' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with object';
+  var src = { a : { b : 2 } };
+  var expected =  { '[object Object]' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with set';
+  var src = { a : new Set([ 1, 2 ]) };
+  var expected =  { '[object Set]' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with array';
+  var src = { a : [ 1, 2 ] };
+  var expected =  { '1,2' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with function';
+  var src = { a : function b() {} };
+  var expected =  { 'function b() {}' : 'a' };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    g : function b() {},
+    h : null,
+    i : undefined
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'function b() {}' : 'g',
+    'null' : 'h',
+    'undefined' : 'i'
+  };
+  var got = _.mapInvertDroppingDuplicates( src );
+  test.identical( got, expected );
+
+  test.close( 'no dst' );
+
+  /* - */
+
+  test.open( 'with dst' );
+
+  test.case = 'src and dst - empty map';
+  var src = {};
+  var dst = {};
+  var expected = {};
+  var got = _.mapInvertDroppingDuplicates( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 1 el';
+  var src = { a : 1 };
+  var dst = { b : 2 };
+  var expected =  { '1' : 'a', 'b' : 2 };
+  var got = _.mapInvertDroppingDuplicates( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst different with 2 el';
+  var dst = { b : 2, d : 4 };
+  var src = { a : 1, c : 3 };
+  var expected =
+  {
+    '1' : 'a',
+    '3' : 'c',
+    'b' : 2,
+    'd' : 4
+  };
+  var got = _.mapInvertDroppingDuplicates( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src, dst are the same';
+  var src = { a : 1 };
+  var dst = { a : 1 };
+  var expected =  { '1' : 'a', 'a' : 1 };
+  var got = _.mapInvertDroppingDuplicates( src, dst );
+  test.identical( got, expected );
+
+  test.case = 'src - map with differen types, some same as dst';
+  var src =
+  {
+    a : 1,
+    b : 'str',
+    c : false,
+    d : { b : 2 },
+    e : new Set([ 1, 2 ]),
+    f : [ 1, 2 ],
+    h : null,
+    i : undefined
+  };
+  var dst =
+  {
+    a : 1,
+    d : { b : 3 },
+    e : new Set([ 1, 2, 3 ]),
+    f : [ 1, 2 ],
+    h : null,
+  };
+  var expected =
+  {
+    '1' : 'a',
+    'd' : { 'b' : 3 },
+    'str' : 'b',
+    'false' : 'c',
+    '[object Object]' : 'd',
+    '[object Set]' : 'e',
+    '1,2' : 'f',
+    'null' : 'h',
+    'undefined' : 'i',
+    'a' : 1,
+    'e' : new Set([ 1, 2, 3 ]),
+    'f' : [ 1, 2 ],
+    'h' : null
+  };
+  var got = _.mapInvertDroppingDuplicates( src, dst );
+  test.identical( got, expected );
+
+  test.close( 'with dst' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapInvertDroppingDuplicates() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapInvertDroppingDuplicates( { a : 1 }, { b : 2 }, { c : 'extra' } ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.mapInvertDroppingDuplicates( 'wrong', { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _.mapInvertDroppingDuplicates( { a : 1 }, 'wrong' ) );
 }
 
 // --
@@ -2828,6 +3090,154 @@ function mapToStr( test )
 // --
 // map properties
 // --
+
+function mapOwnKey( test )
+{
+
+  test.case = 'src primitive';
+  var got = _.mapOwnKey( 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'no args';
+  var got = _.mapOwnKey();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'too many args';
+  var got = _.mapOwnKey({ a : 1 }, { 'b' : 2 }, 3 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'trivial';
+
+  var got = _.mapOwnKey( {}, 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  var got = _.mapOwnKey( { a : 1, b : undefined }, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapOwnKey( { a : 1, b : undefined }, 'b' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapOwnKey( { a : 1 }, 'b' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'prototype, routine';
+  var f = () => {};
+  Object.setPrototypeOf( f, String );
+  f.a = 1;
+  var got = _.mapOwnKey( f, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'prototype, map';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  var got = _.mapOwnKey( a, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapOwnKey( a, 'b' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'non enumerable';
+  var b = {};
+  Object.defineProperty( b, 'k', { enumerable : 0 } );
+  var got = _.mapOwnKey( b, 'k' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'non enumerable with value';
+  var b = {};
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 1 } );
+  var got = _.mapOwnKey( b, 'k' );
+  var expected = true;
+  test.identical( got, expected );
+}
+
+//
+
+function mapHasKey( test )
+{
+
+  test.case = 'src primitive';
+  var got = _.mapHasKey( 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'no args';
+  var got = _.mapHasKey();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'too many args';
+  var got = _.mapHasKey({ a : 1 }, { 'b' : 2 }, 3 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'trivial';
+
+  var got = _.mapHasKey( {}, 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  var got = _.mapHasKey( { a : 1, b : undefined }, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapHasKey( { a : 1, b : undefined }, 'b' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapHasKey( { a : 1 }, 'b' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'prototype, routine';
+  var f = () => {};
+  Object.setPrototypeOf( f, String );
+  f.a = 1;
+  var got = _.mapHasKey( f, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'prototype, map';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  var got = _.mapHasKey( a, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  var got = _.mapHasKey( a, 'b' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'non enumerable';
+  var b = {};
+  Object.defineProperty( b, 'k', { enumerable : 0 } );
+  var got = _.mapHasKey( b, 'k' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'non enumerable with value';
+  var b = {};
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 1 } );
+  var got = _.mapHasKey( b, 'k' );
+  var expected = true;
+  test.identical( got, expected );
+}
+
+//
 
 function mapKeys( test )
 {
@@ -12278,6 +12688,10 @@ function mapsAreIdentical( test )
   });
   test.shouldThrowErrorSync( function()
   {
+    _.mapsAreIdentical( { 'a' : 1 }, 'b' );
+  });
+  test.shouldThrowErrorSync( function()
+  {
     _.mapsAreIdentical( 1, 3 );
   });
   test.shouldThrowErrorSync( function()
@@ -16155,6 +16569,7 @@ let Self =
 
     mapExtend,
     mapExtendConditional,
+    mapsExtendConditional,
     mapExtendNotIdentical,
     mapsExtend,
     mapsExtendWithVectorsInSrcMaps,
@@ -16175,6 +16590,7 @@ let Self =
     mapDelete,
     mapEmpty,
     mapInvert,
+    mapInvertDroppingDuplicates,
 
     // map convert
 
@@ -16189,6 +16605,9 @@ let Self =
     mapToStr,
 
     // map properties
+
+    mapOwnKey,
+    mapHasKey,
 
     mapKeys,
     mapOnlyOwnKeys,

@@ -8,9 +8,9 @@ let _ = _global_.wTools;
 let Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
-/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch */
-/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch */
-/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch */
+/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
 
 // --
 // map checker
