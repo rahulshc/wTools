@@ -2913,6 +2913,8 @@ function strSplitInlinedStereo_( o )
 
   if( _.strIs( o ) )
   o = { src : o };
+  o.quotingPrefixes = o.quotingPrefixes || [ '"' ];
+  o.quotingPostfixes = o.quotingPostfixes || [ '"' ];
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
@@ -2925,12 +2927,6 @@ function strSplitInlinedStereo_( o )
   if( end !== false )
   return end;
 
-  // delete o.prefix;
-  // delete o.postfix;
-  // delete o.onInlined;
-  // delete o.onOrdinary;
-  // delete o.preservingOrdinary;
-  // delete o.preservingInlined;
   let splitOptions = _.mapOnly( o, strSplit.defaults );
   splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
   splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
@@ -2946,32 +2942,62 @@ function strSplitInlinedStereo_( o )
     preservingEmpty: 1,
     preservingDelimeters: 1,
     delimeter: [ '❮', '❯' ] }
-
-    - got :
-      [
-        ' ',
-        '❮',
-        'inline1',
-        '❯',
-        '',
-        '❮',
-        'inline2',
-        '❯',
-        ' '
-      ]
-    - expected :
-      [
-        ' ',
-        [ 'inline1' ],
-        '',
-        [ 'inline2' ],
-        ' '
-      ]
   */
+  console.log( o );
 
-  console.log( o )
+  //? delete o.prefix;
+  //? delete o.postfix;
+  // delete o.onInlined;
+  // delete o.onOrdinary;
+  // delete o.preservingOrdinary;
+  // delete o.preservingInlined;
+  // for( let i=0; i<result.length; i++ )
+  // {
+  //   console.log( result )
+  //   /*
+  //       [
+  //         ' ',
+  //         '❮',
+  //         'inline1',
+  //         '❯',
+  //         '',
+  //         '❮',
+  //         'inline2',
+  //         '❯',
+  //         ' '
+  //       ]
+  //     - expected :
+  //       [
+  //         ' ',
+  //         [ 'inline1' ],
+  //         '',
+  //         [ 'inline2' ],
+  //         ' '
+  //       ]
+  //   */
+  // }
+  let indexesPrefix = indexesOf( o.src, o.prefix );
+  let indexesPostfix = indexesOf( o.src, o.postfix );
+
+  console.log( 'ipr', indexesPrefix );
+  console.log( 'ipo', indexesPostfix );
+
+  console.log( result )
+  let result2 = _.strSplitsQuotedRejoin
+  ({
+    splits : result,
+    delimeter : [ o.prefix, o.postfix ],
+    quoting : 1,
+    quotingPrefixes : [ o.prefix ],
+    quotingPostfixes : [ o.postfix ],
+    preservingQuoting : o.preservingDelimeters, /* removes if 0 */
+    inliningQuoting : 0,
+    onQuoting : o.onInlined,
+  });
+  console.log( result2 )
+
+  return result2;
   return result;
-
 
   /* - */
 
@@ -3004,6 +3030,15 @@ function strSplitInlinedStereo_( o )
     return false;
   }
 
+  function indexesOf( str, sub )
+  {
+    let indixes = [];
+    for( let i=0; i<str.length; i++)
+    if( str[ i ] === sub)
+    indixes.push( i );
+
+    return indixes;
+  }
 
   /* PREVIOUS VERSION */
   // if( o.prefix === o.postfix )
@@ -3317,8 +3352,8 @@ strSplitInlinedStereo_.defaults =
 
   stripping : 0,
   quoting : 0,
-  quotingPrefixes : '"',
-  quotingPostfixes : '"',
+  quotingPrefixes : null,
+  quotingPostfixes : null,
 
   preservingQuoting : 1,
   preservingEmpty : 1,
