@@ -3225,8 +3225,8 @@ strSplitInlinedStereo_.defaults =
 
   stripping : 0,
   quoting : 0,
-  quotingPrefix : '"',
-  quotingPostfix : '"',
+  quotingPrefixes : '"',
+  quotingPostfixes : '"',
 
   preservingQuoting : 1,
   preservingEmpty : 1,
