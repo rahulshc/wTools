@@ -2927,22 +2927,14 @@ function strSplitInlinedStereo_( o )
   if( end !== false )
   return end;
 
+  let replacementForPrefix = '\u{20330}';
+  let isReplacedPrefix = false;
   let splitOptions = _.mapOnly( o, strSplit.defaults );
   splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
   splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
   let result = _.strSplit( splitOptions ); /* array with ordinary, inlined and delimiters */
+  result = concatenateOrdinary( result );
 
-  /*
-    { src: ' ❮inline1❯❮inline2❯ ',
-    stripping: 0,
-    quoting: 0,
-    quotingPrefixes: '"',
-    quotingPostfixes: '"',
-    preservingQuoting: 1,
-    preservingEmpty: 1,
-    preservingDelimeters: 1,
-    delimeter: [ '❮', '❯' ] }
-  */
   console.log( o );
 
   //? delete o.prefix;
@@ -2951,39 +2943,14 @@ function strSplitInlinedStereo_( o )
   // delete o.onOrdinary;
   // delete o.preservingOrdinary;
   // delete o.preservingInlined;
-  // for( let i=0; i<result.length; i++ )
-  // {
-  //   console.log( result )
-  //   /*
-  //       [
-  //         ' ',
-  //         '❮',
-  //         'inline1',
-  //         '❯',
-  //         '',
-  //         '❮',
-  //         'inline2',
-  //         '❯',
-  //         ' '
-  //       ]
-  //     - expected :
-  //       [
-  //         ' ',
-  //         [ 'inline1' ],
-  //         '',
-  //         [ 'inline2' ],
-  //         ' '
-  //       ]
-  //   */
-  // }
   let indexesPrefix = indexesOf( o.src, o.prefix );
   let indexesPostfix = indexesOf( o.src, o.postfix );
 
   // console.log( 'ipr', indexesPrefix );
   // console.log( 'ipo', indexesPostfix );
 
-  console.log( result )
-  let result2 = _.strSplitsQuotedRejoin
+  console.log( 'split', result )
+  result = _.strSplitsQuotedRejoin
   ({
     splits : result,
     delimeter : [ o.prefix, o.postfix ],
@@ -2993,10 +2960,19 @@ function strSplitInlinedStereo_( o )
     preservingQuoting : o.preservingDelimeters, /* removes if 0 */
     inliningQuoting : 0,
     onQuoting : o.onInlined,
+    // onQuoting : escapeInlined( o.onInlined )
   });
-  console.log( result2 )
+  console.log( 'rejoined', result )
 
-  return result2;
+  if( isReplacedPrefix )
+  result = result.map( ( el ) =>
+  {
+    if( _.strIs( el ) )
+    return el.replace( replacementForPrefix, o.prefix )
+    else
+    return el;
+  });
+
   return result;
 
   /* - */
@@ -3038,6 +3014,76 @@ function strSplitInlinedStereo_( o )
     indixes.push( i );
 
     return indixes;
+  }
+
+  function escapeInlined( func )
+  {
+    return function ( el )
+    {
+      return _.escape.make( func( el ) );
+    }
+  }
+
+  function concatenateOrdinary( array )
+  {
+    let ordinary = '';
+    let result = []
+    for( let i = 0; i < array.length; i++ )
+    {
+      /*
+        [ '', '❮', ' ', '❮', ' ', '❮', 'inline1', '❯', ' ', '❯', ' inline2' ]
+        into
+        [ '❮ ❮ ', '❮', 'inline1', '❯', ' ❯ inline2' ]
+      */
+      if( array[ i ] === o.prefix )
+      {
+        if( array[ i + 2 ] === o.postfix )
+        {
+          /* push concatenated ordinary string, add replacementForPrefix if ordinary is prefix */
+          if( ordinary )
+          {
+            if( ordinary === o.prefix )
+            {
+              result.push( replacementForPrefix );
+              isReplacedPrefix = true;
+            }
+            else
+            {
+              result.push( ordinary );
+            }
+          }
+          /* push inlined : '❮', 'inline1', '❯' */
+          result.push( array[ i ] );
+          result.push( array[ i+1 ] );
+          result.push( array[ i+2 ] );
+          i += 2; /* +1 in the loop */
+          ordinary = '';
+        }
+        else
+        {
+          ordinary += array[ i ];
+        }
+      }
+      else
+      {
+        ordinary += array[ i ];
+      }
+    }
+
+    if( ordinary )
+    {
+      if( ordinary === o.prefix )
+      {
+        result.push( replacementForPrefix );
+        isReplacedPrefix = true;
+      }
+      else
+      {
+        result.push( ordinary );
+      }
+    }
+
+    return result;
   }
 
   /* PREVIOUS VERSION */
