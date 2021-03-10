@@ -20197,44 +20197,6 @@ function strSplitInlinedStereo_OptionQuoting( test )
   var expected = [ '', [ '""' ], '"❮""❯"', [ '' ], ' aa ', [ 'inline' ], '' ];
   test.identical( got, expected );
 
-  /* - */
-
-  test.case = 'quote 1 full inlined';
-  var srcStr = 'this "❮inlined1❯"is❮inlined2❯ text and is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮inlined1❯"is', [ 'inlined2' ], ' text and is not' ];
-  test.identical( got, expected );
-
-  test.case = 'quote 2 full inlined';
-  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯" text and is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮inlined1❯"is"❮inlined2❯" text and is not' ];
-  test.identical( got, expected );
-
-  test.case = 'quote 2 inlined with 2 quotes';
-  var srcStr = 'this "❮inlined1❯is❮inlined2❯" text and is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮inlined1❯is❮inlined2❯" text and is not' ];
-  test.identical( got, expected );
-
-  test.case = '1 quote';
-  var srcStr = 'this "❮inlined1❯is❮inlined2❯ text and is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "', [ 'inlined1' ], 'is', [ 'inlined2' ], ' text and is not' ];
-  test.identical( got, expected );
-
-  test.case = '3 quotes';
-  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯ text and is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮inlined1❯"is"', [ 'inlined2' ], ' text and is not' ];
-  test.identical( got, expected );
-
-  test.case = '6 quotes';
-  var srcStr = 'this "❮inlined1❯"is"❮inlined2❯" text" and" is not';
-  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected = [ 'this "❮inlined1❯"is"❮inlined2❯" text" and" is not' ];
-  test.identical( got, expected );
-
   test.close( 'quoting - 1' );
 }
 
@@ -20985,87 +20947,87 @@ var Self =
 
     /* */
 
-    // strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
-    strLeft_,
-    // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
-    strRight_,
+    // // strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
+    // strLeft_,
+    // // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
+    // strRight_,
 
-    strEquivalent,
-    strsEquivalent,
-    strsEquivalentAll,
-    strsEquivalentAny,
-    strsEquivalentNone,
+    // strEquivalent,
+    // strsEquivalent,
+    // strsEquivalentAll,
+    // strsEquivalentAny,
+    // strsEquivalentNone,
 
-    strBeginOf,
-    strEndOf,
-    strBegins,
-    strEnds,
+    // strBeginOf,
+    // strEndOf,
+    // strBegins,
+    // strEnds,
 
-    // converter
+    // // converter
 
-    exportStringShortDiagnostic,
-    strPrimitive,
-    strTypeWithTraitsBasic,
-    strTypeWithoutTraitsBasic,
-    strTypeWithTraitsGeneratedObject,
-    strTypeWithoutTraitsGeneratedObject,
+    // exportStringShortDiagnostic,
+    // strPrimitive,
+    // strTypeWithTraitsBasic,
+    // strTypeWithoutTraitsBasic,
+    // strTypeWithTraitsGeneratedObject,
+    // strTypeWithoutTraitsGeneratedObject,
 
-    strParseType,
+    // strParseType,
 
-    strConcat,
+    // strConcat,
 
-    strQuote,
-    strUnquote,
-    strQuotePairsNormalize,
-    strQuoteAnalyze,
+    // strQuote,
+    // strUnquote,
+    // strQuotePairsNormalize,
+    // strQuoteAnalyze,
 
-    strInsideOf,
-    strInsideOfOptionPairing,
-    strInsideOf_,
-    strInsideOf_OptionPairingIs0,
-    strInsideOf_OptionPairingIs1,
-    strOutsideOf,
+    // strInsideOf,
+    // strInsideOfOptionPairing,
+    // strInsideOf_,
+    // strInsideOf_OptionPairingIs0,
+    // strInsideOf_OptionPairingIs1,
+    // strOutsideOf,
 
-    strRemoveBegin,
-    strRemoveEnd,
+    // strRemoveBegin,
+    // strRemoveEnd,
 
-    strReplaceBegin,
-    strReplaceEnd,
+    // strReplaceBegin,
+    // strReplaceEnd,
 
-    strReplaceSrcIsString,
-    strReplaceSrcIsArrayOfStrings,
+    // strReplaceSrcIsString,
+    // strReplaceSrcIsArrayOfStrings,
 
-    strIsolateLeftOrNone,
-    strIsolateLeftOrAll,
-    strIsolateRightOrNone,
-    strIsolateRightOrAll,
-    // strIsolateInsideOrNone,
-    strIsolateInside,
-    strIsolateInsidePairs,
+    // strIsolateLeftOrNone,
+    // strIsolateLeftOrAll,
+    // strIsolateRightOrNone,
+    // strIsolateRightOrAll,
+    // // strIsolateInsideOrNone,
+    // strIsolateInside,
+    // strIsolateInsidePairs,
 
-    // splits
+    // // splits
 
-    strSplitsCoupledGroup,
-    strSplitsDropEmpty,
-    strSplitsUngroupedJoin,
-    strSplitsQuotedRejoin,
-    strSplitsQuotedRejoinOptionOnQuoting,
+    // strSplitsCoupledGroup,
+    // strSplitsDropEmpty,
+    // strSplitsUngroupedJoin,
+    // strSplitsQuotedRejoin,
+    // strSplitsQuotedRejoinOptionOnQuoting,
 
-    // splitter
+    // // splitter
 
-    strSplitFast,
-    strSplitFastRegexp,
-    strSplit,
-    strSplitOptionOnQuote,
-    strSplitOptionOnDelimeter,
+    // strSplitFast,
+    // strSplitFastRegexp,
+    // strSplit,
+    // strSplitOptionOnQuote,
+    // strSplitOptionOnDelimeter,
 
-    strSplitInlinedDefaultOptions,
-    strSplitInlinedOptionDelimeter,
-    strSplitInlinedOptionStripping,
-    strSplitInlinedOptionQuoting,
-    strSplitInlinedOptionPreservingEmpty,
-    strSplitInlinedOptionOnInlined,
-    strSplitInlinedCombineOnInlinedAndPreservingEmpty,
+    // strSplitInlinedDefaultOptions,
+    // strSplitInlinedOptionDelimeter,
+    // strSplitInlinedOptionStripping,
+    // strSplitInlinedOptionQuoting,
+    // strSplitInlinedOptionPreservingEmpty,
+    // strSplitInlinedOptionOnInlined,
+    // strSplitInlinedCombineOnInlinedAndPreservingEmpty,
 
     strSplitInlinedStereo,
     strSplitInlinedStereo_Basic,

@@ -2903,318 +2903,410 @@ strSplitInlinedStereo.defaults =
  *
  */
 
- function strSplitInlinedStereo_( o )
- {
-    /*
-      New delimiter.
-      was : 'this #background:red#is#background:default# text and is not'.
-      is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
-     */
- 
-    if( _.strIs( o ) )
-    o = { src : o };
- 
-    _.assert( this === _ );
-    _.assert( _.strIs( o.src ) );
-    _.assert( _.object.is( o ) );
-    _.assert( arguments.length === 1, 'Expects single argument' );
-    _.routine.options( strSplitInlinedStereo_, o );
- 
-    if( o.prefix === o.postfix )
+function strSplitInlinedStereo_( o )
+{
+  /*
+    New delimiter.
+    was : 'this #background:red#is#background:default# text and is not'.
+    is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
+    */
+
+  if( _.strIs( o ) )
+  o = { src : o };
+
+  _.assert( this === _ );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.object.is( o ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.routine.options( strSplitInlinedStereo_, o );
+
+  /* Trivial cases */
+  let end = handleTrivial();
+  if( end !== false )
+  return end;
+
+  // delete o.prefix;
+  // delete o.postfix;
+  // delete o.onInlined;
+  // delete o.onOrdinary;
+  // delete o.preservingOrdinary;
+  // delete o.preservingInlined;
+  let splitOptions = _.mapOnly( o, strSplit.defaults );
+  splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
+  splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
+  let result = _.strSplit( splitOptions ); /* array with ordinary, inlined and delimiters */
+
+  /*
+    { src: ' ❮inline1❯❮inline2❯ ',
+    stripping: 0,
+    quoting: 0,
+    quotingPrefixes: '"',
+    quotingPostfixes: '"',
+    preservingQuoting: 1,
+    preservingEmpty: 1,
+    preservingDelimeters: 1,
+    delimeter: [ '❮', '❯' ] }
+
+    - got :
+      [
+        ' ',
+        '❮',
+        'inline1',
+        '❯',
+        '',
+        '❮',
+        'inline2',
+        '❯',
+        ' '
+      ]
+    - expected :
+      [
+        ' ',
+        [ 'inline1' ],
+        '',
+        [ 'inline2' ],
+        ' '
+      ]
+  */
+
+  console.log( o )
+  return result;
+
+
+  /* - */
+
+  function handleTrivial()
+  {
+    let delimLeftPosition = o.src.indexOf( o.prefix );
+    let delimRightPosition = o.src.indexOf( o.postfix );
+
+    if( delimLeftPosition === -1 || delimRightPosition === -1 )
     {
-      o.delimeter = o.prefix;
-      delete o.prefix;
-      delete o.postfix;
-      return _.strSplitInlined( o );
-    }
-  
-    let result = [];
-    let splitted = [];
-    let sr   c = o.src.slice();
-    // let replacementForQuotes = '\u{20331}';
-    let replacementForPrefix = '\u{20330}';
-    let replacementForPostfix = '\u{20331}';
-    let positionsInlined = [];
-    let positionsPrefixes = [];
-    let positionsPostfixes = [];
-    let positionsQuotesPrefix = [];
-    let positionsQuotesPostfix = [];
-    // let positionsQuotes = [];
-    let delimLeftPosition = getNextPos( src, o.prefix );
-    let delimRightPosition = getNextPos( src, o.postfix );
-  
-    if( o.quoting )
-    handleQuoting();
-  
-    let end = handleTrivial();
-    if( end !== false )
-    return end;
-  
-    if( splitted[ 0 ] )
-    result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
-  
-    for( let i = 1; i < splitted.length; i++ )
-    {
-      let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-      // [ leftOfPostfix, postfix, rightOfPostfix ]
-      // console.log( 'splitted[ i ] : ', splitted[ i ] )
-      // console.log( 'halfs : ', halfs )
-      // console.log( '-----------------' )
-  
-      if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
-      {
-        if( result[ result.length - 1 ] === undefined )
-        {
-          result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
-        }
-        else
-        {
-          let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
-  
-          if( _.arrayLike( result[ result.length - 1 ] ) )
-          {
-            result.push( o.prefix + tempStr );
-          }
-          else
-          {
-            result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
-          }
-        }
-        continue;
-      }
-  
-      let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-      let ordinary = halfs[ 2 ];
-  
-      _.assert( halfs.length === 3 );
-  
-      if( strip === undefined )
-      {
-        if( result.length )
-        result[ result.length-1 ] += o.prefix + splitted[ i ];
-        else
-        result.push( o.prefix + splitted[ i ] );
-      }
+      if( o.preservingOrdinary )
+      return [ o.src ];
       else
-      {
-        handlePreservingDelimeters( strip );
-  
-        positionsInlined.push( result.length - 1 );
-  
-        if( ordinary )
-        {
-          if( o.stripping )
-          {
-            if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
-            {
-              result.push( ordinary.trim() );
-            }
-            else
-            {
-              splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
-            }
-          }
-          else
-          {
-            result.push( ordinary );
-          }
-        }
-      }
-    }
-  
-    // if( o.quoting )
-    // {
-    //   console.log( result )
-    //   result = _.strSplitsQuotedRejoin
-    //   ({
-    //     splits : result,
-    //     quoting : 1,
-    //     quotingPrefixes : [ o.quotingPrefix ],
-    //     quotingPostfixes : [ o.quotingPostfix ],
-    //     preservingQuoting : o.preservingQuoting,
-    //     inliningQuoting : 0,
-    //   });
-    // }
-    // handleQuoting();
-  
-    if( o.preservingOrdinary && o.onOrdinary )
-    handleOnOrdinary();
-  
-    if( !o.preservingInlined )
-    removeInlined();
-  
-    if( !o.preservingOrdinary )
-    removeOrdinary();
-  
-    if( o.preservingEmpty )
-    handleEmptyLines();
-  
-    // console.log( '=================' )
-    return result;
-  
-    /* - */
-  
-    function getNextPos( str, delim )
-    {
-      return str.indexOf( delim );
-    }
-  
-    /* */
-  
-    function handleTrivial()
-    {
-      if( delimLeftPosition === -1 || delimRightPosition === -1 )
-      {
-        if( o.preservingOrdinary )
-        return [ o.src ];
-        else
-        return [];
-      }
-  
-      if( !o.preservingOrdinary && !o.preservingInlined )
       return [];
-  
-      splitted = src.split( o.prefix );
-  
-      if( splitted.length === 1 )
-      {
-        if( o.preservingOrdinary )
-        return [ o.src ];
-        else
-        return [];
-      }
-  
-      return false;
     }
-  
-    /* */
-  
-    function findIndexes()
+
+    if( !o.preservingOrdinary && !o.preservingInlined )
+    return [];
+
+    let splitted = o.src.split( o.prefix );
+
+    if( splitted.length === 1 )
     {
-      let isQuotesIdentical = o.quotingPrefix === o.quotingPostfix;
-  
-      for( let i = 0; i < o.src.length; i++ )
-      {
-        if( o.src[ i ] === o.prefix )
-        positionsPrefixes.push( i );
-        else if( o.src[ i ] === o.postfix )
-        positionsPostfixes.push( i );
-        else if( isQuotesIdentical && o.src[ i ] === o.quotingPrefix )
-        i % 2 === 0 ? positionsQuotesPrefix.push( i ) : positionsQuotesPostfix.push( i );
-        else if( o.src[ i ] === o.quotingPrefix )
-        positionsQuotesPrefix.push( i );
-        else if( o.src[ i ] === o.quotingPostfix )
-        positionsQuotesPostfix.push( i );
-        else
-        continue;
-      }
-    }
-  
-    /* */
-  
-    function handleQuoting()
-    {
-      if( o.src.indexOf( '"' ) === -1 )
-      return;
-  
-      findIndexes();
-  
-      console.log( 'pref : ', positionsPrefixes );
-      console.log( 'post : ', positionsPostfixes );
-      console.log( 'quotesPre : ', positionsQuotesPrefix );
-      console.log( 'quotesPost : ', positionsQuotesPostfix );
-      console.log( '=================' )
-  
-      /*      0               1            2              3                       4
-        [ 'this "', [ 'background:red], '"is', [ 'background:default' ], ' text and is not' ];
-        [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' text and is not' ];
-        [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' "text and is not' ];
-      */
-  
-    }
-  
-    /* */
-  
-    function handleOnOrdinary()
-    {
-      result = result.map( ( el ) =>
-      {
-        if( _.arrayLike( el ) )
-        {
-          return el;
-        }
-        else
-        {
-          let res = o.onOrdinary( el );
-          if( res === undefined )
-          return el;
-          else
-          return res;
-        }
-      })
-    }
-  
-    /* */
-  
-    function handleEmptyLines()
-    {
-      if( _.arrayLike( result[ 0 ] ) )
-      result.unshift( '' );
-      if( _.arrayLike( result[ result.length-1 ] ) )
-      result.push( '' );
-      let len = result.length;
-      for( let i = 0; i < len; i++ )
-      {
-        if( _.arrayLike( result[ i ] ) )
-        if( _.arrayLike( result[ i + 1 ] ) )
-        {
-          result.splice( i + 1, 0, '' );
-          len++;
-        }
-      }
-    }
-  
-    /* */
-  
-    function handlePreservingDelimeters( strip )
-    {
-      if( o.preservingDelimeters )
-      {
-        if( o.stripping )
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
-        {
-          return o.prefix + el.trim() + o.postfix;
-        }) : o.prefix + strip + o.postfix );
-        else
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
-        {
-          return o.prefix + el + o.postfix;
-        }) : o.prefix + strip + o.postfix );
-      }
+      if( o.preservingOrdinary )
+      return [ o.src ];
       else
-      {
-        if( o.stripping )
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
-        else
-        result.push( strip );
-      }
+      return [];
     }
-  
-    /* */
-  
-    function removeInlined()
-    {
-      result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
-    }
-  
-    /* */
-  
-    function removeOrdinary()
-    {
-      result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
-    }
- }
- 
+
+    return false;
+  }
+
+
+  /* PREVIOUS VERSION */
+  // if( o.prefix === o.postfix )
+  // {
+  //   o.delimeter = o.prefix;
+  //   /* Routine _strSplitInlined does not expect options: "quotingPrefixes", "quotingPostfixes", "preservingQuoting" */
+  //   delete o.prefix;
+  //   delete o.postfix;
+  //   return _.strSplitInlined( o );
+  // }
+
+  // let result = [];
+  // let splitted = [];
+  // let src = o.src.slice();
+  // // let replacementForPrefix = '\u{20330}';
+  // // let replacementForPostfix = '\u{20331}';
+
+  // let positionsInlined = [];
+  // let positionsOrdinary = [];
+
+  // let positionsPrefixes = [];
+  // let positionsPostfixes = [];
+  // let positionsQuotesPrefix = [];
+  // let positionsQuotesPostfix = [];
+  // // let positionsQuotes = [];
+
+  // let delimLeftPosition = getNextPos( src, o.prefix );
+  // let delimRightPosition = getNextPos( src, o.postfix );
+
+  // if( o.quoting )
+  // handleQuoting();
+
+  // let end = handleTrivial();
+  // if( end !== false )
+  // return end;
+
+  // if( splitted[ 0 ] )
+  // {
+  //   result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
+  //   positionsInlined.push( 0 );
+  // }
+
+  // for( let i = 1; i < splitted.length; i++ )
+  // {
+  //   let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+  //   // [ leftOfPostfix, postfix, rightOfPostfix ]
+  //   // console.log( 'splitted[ i ] : ', splitted[ i ] )
+  //   // console.log( 'halfs : ', halfs )
+  //   // console.log( '-----------------' )
+
+  //   if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
+  //   {
+  //     if( result[ result.length - 1 ] === undefined )
+  //     {
+  //       result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
+  //     }
+  //     else
+  //     {
+  //       let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+
+  //       if( _.arrayLike( result[ result.length - 1 ] ) )
+  //       {
+  //         result.push( o.prefix + tempStr );
+  //       }
+  //       else
+  //       {
+  //         result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+  //       }
+  //     }
+  //     continue;
+  //   }
+
+  //   let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+  //   let ordinary = halfs[ 2 ];
+
+  //   _.assert( halfs.length === 3 );
+
+  //   if( strip === undefined )
+  //   {
+  //     if( result.length )
+  //     result[ result.length-1 ] += o.prefix + splitted[ i ];
+  //     else
+  //     result.push( o.prefix + splitted[ i ] );
+  //   }
+  //   else
+  //   {
+  //     handlePreservingDelimeters( strip );
+
+  //     positionsInlined.push( result.length - 1 );
+
+  //     if( ordinary )
+  //     {
+  //       if( o.stripping )
+  //       {
+  //         if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
+  //         {
+  //           result.push( ordinary.trim() );
+  //         }
+  //         else
+  //         {
+  //           splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
+  //         }
+  //       }
+  //       else
+  //       {
+  //         result.push( ordinary );
+  //       }
+  //     }
+  //   }
+  // }
+
+  // // if( o.quoting )
+  // // {
+  // //   console.log( result )
+  // //   result = _.strSplitsQuotedRejoin
+  // //   ({
+  // //     splits : result,
+  // //     quoting : 1,
+  // //     quotingPrefixes : [ o.quotingPrefix ],
+  // //     quotingPostfixes : [ o.quotingPostfix ],
+  // //     preservingQuoting : o.preservingQuoting,
+  // //     inliningQuoting : 0,
+  // //   });
+  // // }
+  // // handleQuoting();
+
+  // if( o.preservingOrdinary && o.onOrdinary )
+  // handleOnOrdinary();
+
+  // if( !o.preservingInlined )
+  // removeInlined();
+
+  // if( !o.preservingOrdinary )
+  // removeOrdinary();
+
+  // if( o.preservingEmpty )
+  // handleEmptyLines();
+
+  // return result;
+
+  // /* - */
+
+  // function getNextPos( str, delim )
+  // {
+  //   return str.indexOf( delim );
+  // }
+
+  // /* */
+
+  // function handleTrivial()
+  // {
+  //   if( delimLeftPosition === -1 || delimRightPosition === -1 )
+  //   {
+  //     if( o.preservingOrdinary )
+  //     return [ o.src ];
+  //     else
+  //     return [];
+  //   }
+
+  //   if( !o.preservingOrdinary && !o.preservingInlined )
+  //   return [];
+
+  //   splitted = src.split( o.prefix );
+
+  //   if( splitted.length === 1 )
+  //   {
+  //     if( o.preservingOrdinary )
+  //     return [ o.src ];
+  //     else
+  //     return [];
+  //   }
+
+  //   return false;
+  // }
+
+  // /* */
+
+  // function findIndexes()
+  // {
+  //   let isQuotesIdentical = o.quotingPrefix === o.quotingPostfix;
+
+  //   for( let i = 0; i < o.src.length; i++ )
+  //   {
+  //     if( o.src[ i ] === o.prefix )
+  //     positionsPrefixes.push( i );
+  //     else if( o.src[ i ] === o.postfix )
+  //     positionsPostfixes.push( i );
+  //     else if( isQuotesIdentical && o.src[ i ] === o.quotingPrefix )
+  //     i % 2 === 0 ? positionsQuotesPrefix.push( i ) : positionsQuotesPostfix.push( i );
+  //     else if( o.src[ i ] === o.quotingPrefix )
+  //     positionsQuotesPrefix.push( i );
+  //     else if( o.src[ i ] === o.quotingPostfix )
+  //     positionsQuotesPostfix.push( i );
+  //     else
+  //     continue;
+  //   }
+  // }
+
+  // /* */
+
+  // function handleQuoting()
+  // {
+  //   if( o.src.indexOf( '"' ) === -1 )
+  //   return;
+
+  //   findIndexes();
+
+  //   console.log( 'pref : ', positionsPrefixes );
+  //   console.log( 'post : ', positionsPostfixes );
+  //   console.log( 'quotesPre : ', positionsQuotesPrefix );
+  //   console.log( 'quotesPost : ', positionsQuotesPostfix );
+  //   console.log( '=================' )
+
+  //   /*      0               1            2              3                       4
+  //     [ 'this "', [ 'background:red], '"is', [ 'background:default' ], ' text and is not' ];
+  //     [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' text and is not' ];
+  //     [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' "text and is not' ];
+  //   */
+
+  // }
+
+  // /* */
+
+  // function handleOnOrdinary()
+  // {
+  //   result = result.map( ( el ) =>
+  //   {
+  //     if( _.arrayLike( el ) )
+  //     {
+  //       return el;
+  //     }
+  //     else
+  //     {
+  //       let res = o.onOrdinary( el );
+  //       if( res === undefined )
+  //       return el;
+  //       else
+  //       return res;
+  //     }
+  //   })
+  // }
+
+  // /* */
+
+  // function handleEmptyLines()
+  // {
+  //   if( _.arrayLike( result[ 0 ] ) )
+  //   result.unshift( '' );
+  //   if( _.arrayLike( result[ result.length-1 ] ) )
+  //   result.push( '' );
+  //   let len = result.length;
+  //   for( let i = 0; i < len; i++ )
+  //   {
+  //     if( _.arrayLike( result[ i ] ) )
+  //     if( _.arrayLike( result[ i + 1 ] ) )
+  //     {
+  //       result.splice( i + 1, 0, '' );
+  //       len++;
+  //     }
+  //   }
+  // }
+
+  // /* */
+
+  // function handlePreservingDelimeters( strip )
+  // {
+  //   if( o.preservingDelimeters )
+  //   {
+  //     if( o.stripping )
+  //     result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //     {
+  //       return o.prefix + el.trim() + o.postfix;
+  //     }) : o.prefix + strip + o.postfix );
+  //     else
+  //     result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //     {
+  //       return o.prefix + el + o.postfix;
+  //     }) : o.prefix + strip + o.postfix );
+  //   }
+  //   else
+  //   {
+  //     if( o.stripping )
+  //     result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+  //     else
+  //     result.push( strip );
+  //   }
+  // }
+
+  // /* */
+
+  // function removeInlined()
+  // {
+  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
+  // }
+
+  // /* */
+
+  // function removeOrdinary()
+  // {
+  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
+  // }
+}
+
 strSplitInlinedStereo_.defaults =
 {
   src : null,
@@ -3233,9 +3325,7 @@ strSplitInlinedStereo_.defaults =
   preservingDelimeters : 0,
   preservingOrdinary : 1,
   preservingInlined : 1,
- 
   /* qqq for Yevhen : ? */
- 
 }
 
 // function strSplitInlinedStereo_( o )
