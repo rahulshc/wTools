@@ -3501,11 +3501,11 @@ function sureHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _._err
+    err = _._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
-      // args : [ _.entity.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3517,13 +3517,14 @@ function sureHasOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger;
+    throw err;
     return false;
   }
 
@@ -4839,6 +4840,8 @@ let Extension =
   _mapOnly,
   _mapOnly_,
 
+  /* qqq xxx : implement mapDiff(), ask how to */
+
   // map surer
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
@@ -4879,7 +4882,8 @@ let Extension =
 
 let ExtensionMap =
 {
-  // map surer
+
+  // sure
 
   sureHasExactly,
   sureOwnExactly,
@@ -4895,7 +4899,7 @@ let ExtensionMap =
 
   sureHasNoUndefine,
 
-  // map assert
+  // assert
 
   assertHasFields,
   assertOwnFields,
