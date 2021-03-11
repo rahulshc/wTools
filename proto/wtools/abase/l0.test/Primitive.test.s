@@ -222,6 +222,10 @@ function primitivesAreIdenticalShallow( test )
   var got = _.primitive.identicalShallow( true, false );
   test.identical( got, false );
 
+  test.case = 'non primitives';
+  var got = _.primitive.identicalShallow( {}, {} );
+  test.identical( got, false );
+
   test.close( 'not identical' );
 
   /* */
@@ -235,8 +239,6 @@ function primitivesAreIdenticalShallow( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.primitive.identicalShallow( 1, 1, 1 ) )
 
-  test.case = 'non primitive arguments';
-  test.shouldThrowErrorSync( () => _.primitive.identicalShallow( {}, {} ) )
 }
 
 //
