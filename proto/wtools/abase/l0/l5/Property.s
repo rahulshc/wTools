@@ -32,14 +32,58 @@ function identical( src1, src2 )
 
 //
 
+function hasAll( src, screen )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( !_.primitive.is( src ) );
+  _.assert( !_.primitive.is( screen ) );
+
+  if( _.arrayLike( screen ) )
+  {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( !( screen[ s ] in src ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( !( value in src ) )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
+    if( !( k in src ) )
+    return false;
+  }
+
+  return true;
+
+}
+
+//
+
 function hasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return true;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return true;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return true;
   }
@@ -55,14 +99,28 @@ function hasNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return false;
   }
 
   return true;
 }
+
 
 // --
 // extension
@@ -71,6 +129,7 @@ function hasNone( src, screen )
 let Extension =
 {
   identical,
+  hasAll,
   hasAny,
   hasNone
 }

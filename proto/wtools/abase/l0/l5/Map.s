@@ -347,13 +347,27 @@ function mapHasAll( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( !( screen[ s ] in src ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( !( value in src ) )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( !( k in src ) )
     return false;
   }
 
   return true;
+
 }
 
 //
@@ -395,20 +409,17 @@ function mapHasAny( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  if( _.vector.is( screen ) )
+  if( _.arrayLike( screen ) )
   {
-    if( _.arrayLike( screen ) )
-    {
-      for( let s = 0 ; s < screen.length ; s++ )
-      if( screen[ s ] in src )
-      return true;
-    }
-    else
-    {
-      for( let value of screen )
-      if( value in src )
-      return true;
-    }
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return true;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return true;
   }
   else if( _.aux.is( screen ) )
   {
@@ -459,20 +470,17 @@ function mapHasNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  if( _.vector.is( screen ) )
+  if( _.arrayLike( screen ) )
   {
-    if( _.arrayLike( screen ) )
-    {
-      for( let s = 0 ; s < screen.length ; s++ )
-      if( screen[ s ] in src )
-      return false;
-    }
-    else
-    {
-      for( let value of screen )
-      if( value in src )
-      return false;
-    }
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return false;
   }
   else if( _.aux.is( screen ) )
   {
@@ -522,20 +530,17 @@ function mapOnlyOwnAll( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  if( _.vector.is( screen ) )
+  if( _.arrayLike( screen ) )
   {
-    if( _.arrayLike( screen ) )
-    {
-      for( let s = 0 ; s < screen.length ; s++ )
-      if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
-      return false;
-    }
-    else
-    {
-      for( let value of screen )
-      if( !Object.hasOwnProperty.call( src, value ) )
-      return false;
-    }
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( !Object.hasOwnProperty.call( src, value ) )
+    return false;
   }
   else if( _.aux.is( screen ) )
   {
@@ -585,20 +590,17 @@ function mapOnlyOwnAny( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  if( _.vector.is( screen ) )
+  if( _.arrayLike( screen ) )
   {
-    if( _.arrayLike( screen ) )
-    {
-      for( let s = 0 ; s < screen.length ; s++ )
-      if( Object.hasOwnProperty.call( src, screen[ s ] ) )
-      return true;
-    }
-    else
-    {
-      for( let value of screen )
-      if( Object.hasOwnProperty.call( src, value ) )
-      return true;
-    }
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return true;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( Object.hasOwnProperty.call( src, value ) )
+    return true;
   }
   else if( _.aux.is( screen ) )
   {
@@ -649,20 +651,17 @@ function mapOnlyOwnNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  if( _.vector.is( screen ) )
+  if( _.arrayLike( screen ) )
   {
-    if( _.arrayLike( screen ) )
-    {
-      for( let s = 0 ; s < screen.length ; s++ )
-      if( Object.hasOwnProperty.call( src, screen[ s ] ) )
-      return false;
-    }
-    else
-    {
-      for( let value of screen )
-      if( Object.hasOwnProperty.call( src, value ) )
-      return false;
-    }
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( Object.hasOwnProperty.call( src, value ) )
+    return false;
   }
   else if( _.aux.is( screen ) )
   {
