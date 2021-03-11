@@ -2921,6 +2921,7 @@ function strSplitInlinedStereo_( o )
   _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
+  console.log( o );
 
   /* Trivial cases */
   let end = handleTrivial();
@@ -2932,24 +2933,12 @@ function strSplitInlinedStereo_( o )
   let splitOptions = _.mapOnly( o, strSplit.defaults );
   splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
   splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
-  let result = _.strSplit( splitOptions ); /* array with ordinary, inlined and delimiters */
-  result = concatenateOrdinary( result );
+  splitOptions.stripping = 0;
+  splitOptions.preservingEmpty = 1;
 
-  console.log( o );
+  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  result = preprocessBeforeJoin( result );
 
-  //? delete o.prefix;
-  //? delete o.postfix;
-  // delete o.onInlined;
-  // delete o.onOrdinary;
-  // delete o.preservingOrdinary;
-  // delete o.preservingInlined;
-  let indexesPrefix = indexesOf( o.src, o.prefix );
-  let indexesPostfix = indexesOf( o.src, o.postfix );
-
-  // console.log( 'ipr', indexesPrefix );
-  // console.log( 'ipo', indexesPostfix );
-
-  console.log( 'split', result )
   result = _.strSplitsQuotedRejoin
   ({
     splits : result,
@@ -2957,12 +2946,15 @@ function strSplitInlinedStereo_( o )
     quoting : 1,
     quotingPrefixes : [ o.prefix ],
     quotingPostfixes : [ o.postfix ],
-    preservingQuoting : o.preservingDelimeters, /* removes if 0 */
+    preservingQuoting : o.preservingDelimeters,
     inliningQuoting : 0,
-    onQuoting : o.onInlined,
-    // onQuoting : escapeInlined( o.onInlined )
+    onQuoting : o.preservingEmpty ? escapeInlined( o.onInlined ) : o.onInlined
   });
-  console.log( 'rejoined', result )
+
+  if( o.preservingEmpty )
+  handlePreservingEmpty();
+
+  unescape();
 
   if( isReplacedPrefix )
   result = result.map( ( el ) =>
@@ -3006,25 +2998,15 @@ function strSplitInlinedStereo_( o )
     return false;
   }
 
-  function indexesOf( str, sub )
-  {
-    let indixes = [];
-    for( let i=0; i<str.length; i++)
-    if( str[ i ] === sub)
-    indixes.push( i );
-
-    return indixes;
-  }
-
   function escapeInlined( func )
   {
     return function ( el )
     {
-      return _.escape.make( func( el ) );
+      return _.escape.wrap( func( el ) );
     }
   }
 
-  function concatenateOrdinary( array )
+  function preprocessBeforeJoin( array )
   {
     let ordinary = '';
     let result = []
@@ -3039,24 +3021,16 @@ function strSplitInlinedStereo_( o )
       {
         if( array[ i + 2 ] === o.postfix )
         {
-          /* push concatenated ordinary string, add replacementForPrefix if ordinary is prefix */
-          if( ordinary )
-          {
-            if( ordinary === o.prefix )
-            {
-              result.push( replacementForPrefix );
-              isReplacedPrefix = true;
-            }
-            else
-            {
-              result.push( ordinary );
-            }
-          }
+          /* push concatenated ordinary string */
+          pushOrdinary( ordinary );
           /* push inlined : '❮', 'inline1', '❯' */
-          result.push( array[ i ] );
-          result.push( array[ i+1 ] );
-          result.push( array[ i+2 ] );
-          i += 2; /* +1 in the loop */
+          if( o.preservingInlined )
+          {
+            result.push( array[ i ] );
+            result.push( o.stripping ? array[ i+1 ].trim() : array[ i+1 ] );
+            result.push( array[ i+2 ] );
+          }
+          i += 2;
           ordinary = '';
         }
         else
@@ -3070,20 +3044,65 @@ function strSplitInlinedStereo_( o )
       }
     }
 
-    if( ordinary )
-    {
-      if( ordinary === o.prefix )
-      {
-        result.push( replacementForPrefix );
-        isReplacedPrefix = true;
-      }
-      else
-      {
-        result.push( ordinary );
-      }
-    }
+    pushOrdinary( ordinary );
 
     return result;
+
+    /* - */
+
+    function pushOrdinary( ordinary )
+    {
+      if( o.preservingOrdinary && ordinary )
+      {
+        if( ordinary === o.prefix )
+        {
+          result.push( replacementForPrefix );
+          isReplacedPrefix = true;
+        }
+        else
+        {
+          ordinary = o.stripping ? ordinary.trim() : ordinary;
+          if( o.onOrdinary )
+          {
+            let ordinary1 = o.onOrdinary( ordinary );
+            ordinary = ordinary1 ? ordinary1 : ordinary;
+          }
+
+          result.push( ordinary );
+        }
+      }
+    }
+  }
+
+  function handlePreservingEmpty()
+  {
+    if( _.escape.is( result[ 0 ] ) )
+    {
+      result.unshift( '' );
+    }
+    if( _.escape.is( result[ result.length-1 ] ) )
+    {
+      result.push( '' );
+    }
+    let len = result.length;
+    for( let i = 0; i < len; i++ )
+    {
+      if( _.escape.is( result[ i ] ) )
+      if( _.escape.is( result[ i + 1 ] ) )
+      {
+        result.splice( i + 1, 0, '' );
+        len++;
+      }
+    }
+  }
+
+  function unescape()
+  {
+    for( let i = 0; i < result.length; i++ )
+    {
+      if( _.escape.is( result[ i ] ) )
+      result[ i ] = _.escape.unwrap( result[ i ] );
+    }
   }
 
   /* Previous version */
