@@ -20230,12 +20230,7 @@ function strSplitInlinedStereo_OptionQuoting( test )
   test.case = 'escaped 1 inline';
   var srcStr = '"❮inlined❯"i❮s❯"ordinary"❮';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
-  var expected =
-  [
-    '"❮inlined❯"i',
-    [ 's' ],
-    '"ordinary"❮',
-  ]
+  var expected = [ '"❮inlined❯"i', [ 's' ], '"ordinary"❮' ]
   test.identical( got, expected );
 
   test.case = 'escaped whole str';
@@ -20248,6 +20243,18 @@ function strSplitInlinedStereo_OptionQuoting( test )
   var srcStr = '"❮inlined❯"i"❮s❯"ordinary❮';
   var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1 } );
   var expected = [ '"❮inlined❯"i"❮s❯"ordinary❮' ]
+  test.identical( got, expected );
+
+  test.case = 'escaped 2 inline';
+  var srcStr = '"❮inlined❯"i❮s❯"ordinary"❮';
+  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1, preservingQuoting : 0 } );
+  var expected = [ '❮inlined❯i', [ 's' ], 'ordinary❮' ];
+  test.identical( got, expected );
+
+  test.case = 'escaped each separately str';
+  var srcStr = '&&❮inlined❯||i&&❮s❯||ordinary❮';
+  var got = _.strSplitInlinedStereo_( { src : srcStr, quoting : 1, quotingPrefixes : [ '&&' ], quotingPostfixes : [ '||' ] } );
+  var expected = [ '&&❮inlined❯||i&&❮s❯||ordinary❮' ];
   test.identical( got, expected );
 
   test.close( 'quoting - 1' );

@@ -2921,7 +2921,6 @@ function strSplitInlinedStereo_( o )
   _.assert( _.object.is( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
-  console.log( o );
 
   /* Trivial cases */
   let end = handleTrivial();
