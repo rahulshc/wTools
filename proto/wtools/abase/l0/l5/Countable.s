@@ -15,10 +15,16 @@ _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.countable.is( src1 ) );
-  _.assert( _.countable.is( src2 ) );
+  // qqq : for Yevhen : !
+  // _.assert( _.countable.is( src1 ) );
+  // _.assert( _.countable.is( src2 ) );
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( !_.countable.is( src1 ) )
+  return false;
+  if( !_.countable.is( src2 ) )
   return false;
 
   if( _.longIs( src1 ) )

@@ -1,20 +1,22 @@
 {
-  "name": "wTools",
-  "version": "0.8.936",
-  "engine": "node >= 10.0.0",
-  "enabled": 1,
-  "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
-  "license": "MIT",
-  "author": "Kostiantyn Wandalen <wanalen@01.school>",
-  "contributors": [
+  "name" : "wTools",
+  "version" : "0.8.937",
+  "engine" : "node >= 10.0.0",
+  "enabled" : 1,
+  "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
+  "license" : "MIT",
+  "author" : "Kostiantyn Wandalen <wanalen@01.school>",
+  "contributors" :
+  [
     "Kostiantyn Wandalen <wanalen@01.school>",
     "Volodymyr M. <volodymyr.migdal@gmail.com>",
     "Ihor O. <iostashvxi@gmail.com>",
     "Pablo Garcimartin <pablogarcimartinruiz@gmail.com>",
     "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
   ],
-  "main": "proto/wtools/abase/Layer2.s",
-  "files": [
+  "main" : "proto/wtools/abase/Layer2.s",
+  "files" :
+  [
     "proto/wtools/Tools.s",
     "proto/wtools/abase/l0",
     "proto/wtools/abase/l1",
@@ -24,28 +26,25 @@
     "proto/wtools/abase/Layer2.s",
     "out"
   ],
-  "scripts": {
-    "test": "wtest .run \"proto/**\" rapidity:-1",
-    "docgen": "wdocgen proto"
+  "scripts" : { "test" : "wtest .run \"proto/**\" rapidity:-1", "docgen" : "wdocgen proto" },
+  "repository" : { "type" : "git", "url" : "https://github.com/Wandalen/wTools.git" },
+  "bugs" :
+  {
+    "url" : "https://github.com/Wandalen/wTools/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Wandalen/wTools.git"
+  "dependencies" : {},
+  "devDependencies" :
+  {
+    "eslint" : "7.1.0",
+    "wFiles" : "alpha",
+    "wTesting" : "alpha",
+    "wTools" : "file:.",
+    "wcloner" : "alpha",
+    "wselector" : "alpha",
+    "wstringer" : "alpha"
   },
-  "bugs": {
-    "url": "https://github.com/Wandalen/wTools/issues"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "eslint": "7.1.0",
-    "wFiles": "alpha",
-    "wTesting": "alpha",
-    "wTools": "file:.",
-    "wcloner": "alpha",
-    "wselector": "alpha",
-    "wstringer": "alpha"
-  },
-  "keywords": [
+  "keywords" :
+  [
     "base",
     "basic",
     "core",
@@ -56,3 +55,4 @@
     "generic"
   ]
 }
+
