@@ -20977,87 +20977,87 @@ var Self =
 
     /* */
 
-    // // strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
-    // strLeft_,
-    // // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
-    // strRight_,
+    // strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
+    strLeft_,
+    // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
+    strRight_,
 
-    // strEquivalent,
-    // strsEquivalent,
-    // strsEquivalentAll,
-    // strsEquivalentAny,
-    // strsEquivalentNone,
+    strEquivalent,
+    strsEquivalent,
+    strsEquivalentAll,
+    strsEquivalentAny,
+    strsEquivalentNone,
 
-    // strBeginOf,
-    // strEndOf,
-    // strBegins,
-    // strEnds,
+    strBeginOf,
+    strEndOf,
+    strBegins,
+    strEnds,
 
-    // // converter
+    // converter
 
-    // exportStringShortDiagnostic,
-    // strPrimitive,
-    // strTypeWithTraitsBasic,
-    // strTypeWithoutTraitsBasic,
-    // strTypeWithTraitsGeneratedObject,
-    // strTypeWithoutTraitsGeneratedObject,
+    exportStringShortDiagnostic,
+    strPrimitive,
+    strTypeWithTraitsBasic,
+    strTypeWithoutTraitsBasic,
+    strTypeWithTraitsGeneratedObject,
+    strTypeWithoutTraitsGeneratedObject,
 
-    // strParseType,
+    strParseType,
 
-    // strConcat,
+    strConcat,
 
-    // strQuote,
-    // strUnquote,
-    // strQuotePairsNormalize,
-    // strQuoteAnalyze,
+    strQuote,
+    strUnquote,
+    strQuotePairsNormalize,
+    strQuoteAnalyze,
 
-    // strInsideOf,
-    // strInsideOfOptionPairing,
-    // strInsideOf_,
-    // strInsideOf_OptionPairingIs0,
-    // strInsideOf_OptionPairingIs1,
-    // strOutsideOf,
+    strInsideOf,
+    strInsideOfOptionPairing,
+    strInsideOf_,
+    strInsideOf_OptionPairingIs0,
+    strInsideOf_OptionPairingIs1,
+    strOutsideOf,
 
-    // strRemoveBegin,
-    // strRemoveEnd,
+    strRemoveBegin,
+    strRemoveEnd,
 
-    // strReplaceBegin,
-    // strReplaceEnd,
+    strReplaceBegin,
+    strReplaceEnd,
 
-    // strReplaceSrcIsString,
-    // strReplaceSrcIsArrayOfStrings,
+    strReplaceSrcIsString,
+    strReplaceSrcIsArrayOfStrings,
 
-    // strIsolateLeftOrNone,
-    // strIsolateLeftOrAll,
-    // strIsolateRightOrNone,
-    // strIsolateRightOrAll,
-    // // strIsolateInsideOrNone,
-    // strIsolateInside,
-    // strIsolateInsidePairs,
+    strIsolateLeftOrNone,
+    strIsolateLeftOrAll,
+    strIsolateRightOrNone,
+    strIsolateRightOrAll,
+    // strIsolateInsideOrNone,
+    strIsolateInside,
+    strIsolateInsidePairs,
 
-    // // splits
+    // splits
 
-    // strSplitsCoupledGroup,
-    // strSplitsDropEmpty,
-    // strSplitsUngroupedJoin,
-    // strSplitsQuotedRejoin,
-    // strSplitsQuotedRejoinOptionOnQuoting,
+    strSplitsCoupledGroup,
+    strSplitsDropEmpty,
+    strSplitsUngroupedJoin,
+    strSplitsQuotedRejoin,
+    strSplitsQuotedRejoinOptionOnQuoting,
 
-    // // splitter
+    // splitter
 
-    // strSplitFast,
-    // strSplitFastRegexp,
-    // strSplit,
-    // strSplitOptionOnQuote,
-    // strSplitOptionOnDelimeter,
+    strSplitFast,
+    strSplitFastRegexp,
+    strSplit,
+    strSplitOptionOnQuote,
+    strSplitOptionOnDelimeter,
 
-    // strSplitInlinedDefaultOptions,
-    // strSplitInlinedOptionDelimeter,
-    // strSplitInlinedOptionStripping,
-    // strSplitInlinedOptionQuoting,
-    // strSplitInlinedOptionPreservingEmpty,
-    // strSplitInlinedOptionOnInlined,
-    // strSplitInlinedCombineOnInlinedAndPreservingEmpty,
+    strSplitInlinedDefaultOptions,
+    strSplitInlinedOptionDelimeter,
+    strSplitInlinedOptionStripping,
+    strSplitInlinedOptionQuoting,
+    strSplitInlinedOptionPreservingEmpty,
+    strSplitInlinedOptionOnInlined,
+    strSplitInlinedCombineOnInlinedAndPreservingEmpty,
 
     strSplitInlinedStereo,
     strSplitInlinedStereo_Basic,
