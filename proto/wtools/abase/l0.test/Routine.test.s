@@ -3913,6 +3913,116 @@ function routineExtend( test )
 
 //
 
+function extendSpecial( test )
+{
+
+  act({ method : 'extendCloning' });
+  act({ method : 'extendInheriting' });
+  act({ method : 'extendReplacing' });
+
+  function act( env )
+  {
+
+    /* */
+
+    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}, basic`;
+
+    function routine1a( o )
+    {
+      return o.a + o.b;
+    }
+    routine1a.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    var routine1b = _.routine.extendInheriting( null, routine1a );
+    test.true( routine1a !== routine1b );
+    test.true( routine1a.defaults !== routine1b.defaults );
+    test.true( _.prototype.has( routine1b.defaults, routine1a.defaults ) );
+    test.equivalent( routine1a.defaults, routine1b.defaults );
+
+    var united = _.routine.unite( null, routine1b );
+    test.identical( united(), 4 );
+
+    /* */
+
+    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}, triple`;
+
+    function routine2a( o )
+    {
+      return o.a + o.b;
+    }
+    var defaults2a = routine2a.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    function routine2b( o )
+    {
+      return o.a + o.b;
+    }
+    var defaults2b = routine2b.defaults =
+    {
+      a : 2,
+      b : 5,
+    }
+
+    var routine2c = _.routine[ env.method ]( null, routine2a, routine2b );
+    test.true( routine2c !== routine2a );
+    test.true( routine2c !== routine2b );
+    test.true( routine2a.defaults === defaults2a );
+    test.true( routine2b.defaults === defaults2b );
+    test.true( !_.prototype.has( routine2c.defaults, routine2a.defaults ) );
+
+    if( env.method === 'extendCloning' )
+    test.true( !_.prototype.has( routine2c.defaults, routine2b.defaults ) );
+    else
+    test.true( _.prototype.has( routine2c.defaults, routine2b.defaults ) );
+
+    if( env.method === 'extendReplacing' )
+    {
+      test.true( routine2c.defaults === routine2b.defaults );
+    }
+    else
+    {
+      test.true( routine2c.defaults !== routine2b.defaults );
+    }
+
+    var exp =
+    {
+      a : 1,
+      b : 3,
+    }
+    test.equivalent( routine2a.defaults, exp );
+
+    var exp =
+    {
+      a : 2,
+      b : 5,
+    }
+    test.equivalent( routine2b.defaults, exp );
+
+    var exp =
+    {
+      a : 2,
+      b : 5,
+    }
+    test.equivalent( routine2c.defaults, exp );
+
+    var united = _.routine.unite( null, routine2c ); /* qqq : for Dmytro : write such test routine for _.routine.unite() */
+    test.identical( united(), 7 );
+
+    /* */
+
+  }
+
+}
+
+//
+
 function routineDefaults( test )
 {
 
@@ -7376,6 +7486,7 @@ var Self =
 
     // routineExtend_old,
     routineExtend,
+    extendSpecial,
     routineDefaults,
     routineUnite,
 
