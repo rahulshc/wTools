@@ -19563,10 +19563,8 @@ function strSplitInlinedStereo_OptionStripping( test )
   var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text  and  is not' ];
   test.identical( got, expected );
 
-  //
   test.case = 'openning delimeter ❮ does not have closing';
   var srcStr = 'this  ❮ \nbackground:red\t❯ is ❮ background:default   ❯  text  and  ❮  is not\n';
-  debugger;
   var got = _.strSplitInlinedStereo_( { src : srcStr, stripping : 1 } );
   var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text  and  ❮  is not' ];
   test.identical( got, expected );
