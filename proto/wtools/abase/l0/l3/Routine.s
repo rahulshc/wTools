@@ -1610,14 +1610,19 @@ function routineDefaults( dst, src, defaults )
   if( arguments.length === 2 )
   {
     defaults = arguments[ 1 ];
-    src = null;
+    _.assert( _.aux.is( defaults ) );
+    return _.routine.extend( dst, { defaults } );
+  }
+  else
+  {
+    _.assert( arguments.length === 3 );
+    _.assert( _.aux.is( defaults ) );
+    return _.routine.extend( dst, src, { defaults } );
   }
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( dst === null || src === null );
-  _.assert( _.aux.is( defaults ) );
-
-  return _.routine.extend( dst, src, { defaults } );
+  // _.assert( dst === null || src === null );
+  // _.assert( _.aux.is( defaults ) );
+  // return _.routine.extend( dst, src, { defaults } );
 }
 
 //

@@ -3071,13 +3071,13 @@ function routinesChain( test )
 //
 //   test.case = 'dst is null, src is routine maked by routineUnite';
 //   var got = _.routine.extend_old( null, _.routine.unite );
-//   test.identical( got.head, _.routine.unite.head );
-//   test.identical( got.body, _.routine.unite.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
 //   test.identical( typeof got, 'function' );
 //
 //   var got = _.routine.extend_old( null, _.routine.s.compose );
-//   test.identical( got.head, _.routine.s.compose.head );п
-//   test.identical( got.body, _.routine.s.compose.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );п
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
 //   test.identical( typeof got, 'function' );
 //
 //   function f1(){}
@@ -3109,8 +3109,8 @@ function routinesChain( test )
 //     map : { a : 2 },
 //   }
 //   var got = _.routine.extend_old( null, src );
-//   test.identical( got.head, _.routine.unite.head );
-//   test.identical( got.body, _.routine.unite.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
 //   test.equivalent( got.map, { a : 2 } );
 //   test.identical( typeof got, 'function' );
 //
@@ -3122,8 +3122,8 @@ function routinesChain( test )
 //     map : { a : 2 },
 //   };
 //   var got = _.routine.extend_old( null, src );
-//   test.identical( got.head, _.routine.unite.head );
-//   test.identical( got.body, _.routine.unite.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
 //   test.equivalent( got.map, { a : 2 } );
 //   test.identical( typeof got, 'function' );
 //
@@ -3137,8 +3137,8 @@ function routinesChain( test )
 //     c : { str : 'str' }
 //   }
 //   var got = _.routine.extend_old( null, src );
-//   test.identical( got.head, _.routine.unite.head );
-//   test.identical( got.body, _.routine.unite.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
 //   test.identical( got.a, [ 1 ] );
 //   test.identical( got.b, 'str' );
 //   test.identical( got.c, Object.create( { str : 'str' } ) );
@@ -3298,8 +3298,8 @@ function routinesChain( test )
 //   test.case = 'null extends other routine, null extends result';
 //   var src = _.routine.extend_old( null, _.routine.s.compose );
 //   var got = _.routine.extend_old( null, src );
-//   test.identical( got.head, _.routine.s.compose.head );
-//   test.identical( got.body, _.routine.s.compose.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
 //   test.identical( typeof got, 'function' );
 //
 //   test.case = 'src extends routine, result extends map ';
@@ -3312,8 +3312,8 @@ function routinesChain( test )
 //   };
 //   var src = _.routine.extend_old( null, _.routine.s.compose );
 //   var got = _.routine.extend_old( src, src1 );
-//   test.identical( got.head, _.routine.unite.head );
-//   test.identical( got.body, _.routine.unite.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
 //   test.identical( got.b, Object.create( { b : 3 } ) );
 //   test.true( got.a === 'str' );
 //   test.identical( typeof got, 'function' );
@@ -3331,8 +3331,8 @@ function routinesChain( test )
 //   };
 //   var src = _.routine.extend_old( dst, { c : {}, b : 'str' } );
 //   var got = _.routine.extend_old( dst, src1 );
-//   test.identical( got.head, _.routine.s.compose.head );
-//   test.identical( got.body, _.routine.s.compose.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
 //   test.identical( got.a, [ 'str' ] );
 //   test.identical( got.b, 'str' );
 //   test.identical( got.c, Object.create( { d : 2 } ) );
@@ -3352,8 +3352,8 @@ function routinesChain( test )
 //   };
 //   var src = _.routine.extend_old( dst, { c : {} } );
 //   var got = _.routine.extend_old( dst, src1 );
-//   test.identical( got.head, _.routine.s.compose.head );
-//   test.identical( got.body, _.routine.s.compose.body );
+//   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+//   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
 //   test.identical( got.a, [ 'str' ] );
 //   var expectedMap = Object.create( { d : 2 } );
 //   expectedMap.a = 'str';
@@ -3489,19 +3489,24 @@ function routinesChain( test )
 
 //
 
+/* qqq : split by number of arguments and extend */
+/* qqq : write test routines for supplement */
+/* qqq : write test routines for each strategy */
 function routineExtend( test )
 {
   test.open( 'dst is null, src has head and body properties');
 
   test.case = 'dst is null, src is routine maked by routineUnite';
   var got = _.routine.extend( null, _.routine.unite );
-  test.identical( got.head, _.routine.unite.head );
-  test.identical( got.body, _.routine.unite.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
   test.identical( typeof got, 'function' );
 
   var got = _.routine.extend( null, _.routine.s.compose );
-  test.identical( got.head, _.routine.s.compose.head );
-  test.identical( got.body, _.routine.s.compose.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
   test.identical( typeof got, 'function' );
 
   function f1(){}
@@ -3534,8 +3539,8 @@ function routineExtend( test )
     map : { a : 2 },
   }
   var got = _.routine.extend( null, src );
-  test.identical( got.head, _.routine.unite.head );
-  test.identical( got.body, _.routine.unite.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
   test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
@@ -3547,8 +3552,8 @@ function routineExtend( test )
     map : { a : 2 },
   };
   var got = _.routine.extend( null, src );
-  test.identical( got.head, _.routine.unite.head );
-  test.identical( got.body, _.routine.unite.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
   test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
@@ -3562,8 +3567,8 @@ function routineExtend( test )
     c : { str : 'str' }
   }
   var got = _.routine.extend( null, src );
-  test.identical( got.head, _.routine.unite.head );
-  test.identical( got.body, _.routine.unite.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
   test.identical( got.a, [ 1 ] );
   test.identical( got.b, 'str' );
   test.identical( got.c, { str : 'str' } );
@@ -3723,9 +3728,11 @@ function routineExtend( test )
   test.case = 'null extends other routine, null extends result';
   var src = _.routine.extend( null, _.routine.s.compose );
   var got = _.routine.extend( null, src );
-  test.identical( got.head, _.routine.s.compose.head );
-  test.identical( got.body, _.routine.s.compose.body );
+  /* qqq : for Dmytro : don't use routiens from the module as data for testing */
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
   test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : lack of checks */
 
   test.case = 'src extends routine, result extends map ';
   var src1 =
@@ -3737,8 +3744,8 @@ function routineExtend( test )
   };
   var src = _.routine.extend( null, _.routine.s.compose );
   var got = _.routine.extend( src, src1 );
-  test.identical( got.head, _.routine.unite.head );
-  test.identical( got.body, _.routine.unite.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
   test.identical( got.b, { b : 3 } );
   test.true( got.a === 'str' );
   test.identical( typeof got, 'function' );
@@ -3756,8 +3763,8 @@ function routineExtend( test )
   };
   var src = _.routine.extend( dst, { c : {}, b : 'str' } );
   var got = _.routine.extend( dst, src1 );
-  test.identical( got.head, _.routine.s.compose.head );
-  test.identical( got.body, _.routine.s.compose.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
   test.identical( got.a, [ 'str' ] );
   test.identical( got.b, 'str' );
   test.identical( got.c, { d : 2 } );
@@ -3777,8 +3784,8 @@ function routineExtend( test )
   };
   var src = _.routine.extend( dst, { c : {} } );
   var got = _.routine.extend( dst, src1 );
-  test.identical( got.head, _.routine.s.compose.head );
-  test.identical( got.body, _.routine.s.compose.body );
+  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
   test.identical( got.a, [ 'str' ] );
   var expectedMap = { d : 2 };
   expectedMap.a = 'str';
@@ -4102,6 +4109,7 @@ function routineDefaults( test )
 
 //
 
+// qqq : for Dmytro : extend the routine. split it?
 function routineUnite( test )
 {
   function headObject( rotine, args )
@@ -4129,7 +4137,10 @@ function routineUnite( test )
   {
     return _.arrayMake( arguments );
   }
-  bodyUnroll.defaults = bodyObject.defaults;
+  bodyUnroll.defaults =
+  {
+    args : null,
+  }
 
   function tail( result )
   {
@@ -4150,14 +4161,14 @@ function routineUnite( test )
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
-  test.case = 'head - undefined, body expects unroll';
-  var routine = _.routine.unite( undefined, bodyUnroll );
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 1, 2 ] );
+  // test.case = 'head - undefined, body expects unroll';
+  // var routine = _.routine.unite( undefined, bodyUnroll );
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 1, 2 ] );
 
   test.case = 'head - null, body expects map';
   var routine = _.routine.unite( null, bodyObject );
@@ -4168,34 +4179,36 @@ function routineUnite( test )
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 1, 2 ] );
 
-  test.case = 'head - null, body expects unroll';
-  var routine = _.routine.unite( null, bodyUnroll );
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 1, 2 ] );
+
+  // test.case = 'head - null, body expects unroll';
+  // var routine = _.routine.unite( null, bodyUnroll );
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 1, 2 ] );
 
   /* */
 
-  test.case = 'head - null';
-  var routine = _.routine.unite({ head : null, body : bodyUnroll });
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 1, 2 ] );
 
-  test.case = 'head - undefined';
-  var routine = _.routine.unite({ head : undefined, body : bodyUnroll });
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 1, 2 ] );
+  // test.case = 'head - null';
+  // var routine = _.routine.unite({ head : null, body : bodyUnroll });
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 1, 2 ] );
+
+  // test.case = 'head - undefined';
+  // var routine = _.routine.unite({ head : undefined, body : bodyUnroll });
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 1, 2 ] );
 
   test.close( 'only body' );
 
@@ -4252,14 +4265,15 @@ function routineUnite( test )
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
-  test.case = 'head - undefined, body expects unroll';
-  var routine = _.routine.unite( undefined, bodyUnroll, tail );
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2 ] );
+
+  // test.case = 'head - undefined, body expects unroll';
+  // var routine = _.routine.unite( undefined, bodyUnroll, tail );
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 2, 2 ] );
 
   test.case = 'head - null, body expects map';
   var routine = _.routine.unite( null, bodyObject, tail );
@@ -4270,34 +4284,37 @@ function routineUnite( test )
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
-  test.case = 'head - null, body expects unroll';
-  var routine = _.routine.unite( null, bodyUnroll, tail );
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2 ] );
+
+  // test.case = 'head - null, body expects unroll';
+  // var routine = _.routine.unite( null, bodyUnroll, tail );
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 2, 2 ] );
 
   /* */
 
-  test.case = 'head - null';
-  var routine = _.routine.unite({ head : null, body : bodyUnroll, tail });
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2 ] );
 
-  test.case = 'head - undefined';
-  var routine = _.routine.unite({ head : undefined, body : bodyUnroll, tail });
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( _.unrollMake([ 1, 2 ]) );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2 ] );
+  // test.case = 'head - null';
+  // var routine = _.routine.unite({ head : null, body : bodyUnroll, tail });
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 2, 2 ] );
+
+
+  // test.case = 'head - undefined';
+  // var routine = _.routine.unite({ head : undefined, body : bodyUnroll, tail });
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var got = routine( _.unrollMake([ 1, 2 ]) );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 2, 2 ] );
 
   /* */
 
@@ -4318,15 +4335,16 @@ function routineUnite( test )
   test.true( _.arrayIs( got ) );
   test.identical( got, [ 2, 2, o ] );
 
-  test.case = 'head - null, tail use options map';
-  var routine = _.routine.unite({ head : null, body : bodyUnroll, tail : tailUseOptions });
-  test.true( _.routine.is( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var o = _.unrollMake([ 1, 2 ]);
-  var got = routine( o );
-  test.true( _.arrayIs( got ) );
-  test.identical( got, [ 2, 2, o ] );
+
+  // test.case = 'head - null, tail use options map';
+  // var routine = _.routine.unite({ head : null, body : bodyUnroll, tail : tailUseOptions });
+  // test.true( _.routine.is( routine ) );
+  // test.identical( routine.name, 'bodyUnroll' );
+  // test.identical( routine.defaults, { args : null } );
+  // var o = _.unrollMake([ 1, 2 ]);
+  // var got = routine( o );
+  // test.true( _.arrayIs( got ) );
+  // test.identical( got, [ 2, 2, o ] );
 
   test.close( 'body and tail' );
 
