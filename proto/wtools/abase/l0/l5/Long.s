@@ -3145,30 +3145,16 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 function longIdenticalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.longLike( src1 ) );
-  // _.assert( _.longLike( src2 ) );
+  _.assert( _.longLike( src1 ) );
+  _.assert( _.longLike( src2 ) );
 
   if( _.primitiveIs( src1 ) )
   return false;
   if( _.primitiveIs( src2 ) )
   return false;
 
-  let result = true;
+  return _._longIdenticalShallow( src1, src2 );
 
-  if( src1.length !== src2.length )
-  return false;
-
-  for( let s = 0 ; s < src1.length ; s++ )
-  {
-
-    result = src1[ s ] === src2[ s ];
-
-    if( result === false )
-    return false;
-
-  }
-
-  return result;
 }
 
 //
@@ -3783,6 +3769,7 @@ let Extension =
   longIdenticalShallow,
   _longIdenticalShallow,
   longIdentical : longIdenticalShallow,
+  longEquivalentShallow : longIdenticalShallow,
 
   longHas,
   longHasAny,
