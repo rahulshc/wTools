@@ -19581,7 +19581,6 @@ function strSplitInlinedStereo_OptionStripping( test )
   var expected = [ '', [ 'background:red' ], 'i', [ 's' ], 'background:default', [ '' ], 'text' ];
   test.identical( got, expected );
 
-  //
   test.case = 'inlined at the beginning and the end';
   var srcStr = '  ❮  background:red  ❯  i  ❮  s  ❯   background:default  ❮  ';
   var got = _.strSplitInlinedStereo_( { src : srcStr, stripping : 1 } );
