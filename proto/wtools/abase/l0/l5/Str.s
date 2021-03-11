@@ -2997,6 +2997,8 @@ function strSplitInlinedStereo_( o )
     return false;
   }
 
+  //
+
   function escapeInlined( func )
   {
     return function ( el )
@@ -3004,6 +3006,8 @@ function strSplitInlinedStereo_( o )
       return _.escape.wrap( func( el ) );
     }
   }
+
+  //
 
   function preprocessBeforeJoin( array )
   {
@@ -3073,6 +3077,8 @@ function strSplitInlinedStereo_( o )
     }
   }
 
+  //
+
   function handlePreservingEmpty()
   {
     if( _.escape.is( result[ 0 ] ) )
@@ -3094,6 +3100,8 @@ function strSplitInlinedStereo_( o )
       }
     }
   }
+
+  //
 
   function unescape()
   {
