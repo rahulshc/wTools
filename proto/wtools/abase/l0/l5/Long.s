@@ -3154,11 +3154,6 @@ function longIdenticalShallow( src1, src2 )
   if( !_.longLike( src2 ) )
   return false;
 
-  // if( _.primitiveIs( src1 ) )
-  // return false;
-  // if( _.primitiveIs( src2 ) )
-  // return false;
-
   return _._longIdenticalShallow( src1, src2 );
 
 }
