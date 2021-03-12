@@ -630,7 +630,97 @@ function has( src, key )
   return false;
   if( !Reflect.has( src, key ) )
   return false;
+
   return true;
+}
+
+//
+
+function ownEnumerable( src, key )
+{
+  if( _.primitive.is( src ) )
+  return false;
+
+  let descriptor = Object.getOwnPropertyDescriptor( src, key );
+
+  if( !descriptor )
+  return false;
+
+  debugger;
+
+  return !!descriptor.enumerable
+}
+
+//
+
+function hasEnumerable( src, key )
+{
+  if( _.primitive.is( src ) )
+  return false;
+
+  let found = _.property.descriptorOf( src, key );
+
+  debugger;
+
+  if( !found.descriptor )
+  return false;
+
+  return !!found.descriptor.enumerable
+}
+
+//
+
+function descriptorActiveOf( object, name )
+{
+  let result = Object.create( null );
+  // yyy
+  // result.object = null;
+  // result.descriptor = null;
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( !!object, 'No object' );
+
+  do
+  {
+    let descriptor = Object.getOwnPropertyDescriptor( object, name );
+    if( descriptor && !( 'value' in descriptor ) )
+    {
+      result.descriptor = descriptor;
+      result.object = object;
+      return result;
+    }
+    object = Object.getPrototypeOf( object );
+  }
+  while( object );
+
+  return result;
+}
+
+//
+
+function descriptorOf( object, name )
+{
+  let result = Object.create( null );
+  // yyy
+  // result.object = null;
+  // result.descriptor = null;
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  do
+  {
+    let descriptor = Object.getOwnPropertyDescriptor( object, name );
+    if( descriptor )
+    {
+      result.descriptor = descriptor;
+      result.object = object;
+      return result;
+    }
+    object = Object.getPrototypeOf( object );
+  }
+  while( object );
+
+  return result;
 }
 
 // --
@@ -655,8 +745,15 @@ let Extension =
 
   onlyImplicit,
 
-  own,
-  has,
+  own, /* qqq : cover please */
+  has, /* qqq : cover please */
+  ownEnumerable, /* qqq : cover please */
+  hasEnumerable, /* qqq : cover please */
+
+  // propertyDescriptorActiveGet,
+  // propertyDescriptorGet,
+  descriptorActiveOf, /* qqq : cover please */
+  descriptorOf, /* qqq : cover please */
 
 }
 

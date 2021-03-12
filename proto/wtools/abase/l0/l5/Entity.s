@@ -26,14 +26,14 @@ function identicalShallow( src1, src2 )
     /*
       - hashmap
     */
-    return _.hashMap.areIdenticalShallow( src1, src2 )
+    return _.hashMap.identicalShallow( src1, src2 )
   }
   else if( _.set.like( src1 ) )
   {
     /*
       - set
     */
-    return _.set.areIdenticalShallow( src1, src2 );
+    return _.set.identicalShallow( src1, src2 );
   }
   else if( _.bufferAnyIs( src1 ) )
   {
@@ -45,7 +45,7 @@ function identicalShallow( src1, src2 )
       - BufferView
       - BufferBytes
     */
-    return _.buffersAreIdenticalShallow( src1, src2 );
+    return _.buffersIdenticalShallow( src1, src2 );
   }
   else if( _.countable.is( src1 ) )
   {
@@ -55,7 +55,7 @@ function identicalShallow( src1, src2 )
       - long
       - array
     */
-    return _.countable.areIdenticalShallow( src1, src2 );
+    return _.countable.identicalShallow( src1, src2 );
   }
   else if( _.object.like( src1 ) )
   {
@@ -73,15 +73,15 @@ function identicalShallow( src1, src2 )
     */
     if( _.date.is( src1 ) )
     {
-      return _.date.areIdenticalShallow( src1, src2 );
+      return _.date.identicalShallow( src1, src2 );
     }
     else if( _.regexp.is( src1 ) )
     {
-      return _.regexp.areIdenticalShallow( src1, src2 );
+      return _.regexp.identicalShallow( src1, src2 );
     }
     else if( _.aux.is( src1 ) )
     {
-      return _.aux.areIdenticalShallow( src1, src2 );
+      return _.aux.identicalShallow( src1, src2 );
     }
 
     /* non-identical objects */
@@ -97,7 +97,7 @@ function identicalShallow( src1, src2 )
       - String
     */
 
-    return _.primitive.areIdenticalShallow( src1, src2 );
+    return _.primitive.identicalShallow( src1, src2 );
   }
   else
   {
@@ -115,6 +115,7 @@ function equivalentShallow( src1, src2, options )
     - | number1 - number2 | <= accuracy
     - strings that differ only in whitespaces at the start and/or at the end
     - regexp with same source and different flags
+    - countable with the same length and content
   */
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( options === undefined || _.objectLike( options ), 'Expects map of options as third argument' );
@@ -124,7 +125,7 @@ function equivalentShallow( src1, src2, options )
   if( options )
   accuracy = options.accuracy || undefined;
 
-  if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
+  if( _.primitiveIs( src1 ) && _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
   {
     /*
       - Symbol
@@ -133,30 +134,13 @@ function equivalentShallow( src1, src2, options )
       - Boolean
       - String
     */
-    return _.primitive.areEquivalentShallow( src1, src2, accuracy );
+    return _.primitive.equivalentShallow( src1, src2, accuracy );
   }
-
-  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
-  return false;
 
   if( src1 === src2 )
   return true;
 
-  if( _.hashMap.like( src1 ) )
-  {
-    /*
-      - hashmap
-    */
-    return _.hashMap.areEquivalentShallow( src1, src2 )
-  }
-  else if( _.set.like( src1 ) )
-  {
-    /*
-      - set
-    */
-    return _.set.areEquivalentShallow( src1, src2 );
-  }
-  else if( _.bufferAnyIs( src1 ) )
+  if( _.bufferAnyIs( src1 ) && _.bufferAnyIs( src2 ) )
   {
     /*
       - BufferNode
@@ -166,9 +150,23 @@ function equivalentShallow( src1, src2, options )
       - BufferView
       - BufferBytes
     */
-    return _.buffersAreEquivalentShallow( src1, src2 );
+    return _.buffersEquivalentShallow( src1, src2 );
   }
-  else if( _.countable.is( src1 ) )
+  else if( _.hashMap.like( src1 ) && _.hashMap.like( src1 ) )
+  {
+    /*
+      - hashmap
+    */
+    return _.hashMap.equivalentShallow( src1, src2 )
+  }
+  else if( _.set.like( src1 ) && _.set.like( src2 ) )
+  {
+    /*
+      - set
+    */
+    return _.set.equivalentShallow( src1, src2 );
+  }
+  else if( _.countable.is( src1 ) && _.countable.is( src2 ) )
   {
     /*
       - countable
@@ -176,9 +174,13 @@ function equivalentShallow( src1, src2, options )
       - long
       - array
     */
-    return _.countable.areEquivalentShallow( src1, src2 );
+    return _.countable.equivalentShallow( src1, src2 );
   }
-  else if( _.object.like( src1 ) )
+
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
+
+  if( _.object.like( src1 ) )
   {
     /*
       - objectLike
@@ -194,15 +196,15 @@ function equivalentShallow( src1, src2, options )
     */
     if( _.date.is( src1 ) )
     {
-      return _.date.areEquivalentShallow( src1, src2 );
+      return _.date.equivalentShallow( src1, src2 );
     }
     else if( _.regexp.is( src1 ) )
     {
-      return _.regexp.areEquivalentShallow( src1, src2 );
+      return _.regexp.equivalentShallow( src1, src2 );
     }
     else if( _.aux.is( src1 ) )
     {
-      return _.aux.areEquivalentShallow( src1, src2 );
+      return _.aux.equivalentShallow( src1, src2 );
     }
 
     /* non-identical objects */
