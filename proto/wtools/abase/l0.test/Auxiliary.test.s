@@ -198,6 +198,14 @@ function auxsAreIdentical( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'not object-like 1 arg';
+  var got = _.aux.identicalShallow( [ 'a', 7, 'b', 14 ], { a : 7, b : 14 } );
+  var expected = false;
+  test.identical( got, expected );
+  var got = _.aux.identicalShallow( { a : 7, b : 14 }, [ 'a', 7, 'b', 14 ] );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'not object-like arguments';
   var got = _.aux.identicalShallow( [ 'a', 7, 'b', 14 ], [ 'a', 7, 'b', 14 ] );
   var expected = false;

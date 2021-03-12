@@ -222,6 +222,14 @@ function primitivesAreIdenticalShallow( test )
   var got = _.primitive.identicalShallow( true, false );
   test.identical( got, false );
 
+  test.case = 'non primitives 1 arg';
+  var got = _.primitive.identicalShallow( 1, { a : 1 } );
+  test.identical( got, false );
+  var got = _.primitive.identicalShallow( { a : 1 }, 1 );
+  test.identical( got, false );
+  var got = _.primitive.identicalShallow( [ 1 ], 1 );
+  test.identical( got, false );
+
   test.case = 'non primitives';
   var got = _.primitive.identicalShallow( {}, {} );
   test.identical( got, false );
