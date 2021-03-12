@@ -64,7 +64,7 @@ function forEach( src, onEach )
 </details>
 <br>
 The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`.
-The testing program should consist of 2 cases ( can be written as 1 case, then by changing size of entity and number of iterations - run code to produce results for second case ):
+The testing program should consist of 2 cases ( can be written as 1 case, then by changing size of entity and number of iterations - run code to produce results for the second case ):
 
 - Large entity, small amount of iterations ( measure cyclic, mostly code that runs on entity );
 - Small entity, large amount of iterations ( measure non-cyclic, mostly code that runs outside of entity );
