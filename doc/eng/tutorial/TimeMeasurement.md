@@ -90,7 +90,7 @@ Can use abbreviations such as :
 | Njs v12.7.0  | 11.533 s        | 21.673 s      | 0.134 s         | 0.801 s       |
 | Njs v13.3.0  | 11.448 s        | 21.324 s      | 0.135 s         | 0.811 s       |
 
-The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
+The report shows that the `for` loop works at least twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
 
 ### Validity and pitfalls
 
