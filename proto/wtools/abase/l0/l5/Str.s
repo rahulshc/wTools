@@ -3448,8 +3448,8 @@ function _exportStringShort_head( routine, args )
 
 function _exportStringShort_body( o )
 {
-  _.assert( _.number.is( o.width ) && o.width >= 0 );
-  _.assert( _.number.is( o.height ) && o.height >= 0 );
+  _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
+  _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
 
   let result = '';
   let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
@@ -3497,8 +3497,8 @@ function _exportStringShort_body( o )
       result = String( o.src );
     }
 
-    if( o.width !== 0 )
-    result = _.strShort({ src : result, width : o.width });
+    if( o.widthLimit !== 0 )
+    result = _.strShort({ src : result, widthLimit : o.widthLimit });
 
   }
   catch( err )
@@ -3514,8 +3514,8 @@ _exportStringShort_body.defaults =
 {
   src : null,
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  width : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
-  height : 1, /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
 let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
