@@ -2028,6 +2028,18 @@ function strEquivalent( test )
   var got = _.strEquivalent( /\w+/, /\w+/ );
   test.identical( got, true );
 
+  test.case = 'strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\n', '\nabc\n\n' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t           ' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\na   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
+  test.identical( got, true );
+
   test.close( 'true' );
 
   /* - */
@@ -2064,6 +2076,18 @@ function strEquivalent( test )
 
   test.case = 'regexp and regexp';
   var got = _.strEquivalent( /\w+/g, /\w+/gi );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\nb', '\nabc\n\n' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t    c       ' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\nab   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
   test.identical( got, false );
 
   test.close( 'false' );
@@ -3508,52 +3532,51 @@ function exportStringShortDiagnostic( test )
 
   /* */
 
-  test.open( 'option::width' );
+  test.open( 'option::widthLimit' );
 
-  test.case = 'string, width 0';
+  test.case = 'string, widthLimit 0';
   var src = '0123456'
   var expected = '0123456';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 0 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 0 } ), expected );
 
-  test.case = 'string, width 1';
+  test.case = 'string, widthLimit 1';
   var src = '0123456'
   var expected = '0';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 1 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 1 } ), expected );
 
-  test.case = 'string, width 5';
+  test.case = 'string, widthLimit 5';
   var src = '0123456'
   var expected = '01256';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 5 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 5 } ), expected );
 
-  test.case = 'string, width > str.length';
+  test.case = 'string, widthLimit > str.length';
   var src = '0123456'
   var expected = '0123456';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 10 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 10 } ), expected );
 
   /* */
 
-  test.case = 'map, width 0';
+  test.case = 'map, widthLimit 0';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 0 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 0 } ), expected );
 
-  test.case = 'map, width 1';
+  test.case = 'map, widthLimit 1';
   var src = Object.create( null );
   var expected = '{';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 1 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 1 } ), expected );
 
-  test.case = 'map, width 10';
+  test.case = 'map, widthLimit 10';
   var src = Object.create( null );
   var expected = '{- Mats -}';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 10 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 10 } ), expected );
 
-  test.case = 'map, width > str.length';
+  test.case = 'map, widthLimit > str.length';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 100 } ), expected );
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 100 } ), expected );
 
-
-  test.close( 'option::width' );
+  test.close( 'option::widthLimit' );
 
   /* - */
 
