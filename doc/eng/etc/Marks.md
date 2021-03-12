@@ -1,7 +1,7 @@
 | **Mark**        | **Meaning**                                                                      | **Example**                                                 |
 | :-------------: | :------------------------------------------------------------------------------: | :---------------------------------------------------------: |
 | qqq\<priority\> | A task for developer. qqq2 should be performed before qqq, etc.                  | qqq : refactor to use subroutines,  qqq2 : cover with tests |
-| xxx             | A task for Kos                                                                   |                                                             |
+| xxx             | A task for Kostiantyn                                                                   |                                                             |
 | aaa             | A developers mark to signal that a task is completed                             | qqq2 : cover with tests / aaa : Done. \<Name\>              |
 | zzz             | Delayed task                                                                     | zzz : optimize                                              |
 | yyy             |                                                                                  |                                                             |
