@@ -58,6 +58,7 @@ function exportStringShortDiagnostic( src )
 
 var AuxiliaryExtension =
 {
+  identical : identicalShallow,
   identicalShallow,
   _identicalShallow,
   equivalentShallow : identicalShallow,
