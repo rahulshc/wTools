@@ -3448,6 +3448,9 @@ function _exportStringShort_head( routine, args )
 
 function _exportStringShort_body( o )
 {
+  _.assert( _.number.is( o.width ) && o.width >= 0 );
+  _.assert( _.number.is( o.height ) && o.height >= 0 );
+
   let result = '';
   let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
 
@@ -3491,9 +3494,11 @@ function _exportStringShort_body( o )
     }
     else
     {
-      result += String( o.src );
-      result = _.strShort( result );
+      result = String( o.src );
     }
+
+    if( o.width !== 0 )
+    result = _.strShort({ src : result, width : o.width });
 
   }
   catch( err )
@@ -3509,8 +3514,8 @@ _exportStringShort_body.defaults =
 {
   src : null,
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+  width : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  height : 1, /* qqq for Yevhen : implement and cover */
 }
 
 let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
@@ -3546,20 +3551,21 @@ exportStringShortDiagnostic.defaults =
 
 //
 
-function exportStringShortCode( src, o )
+function exportStringShortCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  if( o )
-  {
-    o.src = src;
-    return _.entity._exportStringShortCode( o );
-  }
-  else
-  {
-    return _.entity._exportStringShortCode({ src });
-  }
+  // if( o )
+  // {
+  //   o.src = src;
+  //   return _.entity._exportStringShortCode( o );
+  // }
+  // else
+  // {
+  return _.entity._exportStringShortCode({ src });
+  // }
 }
+
 
 // --
 // extension

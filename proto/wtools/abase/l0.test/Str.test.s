@@ -3506,6 +3506,55 @@ function exportStringShortDiagnostic( test )
   var expected = '{- process.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
+  /* */
+
+  test.open( 'option::width' );
+
+  test.case = 'string, width 0';
+  var src = '0123456'
+  var expected = '0123456';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 0 } ), expected );
+
+  test.case = 'string, width 1';
+  var src = '0123456'
+  var expected = '0';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 1 } ), expected );
+
+  test.case = 'string, width 5';
+  var src = '0123456'
+  var expected = '01256';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 5 } ), expected );
+
+  test.case = 'string, width > str.length';
+  var src = '0123456'
+  var expected = '0123456';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 10 } ), expected );
+
+  /* */
+
+  test.case = 'map, width 0';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 0 } ), expected );
+
+  test.case = 'map, width 1';
+  var src = Object.create( null );
+  var expected = '{';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 1 } ), expected );
+
+  test.case = 'map, width 10';
+  var src = Object.create( null );
+  var expected = '{- Mats -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 10 } ), expected );
+
+  test.case = 'map, width > str.length';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { width : 100 } ), expected );
+
+
+  test.close( 'option::width' );
+
   /* - */
 
   function _iterate()

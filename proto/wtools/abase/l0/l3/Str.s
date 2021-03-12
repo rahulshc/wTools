@@ -273,7 +273,7 @@ function strShort( o )
 {
 
   if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], width : arguments[ 1 ] };
   else if( arguments.length === 1 )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
@@ -281,8 +281,8 @@ function strShort( o )
   _.routine.options( strShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.number.is( o.limit ) );
-  _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
+  _.assert( _.number.is( o.width ) );
+  _.assert( o.width >= 0, 'Option::o.width must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
@@ -296,7 +296,7 @@ function strShort( o )
   o.postfix = '';
   if( o.src.length < 1 )
   {
-    if( o.prefix.length + o.postfix.length <= o.limit )
+    if( o.prefix.length + o.postfix.length <= o.width )
     return o.prefix + o.postfix
     o.src = o.prefix + o.postfix;
     o.prefix = '';
@@ -308,10 +308,10 @@ function strShort( o )
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.width )
   return o.prefix + o.infix + o.postfix;
 
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.width )
   {
     o.src = o.prefix + o.infix + o.postfix;
     o.prefix = '';
@@ -325,7 +325,7 @@ function strShort( o )
 
   if( o.cutting === 'left' )
   {
-    while( o.onLength( src ) + fixLength > o.limit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+    while( o.onLength( src ) + fixLength > o.width ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
       src = src.slice( 1 );
     }
@@ -333,7 +333,7 @@ function strShort( o )
   }
   else if( o.cutting === 'right' )
   {
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.width )
     {
       src = src.slice( 0, src.length - 1 );
     }
@@ -341,11 +341,11 @@ function strShort( o )
   }
   else
   {
-    if( o.onLength( src ) + fixLength <= o.limit )
+    if( o.onLength( src ) + fixLength <= o.width )
     return o.prefix + src + o.postfix;
     let begin = '';
     let end = '';
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.width )
     {
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
@@ -359,9 +359,9 @@ function strShort( o )
 strShort.defaults =
 {
   src : null,
-  limit : 40, // width
-  prefix : null, // '{- '
-  postfix : null, // ' -}'
+  width : 40,
+  prefix : null,
+  postfix : null,
   infix : null,
   onLength : null, /* xxx : investigate */
   cutting : 'center',
