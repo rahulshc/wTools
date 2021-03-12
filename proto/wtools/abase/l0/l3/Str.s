@@ -270,7 +270,6 @@ function exportStringShortDiagnostic( src, o )
   return result;
 }
 
-
 //
 
 /**
@@ -339,7 +338,7 @@ function strShort( o )
 {
 
   if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
   else if( arguments.length === 1 )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
@@ -347,8 +346,8 @@ function strShort( o )
   _.routine.options( strShort, o );
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.number.is( o.limit ) );
-  _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
+  _.assert( _.number.is( o.widthLimit ) );
+  _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
@@ -362,7 +361,7 @@ function strShort( o )
   o.postfix = '';
   if( o.src.length < 1 )
   {
-    if( o.prefix.length + o.postfix.length <= o.limit )
+    if( o.prefix.length + o.postfix.length <= o.widthLimit )
     return o.prefix + o.postfix
     o.src = o.prefix + o.postfix;
     o.prefix = '';
@@ -374,10 +373,10 @@ function strShort( o )
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
   return o.prefix + o.infix + o.postfix;
 
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
   {
     o.src = o.prefix + o.infix + o.postfix;
     o.prefix = '';
@@ -391,7 +390,7 @@ function strShort( o )
 
   if( o.cutting === 'left' )
   {
-    while( o.onLength( src ) + fixLength > o.limit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+    while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
       src = src.slice( 1 );
     }
@@ -399,7 +398,7 @@ function strShort( o )
   }
   else if( o.cutting === 'right' )
   {
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.widthLimit )
     {
       src = src.slice( 0, src.length - 1 );
     }
@@ -407,11 +406,11 @@ function strShort( o )
   }
   else
   {
-    if( o.onLength( src ) + fixLength <= o.limit )
+    if( o.onLength( src ) + fixLength <= o.widthLimit )
     return o.prefix + src + o.postfix;
     let begin = '';
     let end = '';
-    while( o.onLength( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.widthLimit )
     {
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
@@ -425,7 +424,8 @@ function strShort( o )
 strShort.defaults =
 {
   src : null,
-  limit : 40,
+  widthLimit : 40,
+  heightLimit : 0,
   prefix : null,
   postfix : null,
   infix : null,
@@ -1254,6 +1254,7 @@ let StandardTypeSet = new Set
 let ExtensionEntity =
 {
 
+<<<<<<< HEAD
   exportStringSimple : exportStringShortDiagnostic, /* xxx : deprecate? */
   exportStringShort : exportStringShortDiagnostic,
   exportString : exportStringShortDiagnostic,
@@ -1261,6 +1262,8 @@ let ExtensionEntity =
   exportStringShortDiagnostic,
   // exportStringShortCode, /* qqq xxx : introduce */
 
+=======
+>>>>>>> 4a06d103ac3b5e1d0b196e2e547aaf61a8efd73e
   strPrimitive,
   strTypeSecondary,
   strType : strTypeWithTraits,

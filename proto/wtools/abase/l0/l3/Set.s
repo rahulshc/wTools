@@ -108,8 +108,13 @@ function setsToArrays( srcs )
 function setsAreIdenticalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.setIs( src1 ) );
-  _.assert( _.setIs( src2 ) );
+  // _.assert( _.setIs( src1 ) );
+  // _.assert( _.setIs( src2 ) );
+
+  if( !_.set.is( src1 ) )
+  return false;
+  if( !_.set.is( src2 ) )
+  return false;
 
   return _.set._setsAreIdenticalShallow( src1, src2 );
 }
