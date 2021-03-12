@@ -62,21 +62,21 @@ function equalAre( it )
 
   _.assert( arguments.length === 1 );
 
-  if( !it./*srcEffective*/src )
+  if( !it.src )
   return end( false );
-  if( !it./*srcEffective2*/src2 )
+  if( !it.src2 )
   return end( false );
-  if( !it./*srcEffective*/src instanceof _.Escape )
+  if( !it.src instanceof _.Escape )
   return end( false );
-  if( !it./*srcEffective2*/src2 instanceof _.Escape )
+  if( !it.src2 instanceof _.Escape )
   return end( false );
 
-  if( it./*srcEffective*/src.val === it./*srcEffective2*/src2.val )
+  if( it.src.val === it.src2.val )
   return end( true );
 
-  if( !( it./*srcEffective*/src.val instanceof _.Escape ) )
+  if( !( it.src.val instanceof _.Escape ) )
   return end( false );
-  if( !( it./*srcEffective*/src.val instanceof _.Escape ) )
+  if( !( it.src.val instanceof _.Escape ) )
   return end( false );
 
   function end( result )
