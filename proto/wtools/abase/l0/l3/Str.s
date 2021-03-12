@@ -136,6 +136,7 @@ function strEquivalent( src1, src2 )
 
   if( strIs1 && strIs2 )
   {
+    /* qqq : for Yevhen : bad */
     return src1.trim() === src2.trim();
   }
   else if( strIs1 )
@@ -1365,7 +1366,7 @@ let ExtensionTools =
 
   strHas,
 
-  strEquivalent,
+  strEquivalent, /* qqq : for Yevhen : bad */
   areEquivalentShallow : strEquivalent,
   strsEquivalent,
 

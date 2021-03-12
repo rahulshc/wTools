@@ -2630,6 +2630,7 @@ function strLinesJoin( src )
  * @namespace Tools
  */
 
+/* qqq : for Dmytro : measure time and optimize. ask */
 function strLinesStrip( src )
 {
 
