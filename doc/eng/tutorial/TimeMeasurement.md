@@ -74,6 +74,7 @@ The size of entity and iterations should be choosen to always produce similar re
 The program measures the time it takes to iterate elements of an array of length 50 000 000, run both algorithms 10 times.<br>
 Also the program measures the time it takes to iterate elements of an array of length 500, run both algorithms 100000 times.<br>
 The program outputs the variable `counter` to avoid unwanted optimization.
+After completion, time that the test routine took should be analyzed to make sure that it runs nearly times of algorithms checked combined.
 ### Measurement results
 
 The measurements results should be compiled into a table indicating the interpreter and its version. The results may differ significantly depending on the interpreter and its version. Also test case should be specified.
