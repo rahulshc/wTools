@@ -208,126 +208,54 @@ function strsEquivalent( src1, src2 )
 // converter
 // --
 
-/**
- * Return in one string value of all arguments.
- *
- * @example
- * let args = _.entity.exportStringSimple( 'test2' );
- *
- * @return {string}
- * If no arguments return empty string
- * @function exportStringSimple
- * @namespace Tools
- */
-
-function exportStringSimple()
-{
-  let result = '';
-  let line;
-
-  if( !arguments.length )
-  return result;
-
-  _.assert( arguments.length === 1 );
-
-  for( let a = 0 ; a < arguments.length ; a++ )
-  {
-    let src = arguments[ a ];
-
-    if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
-    {
-      line = src.toStr();
-    }
-    else try
-    {
-      line = String( src );
-    }
-    catch( err )
-    {
-      line = _.entity.strType( src );
-    }
-
-    result += line;
-    if( a < arguments.length-1 )
-    result += ' ';
-
-  }
-
-  return result;
-}
-
-//
-
-function exportStringShort( src, opts )
-{
-  let result = '';
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.entity.exportStringShortDiagnostic( src );
-  // result = _.entity.exportStringSimple( src );
-  // result = _.entity.exportStringShort( src ); xxx
-  return result;
-}
-
-// exportStringShort.fields = exportStringShort;
-// exportStringShort.routines = exportStringShort;
-
-//
-
 /* qqq for Yevhen : make head and body */
-function exportStringShortDiagnostic( src )
+function exportStringShortDiagnostic( src, o )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+
   let result = '';
-
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  /* qqq : don't produce options-map when possible that here */
-
   try
   {
-
     if( _.primitive.is( src ) )
     {
-      result += _.primitive.exportStringShortDiagnostic( src );
+      // result = _.primitive[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.set.like( src ) )
     {
-      result += _.set.exportStringShortDiagnostic( src );
+      // result = _.set[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.hashMap.like( src ) )
     {
-      result += _.hashMap.exportStringShortDiagnostic( src );
+      // result = _.hashMap[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.vector.like( src ) )
     {
-      result += _.vector.exportStringShortDiagnostic( src );
+      // result = _.vector[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.date.is( src ) )
     {
-      result += _.date.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      // result = _.date[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.regexpIs( src ) )
     {
-      result += _.regexp.exportStringShortDiagnostic( src ) /* qqq for Yevhen : no! | aaa : Fixed */
+      // result = _.regexp[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.routine.is( src ) )
     {
-      result += _.routine.exportStringShortDiagnostic( src );
-      // if( src.name )
-      // result += `{- routine ${src.name} -}`;
-      // else
-      // result += `{- routine.anonymous -}`; /* qqq for Yevhen : introduce routines _.str.parseType() returning map { type, traits, ?length } */
+      // result = _.routine[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.aux.like( src ) )
     {
-      result = _.aux.exportStringShortDiagnostic( src );
+      // result = _.aux[ 'exportStringShortDiagnostic' ]( src );
     }
     else if( _.object.like( src ) )
     {
-      result += _.object.exportStringShortDiagnostic( src );
+      // result = _.object[ 'exportStringShortDiagnostic' ]( src );
     }
     else
     {
-      result += String( src );
-      result = _.strShort( result );
+      // result = String( src );
+      // result = _.strShort( result );
     }
 
   }
@@ -340,12 +268,6 @@ function exportStringShortDiagnostic( src )
   return result;
 }
 
-exportStringShortDiagnostic.defaults =
-{
-  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
-}
 
 //
 
@@ -1330,9 +1252,9 @@ let StandardTypeSet = new Set
 let ExtensionEntity =
 {
 
-  exportStringSimple, /* xxx : deprecate? */
-  exportStringShort,
-  exportString : exportStringShort,
+  exportStringSimple : exportStringShortDiagnostic, /* xxx : deprecate? */
+  exportStringShort : exportStringShortDiagnostic,
+  exportString : exportStringShortDiagnostic,
   exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
   exportStringShortDiagnostic,
   // exportStringShortCode, /* qqq xxx : introduce */

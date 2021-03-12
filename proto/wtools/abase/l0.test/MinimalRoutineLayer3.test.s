@@ -1,4 +1,4 @@
-( function _Minimal_test_s_()
+( function _MinimalRoutineLayer3_test_s_()
 {
 
 'use strict';
@@ -704,7 +704,7 @@ function assertRoutineOptions( test )
 let Self =
 {
 
-  name : 'Tools.Minimal',
+  name : 'Tools.MinimalRoutineLayer3',
   silencing : 1,
 
   tests :
