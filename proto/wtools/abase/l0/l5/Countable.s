@@ -48,8 +48,6 @@ function identicalShallow( src1, src2 )
 
     return true;
   }
-
-  return false;
 }
 
 //
