@@ -78,20 +78,6 @@ function bufferBytesIs( src )
   return src instanceof U8x;
 }
 
-//
-
-function constructorIsBuffer( src )
-{
-  if( !src )
-  return false;
-  if( !_.number.is( src.BYTES_PER_ELEMENT ) )
-  return false;
-  if( !_.strIs( src.name ) )
-  return false;
-  return src.name.indexOf( 'Array' ) !== -1;
-}
-
-
 // --
 // declaration
 // --
@@ -105,7 +91,6 @@ let Extension =
   bufferNodeIs,
   bufferAnyIs,
   bufferBytesIs,
-  constructorIsBuffer,
   /* xxx qqq : move buffer checks here | aaa : Done. Yevhen S. */
 }
 
