@@ -2085,40 +2085,42 @@ function routineErFor( routine, erhead )
 
 //
 
-function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
-{
-  let self = this;
-  let defaults = routine.defaults;
-  erhead = erhead || routine.erhead || routine.head;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routine.is( routine ) );
-  _.assert( _.routine.is( erhead ) );
-  _.assert( _.routine.is( head ) );
-  _.assert( _.routine.is( body ) );
-  _.assert( _.object.is( defaults ) );
-
-  let op = erhead.call( self, routine, arguments );
-
-  _.assert( _.mapIs( op ) );
-  _.map.assertHasOnly( op, defaults );
-
-  er.defaults = _.mapSupplement( op, defaults );
-
-  return er;
-
-  function er()
-  {
-    let result;
-    let op2 = head.call( self, er, arguments );
-    if( _.unrollIs( op2 ) )
-    result = body.apply( self, op2 );
-    else if( _.mapIs( op2 ) )
-    result = body.call( self, op2 );
-    return result;
-  }
-
-}
+// function routineErJoin( routine, erhead ) /* aaa for Dmytro : cover please */ /* Dmytro : routine is commented because no clear requirements is available */
+// {
+//   let self = this;
+//   let head = routine.head;
+//   let body = routine.body;
+//   let defaults = routine.defaults;
+//   erhead = erhead || routine.erhead || routine.head;
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.routine.is( routine ) );
+//   _.assert( _.routine.is( erhead ) );
+//   _.assert( _.routine.is( head ) );
+//   _.assert( _.routine.is( body ) );
+//   _.assert( _.object.is( defaults ) );
+//
+//   let op = erhead.call( self, routine, arguments );
+//
+//   _.assert( _.mapIs( op ) );
+//   _.map.assertHasOnly( op, defaults );
+//
+//   er.defaults = _.mapSupplement( op, defaults );
+//
+//   return er;
+//
+//   function er()
+//   {
+//     let result;
+//     let op2 = head.call( self, er, arguments );
+//     if( _.unrollIs( op2 ) )
+//     result = body.apply( self, op2 );
+//     else if( _.mapIs( op2 ) )
+//     result = body.call( self, op2 );
+//     return result;
+//   }
+//
+// }
 
 //
 
@@ -3177,7 +3179,7 @@ let ExtensionTools =
   routineUnite : uniteCloning,
   routineEr,
   routineErFor,
-  routineErJoin,
+  // routineErJoin,
 
   routineVectorize_functor : vectorize,
   vectorize,
@@ -3229,7 +3231,7 @@ let Extension = /* qqq : for Yevhen : bad */
 
   er : routineEr,
   erFor : routineErFor,
-  erJoin : routineErJoin,
+  // erJoin : routineErJoin,
 
   vectorize_functor : vectorize,
   vectorize,
