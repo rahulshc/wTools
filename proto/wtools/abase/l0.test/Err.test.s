@@ -7,7 +7,6 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
-  // _.include( 'wConsequence' );
 }
 
 let _ = _global_.wTools;
@@ -39,8 +38,6 @@ function onSuiteEnd()
 // --
 // tests
 // --
-
-//
 
 function errArgumentObject( test )
 {
@@ -3423,7 +3420,7 @@ let Self =
 
   context :
   {
-    nameOfFile : _.introspector.location().fileName, /* xxx : introduce option in utility::Testing */
+    nameOfFile : _.introspector.location().fileName, /* xxx : introduce field in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,

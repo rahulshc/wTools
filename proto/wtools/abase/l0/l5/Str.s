@@ -2680,10 +2680,11 @@ _.assert( strSplit.head !== strSplitFast.head );
 _.assert( _.routine.is( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
 _.assert( _.object.is( strSplit.defaults ) );
+_.assert( !!strSplit.defaults.preservingEmpty );
 
 //
 
-let strSplitNonPreserving = _.routine.unite( strSplit.head, strSplit.body );
+let strSplitNonPreserving = _.routine.uniteCloning( strSplit.head, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -3446,55 +3447,61 @@ function _exportStringShort_head( routine, args )
 
 //
 
-function _exportStringShort_body( o )
+/* qqq : for Yevhen : optimize. ask how to */
+function _exportStringShort( src, o )
 {
+
+  _.assertRoutineOptions( _exportStringShort, o );
+  _.assert( arguments.length === 2 );
   _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
   _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
+  _.assert( o.src === undefined )
+  _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
 
   let result = '';
   let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
 
   try
   {
-    if( _.primitive.is( o.src ) )
+    if( _.primitive.is( src ) )
     {
-      result = _.primitive[ method ]( o.src );
+      result = _.primitive[ method ]( src );
     }
-    else if( _.set.like( o.src ) )
+    else if( _.set.like( src ) )
     {
-      result = _.set[ method ]( o.src );
+      result = _.set[ method ]( src );
     }
-    else if( _.hashMap.like( o.src ) )
+    else if( _.hashMap.like( src ) )
     {
-      result = _.hashMap[ method ]( o.src );
+      result = _.hashMap[ method ]( src );
     }
-    else if( _.vector.like( o.src ) )
+    else if( _.vector.like( src ) )
     {
-      result = _.vector[ method ]( o.src );
+      result = _.vector[ method ]( src );
     }
-    else if( _.date.is( o.src ) )
+    else if( _.date.is( src ) )
     {
-      result = _.date[ method ]( o.src );
+      result = _.date[ method ]( src );
     }
-    else if( _.regexpIs( o.src ) )
+    else if( _.regexpIs( src ) )
     {
-      result = _.regexp[ method ]( o.src );
+      result = _.regexp[ method ]( src );
     }
-    else if( _.routine.is( o.src ) )
+    else if( _.routine.is( src ) )
     {
-      result = _.routine[ method ]( o.src );
+      result = _.routine[ method ]( src );
     }
-    else if( _.aux.like( o.src ) )
+    else if( _.aux.like( src ) )
     {
-      result = _.aux[ method ]( o.src );
+      result = _.aux[ method ]( src );
     }
-    else if( _.object.like( o.src ) )
+    else if( _.object.like( src ) )
     {
-      result = _.object[ method ]( o.src );
+      result = _.object[ method ]( src );
     }
     else
     {
-      result = String( o.src );
+      result = String( src );
     }
 
     if( o.widthLimit !== 0 )
@@ -3510,18 +3517,39 @@ function _exportStringShort_body( o )
   return result;
 }
 
-_exportStringShort_body.defaults =
+_exportStringShort.defaults =
 {
-  src : null,
-  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
+  // src : null,
+  format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
-let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
+// let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
+// _exportStringShort.defaults.format = 'string.diagnostic';
 
-let _exportStringShortCode = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
-_exportStringShortCode.defaults.format = 'string.code';
+// let _exportStringShortCode = _.routine.uniteCloning( _exportStringShort_head, _exportStringShort_body );
+// _exportStringShortCode.defaults.format = 'string.code';
+
+//
+
+/* qqq for Yevhen : make head and body | aaa : Done. */
+function exportStringShortCode( src, o ) /* */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  o = _.routineOptions( exportStringShortCode, o );
+  o.format = o.format || exportStringShortCode.defaults.format;
+
+  return _.entity._exportStringShort( src, o );
+}
+
+exportStringShortCode.defaults =
+{
+  format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
 
 //
 
@@ -3529,17 +3557,11 @@ _exportStringShortCode.defaults.format = 'string.code';
 function exportStringShortDiagnostic( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
-  /* qqq : don't produce options-map when possible that here */
 
-  if( o )
-  {
-    o.src = src;
-    return _.entity._exportStringShort( o );
-  }
-  else
-  {
-    return _.entity._exportStringShort({ src });
-  }
+  o = _.routineOptions( exportStringShortDiagnostic, o );
+  o.format = o.format || exportStringShortDiagnostic.defaults.format;
+
+  return _.entity._exportStringShort( src, o );
 }
 
 exportStringShortDiagnostic.defaults =
@@ -3551,20 +3573,20 @@ exportStringShortDiagnostic.defaults =
 
 //
 
-function exportStringShortCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
-{
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
-
-  // if( o )
-  // {
-  //   o.src = src;
-  //   return _.entity._exportStringShortCode( o );
-  // }
-  // else
-  // {
-  return _.entity._exportStringShortCode({ src });
-  // }
-}
+// function exportStringShortCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+//
+//   // if( o )
+//   // {
+//   //   o.src = src;
+//   //   return _.entity._exportStringShortCode( o );
+//   // }
+//   // else
+//   // {
+//   return _.entity._exportStringShortCode({ src });
+//   // }
+// }
 
 
 // --
@@ -3655,15 +3677,20 @@ let ExtensionEntity =
   _exportStringShort,
   exportString : exportStringShort,
   exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
-  exportStringShortCode, /* qqq xxx : introduce | aaa : Done. */
-  _exportStringShortCode,
+  // exportStringShortCode, /* qqq xxx : introduce | aaa : Done. qqq for Yevhen : bad! */
+  // _exportStringShortCode,
+  exportStringShortCode,
   exportStringShortDiagnostic,
 }
+
+/* xxx : duplicate exportString in namespace::diagnostic? */
 
 //
 
 _.mapExtend( Self, Extension );
 _.mapExtend( _.entity, ExtensionEntity );
+
+_.assert( !!_.strSplit.defaults.preservingEmpty );
 
 // --
 // export
