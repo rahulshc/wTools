@@ -4245,8 +4245,8 @@ function routineDefaults( test )
 
 //
 
-// qqq : for Dmytro : extend the routine. split it?
-function routine.unite( test )
+// qqq : for Dmytro : extend the routine. introduce subroutine for strategies. maybe split?
+function uniteBasic( test )
 {
   function headObject( rotine, args )
   {
@@ -7742,7 +7742,7 @@ var Self =
     extendBodyInstanicing,
     extendThrowing,
     routineDefaults,
-    routine.unite,
+    uniteBasic,
     uniteInstancing, /* xxx : sort */
 
     routineEr,
