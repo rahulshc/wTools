@@ -38,12 +38,12 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "7.1.0",
-    "wFiles": "alpha",
-    "wTesting": "alpha",
+    "wFiles": "",
+    "wTesting": "",
     "wTools": "file:.",
-    "wcloner": "alpha",
-    "wselector": "alpha",
-    "wstringer": "alpha"
+    "wcloner": "",
+    "wselector": "",
+    "wstringer": ""
   },
   "keywords": [
     "base",

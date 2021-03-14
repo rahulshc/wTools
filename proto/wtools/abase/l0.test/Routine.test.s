@@ -3070,7 +3070,7 @@ function routinesChain( test )
 //
 //   test.open( 'dst is null, src has head and body properties');
 //
-//   test.case = 'dst is null, src is routine maked by routineUnite';
+//   test.case = 'dst is null, src is routine maked by routine.unite';
 //   var got = _.routine.extend_old( null, _.routine.unite );
 //   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
 //   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
@@ -3497,7 +3497,7 @@ function routineExtend( test )
 {
   test.open( 'dst is null, src has head and body properties');
 
-  // test.case = 'dst is null, src is routine maked by routineUnite';
+  // test.case = 'dst is null, src is routine maked by routine.unite';
   // var got = _.routine.extend( null, _.routine.unite );
   // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
   // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
@@ -4246,7 +4246,7 @@ function routineDefaults( test )
 //
 
 // qqq : for Dmytro : extend the routine. split it?
-function routineUnite( test )
+function routine.unite( test )
 {
   function headObject( rotine, args )
   {
@@ -7742,7 +7742,7 @@ var Self =
     extendBodyInstanicing,
     extendThrowing,
     routineDefaults,
-    routineUnite,
+    routine.unite,
     uniteInstancing, /* xxx : sort */
 
     routineEr,
