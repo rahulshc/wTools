@@ -3578,6 +3578,7 @@ function exportStringShortDiagnostic( test )
   var expected = '{- Map.pure with 0 elements -}';
   test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 100 } ), expected );
 
+
   test.close( 'option::widthLimit' );
 
   /* - */
