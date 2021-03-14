@@ -3426,24 +3426,24 @@ function exportStringShort( src, opts )
 // exportStringShort.fields = exportStringShort;
 // exportStringShort.routines = exportStringShort;
 
+// //
 //
-
-function _exportStringShort_head( routine, args )
-{
-
-  let o = args[ 0 ];
-
-  _.routine.optionsPreservingUndefines( routine, o );
-  _.assert
-  (
-    o.format === 'string.diagnostic' || o.format === 'string.code',
-    `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
-  );
-  _.assert( args.length === 1 );
-  _.assert( arguments.length === 2 );
-
-  return o;
-}
+// function _exportStringShort_head( routine, args )
+// {
+//
+//   let o = args[ 0 ];
+//
+//   _.routine.optionsPreservingUndefines( routine, o );
+//   _.assert
+//   (
+//     o.format === 'string.diagnostic' || o.format === 'string.code',
+//     `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
+//   );
+//   _.assert( args.length === 1 );
+//   _.assert( arguments.length === 2 );
+//
+//   return o;
+// }
 
 //
 
