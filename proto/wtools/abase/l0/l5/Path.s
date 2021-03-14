@@ -1041,11 +1041,13 @@ dir_body.defaults =
   depth : 1,
 }
 
-let dir = _.routine.unite( dir_head, dir_body );
+let dir = _.routine.uniteCloning( dir_head, dir_body );
 dir.defaults.first = 0;
 
-let dirFirst = _.routine.unite( dir_head, dir_body );
+let dirFirst = _.routine.uniteCloning( dir_head, dir_body );
 dirFirst.defaults.first = 1;
+
+_.assert( !dir.defaults.first );
 
 // --
 // extension

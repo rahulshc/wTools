@@ -250,7 +250,7 @@ function samples( test )
 
     if( _.longHas( found[ i ].exts, 'throwing' ) )
     {
-      appStartNonThrowing({ execPath : found[ i ].relative })
+      appStartNonThrowing({ execPath : found[ i ].relative, outputPiping : 0 })
       .then( ( op ) =>
       {
         console.log( _.time.spent( startTime ) );
@@ -353,7 +353,7 @@ function eslint( test )
   })
   .then( ( op ) =>
   {
-    test.identical( op.exitCode, 0 ); debugger;
+    test.identical( op.exitCode, 0 );
     if( op.output.length < 1000 )
     logger.log( op.output );
     return null;

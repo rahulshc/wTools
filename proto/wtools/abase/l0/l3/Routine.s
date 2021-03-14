@@ -175,7 +175,7 @@ function _routineJoin( o )
       value : routine,
       enumerable : false,
     };
-    Object.defineProperty( result, 'originalRoutine', o2 );
+    Object.defineProperty( result, 'originalRoutine', o2 ); /* qqq : cover */
 
     if( context !== undefined )
     {
@@ -184,7 +184,7 @@ function _routineJoin( o )
         value : context,
         enumerable : false,
       };
-      Object.defineProperty( result, 'boundContext', o3 );
+      Object.defineProperty( result, 'boundContext', o3 ); /* qqq : cover */
     }
 
     if( args !== undefined )
@@ -194,7 +194,7 @@ function _routineJoin( o )
         value : args,
         enumerable : false,
       };
-      Object.defineProperty( result, 'boundArguments', o3 );
+      Object.defineProperty( result, 'boundArguments', o3 ); /* qqq : cover */
     }
 
   }
@@ -551,6 +551,9 @@ function routineOptions( routine, args, defaults )
 
 //
 
+/* qqq : for Dmytro : discuss
+should be { defaults : {} } in the first argument
+*/
 function routineOptions_( defaults, options )
 {
 
@@ -567,7 +570,7 @@ function routineOptions_( defaults, options )
     options = options[ 0 ];
   }
 
-  if( options === undefined )
+  if( options === undefined ) /* qqq : for Dmytro : should be error */
   options = Object.create( null );
   if( defaults === null )
   defaults = Object.create( null );
@@ -1180,22 +1183,21 @@ function _amend( o )
   _.assert( o.amending === 'extending', 'not implemented' );
   _.assert
   (
-    o.strategy === 'cloning' || o.strategy === 'replacing' || o.strategy === 'inheriting' /*|| o.strategy === 'replacing'*/,
+    o.strategy === 'cloning' || o.strategy === 'replacing' || o.strategy === 'inheriting',
     () => `Unknown strategy ${o.strategy}`
   );
 
   /* generate dst routine */
 
-  if( dst === null ) /* qqq */
+  if( dst === null ) /* qqq : for Dmytro : good coverage required */
   dst = _dstMake( srcs );
 
-  /* shallow clone properties of dst routine */
-
-  if( o.strategy === 'cloning' )
-  _fieldsClone( dst );
-  else if( o.strategy === 'inheriting' )
-  _fieldsInherit( dst );
-  /* qqq : for Dmytro : implement for inheriting */
+  // /* shallow clone properties of dst routine */
+  //
+  // if( o.strategy === 'cloning' )
+  // _fieldsClone( dst );
+  // else if( o.strategy === 'inheriting' )
+  // _fieldsInherit( dst );
 
   /* extend dst routine */
 
@@ -1203,11 +1205,9 @@ function _amend( o )
   if( o.strategy === 'cloning' )
   _dstAmend = _dstAmendCloning;
   else if( o.strategy === 'replacing' )
-  _dstAmend = _dstAmendValue;
+  _dstAmend = _dstAmendReplacing;
   else if( o.strategy === 'inheriting' )
   _dstAmend = _dstAmendInheriting;
-  // else if( o.strategy === 'replacing' )
-  // _dstAmend = _dstAmendValue;
   else _.assert( 0, 'not implemented' );
 
   if( srcIsVector )
@@ -1216,17 +1216,24 @@ function _amend( o )
   else
   _dstAmend( dst, srcs );
 
+  /* qqq : for Dmytro : it should be optimal, no redundant cloning of body should happen
+  check and cover it by good test, please
+  */
   if( extended )
-  // if( o.strategy !== 'replacing' )
-  if( dst.body && dst.body.defaults )
-  dst.body = bodyClone( dst.body );
+  // if( dst.body && dst.body.defaults )
+  if( dst.body )
+  dst.body = bodyFrom( dst.body );
 
-  // if( dst.defaults )
-  // _.assert
-  // (
-  //   _.aux.is( dst.defaults ),
-  //   () => `Defaults of the routine should be auxiliary, but is ${_.entity.strType( dst.defaults )}`
-  // );
+  if( Config.debug )
+  {
+    /* qqq : for Dmytro : cover, please */
+    if( _.strEnds( dst.name, '_body' ) )
+    {
+      _.assert( dst.body === undefined, 'Body of routine should not have its own body' );
+      _.assert( dst.head === undefined, 'Body of routine should not have its own head' );
+      _.assert( dst.tail === undefined, 'Body of routine should not have its own tail' );
+    }
+  }
 
   return dst;
 
@@ -1236,6 +1243,7 @@ function _amend( o )
   {
     let dstMap = Object.create( null );
 
+    /* qqq : amendment influence on it */
     if( srcIsVector )
     for( let src of srcs )
     {
@@ -1249,14 +1257,20 @@ function _amend( o )
       _.mapExtend( dstMap, srcs );
     }
 
-    if( dstMap.head && dstMap.body )
+    if( dstMap.body )
     {
-      dst = _.routine.unite( dstMap.head, dstMap.body );
+      // dst = _.routine.uniteCloning( dstMap.head, dstMap.body );
+      dst = _.routine.unite
+      ({
+        head : dstMap.head,
+        body : dstMap.body,
+        tail : dstMap.tail,
+        name : dstMap.name,
+        strategy : o.strategy,
+      });
     }
     else
     {
-      // _.assert( _.routine.is( srcs ) );
-      // dst = function(){ return srcs.apply( this, arguments ); }
       if( srcIsVector )
       dst = dstFrom( srcs[ 0 ] );
       else
@@ -1264,46 +1278,44 @@ function _amend( o )
     }
 
     _.assert( _.routineIs( dst ) );
-    _.mapExtend( dst, dstMap );
+    // _.mapExtend( dst, dstMap );
 
     return dst;
   }
 
   /* */
 
-  function _fieldsClone( dst )
-  {
-
-    for( let s in dst )
-    {
-      let property = dst[ s ];
-      // if( _.mapIs( property ) )
-      // if( _.auxIs( property ) ) /* qqq : cover */
-      if( _.objectIs( property ) )
-      {
-        property = _.mapExtend( null, property );
-        dst[ s ] = property;
-      }
-    }
-
-  }
-
-  /* */
-
-  function _fieldsInherit( dst )
-  {
-
-    for( let s in dst )
-    {
-      let property = dst[ s ];
-      if( _.objectIs( property ) )
-      {
-        property = Object.create( property );
-        dst[ s ] = property;
-      }
-    }
-
-  }
+  // function _fieldsClone( dst )
+  // {
+  //
+  //   for( let s in dst )
+  //   {
+  //     let property = dst[ s ];
+  //     if( _.objectIs( property ) )
+  //     {
+  //       property = _.mapExtend( null, property );
+  //       dst[ s ] = property;
+  //     }
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function _fieldsInherit( dst )
+  // {
+  //
+  //   for( let s in dst )
+  //   {
+  //     let property = dst[ s ];
+  //     if( _.objectIs( property ) )
+  //     {
+  //       property = Object.create( property );
+  //       dst[ s ] = property;
+  //     }
+  //   }
+  //
+  // }
 
   /* */
 
@@ -1314,21 +1326,29 @@ function _amend( o )
     for( let s in src )
     {
       let property = src[ s ];
+      if( dst[ s ] === property )
+      continue;
       let d = Object.getOwnPropertyDescriptor( dst, s );
       if( d && !d.writable )
       continue;
-      if( dst[ s ] === property )
-      continue;
       extended = true;
       if( _.object.is( property ) )
-      // if( s === 'defaults' || _.aux.is( property ) )
       {
-        _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
-        property = _.mapExtend( null, property );
+        _.assert( !_.property.own( dst, s ) || _.objectIs( dst[ s ] ) );
+
         if( dst[ s ] )
-        _.mapSupplement( property, dst[ s ] );
+        _.mapExtend( dst[ s ], property );
+        else
+        dst[ s ] = property = _.mapExtend( null, property );
+
+        // property = _.mapExtend( null, property );
+        // if( dst[ s ] )
+        // _.mapSupplement( property, dst[ s ] );
       }
-      dst[ s ] = property;
+      else
+      {
+        dst[ s ] = property;
+      }
     }
   }
 
@@ -1338,19 +1358,20 @@ function _amend( o )
   {
     _.assert( !!dst );
     _.assert( _.aux.is( src ) || _.routine.is( src ) );
+    /* qqq : for Dmytro : on extending should inherit from the last one, on supplementing should inherit from the first one
+    implement, and cover in separate test
+    */
     for( let s in src )
     {
       let property = src[ s ];
+      if( dst[ s ] === property )
+      continue;
       let d = Object.getOwnPropertyDescriptor( dst, s );
       if( d && !d.writable )
       continue;
-      if( dst[ s ] === property )
-      continue;
       extended = true;
       if( _.object.is( property ) )
-      // if( s === 'defaults' || _.aux.is( property ) )
       {
-        // _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
         property = Object.create( property );
         if( dst[ s ] )
         _.mapSupplement( property, dst[ s ] );
@@ -1361,7 +1382,7 @@ function _amend( o )
 
   /* */
 
-  function _dstAmendValue( dst, src )
+  function _dstAmendReplacing( dst, src )
   {
     _.assert( !!dst );
     _.assert( _.aux.is( src ) || _.routine.is( src ) );
@@ -1380,32 +1401,46 @@ function _amend( o )
 
   /* */
 
-  function bodyClone()
+  function bodyFrom()
   {
     const body = dst.body;
-    const body2 = routineClone( body );
+    let body2 = body;
     _.assert( body.head === undefined, 'Body should not have own head' );
     _.assert( body.tail === undefined, 'Body should not have own tail' );
     _.assert( body.body === undefined, 'Body should not have own body' );
-    _.routine._amend
-    ({
-      dst : body2,
-      srcs : [ body, ... ( srcIsVector ? o.srcs.slice( 1 ) : [] ) ],
-      strategy : o.strategy,
-      amending : o.amending,
-    });
-    _.assert( body2.head === undefined, 'Body should not have own head' );
-    _.assert( body2.tail === undefined, 'Body should not have own tail' );
-    _.assert( body2.body === undefined, 'Body should not have own body' );
+    {
+      let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      srcs.unshift( body );
+      body2 = _.routine._amend
+      ({
+        dst : o.strategy === 'replacing' ? body2 : null,
+        srcs,
+        strategy : o.strategy,
+        amending : o.amending,
+      });
+      _.assert( body2.head === undefined, 'Body should not have own head' );
+      _.assert( body2.tail === undefined, 'Body should not have own tail' );
+      _.assert( body2.body === undefined, 'Body should not have own body' );
+    }
     return body2;
   }
 
   /* */
 
+  function propertiesBut( src )
+  {
+    return src ? _.mapBut_( null, src, [ 'head', 'body', 'tail' ] ) : src;
+  }
+
+  /* */
+
+  /* xxx : make routine? */
   function routineClone( routine )
   {
     _.assert( _.routine.is( routine ) );
     let name = routine.name;
+    // const routine2 = routine.bind();
+    // _.assert( routine2 !== routine );
     const routine2 =
     ({
       [ name ] : function()
@@ -1413,6 +1448,14 @@ function _amend( o )
         return routine.apply( this, arguments );
       }
     })[ name ];
+
+    let o2 =
+    {
+      value : routine,
+      enumerable : false,
+    };
+    Object.defineProperty( routine2, 'originalRoutine', o2 ); /* qqq : for Dmytro : cover */
+
     return routine2;
   }
 
@@ -1420,8 +1463,6 @@ function _amend( o )
 
   function dstFrom( routine )
   {
-    // if( o.strategy === 'cloning' )
-    // return routine;
     return routineClone( routine );
   }
 
@@ -1433,8 +1474,8 @@ _amend.defaults =
 {
   dst : null,
   srcs : null,
-  strategy : 'cloning',
-  amending : 'extending',
+  strategy : 'cloning', /* qqq : for Dmytro : cover */
+  amending : 'extending', /* qqq : for Dmytro : implement and cover */
 }
 
 //
@@ -1502,73 +1543,6 @@ function extendCloning( dst, ... srcs )
     amending : 'extending',
   });
 
-  // _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  // _.assert( _.routine.is( dst ) || dst === null );
-  // _.assert( src === null || src === undefined || _.aux.is( src ) || _.routine.is( src ) );
-  //
-  // /* generate dst routine */
-  //
-  // if( dst === null )
-  // {
-  //
-  //   let dstMap = Object.create( null );
-  //   for( let a = 0 ; a < arguments.length ; a++ )
-  //   {
-  //     let src = arguments[ a ];
-  //     if( src === null )
-  //     continue;
-  //     _.mapExtend( dstMap, src )
-  //   }
-  //
-  //   if( dstMap.head && dstMap.body )
-  //   {
-  //     dst = _.routine.unite( dstMap.head, dstMap.body );
-  //   }
-  //   else
-  //   {
-  //     _.assert( _.routine.is( src ) );
-  //     dst = function(){ return src.apply( this, arguments ); }
-  //   }
-  // }
-  //
-  // /* shallow clone properties of dst routine */
-  //
-  // for( let s in dst )
-  // {
-  //   let property = dst[ s ];
-  //   if( _.mapIs( property ) )
-  //   {
-  //     property = _.mapExtend( null, property );
-  //     dst[ s ] = property;
-  //   }
-  // }
-  //
-  // /* extend dst routine */
-  //
-  // for( let a = 0 ; a < arguments.length ; a++ )
-  // {
-  //   let src = arguments[ a ];
-  //   if( src === null )
-  //   continue;
-  //   _.assert( _.aux.is( src ) || _.routine.is( src ) );
-  //   for( let s in src )
-  //   {
-  //     let property = src[ s ];
-  //     let d = Object.getOwnPropertyDescriptor( dst, s );
-  //     if( d && !d.writable )
-  //     continue;
-  //     if( _.object.is( property ) )
-  //     {
-  //       _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
-  //       property = _.mapExtend( null, property );
-  //       if( dst[ s ] )
-  //       _.mapSupplement( property, dst[ s ] );
-  //     }
-  //     dst[ s ] = property;
-  //   }
-  // }
-  //
-  // return dst;
 }
 
 // qqq : for Dmytro : implement and cover please
@@ -1688,10 +1662,6 @@ function unite_body( o )
     o.head = headWithoutDefaults;
   }
 
-  // let head = o.head;
-  // let body = o.body;
-  // let tail = o.tail;
-
   if( !o.name )
   {
     _.assert( _.strDefined( o.body.name ), 'Body routine should have name' );
@@ -1700,33 +1670,54 @@ function unite_body( o )
     o.name = o.name.substring( 0, o.name.length-5 );
   }
 
-  /* make routine */
+  /* generate body */
 
-  // let arrayOfNames = [ 'body', 'headAndBody', 'bodyAndTail', 'headBodyAndTail' ];
-  // let bodyIndex = 0;
-  // let headIndex = head ? 1 : 0;
-  // let tailIndex = tail ? 2 : 0;
-
-  let unitedRoutine = _unite_functor( o.name, o.head, o.body, o.tail );
-  // let unitedRoutine = _unite_functor( arrayOfNames[ bodyIndex + headIndex + tailIndex ] )[ o.name ];
-
-  _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
-
-  /* qqq xxx : implement and cover option::strategy */
-  _.routine._amend
+  /* qqq : for Dmytro : cover in separate test routine */
+  let body;
+  if( o.strategy === 'replacing' )
+  body = o.body;
+  else
+  body = _.routine._amend
   ({
-    dst : unitedRoutine,
+    dst : null,
     srcs : o.body,
     strategy : o.strategy,
     amending : 'extending',
   });
 
-  /* xxx : should cloning of body and its defaults be here? */
+  /* make routine */
+
+  let unitedRoutine = _unite_functor( o.name, o.head, body, o.tail );
+
+  _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
+
+  /* qqq : for Dmytro : implement and cover option::strategy */
+  // _.routine._amend
+  // ({
+  //   dst : unitedRoutine,
+  //   srcs : o.body,
+  //   strategy : o.strategy,
+  //   amending : 'extending',
+  // });
+
+  _.routine._amend
+  ({
+    dst : unitedRoutine,
+    srcs : body,
+    strategy : 'replacing',
+    amending : 'extending',
+  });
 
   unitedRoutine.head = o.head;
-  unitedRoutine.body = o.body;
+  unitedRoutine.body = body;
   if( o.tail )
   unitedRoutine.tail = o.tail;
+
+  _.assert
+  (
+    unitedRoutine.defaults === body.defaults,
+    'Something wrong, united routined should have same instance of defaults its body has'
+  );
 
   return unitedRoutine;
 
@@ -1761,26 +1752,6 @@ function unite_body( o )
     const body = arguments[ 2 ];
     const tail = arguments[ 3 ];
     let r;
-
-    // if( head === null && tail === null )
-    // {
-    //   [ name ] : function()
-    //   {
-    //     let result;
-    //     let o = arguments[ 0 ];
-    //
-    //     _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
-    //
-    //     if( _.unrollIs( o ) )
-    //     result = body.apply( this, o );
-    //     else if( _.mapIs( o ) )
-    //     result = body.call( this, o );
-    //     else
-    //     _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
-    //
-    //     return result;
-    //   }
-    // };
 
     if( tail === null )
     r =
@@ -1853,12 +1824,12 @@ unite_body.defaults =
   body : null,
   tail : null,
   name : null,
-  strategy : 'cloning',
+  strategy : null,
 };
 
 //
 
-/* qqq : for Dmytro : write the article. should explain why, when, what for! */
+/* qqq : for Dmytro : write the article. it should explain why, when, what for! */
 function uniteCloning()
 {
   let o = uniteCloning.head.call( this, uniteCloning, arguments );
@@ -1896,13 +1867,11 @@ uniteReplacing.head = unite_head;
 uniteReplacing.body = unite_body;
 uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
 
-/* xxx : should unite add group to routines? */
-
 //
 
 /* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineEr() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineEr() extend mechanism of routines constructing of routine routine.unite().
  * The routine routineEr() adds to routine {-routine-} field {-er-} that is a functor for generating
  * of new routine similar to original routine but with changed map {-defaults-}.
  *
@@ -1954,7 +1923,7 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
  * // log : { arg : 'arg1', arg2 : 'arg2' }
  *
  * @param { Function } routine - The routine from which generates new routine.
- * Routine should be generated by routineUnite.
+ * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns original routine with functor in field {-er-}.
  * @function routineEr
@@ -1978,7 +1947,7 @@ function routineEr( routine, erhead )
 
 /* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineErFor() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineErFor() extend mechanism of routines constructing of routine routine.unite().
  * The routine routineErFor() returns functor for generating of new routine similar to original
  * routine {-routine-} but with changed map {-defaults-}.
  *
@@ -2027,7 +1996,7 @@ function routineEr( routine, erhead )
  * // log : { arg : 'arg1', arg2 : 'arg2' }
  *
  * @param { Function } routine - The routine from which generates new routine.
- * Routine should be generated by routineUnite.
+ * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns functor to generate new routine with changed map {-defaults-}.
  * @function routineErFor
@@ -3164,7 +3133,7 @@ let ExtensionTools =
   routineSeal,
 
   routineOptions,
-  routineOptions_,
+  routineOptions_, /* qqq : for Dmytro : bad : where is mark? */
   assertRoutineOptions,
   assertRoutineOptions_,
   routineOptionsPreservingUndefines,
@@ -3176,7 +3145,7 @@ let ExtensionTools =
   routinesCompose, /* xxx : deprecate */
   routineExtend : extendCloning,
   routineDefaults,
-  routineUnite : uniteCloning,
+  // routine.unite : uniteCloning,
   routineEr,
   routineErFor,
   // routineErJoin,
@@ -3223,8 +3192,10 @@ let Extension = /* qqq : for Yevhen : bad */
   extendReplacing,
   defaults : routineDefaults,
 
-  unite : uniteCloning,
+  // unite : uniteCloning,
+  unite : uniteReplacing,
   uniteCloning,
+  uniteCloning_ : uniteCloning,
   uniteInheriting,
   uniteReplacing,
   /* qqq : for Yevhen : for Dmytro : introduce routines uniteReplacing, uniteInheriting, uniteCloning */

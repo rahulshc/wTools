@@ -3227,7 +3227,9 @@ function exportStringShortDiagnostic( test )
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = '{- Symbol maybe -}';
+  debugger;
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+  debugger;
 
   test.case = 'bigint';
   var src = 10n;
@@ -5425,7 +5427,9 @@ function strConcat( test )
 
   test.case = 'srcs - empty string';
   var srcs = '';
+  debugger;
   var got = _.strConcat( srcs );
+  debugger;
   test.identical( got, '' );
 
   test.case = 'srcs - not empty string';
@@ -17383,7 +17387,9 @@ function strSplit( test )
   var expected = [];
   test.identical( got, expected );
 
+  debugger;
   var got = _.strSplit( 'abc', '' );
+  debugger;
   var expected = [ 'a', '', 'b', '', 'c' ];
   test.identical( got, expected );
 

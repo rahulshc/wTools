@@ -260,7 +260,7 @@
 
 <details>
   <summary><a href="./tutorial/RoutineUnite.md">
-    Рутина routineUnite
+    Рутина routine.unite
   </a></summary>
     Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
 </details>

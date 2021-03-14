@@ -16,6 +16,7 @@ let _ = _global_.wTools;
 // context
 // --
 
+/* qqq : move that into test routines, please */
 function testFunction1( x, y )
 {
   return x + y;
@@ -3069,7 +3070,7 @@ function routinesChain( test )
 //
 //   test.open( 'dst is null, src has head and body properties');
 //
-//   test.case = 'dst is null, src is routine maked by routineUnite';
+//   test.case = 'dst is null, src is routine maked by routine.unite';
 //   var got = _.routine.extend_old( null, _.routine.unite );
 //   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
 //   test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
@@ -3489,18 +3490,19 @@ function routinesChain( test )
 
 //
 
-/* qqq : split by number of arguments and extend */
-/* qqq : write test routines for supplement */
-/* qqq : write test routines for each strategy */
+/* qqq : for Dmytro : split on test routines by number of arguments and extend */
+/* qqq : for Dmytro : write test routines for supplement */
+/* qqq : for Dmytro : write test for each strategy ( with subroutine act ) */
 function routineExtend( test )
 {
   test.open( 'dst is null, src has head and body properties');
 
-  test.case = 'dst is null, src is routine maked by routineUnite';
-  var got = _.routine.extend( null, _.routine.unite );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst is null, src is routine maked by routine.unite';
+  // var got = _.routine.extend( null, _.routine.unite );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
   var got = _.routine.extend( null, _.routine.s.compose );
   test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
@@ -3531,48 +3533,51 @@ function routineExtend( test )
   test.true( _.routine.is( got ) );
   test.true( got( _.unrollFrom( [] ) ) );
 
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routine.unite.head,
-    body : _.routine.unite.body,
-    map : { a : 2 },
-  }
-  var got = _.routine.extend( null, src );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
-  test.equivalent( got.map, { a : 2 } );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst is null, src is map with head and body properties';
+  // var src =
+  // {
+  //   head : _.routine.unite.head,
+  //   body : _.routine.unite.body,
+  //   map : { a : 2 },
+  // }
+  // var got = _.routine.extend( null, src );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
+  // test.equivalent( got.map, { a : 2 } );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routine.unite.head,
-    body : _.routine.unite.body,
-    map : { a : 2 },
-  };
-  var got = _.routine.extend( null, src );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
-  test.equivalent( got.map, { a : 2 } );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst is null, src is map with head and body properties';
+  // var src =
+  // {
+  //   head : _.routine.unite.head,
+  //   body : _.routine.unite.body,
+  //   map : { a : 2 },
+  // };
+  // var got = _.routine.extend( null, src );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
+  // test.equivalent( got.map, { a : 2 } );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
-  test.case = 'dst is null, src is map with head and body properties';
-  var src =
-  {
-    head : _.routine.unite.head,
-    body : _.routine.unite.body,
-    a : [ 1 ],
-    b : 'str',
-    c : { str : 'str' }
-  }
-  var got = _.routine.extend( null, src );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
-  test.identical( got.a, [ 1 ] );
-  test.identical( got.b, 'str' );
-  test.identical( got.c, { str : 'str' } );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst is null, src is map with head and body properties';
+  // var src =
+  // {
+  //   head : _.routine.unite.head,
+  //   body : _.routine.unite.body,
+  //   a : [ 1 ],
+  //   b : 'str',
+  //   c : { str : 'str' }
+  // }
+  // var got = _.routine.extend( null, src );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
+  // test.identical( got.a, [ 1 ] );
+  // test.identical( got.b, 'str' );
+  // test.identical( got.c, { str : 'str' } );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
   test.close( 'dst is null, src has head and body properties');
 
@@ -3734,69 +3739,72 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
   /* qqq : for Dmytro : lack of checks */
 
-  test.case = 'src extends routine, result extends map ';
-  var src1 =
-  {
-    head : _.routine.unite.head,
-    body : _.routine.unite.body,
-    a : 'str',
-    b : { b : 3 },
-  };
-  var src = _.routine.extend( null, _.routine.s.compose );
-  var got = _.routine.extend( src, src1 );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
-  test.identical( got.b, { b : 3 } );
-  test.true( got.a === 'str' );
-  test.identical( typeof got, 'function' );
+  // test.case = 'src extends routine, result extends map ';
+  // var src1 =
+  // {
+  //   head : _.routine.unite.head,
+  //   body : _.routine.unite.body,
+  //   a : 'str',
+  //   b : { b : 3 },
+  // };
+  // var src = _.routine.extend( null, _.routine.s.compose );
+  // var got = _.routine.extend( src, src1 );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.unite.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.unite.body ) );
+  // test.identical( got.b, { b : 3 } );
+  // test.true( got.a === 'str' );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
-  test.case = 'dst extends map, dst extends other map';
-  var dst = () =>
-  {
-  };
-  var src1 =
-  {
-    head : _.routine.s.compose.head,
-    body : _.routine.s.compose.body,
-    a : [ 'str' ],
-    c : { d : 2 },
-  };
-  var src = _.routine.extend( dst, { c : {}, b : 'str' } );
-  var got = _.routine.extend( dst, src1 );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
-  test.identical( got.a, [ 'str' ] );
-  test.identical( got.b, 'str' );
-  test.identical( got.c, { d : 2 } );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst extends map, dst extends other map';
+  // var dst = () =>
+  // {
+  // };
+  // var src1 =
+  // {
+  //   head : _.routine.s.compose.head,
+  //   body : _.routine.s.compose.body,
+  //   a : [ 'str' ],
+  //   c : { d : 2 },
+  // };
+  // var src = _.routine.extend( dst, { c : {}, b : 'str' } );
+  // var got = _.routine.extend( dst, src1 );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
+  // test.identical( got.a, [ 'str' ] );
+  // test.identical( got.b, 'str' );
+  // test.identical( got.c, { d : 2 } );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
-  test.case = 'dst has map property, dst extends other map';
-  var dst = () =>
-  {
-  };
-  dst.map = { a : 'str' };
-  var src1 =
-  {
-    head : _.routine.s.compose.head,
-    body : _.routine.s.compose.body,
-    a : [ 'str' ],
-    map : { d : 2 },
-  };
-  var src = _.routine.extend( dst, { c : {} } );
-  var got = _.routine.extend( dst, src1 );
-  test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
-  test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
-  test.identical( got.a, [ 'str' ] );
-  var expectedMap = { d : 2 };
-  expectedMap.a = 'str';
-  test.identical( got.map, expectedMap );
-  test.equivalent( got.c, {} );
-  test.identical
-  (
-    _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
-  );
-  test.identical( typeof got, 'function' );
+  // test.case = 'dst has map property, dst extends other map';
+  // var dst = () =>
+  // {
+  // };
+  // dst.map = { a : 'str' };
+  // var src1 =
+  // {
+  //   head : _.routine.s.compose.head,
+  //   body : _.routine.s.compose.body,
+  //   a : [ 'str' ],
+  //   map : { d : 2 },
+  // };
+  // var src = _.routine.extend( dst, { c : {} } );
+  // var got = _.routine.extend( dst, src1 );
+  // test.identical( _.mapExtend( null, got.head ), _.mapExtend( null, _.routine.s.compose.head ) );
+  // test.identical( _.mapExtend( null, got.body ), _.mapExtend( null, _.routine.s.compose.body ) );
+  // test.identical( got.a, [ 'str' ] );
+  // var expectedMap = { d : 2 };
+  // expectedMap.a = 'str';
+  // test.identical( got.map, expectedMap );
+  // test.equivalent( got.c, {} );
+  // test.identical
+  // (
+  //   _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+  //   _.mapBut( _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
+  // );
+  // test.identical( typeof got, 'function' );
+  /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
 
   test.case = 'dst extends routine1, src extends routine, dst extends src';
   var dst = () =>
@@ -3868,6 +3876,32 @@ function routineExtend( test )
 
   test.close( 'few extends');
 
+  test.case = 'sanitare';
+  var exp =
+  {
+    'defaults' :
+    {
+      'head' : null,
+      'body' : null,
+      'tail' : null,
+      'name' : null,
+      'strategy' : null,
+    }
+  }
+  test.identical( _.mapExtend( null, _.routine.unite.body ), exp );
+  var exp =
+  {
+    'defaults' :
+    {
+      'head' : null,
+      'body' : null,
+      'tail' : null,
+      'name' : null,
+      'strategy' : 'replacing',
+    }
+  }
+  test.identical( _.mapBut_( null, _.routine.unite, [ 'body', 'head' ] ), exp );
+
   if( !Config.debug )
   return;
 
@@ -3923,9 +3957,26 @@ function routineExtend( test )
 function extendSpecial( test )
 {
 
+  test.case = 'assumption';
+
+  var obj = { f1, f2 : f1.bind() }
+  test.true( obj.f1() === obj );
+  test.true( obj.f2() === undefined );
+
+  /* */
+
   act({ method : 'extendCloning' });
   act({ method : 'extendInheriting' });
   act({ method : 'extendReplacing' });
+
+  /* */
+
+  function f1()
+  {
+    return this;
+  }
+
+  /* */
 
   function act( env )
   {
@@ -4030,6 +4081,91 @@ function extendSpecial( test )
 
 //
 
+function extendBodyInstanicing( test )
+{
+
+  act({ method : 'extendCloning' });
+  act({ method : 'extendInheriting' });
+  act({ method : 'extendReplacing' });
+  act({ method : 'extend' });
+
+  /* */
+
+  function act( env )
+  {
+
+    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}`;
+
+    function routine1Dst( o )
+    {
+      return o.a + o.b;
+    }
+
+    function routine1a_body( o )
+    {
+      return o.a + o.b + 1;
+    }
+    var defaults1a = routine1a_body.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    var routine1a = _.routine.uniteReplacing( null, routine1a_body );
+
+    test.true( routine1a.body.defaults === defaults1a );
+    test.true( routine1a.defaults === defaults1a );
+
+    _.routine[ env.method ]( routine1Dst, routine1a );
+    test.identical( env.method === 'extendReplacing', routine1Dst.body === routine1a_body );
+    test.true( routine1a.body === routine1a_body );
+
+  }
+
+}
+
+//
+
+/* xxx */
+/* qqq : for Dmytro : extend */
+function extendThrowing( test )
+{
+
+  act({ method : 'extendCloning' });
+  act({ method : 'extendInheriting' });
+  act({ method : 'extendReplacing' });
+  act({ method : 'extend' });
+
+  /* */
+
+  function act( env )
+  {
+
+    test.case = 'assumption';
+    var got = _.routine[ env.method ]( f1 );
+    test.true( got === f1 );
+
+    if( Config.debug )
+    return test.true( true );
+
+    test.case = 'undefined second arg';
+    test.shouldThrowErrorSync( () => _.routine[ env.method ]( f1, undefined ) );
+    test.case = 'undefined first arg';
+    test.shouldThrowErrorSync( () => _.routine[ env.method ]( undefined, f1 ) );
+
+    test.case = 'sanitare';
+    test.identical( _.mapExtend( null, f1 ), {} );
+
+  }
+
+  function f1()
+  {
+  }
+
+}
+
+//
+
 function routineDefaults( test )
 {
 
@@ -4109,8 +4245,8 @@ function routineDefaults( test )
 
 //
 
-// qqq : for Dmytro : extend the routine. split it?
-function routineUnite( test )
+// qqq : for Dmytro : extend the routine. introduce subroutine for strategies. maybe split?
+function uniteBasic( test )
 {
   function headObject( rotine, args )
   {
@@ -4529,6 +4665,64 @@ function routineUnite( test )
 
   test.case = 'body routine has no name';
   test.shouldThrowErrorSync( () => _.routine.unite( headObject, ( o ) => o.args ) );
+}
+
+//
+
+function uniteInstancing( test )
+{
+
+  act({ method : 'uniteCloning' });
+  act({ method : 'uniteInheriting' });
+  act({ method : 'uniteReplacing' });
+  act({ method : 'unite' });
+
+  /* */
+
+  function act( env )
+  {
+
+    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}`;
+
+    function r1_head( routine, args )
+    {
+      let o = args[ 0 ];
+      return _.routineOptions( routine, o );
+    }
+
+    function r1_body( o )
+    {
+      return o.a + o.b + 1;
+    }
+
+    var extra1 = r1_body.extra =
+    {
+    }
+
+    var defaults1 = r1_body.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    var r1 = _.routine[ env.method ]( r1_head, r1_body );
+
+    test.identical( env.method === 'uniteReplacing' || env.method === 'unite', r1_body === r1.body );
+
+    test.true( r1.defaults === r1.body.defaults );
+    test.identical( env.method === 'uniteReplacing' || env.method === 'unite', r1.defaults === r1_body.defaults );
+    test.true( r1_body.defaults === defaults1 );
+    test.identical( env.method === 'uniteCloning', !_.prototype.has( r1.defaults, defaults1 ) );
+
+    test.true( r1.extra === r1.body.extra );
+    test.identical( env.method === 'uniteReplacing' || env.method === 'unite', r1.extra === r1_body.extra );
+    test.true( r1_body.extra === extra1 );
+    test.identical( env.method === 'uniteCloning', !_.prototype.has( r1.extra, extra1 ) );
+
+    test.identical( r1(), 5 );
+
+  }
+
 }
 
 //
@@ -5371,7 +5565,7 @@ function routineErForShouldSupplementNotDefinedFields( test )
 //   }
 //   test_body1.defaults = { arg : null };
 //
-//   var routine = _.routineUnite( test_head1, test_body1 );
+//   var routine = _.routine.uniteCloning_( test_head1, test_body1 );
 //   test.shouldThrowErrorSync( () => _.routineErJoin( routine ) ); // throws error
 //
 //   /* */
@@ -5387,7 +5581,7 @@ function routineErForShouldSupplementNotDefinedFields( test )
 //   }
 //   test_body.defaults = { arg : null };
 //
-//   var routine = _.routineUnite( test_head, test_body );
+//   var routine = _.routine.uniteCloning_( test_head, test_body );
 //   var routineErJoin = _.routineErJoin( routine ); // throws error
 //   test.identical( routineErJoin.defaults, { arg : null } );
 // }
@@ -7536,6 +7730,7 @@ var Self =
     routineOptionsPreservingUndefines_,
     assertRoutineOptionsPreservingUndefines_,
 
+    /* xxx : deprecate */
     routinesCompose,
     routinesComposeAll,
     routinesComposeAllReturningLast,
@@ -7544,8 +7739,11 @@ var Self =
     // routineExtend_old,
     routineExtend,
     extendSpecial,
+    extendBodyInstanicing,
+    extendThrowing,
     routineDefaults,
-    routineUnite,
+    uniteBasic,
+    uniteInstancing, /* xxx : sort */
 
     routineEr,
     routineErShouldSupplementNotDefinedFields,
