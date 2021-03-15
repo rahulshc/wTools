@@ -3002,6 +3002,8 @@ function errorFunctorBasic( test )
   var err2 = new SomeError( err1, 'def' );
   test.true( err1 instanceof SomeError );
   test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 abc arg2 def' );
   test.true( err1 !== err2 );
 
   /* */
