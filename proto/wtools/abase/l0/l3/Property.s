@@ -673,9 +673,6 @@ function hasEnumerable( src, key )
 function descriptorActiveOf( object, name )
 {
   let result = Object.create( null );
-  // yyy
-  // result.object = null;
-  // result.descriptor = null;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !!object, 'No object' );
@@ -701,9 +698,6 @@ function descriptorActiveOf( object, name )
 function descriptorOf( object, name )
 {
   let result = Object.create( null );
-  // yyy
-  // result.object = null;
-  // result.descriptor = null;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -721,6 +715,13 @@ function descriptorOf( object, name )
   while( object );
 
   return result;
+}
+
+//
+
+function descriptorOwnOf( object, name )
+{
+  return Object.getOwnPropertyDescriptor( object, name );
 }
 
 // --
@@ -754,6 +755,7 @@ let Extension =
   // propertyDescriptorGet,
   descriptorActiveOf, /* qqq : cover please */
   descriptorOf, /* qqq : cover please */
+  descriptorOwnOf,
 
 }
 

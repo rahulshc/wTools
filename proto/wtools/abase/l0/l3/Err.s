@@ -400,6 +400,7 @@ function _errMake( o )
 
     if( o.fields )
     {
+      debugger;
       for( let k in o.fields )
       nonenumerable( k, o.fields[ k ] );
     }
@@ -581,6 +582,7 @@ function _err( o )
       dstError,
       throwLocation : o.throwLocation,
       sections : o.sections,
+      fields : o.fields,
 
       attended : o.attended,
       logged : o.logged,
