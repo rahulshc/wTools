@@ -1049,6 +1049,69 @@ dirFirst.defaults.first = 1;
 
 _.assert( !dir.defaults.first );
 
+//
+
+/**
+ * Returns path name (file name).
+ * @example
+ * wTools.name( '/foo/bar/baz.asdf' ); // 'baz'
+ * @param {string|object} path|o Path string, or options
+ * @param {boolean} o.full if this parameter set to true method return name with extension.
+ * @returns {string}
+ * @throws {Error} If passed argument is not string
+ * @function name
+ * @namespace Tools.path
+ */
+
+function name_head( routine, args )
+{
+  let o = args[ 0 ];
+  if( _.strIs( o ) )
+  o = { path : o };
+
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( o.path ), 'Expects string {-o.path-}' );
+
+  return o;
+}
+
+function name_body( o )
+{
+
+  if( _.strIs( o ) )
+  o = { path : o };
+
+  _.assertRoutineOptions( name, arguments );
+
+  o.path = this.canonize( o.path );
+
+  let i = o.path.lastIndexOf( '/' );
+  if( i !== -1 )
+  o.path = o.path.substr( i+1 );
+
+  if( !o.full )
+  {
+    let i = o.path.lastIndexOf( '.' );
+    if( i !== -1 ) o.path = o.path.substr( 0, i );
+  }
+
+  return o.path;
+}
+
+name_body.defaults =
+{
+  path : null,
+  full : 0,
+}
+
+let name = _.routine.uniteCloning( name_head, name_body );
+name.defaults.full = 0;
+
+let fullName = _.routine.uniteCloning( name_head, name_body );
+fullName.defaults.full = 1;
+
 // --
 // extension
 // --
@@ -1134,6 +1197,8 @@ let Extension =
   detrail,
   dir,
   dirFirst,
+  name,
+  fullName,
 
   // fields
 

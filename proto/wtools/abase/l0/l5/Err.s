@@ -290,9 +290,6 @@ function _handleUncaughtAsync( err )
     if( _.errIsSuspended( err ) )
     return;
 
-    // if( !_.time.timerInCancelBegun( timer ) && _.errIsSuspended( err ) ) /* yyy */
-    // return;
-
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
 
   });
@@ -349,7 +346,6 @@ function _setupUncaughtErrorHandler9()
     });
 
     return [ { err, args } ];
-    // return [ err ];
   }
 
   /* */
@@ -357,7 +353,6 @@ function _setupUncaughtErrorHandler9()
   function _errHeadNode( args )
   {
     return [ { err : args[ 0 ], args } ];
-    // return [ args[ 0 ] ];
   }
 
   /* */

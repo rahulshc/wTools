@@ -552,11 +552,9 @@ function _err( o )
 
   if( !o.message )
   o.message = '';
-  // let originalMessage = '';
   let fallBackMessage = '';
   let errors = [];
   let combinedStack = '';
-  // let message = null;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.error.breakpointOnAssertEnabled )
@@ -1963,7 +1961,6 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
-  // breakpoint,
   breakpointOnDebugger : 0,
   breakpointOnAssertEnabled : !!Config.debug,
   _errorCounter : 0,

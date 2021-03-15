@@ -1189,19 +1189,19 @@ function errCatchStackAndMessage( test )
   {
 
     test.description = 'throwsStack';
-    let regexp = new RegExp( _.regexpEscape( `${context.nameOfFile}:` ) + '.+', 'g' );
+    let regexp = new RegExp( _.regexpEscape( `${_.path.fullName( test.suiteFilePath )}:` ) + '.+', 'g' );
     let throwsStackLocations = _.longOnce( err.throwsStack.match( regexp ) );
     test.true( _.errIs( err ) );
     test.identical( throwsStackLocations.length, 3 );
     test.identical( _.strCount( err.throwsStack, 'thrown at' ), 3 );
     test.identical( _.strCount( err.throwsStack, 'thrown at decrement @' ), 2 );
     test.identical( _.strCount( err.throwsStack, 'thrown at divide @' ), 1 );
-    test.identical( _.strCount( err.throwsStack, `${context.nameOfFile}:` ), 3 );
+    test.identical( _.strCount( err.throwsStack, `${_.path.fullName( test.suiteFilePath )}:` ), 3 );
 
     test.description = 'combinedStack';
     test.identical( _.strCount( err.combinedStack, 'decrement' ), 1 );
     test.identical( _.strCount( err.combinedStack, 'divide' ), 1 );
-    test.identical( _.strCount( err.combinedStack, `${context.nameOfFile}:` ), 3 );
+    test.identical( _.strCount( err.combinedStack, `${_.path.fullName( test.suiteFilePath )}:` ), 3 );
 
     visited.push( 'catch1' );
   }
@@ -3278,7 +3278,7 @@ function eventUncaughtErrorOnce( test )
   let programPath = a.program( program );
   let ready = _globals_.testing.wTools.take( null );
 
-  // ready.then( () => run( 'once' ) ); /* xxx qqq : switch on later */
+  // ready.then( () => run( 'once' ) ); /* qqq : for Dmytro : switch on later */
   ready.then( () => run( 'off' ) );
 
   return ready;
@@ -3325,7 +3325,7 @@ function eventUncaughtErrorOnce( test )
     let off = process.argv.includes( 'how:off' );
 
     if( once )
-    _.process.once( 'uncaughtError', ( e ) => /* xxx qqq : implement routine _.process.once() */
+    _.process.once( 'uncaughtError', ( e ) => /* qqq : for Dmytro : implement routine _.process.once(). make sure it works */
     {
       _.errAttend( e.err );
     });
@@ -3420,7 +3420,7 @@ let Self =
 
   context :
   {
-    nameOfFile : _.introspector.location().fileName, /* xxx : introduce field in utility::Testing */
+    // nameOfFile : _.introspector.location().fileName, /* yyy : introduce field in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
