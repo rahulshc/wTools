@@ -3502,7 +3502,7 @@ function sureHasOnly( srcMap, screenMaps, msg )
   {
     let err;
     if( arguments.length === 2 )
-    err = _._err
+    err = _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3516,7 +3516,7 @@ function sureHasOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      err = _._err
+      err = _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3608,7 +3608,7 @@ function sureOwnOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3622,7 +3622,7 @@ function sureOwnOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 3,
@@ -3711,7 +3711,7 @@ function sureHasAll( srcMap, all, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3725,7 +3725,7 @@ function sureHasAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3813,7 +3813,7 @@ function sureOwnAll( srcMap, all, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3827,7 +3827,7 @@ function sureOwnAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3916,7 +3916,7 @@ function sureHasNone( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3930,7 +3930,7 @@ function sureHasNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3955,7 +3955,7 @@ function sureOwnNone( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3969,7 +3969,7 @@ function sureOwnNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -4055,7 +4055,7 @@ function sureHasNoUndefine( srcMap, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 1 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -4069,7 +4069,7 @@ function sureHasNoUndefine( srcMap, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -4247,7 +4247,7 @@ function assertHasOnly( srcMap, screenMaps, msg )
   //
   // function errFromArgs( args )
   // {
-  //   return _._err
+  //   return _.error._err
   //   ({
   //     args,
   //     level : 2,
@@ -4662,7 +4662,7 @@ function assertHasNoUndefine( srcMap, msg )
 
   function errFromArgs( args )
   {
-    return _._err
+    return _.error._err
     ({
       args,
       level : 2,

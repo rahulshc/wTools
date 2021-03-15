@@ -3387,7 +3387,7 @@ function exportStringShortDiagnostic( test )
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   var expected = '{- Error.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
@@ -3810,7 +3810,7 @@ function exportStringShortCode( test )
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   var expected = '{- Error.constructible -}';
   test.identical( _.entity.exportStringShortCode( src ), expected );
 

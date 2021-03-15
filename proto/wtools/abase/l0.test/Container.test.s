@@ -173,7 +173,7 @@ function like( test )
   test.true( _.container.like( src ) );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   test.true( _.container.like( src ) );
 
   test.case = 'escape';
@@ -425,7 +425,7 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 20 );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   test.identical( _.container.lengthOf( src ), 1 );
 
   test.case = 'escape';
@@ -2873,7 +2873,7 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
 
   /* else _.assert( 0 ); */
   // test.case = 'err';
-  // var src = _.err( 'error' );
+  // var src = _.error.err( 'error' );
   // var got = _.container.elementThGet( src, 0 );
   // test.identical( _.strIs( got ), true );
 
@@ -3156,7 +3156,7 @@ function elementGet( test )
   test.identical( got, 20 );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   var got = _.container.elementGet( src, 'message' );
   test.identical( _.strIs( got ), true );
 

@@ -66,7 +66,7 @@ var nameFielded = function nameFielded( nameString )
     name[ nameString ] = nameString;
     return name;
   }
-  else throw _.err( 'nameFielded :','unknown arguments' );
+  else throw _.error.err( 'nameFielded :','unknown arguments' );
 
 }
 
@@ -101,7 +101,7 @@ var nameUnfielded = function nameUnfielded( nameObject )
     name.raw = nameObject;
     name.coded = nameObject;
   }
-  else throw _.err( 'nameUnfielded :','Unknown arguments' );
+  else throw _.error.err( 'nameUnfielded :','Unknown arguments' );
 
   _assert( arguments.length === 1 );
   _assert( _.strIs( name.raw ) || _.symbol.is( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );

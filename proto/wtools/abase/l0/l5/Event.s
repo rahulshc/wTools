@@ -740,7 +740,7 @@ function eventGive( ehandler, o )
 
   function onError( err, o )
   {
-    throw _.err( `Error on handing event ${o.event}\n`, err );
+    throw _.error.err( `Error on handing event ${o.event}\n`, err );
   }
 
 }

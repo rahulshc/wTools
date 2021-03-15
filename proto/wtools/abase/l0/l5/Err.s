@@ -28,7 +28,7 @@ function _handleUncaught2( o )
 
   processUncaughtErrorEvent();
 
-  if( _.errIsAttended( o.err ) )
+  if( _.error.isAttended( o.err ) )
   return;
 
   debugger;
@@ -86,8 +86,8 @@ function _handleUncaught2( o )
   {
     try
     {
-      if( _._errLog )
-      _._errLog( o.err, o.logger );
+      if( _.error._log )
+      _.error._log( o.err, o.logger );
       else
       console.error( o.err );
     }
@@ -122,7 +122,7 @@ function _handleUncaught2( o )
   {
     try
     {
-      return _.errProcess( err );
+      return _.error.process( err );
     }
     catch( err2 )
     {
@@ -273,24 +273,24 @@ _handleUncaught2.defaults =
 function _handleUncaughtAsync( err )
 {
 
-  if( _.errIsAttended( err ) )
+  if( _.error.isAttended( err ) )
   return err;
 
-  _.errWary( err, 1 );
+  _.error.wary( err, 1 );
 
-  if( _.errIsSuspended( err ) )
+  if( _.error.isSuspended( err ) )
   return err;
 
   let timer = _.time._finally( _.error.uncaughtDelayTime, function uncaught()
   {
 
-    if( _.errIsAttended( err ) )
+    if( _.error.isAttended( err ) )
     return;
 
-    if( _.errIsSuspended( err ) )
+    if( _.error.isSuspended( err ) )
     return;
 
-    // if( !_.time.timerInCancelBegun( timer ) && _.errIsSuspended( err ) ) /* yyy */
+    // if( !_.time.timerInCancelBegun( timer ) && _.error.isSuspended( err ) ) /* yyy */
     // return;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
@@ -334,8 +334,8 @@ function _setupUncaughtErrorHandler9()
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
 
-    if( _._err )
-    err = _._err
+    if( _.error._err )
+    err = _.error._err
     ({
       args : [ error || message ],
       level : 1,
@@ -397,7 +397,7 @@ function error_functor( name, onErrorMake )
         let args1 = onErrorMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
         let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
-        let err2 = _._err({ args : args2, level : 2 });
+        let err2 = _.error._err({ args : args2, level : 2 });
 
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );

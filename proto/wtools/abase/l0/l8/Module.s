@@ -217,14 +217,14 @@ function _sourceFileIncludeSingle( src )
   _.assert( _.strIs( src ), 'Expects string' );
 
   if( typeof module === 'undefined' )
-  throw _.err( 'Cant include, routine "require" does not exist.' );
+  throw _.error.err( 'Cant include, routine "require" does not exist.' );
   else
   return _.module.__nativeInclude( _.path.nativize( src ) );
 
   // if( typeof module !== 'undefined' )
   // return _.module.__nativeInclude( _.path.nativize( src ) );
   // else
-  // throw _.err( 'Cant include, routine "require" does not exist.' );
+  // throw _.error.err( 'Cant include, routine "require" does not exist.' );
 
 }
 
@@ -293,7 +293,7 @@ function _includedRegister( o )
   }
   catch( err )
   {
-    console.log( _.err( err, `\nError in _.module._includedRegister of ${o.sourcePath}` ) );
+    console.log( _.error.err( err, `\nError in _.module._includedRegister of ${o.sourcePath}` ) );
   }
 }
 
@@ -622,9 +622,9 @@ function _Setup()
       // debugger; /**/
       let error;
       if( parent && parent.filename )
-      error = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
+      error = _.error.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
       else
-      error = _.err( err, `\nFailed to include "${request}"` );
+      error = _.error.err( err, `\nFailed to include "${request}"` );
       throw error;
     }
     finally
