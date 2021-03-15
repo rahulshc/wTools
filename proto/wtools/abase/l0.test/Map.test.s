@@ -15718,6 +15718,7 @@ function mapHasNoneMapOnlyPerformance( test )
   var counter = 0;
   var took = 0;
 
+  debugger
   for( let i = times; i > 0; i-- )
   {
     debugger;
@@ -15728,8 +15729,10 @@ function mapHasNoneMapOnlyPerformance( test )
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
-    counter = 0
+    counter = 0;
+    debugger
   }
+  debugger
 
   console.log( `Array length = ${size}, iterations = ${times}` );
   console.log( `Routine BASI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
