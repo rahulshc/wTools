@@ -63,6 +63,19 @@ function constructorIsVectorAdapter( src )
   return '_vectorBuffer' in src.prototype;
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.vector.is( src ) );
+
+  if( _.unrollIs( src ) )
+  return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
+  else
+  return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
+
+}
 
 // --
 // extension
@@ -74,6 +87,15 @@ var Extension =
   like,
   adapterIs,
   constructorIsVectorAdapter,
+
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 }
 
 //
