@@ -396,8 +396,6 @@ function error_functor( name, onErrorMake )
         let err1 = this;
         let args1 = onErrorMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
-        // let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
-        // let args2 = [ err1, ( args1.length ? '\n' : '' ) , args1 ];
         let args2 = args1;
         if( !_.longHas( args2, err1 ) )
         args2 = [ err1, ... args1 ];

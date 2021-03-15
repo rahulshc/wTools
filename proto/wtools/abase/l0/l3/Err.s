@@ -400,7 +400,6 @@ function _errMake( o )
 
     if( o.fields )
     {
-      debugger;
       for( let k in o.fields )
       nonenumerable( k, o.fields[ k ] );
     }

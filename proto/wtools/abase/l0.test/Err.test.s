@@ -2933,6 +2933,7 @@ function errorFunctorBasic( test )
   var got = SomeError( 'abc' )
   test.true( _.errIs( got ) );
   test.true( got instanceof SomeError );
+  test.identical( got.originalMessage, 'arg1 abc arg2' );
   test.identical( got.SomeError, true );
   var exp =
   {
@@ -2951,6 +2952,7 @@ function errorFunctorBasic( test )
   var got = new SomeError( 'abc' );
   test.true( _.errIs( got ) );
   test.true( got instanceof SomeError );
+  test.identical( got.originalMessage, 'arg1 abc arg2' );
   test.identical( got.SomeError, true );
   var exp =
   {
@@ -2970,6 +2972,8 @@ function errorFunctorBasic( test )
   var err2 = SomeError( err1 );
   test.true( err1 instanceof SomeError );
   test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 abc arg2' );
   test.true( err1 === err2 );
 
   /* */
@@ -2980,11 +2984,13 @@ function errorFunctorBasic( test )
   var err2 = new SomeError( err1 );
   test.true( err1 instanceof SomeError );
   test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 arg2' );
   test.true( err1 !== err2 );
 
   /* */
 
-  test.case = 'remake, extra argument, without new';
+  test.case = 'remake, extra argument, left, without new';
   var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
   var err1 = SomeError( 'abc' );
   var err2 = SomeError( err1, 'def' );
@@ -2996,14 +3002,38 @@ function errorFunctorBasic( test )
 
   /* */
 
-  test.case = 'remake, extra argument, with new';
+  test.case = 'remake, extra argument, right, without new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'def arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'def arg1 abc arg2' );
+  test.true( err1 === err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, right, with new';
   var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
   var err1 = SomeError( 'abc' );
   var err2 = new SomeError( err1, 'def' );
   test.true( err1 instanceof SomeError );
   test.true( err2 instanceof SomeError );
   test.identical( err1.originalMessage, 'arg1 abc arg2' );
-  test.identical( err2.originalMessage, 'arg1 abc arg2 def' );
+  test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 def arg2' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, left, with new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 def arg1 abc arg2 arg2' );
   test.true( err1 !== err2 );
 
   /* */
