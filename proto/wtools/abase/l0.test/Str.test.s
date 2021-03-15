@@ -2028,6 +2028,34 @@ function strEquivalent( test )
   var got = _.strEquivalent( /\w+/, /\w+/ );
   test.identical( got, true );
 
+  test.case = 'string with and without spaces ';
+  var got = _.strEquivalent( 'abc', ' abc ' );
+  test.identical( got, true );
+
+  test.case = 'string with and without newlines ';
+  var got = _.strEquivalent( 'abc', '\nabc\n' );
+  test.identical( got, true );
+
+  test.case = 'string with identical newlines';
+  var got = _.strEquivalent( '\na\nb\nc\n', '\na\nb\nc\n' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\n', '\nabc\n\n' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t           ' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\na   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs on each line from both sides';
+  var got = _.strEquivalent( '      \t\n  \ta   \t\n\n  \n\t  b   \t   \n   \n  \n  \t  c  \t     ', '        \n  \t a  \n  \n  \t   \n \n  b  \t \n   \n \t c \t \n \n \t \t           ' );
+  test.identical( got, true );
+
   test.close( 'true' );
 
   /* - */
@@ -2064,6 +2092,18 @@ function strEquivalent( test )
 
   test.case = 'regexp and regexp';
   var got = _.strEquivalent( /\w+/g, /\w+/gi );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\nb', '\nabc\n\n' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t    c       ' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\nab   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
   test.identical( got, false );
 
   test.close( 'false' );
