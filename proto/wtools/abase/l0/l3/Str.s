@@ -136,8 +136,12 @@ function strEquivalent( src1, src2 )
 
   if( strIs1 && strIs2 )
   {
-    /* qqq : for Yevhen : bad */
-    return src1.trim() === src2.trim();
+    /* qqq : for Yevhen : bad | aaa : Fixed. */
+    if( src1 === src2 )
+    return true;
+
+    return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+
   }
   else if( strIs1 )
   {

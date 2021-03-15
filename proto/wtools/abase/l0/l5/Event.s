@@ -117,7 +117,7 @@ function nameValueFrom( name )
 
 function nameIs( name )
 {
-  return name instanceof Name;
+  return name instanceof _.event.Name;
 }
 
 //
@@ -145,7 +145,7 @@ function nameIs( name )
 
 function chainIs( src )
 {
-  return src instanceof Chain;
+  return src instanceof _.event.Chain;
 }
 
 //

@@ -552,11 +552,9 @@ function _err( o )
 
   if( !o.message )
   o.message = '';
-  // let originalMessage = '';
   let fallBackMessage = '';
   let errors = [];
   let combinedStack = '';
-  // let message = null;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.error.breakpointOnAssertEnabled )
@@ -583,6 +581,7 @@ function _err( o )
       dstError,
       throwLocation : o.throwLocation,
       sections : o.sections,
+      fields : o.fields,
 
       attended : o.attended,
       logged : o.logged,
