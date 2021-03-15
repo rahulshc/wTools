@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.8.942",
+  "version": "0.8.949",
   "engine": "node >= 10.0.0",
   "enabled": 1,
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
@@ -38,12 +38,12 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "7.1.0",
-    "wFiles": "alpha",
-    "wTesting": "alpha",
+    "wFiles": "gamma",
+    "wTesting": "gamma",
     "wTools": "file:.",
-    "wcloner": "alpha",
-    "wselector": "alpha",
-    "wstringer": "alpha"
+    "wcloner": "gamma",
+    "wselector": "gamma",
+    "wstringer": "gamma"
   },
   "keywords": [
     "base",

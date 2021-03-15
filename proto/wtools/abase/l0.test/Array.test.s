@@ -26778,6 +26778,8 @@ let Self =
 
 }
 
+/* qqq for Dmytro : this test suite fails with shoulding:0. check also other test suites */
+
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
