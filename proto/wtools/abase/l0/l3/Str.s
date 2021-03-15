@@ -213,58 +213,47 @@ function exportStringShortDiagnostic( src, o )
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
 
   let result = '';
-  try
+
+  if( _.primitive.is( src ) )
   {
-    if( _.primitive.is( src ) ) //
-    {
-      // result = _.primitive[ 'exportStringShortDiagnostic' ]( src );
-    }
-    else if( _.date.is( src ) ) //
-    {
-      // result = _.date[ 'exportStringShortDiagnostic' ]( src );
-    }
-    else if( _.regexpIs( src ) ) //
-    {
-      // result = _.regexp[ 'exportStringShortDiagnostic' ]( src );
-    }
-    else
-    {
-      result = _.set[ 'exportStringShortDiagnostic' ]( src );
-    }
-    // else if( _.set.like( src ) )
-    // {
-    //   // result = _.set[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else if( _.hashMap.like( src ) )
-    // {
-    //   // result = _.hashMap[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else if( _.vector.like( src ) )
-    // {
-    //   // result = _.vector[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else if( _.routine.is( src ) )
-    // {
-    //   // result = _.routine[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else if( _.aux.like( src ) )
-    // {
-    //   // result = _.aux[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else if( _.object.like( src ) )
-    // {
-    //   // result = _.object[ 'exportStringShortDiagnostic' ]( src );
-    // }
-    // else
-    // {
-    //   // result = String( src );
-    //   // result = _.strShort( result );
-    // }
+    result = _.primitive.exportStringShortDiagnostic( src );
   }
-  catch( err )
+  else if( _.date.is( src ) )
   {
-    debugger;
-    throw err;
+    result = _.date.exportStringShortDiagnostic( src );
+  }
+  else if( _.regexpIs( src ) )
+  {
+    result = _.regexp.exportStringShortDiagnostic( src );
+  }
+  else if( _.set.like( src ) )
+  {
+    result = _.set.exportStringShortDiagnostic( src );
+  }
+  else if( _.hashMap.like( src ) )
+  {
+    result = _.hashMap.exportStringShortDiagnostic( src );
+  }
+  else if( _.vector.like( src ) )
+  {
+    result = _.vector.exportStringShortDiagnostic( src );
+  }
+  else if( _.routine.is( src ) )
+  {
+    result = _.routine.exportStringShortDiagnostic( src );
+  }
+  else if( _.aux.like( src ) )
+  {
+    result = _.aux.exportStringShortDiagnostic( src );
+  }
+  else if( _.object.like( src ) )
+  {
+    result = _.object.exportStringShortDiagnostic( src );
+  }
+  else
+  {
+    result = String( src );
+    result = _.strShort( result );
   }
 
   return result;
@@ -1254,16 +1243,10 @@ let StandardTypeSet = new Set
 let ExtensionEntity =
 {
 
-<<<<<<< HEAD
-  exportStringSimple : exportStringShortDiagnostic, /* xxx : deprecate? */
-  exportStringShort : exportStringShortDiagnostic,
-  exportString : exportStringShortDiagnostic,
-  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
-  exportStringShortDiagnostic,
-  // exportStringShortCode, /* qqq xxx : introduce */
+  // export string
 
-=======
->>>>>>> 4a06d103ac3b5e1d0b196e2e547aaf61a8efd73e
+  exportStringShortDiagnostic,
+
   strPrimitive,
   strTypeSecondary,
   strType : strTypeWithTraits,

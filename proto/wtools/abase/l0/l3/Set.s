@@ -138,7 +138,7 @@ function _setsAreIdenticalShallow( src1, src2 )
 function exportStringShortDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  // _.assert( _.set.is( src ) );
+  _.assert( _.set.is( src ) );
 
   return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }

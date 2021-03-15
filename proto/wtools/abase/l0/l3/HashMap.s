@@ -112,6 +112,8 @@ let Extension =
   _identicalShallow,
   equivalentShallow : identicalShallow,
 
+  // export string
+
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,

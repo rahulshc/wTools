@@ -83,6 +83,7 @@ let _ = _global_.wTools;
 
 function exportStringShortDiagnostic( test )
 {
+
   test.case = 'number';
   var src = 1;
   var expected = '1';
@@ -387,11 +388,6 @@ function exportStringShortDiagnostic( test )
   // var src = console;
   // var expected = '{- Console.constructible with 1 elements -}';
   // test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
-
-  test.case = 'Map polluted';
-  var src = _global_.logger;
-  var expected = '{- Map.polluted with 9 elements -}';
-  test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'printerLike';
   var src = new _globals_.testing.wTools.Logger();
