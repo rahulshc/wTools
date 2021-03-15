@@ -1245,7 +1245,12 @@ let ExtensionEntity =
 
   // export string
 
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
   exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 
   strPrimitive,
   strTypeSecondary,
