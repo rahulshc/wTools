@@ -15720,10 +15720,11 @@ function mapHasNoneMapOnlyPerformance( test )
 
   for( let i = times; i > 0; i-- )
   {
+    debugger;
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    _mapOnlyForOf({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -15749,7 +15750,7 @@ function mapHasNoneMapOnlyPerformance( test )
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    _mapOnlyForOf({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
