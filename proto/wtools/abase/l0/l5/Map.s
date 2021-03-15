@@ -353,7 +353,7 @@ function mapHasAll( src, screen )
     if( !( screen[ s ] in src ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( !( value in src ) )
@@ -415,7 +415,7 @@ function mapHasAny( src, screen )
     if( screen[ s ] in src )
     return true;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( value in src )
@@ -476,7 +476,7 @@ function mapHasNone( src, screen )
     if( screen[ s ] in src )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( value in src )
@@ -536,7 +536,7 @@ function mapOnlyOwnAll( src, screen )
     if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( !Object.hasOwnProperty.call( src, value ) )
@@ -596,7 +596,7 @@ function mapOnlyOwnAny( src, screen )
     if( Object.hasOwnProperty.call( src, screen[ s ] ) )
     return true;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( Object.hasOwnProperty.call( src, value ) )
@@ -657,7 +657,7 @@ function mapOnlyOwnNone( src, screen )
     if( Object.hasOwnProperty.call( src, screen[ s ] ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( Object.hasOwnProperty.call( src, value ) )
