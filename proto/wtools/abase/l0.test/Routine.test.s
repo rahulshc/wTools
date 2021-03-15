@@ -4126,7 +4126,6 @@ function extendBodyInstanicing( test )
 
 //
 
-/* xxx */
 /* qqq : for Dmytro : extend */
 function extendThrowing( test )
 {
@@ -7743,7 +7742,7 @@ var Self =
     extendThrowing,
     routineDefaults,
     uniteBasic,
-    uniteInstancing, /* xxx : sort */
+    uniteInstancing,
 
     routineEr,
     routineErShouldSupplementNotDefinedFields,

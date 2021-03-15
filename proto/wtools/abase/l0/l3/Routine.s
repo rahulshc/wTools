@@ -806,6 +806,7 @@ function assertRoutineOptions_( defaults, options )
 /* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
 /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
 /* aaa for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */ /* Dmytro : implemented similar routine */
+/* xxx : make routineOptionsPreservingUndefines default routineOptions */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
