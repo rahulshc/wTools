@@ -3066,10 +3066,9 @@ function errorFunctorExternal( test )
 
     test.identical( _.strCount( op.output, 'ncaught' ), 0 );
     test.identical( _.strCount( op.output, '= Message' ), 1 );
-    test.identical( _.strCount( op.output, 'program.js:9' ), 2 );
-    test.identical( _.strCount( op.output, 'program.js:' ), 3 );
+    test.identical( _.strCount( op.output, 'program.js:9' ), 1 );
+    test.identical( _.strCount( op.output, 'program.js:' ), 2 );
     test.identical( _.strCount( op.output, 'arg1 arg2 abc' ), 1 );
-    test.identical( _.strCount( op.output.substring( 0, op.output.indexOf( 'program.js:9' ) ), 'at ' ), 1 );
 
     return null;
   });
