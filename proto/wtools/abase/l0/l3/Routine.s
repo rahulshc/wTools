@@ -3111,6 +3111,20 @@ function vectorizeAccess( vector )
 
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.routine.is( src ) );
+
+  if( src.name )
+  return `{- routine ${src.name} -}`;
+  else
+  return `{- routine.anonymous -}`;
+}
+
+
 // --
 // routines
 // --
@@ -3213,6 +3227,14 @@ let Extension = /* qqq : for Yevhen : bad */
 
   vectorizeAccess,
 
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 }
 
 //

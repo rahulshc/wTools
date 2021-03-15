@@ -208,6 +208,59 @@ function strsEquivalent( src1, src2 )
 // converter
 // --
 
+function exportStringShortDiagnostic( src, o )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+
+  let result = '';
+
+  if( _.primitive.is( src ) )
+  {
+    result = _.primitive.exportStringShortDiagnostic( src );
+  }
+  else if( _.date.is( src ) )
+  {
+    result = _.date.exportStringShortDiagnostic( src );
+  }
+  else if( _.regexpIs( src ) )
+  {
+    result = _.regexp.exportStringShortDiagnostic( src );
+  }
+  else if( _.set.like( src ) )
+  {
+    result = _.set.exportStringShortDiagnostic( src );
+  }
+  else if( _.hashMap.like( src ) )
+  {
+    result = _.hashMap.exportStringShortDiagnostic( src );
+  }
+  else if( _.vector.like( src ) )
+  {
+    result = _.vector.exportStringShortDiagnostic( src );
+  }
+  else if( _.routine.is( src ) )
+  {
+    result = _.routine.exportStringShortDiagnostic( src );
+  }
+  else if( _.aux.like( src ) )
+  {
+    result = _.aux.exportStringShortDiagnostic( src );
+  }
+  else if( _.object.like( src ) )
+  {
+    result = _.object.exportStringShortDiagnostic( src );
+  }
+  else
+  {
+    result = String( src );
+    result = _.strShort( result );
+  }
+
+  return result;
+}
+
+//
+
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
  * For example: src : 'string', limit : 4, result -> 'stng'.
@@ -1040,7 +1093,7 @@ function strRemoveBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.regexpIs( begin ), 'Expects string/regexp {-begin-}'  );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ), 'Expects string/regexp {-begin-}' );
 
   let result = src;
   let beginOf = _._strBeginOf( result, begin );
@@ -1189,6 +1242,15 @@ let StandardTypeSet = new Set
 
 let ExtensionEntity =
 {
+
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 
   strPrimitive,
   strTypeSecondary,
