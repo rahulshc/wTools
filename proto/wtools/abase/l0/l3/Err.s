@@ -195,16 +195,16 @@ function _make( o )
 
   for( let e in o )
   {
-    if( _errMake.defaults[ e ] === undefined )
+    if( _.error._make.defaults[ e ] === undefined )
     {
       throw Error( `Unknown option::${e}` );
     }
   }
 
-  for( let e in _errMake.defaults )
+  for( let e in _.error._make.defaults )
   {
     if( o[ e ] === undefined )
-    o[ e ] = _errMake.defaults[ e ];
+    o[ e ] = _.error._make.defaults[ e ];
   }
 
   if( !_.error.is( o.dstError ) )
@@ -303,12 +303,18 @@ function _make( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}` );
+        logger.error
+        (
+          `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}`
+        );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}` );
+        logger.error
+        (
+          `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}`
+        );
         delete o.sections[ s ];
       }
     }
@@ -404,8 +410,8 @@ function _make( o )
       nonenumerable( k, o.fields[ k ] );
     }
 
-    if( o.debugging )
-    debugger;
+    // if( o.debugging )
+    // debugger;
 
   }
 
@@ -556,11 +562,11 @@ function _err( o )
   let errors = [];
   let combinedStack = '';
 
-  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
-  if( _global_.debugger )
-  debugger;
+  // if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
+  // if( _global_.debugger )
+  // debugger;
 
   /* algorithm */
 
@@ -646,7 +652,6 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          debugger;
           o.args = _.longBut_( null, o.args, [ a, a ], arg );
           // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
@@ -1332,8 +1337,8 @@ function wary( err, value )
 function restack( err, level )
 {
 
-  if( err && err.debugging )
-  debugger;
+  // if( err && err.debugging )
+  // debugger;
 
   if( !( arguments.length === 1 || arguments.length === 2 ) )
   throw Error( 'Expects single argument or none' );
@@ -1464,8 +1469,8 @@ function _log( err, logger )
 
   /* */
 
-  if( err && err.debugging )
-  debugger;
+  // if( err && err.debugging )
+  // debugger;
 
   if( _.routine.is( err.toString ) )
   {
@@ -1611,8 +1616,8 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
 }
 
 //
@@ -1840,7 +1845,6 @@ function assert( condition )
   {
     if( !_.error.breakpointOnAssertEnabled )
     return;
-    debugger;
   }
 
 }
@@ -1885,8 +1889,8 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
   _.assert( false, 'not tested : ' + stack( 1 ) );
 
 }
@@ -1933,13 +1937,13 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    return val;
+    // return val; /* Setter cannot return a value.eslint(no-setter-return) */
   },
   get : function()
   {
     let val = _[ Symbol.for( 'debugger' ) ];
-    if( val )
-    debugger;
+    // if( val )
+    // debugger;
     return val;
   },
 });
