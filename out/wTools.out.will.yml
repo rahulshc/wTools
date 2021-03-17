@@ -377,7 +377,8 @@ module:
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
           - ../proto/wtools/abase/l0.test/Map.test.s
-          - ../proto/wtools/abase/l0.test/Minimal.test.s
+          - ../proto/wtools/abase/l0.test/MinimalExportStringLayer3.test.s
+          - ../proto/wtools/abase/l0.test/MinimalRoutineLayer3.test.s
           - ../proto/wtools/abase/l0.test/Module.test.s
           - ../proto/wtools/abase/l0.test/Number.test.s
           - ../proto/wtools/abase/l0.test/Object.test.s

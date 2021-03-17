@@ -178,6 +178,20 @@ function hashMapsAreIdenticalShallow( test )
   var got = _.hashMap.identicalShallow( src1, src2 );
   test.identical( got, false );
 
+  test.case = '1 hash map and 1 not';
+  var src1 = new HashMap([ [ 'a', 1 ] ]);
+  var src2 = { a : 1 };
+  var got = _.hashMap.identicalShallow( src1, src2 );
+  test.identical( got, false );
+  var src1 = { a : 1 };
+  var src2 = new HashMap([ [ 'a', 1 ] ]);
+  var got = _.hashMap.identicalShallow( src1, src2 );
+  test.identical( got, false );
+  var src1 = [ 'a', 1 ];
+  var src2 = new HashMap([ [ 'a', 1 ] ]);
+  var got = _.hashMap.identicalShallow( src1, src2 );
+  test.identical( got, false );
+
   //
 
   test.case = 'non-primitive, key not same refference. object empty';

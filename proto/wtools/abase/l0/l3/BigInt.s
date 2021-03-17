@@ -17,6 +17,16 @@ function is( src )
   return result;
 }
 
+//
+
+function exportStringShortCode( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.bigInt.is( src ) );
+
+  return `${String( src )}n`;
+}
+
 // --
 // extension
 // --
@@ -31,6 +41,15 @@ let ExtensionTools =
 let Extension =
 {
   is,
+
+  // export string
+
+  exportString : exportStringShortCode,
+  exportStringShort : exportStringShortCode,
+  exportStringShortCode,
+  exportStringShortDiagnostic : exportStringShortCode,
+  exportStringDiagnostic : exportStringShortCode,
+  exportStringCode : exportStringShortCode
 }
 
 Object.assign( Self, Extension );

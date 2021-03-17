@@ -7064,6 +7064,99 @@ function dirFirstDepthOption( test )
   test.identical( got, exp );
 }
 
+//
+
+/* qqq : extend */
+function name( test )
+{
+
+  var src = '/foo/bar/baz.asdf';
+  var expected = 'baz';
+  test.identical( _.path.name( src ), expected );
+
+  // test.case = 'get paths name';
+  // var src =
+  // [
+  //   '',
+  //   'some.txt',
+  //   '/foo/bar/baz.asdf',
+  //   '/foo/bar/.baz',
+  //   '/foo.coffee.md',
+  //   '/foo/bar/baz'
+  // ];
+  // var expected =
+  // [
+  //   '',
+  //   'some',
+  //   'baz',
+  //   '',
+  //   'foo.coffee',
+  //   'baz'
+  // ];
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'incorrect input';
+  test.shouldThrowErrorSync( () => _.paths.name() );
+  test.shouldThrowErrorSync( () => _.paths.name( [ 'aa/bb/file.txt', 1 ] ) );
+
+  test.case = 'inner array';
+  test.shouldThrowErrorSync( () => _.paths.name( [ 'a/b/file.txt', [ '/a/d/file.js' ] ] ) );
+
+  test.case = 'two arguments';
+  test.shouldThrowErrorSync( () => _.paths.name( [ 'a/b/file.txt' ], [ 'a/c/file.js' ] ) );
+}
+
+//
+
+/* qqq : extend */
+function fullName( test )
+{
+
+  var src = '/foo/bar/baz.asdf';
+  var expected = 'baz.asdf';
+  test.identical( _.path.fullName( src ), expected );
+
+  // test.case = 'get paths name with extension';
+  // var src =
+  // [
+  //   '',
+  //   'some.txt',
+  //   '/foo/bar/baz.asdf',
+  //   '/foo/bar/.baz',
+  //   '/foo.coffee.md',
+  //   '/foo/bar/baz'
+  // ];
+  // var expected =
+  // [
+  //   '',
+  //   'some.txt',
+  //   'baz.asdf',
+  //   '.baz',
+  //   'foo.coffee.md',
+  //   'baz'
+  // ];
+  // test.identical( _.paths.fullName( src ), expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'incorrect input';
+  test.shouldThrowErrorSync( () => _.paths.fullName() );
+  test.shouldThrowErrorSync( () => _.paths.fullName( [ 'aa/bb/file.txt', 1 ] ) );
+
+  test.case = 'inner array';
+  test.shouldThrowErrorSync( () => _.paths.fullName( [ 'a/b/file.txt', [ '/a/d/file.js' ] ] ) );
+
+  test.case = 'two arguments';
+  test.shouldThrowErrorSync( () => _.paths.fullName( [ 'a/b/file.txt' ], [ 'a/c/file.js' ] ) );
+}
+
 // --
 // declare
 // --
@@ -7112,6 +7205,8 @@ let Self =
     dirDepthOption,
     dirFirst,
     dirFirstDepthOption,
+    name,
+    fullName,
 
   },
 

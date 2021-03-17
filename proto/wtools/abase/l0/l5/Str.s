@@ -1467,37 +1467,46 @@ function strReplace( src, ins, sub )
 // --
 
 /**
- * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
- * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
- *
- * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
- * @param {string} [ o.src=null ]- Source string to strip.
- * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
- * @returns {string} Returns result of removement in a string.
+ * Routine strStrip() removes entries of leading and trailing characters in source string {-o.src-},
+ * which is found by mask {-o.stripper-}.
+ * If {-o.stripper-} is not defined function removes leading and trailing whitespaces and escaped
+ * characters from begin and end of source string {-o.src-}.
  *
  * @example
- * _.strStrip( { src : 'aabaa', stripper : 'a' } );
- * // returns 'b'
+ * _.strStrip( '  abc  ' );
+ * // returns 'abc'
  *
  * @example
- * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
- * // returns 'b'
+ * _.strStrip({ src : 'ababa', stripper : 'a' });
+ * // returns 'bb'
  *
  * @example
- * _.strStrip( { src : '   b  \n' } )
- * // returns 'b'
+ * _.strStrip({ src : '  abc  ', stripper : /^\s+/ });
+ * // returns 'abc  '
  *
- * @method strStrip
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @throws { Exception } Throw an exception if( o ) is not Map.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @example
+ * _.strStrip({ src : 'axc bb cxa', stripper : [ 'a', 'x' ] });
+ * // returns 'c bb c'
+ *
+ * @example
+ * _.strStrip({ src : '  abc  ', stripper : true });
+ * // returns 'abc'
+ *
+ * First parameter set :
+ * @param { String|Array } src - Source string(s) to strip.
+ * Second parameter set :
+ * @param { Aux } o - Options map.
+ * @param { String|Array } o.src - Source string(s) to strip.
+ * @param { String|RegExp|Array|BoolLike } o.stripper - Defines characters to remove.
+ * @returns { String|Array } - Returns stripped string. If source string was an Array of strings, then routine
+ * returns array with stripped strings.
+ * @function strStrip
+ * @throws { Exception } Throw an error if arguments.length is not equal 1.
+ * @throws { Exception } Throw an error if options map {-o-} has not valid type.
+ * @throws { Exception } Throw an error if options map {-o-} has unknown property.
+ * @throws { Exception } Throw an error if {-o.src-} is not a String or not an Array of strings.
+ * @throws { Exception } Throw an error if {-o.stripper-} has not valid type, or it has value `false`.
  * @namespace Tools
- *
  */
 
 function strStrip( o )
@@ -1506,64 +1515,75 @@ function strStrip( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routine.options( strStrip, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
+  _.routine.options( strStrip, o );
+
+  o.stripper = stripperNormalize();
+  let stripRoutine = _.regexpIs( o.stripper ) ? singleStripByRegexp : singleStripByArrayOfStrings;
 
   if( _.arrayIs( o.src ) )
   {
+    _.assert( _.strsAreAll( o.src ), 'Expects strings {-o.srs-}' );
+
     let result = [];
-    for( let s = 0 ; s < o.src.length ; s++ )
-    {
-      let optionsForStrip = _.mapExtend( null, o );
-      optionsForStrip.src = optionsForStrip.src[ s ];
-      result[ s ] = strStrip( optionsForStrip );
-    }
+    for( let i = 0 ; i < o.src.length ; i++ )
+    result[ i ] = stripRoutine( o.src[ i ] );
     return result;
   }
 
-  if( _.bool.likeTrue( o.stripper ) )
+  _.assert( _.strIs( o.src ) );
+  return stripRoutine( o.src );
+
+  /* */
+
+  function stripperNormalize()
   {
-    o.stripper = strStrip.defaults.stripper;
+    let stripper = o.stripper;
+    if( _.bool.likeTrue( o.stripper ) )
+    {
+      stripper = strStrip.defaults.stripper;
+    }
+    else if( _.arrayIs( o.stripper ) )
+    {
+      _.assert( _.strsAreAll( o.stripper ), 'Expects characters in container {-o.stripper-}' );
+    }
+    else if( _.strIs( o.stripper ) )
+    {
+      stripper = _.regexpEscape( o.stripper );
+      stripper = new RegExp( stripper, 'g' );
+    }
+    else if( !_.regexpIs( o.stripper ) )
+    {
+      _.assert( 0, 'Unexpected type of {-o.stripper-}. Expects either a String, an Array or a Regexp {-o.stripper-}' );
+    }
+    return stripper;
   }
 
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
-  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+  /* */
 
-  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+  function singleStripByRegexp( src )
   {
-    let exp = o.stripper;
-    if( _.strIs( exp ) )
-    {
-      exp = _.regexpEscape( exp );
-      exp = new RegExp( exp, 'g' );
-    }
-    return o.src.replace( exp, '' );
+    return src.replace( o.stripper, '' );
   }
-  else
+
+  /* */
+
+  function singleStripByArrayOfStrings( src )
   {
-
-    _.assert( _.arrayIs( o.stripper ) );
-
-    if( Config.debug )
-    for( let s of o.stripper )
-    {
-      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
-    }
-
-    let b = 0;
-    for( ; b < o.src.length ; b++ )
-    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+    let begin = 0;
+    for( ; begin < src.length ; begin++ )
+    if( o.stripper.indexOf( src[ begin ] ) === -1 )
     break;
 
-    let e = o.src.length-1;
-    for( ; e >= 0 ; e-- )
-    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+    let end = src.length-1;
+    for( ; end >= 0 ; end-- )
+    if( o.stripper.indexOf( src[ end ] ) === -1 )
     break;
 
-    if( b >= e )
+    if( begin >= end )
     return '';
 
-    return o.src.substring( b, e+1 );
+    return src.substring( begin, end + 1 );
   }
 
 }
@@ -1571,8 +1591,83 @@ function strStrip( o )
 strStrip.defaults =
 {
   src : null,
-  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g,
+  // stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm, /* Dmytro : multiline replacing should be an option, not for single string */
 }
+
+// function strStrip( o )
+// {
+//
+//   if( _.strIs( o ) || _.arrayIs( o ) )
+//   o = { src : o };
+//
+//   _.routine.options( strStrip, o );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( _.arrayIs( o.src ) )
+//   {
+//     let result = [];
+//     for( let s = 0 ; s < o.src.length ; s++ )
+//     {
+//       let optionsForStrip = _.mapExtend( null, o );
+//       optionsForStrip.src = optionsForStrip.src[ s ];
+//       result[ s ] = strStrip( optionsForStrip );
+//     }
+//     return result;
+//   }
+//
+//   if( _.bool.likeTrue( o.stripper ) )
+//   {
+//     o.stripper = strStrip.defaults.stripper;
+//   }
+//
+//   _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
+//   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+//
+//   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+//   {
+//     let exp = o.stripper;
+//     if( _.strIs( exp ) )
+//     {
+//       exp = _.regexpEscape( exp );
+//       exp = new RegExp( exp, 'g' );
+//     }
+//     return o.src.replace( exp, '' );
+//   }
+//   else
+//   {
+//
+//     _.assert( _.arrayIs( o.stripper ) );
+//
+//     if( Config.debug )
+//     for( let s of o.stripper )
+//     {
+//       _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+//     }
+//
+//     let b = 0;
+//     for( ; b < o.src.length ; b++ )
+//     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+//     break;
+//
+//     let e = o.src.length-1;
+//     for( ; e >= 0 ; e-- )
+//     if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+//     break;
+//
+//     if( b >= e )
+//     return '';
+//
+//     return o.src.substring( b, e+1 );
+//   }
+//
+// }
+//
+// strStrip.defaults =
+// {
+//   src : null,
+//   stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+// }
 
 //
 
@@ -2585,10 +2680,11 @@ _.assert( strSplit.head !== strSplitFast.head );
 _.assert( _.routine.is( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
 _.assert( _.object.is( strSplit.defaults ) );
+_.assert( !!strSplit.defaults.preservingEmpty );
 
 //
 
-let strSplitNonPreserving = _.routine.unite( strSplit.head, strSplit.body );
+let strSplitNonPreserving = _.routine.uniteCloning( strSplit.head, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -3264,6 +3360,236 @@ function strFrom( src )
 }
 
 // --
+// entity
+// --
+
+/**
+ * Return in one string value of all arguments.
+ *
+ * @example
+ * let args = _.entity.exportStringSimple( 'test2' );
+ *
+ * @return {string}
+ * If no arguments return empty string
+ * @function exportStringSimple
+ * @namespace Tools
+ */
+
+function exportStringSimple()
+{
+  let result = '';
+  let line;
+
+  if( !arguments.length )
+  return result;
+
+  _.assert( arguments.length === 1 );
+
+  for( let a = 0 ; a < arguments.length ; a++ )
+  {
+    let src = arguments[ a ];
+
+    if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
+    {
+      line = src.toStr();
+    }
+    else try
+    {
+      line = String( src );
+    }
+    catch( err )
+    {
+      line = _.entity.strType( src );
+    }
+
+    result += line;
+    if( a < arguments.length-1 )
+    result += ' ';
+
+  }
+
+  return result;
+}
+
+//
+
+function exportStringShort( src, opts )
+{
+  let result = '';
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  result = _.entity.exportStringShortDiagnostic( src );
+  // result = _.entity.exportStringSimple( src );
+  // result = _.entity.exportStringShort( src ); xxx
+  return result;
+}
+
+// exportStringShort.fields = exportStringShort;
+// exportStringShort.routines = exportStringShort;
+
+// //
+//
+// function _exportStringShort_head( routine, args )
+// {
+//
+//   let o = args[ 0 ];
+//
+//   _.routine.optionsPreservingUndefines( routine, o );
+//   _.assert
+//   (
+//     o.format === 'string.diagnostic' || o.format === 'string.code',
+//     `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
+//   );
+//   _.assert( args.length === 1 );
+//   _.assert( arguments.length === 2 );
+//
+//   return o;
+// }
+
+//
+
+/* qqq : for Yevhen : optimize. ask how to */
+function _exportStringShort( src, o )
+{
+
+  _.assertRoutineOptions( _exportStringShort, o );
+  _.assert( arguments.length === 2 );
+  _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
+  _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
+  _.assert( o.src === undefined )
+  _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
+
+  let result = '';
+  let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
+
+  try
+  {
+    if( _.primitive.is( src ) )
+    {
+      result = _.primitive[ method ]( src );
+    }
+    else if( _.set.like( src ) )
+    {
+      result = _.set[ method ]( src );
+    }
+    else if( _.hashMap.like( src ) )
+    {
+      result = _.hashMap[ method ]( src );
+    }
+    else if( _.vector.like( src ) )
+    {
+      result = _.vector[ method ]( src );
+    }
+    else if( _.date.is( src ) )
+    {
+      result = _.date[ method ]( src );
+    }
+    else if( _.regexpIs( src ) )
+    {
+      result = _.regexp[ method ]( src );
+    }
+    else if( _.routine.is( src ) )
+    {
+      result = _.routine[ method ]( src );
+    }
+    else if( _.aux.like( src ) )
+    {
+      result = _.aux[ method ]( src );
+    }
+    else if( _.object.like( src ) )
+    {
+      result = _.object[ method ]( src );
+    }
+    else
+    {
+      result = String( src );
+    }
+
+    if( o.widthLimit !== 0 )
+    result = _.strShort({ src : result, widthLimit : o.widthLimit });
+
+  }
+  catch( err )
+  {
+    debugger;
+    throw err;
+  }
+
+  return result;
+}
+
+_exportStringShort.defaults =
+{
+  // src : null,
+  format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+// let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
+// _exportStringShort.defaults.format = 'string.diagnostic';
+
+// let _exportStringShortCode = _.routine.uniteCloning( _exportStringShort_head, _exportStringShort_body );
+// _exportStringShortCode.defaults.format = 'string.code';
+
+//
+
+/* qqq for Yevhen : make head and body | aaa : Done. */
+function exportStringShortCode( src, o ) /* */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  o = _.routineOptions( exportStringShortCode, o );
+  o.format = o.format || exportStringShortCode.defaults.format;
+
+  return _.entity._exportStringShort( src, o );
+}
+
+exportStringShortCode.defaults =
+{
+  format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+//
+
+/* qqq for Yevhen : make head and body | aaa : Done. */
+function exportStringShortDiagnostic( src, o ) /* */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  o = _.routineOptions( exportStringShortDiagnostic, o );
+  o.format = o.format || exportStringShortDiagnostic.defaults.format;
+
+  return _.entity._exportStringShort( src, o );
+}
+
+exportStringShortDiagnostic.defaults =
+{
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+}
+
+//
+
+// function exportStringShortCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+//
+//   // if( o )
+//   // {
+//   //   o.src = src;
+//   //   return _.entity._exportStringShortCode( o );
+//   // }
+//   // else
+//   // {
+//   return _.entity._exportStringShortCode({ src });
+//   // }
+// }
+
+
+// --
 // extension
 // --
 
@@ -3309,7 +3635,7 @@ let Extension =
 
   // stripper
 
-  strStrip, /* qqq for Dmytro : does not look working. fix, please */
+  strStrip, /* aaa for Dmytro : does not look working. fix, please */ /* Dmytro : covered, fixed, optimized */
   strStripLeft,
   strStripRight,
   _strRemoveAllSpaces,
@@ -3343,7 +3669,28 @@ let Extension =
 
 //
 
+let ExtensionEntity =
+{
+
+  exportStringSimple, /* xxx : deprecate? */
+  exportStringShort,
+  _exportStringShort,
+  exportString : exportStringShort,
+  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
+  // exportStringShortCode, /* qqq xxx : introduce | aaa : Done. qqq for Yevhen : bad! */
+  // _exportStringShortCode,
+  exportStringShortCode,
+  exportStringShortDiagnostic,
+}
+
+/* xxx : duplicate exportString in namespace::diagnostic? */
+
+//
+
 _.mapExtend( Self, Extension );
+_.mapExtend( _.entity, ExtensionEntity );
+
+_.assert( !!_.strSplit.defaults.preservingEmpty );
 
 // --
 // export

@@ -15,8 +15,13 @@ function identicalShallow( src1, src2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.aux.is( src1 ) );
-  _.assert( _.aux.is( src2 ) );
+  // _.assert( _.aux.is( src1 ) );
+  // _.assert( _.aux.is( src2 ) );
+
+  if( !_.aux.is( src1 ) )
+  return false;
+  if( !_.aux.is( src2 ) )
+  return false;
 
   return _.aux._identicalShallow( src1, src2 );
 }
@@ -37,31 +42,16 @@ function _identicalShallow( src1, src2 )
   return true;
 }
 
-//
-
-function exportStringShortDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.aux.is( src ) );
-
-  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
-}
-
 // --
 // extension
 // --
 
 var AuxiliaryExtension =
 {
+  identical : identicalShallow,
   identicalShallow,
   _identicalShallow,
   equivalentShallow : identicalShallow,
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic
 }
 
 Object.assign( _.aux, AuxiliaryExtension );

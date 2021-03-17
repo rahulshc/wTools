@@ -907,12 +907,11 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
-/* qqq for Yevhen : bad! ask */
 function numbersAreEquivalentBasic( test )
 {
 
   test.case = 'empty strings';
-  var got = _.number.s.areEquivalent( '', '' );
+  var got = _.number.s.areEquivalent( '', '' ); /* qqq for Yevhen : _.nubmer.areEquivalent should also work */
   test.identical( got, false );
 
   test.case = 'equal string numbers';

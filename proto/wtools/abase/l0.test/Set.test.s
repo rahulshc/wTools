@@ -178,6 +178,20 @@ function setsAreIdenticalShallow( test )
   var got = _.set.identicalShallow( src1, src2 );
   test.identical( got, false );
 
+  test.case = 'non-primitive, one not set';
+  var src1 = new Set([ 1, 2 ]);
+  var src2 = [ 1, 2 ];
+  var got = _.set.identicalShallow( src1, src2 );
+  test.identical( got, false );
+  var src1 = [ 1, 2 ];
+  var src2 = new Set([ 1, 2 ]);
+  var got = _.set.identicalShallow( src1, src2 );
+  test.identical( got, false );
+  var src1 = [ 1, 2 ];
+  var src2 = { '0' : 1, '1' : 2 };
+  var got = _.set.identicalShallow( src1, src2 );
+  test.identical( got, false );
+
   test.close( 'not identical' );
 }
 

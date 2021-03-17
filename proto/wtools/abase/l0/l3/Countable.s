@@ -34,6 +34,19 @@ function like( src )
   return _.countable.is( src );
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.countable.is( src ) );
+
+  if( _.vector.is( src ) )
+  return _.vector.exportStringShortDiagnostic( src );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+}
+
 // --
 // extension
 // --
@@ -41,7 +54,17 @@ function like( src )
 var Extension =
 {
   is,
-  like
+  like,
+
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
+
 }
 
 //

@@ -46,16 +46,6 @@ function bigIntsFrom( src )
   else _.assert( 0, 'Cant convert' );
 }
 
-//
-
-function exportStringShortCode( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.bigInt.is( src ) );
-
-  return `${String( src )}n`;
-}
-
 // --
 // extension
 // --
@@ -71,13 +61,6 @@ let ExtensionTools =
 let Extension =
 {
   from : bigIntFrom,
-
-  exportString : exportStringShortCode,
-  exportStringShort : exportStringShortCode,
-  exportStringShortCode,
-  exportStringShortDiagnostic : exportStringShortCode,
-  exportStringDiagnostic : exportStringShortCode,
-  exportStringCode : exportStringShortCode
 }
 
 //
