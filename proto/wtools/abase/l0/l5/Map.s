@@ -3167,7 +3167,7 @@ function _mapOnly_( o )
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.primitive.is( o.screenMaps[ m ] ) )
       {
-        if( o.screenMaps[ m ] === key || String( m ) === key )
+        if( o.screenMaps[ m ] === key )
         return key;
       }
     }
@@ -3176,7 +3176,7 @@ function _mapOnly_( o )
       for( let m of o.screenMaps )
       if( _.primitive.is( m ) )
       {
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
     }
