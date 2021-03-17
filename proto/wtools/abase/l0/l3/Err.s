@@ -533,16 +533,16 @@ function _err( o )
 
   for( let e in o )
   {
-    if( _err.defaults[ e ] === undefined )
+    if( _.error._err.defaults[ e ] === undefined )
     {
       throw Error( `Unknown option::${e}` );
     }
   }
 
-  for( let e in _err.defaults )
+  for( let e in _.error._err.defaults )
   {
     if( o[ e ] === undefined )
-    o[ e ] = _err.defaults[ e ];
+    o[ e ] = _.error._err.defaults[ e ];
   }
 
   if( _.error._errorMaking )
