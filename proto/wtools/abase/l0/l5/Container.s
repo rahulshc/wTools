@@ -230,71 +230,103 @@ function empty( dstContainer )
 
 //
 
+/* qqq : for Yevhen : bad : jsdoc? */
 function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
+  if( key < 0 )
+  return [ undefined, key, false ];
 
   if( _.mapIs( container ) )
   {
-    let key2 = Object.keys( container )[ key ];
-    return [ key2, container[ key2 ] ];
+    let keys = Object.keys( container );
+    let key2 = keys[ key ];
+    if( keys.length < key )
+    return [ undefined, key2, false ];
+    return [ container[ key2 ], key2, true ];
   }
   else if( _.hashMap.is( container ) )
   {
-    return [ ... container ][ key ];
+    if( container.size <= key )
+    return [ undefined, key, false ];
+    let entry = [ ... container ][ key ];
+    return [ entry[ 1 ], entry[ 0 ], true ];
+  }
+  else if( _.set.like( container ) )
+  {
+    if( container.size <= key )
+    return [ undefined, key, false ];
+    return [ [ ... container ][ key ], key, true ];
   }
   else if( _.entity.methodIteratorOf( container ) )
   {
-    return [ key, [ ... container ][ key ] ];
+    let elements = [ ... container ];
+    if( key < elements.length )
+    return [ elements[ key ], key, true ];
+    return [ undefined, key, false ];
   }
-  else _.assert( 0 );
+  else _.assert( 0, 'Not container' );
 
 }
 
 //
 
+/* qqq : for Yevhen : bad : jsdoc? */
 function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
 
-  if( container )
+  if( !container )
   {
-    if( _.hashMap.like( container ) )
-    {
-      return container.get( key );
-    }
-    else if( _.set.like( container ) )
-    {
-      return [ ... container ][ key ];
-    }
-    else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
-    {
-      return [ ... container ][ key ];
-    }
-    else if( _.escape.is( key ) )
-    {
-      debugger;
-      if( key.val === prototypeSymbol )
-      return _.prototype.of( container );
-      else _.assert( 0, 'Unknown implicit field' );
-    }
+    return [ undefined, key, false ];
+  }
+  else if( _.hashMap.like( container ) )
+  {
+    if( container.has( key ) )
+    return [ container.get( key ), key, true ];
     else
+    return [ undefined, key, false ];
+  }
+  else if( _.set.like( container ) ) /* xxx : change */
+  {
+    if( container.size <= key )
+    return [ undefined, key, false ];
+    return [ [ ... container ][ key ], key, true ];
+  }
+  else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
+  {
+    const container2 = [ ... container ];
+    if( container2.length > key )
+    return [ container2[ key ], key, true ];
+    else
+    return [ undefined, key, false ];
+  }
+  else if( _.escape.is( key ) )
+  {
+    debugger;
+    if( key.val === prototypeSymbol )
     {
-      return container[ key ];
+      let r = _.prototype.of( container );
+      return [ r, prototypeSymbol, !!r ];
     }
+    else _.assert( 0, 'Unknown implicit field' );
   }
   else
   {
-    return undefined;
+    if( _.property.has( container, key ) )
+    return [ container[ key ], key, true ];
+    else
+    return [ undefined, key, false ];
   }
 
 }
 
 //
 
+/* qqq : for Yevhen : cover, please. dont forget jsdoc. */
 function elementSet( container, key, value )
 {
 
