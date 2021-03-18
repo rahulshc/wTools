@@ -10,7 +10,8 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = _global_.wTools;
-let fileProvider = _globals_.testing.wTools.fileProvider;
+let __ = _globals_.testing.wTools;
+let fileProvider = __.fileProvider;
 let path = fileProvider.path;
 
 // --
@@ -211,6 +212,53 @@ resolve.description  =
   Routine _.module.resolve return path to include path of the specified module.
 `
 
+//
+
+function toolsPathGetBasic( test )
+{
+  let context = this;
+
+  /* */
+
+  test.case = 'basic';
+  var got = _.module.toolsPathGet();
+  var exp = __.path.join( __dirname, '../../Tools.s' );
+  test.identical( got,  );
+  console.log( `toolsPath : ${got}` );
+
+  /* */
+
+}
+
+//
+
+/* qqq xxx : duplicate the test in utility::Testing */
+function toolsPathGetTester( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  debugger;
+  let programPath = a.program( program );
+
+  var toolsPath1 = _.module.toolsPathGet();
+  return a.forkNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    var toolsPath2 = op.output.trim();
+    var exp = __.path.join( __dirname, '../../Tools.s' );
+    test.identical( toolsPath1, exp );
+    test.identical( toolsPath2, exp );
+    return op;
+  });
+
+  function program()
+  {
+    console.log( toolsPath );
+  }
+
+}
+
 // --
 // test suite definition
 // --
@@ -238,6 +286,8 @@ let Self =
     withoutIsIncluded,
     moduleExportsUndefined,
     resolve,
+    toolsPathGetBasic,
+    toolsPathGetTester,
 
   }
 
