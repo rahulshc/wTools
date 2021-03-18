@@ -2686,9 +2686,9 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   test.case = 'map';
   var src = { a : 1, b : 2 };
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'a', 1 ] );
+  test.identical( got, [ 1, 'a', true ] );
   var got = _.container.elementThGet( src, 1 );
-  test.identical( got, [ 'b', 2 ] );
+  test.identical( got, [ 2, 'b', true ] );
 
   /* */
 
@@ -2697,100 +2697,100 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   src.set( 'a', 1 );
   src.set( 'b', 2 );
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'a', 1 ] );
+  test.identical( got, [ 1, 'a', true ] );
   var got = _.container.elementThGet( src, 1 );
-  test.identical( got, [ 'b', 2 ] );
+  test.identical( got, [ 2, 'b', true ] );
 
   /* */
 
   test.case = 'array';
   var src = [ 1, 2 ];
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got = _.container.elementThGet( src, 1 );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, [ 2, 1, true ] );
 
   /* */
 
   test.case = 'set';
   var src = new Set([ 1, 2 ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got = _.container.elementThGet( src, 1 );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, [ 2, 1, true ] );
 
   /* */
 
   test.case = 'escape';
   var src = new _.Escape( 'abc' );
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 'abc' ] );
+  test.identical( got, [ 'abc', 0, true ] );
   var got = _.container.elementThGet( src, 1 );
-  test.identical( got, [ 1, undefined ] );
+  test.identical( got, [ undefined, 1, false ] );
 
   /* */
 
   test.case = 'string';
   var src = 'abc';
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 'a' ] );
+  test.identical( got, [ 'a', 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 'b' ] );
+  test.identical( got2, [ 'b', 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, 'c' ] );
+  test.identical( got3, [ 'c', 2, true ] );
   var got4 = _.container.elementThGet( src, 3 );
-  test.identical( got4, [ 3, undefined ] );
+  test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 2 ] );
+  test.identical( got2, [ 2, 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, 3 ] );
+  test.identical( got3, [ 3, 2, true ] );
   var got4 = _.container.elementThGet( src, 3 );
-  test.identical( got4, [ 3, undefined ] );
+  test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'unroll';
   var src = _.unrollMake([ 1, 2, 3 ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 2 ] );
+  test.identical( got2, [ 2, 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, 3 ] );
+  test.identical( got3, [ 3, 2, true ] );
   var got4 = _.container.elementThGet( src, 3 );
-  test.identical( got4, [ 3, undefined ] );
+  test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'long & longLike';
   var src = _.longMake([ 1, 2, 3 ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 2 ] );
+  test.identical( got2, [ 2, 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, 3 ] );
+  test.identical( got3, [ 3, 2, true ] );
   var got4 = _.container.elementThGet( src, 3 );
-  test.identical( got4, [ 3, undefined ] );
+  test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'vector & vectorLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, '1' ] );
+  test.identical( got, [ '1', 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, '10' ] );
+  test.identical( got2, [ '10', 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, undefined ] );
+  test.identical( got3, [ undefined, 2, false ] );
 
   test.case = 'countable & countableLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, '1' ] );
+  test.identical( got, [ '1', 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, '10' ] );
+  test.identical( got2, [ '10', 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, undefined ] );
+  test.identical( got3, [ undefined, 2, false ] );
 
   /* else _.assert( 0 ); */
   // test.case = 'Global & GlobalReal';
@@ -2813,40 +2813,40 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'a', 1 ] );
+  test.identical( got, [ 1, 'a', true ] );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   src.a = 1;
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'a', 1 ] );
+  test.identical( got, [ 1, 'a', true ] );
 
   test.case = 'HashMap';
   var objRef = { a : 1 };
   var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'a', 1 ] );
+  test.identical( got, [ 1, 'a', true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ true, false ] );
+  test.identical( got2, [ false, true, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ objRef, { a : 2 } ] );
+  test.identical( got3, [ { 'a' : 2 }, { 'a' : 1 }, true ] );
 
   test.case = 'Set & SetLike';
   var objRef = { a : 1 };
   var src = new Set([ 'a', 1, true, objRef ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 'a' ] );
+  test.identical( got, [ 'a', 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 1 ] );
+  test.identical( got2, [ 1, 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, true ] );
+  test.identical( got3, [ true, 2, true ] );
   var got4 = _.container.elementThGet( src, 3 );
-  test.identical( got4, [ 3, objRef ] );
+  test.identical( got4, [{ 'a' : 1 }, 3, true ] );
 
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 115 ] );
+  test.identical( got, [ 115, 0, true ] );
 
   /* else _.assert( 0 ); */
   // test.case = 'BufferRaw';
@@ -2863,7 +2863,7 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   test.case = 'BufferTyped';
   var src = new I8x( 20 );
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 0 ] );
+  test.identical( got, [ 0, 0, true ] );
 
   /* else _.assert( 0 ); */
   // test.case = 'BufferView';
@@ -2880,11 +2880,11 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   test.case = 'pair';
   var src = _.pair.make([ 1, 2 ]);
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, [ 1, 0, true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 1, 2 ] );
+  test.identical( got2, [ 2, 1, true ] );
   var got3 = _.container.elementThGet( src, 2 );
-  test.identical( got3, [ 2, undefined ] );
+  test.identical( got3, [ undefined, 2, false ] );
 
   /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & filter';
@@ -2907,9 +2907,9 @@ function elementThGet( test ) /* xxx : types that cause error marked with - 'els
   test.case = 'timer';
   var src = _.time._begin( Infinity );
   var got = _.container.elementThGet( src, 0 );
-  test.identical( got, [ 'onTime', undefined ] );
+  test.identical( got, [ undefined, 'onTime', true ] );
   var got2 = _.container.elementThGet( src, 1 );
-  test.identical( got2, [ 'onCancel', undefined ] );
+  test.identical( got2, [ undefined, 'onCancel', true ] );
   _.time.cancel( src );
 
   /* else _.assert( 0 ); */
