@@ -11,6 +11,7 @@ if( typeof module !== 'undefined' )
 
 let _global = _global_;
 let _ = _global_.wTools;
+let __ = _globals_.testing.wTools;
 
 // --
 // tests
@@ -1096,7 +1097,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.entity.exportStringSolo( src );
+    return __.entity.exportStringSolo( src );
   }
 
 }

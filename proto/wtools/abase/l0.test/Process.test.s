@@ -10,6 +10,7 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = _global_.wTools;
+let __ = _globals_.testing.wTools;
 
 //
 
@@ -309,7 +310,7 @@ function onCheckDescriptor( test )
 function ready( test )
 {
   let t1 = 100;
-  let ready =  new _globals_.testing.wTools.Consequence().take( null );
+  let ready =  new __.Consequence().take( null );
 
   /* */
 
@@ -329,7 +330,7 @@ function ready( test )
     var onReady = () => arr.push( 1 );
     _.process.ready( onReady );
 
-    return _globals_.testing.wTools.time.out( t1, () =>
+    return __.time.out( t1, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -343,7 +344,7 @@ function ready( test )
     _.process.ready( t1, null );
     test.identical( arr, [] );
 
-    return _globals_.testing.wTools.time.out( t1 * 2, () =>
+    return __.time.out( t1 * 2, () =>
     {
       test.identical( arr, [] );
       return null;
@@ -358,7 +359,7 @@ function ready( test )
     _.process.ready( t1, onReady );
     test.identical( arr, [] );
 
-    return _globals_.testing.wTools.time.out( t1 * 2, () =>
+    return __.time.out( t1 * 2, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -374,7 +375,7 @@ function ready( test )
     var onReady = () => arr.push( 1 );
     _.process.ready({ onReady });
 
-    return _globals_.testing.wTools.time.out( t1, () =>
+    return __.time.out( t1, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -389,7 +390,7 @@ function ready( test )
     _.process.ready({ timeOut : t1, onReady });
     test.identical( arr, [] );
 
-    return _globals_.testing.wTools.time.out( t1 * 2, () =>
+    return __.time.out( t1 * 2, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
