@@ -230,7 +230,45 @@ function empty( dstContainer )
 
 //
 
-/* qqq : for Yevhen : bad : jsdoc? */
+/**
+ * The routine elementThGet() searches for value under a certain index {-key-} in a container {-container-}
+ * and returns array with value, key, booLike.
+ *
+ * @param { Long|Set|HashMap|Aux } container - input container.
+ * @param { Number } key - index to be looked in a container.
+ *
+ * @example
+ * var src = { a : 1, b : 2 };
+ * var got = _.container.elementThGet( src, 0 );
+ * console.log( got );
+ * // log : [ 1, 'a', true ]
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementThGet( src, 2 );
+ * console.log( got );
+ * // log : [ 3, 2, true ]
+ *
+ * @example
+ * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+ * var got = _.container.elementThGet( src, 1 );
+ * console.log( got )
+ * // log : [ false, true, true ] );
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementThGet( src, 5 );
+ * console.log( got );
+ * // log : [ undefined, 5, false ]
+ *
+ * @returns { Long } - with 3 elements : value ( undefined if index {-key-} is more or less than container's length ), key, boolLike ( true if index {-key-} is within container's length, false otherwise ).
+ * @function elementThGet
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @throws { Error } If {-key-} is not Number.
+ * @namespace Tools
+ */
+
+/* qqq : for Yevhen : bad : jsdoc? | added . */
 function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
@@ -273,7 +311,44 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
 
 //
 
-/* qqq : for Yevhen : bad : jsdoc? */
+/**
+ * The routine elementGet() searches for value under a certain {-key-} in a container {-container-}
+ * and returns array with value, key, booLike.
+ *
+ * @param { Long|Set|HashMap|Aux } container - input container.
+ * @param { * } key - key to be looked in a container.
+ *
+ * @example
+ * var src = { a : 1, b : 2 };
+ * var got = _.container.elementGet( src, 'a' );
+ * console.log( got );
+ * // log : [ 1, 'a', true ]
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementGet( src, 2 );
+ * console.log( got );
+ * // log : [ 3, 2, true ]
+ *
+ * @example
+ * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+ * var got = _.container.elementGet( src, true );
+ * console.log( got )
+ * // log : [ false, true, true ] );
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementGet( src, 5 );
+ * console.log( got );
+ * // log : [ undefined, 5, false ]
+ *
+ * @returns { Long } - with 3 elements : value ( undefined if key is absent ), key, boolLike ( true if key exists, false otherwise ).
+ * @function elementGet
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @namespace Tools
+ */
+
+/* qqq : for Yevhen : bad : jsdoc? | aaa : Added */
 function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
