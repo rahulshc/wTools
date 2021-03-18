@@ -13768,13 +13768,13 @@ function mapHasAny( test )
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
   var got = _.mapHasAny( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - empty countable';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1 });
   var got = _.mapHasAny( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - same vector';
   var src = { a : 1, b : 2 };
@@ -13792,13 +13792,13 @@ function mapHasAny( test )
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
   var got = _.mapHasAny( src, screen );
-  test.true( !got );
+  test.true( got );
 
   test.case = 'screen - countable > src';
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
   var got = _.mapHasAny( src, screen );
-  test.true( !got );
+  test.true( got );
 
   test.case = 'screen - vector < src';
   var src = { a : 1, b : 2 };
@@ -13816,13 +13816,13 @@ function mapHasAny( test )
   var src = { a : 1, c : 2, d : 3, f : 4 };
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
   var got = _.mapHasAny( src, screen );
-  test.true( !got );
+  test.true( got );
 
   test.case = 'screen - countable = src, some the same el';
   var src = { a : 1, c : 2, d : 3, f : 4 };
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
   var got = _.mapHasAny( src, screen );
-  test.true( !got );
+  test.true( got );
 
   test.close( 'countable' );
 
@@ -13877,6 +13877,49 @@ function mapHasAny( test )
     {
       _.mapHasAny( {}, {}, {} );
     });
+  }
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
   }
 
 }
@@ -13957,7 +14000,7 @@ function mapHasNone( test )
   var got = _.mapHasNone( a, { a : 1 } );
   test.true( !got );
 
-  /* vector */
+  /* countable */
 
   test.open( 'array' )
 
@@ -14015,6 +14058,84 @@ function mapHasNone( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.close( 'countable' );
+
+  /* - */
+
   test.open( 'containerAdapter' );
 
   test.case = 'screen - empty';
@@ -14064,6 +14185,49 @@ function mapHasNone( test )
     {
       _.mapHasNone( {}, {}, {} );
     });
+  }
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
   }
 
 }
@@ -14133,7 +14297,7 @@ function mapOnlyOwnAll( test )
   var got = _.mapOnlyOwnAll( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  /* vector */
+  /* countable */
 
   test.open( 'array' )
 
@@ -14188,6 +14352,84 @@ function mapOnlyOwnAll( test )
   test.true( !got );
 
   test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.close( 'countable' );
 
   /* - */
 
@@ -14260,6 +14502,49 @@ function mapOnlyOwnAll( test )
     });
   }
 
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
 }
 
 //
@@ -14327,7 +14612,7 @@ function mapOnlyOwnAny( test )
   var got = _.mapOnlyOwnAny( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  /* vector */
+  /* countable */
 
   test.open( 'array' )
 
@@ -14382,6 +14667,84 @@ function mapOnlyOwnAny( test )
   test.true( got );
 
   test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.close( 'countable' );
 
   /* - */
 
@@ -14454,6 +14817,49 @@ function mapOnlyOwnAny( test )
     });
   }
 
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
 }
 
 //
@@ -14521,7 +14927,7 @@ function mapOnlyOwnNone( test )
   var got = _.mapOnlyOwnNone( {}, { x : 1, toString : 1 } );
   test.true( got );
 
-  /* vector */
+  /* countable */
 
   test.open( 'array' )
 
@@ -14576,6 +14982,84 @@ function mapOnlyOwnNone( test )
   test.true( !got );
 
   test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.close( 'countable' );
 
   /* - */
 
@@ -14646,6 +15130,49 @@ function mapOnlyOwnNone( test )
       Object.setPrototypeOf( a, b )
       _.mapOnlyOwnNone( { a : 1 }, a );
     });
+  }
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
   }
 
 }
