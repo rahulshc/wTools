@@ -223,7 +223,7 @@ function toolsPathGetBasic( test )
   test.case = 'basic';
   var got = _.module.toolsPathGet();
   var exp = __.path.join( __dirname, '../../Tools.s' );
-  test.identical( got,  );
+  test.identical( got, exp );
   console.log( `toolsPath : ${got}` );
 
   /* */
