@@ -3383,7 +3383,7 @@ function eventUncaughtErrorBasic( test )
     _.process.on( 'uncaughtError', ( e ) =>
     {
 
-      console.log( 'errIs:' + _.errIs( e.err ) );
+      console.log( 'errIs:' + _.error.is( e.err ) );
       console.log( 'errIsAttended:' + _.errIsAttended( e.err ) );
       console.log( 'errIsWary:' + _.errIsWary( e.err ) );
       console.log( 'errIsSuspended:' + _.errIsSuspended( e.err ) );
