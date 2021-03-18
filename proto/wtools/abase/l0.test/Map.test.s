@@ -8996,6 +8996,22 @@ function mapOnly( test )
 
   test.close( 'srcMap - long' );
 
+  /* Special : screenMap elements are compared as is, without string convertion */
+
+  test.case = 'srcMap - map, screenMap - array with numbers';
+  var srcMap = { 1 : 'a', 0 : 'b' };
+  var screenMap = [ 0, 1 ];
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'srcMap - map, screenMap - array with strings';
+  var srcMap = { 1 : 'a', 0 : 'b' };
+  var screenMap = [ '0', '1' ];
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { '0' : 'b', '1' : 'a' };
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )

@@ -110,8 +110,6 @@ function _usePathGloballyChildren( _module, paths, visited )
     _module.paths.push( paths[ p ] );
   }
 
-  // [].push.apply( _module.paths, paths );
-
   /* patch parents */
 
   if( _module.children )
@@ -341,15 +339,6 @@ function _resolve( moduleName )
   });
 }
 
-// //
-//
-// function _resolveFirst()
-// {
-//   let sourcePaths = this._modulesToSourcePaths( arguments );
-//   let resolved = this._sourceFileResolve( sourcePaths );
-//   return resolved;
-// }
-
 //
 
 function resolve( moduleName )
@@ -365,7 +354,6 @@ function resolve( moduleName )
       if( moduleName === _.optional )
       continue;
 
-      // let r = _.module.resolveFirst( moduleName );
       let r = _.module._resolveFirst
       ({
         moduleNames : [ moduleName ],
@@ -385,7 +373,6 @@ function resolve( moduleName )
     basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ),
     throwing : 1,
   });
-  // return _.module.resolveFirst( moduleName );
 }
 
 //
@@ -399,13 +386,6 @@ function _resolveFirst( o )
 
   if( o.basePath === null )
   o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
-
-  // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wGitTools' )
-  // debugger;
-
-  // if( module.isScript )
-  // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wBlueprint' )
-  // debugger;
 
   let sourcePaths = this._modulesToSourcePaths( o.moduleNames );
   let resolved = this._sourceFileResolve({ sourcePaths, basePath : o.basePath });
@@ -430,15 +410,6 @@ _resolveFirst.defaults =
   basePath : null,
   throwing : 0,
 }
-
-// //
-//
-// function _resolveFirst()
-// {
-//   let sourcePaths = this._modulesToSourcePaths( arguments );
-//   let resolved = this._sourceFileResolve( sourcePaths );
-//   return resolved;
-// }
 
 //
 
@@ -603,7 +574,6 @@ function _Setup()
     let parent = arguments[ 1 ];
     let isMain = arguments[ 2 ];
     let options = arguments[ 3 ];
-    // console.log( `_resolveFilename : ${request}` );
     let result = NjsResolveFilename.apply( this, arguments );
     resolvedPath = result;
     return result;
@@ -619,7 +589,6 @@ function _Setup()
     }
     catch( err )
     {
-      // debugger; /**/
       let error;
       if( parent && parent.filename )
       error = _.error.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );

@@ -10,7 +10,8 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = _global_.wTools;
-let fileProvider = _globals_.testing.wTools.fileProvider;
+let __ = _globals_.testing.wTools;
+let fileProvider = __.fileProvider;
 let path = fileProvider.path;
 
 // --
