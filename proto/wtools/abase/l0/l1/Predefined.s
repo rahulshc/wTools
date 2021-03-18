@@ -109,6 +109,7 @@ Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
 Self.def = Symbol.for( 'def' );
 Self.null = Symbol.for( 'null' );
 Self.undefined = Symbol.for( 'undefined' );
+Self.void = Symbol.for( 'void' );
 Self.nothing = Symbol.for( 'nothing' );
 Self.anything = Symbol.for( 'anything' );
 Self.maybe = Symbol.for( 'maybe' );

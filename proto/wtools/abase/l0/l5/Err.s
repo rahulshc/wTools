@@ -361,8 +361,12 @@ function _setupUncaughtErrorHandler9()
 
 //
 
+/* qqq : for Yevhen : implement performance test */
+/* xxx : optimize */
 function error_functor( name, onErrorMake )
 {
+
+  _.assert( _._err.defaults[ name ] === undefined );
 
   if( _.strIs( onErrorMake ) || _.arrayIs( onErrorMake ) )
   {
@@ -386,24 +390,39 @@ function error_functor( name, onErrorMake )
   {
     [ name ] : function()
     {
-      if( !( this instanceof ErrorConstructor ) )
+      if( ( this instanceof ErrorConstructor ) )
       {
-        let err1 = new ErrorConstructor();
+
+        let err1 = this;
         let args1 = onErrorMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
-        let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
-        let err2 = _._err({ args : args2, level : 2 });
-
+        let args2 = args1;
+        if( !_.longHas( args2, err1 ) )
+        args2 = [ err1, ... args1 ];
+        let err2 = _._err({ args : args2, level : 2, fields : { [ name ] : true } });
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
         _.assert( err2 instanceof ErrorConstructor );
-
         return err2;
+
       }
       else
       {
-        _.assert( arguments.length === 0, 'Expects no arguments' );
-        return this;
+
+        if( arguments.length === 1 && arguments[ 0 ] && arguments[ 0 ] instanceof ErrorConstructor )
+        return arguments[ 0 ];
+
+        let err1;
+        for( let i = 0 ; i < arguments.length ; i++ )
+        if( arguments[ i ] && arguments[ i ] instanceof ErrorConstructor )
+        {
+          err1 = arguments[ i ];
+          break;
+        }
+
+        if( err1 )
+        return ErrorConstructor.apply( err1, arguments );
+        return new ErrorConstructor( ... arguments );
       }
     }
   }

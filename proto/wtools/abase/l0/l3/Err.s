@@ -581,6 +581,7 @@ function _err( o )
       dstError,
       throwLocation : o.throwLocation,
       sections : o.sections,
+      fields : o.fields,
 
       attended : o.attended,
       logged : o.logged,

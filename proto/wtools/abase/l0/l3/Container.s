@@ -50,10 +50,11 @@ function lengthOf( container )
   // if( type && type._lengthGet )
   // return type._lengthGet( container );
 
-  if( _.entity.methodIteratorOf( container ) )
-  return [ ... container ].length;
+  // if( _.entity.methodIteratorOf( container ) )
+  // return [ ... container ].length;
 
-  return _.lengthOf( container );
+  /* qqq : find optimal solution. write performance test */
+  return _.entity.lengthOf( container );
 }
 
 // --

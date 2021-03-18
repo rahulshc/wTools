@@ -123,11 +123,8 @@ function lengthOf( src )
   return src.size;
   if( _.countableIs( src ) )
   return [ ... src ].length;
-
   if( _.aux.is( src ) )
   return _.mapKeys( src ).length;
-  // if( _.aux.is( src ) )
-  // return _.mapOnlyOwnKeys( src ).length;
 
   return 1;
 }
