@@ -35,9 +35,9 @@ function test( regexp, strs )
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._test( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.map( ( str ) => _._test( regexp, str ) )
+  return strs.map( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
@@ -50,9 +50,9 @@ function testAll( regexp, strs )
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._test( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.every( ( str ) => _._test( regexp, str ) )
+  return strs.every( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
@@ -65,9 +65,9 @@ function testAny( regexp, strs )
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._test( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.some( ( str ) => _._test( regexp, str ) )
+  return strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
@@ -80,9 +80,9 @@ function testNone( regexp, strs )
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return !_._test( regexp, strs );
+  return !_.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return !strs.some( ( str ) => _._test( regexp, str ) )
+  return !strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }

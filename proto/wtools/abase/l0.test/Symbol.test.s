@@ -17,7 +17,7 @@ let _ = _global_.wTools;
 // --
 
 
-function symbolIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.symbol.is();
@@ -261,7 +261,7 @@ var Self =
 
   tests :
   {
-    symbolIs,
+    is,
     exportStringShortCode,
     exportStringShortDiagnostic
   }

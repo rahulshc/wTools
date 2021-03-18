@@ -124,7 +124,7 @@ function is( test )
 
 //
 
-function primitivesAreIdenticalShallow( test )
+function areIdenticalShallow( test )
 {
   test.open( 'identical' );
 
@@ -251,7 +251,7 @@ function primitivesAreIdenticalShallow( test )
 
 //
 
-function primitivesAreEquivalentShallow( test )
+function areEquivalentShallow( test )
 {
   test.open( 'identical' );
 
@@ -577,8 +577,8 @@ var Self =
   tests :
   {
     is,
-    primitivesAreIdenticalShallow,
-    primitivesAreEquivalentShallow,
+    areIdenticalShallow,
+    areEquivalentShallow,
 
     exportStringShortCode,
     exportStringShortDiagnostic

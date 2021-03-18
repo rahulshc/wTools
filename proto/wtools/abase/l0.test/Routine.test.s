@@ -7630,7 +7630,7 @@ function vectorizeAccessSpecial( test )
 
 //
 
-function routineExportStringShortDiagnostic( test )
+function exportStringShortDiagnostic( test )
 {
 
   test.case = 'function';
@@ -7766,7 +7766,7 @@ var Self =
     vectorizeAccessBasic,
     vectorizeAccessSpecial,
 
-    routineExportStringShortDiagnostic,
+    exportStringShortDiagnostic,
 
   }
 

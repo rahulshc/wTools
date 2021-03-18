@@ -676,7 +676,7 @@ function intIs( test )
 
 /* - */
 
-function numbersAreAll( test )
+function areAll( test )
 {
   test.case = 'empty array';
   var got = _.number.s.areAll( [] );
@@ -735,7 +735,7 @@ function numbersAreAll( test )
 
 //
 
-function numbersAreIdentical( test )
+function areIdentical( test )
 {
   test.case = 'empty strings';
   var got = _.number.s.areIdentical( '', '' );
@@ -821,7 +821,7 @@ function numbersAreIdentical( test )
 
 //
 
-function numbersAreIdenticalNotStrictly( test )
+function areIdenticalNotStrictly( test )
 {
   test.case = 'empty strings';
   var got = _.number.s.areIdenticalNotStrictly( '', '' );
@@ -907,7 +907,7 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
-function numbersAreEquivalentBasic( test )
+function areEquivalentBasic( test )
 {
 
   test.case = 'empty strings';
@@ -1009,7 +1009,7 @@ function numbersAreEquivalentBasic( test )
 
 /* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` */
 
-function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
+function areEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
 {
   test.open( 'positive numbers' )
 
@@ -1171,7 +1171,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
 
 //
 
-function numbersAreFinite( test )
+function areFinite( test )
 {
 
   test.case = 'empty array';
@@ -1234,7 +1234,7 @@ function numbersAreFinite( test )
 
 //
 
-function numbersArePositive( test )
+function arePositive( test )
 {
   test.case = '1 1 1';
   var got = _.number.s.arePositive([ 1, 1, 1 ]);
@@ -1278,7 +1278,7 @@ function numbersArePositive( test )
 
 //
 
-function numbersAreInt( test )
+function areInt( test )
 {
   test.case = '1 1 1';
   var got = _.number.s.areInt([ 1, 1, 1 ]);
@@ -2742,14 +2742,14 @@ let Self =
     isFinite,
     isInfinite,
     intIs,
-    numbersAreAll,
-    numbersAreIdentical,
-    numbersAreIdenticalNotStrictly,
-    numbersAreEquivalentBasic,
-    numbersAreEquivalentOptionAccuracy,
-    numbersAreFinite,
-    numbersArePositive,
-    numbersAreInt,
+    areAll,
+    areIdentical,
+    areIdenticalNotStrictly,
+    areEquivalentBasic,
+    areEquivalentOptionAccuracy,
+    areFinite,
+    arePositive,
+    areInt,
 
     // l0/l8/Number.s
 
