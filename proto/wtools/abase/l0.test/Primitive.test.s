@@ -17,7 +17,7 @@ let _ = _global_.wTools;
 // --
 
 
-function primitiveIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.primitive.is();
@@ -576,7 +576,7 @@ var Self =
 
   tests :
   {
-    primitiveIs,
+    is,
     primitivesAreIdenticalShallow,
     primitivesAreEquivalentShallow,
 

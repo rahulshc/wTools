@@ -18,7 +18,7 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function entityIdenticalShallowBasic( test )
+function identicalShallowBasic( test )
 {
   /* */
 
@@ -870,7 +870,7 @@ function entityIdenticalShallowBasic( test )
 
 //
 
-function entityIdenticalShallowAllTypes( test )
+function identicalShallowAllTypes( test )
 {
   test.open( 'identical' );
 
@@ -1445,7 +1445,7 @@ function entityIdenticalShallowAllTypes( test )
 //
 
 
-function entityEquivalentShallowBasic( test )
+function equivalentShallowBasic( test )
 {
   /* */
 
@@ -2297,7 +2297,7 @@ function entityEquivalentShallowBasic( test )
 
 //
 
-function entityEquivalentShallowAllTypes( test )
+function equivalentShallowAllTypes( test )
 {
   test.open( 'equivalent' );
 
@@ -2875,7 +2875,7 @@ function entityEquivalentShallowAllTypes( test )
 
 //
 
-function entityEquivalentNotIdentical( test )
+function equivalentNotIdentical( test )
 {
   test.case = 'true and 1';
   var src1 = true;
@@ -3044,7 +3044,7 @@ function entityEquivalentNotIdentical( test )
 }
 
 //
-// function entityMakeConstructing( test )
+// function makeConstructing( test )
 // {
 //   test.case = 'null';
 //   var got = _.entity.cloneShallow( null );
@@ -3234,7 +3234,7 @@ function entityEquivalentNotIdentical( test )
 //
 // //
 //
-// function entityMakeConstructingArgumentsArray( test )
+// function makeConstructingArgumentsArray( test )
 // {
 //   test.case = 'src = empty long, not ins';
 //   var src = _.argumentsArray.make( [] );
@@ -3304,7 +3304,7 @@ function entityEquivalentNotIdentical( test )
 //
 // //
 //
-// function entityMakeConstructingBufferTyped( test )
+// function makeConstructingBufferTyped( test )
 // {
 //   var list =
 //   [
@@ -3403,7 +3403,7 @@ function entityEquivalentNotIdentical( test )
 //
 // //
 //
-// function entityMakeConstructingLongDescriptor( test )
+// function makeConstructingLongDescriptor( test )
 // {
 //   let times = 4;
 //   for( let e in _.LongDescriptors )
@@ -3585,7 +3585,7 @@ function entityEquivalentNotIdentical( test )
 //
 // //
 //
-// function entityMakeConstructingArgumentsArrayLongDescriptor( test )
+// function makeConstructingArgumentsArrayLongDescriptor( test )
 // {
 //   let times = 4;
 //   for( let e in _.LongDescriptors )
@@ -3673,7 +3673,7 @@ function entityEquivalentNotIdentical( test )
 //
 // //
 //
-// function entityMakeConstructingBufferTypedLongDescriptor( test )
+// function makeConstructingBufferTypedLongDescriptor( test )
 // {
 //   var list =
 //   [
@@ -3782,7 +3782,7 @@ function entityEquivalentNotIdentical( test )
 
 //
 
-function entityMakeEmpty( test )
+function makeEmpty( test )
 {
   test.case = 'null';
   var got = _.entity.makeEmpty( null );
@@ -3938,7 +3938,7 @@ function entityMakeEmpty( test )
 
 //
 
-function entityMakeEmptyLongDescriptor( test )
+function makeEmptyLongDescriptor( test )
 {
   let times = 4;
   for( let e in _.LongDescriptors )
@@ -4119,7 +4119,7 @@ function entityMakeEmptyLongDescriptor( test )
 
 //
 
-function entityMakeUndefined( test )
+function makeUndefined( test )
 {
   test.case = 'null';
   var got = _.entity.makeUndefined( null );
@@ -4338,7 +4338,7 @@ function entityMakeUndefined( test )
 
 //
 
-function entityMakeUndefinedLongDescriptor( test )
+function makeUndefinedLongDescriptor( test )
 {
   let times = 4;
   for( let e in _.LongDescriptors )
@@ -4577,7 +4577,7 @@ function entityMakeUndefinedLongDescriptor( test )
 
 //
 
-function entityMake( test )
+function make( test )
 {
   test.case = 'null';
   var got = _.entity.make( null );
@@ -4801,7 +4801,7 @@ function entityMake( test )
 
 //
 
-function entityMakeLongDescriptor( test )
+function makeLongDescriptor( test )
 {
   let times = 4;
   for( let e in _.LongDescriptors )
@@ -5037,7 +5037,7 @@ function entityMakeLongDescriptor( test )
 
 //
 
-function entityEntityEqualize( test )
+function entityEqualize( test )
 {
   test.open( 'without callbacks' );
 
@@ -5293,7 +5293,7 @@ function entityEntityEqualize( test )
 
 //
 
-function entityAssign( test )
+function assign( test )
 {
   test.case = 'src null';
   var dst = 'string';
@@ -5387,7 +5387,7 @@ function entityAssign( test )
 
 //
 
-function entityAssignFieldFromContainer( test )
+function assignFieldFromContainer( test )
 {
   test.case = 'non recursive';
   var dst ={};
@@ -5427,123 +5427,123 @@ function entityAssignFieldFromContainer( test )
 
 //
 
-function entityLengthOf( test )
+function lengthOf( test )
 {
 
   test.case = 'undefined';
-  var got = _.entityLengthOf( undefined );
+  var got = _.entity.lengthOf( undefined );
   test.identical( got, 0 );
 
   test.case = 'null';
-  var got = _.entityLengthOf( null );
+  var got = _.entity.lengthOf( null );
   test.identical( got, 1 );
 
   test.case = 'false';
-  var got = _.entityLengthOf( false );
+  var got = _.entity.lengthOf( false );
   test.identical( got, 1 );
 
   test.case = 'true';
-  var got = _.entityLengthOf( true );
+  var got = _.entity.lengthOf( true );
   test.identical( got, 1 );
 
   test.case = 'zero';
-  var got = _.entityLengthOf( 0 );
+  var got = _.entity.lengthOf( 0 );
   test.identical( got, 1 );
 
   test.case = 'number';
-  var got = _.entityLengthOf( 34 );
+  var got = _.entity.lengthOf( 34 );
   test.identical( got, 1 );
 
   test.case = 'NaN';
-  var got = _.entityLengthOf( NaN );
+  var got = _.entity.lengthOf( NaN );
   test.identical( got, 1 );
 
   test.case = 'Infinity';
-  var got = _.entityLengthOf( Infinity );
+  var got = _.entity.lengthOf( Infinity );
   test.identical( got, 1 );
 
   test.case = 'empty string';
-  var got = _.entityLengthOf( '' );
+  var got = _.entity.lengthOf( '' );
   test.identical( got, 1 );
 
   test.case = 'string';
-  var got = _.entityLengthOf( 'str' );
+  var got = _.entity.lengthOf( 'str' );
   test.identical( got, 1 );
 
   test.case = 'symbol';
-  var got = _.entityLengthOf( Symbol.for( 'x' ) );
+  var got = _.entity.lengthOf( Symbol.for( 'x' ) );
   test.identical( got, 1 );
 
   test.case = 'empty array';
-  var got = _.entityLengthOf( [] );
+  var got = _.entity.lengthOf( [] );
   test.identical( got, 0 );
 
   test.case = 'array';
-  var got = _.entityLengthOf( [ [ 23, 17 ], undefined, 34 ] );
+  var got = _.entity.lengthOf( [ [ 23, 17 ], undefined, 34 ] );
   test.identical( got, 3 );
 
   test.case = 'argumentsArray';
-  var got = _.entityLengthOf( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
+  var got = _.entity.lengthOf( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
   test.identical( got, 3 );
 
   test.case = 'unroll';
-  var got = _.entityLengthOf( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = _.entity.lengthOf( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
   test.identical( got, 3 );
 
   test.case = 'BufferTyped';
-  var got = _.entityLengthOf( new U8x([ 1, 2, 3 ]) );
+  var got = _.entity.lengthOf( new U8x([ 1, 2, 3 ]) );
   test.identical( got, 3 );
 
   test.case = 'F32x';
-  var got = _.entityLengthOf( new F32x([ 1, 2, 3 ]) );
+  var got = _.entity.lengthOf( new F32x([ 1, 2, 3 ]) );
   test.identical( got, 3 );
 
   test.case = 'BufferRaw';
-  var got = _.entityLengthOf( new BufferRaw( 10 ) );
+  var got = _.entity.lengthOf( new BufferRaw( 10 ) );
   test.identical( got, 1 );
 
   test.case = 'BufferView';
-  var got = _.entityLengthOf( new BufferView( new BufferRaw( 10 ) ) );
+  var got = _.entity.lengthOf( new BufferView( new BufferRaw( 10 ) ) );
   test.identical( got, 1 );
 
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got1 = _.entityLengthOf( BufferNode.from([ 1, 2, 3, 4 ]) );
+    var got1 = _.entity.lengthOf( BufferNode.from([ 1, 2, 3, 4 ]) );
     test.identical( got1, 4 );
   }
 
   test.case = 'Set';
-  var got = _.entityLengthOf( new Set( [ 1, 2, undefined, 4 ] ) );
+  var got = _.entity.lengthOf( new Set( [ 1, 2, undefined, 4 ] ) );
   test.identical( got, 4 );
 
   test.case = 'map';
-  var got = _.entityLengthOf( { a : 1, b : 2, c : { d : 3 } } );
+  var got = _.entity.lengthOf( { a : 1, b : 2, c : { d : 3 } } );
   test.identical( got, 3 );
 
   test.case = 'HashMap';
-  var got = _.entityLengthOf( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+  var got = _.entity.lengthOf( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
   test.identical( got, 3 );
 
   test.case = 'function';
-  var got = _.entityLengthOf( function(){} );
+  var got = _.entity.lengthOf( function(){} );
   test.identical( got, 1 );
 
   test.case = 'object';
   var obj1 = new Obj1({});
-  var got = _.entityLengthOf( obj1 );
+  var got = _.entity.lengthOf( obj1 );
   test.identical( got, 1 );
 
   test.case = 'object with iterator, empty';
   var obj1 = new Obj1({ elements : [] });
   obj1[ Symbol.iterator ] = _iterate;
-  var got = _.entityLengthOf( obj1 );
+  var got = _.entity.lengthOf( obj1 );
   test.identical( got, 0 );
 
   test.case = 'object with iterator, empty';
   var obj1 = new Obj1({ elements : [ 'a', 'b', 'c' ] });
   obj1[ Symbol.iterator ] = _iterate;
-  var got = _.entityLengthOf( obj1 );
+  var got = _.entity.lengthOf( obj1 );
   test.identical( got, 3 );
 
   test.case = 'instance of class';
@@ -5558,7 +5558,7 @@ function entityLengthOf( test )
     console.log('some message');
   }
   Constr1.prototype.c = 99;
-  var got = _.entityLengthOf( new Constr1() );
+  var got = _.entity.lengthOf( new Constr1() );
   test.identical( got, 1 );
 
   test.case = 'object, some properties are non enumerable';
@@ -5584,21 +5584,21 @@ function entityLengthOf( test )
     }
   };
   Object.defineProperties( src, o );
-  var got = _.entityLengthOf( src );
+  var got = _.entity.lengthOf( src );
   test.identical( got, 1 );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.a = 1;
   src.b = 1;
-  var got = _.entityLengthOf( src );
+  var got = _.entity.lengthOf( src );
   test.identical( got, 2 );
 
   test.case = 'polluted map';
   var src = {};
   src.a = 1;
   src.b = 1;
-  var got = _.entityLengthOf( src );
+  var got = _.entity.lengthOf( src );
   test.identical( got, 2 );
 
   test.case = 'pure auxilary';
@@ -5608,7 +5608,7 @@ function entityLengthOf( test )
   var src = Object.create( prototype );
   src.b = 1;
   src.c = 1;
-  var got = _.entityLengthOf( src );
+  var got = _.entity.lengthOf( src );
   test.identical( got, 3 );
 
   test.case = 'polluted auxilary';
@@ -5618,7 +5618,7 @@ function entityLengthOf( test )
   var src = Object.create( prototype );
   src.b = 1;
   src.c = 1;
-  var got = _.entityLengthOf( src );
+  var got = _.entity.lengthOf( src );
   test.identical( got, 3 );
 
   /* */
@@ -6416,34 +6416,34 @@ let Self =
 
   tests :
   {
-    entityIdenticalShallowBasic,
-    entityIdenticalShallowAllTypes,
-    entityEquivalentShallowBasic,
-    entityEquivalentShallowAllTypes,
-    entityEquivalentNotIdentical,
+    identicalShallowBasic,
+    identicalShallowAllTypes,
+    equivalentShallowBasic,
+    equivalentShallowAllTypes,
+    equivalentNotIdentical,
 
-    // entityMakeConstructing,
-    // entityMakeConstructingArgumentsArray,
-    // entityMakeConstructingBufferTyped,
-    // entityMakeConstructingLongDescriptor,
-    // entityMakeConstructingArgumentsArrayLongDescriptor,
-    // entityMakeConstructingBufferTypedLongDescriptor,
+    // makeConstructing,
+    // makeConstructingArgumentsArray,
+    // makeConstructingBufferTyped,
+    // makeConstructingLongDescriptor,
+    // makeConstructingArgumentsArrayLongDescriptor,
+    // makeConstructingBufferTypedLongDescriptor,
 
-    entityMakeEmpty,
-    entityMakeEmptyLongDescriptor,
+    makeEmpty,
+    makeEmptyLongDescriptor,
 
-    entityMakeUndefined,
-    entityMakeUndefinedLongDescriptor,
+    makeUndefined,
+    makeUndefinedLongDescriptor,
 
-    entityMake,
-    entityMakeLongDescriptor,
+    make,
+    makeLongDescriptor,
 
-    entityEntityEqualize,
+    entityEqualize,
 
-    entityAssign,
-    entityAssignFieldFromContainer,
+    assign,
+    assignFieldFromContainer,
 
-    entityLengthOf,
+    lengthOf,
     uncountableSize,
     entitySize,
     // iterableIs,
