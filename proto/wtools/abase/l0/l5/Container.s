@@ -281,8 +281,8 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
   {
     let keys = Object.keys( container );
     let key2 = keys[ key ];
-    if( keys.length < key )
-    return [ undefined, key2, false ];
+    if( keys.length <= key )
+    return [ undefined, key, false ];
     return [ container[ key2 ], key2, true ];
   }
   else if( _.hashMap.is( container ) )
@@ -298,7 +298,7 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
     return [ undefined, key, false ];
     return [ [ ... container ][ key ], key, true ];
   }
-  else if( _.entity.methodIteratorOf( container ) )
+  else if( _.entity.methodIteratorOf( container ) && !_.primitive.is( container ) )
   {
     let elements = [ ... container ];
     if( key < elements.length )
@@ -367,7 +367,7 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
   }
   else if( _.set.like( container ) ) /* xxx : change */
   {
-    if( container.size <= key )
+    if( container.size <= key || isNaN( parseInt( key ) ) )
     return [ undefined, key, false ];
     return [ [ ... container ][ key ], key, true ];
   }
@@ -381,7 +381,6 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
   }
   else if( _.escape.is( key ) )
   {
-    debugger;
     if( key.val === prototypeSymbol )
     {
       let r = _.prototype.of( container );
