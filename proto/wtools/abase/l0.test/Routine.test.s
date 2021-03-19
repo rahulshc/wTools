@@ -11,6 +11,7 @@ if( typeof module !== 'undefined' )
 
 let _global = _global_;
 let _ = _global_.wTools;
+let __ = _globals_.testing.wTools;
 
 // --
 // context
@@ -3983,7 +3984,7 @@ function extendSpecial( test )
 
     /* */
 
-    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}, basic`;
+    test.case = `${__.entity.exportStringSolo( env )}, basic`;
 
     function routine1a( o )
     {
@@ -4006,7 +4007,7 @@ function extendSpecial( test )
 
     /* */
 
-    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}, triple`;
+    test.case = `${__.entity.exportStringSolo( env )}, triple`;
 
     function routine2a( o )
     {
@@ -4094,7 +4095,7 @@ function extendBodyInstanicing( test )
   function act( env )
   {
 
-    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}`;
+    test.case = `${__.entity.exportStringSolo( env )}`;
 
     function routine1Dst( o )
     {
@@ -4681,7 +4682,7 @@ function uniteInstancing( test )
   function act( env )
   {
 
-    test.case = `${_globals_.testing.wTools.entity.exportStringSolo( env )}`;
+    test.case = `${__.entity.exportStringSolo( env )}`;
 
     function r1_head( routine, args )
     {
