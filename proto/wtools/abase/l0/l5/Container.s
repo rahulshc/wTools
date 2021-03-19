@@ -282,13 +282,13 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
     let keys = Object.keys( container );
     let key2 = keys[ key ];
     if( keys.length <= key )
-    return [ undefined, key, false ];
+    return [ undefined, undefined, false ];
     return [ container[ key2 ], key2, true ];
   }
   else if( _.hashMap.is( container ) )
   {
     if( container.size <= key )
-    return [ undefined, key, false ];
+    return [ undefined, undefined, false ];
     let entry = [ ... container ][ key ];
     return [ entry[ 1 ], entry[ 0 ], true ];
   }
@@ -367,7 +367,7 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
   }
   else if( _.set.like( container ) ) /* xxx : change */
   {
-    if( container.size <= key || isNaN( parseInt( key ) ) )
+    if( container.size <= key || !_.number.is( key ) )
     return [ undefined, key, false ];
     return [ [ ... container ][ key ], key, true ];
   }
@@ -390,6 +390,9 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
   }
   else
   {
+    if( _.arrayLike( container ) && !_.number.is( key ) )
+    return [ undefined, key, false ];
+
     if( _.property.has( container, key ) )
     return [ container[ key ], key, true ];
     else
