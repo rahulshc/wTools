@@ -246,7 +246,7 @@ function toolsPathGetTester( test )
   {
     test.identical( op.exitCode, 0 );
     var toolsPath2 = op.output.trim();
-    var exp = __.path.join( __dirname, '../../Tools.s' );
+    var exp = a.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
     test.identical( toolsPath1, exp );
     test.identical( toolsPath2, exp );
     return op;
