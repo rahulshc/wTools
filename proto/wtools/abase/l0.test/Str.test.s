@@ -15,6 +15,7 @@ if( typeof module !== 'undefined' )
 
 let _global = _global_;
 let _ = _global_.wTools;
+let __ = _globals_.testing.wTools;
 
 // --
 //
@@ -3534,12 +3535,12 @@ function exportStringShortDiagnostic( test )
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'printerLike';
-  var src = new _globals_.testing.wTools.Logger();
+  var src = new __.Logger();
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'printerLike with output to console';
-  var src = new _globals_.testing.wTools.Logger({ output : console });
+  var src = new __.Logger({ output : console });
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
@@ -3957,12 +3958,12 @@ function exportStringShortCode( test )
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
   test.case = 'printerLike';
-  var src = new _globals_.testing.wTools.Logger();
+  var src = new __.Logger();
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
   test.case = 'printerLike with output to console';
-  var src = new _globals_.testing.wTools.Logger({ output : console });
+  var src = new __.Logger({ output : console });
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortCode( src ), expected );
 
@@ -4325,7 +4326,7 @@ function strTypeWithTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.entity.exportStringSolo( src );
+    return __.entity.exportStringSolo( src );
   }
 
 }
@@ -4391,7 +4392,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.entity.exportStringSolo( src );
+    return __.entity.exportStringSolo( src );
   }
 
 }
