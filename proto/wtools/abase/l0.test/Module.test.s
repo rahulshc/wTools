@@ -240,14 +240,14 @@ function toolsPathGetTester( test )
   debugger;
   let programPath = a.program( program );
 
-  var toolsPath1 = _.module.toolsPathGet();
+  var toolsPath1 = _.module.toolsPathGet(); /* normalized unix like */
   return a.forkNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
-    var toolsPath2 = op.output.trim();
+    var toolsPath2 = op.output.trim(); /* nativized */
     var exp = a.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
-    test.identical( toolsPath1, exp );
+    test.identical( a.path.nativize( toolsPath1 ), exp );
     test.identical( toolsPath2, exp );
     return op;
   });
