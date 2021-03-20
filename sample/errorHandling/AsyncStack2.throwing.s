@@ -13,7 +13,7 @@ function program()
     if( arg >= 0 )
     return arg-1;
     else
-    throw _.err( 'Example' );
+    throw _.error.err( 'Example' );
   } );
   consequence.take( -1 );
 }

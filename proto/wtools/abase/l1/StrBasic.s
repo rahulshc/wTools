@@ -1336,7 +1336,7 @@ function strSplitChunks( o )
     if( end === -1 )
     {
       result.lines = src.split( '\n' ).length;
-      result.error = _.err( 'Openning prefix', o.prefix, 'of chunk #' + result.chunks.length, 'at'+line, 'line does not have closing tag :', o.postfix );
+      result.error = _.error.err( 'Openning prefix', o.prefix, 'of chunk #' + result.chunks.length, 'at'+line, 'line does not have closing tag :', o.postfix );
       return result;
     }
 

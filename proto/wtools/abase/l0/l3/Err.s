@@ -13,77 +13,77 @@ _global.wTools.error = _global.wTools.error || Object.create( null );
 // error
 // --
 
-function errIs( src )
+function is( src )
 {
   return src instanceof Error || Object.prototype.toString.call( src ) === '[object Error]';
 }
 
 //
 
-function errIsStandard( src )
+function isStandard( src )
 {
-  if( !_.errIs( src ) )
+  if( !_.error.is( src ) )
   return false;
   return src.originalMessage !== undefined;
 }
 
 //
 
-function errIsAttended( src )
+function isAttended( src )
 {
-  if( !_.errIs( src ) )
+  if( !_.error.is( src ) )
   return false;
   return !!src.attended;
 }
 
 //
 
-function errIsLogged( src )
+function isLogged( src )
 {
-  if( _.errIs( src ) === false )
+  if( _.error.is( src ) === false )
   return false;
   return !!src.logged;
 }
 
 //
 
-function errIsSuspended( src )
+function isSuspended( src )
 {
-  if( _.errIs( src ) === false )
+  if( _.error.is( src ) === false )
   return false;
   return !!src.suspended;
 }
 
 //
 
-function errIsWary( src )
+function isWary( src )
 {
-  if( _.errIs( src ) === false )
+  if( _.error.is( src ) === false )
   return false;
   return !!src.wary;
 }
 
 //
 
-function errIsBrief( src )
+function isBrief( src )
 {
-  if( !_.errIs( src ) )
+  if( !_.error.is( src ) )
   return false;
   return !!src.brief;
 }
 
 //
 
-function errIsProcess( src )
+function isProcess( src )
 {
-  if( !_.errIs( src ) )
+  if( !_.error.is( src ) )
   return false;
   return !!src.isProcess;
 }
 
 //
 
-function errReason( err, reason )
+function reason( err, reason )
 {
 
   if( arguments.length === 1 )
@@ -123,7 +123,7 @@ function errReason( err, reason )
 
 //
 
-function errOriginalMessage( err )
+function originalMessage( err )
 {
 
   if( arguments.length !== 1 )
@@ -157,13 +157,13 @@ function errOriginalMessage( err )
 
 //
 
-function errOriginalStack( err )
+function originalStack( err )
 {
 
   if( arguments.length !== 1 )
   throw Error( 'errOriginalStack : Expects single argument' );
 
-  if( !_.errIs( err ) )
+  if( !_.error.is( err ) )
   throw Error( 'errOriginalStack : Expects error' );
 
   if( err.throwCallsStack )
@@ -184,7 +184,7 @@ function errOriginalStack( err )
 
 //
 
-function _errMake( o )
+function _make( o )
 {
 
   if( arguments.length !== 1 )
@@ -195,19 +195,19 @@ function _errMake( o )
 
   for( let e in o )
   {
-    if( _errMake.defaults[ e ] === undefined )
+    if( _.error._make.defaults[ e ] === undefined )
     {
       throw Error( `Unknown option::${e}` );
     }
   }
 
-  for( let e in _errMake.defaults )
+  for( let e in _.error._make.defaults )
   {
     if( o[ e ] === undefined )
-    o[ e ] = _errMake.defaults[ e ];
+    o[ e ] = _.error._make.defaults[ e ];
   }
 
-  if( !_.errIs( o.dstError ) )
+  if( !_.error.is( o.dstError ) )
   throw Error( 'Expects option.dstError:Error' );
 
   if( !_.strIs( o.originalMessage ) )
@@ -303,12 +303,18 @@ function _errMake( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}` );
+        logger.error
+        (
+          `Each section of an error should have head, but head of section::${s} is ${_.entity.strType(section.head)}`
+        );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}` );
+        logger.error
+        (
+          `Each section of an error should have body, but body of section::${s} is ${_.entity.strType(section.body)}`
+        );
         delete o.sections[ s ];
       }
     }
@@ -404,8 +410,8 @@ function _errMake( o )
       nonenumerable( k, o.fields[ k ] );
     }
 
-    if( o.debugging )
-    debugger;
+    // if( o.debugging )
+    // debugger;
 
   }
 
@@ -453,8 +459,8 @@ function _errMake( o )
     }
     function get()
     {
-      _.errLogged( this );
-      _.errAttend( this );
+      _.error.logged( this );
+      _.error.attend( this );
       return this[ symbol ];
     }
     function set( src )
@@ -466,7 +472,7 @@ function _errMake( o )
 
 }
 
-_errMake.defaults =
+_make.defaults =
 {
 
   dstError : null,
@@ -527,16 +533,16 @@ function _err( o )
 
   for( let e in o )
   {
-    if( _err.defaults[ e ] === undefined )
+    if( _.error._err.defaults[ e ] === undefined )
     {
       throw Error( `Unknown option::${e}` );
     }
   }
 
-  for( let e in _err.defaults )
+  for( let e in _.error._err.defaults )
   {
     if( o[ e ] === undefined )
-    o[ e ] = _err.defaults[ e ];
+    o[ e ] = _.error._err.defaults[ e ];
   }
 
   if( _.error._errorMaking )
@@ -556,11 +562,11 @@ function _err( o )
   let errors = [];
   let combinedStack = '';
 
-  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
-  if( _global_.debugger )
-  debugger;
+  // if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
+  // if( _global_.debugger )
+  // debugger;
 
   /* algorithm */
 
@@ -576,7 +582,7 @@ function _err( o )
     sourceCodeForm();
     originalMessageForm();
 
-    dstError = _._errMake
+    dstError = _.error._make
     ({
       dstError,
       throwLocation : o.throwLocation,
@@ -619,7 +625,7 @@ function _err( o )
     {
       let arg = o.args[ a ];
 
-      if( !_.errIs( arg ) && _.routine.is( arg ) )
+      if( !_.error.is( arg ) && _.routine.is( arg ) )
       {
         if( arg.length === 0 )
         {
@@ -646,7 +652,6 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          debugger;
           o.args = _.longBut_( null, o.args, [ a, a ], arg );
           // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
@@ -667,19 +672,19 @@ function _err( o )
     {
       let arg = o.args[ a ];
 
-      if( _.errIs( arg ) )
+      if( _.error.is( arg ) )
       {
 
         errProcess( arg );
-        o.args[ a ] = _.errOriginalMessage( arg )
+        o.args[ a ] = _.error.originalMessage( arg )
 
       }
-      else if( _.strIs( arg ) && _.errInStr( arg ) )
+      else if( _.strIs( arg ) && _.error.inStr( arg ) )
       {
 
-        let err = _.errFromStr( arg );
+        let err = _.error.fromStr( arg );
         errProcess( err );
-        o.args[ a ] = _.errOriginalMessage( err );
+        o.args[ a ] = _.error.originalMessage( err );
 
       }
 
@@ -766,7 +771,7 @@ function _err( o )
       if( o.throwLocation )
       o.throwCallsStack = _.introspector.locationToStack( o.throwLocation );
       if( !o.throwCallsStack )
-      o.throwCallsStack = _.errOriginalStack( dstError );
+      o.throwCallsStack = _.error.originalStack( dstError );
       if( !o.throwCallsStack )
       o.throwCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
 
@@ -966,11 +971,11 @@ function _err( o )
         {
           str = arg.toStr();
         }
-        else if( _.errIs( arg ) && _.strIs( arg.originalMessage ) )
+        else if( _.error.is( arg ) && _.strIs( arg.originalMessage ) )
         {
           str = arg.originalMessage;
         }
-        else if( _.errIs( arg ) )
+        else if( _.error.is( arg ) )
         {
           if( _.strIs( arg.message ) )
           str = arg.message;
@@ -1132,7 +1137,7 @@ _err.defaults =
  * function divide( x, y )
  * {
  *   if( y == 0 )
- *     throw _.err( 'divide by zero' )
+ *     throw _.error.err( 'divide by zero' )
  *   return x / y;
  * }
  * divide( 3, 0 );
@@ -1156,7 +1161,7 @@ _err.defaults =
 
 function err()
 {
-  return _._err
+  return _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1165,9 +1170,9 @@ function err()
 
 //
 
-function errBrief()
+function brief()
 {
-  return _._err
+  return _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1177,9 +1182,9 @@ function errBrief()
 
 //
 
-function errUnbrief()
+function unbrief()
 {
-  return _._err
+  return _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1189,9 +1194,9 @@ function errUnbrief()
 
 //
 
-function errProcess()
+function process()
 {
-  return _._err
+  return _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1201,9 +1206,9 @@ function errProcess()
 
 //
 
-function errUnprocess()
+function unprocess()
 {
-  return _._err
+  return _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1213,7 +1218,7 @@ function errUnprocess()
 
 //
 
-function _errFields( args, fields )
+function _fields( args, fields )
 {
 
   _.assert( arguments.length === 2 );
@@ -1230,8 +1235,8 @@ function _errFields( args, fields )
     return err;
   }
 
-  if( args.length !== 1 || !_.errIsStandard( err ) )
-  err = _._err
+  if( args.length !== 1 || !_.error.isStandard( err ) )
+  err = _.error._err
   ({
     args,
     level : 2,
@@ -1267,28 +1272,28 @@ function _errFields( args, fields )
 
 //
 
-function errAttend( err, value )
+function attend( err, value )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-  let result = _._errFields( err, { attended : value } );
+  let result = _.error._fields( err, { attended : value } );
   return result;
 }
 
 //
 
-function errLogged( err, value )
+function logged( err, value )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-  return _._errFields( err, { logged : value } );
+  return _.error._fields( err, { logged : value } );
 }
 
 //
 
-function errSuspend( err, owner, value )
+function suspend( err, owner, value )
 {
   _.assert( arguments.length === 3 );
   _.assert( !!owner );
@@ -1298,12 +1303,12 @@ function errSuspend( err, owner, value )
   */
 
   if( err.suspended && err.suspended !== owner )
-  return _._errFields( err, {} );
+  return _.error._fields( err, {} );
 
   let value2 = err.suspended;
   if( value === undefined )
   value = true;
-  let result = _._errFields( err, { suspended : value ? owner : false } );
+  let result = _.error._fields( err, { suspended : value ? owner : false } );
 
   /*
   resuming of suspended wary error object should resume _handleUncaughtAsync
@@ -1319,21 +1324,21 @@ function errSuspend( err, owner, value )
 
 //
 
-function errWary( err, value )
+function wary( err, value )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = true;
-  return _._errFields( err, { wary : value } );
+  return _.error._fields( err, { wary : value } );
 }
 
 //
 
-function errRestack( err, level )
+function restack( err, level )
 {
 
-  if( err && err.debugging )
-  debugger;
+  // if( err && err.debugging )
+  // debugger;
 
   if( !( arguments.length === 1 || arguments.length === 2 ) )
   throw Error( 'Expects single argument or none' );
@@ -1344,21 +1349,21 @@ function errRestack( err, level )
   if( !_.number.defined( level ) )
   throw Error( 'Expects defined number' );
 
-  let err2 = _._err
+  let err2 = _.error._err
   ({
     args : [],
     level : level + 1,
   });
 
-  return _.err( err2, err );
+  return _.error.err( err2, err );
 }
 
 //
 
-function errOnce( err )
+function once( err )
 {
 
-  err = _._err
+  err = _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1367,14 +1372,14 @@ function errOnce( err )
   if( err.logged )
   return undefined;
 
-  _.errAttend( err );
+  _.error.attend( err );
 
   return err;
 }
 
 //
 
-function errInStr( errStr )
+function inStr( errStr )
 {
   _.assert( _.strIs( errStr ) );
 
@@ -1389,7 +1394,7 @@ function errInStr( errStr )
 
 //
 
-function errFromStr( errStr )
+function fromStr( errStr )
 {
 
   try
@@ -1436,7 +1441,7 @@ function errFromStr( errStr )
 
     let originalMessage = messages.join( '\n' );
 
-    let result = _._errMake
+    let result = _.error._make
     ({
       dstError,
       throwLocation,
@@ -1458,14 +1463,14 @@ function errFromStr( errStr )
 
 //
 
-function _errLog( err, logger )
+function _log( err, logger )
 {
   logger = logger || _global.logger || _global.console;
 
   /* */
 
-  if( err && err.debugging )
-  debugger;
+  // if( err && err.debugging )
+  // debugger;
 
   if( _.routine.is( err.toString ) )
   {
@@ -1482,8 +1487,8 @@ function _errLog( err, logger )
 
   /* */
 
-  _.errLogged( err );
-  _.errAttend( err );
+  _.error.logged( err );
+  _.error.attend( err );
 
   /* */
 
@@ -1504,7 +1509,7 @@ function _errLog( err, logger )
  * function divide( x, y )
  * {
  *   if( y == 0 )
- *    throw _.errLog( 'divide by zero' )
+ *    throw _.error.log( 'divide by zero' )
  *    return x / y;
  * }
  * divide( 3, 0 );
@@ -1525,24 +1530,24 @@ function _errLog( err, logger )
  * @namespace Tools
  */
 
-function errLog()
+function log()
 {
 
-  let err = _._err
+  let err = _.error._err
   ({
     args : arguments,
     level : 2,
   });
 
-  return _._errLog( err );
+  return _.error._log( err );
 }
 
 //
 
-function errLogOnce( err )
+function logOnce( err )
 {
 
-  err = _._err
+  err = _.error._err
   ({
     args : arguments,
     level : 2,
@@ -1551,7 +1556,7 @@ function errLogOnce( err )
   if( err.logged )
   return err;
 
-  return _._errLog( err );
+  return _.error._log( err );
 }
 
 // --
@@ -1568,7 +1573,7 @@ function tryCatch( routine )
   }
   catch( err )
   {
-    throw _._err({ args : [ err ] });
+    throw _.error._err({ args : [ err ] });
   }
 }
 
@@ -1585,7 +1590,7 @@ function tryCatchBrief( routine )
   }
   catch( err )
   {
-    throw _._err({ args : [ err ], brief : 1 });
+    throw _.error._err({ args : [ err ], brief : 1 });
   }
 }
 
@@ -1601,7 +1606,7 @@ function tryCatchDebug( routine )
   }
   catch( err )
   {
-    throw _._err({ args : [ err ], debugging : 1 });
+    throw _.error._err({ args : [ err ], debugging : 1 });
   }
 }
 
@@ -1611,8 +1616,8 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
 }
 
 //
@@ -1840,7 +1845,6 @@ function assert( condition )
   {
     if( !_.error.breakpointOnAssertEnabled )
     return;
-    debugger;
   }
 
 }
@@ -1885,8 +1889,8 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
-  if( _.error.breakpointOnAssertEnabled )
-  debugger;
+  // if( _.error.breakpointOnAssertEnabled )
+  // debugger;
   _.assert( false, 'not tested : ' + stack( 1 ) );
 
 }
@@ -1933,13 +1937,13 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    return val;
+    // return val; /* Setter cannot return a value.eslint(no-setter-return) */
   },
   get : function()
   {
     let val = _[ Symbol.for( 'debugger' ) ];
-    if( val )
-    debugger;
+    // if( val )
+    // debugger;
     return val;
   },
 });
@@ -1962,6 +1966,61 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
+  // error
+
+  is,
+  isStandard,
+  isAttended,
+  isBrief,
+  isProcess,
+  isLogged,
+  isSuspended,
+  isWary,
+  reason,
+  originalMessage,
+  originalStack,
+
+  _make,
+  _err,
+  err,
+  brief,
+  unbrief,
+  process,
+  unprocess,
+  _fields,
+  attend,
+  logged,
+  suspend, /* qqq : cover, please. should work okay with symbols */
+  wary,
+  restack,
+  once,
+  inStr,
+  fromStr,
+
+  _log,
+  log,
+  logOnce,
+
+  // try
+
+  tryCatch,
+  tryCatchBrief,
+  tryCatchDebug,
+
+  // sure
+
+  sure,
+  sureBriefly,
+  sureWithoutDebugger,
+
+  // assert
+
+  assert,
+  assertWithoutBreakpoint,
+  assertNotTested,
+  assertWarn,
+
+  // breakpoint,
   breakpointOnDebugger : 0,
   breakpointOnAssertEnabled : !!Config.debug,
   _errorCounter : 0,
@@ -1972,42 +2031,42 @@ let ErrorExtension =
 let ToolsExtension =
 {
 
-  /* qqq : for Yevhen : make migration of routines to namespace _.error */
+  /* qqq : for Yevhen : make migration of routines to namespace _.error | aaa : Done */
 
   // error
 
-  errIs,
-  errIsStandard,
-  errIsAttended,
-  errIsBrief,
-  errIsProcess,
-  errIsLogged,
-  errIsSuspended,
-  errIsWary,
-  errReason,
-  errOriginalMessage,
-  errOriginalStack,
+  errIs : is,
+  errIsStandard : isStandard,
+  errIsAttended : isAttended,
+  errIsBrief : isBrief,
+  errIsProcess : isProcess,
+  errIsLogged : isLogged,
+  errIsSuspended : isSuspended,
+  errIsWary : isWary,
+  errReason : reason,
+  errOriginalMessage : originalMessage,
+  errOriginalStack : originalStack,
 
-  _errMake,
+  _errMake : _make,
   _err,
   err,
-  errBrief,
-  errUnbrief,
-  errProcess,
-  errUnprocess,
-  _errFields,
-  errAttend,
-  errLogged,
-  errSuspend, /* qqq : cover, please. should work okay with symbols */
-  errWary,
-  errRestack,
-  errOnce,
-  errInStr,
-  errFromStr,
+  errBrief : brief,
+  errUnbrief : unbrief,
+  errProcess : process,
+  errUnprocess : unprocess,
+  _errFields : _fields,
+  errAttend : attend,
+  errLogged : logged,
+  errSuspend : suspend, /* qqq : cover, please. should work okay with symbols */
+  errWary : wary,
+  errRestack : restack,
+  errOnce : once,
+  errInStr : inStr,
+  errFromStr : fromStr,
 
-  _errLog,
-  errLog,
-  errLogOnce,
+  _errLog : _log,
+  errLog : log,
+  errLogOnce : logOnce,
 
   // try
 

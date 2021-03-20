@@ -1798,12 +1798,12 @@ function eventGive( test )
   test.case = 'callback throws error';
   test.shouldThrowErrorSync( () =>
   {
-    var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
+    var handler = { events : { event : [ () => { throw _.error.err( 'err' ) } ] } };
     _.event.eventGive( handler, 'event' );
   },
   ( err, arg ) =>
   {
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
   });
 }

@@ -127,7 +127,7 @@ function is( test )
   test.true( !_.object.is( src ) );
 
   test.case = 'err';
-  var src = _.err( 'error' );
+  var src = _.error.err( 'error' );
   test.true( !_.object.is( src ) );
 
   test.case = 'escape';

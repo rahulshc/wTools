@@ -4,7 +4,7 @@ let _ = require( '../..' );
 
 try
 {
-  throw _.err( 'Simplest error sample' );
+  throw _.error.err( 'Simplest error sample' );
 }
 catch( err )
 {

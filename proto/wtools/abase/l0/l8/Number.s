@@ -275,7 +275,7 @@ function intRandomBut( range )
   range = [ 0, range ];
   else if( _.arrayIs( range ) )
   range = range;
-  else throw _.err( 'intRandom', 'unexpected argument' );
+  else throw _.error.err( 'intRandom', 'unexpected argument' );
 
   for( let attempt = 0 ; attempt < attempts ; attempt++ )
   {

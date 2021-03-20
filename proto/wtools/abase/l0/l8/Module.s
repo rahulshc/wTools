@@ -527,14 +527,14 @@ function _sourceFileIncludeSingle( src )
   _.assert( _.strIs( src ), 'Expects string' );
 
   if( typeof module === 'undefined' )
-  throw _.err( 'Cant include, routine "require" does not exist.' );
+  throw _.error.err( 'Cant include, routine "require" does not exist.' );
   else
   return _.module.__nativeInclude( _.path.nativize( src ) );
 
   // if( typeof module !== 'undefined' )
   // return _.module.__nativeInclude( _.path.nativize( src ) );
   // else
-  // throw _.err( 'Cant include, routine "require" does not exist.' );
+  // throw _.error.err( 'Cant include, routine "require" does not exist.' );
 
 }
 
@@ -1107,14 +1107,6 @@ function _Setup()
   Module = require( 'module' );
 
   _.module.moduleNativeFilesMap = Module._cache;
-
-  // if( _realGlobal_.wTools.module._setupRequireDone )
-  // {
-  //   _.module._setupRequireDone = 1;
-  //   return;
-  // }
-  // _realGlobal_.wTools.module._setupRequireDone = 1;
-  // _.module._setupRequireDone = 1;
 
   if( _.module._setupRequireDone )
   return;

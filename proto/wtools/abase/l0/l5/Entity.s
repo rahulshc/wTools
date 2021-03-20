@@ -617,7 +617,7 @@ function assign2( dst, src, onRecursive )
 
     if( dst instanceof src.constructor )
     {
-      throw _.err( 'not tested' );
+      throw _.error.err( 'not tested' );
       result = src.clone( dst );
     }
     else if( _.primitive.is( dst ) || _.longIs( dst ) )
@@ -775,7 +775,7 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
   if( onRecursive )
   {
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
     result = _.entity.assign2( dstValue, srcValue, onRecursive );
   }
   else

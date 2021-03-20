@@ -674,7 +674,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 // {
 //   let result, length;
 //
-//   throw _.err( 'not tested' );
+//   throw _.error.err( 'not tested' );
 //
 //   if( _.routine.is( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -749,7 +749,7 @@ function bufferFromArrayOfArray( array, options )
   if( options.BufferType === undefined ) options.BufferType = F32x;
   if( options.sameLength === undefined ) options.sameLength = 1;
   if( !options.sameLength )
-  throw _.err( '_.bufferFromArrayOfArray :', 'different length of arrays is not implemented' );
+  throw _.error.err( '_.bufferFromArrayOfArray :', 'different length of arrays is not implemented' );
 
   if( !array.length )
   return new options.BufferType();
@@ -757,7 +757,7 @@ function bufferFromArrayOfArray( array, options )
   let scalarsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
   if( !_.number.is( scalarsPerElement ) )
-  throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
+  throw _.error.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
 
   let length = array.length * scalarsPerElement;
   let result = new options.BufferType( length );
@@ -901,7 +901,7 @@ function bufferFrom( o )
 //   else if ( _.longIs( o.src ) )
 //   {
 //     result = new o.bufferConstructor( o.src );
-//     throw _.err( 'not tested' );
+//     throw _.error.err( 'not tested' );
 //   }
 //   else
 //   {
@@ -3942,7 +3942,7 @@ function bufferMove( dst, src )
     _.assert( _.longIs( src ) );
 
     if( dst.length !== src.length )
-    throw _.err( '_.bufferMove :', '"dst" and "src" must have same length' );
+    throw _.error.err( '_.bufferMove :', '"dst" and "src" must have same length' );
 
     if( dst.set && ( src instanceof U64x || src instanceof I64x ) )
     {
@@ -4060,7 +4060,7 @@ function bufferToDom( xmlBuffer )
 
     let parser = new DOMParser();
     result = parser.parseFromBuffer( xmlBuffer, xmlBuffer.byteLength, 'text/xml' );
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
 
   }
   else

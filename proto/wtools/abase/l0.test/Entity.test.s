@@ -1310,13 +1310,13 @@ function identicalShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'err same message';
-  var src1 = _.err( 'error' );
-  var src2 = _.err( 'error' );
+  var src1 = _.error.err( 'error' );
+  var src2 = _.error.err( 'error' );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'err diff message';
-  var src1 = _.err( 'error' );
-  var src2 = _.err( 'error2' );
+  var src1 = _.error.err( 'error' );
+  var src2 = _.error.err( 'error2' );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   test.case = 'escape';
@@ -2746,13 +2746,13 @@ function equivalentShallowAllTypes( test )
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
   test.case = 'err same message';
-  var src1 = _.err( 'error' );
-  var src2 = _.err( 'error' );
+  var src1 = _.error.err( 'error' );
+  var src2 = _.error.err( 'error' );
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
   test.case = 'err diff message';
-  var src1 = _.err( 'error' );
-  var src2 = _.err( 'error2' );
+  var src1 = _.error.err( 'error' );
+  var src2 = _.error.err( 'error2' );
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
   test.case = 'escape';
