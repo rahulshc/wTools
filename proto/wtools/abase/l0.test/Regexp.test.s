@@ -125,6 +125,11 @@ function regexpLike( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'regexp empty';
+  var got = _.regexp.like( /(?:)/ );
+  var expected = true;
+  test.identical( got, expected );
+
   test.case = 'regexp with flags';
   var got = _.regexp.like( /a/g );
   var expected = true;

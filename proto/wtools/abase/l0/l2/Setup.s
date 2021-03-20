@@ -41,7 +41,6 @@ function _handleUncaughtPromise1( err, promise )
 
 //
 
-// function _handleUncaught2( err, origination )
 function _handleUncaught2( o )
 {
   return _.error._handleUncaught2Minimal( o );
@@ -49,7 +48,6 @@ function _handleUncaught2( o )
 
 //
 
-// function _handleUncaught2Minimal( err, origination )
 function _handleUncaught2Minimal( o )
 {
   if( !o.origination )

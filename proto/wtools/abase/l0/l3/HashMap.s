@@ -44,8 +44,13 @@ function isPopulated()
 function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.hashMap.like( src1 ) );
-  _.assert( _.hashMap.like( src2 ) );
+  // _.assert( _.hashMap.like( src1 ) );
+  // _.assert( _.hashMap.like( src2 ) );
+
+  if( !_.hashMap.like( src1 ) )
+  return false;
+  if( !_.hashMap.like( src2 ) )
+  return false;
 
   return _.hashMap._identicalShallow( src1, src2 );
 }
@@ -106,6 +111,8 @@ let Extension =
   identicalShallow,
   _identicalShallow,
   equivalentShallow : identicalShallow,
+
+  // export string
 
   exportString : exportStringShortDiagnostic,
   exportStringShort : exportStringShortDiagnostic,

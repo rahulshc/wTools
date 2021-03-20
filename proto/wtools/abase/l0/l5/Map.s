@@ -8,9 +8,9 @@ let _ = _global_.wTools;
 let Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
-/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch */
-/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch */
-/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch */
+/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
 
 // --
 // map checker
@@ -47,8 +47,8 @@ _global_.wTools.map = _global_.wTools.map || Object.create( null );
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : duplicate in _.property.identical() */
-/* xxx qqq : for Yevhen : move to _.aux.identical() */
+/* xxx qqq : for Yevhen : duplicate in _.property.identical() | aaa : Done */
+/* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
 function mapsAreIdentical( src1, src2 )
 {
 
@@ -347,13 +347,27 @@ function mapHasAll( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( !( screen[ s ] in src ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( !( value in src ) )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( !( k in src ) )
     return false;
   }
 
   return true;
+
 }
 
 //
@@ -366,7 +380,7 @@ function mapHasAll( src, screen )
  * Returns true if any key from( screen ) exists on object( src ), otherwise returns false.
  *
  * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
- * @param { ObjectLike } screen - Map that hold keys.
+ * @param { ObjectLike|Vector } screen - Map or vector that hold keys.
  *
  * @example
  * _.mapHasAny( {}, {} );
@@ -387,16 +401,29 @@ function mapHasAll( src, screen )
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : teach to accept vector */
-/* xxx qqq : for Yevhen : duplicate in _.property.hasAll() */
+/* xxx qqq : for Yevhen : teach to accept vector | aaa : Done. */
+/* xxx qqq : for Yevhen : duplicate in _.property.hasAny() | aaa : Done */
 function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return true;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return true;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return true;
   }
@@ -435,16 +462,29 @@ function mapHasAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
-/* xxx qqq : for Yevhen : duplicate in _.property.hasNone() */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done */
+/* xxx qqq : for Yevhen : duplicate in _.property.hasNone() | aaa : Done */
 function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( screen[ s ] in src )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( value in src )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( k in src )
     return false;
   }
@@ -483,17 +523,28 @@ function mapHasNone( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
-    if( !Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( !Object.hasOwnProperty.call( src, value ) )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( !Object.hasOwnProperty.call( src, k ) )
     return false;
   }
@@ -532,17 +583,28 @@ function mapOnlyOwnAll( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
-    if( Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return true;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( Object.hasOwnProperty.call( src, value ) )
+    return true;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( Object.hasOwnProperty.call( src, k ) )
     return true;
   }
@@ -581,7 +643,7 @@ function mapOnlyOwnAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector */
+/* qqq : for Yevhen : teach to accept vector | aaa : Done.*/
 /* xxx : move? */
 function mapOnlyOwnNone( src, screen )
 {
@@ -589,10 +651,21 @@ function mapOnlyOwnNone( src, screen )
   _.assert( !_.primitive.is( src ) );
   _.assert( !_.primitive.is( screen ) );
 
-  for( let k in screen )
+  if( _.arrayLike( screen ) )
   {
-    if( Object.hasOwnProperty.call( src, k ) )
-    debugger;
+    for( let s = 0 ; s < screen.length ; s++ )
+    if( Object.hasOwnProperty.call( src, screen[ s ] ) )
+    return false;
+  }
+  else if( _.vector.is( screen ) )
+  {
+    for( let value of screen )
+    if( Object.hasOwnProperty.call( src, value ) )
+    return false;
+  }
+  else if( _.aux.is( screen ) )
+  {
+    for( let k in screen )
     if( Object.hasOwnProperty.call( src, k ) )
     return false;
   }
@@ -2888,7 +2961,7 @@ function _mapOnly( o )
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.primitive.is( o.screenMaps[ m ] ) )
       {
-        if( o.screenMaps[ m ] === key || String( m ) === key )
+        if( o.screenMaps[ m ] === key )
         return key;
       }
     }
@@ -2897,10 +2970,11 @@ function _mapOnly( o )
       for( let m of o.screenMaps )
       if( _.primitive.is( m ) )
       {
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
     }
+
     // let m;
     // if( _.arrayLike( o.screenMaps ) )
     // {
@@ -3093,7 +3167,7 @@ function _mapOnly_( o )
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.primitive.is( o.screenMaps[ m ] ) )
       {
-        if( o.screenMaps[ m ] === key || String( m ) === key )
+        if( o.screenMaps[ m ] === key )
         return key;
       }
     }
@@ -3102,7 +3176,7 @@ function _mapOnly_( o )
       for( let m of o.screenMaps )
       if( _.primitive.is( m ) )
       {
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
     }
@@ -3427,11 +3501,11 @@ function sureHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _._err
+    err = _._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
-      // args : [ _.entity.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -3443,13 +3517,14 @@ function sureHasOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger;
+    throw err;
     return false;
   }
 
@@ -4765,6 +4840,8 @@ let Extension =
   _mapOnly,
   _mapOnly_,
 
+  /* qqq xxx : implement mapDiff(), ask how to */
+
   // map surer
 
   /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
@@ -4805,7 +4882,8 @@ let Extension =
 
 let ExtensionMap =
 {
-  // map surer
+
+  // sure
 
   sureHasExactly,
   sureOwnExactly,
@@ -4821,7 +4899,7 @@ let ExtensionMap =
 
   sureHasNoUndefine,
 
-  // map assert
+  // assert
 
   assertHasFields,
   assertOwnFields,

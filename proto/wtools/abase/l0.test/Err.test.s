@@ -7,11 +7,11 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
-  // _.include( 'wConsequence' );
 }
 
 let _ = _global_.wTools;
-let fileProvider = _globals_.testing.wTools.fileProvider;
+let __ = _globals_.testing.wTools;
+let fileProvider = __.fileProvider;
 let path = fileProvider.path;
 
 // --
@@ -39,8 +39,6 @@ function onSuiteEnd()
 // --
 // tests
 // --
-
-//
 
 function errArgumentObject( test )
 {
@@ -960,8 +958,10 @@ function _errOptionReason( test )
 
 //
 
+/* qqq : for Dmytro : bad test. option section changes not only err.section. improve */
 function _errOptionSections( test )
 {
+
   test.case = 'args - Error, without sections option';
   var srcErr = new Error( 'Sample' );
   var err = _._err
@@ -1004,6 +1004,7 @@ function _errOptionSections( test )
   test.true( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
   test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
+
 }
 
 //
@@ -1251,6 +1252,31 @@ function _errMessageForm( test )
 
 //
 
+function _errOptionFields( test )
+{
+  let context = this;
+
+  /* */
+
+  test.case = 'basic';
+  var args = [ 'a', 'b' ];
+  var err = _._err({ args : args, fields : { 'field1' : 13 } });
+  var got = _.property.descriptorOwnOf( err, 'field1' );
+  var exp =
+  {
+    'value' : 13,
+    'writable' : true,
+    'enumerable' : false,
+    'configurable' : true
+  }
+  test.identical( got, exp );
+
+  /* */
+
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -1292,19 +1318,19 @@ function errCatchStackAndMessage( test )
   {
 
     test.description = 'throwsStack';
-    let regexp = new RegExp( _.regexpEscape( `${context.nameOfFile}:` ) + '.+', 'g' );
+    let regexp = new RegExp( _.regexpEscape( `${_.path.fullName( test.suiteFilePath )}:` ) + '.+', 'g' );
     let throwsStackLocations = _.longOnce( err.throwsStack.match( regexp ) );
     test.true( _.errIs( err ) );
     test.identical( throwsStackLocations.length, 3 );
     test.identical( _.strCount( err.throwsStack, 'thrown at' ), 3 );
     test.identical( _.strCount( err.throwsStack, 'thrown at decrement @' ), 2 );
     test.identical( _.strCount( err.throwsStack, 'thrown at divide @' ), 1 );
-    test.identical( _.strCount( err.throwsStack, `${context.nameOfFile}:` ), 3 );
+    test.identical( _.strCount( err.throwsStack, `${_.path.fullName( test.suiteFilePath )}:` ), 3 );
 
     test.description = 'combinedStack';
     test.identical( _.strCount( err.combinedStack, 'decrement' ), 1 );
     test.identical( _.strCount( err.combinedStack, 'divide' ), 1 );
-    test.identical( _.strCount( err.combinedStack, `${context.nameOfFile}:` ), 3 );
+    test.identical( _.strCount( err.combinedStack, `${_.path.fullName( test.suiteFilePath )}:` ), 3 );
 
     visited.push( 'catch1' );
   }
@@ -2997,7 +3023,135 @@ Exec : program`;
 
 //
 
-function errorFunctor( test )
+function errorFunctorBasic( test )
+{
+  let context = this;
+
+  /* */
+
+  test.case = 'without new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var got = SomeError( 'abc' )
+  test.true( _.errIs( got ) );
+  test.true( got instanceof SomeError );
+  test.identical( got.originalMessage, 'arg1 abc arg2' );
+  test.identical( got.SomeError, true );
+  var exp =
+  {
+    'value' : true,
+    'writable' : true,
+    'enumerable' : false,
+    'configurable' : true,
+  };
+  var got = _.property.descriptorOwnOf( got, 'SomeError' );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'with new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var got = new SomeError( 'abc' );
+  test.true( _.errIs( got ) );
+  test.true( got instanceof SomeError );
+  test.identical( got.originalMessage, 'arg1 abc arg2' );
+  test.identical( got.SomeError, true );
+  var exp =
+  {
+    'value' : true,
+    'writable' : true,
+    'enumerable' : false,
+    'configurable' : true,
+  };
+  var got = _.property.descriptorOwnOf( got, 'SomeError' );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'remake, without new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 abc arg2' );
+  test.true( err1 === err2 );
+
+  /* */
+
+  test.case = 'remake, with new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 arg2' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, left, without new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( err1, 'def' );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2 def' );
+  test.identical( err2.originalMessage, 'arg1 abc arg2 def' );
+  test.true( err1 === err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, right, without new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'def arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'def arg1 abc arg2' );
+  test.true( err1 === err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, right, with new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( err1, 'def' );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 def arg2' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'remake, extra argument, left, with new';
+  var SomeError = _.error.error_functor( 'SomeError', _onSomeError );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err2 instanceof SomeError );
+  test.identical( err1.originalMessage, 'arg1 abc arg2' );
+  test.identical( err2.originalMessage, 'arg1 def arg1 abc arg2 arg2' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  function _onSomeError( arg )
+  {
+    if( this.originalMessage !== undefined )
+    return arguments;
+    else
+    return [ 'arg1', ... arguments, 'arg2' ];
+  }
+
+}
+
+//
+
+function errorFunctorExternal( test )
 {
   let context = this;
   let visited = [];
@@ -3013,10 +3167,9 @@ function errorFunctor( test )
 
     test.identical( _.strCount( op.output, 'ncaught' ), 0 );
     test.identical( _.strCount( op.output, '= Message' ), 1 );
-    test.identical( _.strCount( op.output, 'program.js:9' ), 2 );
-    test.identical( _.strCount( op.output, 'program.js:' ), 3 );
+    test.identical( _.strCount( op.output, 'program.js:9' ), 1 );
+    test.identical( _.strCount( op.output, 'program.js:' ), 2 );
     test.identical( _.strCount( op.output, 'arg1 arg2 abc' ), 1 );
-    test.identical( _.strCount( op.output.substring( 0, op.output.indexOf( 'program.js:9' ) ), 'at ' ), 1 );
 
     return null;
   });
@@ -3163,7 +3316,7 @@ function eventUncaughtErrorBasic( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _globals_.testing.wTools.take( null );
+  let ready = __.take( null );
 
   ready.then( () => run( 'sync' ) );
   ready.then( () => run( 'timer' ) );
@@ -3176,7 +3329,7 @@ function eventUncaughtErrorBasic( test )
 
   function run( throwing )
   {
-    let ready = _globals_.testing.wTools.take( null );
+    let ready = __.take( null );
 
     ready.then( () =>
     {
@@ -3379,9 +3532,9 @@ function eventUncaughtErrorOnce( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _globals_.testing.wTools.take( null );
+  let ready = __.take( null );
 
-  // ready.then( () => run( 'once' ) ); /* xxx qqq : switch on later */
+  // ready.then( () => run( 'once' ) ); /* qqq : for Dmytro : switch on later */
   ready.then( () => run( 'off' ) );
 
   return ready;
@@ -3390,7 +3543,7 @@ function eventUncaughtErrorOnce( test )
 
   function run( how )
   {
-    let ready = _globals_.testing.wTools.take( null );
+    let ready = __.take( null );
 
     ready.then( () =>
     {
@@ -3428,7 +3581,7 @@ function eventUncaughtErrorOnce( test )
     let off = process.argv.includes( 'how:off' );
 
     if( once )
-    _.process.once( 'uncaughtError', ( e ) => /* xxx qqq : implement routine _.process.once() */
+    _.process.once( 'uncaughtError', ( e ) => /* qqq : for Dmytro : implement routine _.process.once(). make sure it works */
     {
       _.errAttend( e.err );
     });
@@ -3462,7 +3615,7 @@ function entryProcedureStack( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _globals_.testing.wTools.take( null );
+  let ready = __.take( null );
   ready.then( () => run() );
   return ready;
 
@@ -3470,7 +3623,7 @@ function entryProcedureStack( test )
 
   function run( how )
   {
-    let ready = _globals_.testing.wTools.take( null );
+    let ready = __.take( null );
 
     ready.then( () =>
     {
@@ -3523,7 +3676,7 @@ let Self =
 
   context :
   {
-    nameOfFile : _.introspector.location().fileName, /* xxx : introduce option in utility::Testing */
+    // nameOfFile : _.introspector.location().fileName, /* yyy : introduce field in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
@@ -3551,6 +3704,7 @@ let Self =
     _errSourceCodeForm,
     _errOriginalMessageForm,
     _errMessageForm,
+    _errOptionFields,
     errCatchStackAndMessage,
     errErrorWithoutStack,
     errCustomError,
@@ -3563,7 +3717,8 @@ let Self =
     errBriefFromStrings,
     errBriefFromErr,
 
-    errorFunctor,
+    errorFunctorBasic,
+    errorFunctorExternal,
 
     uncaughtError,
     sourceCode,

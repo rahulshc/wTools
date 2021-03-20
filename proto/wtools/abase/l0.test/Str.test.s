@@ -15,6 +15,7 @@ if( typeof module !== 'undefined' )
 
 let _global = _global_;
 let _ = _global_.wTools;
+let __ = _globals_.testing.wTools;
 
 // --
 //
@@ -2028,6 +2029,34 @@ function strEquivalent( test )
   var got = _.strEquivalent( /\w+/, /\w+/ );
   test.identical( got, true );
 
+  test.case = 'string with and without spaces ';
+  var got = _.strEquivalent( 'abc', ' abc ' );
+  test.identical( got, true );
+
+  test.case = 'string with and without newlines ';
+  var got = _.strEquivalent( 'abc', '\nabc\n' );
+  test.identical( got, true );
+
+  test.case = 'string with identical newlines';
+  var got = _.strEquivalent( '\na\nb\nc\n', '\na\nb\nc\n' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\n', '\nabc\n\n' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t           ' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\na   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
+  test.identical( got, true );
+
+  test.case = 'strings with different newlines, spaces and tabs on each line from both sides';
+  var got = _.strEquivalent( '      \t\n  \ta   \t\n\n  \n\t  b   \t   \n   \n  \n  \t  c  \t     ', '        \n  \t a  \n  \n  \t   \n \n  b  \t \n   \n \t c \t \n \n \t \t           ' );
+  test.identical( got, true );
+
   test.close( 'true' );
 
   /* - */
@@ -2064,6 +2093,18 @@ function strEquivalent( test )
 
   test.case = 'regexp and regexp';
   var got = _.strEquivalent( /\w+/g, /\w+/gi );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines';
+  var got = _.strEquivalent( '\n\nabc\nb', '\nabc\n\n' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs';
+  var got = _.strEquivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t    c       ' );
+  test.identical( got, false );
+
+  test.case = 'diff strings with different newlines, spaces and tabs on each line';
+  var got = _.strEquivalent( '      \t\nab   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
   test.identical( got, false );
 
   test.close( 'false' );
@@ -3203,7 +3244,9 @@ function exportStringShortDiagnostic( test )
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = '{- Symbol maybe -}';
+  debugger;
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+  debugger;
 
   test.case = 'bigint';
   var src = 10n;
@@ -3492,12 +3535,12 @@ function exportStringShortDiagnostic( test )
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'printerLike';
-  var src = new _globals_.testing.wTools.Logger();
+  var src = new __.Logger();
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
   test.case = 'printerLike with output to console';
-  var src = new _globals_.testing.wTools.Logger({ output : console });
+  var src = new __.Logger({ output : console });
   var expected = '{- wLoggerTop.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
 
@@ -3505,6 +3548,429 @@ function exportStringShortDiagnostic( test )
   var src = process;
   var expected = '{- process.constructible -}';
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+
+  /* */
+
+  test.open( 'option::widthLimit' );
+
+  test.case = 'string, widthLimit 0';
+  var src = '0123456'
+  var expected = '0123456';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 0 } ), expected );
+
+  test.case = 'string, widthLimit 1';
+  var src = '0123456'
+  var expected = '0';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 1 } ), expected );
+
+  test.case = 'string, widthLimit 5';
+  var src = '0123456'
+  var expected = '01256';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 5 } ), expected );
+
+  test.case = 'string, widthLimit > str.length';
+  var src = '0123456'
+  var expected = '0123456';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 10 } ), expected );
+
+  /* */
+
+  test.case = 'map, widthLimit 0';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 0 } ), expected );
+
+  test.case = 'map, widthLimit 1';
+  var src = Object.create( null );
+  var expected = '{';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 1 } ), expected );
+
+  test.case = 'map, widthLimit 10';
+  var src = Object.create( null );
+  var expected = '{- Mats -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 10 } ), expected );
+
+  test.case = 'map, widthLimit > str.length';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortDiagnostic( src, { widthLimit : 100 } ), expected );
+
+
+  test.close( 'option::widthLimit' );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+  function routine () {}
+
+}
+
+//
+
+
+function exportStringShortCode( test )
+{
+
+  test.case = 'number';
+  var src = 1;
+  var expected = '1';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'bool & boolLike & fuzzy';
+  var src = true;
+  var expected = 'true';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'boolLike & number & fuzzyLike';
+  var src = 0;
+  var expected = '0';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'fuzzy';
+  var src = _.maybe;
+  var expected = 'Symbol.for( \'maybe\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'bigint';
+  var src = 10n;
+  var expected = '10n';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'str & regexpLike';
+  var src = 'str';
+  var expected = '\'str\'';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'regexp & objectLike & constructible & constructibleLike';
+  var src = /hello/g;
+  var expected = '/hello/g';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'ArgumentsArray & arrayLike';
+  var src = _.argumentsArray.make();
+  var expected = '{- ArgumentsArray with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'ArgumentsArray & arrayLike with 3 elems';
+  var src = _.argumentsArray.make([ 1, 2, 3 ]);
+  var expected = '{- ArgumentsArray with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'unroll';
+  var src = _.unrollMake([ 2, 3, 4 ]);
+  var expected = '{- Array.unroll with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'array';
+  var src = [ 2, 3, 4 ];
+  var expected = '{- Array with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'long & longLike';
+  var src = _.longMake([ 1, 2 ]);
+  var expected = '{- Array with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'vector & vectorLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var expected = '{- countableConstructor.countable with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'countable & countableLike';
+  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = `object countable - empty, non-vector`;
+  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var expected = '{- Object.countable with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = `object countable - non empty, non-vector`;
+  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var expected = '{- Object.countable with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Global & GlobalReal';
+  var src = global;
+  var expected = '{- Aux.polluted.prototyped with ';
+  test.true( _.strHas( _.entity.exportStringShortCode( src ), expected ) );
+
+  test.case = 'Global & GlobalDerived';
+  var src = Object.create( global );
+  var expected = '{- Aux.polluted.prototyped with ';
+  test.true( _.strHas( _.entity.exportStringShortCode( src ), expected ) );
+
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
+  var src = { [ Symbol.iterator ] : 1 };
+  var expected = '{- Object -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & Container & ContainerLike with `exportString` method';
+  var src =
+  {
+    [ Symbol.iterator ] : 1,
+    exportString : () => 'Custom string transformation'
+  };
+  var expected = 'Custom string transformation';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
+  var src = { a : 1 };
+  Object.setPrototypeOf( src, { b : 2 } )
+  var expected = '{- Aux.polluted.prototyped with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted with `exportString` method';
+  var src = { a : 1 };
+  var proto =
+  {
+    b : 2,
+    exportString : () => 'Custom string transformation'
+  }
+  Object.setPrototypeOf( src, proto )
+  var expected = '{- Aux.polluted.prototyped with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
+  var src = Object.create( null );
+  var expected = '{- Map.pure with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure with `exportString` method';
+  var src = Object.create( null );
+  src.exportString = () => 'Custom string transformation'
+  var expected = '{- Map.pure with 1 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var expected = '{- Map.pure with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
+  var src = {};
+  var expected = '{- Map.polluted with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = '{- Map.polluted with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'HashMap';
+  var src = new HashMap();
+  var expected = '{- HashMap with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'HashMap with 2 elems';
+  var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
+  var expected = '{- HashMap with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Set & SetLike';
+  var src = new Set();
+  var expected = '{- Set with 0 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Set with 3 elems';
+  var src = new Set([ 1, 2, 3 ]);
+  var expected = '{- Set with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferNode';
+  var src = BufferNode.from( 'str' );
+  var expected = '{- BufferNode with 3 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 'str' );
+  var expected = '{- BufferRaw -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferRawShared';
+  var src = new BufferRawShared( 'str' );
+  var expected = '{- BufferRawShared -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferTyped';
+  var src = new I8x( 20 );
+  var expected = '{- I8x with 20 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 20 ) );
+  var expected = '{- DataView.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'BufferBytes & BufferTyped';
+  var src = new U8x( 20 );
+  var expected = '{- U8x with 20 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'err';
+  var src = _.err( 'error' );
+  var expected = '{- Error.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'escape';
+  var src = _.escape.make( 1 );
+  var expected = 'Escape( 1 )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'interval & BufferTyped';
+  var src = new F32x( 2 );
+  var expected = '{- F32x with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'pair';
+  var src = _.pair.make();
+  var expected = '{- Array with 2 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'path & str';
+  var src = '/a/b/';
+  var expected = '\'/a/b/\'';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'propertyTransformer & filter';
+  var src = _.property.filter[ 'dstAndSrcOwn' ];
+  var expected = '{- routine dstAndSrcOwn -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'propertyTransformer & mapper';
+  var src = _.property.mapper[ 'assigning' ];
+  var expected = '{- routine assigning -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'routine & routineLike';
+  var src = routine;
+  var expected = '{- routine routine -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'timer';
+  var src = _.time._begin( Infinity );
+  var expected = '{- Map.pure with 9 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+  _.time.cancel( src );
+
+  test.case = 'date & objectLike';
+  var src = new Date( '2021-02-19T11:26:42.840Z' );
+  var expected = 'new Date( \'2021-02-19T11:26:42.840Z\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'null';
+  var src = null;
+  var expected = 'null';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var expected = 'undefined';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Symbol null';
+  var src = _.null;
+  var expected = 'Symbol.for( \'null\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Symbol undefined';
+  var src = _.undefined;
+  var expected = 'Symbol.for( \'undefined\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Symbol Nothing';
+  var src = _.nothing;
+  var expected = 'Symbol.for( \'nothing\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'primitive';
+  var src = 5;
+  var expected = '5';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'Symbol';
+  var src = Symbol( 'a' );
+  var expected = 'Symbol.for( \'a\' )';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'ConsequenceLike & promiseLike & promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var expected = '{- Promise.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'stream';
+  var src = require( 'stream' ).Readable();
+  var expected = '{- Readable.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  // test.case = 'console';
+  // var src = console;
+  // var expected = '{- Console.constructible with 1 elements -}';
+  // test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
+  test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
+  var src = _global.logger;
+  var expected = '{- Map.polluted with 9 elements -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'printerLike';
+  var src = new __.Logger();
+  var expected = '{- wLoggerTop.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'printerLike with output to console';
+  var src = new __.Logger({ output : console });
+  var expected = '{- wLoggerTop.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
+
+  test.case = 'process';
+  var src = process;
+  var expected = '{- process.constructible -}';
+  test.identical( _.entity.exportStringShortCode( src ), expected );
 
   /* - */
 
@@ -3860,7 +4326,7 @@ function strTypeWithTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.entity.exportStringSolo( src );
+    return __.entity.exportStringSolo( src );
   }
 
 }
@@ -3926,7 +4392,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
 
   function toStr( src )
   {
-    return _globals_.testing.wTools.entity.exportStringSolo( src );
+    return __.entity.exportStringSolo( src );
   }
 
 }
@@ -4979,7 +5445,9 @@ function strConcat( test )
 
   test.case = 'srcs - empty string';
   var srcs = '';
+  debugger;
   var got = _.strConcat( srcs );
+  debugger;
   test.identical( got, '' );
 
   test.case = 'srcs - not empty string';
@@ -10335,6 +10803,888 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.close( 'src - array of strings, ins - array of RegExp, sub - array of strings' );
 }
 
+//
+
+function strStripWithDefaultOptions( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = '';
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = 'abc';
+  var got = _.strStrip( src );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = 'a \tbc';
+  var got = _.strStrip( src );
+  test.identical( got, 'a \tbc' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = 'a\n\nbc';
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\nbc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = 'a\0\0bc';
+  var got = _.strStrip( src );
+  test.identical( got, 'a\0\0bc' );
+
+  /* */
+
+  test.case = 'src - empty string';
+  var src = { src : '' };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc' };
+  var got = _.strStrip( src );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \tbc' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\nbc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = ' \n\t\0\n  \n\t\n\0';
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = ' \n\t\0\n  \n\t\n\0a';
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = ' \n\t\0\n  \n\t\n\0a \t\n\0b';
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = 'a \n\t\0\n  \n\t\n\0';
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = 'a \t\n\0b \n\t\0\n  \n\t\n\0';
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0';
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0';
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = [ '', '' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = [ 'abc', 'abc' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'abc', 'abc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = [ 'a \tbc', 'a \tbc' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \tbc', 'a \tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = [ 'a\n\nbc', 'a\n\nbc' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\nbc', 'a\n\nbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = [ 'a\0\0bc', 'a\0\0bc' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\0\0bc', 'a\0\0bc' ] );
+  test.true( got!== src );
+
+  /* */
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'abc', 'abc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \tbc', 'a \tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\nbc', 'a\n\nbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\0\0bc', 'a\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ];
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strStrip() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strStrip( 'abc', 'abc' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strStrip( 1 ) );
+  test.shouldThrowErrorSync( () => _.strStrip({ src : 1 }) );
+
+  test.case = 'wrong type of stripper';
+  test.shouldThrowErrorSync( () => _.strStrip({ src : 'abc', stripper : {} }) );
+}
+
+//
+
+function strStripStripperIsTrueLike( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = { src : '', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \tbc' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\nbc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : ' \n\t\0\n  \n\t\n\0', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : 'a \n\t\0\n  \n\t\n\0', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : 'a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'abc', 'abc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \tbc', 'a \tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\nbc', 'a\n\nbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\0\0bc', 'a\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : true };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+}
+
+//
+
+function strStripStripperIsString( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = { src : '', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\tbc' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\nbc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : ' \n\t\0\n  \n\t\n\0', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '\n\t\0\n\n\t\n\0' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '\n\t\0\n\n\t\n\0a' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '\n\t\0\n\n\t\n\0a\t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : 'a \n\t\0\n  \n\t\n\0', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\t\0\n\n\t\n\0' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : 'a\t\n\0b \n\t\0\n  \n\t\n\0', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\t\n\0b\n\t\0\n\n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '\n\t\0\n\n\t\n\0a\n\t\0\n\n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, '\n\t\0\n\n\t\n\0a\t\n\0b\n\t\0\n\n\t\n\0' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'abc', 'abc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\tbc', 'a\tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\nbc', 'a\n\nbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\0\0bc', 'a\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\n\t\0\n\n\t\n\0', '\n\t\0\n\n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\n\t\0\n\n\t\n\0a', '\n\t\0\n\n\t\n\0a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\n\t\0\n\n\t\n\0a\t\n\0b', '\n\t\0\n\n\t\n\0a\t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\t\0\n\n\t\n\0', 'a\n\t\0\n\n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\t\n\0b\n\t\0\n\n\t\n\0', 'a\t\n\0b\n\t\0\n\n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\n\t\0\n\n\t\n\0a\n\t\0\n\n\t\n\0', '\n\t\0\n\n\t\n\0a\n\t\0\n\n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : ' ' };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\n\t\0\n\n\t\n\0a\t\n\0b\n\t\0\n\n\t\n\0', '\n\t\0\n\n\t\n\0a\t\n\0b\n\t\0\n\n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+}
+
+//
+
+function strStripStripperIsRegexp( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = { src : '', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \tbc' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\n\nbc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : ' \n\t\0\n  \n\t\n\0', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : 'a \n\t\0\n  \n\t\n\0', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : 'a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, 'a \t\n\0b' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'abc', 'abc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \tbc', 'a \tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\n\nbc', 'a\n\nbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a\0\0bc', 'a\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a', 'a' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'a \t\n\0b', 'a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+}
+
+//
+
+function strStripStripperIsArrayOfStrings( test )
+{
+  test.open( 'no strip, src - string' );
+
+  test.case = 'src - empty string';
+  var src = { src : '', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : 'abc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, 'bc' );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : 'a \tbc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\tbc' );
+
+  test.case = 'src - string with only strip characters';
+  var src = { src : ' a', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : 'a\n\nbc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, 'bc' );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : 'a\0\0bc', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\0\0bc' );
+
+  test.close( 'no strip, src - string' );
+
+  /* - */
+
+  test.open( 'strip, src - string' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : ' \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \t\n\0b' );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : 'a \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : 'a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\n\0b \n\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' );
+
+  test.close( 'strip, src - string' );
+
+  /* - */
+
+  test.open( 'no strip, src - array' );
+
+  test.case = 'src - empty string';
+  var src = { src : [ '', '' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string without trailing characters';
+  var src = { src : [ 'abc', 'abc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'bc', 'bc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with spaces in the middle';
+  var src = { src : [ 'a \tbc', 'a \tbc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\tbc', '\tbc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with only strip characters';
+  var src = { src : [ ' a', ' a' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '', '' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with new line symbol in the middle';
+  var src = { src : [ 'a\n\nbc', 'a\n\nbc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ 'bc', 'bc' ] );
+  test.true( got!== src );
+
+  test.case = 'src - string with zero symbol in the middle';
+  var src = { src : [ 'a\0\0bc', 'a\0\0bc' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\0\0bc', '\0\0bc' ] );
+  test.true( got!== src );
+
+  test.close( 'no strip, src - array' );
+
+  /* - */
+
+  test.open( 'strip, src - array' );
+
+  test.case = 'src - string contains only trailing characters';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, regular symbol, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a', ' \n\t\0\n  \n\t\n\0a' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left, string with trailing characters in the middle, strip left';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b', ' \n\t\0\n  \n\t\n\0a \t\n\0b' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \t\n\0b', '\t\0\n  \n\t\n\0a \t\n\0b' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, regular symbol, strip right';
+  var src = { src : [ 'a \n\t\0\n  \n\t\n\0', 'a \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - right, string with trailing characters in the middle, strip right';
+  var src = { src : [ 'a \t\n\0b \n\t\0\n  \n\t\n\0', 'a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\n\0b \n\t\0\n  \n\t\n\0', '\t\n\0b \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, regular symbol, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0a \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.case = 'src - trailing characters - left and right, string with trailing characters in the middle, strip';
+  var src = { src : [ ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', ' \n\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ], stripper : [ ' ', '\n', 'a' ] };
+  var got = _.strStrip( src );
+  test.identical( got, [ '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0', '\t\0\n  \n\t\n\0a \t\n\0b \n\t\0\n  \n\t\n\0' ] );
+  test.true( got!== src );
+
+  test.close( 'strip, src - array' );
+}
 
 //
 
@@ -16055,7 +17405,9 @@ function strSplit( test )
   var expected = [];
   test.identical( got, expected );
 
+  debugger;
   var got = _.strSplit( 'abc', '' );
+  debugger;
   var expected = [ 'a', '', 'b', '', 'c' ];
   test.identical( got, expected );
 
@@ -20966,6 +22318,7 @@ var Self =
     // converter
 
     exportStringShortDiagnostic,
+    exportStringShortCode,
     strPrimitive,
     strTypeWithTraitsBasic,
     strTypeWithoutTraitsBasic,
@@ -20996,6 +22349,12 @@ var Self =
 
     strReplaceSrcIsString,
     strReplaceSrcIsArrayOfStrings,
+
+    strStripWithDefaultOptions,
+    strStripStripperIsTrueLike,
+    strStripStripperIsString,
+    strStripStripperIsRegexp,
+    strStripStripperIsArrayOfStrings,
 
     strIsolateLeftOrNone,
     strIsolateLeftOrAll,

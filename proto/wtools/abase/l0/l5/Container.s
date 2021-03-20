@@ -230,71 +230,180 @@ function empty( dstContainer )
 
 //
 
+/**
+ * The routine elementThGet() searches for value under a certain index {-key-} in a container {-container-}
+ * and returns array with value, key, booLike.
+ *
+ * @param { Long|Set|HashMap|Aux } container - input container.
+ * @param { Number } key - index to be looked in a container.
+ *
+ * @example
+ * var src = { a : 1, b : 2 };
+ * var got = _.container.elementThGet( src, 0 );
+ * console.log( got );
+ * // log : [ 1, 'a', true ]
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementThGet( src, 2 );
+ * console.log( got );
+ * // log : [ 3, 2, true ]
+ *
+ * @example
+ * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+ * var got = _.container.elementThGet( src, 1 );
+ * console.log( got )
+ * // log : [ false, true, true ] );
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementThGet( src, 5 );
+ * console.log( got );
+ * // log : [ undefined, 5, false ]
+ *
+ * @returns { Long } - with 3 elements : value ( undefined if index {-key-} is more or less than container's length ), key, boolLike ( true if index {-key-} is within container's length, false otherwise ).
+ * @function elementThGet
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @throws { Error } If {-key-} is not Number.
+ * @namespace Tools
+ */
+
+/* qqq : for Yevhen : bad : jsdoc? | added . */
 function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
+  if( key < 0 )
+  return [ undefined, key, false ];
 
   if( _.mapIs( container ) )
   {
-    let key2 = Object.keys( container )[ key ];
-    return [ key2, container[ key2 ] ];
+    let keys = Object.keys( container );
+    let key2 = keys[ key ];
+    if( keys.length <= key )
+    return [ undefined, undefined, false ];
+    return [ container[ key2 ], key2, true ];
   }
   else if( _.hashMap.is( container ) )
   {
-    return [ ... container ][ key ];
+    if( container.size <= key )
+    return [ undefined, undefined, false ];
+    let entry = [ ... container ][ key ];
+    return [ entry[ 1 ], entry[ 0 ], true ];
   }
-  else if( _.entity.methodIteratorOf( container ) )
+  else if( _.set.like( container ) )
   {
-    return [ key, [ ... container ][ key ] ];
+    if( container.size <= key )
+    return [ undefined, key, false ];
+    return [ [ ... container ][ key ], key, true ];
   }
-  else _.assert( 0 );
+  else if( _.entity.methodIteratorOf( container ) && !_.primitive.is( container ) )
+  {
+    let elements = [ ... container ];
+    if( key < elements.length )
+    return [ elements[ key ], key, true ];
+    return [ undefined, key, false ];
+  }
+  else _.assert( 0, 'Not container' );
 
 }
 
 //
 
+/**
+ * The routine elementGet() searches for value under a certain {-key-} in a container {-container-}
+ * and returns array with value, key, booLike.
+ *
+ * @param { Long|Set|HashMap|Aux } container - input container.
+ * @param { * } key - key to be looked in a container.
+ *
+ * @example
+ * var src = { a : 1, b : 2 };
+ * var got = _.container.elementGet( src, 'a' );
+ * console.log( got );
+ * // log : [ 1, 'a', true ]
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementGet( src, 2 );
+ * console.log( got );
+ * // log : [ 3, 2, true ]
+ *
+ * @example
+ * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
+ * var got = _.container.elementGet( src, true );
+ * console.log( got )
+ * // log : [ false, true, true ] );
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.container.elementGet( src, 5 );
+ * console.log( got );
+ * // log : [ undefined, 5, false ]
+ *
+ * @returns { Long } - with 3 elements : value ( undefined if key is absent ), key, boolLike ( true if key exists, false otherwise ).
+ * @function elementGet
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @namespace Tools
+ */
+
+/* qqq : for Yevhen : bad : jsdoc? | aaa : Added */
 function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
 {
 
   _.assert( arguments.length === 2 );
 
-  if( container )
+  if( !container )
   {
-    if( _.hashMap.like( container ) )
-    {
-      return container.get( key );
-    }
-    else if( _.set.like( container ) )
-    {
-      return [ ... container ][ key ];
-    }
-    else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
-    {
-      return [ ... container ][ key ];
-    }
-    else if( _.escape.is( key ) )
-    {
-      debugger;
-      if( key.val === prototypeSymbol )
-      return _.prototype.of( container );
-      else _.assert( 0, 'Unknown implicit field' );
-    }
+    return [ undefined, key, false ];
+  }
+  else if( _.hashMap.like( container ) )
+  {
+    if( container.has( key ) )
+    return [ container.get( key ), key, true ];
     else
+    return [ undefined, key, false ];
+  }
+  else if( _.set.like( container ) ) /* xxx : change */
+  {
+    if( container.size <= key || !_.number.is( key ) )
+    return [ undefined, key, false ];
+    return [ [ ... container ][ key ], key, true ];
+  }
+  else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
+  {
+    const container2 = [ ... container ];
+    if( container2.length > key )
+    return [ container2[ key ], key, true ];
+    else
+    return [ undefined, key, false ];
+  }
+  else if( _.escape.is( key ) )
+  {
+    if( key.val === prototypeSymbol )
     {
-      return container[ key ];
+      let r = _.prototype.of( container );
+      return [ r, prototypeSymbol, !!r ];
     }
+    else _.assert( 0, 'Unknown implicit field' );
   }
   else
   {
-    return undefined;
+    if( _.arrayLike( container ) && !_.number.is( key ) )
+    return [ undefined, key, false ];
+
+    if( _.property.has( container, key ) )
+    return [ container[ key ], key, true ];
+    else
+    return [ undefined, key, false ];
   }
 
 }
 
 //
 
+/* qqq : for Yevhen : cover, please. dont forget jsdoc. */
 function elementSet( container, key, value )
 {
 

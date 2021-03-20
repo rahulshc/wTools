@@ -175,7 +175,7 @@ function _routineJoin( o )
       value : routine,
       enumerable : false,
     };
-    Object.defineProperty( result, 'originalRoutine', o2 );
+    Object.defineProperty( result, 'originalRoutine', o2 ); /* qqq : cover */
 
     if( context !== undefined )
     {
@@ -184,7 +184,7 @@ function _routineJoin( o )
         value : context,
         enumerable : false,
       };
-      Object.defineProperty( result, 'boundContext', o3 );
+      Object.defineProperty( result, 'boundContext', o3 ); /* qqq : cover */
     }
 
     if( args !== undefined )
@@ -194,7 +194,7 @@ function _routineJoin( o )
         value : args,
         enumerable : false,
       };
-      Object.defineProperty( result, 'boundArguments', o3 );
+      Object.defineProperty( result, 'boundArguments', o3 ); /* qqq : cover */
     }
 
   }
@@ -551,6 +551,9 @@ function routineOptions( routine, args, defaults )
 
 //
 
+/* qqq : for Dmytro : discuss
+should be { defaults : {} } in the first argument
+*/
 function routineOptions_( defaults, options )
 {
 
@@ -567,7 +570,7 @@ function routineOptions_( defaults, options )
     options = options[ 0 ];
   }
 
-  if( options === undefined )
+  if( options === undefined ) /* qqq : for Dmytro : should be error */
   options = Object.create( null );
   if( defaults === null )
   defaults = Object.create( null );
@@ -803,6 +806,7 @@ function assertRoutineOptions_( defaults, options )
 /* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
 /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
 /* aaa for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */ /* Dmytro : implemented similar routine */
+/* xxx : make routineOptionsPreservingUndefines default routineOptions */
 function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
@@ -1165,8 +1169,320 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 
 //
 
+/* qqq : for Dmytro : cover and optimize */
+function _amend( o )
+{
+  let dst = o.dst;
+  let srcs = o.srcs;
+  let srcIsVector = _.vectorIs( srcs );
+  let extended = false;
+
+  _.assertRoutineOptions( _amend, o );
+  _.assert( arguments.length === 1 );
+  _.assert( _.routine.is( dst ) || dst === null );
+  _.assert( srcs === null || srcs === undefined || _.aux.is( srcs ) || _.routine.is( srcs ) || _.vector.is( srcs ) );
+  _.assert( o.amending === 'extending', 'not implemented' );
+  _.assert
+  (
+    o.strategy === 'cloning' || o.strategy === 'replacing' || o.strategy === 'inheriting',
+    () => `Unknown strategy ${o.strategy}`
+  );
+
+  /* generate dst routine */
+
+  if( dst === null ) /* qqq : for Dmytro : good coverage required */
+  dst = _dstMake( srcs );
+
+  // /* shallow clone properties of dst routine */
+  //
+  // if( o.strategy === 'cloning' )
+  // _fieldsClone( dst );
+  // else if( o.strategy === 'inheriting' )
+  // _fieldsInherit( dst );
+
+  /* extend dst routine */
+
+  let _dstAmend;
+  if( o.strategy === 'cloning' )
+  _dstAmend = _dstAmendCloning;
+  else if( o.strategy === 'replacing' )
+  _dstAmend = _dstAmendReplacing;
+  else if( o.strategy === 'inheriting' )
+  _dstAmend = _dstAmendInheriting;
+  else _.assert( 0, 'not implemented' );
+
+  if( srcIsVector )
+  for( let src of srcs )
+  _dstAmend( dst, src );
+  else
+  _dstAmend( dst, srcs );
+
+  /* qqq : for Dmytro : it should be optimal, no redundant cloning of body should happen
+  check and cover it by good test, please
+  */
+  if( extended )
+  // if( dst.body && dst.body.defaults )
+  if( dst.body )
+  dst.body = bodyFrom( dst.body );
+
+  if( Config.debug )
+  {
+    /* qqq : for Dmytro : cover, please */
+    if( _.strEnds( dst.name, '_body' ) )
+    {
+      _.assert( dst.body === undefined, 'Body of routine should not have its own body' );
+      _.assert( dst.head === undefined, 'Body of routine should not have its own head' );
+      _.assert( dst.tail === undefined, 'Body of routine should not have its own tail' );
+    }
+  }
+
+  return dst;
+
+  /* */
+
+  function _dstMake( srcs )
+  {
+    let dstMap = Object.create( null );
+
+    /* qqq : amendment influence on it */
+    if( srcIsVector )
+    for( let src of srcs )
+    {
+      if( src === null )
+      continue;
+      _.mapExtend( dstMap, src );
+    }
+    else
+    {
+      if( srcs !== null )
+      _.mapExtend( dstMap, srcs );
+    }
+
+    if( dstMap.body )
+    {
+      // dst = _.routine.uniteCloning( dstMap.head, dstMap.body );
+      dst = _.routine.unite
+      ({
+        head : dstMap.head,
+        body : dstMap.body,
+        tail : dstMap.tail,
+        name : dstMap.name,
+        strategy : o.strategy,
+      });
+    }
+    else
+    {
+      if( srcIsVector )
+      dst = dstFrom( srcs[ 0 ] );
+      else
+      dst = dstFrom( srcs );
+    }
+
+    _.assert( _.routineIs( dst ) );
+    // _.mapExtend( dst, dstMap );
+
+    return dst;
+  }
+
+  /* */
+
+  // function _fieldsClone( dst )
+  // {
+  //
+  //   for( let s in dst )
+  //   {
+  //     let property = dst[ s ];
+  //     if( _.objectIs( property ) )
+  //     {
+  //       property = _.mapExtend( null, property );
+  //       dst[ s ] = property;
+  //     }
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function _fieldsInherit( dst )
+  // {
+  //
+  //   for( let s in dst )
+  //   {
+  //     let property = dst[ s ];
+  //     if( _.objectIs( property ) )
+  //     {
+  //       property = Object.create( property );
+  //       dst[ s ] = property;
+  //     }
+  //   }
+  //
+  // }
+
+  /* */
+
+  function _dstAmendCloning( dst, src )
+  {
+    _.assert( !!dst );
+    _.assert( _.aux.is( src ) || _.routine.is( src ) );
+    for( let s in src )
+    {
+      let property = src[ s ];
+      if( dst[ s ] === property )
+      continue;
+      let d = Object.getOwnPropertyDescriptor( dst, s );
+      if( d && !d.writable )
+      continue;
+      extended = true;
+      if( _.object.is( property ) )
+      {
+        _.assert( !_.property.own( dst, s ) || _.objectIs( dst[ s ] ) );
+
+        if( dst[ s ] )
+        _.mapExtend( dst[ s ], property );
+        else
+        dst[ s ] = property = _.mapExtend( null, property );
+
+        // property = _.mapExtend( null, property );
+        // if( dst[ s ] )
+        // _.mapSupplement( property, dst[ s ] );
+      }
+      else
+      {
+        dst[ s ] = property;
+      }
+    }
+  }
+
+  /* */
+
+  function _dstAmendInheriting( dst, src )
+  {
+    _.assert( !!dst );
+    _.assert( _.aux.is( src ) || _.routine.is( src ) );
+    /* qqq : for Dmytro : on extending should inherit from the last one, on supplementing should inherit from the first one
+    implement, and cover in separate test
+    */
+    for( let s in src )
+    {
+      let property = src[ s ];
+      if( dst[ s ] === property )
+      continue;
+      let d = Object.getOwnPropertyDescriptor( dst, s );
+      if( d && !d.writable )
+      continue;
+      extended = true;
+      if( _.object.is( property ) )
+      {
+        property = Object.create( property );
+        if( dst[ s ] )
+        _.mapSupplement( property, dst[ s ] );
+      }
+      dst[ s ] = property;
+    }
+  }
+
+  /* */
+
+  function _dstAmendReplacing( dst, src )
+  {
+    _.assert( !!dst );
+    _.assert( _.aux.is( src ) || _.routine.is( src ) );
+    for( let s in src )
+    {
+      let property = src[ s ];
+      if( dst[ s ] === property )
+      continue;
+      let d = Object.getOwnPropertyDescriptor( dst, s );
+      if( d && !d.writable )
+      continue;
+      extended = true;
+      dst[ s ] = property;
+    }
+  }
+
+  /* */
+
+  function bodyFrom()
+  {
+    const body = dst.body;
+    let body2 = body;
+    _.assert( body.head === undefined, 'Body should not have own head' );
+    _.assert( body.tail === undefined, 'Body should not have own tail' );
+    _.assert( body.body === undefined, 'Body should not have own body' );
+    {
+      let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      srcs.unshift( body );
+      body2 = _.routine._amend
+      ({
+        dst : o.strategy === 'replacing' ? body2 : null,
+        srcs,
+        strategy : o.strategy,
+        amending : o.amending,
+      });
+      _.assert( body2.head === undefined, 'Body should not have own head' );
+      _.assert( body2.tail === undefined, 'Body should not have own tail' );
+      _.assert( body2.body === undefined, 'Body should not have own body' );
+    }
+    return body2;
+  }
+
+  /* */
+
+  function propertiesBut( src )
+  {
+    return src ? _.mapBut_( null, src, [ 'head', 'body', 'tail' ] ) : src;
+  }
+
+  /* */
+
+  /* xxx : make routine? */
+  function routineClone( routine )
+  {
+    _.assert( _.routine.is( routine ) );
+    let name = routine.name;
+    // const routine2 = routine.bind();
+    // _.assert( routine2 !== routine );
+    const routine2 =
+    ({
+      [ name ] : function()
+      {
+        return routine.apply( this, arguments );
+      }
+    })[ name ];
+
+    let o2 =
+    {
+      value : routine,
+      enumerable : false,
+    };
+    Object.defineProperty( routine2, 'originalRoutine', o2 ); /* qqq : for Dmytro : cover */
+
+    return routine2;
+  }
+
+  /* */
+
+  function dstFrom( routine )
+  {
+    return routineClone( routine );
+  }
+
+  /* */
+
+}
+
+_amend.defaults =
+{
+  dst : null,
+  srcs : null,
+  strategy : 'cloning', /* qqq : for Dmytro : cover */
+  amending : 'extending', /* qqq : for Dmytro : implement and cover */
+}
+
+//
+
 /**
- * The routineExtend() is used to copy the values of all properties
+ * The routine _.routine.extendCloning() is used to copy the values of all properties
  * from source routine to a target routine.
  *
  * It takes first routine (dst), and shallow clone each destination property of type map.
@@ -1175,8 +1491,8 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * if descriptor (writable) of dst property is set.
  *
  * If the first routine (dst) is null then
- * routine routineExtend() makes a routine from routines head and body
- * @see {@link wTools.routineUnite} - Automatic routine generating
+ * routine _.routine.extendCloning() makes a routine from routines head and body
+ * @see {@link wTools.routine.unite} - Automatic routine generating
  * from preparation routine and main routine (body).
  *
  * @param{ routine } dst - The target routine or null.
@@ -1189,24 +1505,24 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  *   body : _.routine.s.compose.body,
  *   someOption : 1,
  * }
- * var got = _.routine.extend( null, src );
+ * var got = _.routine.extendCloning( null, src );
  * // returns [ routine routinesCompose ], got.option === 1
  *
  * @example
- * _.routine.extend( null, _.routine.s.compose );
+ * _.routine.extendCloning( null, _.routine.s.compose );
  * // returns [ routine routinesCompose ]
  *
  * @example
- * _.routine.extend( _.routine.s.compose, { someOption : 1 } );
+ * _.routine.extendCloning( _.routine.s.compose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @example
  * _.routine.s.composes.someOption = 22;
- * _.routine.extend( _.routine.s.compose, { someOption : 1 } );
+ * _.routine.extendCloning( _.routine.s.compose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @returns { routine } It will return the target routine with extended properties.
- * @function routineExtend
+ * @function extendCloning
  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
  * @throws { Error } Throw an error if dst is not routine or not null.
  * @throws { Error } Throw an error if dst is null and src has not head and body properties.
@@ -1214,77 +1530,51 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @namespace Tools
  */
 
-function routineExtend( dst, src )
+/* qqq : for Yevhen : bad : namespaces are not adjusted */
+
+function extendCloning( dst, ... srcs )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.routine.is( dst ) || dst === null );
-  _.assert( src === null || src === undefined || _.aux.is( src ) || _.routine.is( src ) );
+  return _.routine._amend
+  ({
+    dst,
+    srcs : [ ... srcs ],
+    strategy : 'cloning',
+    amending : 'extending',
+  });
 
-  /* generate dst routine */
+}
 
-  if( dst === null )
-  {
+// qqq : for Dmytro : implement and cover please
+function extendInheriting( dst, ... srcs )
+{
 
-    let dstMap = Object.create( null );
-    for( let a = 0 ; a < arguments.length ; a++ )
-    {
-      let src = arguments[ a ];
-      if( src === null )
-      continue;
-      _.mapExtend( dstMap, src )
-    }
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  return _.routine._amend
+  ({
+    dst,
+    srcs : [ ... srcs ],
+    strategy : 'inheriting',
+    amending : 'extending',
+  });
 
-    if( dstMap.head && dstMap.body )
-    {
-      dst = _.routine.unite( dstMap.head, dstMap.body );
-    }
-    else
-    {
-      _.assert( _.routine.is( src ) );
-      dst = function(){ return src.apply( this, arguments ); }
-    }
-  }
+}
 
-  /* shallow clone properties of dst routine */
+//
+/*qqq : for Dmytro : implement and cover please */
+function extendReplacing( dst, ... srcs )
+{
 
-  for( let s in dst )
-  {
-    let property = dst[ s ];
-    if( _.mapIs( property ) )
-    {
-      property = _.mapExtend( null, property );
-      dst[ s ] = property;
-    }
-  }
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  return _.routine._amend
+  ({
+    dst,
+    srcs : [ ... srcs ],
+    strategy : 'replacing',
+    amending : 'extending',
+  });
 
-  /* extend dst routine */
-
-  for( let a = 0 ; a < arguments.length ; a++ )
-  {
-    let src = arguments[ a ];
-    if( src === null )
-    continue;
-    _.assert( _.aux.is( src ) || _.routine.is( src ) );
-    for( let s in src )
-    {
-      let property = src[ s ];
-      let d = Object.getOwnPropertyDescriptor( dst, s );
-      if( d && !d.writable )
-      continue;
-      if( _.object.is( property ) )
-      {
-        _.assert( !_.mapOwn( dst, s ) || _.mapIs( dst[ s ] ) );
-        // property = Object.create( property );
-        property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
-        if( dst[ s ] )
-        _.mapSupplement( property, dst[ s ] );
-      }
-      dst[ s ] = property;
-    }
-  }
-
-  return dst;
 }
 
 //
@@ -1295,19 +1585,24 @@ function routineDefaults( dst, src, defaults )
   if( arguments.length === 2 )
   {
     defaults = arguments[ 1 ];
-    src = null;
+    _.assert( _.aux.is( defaults ) );
+    return _.routine.extend( dst, { defaults } );
+  }
+  else
+  {
+    _.assert( arguments.length === 3 );
+    _.assert( _.aux.is( defaults ) );
+    return _.routine.extend( dst, src, { defaults } );
   }
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( dst === null || src === null );
-  _.assert( _.aux.is( defaults ) );
-
-  return _.routine.extend( dst, src, { defaults } );
+  // _.assert( dst === null || src === null );
+  // _.assert( _.aux.is( defaults ) );
+  // return _.routine.extend( dst, src, { defaults } );
 }
 
 //
 
-function routineUnite_head( routine, args )
+function unite_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1319,7 +1614,11 @@ function routineUnite_head( routine, args )
   _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  _.assert( _.routine.is( o.head ) || _.routine.s.are( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
+  _.assert
+  (
+    o.head === null || _.routine.is( o.head ) || _.routine.s.are( o.head )
+    , 'Expects routine or routines {-o.head-}'
+  );
   _.assert( _.routine.is( o.body ), 'Expects routine {-o.body-}' );
   _.assert( !o.tail || _.routine.is( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.entity.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
@@ -1329,20 +1628,19 @@ function routineUnite_head( routine, args )
 
 //
 
-function routineUnite_body( o )
+function unite_body( o )
 {
 
-  _.assert( arguments.length === 1 );
-
-  if( !_.routine.is( o.head ) && o.head !== null ) /* Dmytro : o.head - optional */
+  if( !_.routine.is( o.head ) && o.head !== null )
   {
+    /* xxx : deprecate compose */
+    /* qqq : for Dmytro : implement without compose */
     let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
       let op = arguments[ 2 ];
       let k = arguments[ 3 ];
-
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
       _.assert( _.object.is( result ) );
@@ -1351,15 +1649,19 @@ function routineUnite_body( o )
     _.assert( _.routine.is( _head ) );
     o.head = function head()
     {
-
       let result = _head.apply( this, arguments );
       return result[ result.length-1 ];
     }
   }
 
-  let head = o.head;
-  let body = o.body;
-  let tail = o.tail;
+  if( o.head === null )
+  {
+    /* qqq : for Dmytro : cover please */
+    if( o.body.defaults )
+    o.head = headWithDefaults;
+    else
+    o.head = headWithoutDefaults;
+  }
 
   if( !o.name )
   {
@@ -1369,56 +1671,93 @@ function routineUnite_body( o )
     o.name = o.name.substring( 0, o.name.length-5 );
   }
 
+  /* generate body */
+
+  /* qqq : for Dmytro : cover in separate test routine */
+  let body;
+  if( o.strategy === 'replacing' )
+  body = o.body;
+  else
+  body = _.routine._amend
+  ({
+    dst : null,
+    srcs : o.body,
+    strategy : o.strategy,
+    amending : 'extending',
+  });
+
   /* make routine */
 
-  let arrayOfNames = [ 'body', 'headAndBody', 'bodyAndTail', 'headBodyAndTail' ];
-
-  let bodyIndex = 0;
-  let headIndex = head ? 1 : 0;
-  let tailIndex = tail ? 2 : 0;
-
-  let unitedRoutine = routineUnite_functor( arrayOfNames[ bodyIndex + headIndex + tailIndex ] )[ o.name ];
+  let unitedRoutine = _unite_functor( o.name, o.head, body, o.tail );
 
   _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routine.extend( unitedRoutine, o.body );
+  /* qqq : for Dmytro : implement and cover option::strategy */
+  // _.routine._amend
+  // ({
+  //   dst : unitedRoutine,
+  //   srcs : o.body,
+  //   strategy : o.strategy,
+  //   amending : 'extending',
+  // });
+
+  _.routine._amend
+  ({
+    dst : unitedRoutine,
+    srcs : body,
+    strategy : 'replacing',
+    amending : 'extending',
+  });
 
   unitedRoutine.head = o.head;
-  unitedRoutine.body = o.body;
+  unitedRoutine.body = body;
   if( o.tail )
   unitedRoutine.tail = o.tail;
+
+  _.assert
+  (
+    unitedRoutine.defaults === body.defaults,
+    'Something wrong, united routined should have same instance of defaults its body has'
+  );
 
   return unitedRoutine;
 
   /* */
 
-  function routineUnite_functor( name )
+  function headWithoutDefaults( routine, args )
   {
-    let routinesMap = Object.create( null );
+    let o = args[ 0 ];
+    _.assert( arguments.length === 2 );
+    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
+    return o || null;
+  }
 
-    routinesMap.body =
+  /* */
+
+  function headWithDefaults( routine, args )
+  {
+    let o = args[ 0 ];
+    _.assert( arguments.length === 2 );
+    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
+    return _.routine.options( routine, o || Object.create( null ) );
+  }
+
+  /* */
+
+  function _unite_functor()
+  {
+    const name = arguments[ 0 ];
+    const head = arguments[ 1 ];
+    const body = arguments[ 2 ];
+    const tail = arguments[ 3 ];
+    let r;
+
+    if( tail === null )
+    r =
     {
-      [ o.name ] : function()
-      {
-        let result;
-        let o = arguments[ 0 ];
-
-        _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
-
-        if( _.unrollIs( o ) )
-        result = body.apply( this, o );
-        else if( _.mapIs( o ) )
-        result = body.call( this, o );
-        else
-        _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
-
-        return result;
-      }
-    };
-
-    routinesMap.headAndBody =
-    {
-      [ o.name ] : function()
+      [ name ] : function()
       {
         let result;
         let o = head.call( this, unitedRoutine, arguments );
@@ -1433,10 +1772,10 @@ function routineUnite_body( o )
         return result;
       }
     };
-
-    routinesMap.bodyAndTail =
+    else if( head === null )
+    r =
     {
-      [ o.name ] : function()
+      [ name ] : function()
       {
         let result;
         let o = arguments[ 0 ];
@@ -1455,10 +1794,10 @@ function routineUnite_body( o )
         return result;
       }
     };
-
-    routinesMap.headBodyAndTail =
+    else
+    r =
     {
-      [ o.name ] : function()
+      [ name ] : function()
       {
         let result;
         let o = head.call( this, unitedRoutine, arguments );
@@ -1470,43 +1809,70 @@ function routineUnite_body( o )
         else
         result = body.call( this, o );
 
-        result = tail.call( this, result, o, unitedRoutine ); /* xxx aaa for Dmytro : 3rd argument is unitedRoutine */ /* Dmytro : added, covered */
+        result = tail.call( this, result, o );
 
         return result;
       }
     };
 
-    return routinesMap[ name ];
+    return r[ name ]
   }
 }
 
-routineUnite_body.defaults =
+unite_body.defaults =
 {
   head : null,
   body : null,
   tail : null,
   name : null,
+  strategy : null,
 };
 
 //
 
-function routineUnite()
+/* qqq : for Dmytro : write the article. it should explain why, when, what for! */
+function uniteCloning()
 {
-  let o = routineUnite.head.call( this, routineUnite, arguments );
-  let result = routineUnite.body.call( this, o );
+  let o = uniteCloning.head.call( this, uniteCloning, arguments );
+  let result = uniteCloning.body.call( this, o );
   return result;
 }
 
-routineUnite.head = routineUnite_head;
-routineUnite.body = routineUnite_body;
-routineUnite.defaults = { ... routineUnite_body.defaults };
-
-/* xxx : should routineUnite add group to routines? */
+uniteCloning.head = unite_head;
+uniteCloning.body = unite_body;
+uniteCloning.defaults = { ... unite_body.defaults, strategy : 'cloning' };
 
 //
 
+function uniteInheriting()
+{
+  let o = uniteInheriting.head.call( this, uniteInheriting, arguments );
+  let result = uniteInheriting.body.call( this, o );
+  return result;
+}
+
+uniteInheriting.head = unite_head;
+uniteInheriting.body = unite_body;
+uniteInheriting.defaults = { ... unite_body.defaults, strategy : 'inheriting' };
+
+//
+
+function uniteReplacing()
+{
+  let o = uniteReplacing.head.call( this, uniteReplacing, arguments );
+  let result = uniteReplacing.body.call( this, o );
+  return result;
+}
+
+uniteReplacing.head = unite_head;
+uniteReplacing.body = unite_body;
+uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
+
+//
+
+/* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineEr() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineEr() extend mechanism of routines constructing of routine routine.unite().
  * The routine routineEr() adds to routine {-routine-} field {-er-} that is a functor for generating
  * of new routine similar to original routine but with changed map {-defaults-}.
  *
@@ -1558,7 +1924,7 @@ routineUnite.defaults = { ... routineUnite_body.defaults };
  * // log : { arg : 'arg1', arg2 : 'arg2' }
  *
  * @param { Function } routine - The routine from which generates new routine.
- * Routine should be generated by routineUnite.
+ * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns original routine with functor in field {-er-}.
  * @function routineEr
@@ -1580,8 +1946,9 @@ function routineEr( routine, erhead )
 
 //
 
+/* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineErFor() extend mechanism of routines constructing of routine routineUnite().
+ * The routine routineErFor() extend mechanism of routines constructing of routine routine.unite().
  * The routine routineErFor() returns functor for generating of new routine similar to original
  * routine {-routine-} but with changed map {-defaults-}.
  *
@@ -1630,7 +1997,7 @@ function routineEr( routine, erhead )
  * // log : { arg : 'arg1', arg2 : 'arg2' }
  *
  * @param { Function } routine - The routine from which generates new routine.
- * Routine should be generated by routineUnite.
+ * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns functor to generate new routine with changed map {-defaults-}.
  * @function routineErFor
@@ -1671,7 +2038,7 @@ function routineErFor( routine, erhead )
 
     return er;
 
-    function er() /* Dmytro : using of routineUnite can extend behavior of routine _.routine.unite({ head, body, head, name : 'er' }) */
+    function er()
     {
       let result;
       let op2 = head.call( self, er, arguments );
@@ -1688,40 +2055,42 @@ function routineErFor( routine, erhead )
 
 //
 
-function routineErJoin( routine, erhead ) /* qqq for Dmytro : cover please */
-{
-  let self = this;
-  let defaults = routine.defaults;
-  erhead = erhead || routine.erhead || routine.head;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routine.is( routine ) );
-  _.assert( _.routine.is( erhead ) );
-  _.assert( _.routine.is( head ) );
-  _.assert( _.routine.is( body ) );
-  _.assert( _.object.is( defaults ) );
-
-  let op = erhead.call( self, routine, arguments );
-
-  _.assert( _.mapIs( op ) );
-  _.map.assertHasOnly( op, defaults );
-
-  er.defaults = _.mapSupplement( op, defaults );
-
-  return er;
-
-  function er()
-  {
-    let result;
-    let op2 = head.call( self, er, arguments );
-    if( _.unrollIs( op2 ) )
-    result = body.apply( self, op2 );
-    else if( _.mapIs( op2 ) )
-    result = body.call( self, op2 );
-    return result;
-  }
-
-}
+// function routineErJoin( routine, erhead ) /* aaa for Dmytro : cover please */ /* Dmytro : routine is commented because no clear requirements is available */
+// {
+//   let self = this;
+//   let head = routine.head;
+//   let body = routine.body;
+//   let defaults = routine.defaults;
+//   erhead = erhead || routine.erhead || routine.head;
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.routine.is( routine ) );
+//   _.assert( _.routine.is( erhead ) );
+//   _.assert( _.routine.is( head ) );
+//   _.assert( _.routine.is( body ) );
+//   _.assert( _.object.is( defaults ) );
+//
+//   let op = erhead.call( self, routine, arguments );
+//
+//   _.assert( _.mapIs( op ) );
+//   _.map.assertHasOnly( op, defaults );
+//
+//   er.defaults = _.mapSupplement( op, defaults );
+//
+//   return er;
+//
+//   function er()
+//   {
+//     let result;
+//     let op2 = head.call( self, er, arguments );
+//     if( _.unrollIs( op2 ) )
+//     result = body.apply( self, op2 );
+//     else if( _.mapIs( op2 ) )
+//     result = body.call( self, op2 );
+//     return result;
+//   }
+//
+// }
 
 //
 
@@ -2742,6 +3111,20 @@ function vectorizeAccess( vector )
 
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.routine.is( src ) );
+
+  if( src.name )
+  return `{- routine ${src.name} -}`;
+  else
+  return `{- routine.anonymous -}`;
+}
+
+
 // --
 // routines
 // --
@@ -2765,7 +3148,7 @@ let ExtensionTools =
   routineSeal,
 
   routineOptions,
-  routineOptions_,
+  routineOptions_, /* qqq : for Dmytro : bad : where is mark? */
   assertRoutineOptions,
   assertRoutineOptions_,
   routineOptionsPreservingUndefines,
@@ -2775,12 +3158,12 @@ let ExtensionTools =
   routineOptionsFromThis,
 
   routinesCompose, /* xxx : deprecate */
-  routineExtend,
+  routineExtend : extendCloning,
   routineDefaults,
-  routineUnite,
+  // routine.unite : uniteCloning,
   routineEr,
   routineErFor,
-  routineErJoin,
+  // routineErJoin,
 
   routineVectorize_functor : vectorize,
   vectorize,
@@ -2794,7 +3177,7 @@ let ExtensionTools =
 
 //
 
-let Extension =
+let Extension = /* qqq : for Yevhen : bad */
 {
 
   is : routineIs,
@@ -2817,14 +3200,24 @@ let Extension =
   assertOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
   optionsFromThis : routineOptionsFromThis,
 
-  // routineExtend_old, /* xxx : deprecate */
-  // routineExtend : routineExtend_,
-  extend : routineExtend,
+  _amend,
+  extend : extendCloning,
+  extendCloning,
+  extendInheriting,
+  extendReplacing,
   defaults : routineDefaults,
-  unite : routineUnite,
+
+  // unite : uniteCloning,
+  unite : uniteReplacing,
+  uniteCloning,
+  uniteCloning_ : uniteCloning,
+  uniteInheriting,
+  uniteReplacing,
+  /* qqq : for Yevhen : for Dmytro : introduce routines uniteReplacing, uniteInheriting, uniteCloning */
+
   er : routineEr,
   erFor : routineErFor,
-  erJoin : routineErJoin,
+  // erJoin : routineErJoin,
 
   vectorize_functor : vectorize,
   vectorize,
@@ -2834,6 +3227,14 @@ let Extension =
 
   vectorizeAccess,
 
+  // export string
+
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic,
 }
 
 //

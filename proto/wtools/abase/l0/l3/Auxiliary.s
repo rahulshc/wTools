@@ -136,6 +136,16 @@ function isPopulated( src )
   return Object.keys( src ).length > 0;
 }
 
+//
+
+function exportStringShortDiagnostic( src )
+{
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.aux.is( src ) );
+
+  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+}
+
 // --
 // extension
 // --
@@ -182,6 +192,14 @@ var AuxiliaryExtension =
 
   /* qqq : move here related routines */
   /* qqq : make a test suite and move there related test routines */
+
+  // export string
+  exportString : exportStringShortDiagnostic,
+  exportStringShort : exportStringShortDiagnostic,
+  exportStringShortDiagnostic,
+  exportStringShortCode : exportStringShortDiagnostic,
+  exportStringDiagnostic : exportStringShortDiagnostic,
+  exportStringCode : exportStringShortDiagnostic
 
 }
 
