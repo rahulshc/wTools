@@ -1188,12 +1188,12 @@ function errCatchStackAndMessage( test )
     try
     {
       if( i <= 0 )
-      throw _.error.err( 'negative!' );
+      throw _.err( 'negative!' );
       return i-1;
     }
     catch( err )
     {
-      throw _.error.err( err, '\nFailed to decrement' );
+      throw _.err( err, '\nFailed to decrement' );
     }
   }
 
@@ -1202,12 +1202,12 @@ function errCatchStackAndMessage( test )
     try
     {
       if( i % 2 === 1 )
-      throw _.error.err( 'odd!' );
+      throw _.err( 'odd!' );
       return decrement( i / 2 );
     }
     catch( err )
     {
-      throw _.error.err( err, '\nFailed to divide' );
+      throw _.err( err, '\nFailed to divide' );
     }
   }
 
@@ -1255,7 +1255,7 @@ function errErrorWithoutStack( test )
   let err1 = new ErrorConstructor();
   test.identical( err1.stack, undefined );
 
-  let err2 = _.error.err( err1 );
+  let err2 = _.err( err1 );
   test.true( err1 === err2 );
 
   logger.log( err2.throwCallsStack );
@@ -1305,7 +1305,7 @@ function errInStr( test )
   let context = this;
 
   test.case = 'basic';
-  var err = _.error.err( 'Some' );
+  var err = _.err( 'Some' );
   test.true( _.error.inStr( String( err ) ) );
   test.true( _.error.inStr( String( err.message ) ) );
   test.true( err.originalMessage === 'Some' );

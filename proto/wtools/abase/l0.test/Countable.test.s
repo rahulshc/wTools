@@ -525,7 +525,7 @@ function typingExtended( test )
   test.true( !_.arrayIs( src ) );
 
   test.case = 'err';
-  var src = _.error.err( 'error' );
+  var src = _.err( 'error' );
   test.true( !_.countable.like( src ) );
   test.true( !_.countable.is( src ) );
   test.true( !_.vector.like( src ) );

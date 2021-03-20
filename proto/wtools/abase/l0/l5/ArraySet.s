@@ -661,10 +661,10 @@ function arraySetContainAll( src )
     for( let i = 0 ; i < src.length ; i++ )
     {
 
-      throw _.error.err( 'Not tested' );
+      throw _.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
-        throw _.error.err( 'Not tested' );
+        throw _.err( 'Not tested' );
         return false;
       }
 

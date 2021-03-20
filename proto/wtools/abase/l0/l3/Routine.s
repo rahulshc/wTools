@@ -2679,7 +2679,7 @@ function vectorize_body( o )
     {
       args = [ ... args ];
       // let result = [];
-      throw _.error.err( 'not tested' ); /* cover please */
+      throw _.err( 'not tested' ); /* cover please */
 
       let result = _.longMakeEmpty( src );
       let append = _.long_.appender( result );
@@ -2719,7 +2719,7 @@ function vectorize_body( o )
     {
       args = [ ... args ];
       let result = Object.create( null );
-      throw _.error.err( 'not tested' ); /* qqq : cover please */
+      throw _.err( 'not tested' ); /* qqq : cover please */
       for( let r in src )
       {
         if( propertyFilter( src[ r ], r, src ) )

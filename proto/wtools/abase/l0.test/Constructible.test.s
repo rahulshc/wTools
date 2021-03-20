@@ -637,7 +637,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'err';
-  var src = _.error.err( 'error' );
+  var src = _.err( 'error' );
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );

@@ -43,7 +43,7 @@ function make( src )
     else if( arguments[ 0 ].length === 0 )
     result = _.makeUndefined( arguments[ 0 ], 2 );
     else
-    throw _.error.err( 'Length of pair should be 2' );
+    throw _.err( 'Length of pair should be 2' );
   }
   else if( arguments.length === 0 )
   {

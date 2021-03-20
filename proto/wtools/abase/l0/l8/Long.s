@@ -877,7 +877,7 @@ function longToMap( array )
 //   }
 //   else
 //   {
-//     throw _.error.err( 'not tested' );
+//     throw _.err( 'not tested' );
 //     for( let s = 0 ; s < src.length-1 ; s++ )
 //     {
 //       result += String( src[ s ] ) + ' ';
@@ -1336,7 +1336,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   let l = srcArray.length;
 //
 //   debugger;
-//   throw _.error.err( 'not tested' );
+//   throw _.err( 'not tested' );
 //
 //   comparator = _.routine._comparatorFromEvaluator( comparator );
 //

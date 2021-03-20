@@ -1137,7 +1137,7 @@ _err.defaults =
  * function divide( x, y )
  * {
  *   if( y == 0 )
- *     throw _.error.err( 'divide by zero' )
+ *     throw _.err( 'divide by zero' )
  *   return x / y;
  * }
  * divide( 3, 0 );
@@ -1355,7 +1355,7 @@ function restack( err, level )
     level : level + 1,
   });
 
-  return _.error.err( err2, err );
+  return _.err( err2, err );
 }
 
 //

@@ -1798,7 +1798,7 @@ function eventGive( test )
   test.case = 'callback throws error';
   test.shouldThrowErrorSync( () =>
   {
-    var handler = { events : { event : [ () => { throw _.error.err( 'err' ) } ] } };
+    var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
     _.event.eventGive( handler, 'event' );
   },
   ( err, arg ) =>

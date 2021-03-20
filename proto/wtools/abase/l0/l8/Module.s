@@ -527,14 +527,14 @@ function _sourceFileIncludeSingle( src )
   _.assert( _.strIs( src ), 'Expects string' );
 
   if( typeof module === 'undefined' )
-  throw _.error.err( 'Cant include, routine "require" does not exist.' );
+  throw _.err( 'Cant include, routine "require" does not exist.' );
   else
   return _.module.__nativeInclude( _.path.nativize( src ) );
 
   // if( typeof module !== 'undefined' )
   // return _.module.__nativeInclude( _.path.nativize( src ) );
   // else
-  // throw _.error.err( 'Cant include, routine "require" does not exist.' );
+  // throw _.err( 'Cant include, routine "require" does not exist.' );
 
 }
 

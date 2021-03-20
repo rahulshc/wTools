@@ -1504,7 +1504,7 @@ function longJoin()
 
     _.assert( argument !== undefined, 'argument is not defined' );
     // if( argument === undefined )
-    // throw _.error.err( 'argument is not defined' );
+    // throw _.err( 'argument is not defined' );
 
     if( _.longLike( argument ) || _.bufferNodeIs( argument ) )
     length += argument.length;
