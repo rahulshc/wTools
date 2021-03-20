@@ -11,7 +11,7 @@ let Self = _global_.wTools.constructible = _global_.wTools.constructible || Obje
 // typing
 // --
 
-function constructibleIs( src ) /* xxx qqq : optimize */
+function is( src ) /* xxx qqq : optimize */
 {
   if( _.primitive.is( src ) )
   return false;
@@ -39,7 +39,7 @@ function constructibleIs( src ) /* xxx qqq : optimize */
 
 //
 
-function constructibleLike( src )
+function like( src )
 {
   return _.constructibleIs( src );
 }
@@ -53,8 +53,8 @@ let ToolsExtension =
 
   // typing
 
-  constructibleIs, /* qqq : cover and move */
-  constructibleLike, /* qqq : cover and move */
+  constructibleIs : is, /* qqq : cover and move */
+  constructibleLike : like, /* qqq : cover and move */
 
 }
 
@@ -65,8 +65,8 @@ let Extension =
 
   // typing
 
-  is : constructibleIs, /* qqq : cover and move */
-  like : constructibleLike, /* qqq : cover and move */
+  is, /* qqq : cover and move */
+  like, /* qqq : cover and move */
 
 }
 

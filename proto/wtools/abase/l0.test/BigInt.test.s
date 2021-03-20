@@ -17,7 +17,7 @@ const _ = _global_.wTools;
 // --
 
 
-function bigIntIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.bigInt.is();
@@ -184,7 +184,7 @@ var Self =
 
   tests :
   {
-    bigIntIs,
+    is,
     exportStringShortCode
   }
 

@@ -15,7 +15,7 @@ let _ = wTools;
 // tests
 //--
 
-function fuzzyIs( test )
+function is( test )
 {
   test.case = 'string empty input';
   var got = _.fuzzy.is( '' );
@@ -88,7 +88,7 @@ function fuzzyIs( test )
 
 //
 
-function fuzzyLike( test )
+function like( test )
 {
   test.case = 'string empty input';
   var got = _.fuzzy.like( '' );
@@ -161,7 +161,7 @@ function fuzzyLike( test )
 
 //
 
-function fuzzyLikeFalse( test )
+function likeFalse( test )
 {
   test.case = 'string empty input';
   var got = _.fuzzy.likeFalse( '' );
@@ -234,7 +234,7 @@ function fuzzyLikeFalse( test )
 
 //
 
-function fuzzyLikeTrue( test )
+function likeTrue( test )
 {
   test.case = 'string empty input';
   var got = _.fuzzy.likeTrue( '' );
@@ -318,10 +318,10 @@ let Self =
 
   tests :
   {
-    fuzzyIs,
-    fuzzyLike,
-    fuzzyLikeFalse,
-    fuzzyLikeTrue,
+    is,
+    like,
+    likeFalse,
+    likeTrue,
   }
 
 }

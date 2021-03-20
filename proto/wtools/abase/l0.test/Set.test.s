@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-function setsAreIdenticalShallow( test )
+function areIdenticalShallow( test )
 {
   test.open( 'identical' );
 
@@ -249,7 +249,7 @@ var Self =
 
   tests :
   {
-    setsAreIdenticalShallow,
+    areIdenticalShallow,
     exportStringShortDiagnostic
   }
 

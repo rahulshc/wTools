@@ -15,65 +15,65 @@ const _ = _global_.wTools;
 // long
 //--
 
-function longIs( test )
+function is( test )
 {
   test.case = 'an empty array';
-  var got = _.longIs( [] );
+  var got = _.long_.is( [] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.longIs( [ 1, 2, 3 ] );
+  var got = _.long_.is( [ 1, 2, 3 ] );
   var expected  = true;
   test.identical( got, expected );
 
   test.case = 'a pseudo array';
-  var got = _.longIs( arguments );
+  var got = _.long_.is( arguments );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.longIs( new BufferRaw( 10 ) );
+  var got = _.long_.is( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'typed array buffer';
-  var got = _.longIs( new F32x( 10 ) );
+  var got = _.long_.is( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.longIs();
+  var got = _.long_.is();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.longIs( null );
+  var got = _.long_.is( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.longIs( function() {} );
+  var got = _.long_.is( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.longIs( 'x' );
+  var got = _.long_.is( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'number';
-  var got = _.longIs( 1 );
+  var got = _.long_.is( 1 );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.longIs( true );
+  var got = _.long_.is( true );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'object';
-  var got = _.longIs( {} );
+  var got = _.long_.is( {} );
   var expected  = false;
   test.identical( got, expected );
 
@@ -85,7 +85,7 @@ function longIs( test )
       return { next() { return { done : true } } }
     }
   }
-  var got = _.longIs( src );
+  var got = _.long_.is( src );
   var expected  = false;
   test.identical( got, expected );
 
@@ -97,70 +97,70 @@ function longIs( test )
 
 //
 
-function longLike( test )
+function like( test )
 {
   test.case = 'an empty array';
-  var got = _.longLike( [] );
+  var got = _.long_.like( [] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.longLike( [ 1, 2, 3 ] );
+  var got = _.long_.like( [ 1, 2, 3 ] );
   var expected  = true;
   test.identical( got, expected );
 
   test.case = 'a pseudo array';
-  var got = _.longLike( arguments );
+  var got = _.long_.like( arguments );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.longLike( new BufferRaw( 10 ) );
+  var got = _.long_.like( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'typed array buffer';
-  var got = _.longLike( new F32x( 10 ) );
+  var got = _.long_.like( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.longLike();
+  var got = _.long_.like();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.longLike( null );
+  var got = _.long_.like( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.longLike( function() {} );
+  var got = _.long_.like( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.longLike( 'x' );
+  var got = _.long_.like( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'number';
-  var got = _.longLike( 1 );
+  var got = _.long_.like( 1 );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.longLike( true );
+  var got = _.long_.like( true );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'empty object';
-  var got = _.longLike( {} );
+  var got = _.long_.like( {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'object with fields';
-  var got = _.longLike( { 0 : 1, 1 : 2, length : 2 } );
+  var got = _.long_.like( { 0 : 1, 1 : 2, length : 2 } );
   var expected  = false;
   test.identical( got, expected );
 
@@ -175,8 +175,8 @@ function longLike( test )
 
   test.identical( _.arrayIs( src ), false );
   test.identical( _.arrayLike( src ), false );
-  test.identical( _.longIs( src ), false );
-  test.identical( _.longLike( src ), false );
+  test.identical( _.long_.is( src ), false );
+  test.identical( _.long_.like( src ), false );
   test.identical( _.vector.is( src ), false );
   test.identical( _.vector.like( src ), false );
   test.identical( _.countable.is( src ), true );
@@ -17408,8 +17408,8 @@ let Self =
 
     // long l0/l3
 
-    longIs,
-    longLike,
+    is,
+    like,
 
     // long, l0/l5
 
