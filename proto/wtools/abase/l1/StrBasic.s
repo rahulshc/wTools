@@ -13,7 +13,7 @@ qqq : write article "strIsolate* difference"
 
 let Self = _global_.wTools;
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;

@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.entity = _.entity || Object.create( null );
 // let Self = _global_.wTools;
 
@@ -159,7 +159,7 @@ const typeNameGetterSymbol = Symbol.toStringTag;
 const toPrimitiveSymbol = Symbol.toPrimitive;
 const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
-const shallowCloneSymbol = Symbol.for( 'cloneShallow' );
+const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
 const deepCloneSymbol = Symbol.for( 'cloneDeep' );
 
 // _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
@@ -184,7 +184,7 @@ let EntityExtension =
   toPrimitiveSymbol,
   toStrNjsSymbol,
   equalAreSymbol,
-  shallowCloneSymbol,
+  cloneShallowSymbol,
   deepCloneSymbol,
 
 }

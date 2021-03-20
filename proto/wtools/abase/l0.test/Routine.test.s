@@ -10,8 +10,8 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
-let __ = _globals_.testing.wTools;
+const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 // context
@@ -49,7 +49,7 @@ var context3 = new contextConstructor3();
 // test
 // --
 
-function routineIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.routine.is();
@@ -174,7 +174,7 @@ function routineIs( test )
 
 //
 
-function routineLike( test )
+function like( test )
 {
   test.case = 'without argument';
   var got = _.routine.like();
@@ -299,7 +299,7 @@ function routineLike( test )
 
 //
 
-function routineIsTrivial( test )
+function isTrivial( test )
 {
 
   var got = _.routine.isTrivial( 1 );
@@ -367,7 +367,7 @@ function routineIsTrivial( test )
 
 //
 
-function routineIsSync( test )
+function isSync( test )
 {
 
   function sync1(){}
@@ -426,7 +426,7 @@ function routineIsSync( test )
 
 //
 
-function routineIsAsync( test )
+function isAsync( test )
 {
 
   function sync1(){}
@@ -485,7 +485,7 @@ function routineIsAsync( test )
 
 //
 
-function _routineJoin( test )
+function _join( test )
 {
 
   var testParam1 = 2;
@@ -797,7 +797,7 @@ function constructorJoin( test )
 
 //
 
-function routineJoin( test )
+function join( test )
 {
   function testFunction1( x, y ){ return this }
   function testFunction2( x, y ){ return x + y }
@@ -1029,7 +1029,7 @@ function routineJoin( test )
 
 //
 
-function routineSeal( test )
+function seal( test )
 {
 
   var testParam1 = 2;
@@ -1100,7 +1100,7 @@ function routineSeal( test )
 
 //
 
-function routineOptions( test )
+function options( test )
 {
   test.case = 'args - empty map, defaults - empty map';
   var testRoutine = () => true;
@@ -1449,7 +1449,7 @@ function routineOptions( test )
 
 //
 
-function routineOptions_( test )
+function options_( test )
 {
   test.open( 'empty defaults' );
 
@@ -1703,7 +1703,7 @@ function routineOptions_( test )
 
 //
 
-function assertRoutineOptions( test )
+function assertOptions( test )
 {
   test.case = 'args - empty map, defaults - empty map';
   var testRoutine = () => true;
@@ -2018,7 +2018,7 @@ function assertRoutineOptions( test )
 
 //
 
-function assertRoutineOptions_( test )
+function assertOptions_( test )
 {
   test.open( 'empty defaults' );
 
@@ -2199,7 +2199,7 @@ function assertRoutineOptions_( test )
 
 //
 
-function routineOptionsPreservingUndefines_( test )
+function optionsPreservingUndefines_( test )
 {
   test.open( 'empty defaults' );
 
@@ -2454,7 +2454,7 @@ function routineOptionsPreservingUndefines_( test )
 
 //
 
-function assertRoutineOptionsPreservingUndefines_( test )
+function assertOptionsPreservingUndefines_( test )
 {
   test.open( 'empty defaults' );
 
@@ -7631,7 +7631,7 @@ function vectorizeAccessSpecial( test )
 
 //
 
-function routineExportStringShortDiagnostic( test )
+function exportStringShortDiagnostic( test )
 {
 
   test.case = 'function';
@@ -7710,25 +7710,25 @@ var Self =
   tests :
   {
 
-    routineIs,
-    routineLike,
-    routineIsSync,
-    routineIsAsync,
-    routineIsTrivial,
+    is,
+    like,
+    isSync,
+    isAsync,
+    isTrivial,
 
     /* aaa : tests for constructorJoin, extend tests for routineJoin | Dmytro : coverage is extended */
 
-    _routineJoin,
+    _join,
     constructorJoin,
-    routineJoin,
-    routineSeal,
+    join,
+    seal,
 
-    routineOptions,
-    routineOptions_,
-    assertRoutineOptions,
-    assertRoutineOptions_,
-    routineOptionsPreservingUndefines_,
-    assertRoutineOptionsPreservingUndefines_,
+    options,
+    options_,
+    assertOptions,
+    assertOptions_,
+    optionsPreservingUndefines_,
+    assertOptionsPreservingUndefines_,
 
     /* xxx : deprecate */
     routinesCompose,
@@ -7767,7 +7767,7 @@ var Self =
     vectorizeAccessBasic,
     vectorizeAccessSpecial,
 
-    routineExportStringShortDiagnostic,
+    exportStringShortDiagnostic,
 
   }
 

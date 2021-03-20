@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.bigInt = _.bigInt || Object.create( null );
 _.bigInt.s = _.bigInt.s || Object.create( null );
 
@@ -13,7 +13,7 @@ _.bigInt.s = _.bigInt.s || Object.create( null );
 // --
 
 
-function bigIntFrom( src )
+function from( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   if( _.strIs( src ) )
@@ -52,7 +52,7 @@ function bigIntsFrom( src )
 
 let ExtensionTools =
 {
-  bigIntFrom,
+  bigIntFrom : from,
   bigIntsFrom,
 }
 
@@ -60,7 +60,7 @@ let ExtensionTools =
 
 let Extension =
 {
-  from : bigIntFrom,
+  from,
 }
 
 //

@@ -15,7 +15,7 @@ let _ = wTools;
 // l0/l3/Bool.s
 //--
 
-function boolIs( test )
+function is( test )
 {
   test.case = 'string empty input';
   var got = _.bool.is( '' );
@@ -75,7 +75,7 @@ function boolIs( test )
 
 //
 
-function boolLike( test )
+function like( test )
 {
   test.case = 'string empty input';
   var got = _.bool.like( '' );
@@ -138,7 +138,7 @@ function boolLike( test )
 
 //
 
-function boolLikeFalse ( test )
+function likeFalse ( test )
 {
   test.case = 'string empty input';
   var got = _.bool.likeFalse( '' );
@@ -201,7 +201,7 @@ function boolLikeFalse ( test )
 
 //
 
-function boolLikeTrue ( test )
+function likeTrue ( test )
 {
   test.case = 'string empty input';
   var got = _.bool.likeTrue( '' );
@@ -266,7 +266,7 @@ function boolLikeTrue ( test )
 // l0/l5/Bool.s
 //--
 
-function boolAreEquivalentShallow ( test )
+function areEquivalentShallow ( test )
 {
   test.case = 'true - true';
   var got = _.bool.areEquivalentShallow( true, true );
@@ -321,7 +321,7 @@ function boolAreEquivalentShallow ( test )
   test.case = 'too many args';
   test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( true, true, true ) );
 
-  test.case = 'not a boolLike';
+  test.case = 'not a boollike';
   test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( {}, [] ) );
 
 }
@@ -330,7 +330,7 @@ function boolAreEquivalentShallow ( test )
 // l0/l8/Bool.s
 //--
 
-function boolFrom( test )
+function from( test )
 {
   test.case = 'string \'1\'';
   var got = _.bool.from( '1' );
@@ -408,7 +408,7 @@ function boolFrom( test )
 
 //
 
-function boolFromMaybe( test )
+function fromMaybe( test )
 {
   test.case = 'string \'1\'';
   var got = _.bool.fromMaybe( '1' );
@@ -489,7 +489,7 @@ function boolFromMaybe( test )
 
 //
 
-function boolFromForce( test )
+function fromForce( test )
 {
   test.case = 'empty string';
   var got = _.bool.fromForce( '' );
@@ -596,20 +596,20 @@ let Self =
 
     // l0/l3/Bool.s
 
-    boolIs,
-    boolLike,
-    boolLikeFalse,
-    boolLikeTrue,
+    is,
+    like,
+    likeFalse,
+    likeTrue,
 
     // l0/l5/Bool.s
 
-    boolAreEquivalentShallow,
+    areEquivalentShallow,
 
     // l0/l8/Bool.s
 
-    boolFrom,
-    boolFromMaybe,
-    boolFromForce
+    from,
+    fromMaybe,
+    fromForce
   }
 
 }

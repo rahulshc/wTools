@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 

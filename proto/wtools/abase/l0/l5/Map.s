@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
@@ -781,7 +781,7 @@ function mapMake( src )
 
 //
 
-function mapShallowClone( src )
+function mapCloneShallow( src )
 {
   return _.mapMake( src );
 }
@@ -1345,7 +1345,7 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   _.assert( _.routine.is( filters.onUpFilter ) );
   _.assert( _.routine.is( filters.onField ) );
   // _.assert( _.property.filterIs( filters.onUpFilter ) );
-  _.assert( _.property.filterIs( ilters.onUpFilter ) && !ilters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  _.assert( _.property.filterIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.transformerIs( filters.onField ) );
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
@@ -4731,7 +4731,7 @@ let Extension =
   // map extend
 
   mapMake,
-  mapShallowClone,
+  mapCloneShallow,
   mapCloneAssigning, /* dubious */
 
   // mapExtend,

@@ -10,7 +10,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wSelector' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // base tests

@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.number = _.number || Object.create( null );
 _.number.s = _.number.s || Object.create( null );
 
@@ -30,7 +30,7 @@ _.number.s = _.number.s || Object.create( null );
  * @namespace Tools
  */
 
-function numberIs( src )
+function is( src )
 {
   return typeof src === 'number';
   return Object.prototype.toString.call( src ) === '[object Number]';
@@ -38,7 +38,7 @@ function numberIs( src )
 
 //
 
-function numberIsNotNan( src )
+function isNotNan( src )
 {
   return _.number.is( src ) && !isNaN( src );
 }
@@ -54,7 +54,7 @@ function numberIsFinite( src )
 
 //
 
-function numberIsInfinite( src )
+function isInfinite( src )
 {
 
   if( !_.number.is( src ) )
@@ -76,7 +76,7 @@ function intIs( src )
 
 //
 
-function numbersAreAll( src )
+function areAll( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -115,7 +115,7 @@ function numbersAreAll( src )
 
 //
 
-function numbersAreIdentical( a, b )
+function areIdentical( a, b )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -127,7 +127,7 @@ function numbersAreIdentical( a, b )
 
 //
 
-function numbersAreIdenticalNotStrictly( a, b )
+function areIdenticalNotStrictly( a, b )
 {
   /*
   it takes into account -0 === +0 case
@@ -143,7 +143,7 @@ function numbersAreIdenticalNotStrictly( a, b )
 
 //
 
-function numbersAreEquivalent( a, b, accuracy )
+function areEquivalent( a, b, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
@@ -237,7 +237,7 @@ function numbersAreEquivalent( a, b, accuracy )
 
 //
 
-function numbersAreFinite( src )
+function areFinite( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
@@ -256,7 +256,7 @@ function numbersAreFinite( src )
 
 //
 
-function numbersArePositive( src )
+function arePositive( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
@@ -275,7 +275,7 @@ function numbersArePositive( src )
 
 //
 
-function numbersAreInt( src )
+function areInt( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
 
@@ -299,22 +299,22 @@ function numbersAreInt( src )
 let ExtensionTools =
 {
 
-  numberIs,
-  numberIsNotNan,
+  numberIs : is,
+  numberIsNotNan : isNotNan,
   numberIsFinite,
   numberDefined : numberIsFinite,
-  numberIsInfinite,
+  numberIsInfinite : isInfinite,
 
   intIs,
 
-  numbersAreAll,
-  numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
-  numbersAreIdenticalNotStrictly,
-  numbersAreEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
+  numbersAreAll : areAll,
+  numbersAreIdentical : areIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
+  numbersAreIdenticalNotStrictly : areIdenticalNotStrictly,
+  numbersAreEquivalent : areEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
 
-  numbersAreFinite,
-  numbersArePositive,
-  numbersAreInt,
+  numbersAreFinite : areFinite,
+  numbersArePositive : arePositive,
+  numbersAreInt : areInt,
 
 }
 
@@ -323,12 +323,12 @@ let ExtensionTools =
 let Extension =
 {
 
-  is : numberIs,
-  isNotNan : numberIsNotNan,
+  is,
+  isNotNan,
   isFinite : numberIsFinite,
   defined : numberIsFinite,
-  isInfinite : numberIsInfinite,
-  areEquivalentShallow : numbersAreEquivalent,
+  isInfinite,
+  areEquivalentShallow : areEquivalent,
 
   intIs,
 
@@ -339,14 +339,14 @@ let Extension =
 let ExtensionS =
 {
 
-  areAll : numbersAreAll,
-  areIdentical : numbersAreIdentical,
-  areIdenticalNotStrictly : numbersAreIdenticalNotStrictly,
-  areEquivalent : numbersAreEquivalent,
+  areAll,
+  areIdentical,
+  areIdenticalNotStrictly,
+  areEquivalent,
 
-  areFinite : numbersAreFinite,
-  arePositive : numbersArePositive,
-  areInt : numbersAreInt,
+  areFinite,
+  arePositive,
+  areInt,
 
 }
 

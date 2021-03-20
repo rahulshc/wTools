@@ -9,7 +9,7 @@ if( !_ArrayIncludes )
 _ArrayIncludes = function( e ){ _ArrayIndexOf.call( this, e ) }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools;
 
 /*

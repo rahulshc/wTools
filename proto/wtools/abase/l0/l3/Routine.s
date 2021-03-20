@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools;
 let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
 let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
@@ -25,7 +25,7 @@ let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.c
 //   return _.routine.is( src );
 // }
 
-function routineIs( src )
+function is( src )
 {
   let typeStr = Object.prototype.toString.call( src );
   return _.routine._is( src, typeStr );
@@ -33,14 +33,14 @@ function routineIs( src )
 
 //
 
-function _routineIs( src, typeStr )
+function _is( src, typeStr )
 {
   return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
 }
 
 //
 
-function routineLike( src )
+function like( src )
 {
   let typeStr = Object.prototype.toString.call( src );
   return _.routine._like( src, typeStr );
@@ -48,7 +48,7 @@ function routineLike( src )
 
 //
 
-function _routineLike( src, typeStr )
+function _like( src, typeStr )
 {
   return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
 }
@@ -80,8 +80,8 @@ function routineIsTrivial_functor()
 
 }
 
-let routineIsTrivial = routineIsTrivial_functor();
-routineIsTrivial.functor = routineIsTrivial_functor;
+let isTrivial = routineIsTrivial_functor();
+isTrivial.functor = routineIsTrivial_functor;
 // function routineIsTrivial( src )
 // {
 //   if( !src )
@@ -102,21 +102,21 @@ routineIsTrivial.functor = routineIsTrivial_functor;
 
 //
 
-function routineIsSync( src )
+function isSync( src )
 {
   return Object.prototype.toString.call( src ) === '[object Function]'
 }
 
 //
 
-function routineIsAsync( src )
+function isAsync( src )
 {
   return Object.prototype.toString.call( src ) === '[object AsyncFunction]'
 }
 
 //
 
-function routinesAre( src )
+function are( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -133,9 +133,9 @@ function routinesAre( src )
 
 //
 
-function routineWithName( src )
+function withName( src )
 {
-  if( !routineIs( src ) )
+  if( !routine.is( src ) )
   return false;
   if( !src.name )
   return false;
@@ -152,7 +152,7 @@ function routineWithName( src )
  * @namespace Tools
  */
 
-function _routineJoin( o )
+function _join( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -305,7 +305,7 @@ function constructorJoin( routine, args )
 //
 
 /**
- * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
+ * The join() routine creates a new function with its 'this' ( context ) set to the provided `context`
  * value. Argumetns `args` of target function which are passed before arguments of binded function during
  * calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
  *
@@ -338,11 +338,11 @@ function constructorJoin( routine, args )
  * @returns {Function} New created function with preceding this, and args.
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
- * @function routineJoin
+ * @function join
  * @namespace Tools
  */
 
-function routineJoin( context, routine, args )
+function join( context, routine, args )
 {
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
@@ -361,7 +361,7 @@ function routineJoin( context, routine, args )
 //
 
 /**
- * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
+ * The join() routine creates a new function with its 'this' ( context ) set to the provided `context`
  * value. Argumetns `args` of target function which are passed before arguments of binded function during
  * calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
  *
@@ -398,7 +398,7 @@ function routineJoin( context, routine, args )
  * @namespace Tools
  */
 
-function routineJoin( context, routine, args )
+function join( context, routine, args )
 {
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
@@ -433,11 +433,11 @@ function routineJoin( context, routine, args )
  * @param { Function } routine - Function which will be used as base for result function.
  * @param { Array } args - Arguments wrapped into array. Will be used as argument to `routine` function
  * @returns { Function } - Result function with sealed context and arguments.
- * @function routineSeal
+ * @function seal
  * @namespace Tools
  */
 
-function routineSeal( context, routine, args )
+function seal( context, routine, args )
 {
 
   _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
@@ -455,7 +455,7 @@ function routineSeal( context, routine, args )
 
 //
 
-function routineOptions( routine, args, defaults )
+function options( routine, args, defaults )
 {
 
   if( !_.arrayLike( args ) )
@@ -554,7 +554,7 @@ function routineOptions( routine, args, defaults )
 /* qqq : for Dmytro : discuss
 should be { defaults : {} } in the first argument
 */
-function routineOptions_( defaults, options )
+function options_( defaults, options )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
@@ -658,7 +658,7 @@ function routineOptions_( defaults, options )
 
 //
 
-function assertRoutineOptions( routine, args, defaults )
+function assertOptions( routine, args, defaults )
 {
 
   if( !_.arrayLike( args ) )
@@ -725,7 +725,7 @@ function assertRoutineOptions( routine, args, defaults )
 
 //
 
-function assertRoutineOptions_( defaults, options )
+function assertOptions_( defaults, options )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
@@ -807,7 +807,7 @@ function assertRoutineOptions_( defaults, options )
 /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
 /* aaa for Dmytro : make sure _.routineOptions and routineOptionsPreservingUndefines are similar */ /* Dmytro : implemented similar routine */
 /* xxx : make routineOptionsPreservingUndefines default routineOptions */
-function routineOptionsPreservingUndefines( routine, args, defaults )
+function optionsPreservingUndefines( routine, args, defaults )
 {
 
   if( !_.arrayLike( args ) )
@@ -832,7 +832,7 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
 
 //
 
-function routineOptionsPreservingUndefines_( defaults, options )
+function optionsPreservingUndefines_( defaults, options )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
@@ -930,7 +930,7 @@ function routineOptionsPreservingUndefines_( defaults, options )
 
 //
 
-function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
+function assertOptionsPreservingUndefines( routine, args, defaults )
 {
 
   if( !_.arrayLike( args ) )
@@ -952,7 +952,7 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
 
 //
 
-function assertRoutineOptionsPreservingUndefines_( defaults, options )
+function assertOptionsPreservingUndefines_( defaults, options )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
@@ -1015,7 +1015,7 @@ function assertRoutineOptionsPreservingUndefines_( defaults, options )
 
 //
 
-function routineOptionsFromThis( routine, _this, constructor )
+function optionsFromThis( routine, _this, constructor )
 {
 
   _.assert( arguments.length === 3, 'routineOptionsFromThis : expects 3 arguments' );
@@ -1156,16 +1156,16 @@ _routinesCompose_body.defaults =
 
 //
 
-function routinesCompose()
+function compose()
 {
-  let o = _.routine.s.compose.head( routinesCompose, arguments );
+  let o = _.routine.s.compose.head( compose, arguments );
   let result = _.routine.s.compose.body( o );
   return result;
 }
 
-routinesCompose.head = _routinesCompose_head;
-routinesCompose.body = _routinesCompose_body;
-routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose.body.defaults );
+compose.head = _routinesCompose_head;
+compose.body = _routinesCompose_body;
+compose.defaults = Object.assign( Object.create( null ), compose.body.defaults );
 
 //
 
@@ -1579,7 +1579,7 @@ function extendReplacing( dst, ... srcs )
 
 //
 
-function routineDefaults( dst, src, defaults )
+function defaults( dst, src, defaults )
 {
 
   if( arguments.length === 2 )
@@ -1872,8 +1872,8 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
 
 /* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineEr() extend mechanism of routines constructing of routine routine.unite().
- * The routine routineEr() adds to routine {-routine-} field {-er-} that is a functor for generating
+ * The routine er() extend mechanism of routines constructing of routine routine.unite().
+ * The routine er() adds to routine {-routine-} field {-er-} that is a functor for generating
  * of new routine similar to original routine but with changed map {-defaults-}.
  *
  * @example
@@ -1927,7 +1927,7 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
  * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns original routine with functor in field {-er-}.
- * @function routineEr
+ * @function er
  * @throws { Error } If arguments.length neither is 1, nor 2.
  * @throws { Error } If {-routine-} is not a Function.
  * @throws { Error } If {-erhead-} is not a Function.
@@ -1936,7 +1936,7 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
  * @namespace Tools
  */
 
-function routineEr( routine, erhead )
+function er( routine, erhead )
 {
   if( routine.er )
   return routine.er; /* Dmytro : maybe before return should be assert like : _.assert( _.routine.is( routine.er ) ) */
@@ -1948,8 +1948,8 @@ function routineEr( routine, erhead )
 
 /* qqq : for Dmytro : update jsdoc, please */
 /**
- * The routine routineErFor() extend mechanism of routines constructing of routine routine.unite().
- * The routine routineErFor() returns functor for generating of new routine similar to original
+ * The routine erFor() extend mechanism of routines constructing of routine routine.unite().
+ * The routine erFor() returns functor for generating of new routine similar to original
  * routine {-routine-} but with changed map {-defaults-}.
  *
  * @example
@@ -2000,7 +2000,7 @@ function routineEr( routine, erhead )
  * Routine should be generated by routine.unite.
  * @param { Function } erhead - The routine to make map {-defaults-} for new routine.
  * @returns { Function } - Returns functor to generate new routine with changed map {-defaults-}.
- * @function routineErFor
+ * @function erFor
  * @throws { Error } If arguments.length neither is 1, nor 2.
  * @throws { Error } If {-routine-} is not a Function.
  * @throws { Error } If {-erhead-} is not a Function.
@@ -2009,7 +2009,7 @@ function routineEr( routine, erhead )
  * @namespace Tools
  */
 
-function routineErFor( routine, erhead )
+function erFor( routine, erhead )
 {
 
   erhead = erhead || routine.erhead || routine.head;
@@ -3132,37 +3132,37 @@ function exportStringShortDiagnostic( src )
 let ExtensionTools =
 {
 
-  routineIs,
-  _routineIs,
-  routineLike,
-  _routineLike,
-  routineIsTrivial,
-  routineIsSync,
-  routineIsAsync,
-  routinesAre,
-  routineWithName,
+  routineIs : is,
+  _routineIs : _is,
+  routineLike : like,
+  _routineLike : _like,
+  routineIsTrivial : isTrivial,
+  routineIsSync : isSync,
+  routineIsAsync : isAsync,
+  routinesAre : are,
+  routineWithName : withName,
 
-  _routineJoin,
+  _routineJoin : _join,
   constructorJoin,
-  routineJoin,
-  routineSeal,
+  routineJoin : join,
+  routineSeal : seal,
 
-  routineOptions,
-  routineOptions_, /* qqq : for Dmytro : bad : where is mark? */
-  assertRoutineOptions,
-  assertRoutineOptions_,
-  routineOptionsPreservingUndefines,
-  routineOptionsPreservingUndefines_,
-  assertRoutineOptionsPreservingUndefines,
-  assertRoutineOptionsPreservingUndefines_,
-  routineOptionsFromThis,
+  routineOptions : options,
+  routineOptions_ : options_, /* qqq : for Dmytro : bad : where is mark? */
+  assertRoutineOptions : assertOptions,
+  assertRoutineOptions_ : assertOptions_,
+  routineOptionsPreservingUndefines : optionsPreservingUndefines,
+  routineOptionsPreservingUndefines_ : optionsPreservingUndefines_,
+  assertRoutineOptionsPreservingUndefines : assertOptionsPreservingUndefines,
+  assertRoutineOptionsPreservingUndefines_ : assertOptionsPreservingUndefines_,
+  routineOptionsFromThis : optionsFromThis,
 
-  routinesCompose, /* xxx : deprecate */
+  routinesCompose : compose, /* xxx : deprecate */
   routineExtend : extendCloning,
-  routineDefaults,
+  routineDefaults : defaults,
   // routine.unite : uniteCloning,
-  routineEr,
-  routineErFor,
+  routineEr : er,
+  routineErFor : erFor,
   // routineErJoin,
 
   routineVectorize_functor : vectorize,
@@ -3180,32 +3180,32 @@ let ExtensionTools =
 let Extension = /* qqq : for Yevhen : bad */
 {
 
-  is : routineIs,
-  _is : _routineIs,
-  like : routineLike,
-  _like : _routineLike,
-  isTrivial : routineIsTrivial,
-  isSync : routineIsSync,
-  isAsync : routineIsAsync,
-  withName : routineWithName,
+  is,
+  _is,
+  like,
+  _like,
+  isTrivial,
+  isSync,
+  isAsync,
+  withName,
 
-  _join : _routineJoin,
+  _join,
   constructorJoin,
-  join : routineJoin,
-  seal : routineSeal,
+  join,
+  seal,
 
-  options : routineOptions,
-  assertOptions : assertRoutineOptions,
-  optionsPreservingUndefines : routineOptionsPreservingUndefines,
-  assertOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
-  optionsFromThis : routineOptionsFromThis,
+  options,
+  assertOptions,
+  optionsPreservingUndefines,
+  assertOptionsPreservingUndefines,
+  optionsFromThis,
 
   _amend,
   extend : extendCloning,
   extendCloning,
   extendInheriting,
   extendReplacing,
-  defaults : routineDefaults,
+  defaults,
 
   // unite : uniteCloning,
   unite : uniteReplacing,
@@ -3215,8 +3215,8 @@ let Extension = /* qqq : for Yevhen : bad */
   uniteReplacing,
   /* qqq : for Yevhen : for Dmytro : introduce routines uniteReplacing, uniteInheriting, uniteCloning */
 
-  er : routineEr,
-  erFor : routineErFor,
+  er,
+  erFor,
   // erJoin : routineErJoin,
 
   vectorize_functor : vectorize,
@@ -3242,8 +3242,8 @@ let Extension = /* qqq : for Yevhen : bad */
 let ExtensionS =
 {
 
-  are : routinesAre,
-  compose : routinesCompose,
+  are,
+  compose,
 }
 
 Object.assign( Self, ExtensionTools );

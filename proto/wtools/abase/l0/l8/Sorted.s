@@ -6,7 +6,7 @@
 //
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools.sorted = _global_.wTools.sorted || Object.create( null );
 
 // --

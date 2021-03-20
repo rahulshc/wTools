@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
@@ -46,7 +46,7 @@ _.long_ = _.long_ || Object.create( null );
 /* xxx : optimize! */
 /* qqq : for Yevhen : optimize. ask how to */
 /* qqq : check coverage */
-function longIs( src )
+function is( src )
 {
 
   if( _.primitive.is( src ) )
@@ -90,7 +90,7 @@ function longIs( src )
 
 //
 
-function longIsEmpty( src )
+function isEmpty( src )
 {
   if( !_.longIs( src ) )
   return false;
@@ -99,7 +99,7 @@ function longIsEmpty( src )
 
 //
 
-function longIsPopulated( src )
+function isPopulated( src )
 {
   if( !_.longIs( src ) )
   return false;
@@ -109,7 +109,7 @@ function longIsPopulated( src )
 //
 
 /* xxx : introduce vectorIs. remove check methodIteratorOf from here */
-function longLike( src ) /* qqq : cover */
+function like( src ) /* qqq : cover */
 {
   if( _.primitive.is( src ) )
   return false;
@@ -138,7 +138,7 @@ function lengthOf( src )
 // long sequential search
 // --
 
-function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
+function leftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -204,7 +204,7 @@ function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 
 //
 
-function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
+function rightIndex( /* arr, ins, evaluator1, evaluator2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -324,7 +324,7 @@ function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
  * @namespace Tools
  */
 
-function longLeft( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
+function left( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -407,7 +407,7 @@ function longLeft( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
  * @namespace Tools
  */
 
-function longRight( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
+function right( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -457,7 +457,7 @@ function longRight( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
  * @namespace Tools
  */
 
-function longLeftDefined( arr )
+function leftDefined( arr )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   return _.longLeft( arr, true, function( e ){ return e !== undefined; } );
@@ -492,7 +492,7 @@ function longLeftDefined( arr )
  * @namespace Tools
  */
 
-function longRightDefined( arr )
+function rightDefined( arr )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   return _.longRight( arr, true, function( e ){ return e !== undefined; } );
@@ -615,21 +615,21 @@ let ToolsExtension =
 
   // long
 
-  longIs,
-  longIsEmpty,
-  longIsPopulated,
-  longLike,
+  longIs : is,
+  longIsEmpty : isEmpty,
+  longIsPopulated : isPopulated,
+  longLike : like,
 
   // long sequential search
 
-  longLeftIndex,
-  longRightIndex,
+  longLeftIndex : leftIndex,
+  longRightIndex : rightIndex,
 
-  longLeft,
-  longRight,
+  longLeft : left,
+  longRight : right,
 
-  longLeftDefined,
-  longRightDefined,
+  longLeftDefined : leftDefined,
+  longRightDefined : rightDefined,
 
   // fields
 
@@ -648,10 +648,10 @@ let LongExtension =
 
   // checker
 
-  is : longIs,
-  isEmpty : longIsEmpty,
-  isPopulated : longIsPopulated,
-  like : longLike,
+  is,
+  isEmpty,
+  isPopulated,
+  like,
 
   // getter
 
@@ -659,14 +659,14 @@ let LongExtension =
 
   // long sequential search
 
-  leftIndex : longLeftIndex,
-  rightIndex : longRightIndex,
+  leftIndex,
+  rightIndex,
 
-  left : longLeft,
-  right : longRight,
+  left,
+  right,
 
-  leftDefined : longLeftDefined,
-  rightDefined : longRightDefined,
+  leftDefined,
+  rightDefined,
 
   // er
 
