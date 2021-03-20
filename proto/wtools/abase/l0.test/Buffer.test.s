@@ -9,7 +9,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // buffer

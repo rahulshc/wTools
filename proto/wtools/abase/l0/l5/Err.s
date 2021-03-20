@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools.error;
 
 // --
@@ -13,8 +13,8 @@ let Self = _global_.wTools.error;
 
 function _handleUncaught2( o )
 {
-
-  let process0 = processNamespaceGet();
+  const __ = _global_.globals && _globals_.testing.wTools;
+  const process0 = processNamespaceGet();
 
   optionsRefine();
 
@@ -144,11 +144,11 @@ function _handleUncaught2( o )
     (
       !result
       && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.process
-      && _globals_.testing.wTools.process.exitReason
+      && __
+      && __.process
+      && __.process.exitReason
     )
-    result = _globals_.testing.wTools.process;
+    result = __.process;
     if( !result )
     result = _.process;
     return result;
@@ -166,12 +166,11 @@ function _handleUncaught2( o )
     if
     (
       !result
-      && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.Logger
-      && _globals_.testing.wTools.Logger.ConsoleBar
+      && __
+      && __.Logger
+      && __.Logger.ConsoleBar
     )
-    result = _globals_.testing.wTools.Logger;
+    result = __.Logger;
     return result;
   }
 

@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 // let Self = _global_.wTools;
 let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
 let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );

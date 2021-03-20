@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.number = _.number || Object.create( null );
 _.number.s = _.number.s || Object.create( null );
 

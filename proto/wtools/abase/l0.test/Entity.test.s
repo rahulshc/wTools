@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -4774,7 +4774,7 @@ function entityMake( test )
   test.case = 'routine for key shallowSymbol';
   function Constr1(){ this.x = 1; return this };
   var src = new Constr1();
-  src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+  src[ _.entity.cloneShallowSymbol ] = () => new Constr1();
   var got = _.entity.make( src );
   var exp = new Constr1();
   test.identical( got.x, exp.x );
@@ -5001,7 +5001,7 @@ function entityMakeLongDescriptor( test )
     test.case = 'routine for key shallowSymbol';
     function Constr1(){ this.x = 1; return this };
     var src = new Constr1();
-    src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+    src[ _.entity.cloneShallowSymbol ] = () => new Constr1();
     var got = descriptor.entityMake( src );
     var exp = new Constr1();
     test.identical( got.x, exp.x );
