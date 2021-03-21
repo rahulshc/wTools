@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
 
 // --
@@ -12,7 +12,7 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
 // --
 
 /**
- * Function objectIs checks incoming param whether it is object.
+ * Function is checks incoming param whether it is object.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
  * @example
@@ -26,18 +26,18 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
  *
  * @param { * } src.
  * @return { Boolean }.
- * @function objectIs
+ * @function is
  * @namespace Tools
  */
 
-function objectIs( src )
+function is( src )
 {
   return Object.prototype.toString.call( src ) === '[object Object]';
 }
 
 //
 
-function objectLike( src ) /* xxx qqq : optimize */
+function like( src ) /* xxx qqq : optimize */
 {
 
   if( _.object.is( src ) )
@@ -70,7 +70,7 @@ function objectLike( src ) /* xxx qqq : optimize */
 
 //
 
-function objectLikeStandard( src ) /* xxx qqq : optimize */
+function likeStandard( src ) /* xxx qqq : optimize */
 {
 
   // if( _.object.is( src ) )
@@ -231,9 +231,9 @@ let ToolsExtension =
 
   // typing
 
-  objectIs, /* qqq : optimize */
-  objectLike, /* qqq : optimize */
-  objectLikeStandard, /* qqq : optimize */
+  objectIs : is, /* qqq : optimize */
+  objectLike : like, /* qqq : optimize */
+  objectLikeStandard : likeStandard, /* qqq : optimize */
 
   //
 
@@ -246,9 +246,9 @@ let Extension =
 
   // typing
 
-  is : objectIs,
-  like : objectLike,
-  likeStandard : objectLikeStandard,
+  is,
+  like,
+  likeStandard,
 
   // export string
 

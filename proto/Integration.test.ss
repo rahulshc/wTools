@@ -190,7 +190,7 @@ function production( test )
   {
     if( _.strHas( err.message, 'npm ERR! ERROR: Repository not found' ) )
     {
-      _.errAttend( err );
+      _.error.attend( err );
       return a.shell( `npm i --production` );
     }
     throw _.err( err );

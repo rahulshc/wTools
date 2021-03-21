@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // implement
@@ -143,7 +143,7 @@ const typeNameGetterSymbol = Symbol.toStringTag;
 const toPrimitiveSymbol = Symbol.toPrimitive;
 const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
-const shallowCloneSymbol = Symbol.for( 'cloneShallow' );
+const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
 const deepCloneSymbol = Symbol.for( 'cloneDeep' );
 
 function Escape( val )
@@ -160,7 +160,7 @@ Escape.prototype = Object.create( null );
 Escape.prototype[ iteratorSymbol ] = iterate;
 Escape.prototype[ toPrimitiveSymbol ] = exportStringIgnoringArgs;
 Escape.prototype[ toStrNjsSymbol ] = exportStringIgnoringArgs;
-Escape.prototype[ shallowCloneSymbol ] = cloneShallow; /* qqq : cover */
+Escape.prototype[ cloneShallowSymbol ] = cloneShallow; /* xxx : reimplement? */
 Escape.prototype[ deepCloneSymbol ] = cloneDeep; /* xxx : implement */
 Escape.prototype[ equalAreSymbol ] = equalAre; /* qqq : cover */
 Escape.prototype.exportString = exportString;

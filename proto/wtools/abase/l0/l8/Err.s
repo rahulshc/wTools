@@ -5,7 +5,7 @@
 
 let _global = _global_;
 let _ = _global.wTools;
-let _err = _._err;
+let _err = _.error._err;
 
 // --
 // checker

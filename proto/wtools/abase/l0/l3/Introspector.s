@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.introspector = _.introspector || Object.create( null );
 
 // --
@@ -38,7 +38,7 @@ function location( o )
   o = { level : o }
   else if( _.strIs( o ) )
   o = { stack : o, level : 0 }
-  else if( _.errIs( o ) )
+  else if( _.error.is( o ) )
   o = { error : o, level : 0 }
   else if( o === undefined )
   o = { stack : _.introspector.stack([ 1, Infinity ]) };
@@ -659,7 +659,7 @@ function stack( stack, range )
 
   if( arguments.length === 1 )
   {
-    if( !_.errIs( stack ) )
+    if( !_.error.is( stack ) )
     if( !_.strIs( stack ) )
     {
       range = arguments[ 0 ];
@@ -714,9 +714,9 @@ function stack( stack, range )
   // }
 
   let errIs = 0;
-  if( _.errIs( stack ) )
+  if( _.error.is( stack ) )
   {
-    stack = _.errOriginalStack( stack );
+    stack = _.error.originalStack( stack );
     errIs = 1;
   }
 

@@ -10,14 +10,14 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function symbolIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.symbol.is();
@@ -261,7 +261,7 @@ var Self =
 
   tests :
   {
-    symbolIs,
+    is,
     exportStringShortCode,
     exportStringShortDiagnostic
   }

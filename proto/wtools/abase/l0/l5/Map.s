@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
@@ -781,7 +781,7 @@ function mapMake( src )
 
 //
 
-function mapShallowClone( src )
+function mapCloneShallow( src )
 {
   return _.mapMake( src );
 }
@@ -1345,7 +1345,7 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   _.assert( _.routine.is( filters.onUpFilter ) );
   _.assert( _.routine.is( filters.onField ) );
   // _.assert( _.property.filterIs( filters.onUpFilter ) );
-  _.assert( _.property.filterIs( ilters.onUpFilter ) && !ilters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  _.assert( _.property.filterIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
   _.assert( _.property.transformerIs( filters.onField ) );
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
@@ -2961,7 +2961,7 @@ function _mapOnly( o )
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.primitive.is( o.screenMaps[ m ] ) )
       {
-        if( o.screenMaps[ m ] === key || String( m ) === key )
+        if( o.screenMaps[ m ] === key )
         return key;
       }
     }
@@ -2970,10 +2970,11 @@ function _mapOnly( o )
       for( let m of o.screenMaps )
       if( _.primitive.is( m ) )
       {
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
     }
+
     // let m;
     // if( _.arrayLike( o.screenMaps ) )
     // {
@@ -3166,7 +3167,7 @@ function _mapOnly_( o )
       for( let m = 0 ; m < o.screenMaps.length ; m++ )
       if( _.primitive.is( o.screenMaps[ m ] ) )
       {
-        if( o.screenMaps[ m ] === key || String( m ) === key )
+        if( o.screenMaps[ m ] === key )
         return key;
       }
     }
@@ -3175,7 +3176,7 @@ function _mapOnly_( o )
       for( let m of o.screenMaps )
       if( _.primitive.is( m ) )
       {
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
     }
@@ -3502,7 +3503,7 @@ function sureHasOnly( srcMap, screenMaps, msg )
   {
     let err;
     if( arguments.length === 2 )
-    err = _._err
+    err = _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3516,7 +3517,7 @@ function sureHasOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      err = _._err
+      err = _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3608,7 +3609,7 @@ function sureOwnOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3622,7 +3623,7 @@ function sureOwnOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 3,
@@ -3711,7 +3712,7 @@ function sureHasAll( srcMap, all, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3725,7 +3726,7 @@ function sureHasAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3813,7 +3814,7 @@ function sureOwnAll( srcMap, all, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3827,7 +3828,7 @@ function sureOwnAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3916,7 +3917,7 @@ function sureHasNone( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3930,7 +3931,7 @@ function sureHasNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -3955,7 +3956,7 @@ function sureOwnNone( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 2 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3969,7 +3970,7 @@ function sureOwnNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -4055,7 +4056,7 @@ function sureHasNoUndefine( srcMap, msg )
   if( but.length > 0 )
   {
     if( arguments.length === 1 )
-    throw _._err
+    throw _.error._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -4069,7 +4070,7 @@ function sureHasNoUndefine( srcMap, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _._err
+      throw _.error._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
@@ -4247,7 +4248,7 @@ function assertHasOnly( srcMap, screenMaps, msg )
   //
   // function errFromArgs( args )
   // {
-  //   return _._err
+  //   return _.error._err
   //   ({
   //     args,
   //     level : 2,
@@ -4662,7 +4663,7 @@ function assertHasNoUndefine( srcMap, msg )
 
   function errFromArgs( args )
   {
-    return _._err
+    return _.error._err
     ({
       args,
       level : 2,
@@ -4730,7 +4731,7 @@ let Extension =
   // map extend
 
   mapMake,
-  mapShallowClone,
+  mapCloneShallow,
   mapCloneAssigning, /* dubious */
 
   // mapExtend,
