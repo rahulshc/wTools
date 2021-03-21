@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.fuzzy = _.fuzzy || Object.create( null );
 
 // --
@@ -13,7 +13,7 @@ let Self = _.fuzzy = _.fuzzy || Object.create( null );
 
 /**
  * Returns true if entity ( src ) is a Boolean values - true and false or Symbol(maybe).
- * @function fuzzyIs
+ * @function is
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
@@ -91,7 +91,7 @@ function like( src )
 
 /**
  * Returns true if entity ( src ) is false or 0.
- * @function fuzzyLikeFalse
+ * @function likeFalse
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
@@ -133,7 +133,7 @@ function likeFalse( src )
 
 /**
  * Returns true if entity ( src ) is true or a Number which is not 0.
- * @function fuzzyLikeTrue
+ * @function likeTrue
  * @param { * } src - An entity to check.
  * @namespace Tools
  *

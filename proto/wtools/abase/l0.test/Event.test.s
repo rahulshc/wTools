@@ -9,7 +9,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // chain
@@ -1803,7 +1803,7 @@ function eventGive( test )
   },
   ( err, arg ) =>
   {
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
   });
 }

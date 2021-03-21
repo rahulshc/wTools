@@ -53,8 +53,8 @@ if( typeof module !== 'undefined' )
 
 }
 
-let _ = _global_.wTools;
-let __ = _globals_.testing.wTools;
+const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 // tests

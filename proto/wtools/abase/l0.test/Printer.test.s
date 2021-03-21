@@ -10,14 +10,14 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function printerIs( test )
+function is( test )
 {
   test.case = 'check null';
   var got = _.printer.is( null );
@@ -156,7 +156,7 @@ function printerIs( test )
 
 //
 
-function printerLike( test )
+function like( test )
 {
   test.case = 'check null';
   var got = _.printer.like( null );
@@ -313,8 +313,8 @@ var Self =
 
   tests :
   {
-    printerIs,
-    printerLike,
+    is,
+    like,
   }
 
 }

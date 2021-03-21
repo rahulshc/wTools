@@ -4,14 +4,14 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.primitive = _.primitive || Object.create( null );
 
 // --
 // primitive
 // --
 
-function primitiveIs( src )
+function is( src )
 {
   if( !src )
   return true;
@@ -38,8 +38,8 @@ function _primitiveIs_functor()
 
 }
 
-let _primitiveIs = _primitiveIs_functor();
-_primitiveIs.functor = _primitiveIs_functor;
+let _is = _primitiveIs_functor();
+_is.functor = _primitiveIs_functor;
 
 //
 
@@ -82,16 +82,16 @@ function exportStringShortDiagnostic( src )
 
 let ExtensionTools =
 {
-  primitiveIs,
-  _primitiveIs,
+  primitiveIs : is,
+  _primitiveIs : _is,
 }
 
 //
 
 let Extension =
 {
-  is : primitiveIs,
-  _is : _primitiveIs,
+  is,
+  _is,
 
   // export string
 

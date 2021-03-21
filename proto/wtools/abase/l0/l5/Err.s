@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools.error;
 
 // --
@@ -13,8 +13,8 @@ let Self = _global_.wTools.error;
 
 function _handleUncaught2( o )
 {
-
-  let process0 = processNamespaceGet();
+  const __ = _global_.globals && _globals_.testing.wTools;
+  const process0 = processNamespaceGet();
 
   optionsRefine();
 
@@ -28,7 +28,7 @@ function _handleUncaught2( o )
 
   processUncaughtErrorEvent();
 
-  if( _.errIsAttended( o.err ) )
+  if( _.error.isAttended( o.err ) )
   return;
 
   debugger;
@@ -86,8 +86,8 @@ function _handleUncaught2( o )
   {
     try
     {
-      if( _._errLog )
-      _._errLog( o.err, o.logger );
+      if( _.error._log )
+      _.error._log( o.err, o.logger );
       else
       console.error( o.err );
     }
@@ -122,7 +122,7 @@ function _handleUncaught2( o )
   {
     try
     {
-      return _.errProcess( err );
+      return _.error.process( err );
     }
     catch( err2 )
     {
@@ -144,11 +144,11 @@ function _handleUncaught2( o )
     (
       !result
       && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.process
-      && _globals_.testing.wTools.process.exitReason
+      && __
+      && __.process
+      && __.process.exitReason
     )
-    result = _globals_.testing.wTools.process;
+    result = __.process;
     if( !result )
     result = _.process;
     return result;
@@ -166,12 +166,11 @@ function _handleUncaught2( o )
     if
     (
       !result
-      && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.Logger
-      && _globals_.testing.wTools.Logger.ConsoleBar
+      && __
+      && __.Logger
+      && __.Logger.ConsoleBar
     )
-    result = _globals_.testing.wTools.Logger;
+    result = __.Logger;
     return result;
   }
 
@@ -273,21 +272,21 @@ _handleUncaught2.defaults =
 function _handleUncaughtAsync( err )
 {
 
-  if( _.errIsAttended( err ) )
+  if( _.error.isAttended( err ) )
   return err;
 
-  _.errWary( err, 1 );
+  _.error.wary( err, 1 );
 
-  if( _.errIsSuspended( err ) )
+  if( _.error.isSuspended( err ) )
   return err;
 
   let timer = _.time._finally( _.error.uncaughtDelayTime, function uncaught()
   {
 
-    if( _.errIsAttended( err ) )
+    if( _.error.isAttended( err ) )
     return;
 
-    if( _.errIsSuspended( err ) )
+    if( _.error.isSuspended( err ) )
     return;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
@@ -331,8 +330,8 @@ function _setupUncaughtErrorHandler9()
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
 
-    if( _._err )
-    err = _._err
+    if( _.error._err )
+    err = _.error._err
     ({
       args : [ error || message ],
       level : 1,
