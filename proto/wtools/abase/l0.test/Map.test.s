@@ -16649,17 +16649,17 @@ function assertMapHasNoUndefine( test )
 function mapHasNoneMapOnlyPerformance( test )
 {
   /*
-    | **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    |     **Routine**      | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
     | :------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    | mapHasNoneFor BASI   | 1.3931s            | 1.9093s           | 1.7917s            | 1.8383s            | 2.0569s           |
-    | mapHasNoneForOf BASI | 3.5931s            | 2.0025s           | 1.9753s            | 2.0242s            | 2.1874s           |
-    | mapHasNoneFor SABI   | 0.0000183s         | 0.0000202s        | 0.0000154s         | 0.0000166s         | 0.0000188s        |
-    | mapHasNoneForOf SABI | 0.0000187s         | 0.0000119s        | 0.000012s          | 0.0000155s         | 0.0000185s        |
-    | -                    | -                  | -                 | -                  | -                  | -                 |
-    | _mapOnlyFor BASI     | 5.9452s            | 5.3333s           | 5.6317s            | 5.6224s            | 3.8146s           |
-    | _mapOnlyForOf BASI   | 2.1911s            | 1.9438s           | 2.6383s            | 2.238s             | 2.1645s           |
-    | _mapOnlyFor SABI     | 0.000029s          | 0.0000286s        | 0.0000322s         | 0.0000304s         | 0.0000321s        |
-    | _mapOnlyForOf SABI   | 0.0000335s         | 0.0000284s        | 0.0000332s         | 0.000031s          | 0.0000335s        |
+    |  mapHasNoneFor BASI  |      1.3931s       |      1.9093s      |      1.7917s       |      1.8383s       |      2.0569s      |
+    | mapHasNoneForOf BASI |      3.5931s       |      2.0025s      |      1.9753s       |      2.0242s       |      2.1874s      |
+    |  mapHasNoneFor SABI  |     0.0000183s     |    0.0000202s     |     0.0000154s     |     0.0000166s     |    0.0000188s     |
+    | mapHasNoneForOf SABI |     0.0000187s     |    0.0000119s     |     0.000012s      |     0.0000155s     |    0.0000185s     |
+    |          -           |         -          |         -         |         -          |         -          |         -         |
+    |   _mapOnlyFor BASI   |      1.2686s       |      1.3045s      |      1.3271s       |      1.4486s       |      1.4252s      |
+    |  _mapOnlyForOf BASI  |      1.4654s       |      1.6092s      |      2.1641s       |      1.6454s       |      1.3312s      |
+    |   _mapOnlyFor SABI   |     0.0000248s     |    0.0000242s     |     0.0000255s     |     0.0000235s     |    0.0000235s     |
+    |  _mapOnlyForOf SABI  |     0.0000269s     |    0.0000199s     |     0.0000247s     |     0.0000243s     |    0.0000218s     |
 
     BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
     SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
@@ -16674,21 +16674,17 @@ function mapHasNoneMapOnlyPerformance( test )
   var counter = 0;
   var took = 0;
 
-  debugger
   for( let i = times; i > 0; i-- )
   {
-    debugger;
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyForOf({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
     counter = 0;
-    debugger
   }
-  debugger
 
   console.log( `Array length = ${size}, iterations = ${times}` );
   console.log( `Routine BASI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
@@ -16709,7 +16705,7 @@ function mapHasNoneMapOnlyPerformance( test )
     var time1 = _.time.now();
     /* Routine for testing */
     // mapHasNoneFor( { a : 1 }, array );
-    _mapOnlyForOf({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
     var time2 = _.time.now();
     took += time2 - time1;
     test.identical( counter, size );
@@ -16839,7 +16835,7 @@ function mapHasNoneMapOnlyPerformance( test )
         if( _.primitive.is( o.screenMaps[ m ] ) )
         {
           counter++;
-          if( o.screenMaps[ m ] === key || String( m ) === key )
+          if( o.screenMaps[ m ] === key )
           return key;
         }
       }
@@ -16848,7 +16844,7 @@ function mapHasNoneMapOnlyPerformance( test )
         for( let m of o.screenMaps )
         if( _.primitive.is( m ) )
         {
-          if( m === key || String( m ) === key )
+          if( m === key )
           return key;
         }
       }
@@ -16926,7 +16922,7 @@ function mapHasNoneMapOnlyPerformance( test )
         // for( let m = 0 ; m < o.screenMaps.length ; m++ )
         // if( _.primitive.is( o.screenMaps[ m ] ) )
         // {
-        //   if( o.screenMaps[ m ] === key || String( m ) === key )
+        //   if( o.screenMaps[ m ] === key )
         //   return key;
         // }
       }
@@ -16936,7 +16932,7 @@ function mapHasNoneMapOnlyPerformance( test )
       if( _.primitive.is( m ) )
       {
         counter++;
-        if( m === key || String( m ) === key )
+        if( m === key )
         return key;
       }
       // }
