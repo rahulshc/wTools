@@ -486,6 +486,7 @@ function strShort2( o )
   {
     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
+      if( o.testing )
       o.testingData.counter++;
       src = src.slice( 1 );
     }
@@ -495,6 +496,7 @@ function strShort2( o )
   {
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
+      if( o.testing )
       o.testingData.counter++;
       src = src.slice( 0, src.length - 1 );
     }
@@ -502,9 +504,7 @@ function strShort2( o )
   }
   else
   {
-    let srcLength = o.onLength( src );
-
-    if( srcLength + fixLength <= o.widthLimit )
+    if( o.onLength( src ) + fixLength <= o.widthLimit )
     return o.prefix + src + o.postfix;
 
     let begin = '';
@@ -512,32 +512,30 @@ function strShort2( o )
 
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
+      if( o.testing )
       o.testingData.counter++;
-      /* remove middle character */
+
+      /* find a place between elements */
       let center = Math.floor( src.length / 2 );
       begin = src.slice( 0, center );
-      end = src.slice( center + 1 );
+      end = src.slice( center );
 
-      let isScannedLeft = false;
-      let isScannedRight = false;
+      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but between one element */
+      {
+        center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
+        begin = src.slice( 0, center );
+        end = src.slice( center );
+      }
+
       let beginLength = o.onLength( begin );
       let endLength = o.onLength( end );
-      let lenSum = beginLength + endLength;
-
-      /* begin or/and end contain parts of removed element */
-      if( lenSum > srcLength )
-      {
-        /* remove parts of the same element */
-        for( let i = 1; !isScannedLeft && !isScannedRight; i++ )
-        {
-          // begin = begin.slice( 0, center - i );
-          let beginLength2 = o.onLength( begin );
-          if( beginLength2 === beginLength )
-
-          isScannedLeft = true;
-          isScannedRight = true;
-        }
-      }
+      /* center is between elements, slice from bigger part until 1 complete element is removed */
+      if( o.onLength( begin ) > o.onLength( end ) )
+      while( o.onLength( begin ) >= beginLength )
+        begin = begin.slice( 0, -1 );
+      else
+      while( o.onLength( end ) >= endLength )
+        end = end.slice( 1 );
 
       src = begin + end;
     }

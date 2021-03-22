@@ -2295,82 +2295,138 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut left';
   var src =
   {
-    src : 'abbcccdddd', /* length = 4 */
+    src : 'abbcccdddd',
     widthLimit : 2,
     cutting : 'left',
-    onLength : ( src ) =>
-    {
-      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
-
-      if( match === null ) /* prefix, postfix, infix */
-      return src.length;
-
-      return match.length;
-    }
+    onLength
   }
   var got = _.strShort2( src )
   var expected = 'cccdddd';
   test.identical( got, expected );
 
+  test.case = 'same characters as 1 el, cut right';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'abb';
+  test.identical( got, expected );
+
+  /* cut middle */
+
   test.case = 'same characters as 1 el, cut middle';
   var src =
   {
-    src : 'abbcccdddd', /* length = 4 */
+    src : 'abbcccdddd',
     widthLimit : 2,
     cutting : 'middle',
-    onLength : ( src ) =>
-    {
-      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
-
-      if( match === null ) /* prefix, postfix, infix */
-      return src.length;
-
-      return match.length;
-    }
+    onLength
   }
   var got = _.strShort2( src )
-  var expected = 'adddd'; /* now 'ad' */
+  var expected = 'adddd'; /* ! */
   test.identical( got, expected );
 
-  test.case = 'same characters as 1 el, 3 characters, cut middle';
+  test.case = 'same characters as 1 el, 5 characters, cut middle';
   var src =
   {
-    src : 'abcde', /* length = 4 */
+    src : 'abcde',
     widthLimit : 4,
     cutting : 'middle',
-    onLength : ( src ) =>
-    {
-      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
-
-      if( match === null ) /* prefix, postfix, infix */
-      return src.length;
-
-      return match.length;
-    }
+    onLength
   }
   var got = _.strShort2( src )
   var expected = 'abde';
   test.identical( got, expected );
 
-  test.case = 'same characters as 1 el, cut right';
+  test.case = 'same characters as 1 el, big str, cut middle';
   var src =
   {
-    src : 'abbcccdddd', /* length = 4 */
-    widthLimit : 2,
-    cutting : 'right',
-    onLength : ( src ) =>
-    {
-      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
-
-      if( match === null ) /* prefix, postfix, infix */
-      return src.length;
-
-      return match.length;
-    }
+    src : 'aabbccccccccc111222333dddeee',
+    widthLimit : 4,
+    cutting : 'middle',
+    onLength
   }
   var got = _.strShort2( src )
-  var expected = 'abb';
+  var expected = 'aabbdddeee';
   test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, 3 characters, cut middle';
+  var src =
+  {
+    src : 'abc',
+    widthLimit : 2,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'ac';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'same characters as 1 el, cut middle, odd width';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 3,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'abbdddd';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, 5 characters, cut middle, odd width';
+  var src =
+  {
+    src : 'abcde',
+    widthLimit : 3,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'abe';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, big str, cut middle, odd width';
+  var src =
+  {
+    src : 'aabbccccccccc111222333dddeee',
+    widthLimit : 5,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'aabbcccccccccdddeee';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, 3 characters, cut middle, odd width';
+  var src =
+  {
+    src : 'abc',
+    widthLimit : 1,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort2( src )
+  var expected = 'a';
+  test.identical( got, expected );
+
+  /* - */
+
+  function onLength( src )
+  {
+    let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+    if( match === null ) /* prefix, postfix, infix */
+    return src.length;
+
+    return match.length;
+  }
 
 }
 
@@ -2639,11 +2695,18 @@ function strShortPerformance( test )
 
   /* - */
 
-  function act()
+  function act() /* existing implementation with fixed 'center' cutting */
   {
     _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
     _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
     _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+  }
+
+  function act2() /* binary search implementation */
+  {
+    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
   }
 
   function onLength( src )
