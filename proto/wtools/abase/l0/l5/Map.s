@@ -2920,19 +2920,19 @@ function _mapOnly( o )
   _.map.assertHasOnly( o, _mapOnly.defaults );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   for( let srcMap of o.srcMaps )
   {
     _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
 
-    if( _.vector.is( o.screenMaps ) )
+    if( _.countable.is( o.screenMaps ) )
     filterSrcMapWithVectorScreenMap( srcMap );
     else
     filterSrcMap( srcMap );
   }
   else
   {
-    if( _.vector.is( o.screenMaps ) )
+    if( _.countable.is( o.screenMaps ) )
     filterSrcMapWithVectorScreenMap( o.srcMaps );
     else
     filterSrcMap( o.srcMaps );
@@ -3109,12 +3109,12 @@ function _mapOnly_( o )
   /* aaa : allow and cover vector */ /* Dmytro : allowed, covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
 
   let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
-  let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
+  let screenMapsIsCountable = _.countable.is( o.screenMaps ) ? 2 : 0;
   let filterRoutines = [ filterNotIdentical, filterIdentical, filterWithVectorScreenMap, filterWithVectorScreenMap ];
   let filterCallbacks = [ filterNotIdenticalMaps, filterIdenticalMaps ];
-  let key = mapsAreIdentical + screenMapsIsVector;
+  let key = mapsAreIdentical + screenMapsIsCountable;
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {

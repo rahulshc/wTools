@@ -10768,7 +10768,7 @@ function mapOnly_DstMapIsMap( test )
 
 //
 
-function mapOnly_SrcMapsIsVector( test )
+function mapOnly_SrcMapsIsCountable( test )
 {
   test.open( 'unroll' );
 
@@ -10879,11 +10879,105 @@ function mapOnly_SrcMapsIsVector( test )
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.close( 'containerAdapter' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = new countableConstructor({ elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], withIterator : 1 });
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = new countableConstructor({ elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], withIterator : 1 });
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = new countableConstructor({ elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], withIterator : 1 });
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.close( 'countable' );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
 
-function mapOnly_ScreenMapIsVector( test )
+function mapOnly_ScreenMapIsCountable( test )
 {
   test.open( 'unroll' );
 
@@ -11015,6 +11109,109 @@ function mapOnly_ScreenMapIsVector( test )
   test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
 
   test.close( 'containerAdapter' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'srcMap - empty map, screenMap - empty countable';
+  var srcMap = {};
+  var screenMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'srcMap - empty map, screenMap - filled countable';
+  var srcMap = {};
+  var screenMap = new countableConstructor({ elements : [ 'a', 'c', { b : 77 } ], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'screenMap - empty countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'all keys in srcMap exists in screenMap - countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = new countableConstructor({ elements : [ 'a', 'c', { d : 7 } ], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'none keys in srcMap exists in screenMap - countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = new countableConstructor({ elements : [ 'aa', '13', { bb : 77 } ], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = new countableConstructor({ elements : [ { a : 13 }, [ 'a', 'b', 'c' ] ], withIterator : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+
+  test.close( 'countable' );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
@@ -18147,8 +18344,8 @@ let Self =
     mapOnly_WithTwoArguments,
     mapOnly_DstMapIsNull,
     mapOnly_DstMapIsMap,
-    mapOnly_SrcMapsIsVector,
-    mapOnly_ScreenMapIsVector,
+    mapOnly_SrcMapsIsCountable,
+    mapOnly_ScreenMapIsCountable,
 
     mapOnlyOwn_WithTwoArguments,
     mapOnlyOwn_DstMapIsNull,
