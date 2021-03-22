@@ -875,11 +875,11 @@ function mapsExtend( dstMap, srcMaps )
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
   /* aaa : allow and cover vector */ /* Dmytro : allowed and covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
-  if( !_.vector.is( srcMaps ) )
-  dstMapExtend( srcMaps );
-  else
+  if( _.countable.is( srcMaps ) )
   for( let srcMap of srcMaps )
   dstMapExtend( srcMap );
+  else
+  dstMapExtend( srcMaps );
 
   return dstMap;
 

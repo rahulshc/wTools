@@ -1226,6 +1226,76 @@ function mapsExtend( test )
 
   test.close( 'null prototyped map extesion' );
 
+  /* */
+
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - same vector';
+  var dst = { a : 1 };
+  var src1 = { a : 1 };
+  var screen = new countableConstructor({ elements : [ src1 ], withIterator : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - same vector';
+  var dst = { a : 1 };
+  var src1 = { a : 1 };
+  var screen = new countableConstructor({ elements : [ src1 ], withIterator : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - vector > src';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var screen = new countableConstructor({ elements : [ src1 ], withIterator : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+
+  test.case = 'screen - countable > src';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var screen = new countableConstructor({ elements : [ src1 ], withIterator : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+
+  test.case = 'screen - vector, several srcs';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var screen = new countableConstructor({ elements : [ src1, src2 ], withIterator : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+
+  test.case = 'screen - countable, several srcs';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var screen = new countableConstructor({ elements : [ src1, src2 ], withIterator : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+
+  test.close( 'countable' );
+
   /* - */
 
   if( !Config.debug )
@@ -1247,6 +1317,49 @@ function mapsExtend( test )
   test.case = 'wrong type of srcMaps';
   test.shouldThrowErrorSync( () => _.mapsExtend( {}, 'wrong' ) );
   test.shouldThrowErrorSync( () => _.mapsExtend( {}, [ 'wrong' ] ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
