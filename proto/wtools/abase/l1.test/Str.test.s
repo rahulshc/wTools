@@ -2244,53 +2244,53 @@ function strStrShortOptionInfix( test )
 function strStrShortOptionsOnLength( test )
 {
 
-  // test.case = 'true length is smaller';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '1' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '202020';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
+  test.case = 'true length is smaller';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is the same';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '10' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '200';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  test.case = 'true length is the same';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '200';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'true length is bigger';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '100' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '20';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'true length is bigger';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
   test.case = 'same characters as 1 el, cut left';
   var src =
