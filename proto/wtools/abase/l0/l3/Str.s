@@ -515,12 +515,12 @@ function strShort2( o )
       if( o.testing )
       o.testingData.counter++;
 
-      /* find a place between elements */
+      /* find a place between elements, not within element */
       let center = Math.floor( src.length / 2 );
       begin = src.slice( 0, center );
       end = src.slice( center );
 
-      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but between one element */
+      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
       {
         center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
         begin = src.slice( 0, center );
