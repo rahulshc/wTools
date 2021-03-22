@@ -2547,26 +2547,18 @@ function strStrShortOptionsCombination( test )
 function strShortPerformance( test )
 {
   /*
-    |          **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
-    | :---------------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |    strShort BISI : middle     |                    |                   |                    |                    |                   |
-    | strShortBinary BISI  : middle |                    |                   |                    |                    |                   |
-    |    strShort SIBI  : middle    |                    |                   |                    |                    |                   |
-    | strShortBinary SIBI  : middle |                    |                   |                    |                    |                   |
-    |     strShort BISI : left      |                    |                   |                    |                    |                   |
-    |  strShortBinary BISI  : left  |                    |                   |                    |                    |                   |
-    |     strShort SIBI  : left     |                    |                   |                    |                    |                   |
-    |  strShortBinary SIBI  : left  |                    |                   |                    |                    |                   |
-    |     strShort BISI : right     |                    |                   |                    |                    |                   |
-    | strShortBinary BISI  : right  |                    |                   |                    |                    |                   |
-    |    strShort SIBI  : right     |                    |                   |                    |                    |                   |
-    | strShortBinary SIBI  : right  |                    |                   |                    |                    |                   |
+    |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    |    strShort BISI    | regular |                    |                   |                    |                    |                   |
+    | strShortBinary BISI | binary  |                    |                   |                    |                    |                   |
+    |    strShort SIBI    | regular |                    |                   |                    |                    |                   |
+    | strShortBinary SIBI | binary  |                    |                   |                    |                    |                   |
 
     BISI = Big input( length : 5e7 ), small amount of iterations ( 1e1 )
     SIBI = Small input ( length : 5e2 ), big amount of iterations ( 1e4 )
   */
 
-  test.case = 'long array, 10 iterations';
+  test.case = 'long string, 10 iterations';
   var times = 1e1;
   var size = 1e3;
   var filler = 'abbcccdddd';
@@ -2576,20 +2568,17 @@ function strShortPerformance( test )
   var stringSize = string.length;
   test.true( true );
 
-  var counter = 0;
+  var testing = { counter : 0 };
   var took = 0;
 
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    /* Routine for testing */
-    let result = _.strShort2({ src : string, onLength, widthLimit : 2 });
-    /* ------------------- */
+    act();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( result, 'ad' ) /* adddd ? */
-    // test.identical( counter, stringSize-2 );
-    counter = 0;
+    test.identical( testing.counter, ( stringSize * 3 ) - 12 );
+    testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
@@ -2607,33 +2596,34 @@ function strShortPerformance( test )
   .join( '' );
   var stringSize = string.length;
 
-  var counter = 0;
+  var testing = { counter : 0 }
   var took = 0;
 
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    /* Routine for testing */
-    let result = act();
-    /* ------------------- */
+    act();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( result, 'ad' ) /* adddd ? */
-    // test.identical( counter, stringSize-2 );
-    counter = 0
+    test.identical( testing.counter, ( stringSize * 3 ) - 12 ); /* CENTER : 'ad', LEFT : 'cccdddd' RIGHT : 'abb' */
+    testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
   console.log( '----------------------------------------------------' );
 
+  // console.log( 'CENTER', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testing }) );
+  // console.log( 'LEFT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testing }) );
+  // console.log( 'RIGHT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testing }) );
+
   /* - */
 
   function act()
   {
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center' });
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left' });
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'rigth' });
+    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
   }
 
   function onLength( src )
