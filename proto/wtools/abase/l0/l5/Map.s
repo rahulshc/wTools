@@ -1631,11 +1631,11 @@ function objectSetWithKeys( dstMap, key, val )
   dstMap = Object.create( null );
 
   _.assert( _.object.is( dstMap ) );
-  _.assert( _.strIs( key ) || _.vector.is( key ) );
+  _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
-  if( _.vector.is( key ) )
+  if( _.countable.is( key ) )
   {
     if( _.arrayLike( key ) )
     for( let s = 0 ; s < key.length ; s++ )
@@ -1670,11 +1670,11 @@ function objectSetWithKeyStrictly( dstMap, key, val )
   dstMap = Object.create( null );
 
   _.assert( _.object.is( dstMap ) );
-  _.assert( _.strIs( key ) || _.vector.is( key ) );
+  _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
-  if( _.vector.is( key ) )
+  if( _.countable.is( key ) )
   {
     if( _.arrayLike( key ) )
     for( let s = 0 ; s < key.length ; s++ )
@@ -1812,13 +1812,13 @@ function mapInvertDroppingDuplicates( src, dst )
 function mapsFlatten( o )
 {
 
-  if( _.vector.is( o ) )
+  if( _.countable.is( o ) )
   o = { src : o };
 
   _.routine.options( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
-  _.assert( _.vector.is( o.src ) || _.aux.is( o.src ) ); /* xxx */
+  _.assert( _.countable.is( o.src ) || _.aux.is( o.src ) ); /* xxx */
 
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
@@ -1831,7 +1831,7 @@ function mapsFlatten( o )
   {
 
     /* aaa : allow and cover vector */ /* Dmytro : extended, covered */
-    if( _.vector.is( src ) )
+    if( _.countable.is( src ) )
     {
       if( _.arrayLike( src ) )
       for( let s = 0 ; s < src.length ; s++ )
@@ -2006,7 +2006,7 @@ function mapButConditional( propertyFilter, srcMap, butMap )
   let result = Object.create( null );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( butMap ) )
+  if( _.countable.is( butMap ) )
   {
     let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
     let arrayLikeIs = _.arrayLike( butMap ) ? 1 : 0;
@@ -2175,7 +2175,7 @@ function mapBut( srcMap, butMap )
   _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( butMap ) )
+  if( _.countable.is( butMap ) )
   {
     let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
     let arrayLikeIs = _.arrayLike( butMap ) ? 1 : 0;
@@ -2416,7 +2416,7 @@ function _mapBut_( o )
   // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
 
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let butMapIsCountable = _.countable.is( o.butMap ) ? 2 : 0;
   let filterRoutines =
   [
     filterNotIdentical,
@@ -2424,7 +2424,7 @@ function _mapBut_( o )
     filterNotIdenticalWithVectorButMap,
     filterIdenticalWithVectorButMap
   ];
-  let key = mapsAreIdentical + butMapIsVector;
+  let key = mapsAreIdentical + butMapIsCountable;
 
   for( let s in o.srcMap )
   filterRoutines[ key ]( s );

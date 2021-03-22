@@ -1739,6 +1739,40 @@ function objectSetWithKeys( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.objectSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeys( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeys( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  test.close( 'countable' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -1758,6 +1792,49 @@ function objectSetWithKeys( test )
   test.case = 'src is not array of strings or string'
   test.shouldThrowErrorSync( () => _.objectSetWithKeys( { 'a' : 1 }, 1, 'a' ) );
   test.shouldThrowErrorSync( () => _.objectSetWithKeys( { 'a' : 1 }, { 'k' : 2 }, 'a' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
@@ -2023,6 +2100,68 @@ function objectSetWithKeyStrictly( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'screen - empty vector';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.objectSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  test.close( 'countable' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -2045,6 +2184,49 @@ function objectSetWithKeyStrictly( test )
 
   test.case = 'dstMap has value not identical to val'
   test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
@@ -2761,6 +2943,30 @@ function mapsFlatten( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'src - empty countable';
+  var src = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable';
+  var src = new countableConstructor({ elements : [ { a : 1 } ], withIterator : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable, several, nested';
+  var src = new countableConstructor({ elements : [ { a : 1, dir : { b : 2 } }, { c : 3 } ], withIterator : 1 });
+  var got = _.mapsFlatten({ src, delimeter : '.' });
+  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
+  test.identical( got, expected );
+
+  test.close( 'countable' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -2808,6 +3014,49 @@ function mapsFlatten( test )
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 'a' ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 1 ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ null ] }) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 
 }
 
@@ -4665,6 +4914,48 @@ function mapButConditional( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'srcMap - empty map, butMap - empty countable';
+  var srcMap = [];
+  var butMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, [] );
+
+  test.case = 'srcMap - empty map, butMap - filled countable';
+  var srcMap = [];
+  var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, [] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled countable, not identical keys';
+  var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  var butMap = new countableConstructor({ elements : [ 'a', 'b', 'c', 'd' ], withIterator : 1 });
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = { 1 : 0, 3 : 1 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled countable, has identical keys';
+  var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  var butMap = new countableConstructor({ elements : [ 'a', '3', 'b', '1' ], withIterator : 1 });
+  var got = _.mapButConditional( filter, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+
+  test.close( 'countable' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -4686,6 +4977,50 @@ function mapButConditional( test )
 
   test.case = 'wrong type of butMap';
   test.shouldThrowErrorSync( () => _.mapButConditional( _.property.mapper.primitive(), {}, 'wrong' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
 }
 
 //
@@ -6061,6 +6396,65 @@ function mapBut( test )
 
   /* - */
 
+  test.open( 'countable' );
+
+  test.case = 'srcMap - empty map, butMap - empty array';
+  var srcMap = {};
+  var butMap = new countableConstructor({ elements : [], withIterator : 1 });;
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'srcMap - empty map, butMap - filled array';
+  var srcMap = {};
+  var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
+  var got = _.mapBut( srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : 3 };
+  var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { aa : 1, bb : 2, cc : 3 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
+
+  test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : 3 };
+  var butMap = new countableConstructor({ elements : [ 'aa', 0, 'bb', 1 ], withIterator : 1 });
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { cc : 3 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
+
+  test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
+  var srcMap = { a : 1, b : 2, cc : 3 };
+  var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { cc : 3 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ { c : 0 }, { a : 0 } ], withIterator : 1 });
+  var got = _.mapBut( srcMap, butMap );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+
+  test.close( 'countable' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -6078,6 +6472,49 @@ function mapBut( test )
 
   test.case = 'second argument is not an object-like';
   test.shouldThrowErrorSync( () => _.mapBut( [], '' ) );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
@@ -6883,7 +7320,7 @@ function mapBut_DstMapIsMap( test )
   var srcMap = [ 'a', 'b', 'c' ]
   var butMap = [ { '0' : 0 }, { '1' : 0 } ];
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { 0 : 'a', 1 : 'b',  2 : 'c' };
+  var expected = { 0 : 'a', 1 : 'b', 2 : 'c' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 'b', 'c' ] );
@@ -6894,7 +7331,7 @@ function mapBut_DstMapIsMap( test )
 
 //
 
-function mapBut_ButMapIsVector( test )
+function mapBut_ButMapIsCountable( test )
 {
   test.open( 'unroll' );
 
@@ -7233,6 +7670,136 @@ function mapBut_ButMapIsVector( test )
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   test.close( 'containerAdapter' );
+
+  /* - */
+
+  test.open( 'countable' );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - empty countable';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - countable, no deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.case = 'dstMap - null, srcMap - filled, butMap - countable, full deleting';
+  var dstMap = null;
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  /* */
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - empty countable';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - countable, no deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.case = 'dstMap - empty, srcMap - filled, butMap - countable, full deleting';
+  var dstMap = {};
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ 'a', 'b' ], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  /* */
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - empty countable';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - countable, no deleting';
+  var dstMap = { c : 3 };
+  var srcMap = { a : 1, b : 2 };
+  var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
+  var got = _.mapBut_( dstMap, srcMap, butMap );
+  var expected = { c : 3, a : 1, b : 2 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2 } );
+
+  test.close( 'countable' );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
 }
 
 //
@@ -17560,7 +18127,7 @@ let Self =
     mapBut_WithTwoArguments,
     mapBut_DstMapIsNull,
     mapBut_DstMapIsMap,
-    mapBut_ButMapIsVector,
+    mapBut_ButMapIsCountable,
 
     mapButIgnoringUndefines_WithThreeArguments,
     mapButIgnoringUndefines_DstMapNull,
