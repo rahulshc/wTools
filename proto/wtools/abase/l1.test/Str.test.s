@@ -2244,53 +2244,113 @@ function strStrShortOptionInfix( test )
 function strStrShortOptionsOnLength( test )
 {
 
-  test.case = 'true length is smaller';
-  var src =
-  {
-    src : '202020',
-    widthLimit : 3,
-    onLength : ( src ) =>
-    {
-      src = src.replace( /20/mg, '1' );
-      return src.length;
-    }
-  }
-  var got = _.strShort( src )
-  var expected = '202020';
-  test.identical( got, expected );
-  test.identical( got.length, 6 );
+  // test.case = 'true length is smaller';
+  // var src =
+  // {
+  //   src : '202020',
+  //   widthLimit : 3,
+  //   onLength : ( src ) =>
+  //   {
+  //     src = src.replace( /20/mg, '1' );
+  //     return src.length;
+  //   }
+  // }
+  // var got = _.strShort( src )
+  // var expected = '202020';
+  // test.identical( got, expected );
+  // test.identical( got.length, 6 );
 
-  test.case = 'true length is the same';
-  var src =
-  {
-    src : '202020',
-    widthLimit : 3,
-    onLength : ( src ) =>
-    {
-      src = src.replace( /20/mg, '10' );
-      return src.length;
-    }
-  }
-  var got = _.strShort( src )
-  var expected = '200';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  // test.case = 'true length is the same';
+  // var src =
+  // {
+  //   src : '202020',
+  //   widthLimit : 3,
+  //   onLength : ( src ) =>
+  //   {
+  //     src = src.replace( /20/mg, '10' );
+  //     return src.length;
+  //   }
+  // }
+  // var got = _.strShort( src )
+  // var expected = '200';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
 
-  test.case = 'true length is bigger';
+  // test.case = 'true length is bigger';
+  // var src =
+  // {
+  //   src : '202020',
+  //   widthLimit : 3,
+  //   onLength : ( src ) =>
+  //   {
+  //     src = src.replace( /20/mg, '100' );
+  //     return src.length;
+  //   }
+  // }
+  // var got = _.strShort( src )
+  // var expected = '20';
+  // test.identical( got, expected );
+  // test.identical( got.length, 2 );
+
+  test.case = 'same characters as 1 el, cut left';
   var src =
   {
-    src : '202020',
-    widthLimit : 3,
+    src : 'abbcccdddd', /* length = 4 */
+    widthLimit : 2,
+    cutting : 'left',
     onLength : ( src ) =>
     {
-      src = src.replace( /20/mg, '100' );
+      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+      if( match === null ) /* prefix, postfix, infix */
       return src.length;
+
+      return match.length;
     }
   }
   var got = _.strShort( src )
-  var expected = '20';
+  var expected = 'cccdddd';
   test.identical( got, expected );
-  test.identical( got.length, 2 );
+
+  test.case = 'same characters as 1 el, cut middle';
+  var src =
+  {
+    src : 'abbcccdddd', /* length = 4 */
+    widthLimit : 2,
+    cutting : 'middle',
+    onLength : ( src ) =>
+    {
+      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+      if( match === null ) /* prefix, postfix, infix */
+      return src.length;
+
+      return match.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = 'ad'; /* 'adddd' ? */
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut right';
+  var src =
+  {
+    src : 'abbcccdddd', /* length = 4 */
+    widthLimit : 2,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+      if( match === null ) /* prefix, postfix, infix */
+      return src.length;
+
+      return match.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = 'abb';
+  test.identical( got, expected );
 
 }
 
@@ -2483,6 +2543,202 @@ function strStrShortOptionsCombination( test )
   test.close( 'change cutting, prefix, infix, postfix' )
 
 }
+
+function strShortPerformance( test )
+{
+  /*
+    |          **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :---------------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    |    strShort BISI : middle     |                    |                   |                    |                    |                   |
+    | strShortBinary BISI  : middle |                    |                   |                    |                    |                   |
+    |    strShort SIBI  : middle    |                    |                   |                    |                    |                   |
+    | strShortBinary SIBI  : middle |                    |                   |                    |                    |                   |
+    |     strShort BISI : left      |                    |                   |                    |                    |                   |
+    |  strShortBinary BISI  : left  |                    |                   |                    |                    |                   |
+    |     strShort SIBI  : left     |                    |                   |                    |                    |                   |
+    |  strShortBinary SIBI  : left  |                    |                   |                    |                    |                   |
+    |     strShort BISI : right     |                    |                   |                    |                    |                   |
+    | strShortBinary BISI  : right  |                    |                   |                    |                    |                   |
+    |    strShort SIBI  : right     |                    |                   |                    |                    |                   |
+    | strShortBinary SIBI  : right  |                    |                   |                    |                    |                   |
+
+    BISI = Big input( length : 5e7 ), small amount of iterations ( 1e1 )
+    SIBI = Small input ( length : 5e2 ), big amount of iterations ( 1e4 )
+  */
+
+  test.case = 'long array, 10 iterations';
+  var times = 1e1;
+  var size = 1e3;
+  var filler = 'abbcccdddd';
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+  test.true( true );
+
+  var counter = 0;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    /* Routine for testing */
+    strShort({ src : string, onLength, widthLimit : 2 });
+    /* ------------------- */
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, stringSize-2 );
+    counter = 0;
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  test.case = 'short array, 10000 iterations';
+  var times = 1e3;
+  var size = 2e1;
+  var filler = 'abbcccdddd';
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+
+  var counter = 0;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    /* Routine for testing */
+    strShort({ src : string, onLength, widthLimit : 2 });
+    /* ------------------- */
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, stringSize-2 );
+    counter = 0
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+  function strShort( o )
+  {
+
+    if( arguments.length === 2 )
+    o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
+    else if( arguments.length === 1 )
+    if( _.strIs( o ) )
+    o = { src : arguments[ 0 ] };
+
+    strShort.defaults =
+    {
+      src : null,
+      widthLimit : 40,
+      heightLimit : 0,
+      prefix : null,
+      postfix : null,
+      infix : null,
+      onLength : null, /* xxx : investigate */
+      cutting : 'center',
+    }
+
+    _.routine.options( strShort, o );
+
+    _.assert( _.strIs( o.src ) );
+    _.assert( _.number.is( o.widthLimit ) );
+    _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
+    _.assert( o.prefix === null || _.strIs( o.prefix ) );
+    _.assert( o.postfix === null || _.strIs( o.postfix ) );
+    _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+
+    if( !o.infix )
+    o.infix = '';
+    if( !o.prefix )
+    o.prefix = '';
+    if( !o.postfix )
+    o.postfix = '';
+    if( o.src.length < 1 )
+    {
+      if( o.prefix.length + o.postfix.length <= o.widthLimit )
+      return o.prefix + o.postfix
+      o.src = o.prefix + o.postfix;
+      o.prefix = '';
+      o.postfix = '';
+    }
+    if( _.bool.likeTrue( o.infix ) )
+    o.infix = '...';
+
+    if( !o.onLength )
+    o.onLength = ( src ) => src.length;
+
+    if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
+    return o.prefix + o.infix + o.postfix;
+
+    if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
+    {
+      o.src = o.prefix + o.infix + o.postfix;
+      o.prefix = '';
+      o.postfix = '';
+      o.infix = '';
+    }
+
+    let src = o.src;
+    let fixLength = 0;
+    fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+
+    if( o.cutting === 'left' )
+    {
+      while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+      {
+        src = src.slice( 1 );
+      }
+      return o.prefix + o.infix + src + o.postfix;
+    }
+    else if( o.cutting === 'right' )
+    {
+      while( o.onLength( src ) + fixLength > o.widthLimit )
+      {
+        src = src.slice( 0, src.length - 1 );
+      }
+      return o.prefix + src + o.infix + o.postfix;
+    }
+    else
+    {
+      if( o.onLength( src ) + fixLength <= o.widthLimit )
+      return o.prefix + src + o.postfix;
+      let begin = '';
+      let end = '';
+      while( o.onLength( src ) + fixLength > o.widthLimit )
+      {
+        counter++;
+        begin = src.slice( 0, Math.floor( src.length / 2 ) );
+        end = src.slice( Math.floor( src.length / 2 ) + 1 );
+        src = begin + end;
+      }
+      return o.prefix + begin + o.infix + end + o.postfix;
+    }
+  }
+
+  function onLength( src )
+  {
+    let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+    if( match === null ) /* prefix, postfix, infix */
+    return src.length;
+
+    return match.length;
+  }
+
+}
+
+strShortPerformance.timeOut = 1e7;
+strShortPerformance.experimental = true;
 
 //--
 // transformer
@@ -11533,6 +11789,7 @@ let Self =
     strStrShortOptionsOnLength,
     strStrShortOptionCutting,
     strStrShortOptionsCombination,
+    strShortPerformance,
 
     // transformer
 

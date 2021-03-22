@@ -253,3 +253,19 @@ In the example above, the routine has both branches implemented, but the develop
 - Don't confuse unattended errors and uncaught errors.
 - The assertion is a mechanism for deductive and inductive practices.
 - TDD practice is superior but expensive.
+
+
+|          **Routine**          | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+| :---------------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+|    strShort BASI : middle     |       1.29s        |                   |                    |                    |                   |
+| strShortBinary BASI  : middle |                    |                   |                    |                    |                   |
+|    strShort SABI  : middle    |     0.003295s      |                   |                    |                    |                   |
+| strShortBinary SABI  : middle |                    |                   |                    |                    |                   |
+|     strShort BASI : left      |                    |                   |                    |                    |                   |
+|  strShortBinary BASI  : left  |                    |                   |                    |                    |                   |
+|     strShort SABI  : left     |                    |                   |                    |                    |                   |
+|  strShortBinary SABI  : left  |                    |                   |                    |                    |                   |
+|     strShort BASI : right     |                    |                   |                    |                    |                   |
+| strShortBinary BASI  : right  |                    |                   |                    |                    |                   |
+|    strShort SABI  : right     |                    |                   |                    |                    |                   |
+| strShortBinary SABI  : right  |                    |                   |                    |                    |                   |
