@@ -405,8 +405,6 @@ function strShort( o )
     let end = '';
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      counter++;
-      ;
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
       src = begin + end;
@@ -504,19 +502,43 @@ function strShort2( o )
   }
   else
   {
-    if( o.onLength( src ) + fixLength <= o.widthLimit )
+    let srcLength = o.onLength( src );
+
+    if( srcLength + fixLength <= o.widthLimit )
     return o.prefix + src + o.postfix;
+
     let begin = '';
     let end = '';
+
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
       o.testingData.counter++;
-      begin = src.slice( 0, Math.floor( src.length / 2 ) );
-      let removed = src[ Math.floor( src.length / 2 ) ];
-      end = src.slice( Math.floor( src.length / 2 ) + 1 );
+      /* remove middle character */
+      let center = Math.floor( src.length / 2 );
+      begin = src.slice( 0, center );
+      end = src.slice( center + 1 );
+
+      let isScannedLeft = false;
+      let isScannedRight = false;
       let beginLength = o.onLength( begin );
       let endLength = o.onLength( end );
-      let sum = beginLength + endLength;
+      let lenSum = beginLength + endLength;
+
+      /* begin or/and end contain parts of removed element */
+      if( lenSum > srcLength )
+      {
+        /* remove parts of the same element */
+        for( let i = 1; !isScannedLeft && !isScannedRight; i++ )
+        {
+          // begin = begin.slice( 0, center - i );
+          let beginLength2 = o.onLength( begin );
+          if( beginLength2 === beginLength )
+
+          isScannedLeft = true;
+          isScannedRight = true;
+        }
+      }
+
       src = begin + end;
     }
     return o.prefix + begin + o.infix + end + o.postfix;

@@ -2255,7 +2255,7 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort( src )
+  var got = _.strShort2( src )
   var expected = '202020';
   test.identical( got, expected );
   test.identical( got.length, 6 );
@@ -2271,7 +2271,7 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort( src )
+  var got = _.strShort2( src )
   var expected = '200';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
@@ -2287,7 +2287,7 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort( src )
+  var got = _.strShort2( src )
   var expected = '20';
   test.identical( got, expected );
   test.identical( got.length, 2 );
@@ -2308,7 +2308,7 @@ function strStrShortOptionsOnLength( test )
       return match.length;
     }
   }
-  var got = _.strShort( src )
+  var got = _.strShort2( src )
   var expected = 'cccdddd';
   test.identical( got, expected );
 
@@ -2328,8 +2328,28 @@ function strStrShortOptionsOnLength( test )
       return match.length;
     }
   }
-  var got = _.strShort( src )
-  var expected = 'ad'; /* 'adddd' ? */
+  var got = _.strShort2( src )
+  var expected = 'adddd'; /* now 'ad' */
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, 3 characters, cut middle';
+  var src =
+  {
+    src : 'abcde', /* length = 4 */
+    widthLimit : 4,
+    cutting : 'middle',
+    onLength : ( src ) =>
+    {
+      let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+      if( match === null ) /* prefix, postfix, infix */
+      return src.length;
+
+      return match.length;
+    }
+  }
+  var got = _.strShort2( src )
+  var expected = 'abde';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, cut right';
@@ -2348,7 +2368,7 @@ function strStrShortOptionsOnLength( test )
       return match.length;
     }
   }
-  var got = _.strShort( src )
+  var got = _.strShort2( src )
   var expected = 'abb';
   test.identical( got, expected );
 
