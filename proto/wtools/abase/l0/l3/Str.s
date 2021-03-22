@@ -399,21 +399,18 @@ function strShort( o )
   }
   else
   {
-    debugger;
     if( o.onLength( src ) + fixLength <= o.widthLimit )
     return o.prefix + src + o.postfix;
     let begin = '';
     let end = '';
-    debugger
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
       counter++;
-      debugger;
+      ;
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
       src = begin + end;
     }
-    debugger;
     return o.prefix + begin + o.infix + end + o.postfix;
   }
 
