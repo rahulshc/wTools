@@ -16649,17 +16649,17 @@ function assertMapHasNoUndefine( test )
 function mapHasNoneMapOnlyPerformance( test )
 {
   /*
-    |     **Routine**      | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
-    | :------------------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |  mapHasNoneFor BASI  |      1.3931s       |      1.9093s      |      1.7917s       |      1.8383s       |      2.0569s      |
-    | mapHasNoneForOf BASI |      3.5931s       |      2.0025s      |      1.9753s       |      2.0242s       |      2.1874s      |
-    |  mapHasNoneFor SABI  |     0.0000183s     |    0.0000202s     |     0.0000154s     |     0.0000166s     |    0.0000188s     |
-    | mapHasNoneForOf SABI |     0.0000187s     |    0.0000119s     |     0.000012s      |     0.0000155s     |    0.0000185s     |
-    |          -           |         -          |         -         |         -          |         -          |         -         |
-    |   _mapOnlyFor BASI   |      1.2686s       |      1.3045s      |      1.3271s       |      1.4486s       |      1.4252s      |
-    |  _mapOnlyForOf BASI  |      1.4654s       |      1.6092s      |      2.1641s       |      1.6454s       |      1.3312s      |
-    |   _mapOnlyFor SABI   |     0.0000248s     |    0.0000242s     |     0.0000255s     |     0.0000235s     |    0.0000235s     |
-    |  _mapOnlyForOf SABI  |     0.0000269s     |    0.0000199s     |     0.0000247s     |     0.0000243s     |    0.0000218s     |
+    |   **Routine**   | type  | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :-------------: | :---: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    | mapHasNone BASI |  for  |      1.3931s       |      1.9093s      |      1.7917s       |      1.8383s       |      2.0569s      |
+    | mapHasNone BASI | forOf |      3.5931s       |      2.0025s      |      1.9753s       |      2.0242s       |      2.1874s      |
+    | mapHasNone SABI |  for  |     0.0000183s     |    0.0000202s     |     0.0000154s     |     0.0000166s     |    0.0000188s     |
+    | mapHasNone SABI | forOf |     0.0000187s     |    0.0000119s     |     0.000012s      |     0.0000155s     |    0.0000185s     |
+    |        -        |       |         -          |         -         |         -          |         -          |         -         |
+    |  _mapOnly BASI  |  for  |      1.2686s       |      1.3045s      |      1.3271s       |      1.4486s       |      1.4252s      |
+    |  _mapOnly BASI  | forOf |      1.4654s       |      1.6092s      |      2.1641s       |      1.6454s       |      1.3312s      |
+    |  _mapOnly SABI  |  for  |     0.0000248s     |    0.0000242s     |     0.0000255s     |     0.0000235s     |    0.0000235s     |
+    |  _mapOnly SABI  | forOf |     0.0000269s     |    0.0000199s     |     0.0000247s     |     0.0000243s     |    0.0000218s     |
 
     BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
     SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
