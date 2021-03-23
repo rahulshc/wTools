@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.bool = _.bool || Object.create( null );
 
 // --
@@ -13,7 +13,7 @@ let Self = _.bool = _.bool || Object.create( null );
 
 /**
  * Returns true if entity ( src ) is a Boolean values - true and false.
- * @function boolIs
+ * @function is
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
@@ -47,8 +47,8 @@ function is( src )
 //
 
 /**
- * Routine boolLike() returns true if entity ( src ) is a Boolean values - true and false or Numbers 1 and 0.
- * @function boolLike
+ * Routine like() returns true if entity ( src ) is a Boolean values - true and false or Numbers 1 and 0.
+ * @function like
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
@@ -90,7 +90,7 @@ function like( src )
 
 /**
  * Returns true if entity ( src ) is Boolean value - false or Number - 0.
- * @function boolLikeFalse
+ * @function likeFalse
  * @param { * } src - An entity to check.
  * @namespace Tools
  *
@@ -127,7 +127,7 @@ function likeFalse( src )
 
 /**
  * Returns true if entity ( src ) is Boolean value - true or Number - 1.
- * @function boolLikeTrue
+ * @function likeTrue
  * @param { * } src - An entity to check.
  * @namespace Tools
  *

@@ -10,7 +10,7 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 //--
 // map checker
@@ -15690,7 +15690,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps ), errCallback );
@@ -15704,7 +15704,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
@@ -15718,7 +15718,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg ), errCallback );
@@ -15731,7 +15731,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
@@ -15745,7 +15745,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
@@ -15759,7 +15759,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
@@ -15773,7 +15773,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
@@ -15788,7 +15788,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Map.polluted should have no fields : "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps ), errCallback );
@@ -15802,7 +15802,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg' ), errCallback );
@@ -15816,7 +15816,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg ), errCallback );
@@ -15829,7 +15829,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', '90' ), errCallback );
@@ -15843,7 +15843,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'msg', msg ), errCallback );
@@ -15857,7 +15857,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, 'msg' ), errCallback );
@@ -15871,7 +15871,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, msg, msg ), errCallback );
@@ -15888,7 +15888,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
@@ -15901,7 +15901,7 @@ function assertMapHasOnly( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Fields :: "a", "b", "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasOnly( srcMap, screenMaps, 'Fields ::' ), errCallback );
@@ -16474,7 +16474,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Map.polluted should have no undefines, but has : "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap ), errCallback );
@@ -16485,7 +16485,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg' ), errCallback );
@@ -16497,7 +16497,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg ), errCallback );
@@ -16508,7 +16508,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
@@ -16520,7 +16520,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', msg ), errCallback );
@@ -16532,7 +16532,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 msg "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
@@ -16544,7 +16544,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 90 "d"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, msg ), errCallback );
@@ -16557,7 +16557,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'Array should have no undefines, but has : "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap ), errCallback );
@@ -16568,7 +16568,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg' ), errCallback );
@@ -16580,7 +16580,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg ), errCallback );
@@ -16591,7 +16591,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg msg "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', 'msg' ), errCallback );
@@ -16603,7 +16603,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, 'msg 90 "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, 'msg', msg ), errCallback );
@@ -16615,7 +16615,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 msg "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, 'msg' ), errCallback );
@@ -16627,7 +16627,7 @@ function assertMapHasNoUndefine( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( err.originalMessage, '90 90 "2"' );
   };
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( srcMap, msg, msg ), errCallback );

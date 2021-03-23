@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.entity = _.entity || Object.create( null );
 
 // --
@@ -339,7 +339,7 @@ function makeUndefined( src, length )
 //   }
 //   else if( _.aux.is( src ) )
 //   {
-//     return _.mapShallowClone( src )
+//     return _.mapCloneShallow( src )
 //   }
 //   else if( src === _.null )
 //   {
@@ -382,7 +382,7 @@ function cloneShallow( src )
   }
   else if( _.aux.is( src ) )
   {
-    return _.mapShallowClone( src )
+    return _.mapCloneShallow( src )
   }
   // else if( src === _.null )
   // {
@@ -396,9 +396,9 @@ function cloneShallow( src )
   // {
   //   return src;
   // }
-  else if( _.routine.is( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
-    return src[ shallowCloneSymbol ]();
+    return src[ cloneShallowSymbol ]();
   }
   else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
@@ -426,7 +426,7 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
     return src[ deepCloneSymbol ]();
   }
@@ -449,7 +449,7 @@ function cloneDeep( src )
   }
   else if( _.aux.is( src ) )
   {
-    return _.mapShallowClone( src );
+    return _.mapCloneShallow( src );
   }
   // else if( src === _.null )
   // {
@@ -822,7 +822,7 @@ const typeNameGetterSymbol = _.entity.typeNameGetterSymbol;
 const toPrimitiveSymbol = _.entity.toPrimitiveSymbol;
 const toStrNjsSymbol = _.entity.toStrNjsSymbol;
 const equalAreSymbol = _.entity.equalAreSymbol;
-const shallowCloneSymbol = _.entity.shallowCloneSymbol;
+const cloneShallowSymbol = _.entity.cloneShallowSymbol;
 const deepCloneSymbol = _.entity.deepCloneSymbol;
 
 let EntityExtension =

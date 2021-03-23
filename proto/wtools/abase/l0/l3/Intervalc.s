@@ -4,7 +4,7 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _global_.wTools.cinterval = _global_.wTools.cinterval || Object.create( null );
 
 // --

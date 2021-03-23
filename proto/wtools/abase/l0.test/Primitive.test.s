@@ -10,14 +10,14 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function primitiveIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.primitive.is();
@@ -124,7 +124,7 @@ function primitiveIs( test )
 
 //
 
-function primitivesAreIdenticalShallow( test )
+function areIdenticalShallow( test )
 {
   test.open( 'identical' );
 
@@ -251,7 +251,7 @@ function primitivesAreIdenticalShallow( test )
 
 //
 
-function primitivesAreEquivalentShallow( test )
+function areEquivalentShallow( test )
 {
   test.open( 'identical' );
 
@@ -576,9 +576,9 @@ var Self =
 
   tests :
   {
-    primitiveIs,
-    primitivesAreIdenticalShallow,
-    primitivesAreEquivalentShallow,
+    is,
+    areIdenticalShallow,
+    areEquivalentShallow,
 
     exportStringShortCode,
     exportStringShortDiagnostic

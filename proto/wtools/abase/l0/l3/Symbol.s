@@ -4,14 +4,14 @@
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let Self = _.symbol = _.symbol || Object.create( null );
 
 // --
 // symbol
 // --
 
-function symbolIs( src )
+function is( src )
 {
   let result = Object.prototype.toString.call( src ) === '[object Symbol]';
   return result;
@@ -45,14 +45,14 @@ function exportStringShortDiagnostic( src )
 
 let ExtensionTools =
 {
-  symbolIs
+  symbolIs : is
 }
 
 //
 
 let Extension =
 {
-  is : symbolIs,
+  is,
 
   // export string
 
