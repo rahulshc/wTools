@@ -2108,10 +2108,22 @@ function strStrShortOptionHeightLimit( test )
   var expected = 'b\nc';
   test.identical( got, expected );
 
+  test.case = 'src with linebreaks > heightLimit, cutting left, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'b\nc\nd\ne';
+  test.identical( got, expected );
+
   test.case = 'src with linebreaks > heightLimit, cutting right';
   var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'right' }
   var got = _.strShort( src );
   var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting right, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'right' }
+  var got = _.strShort( src );
+  var expected = '\n0\n1\na\nb';
   test.identical( got, expected );
 
   /* middle */
