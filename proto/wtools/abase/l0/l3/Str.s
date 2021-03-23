@@ -428,7 +428,7 @@ strShort.defaults =
 
 //
 
-function strShort2( o )
+function strShort2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
 {
 
   if( arguments.length === 2 )
@@ -558,7 +558,7 @@ strShort2.defaults =
 
 //
 
-function strShort3( o )
+function strShort3( o )  /* version with binary search cutting */
 {
 
   if( arguments.length === 2 )
