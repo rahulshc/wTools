@@ -486,7 +486,7 @@ function strShort2( o )
   {
     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
-      if( o.testing )
+      if( o.testingData )
       o.testingData.counter++;
       src = src.slice( 1 );
     }
@@ -496,7 +496,7 @@ function strShort2( o )
   {
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      if( o.testing )
+      if( o.testingData )
       o.testingData.counter++;
       src = src.slice( 0, src.length - 1 );
     }
@@ -512,7 +512,7 @@ function strShort2( o )
 
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      if( o.testing )
+      if( o.testingData )
       o.testingData.counter++;
 
       /* find a place between elements, not within element */
@@ -614,41 +614,195 @@ function strShort3( o )
 
   if( o.cutting === 'left' )
   {
-    while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let begin = '';
+    let end = '';
+    for( ; startIndex <= endIndex ; )
     {
+      if( o.testingData )
       o.testingData.counter++;
-      src = src.slice( 1 );
+
+      let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+      begin = src.slice( 0, middleIndex );
+      end = src.slice( middleIndex );
+
+      let endLength = o.onLength( end );
+
+      if( endLength + fixLength > o.widthLimit ) /* all needed elements are in end */
+      startIndex = middleIndex;
+      else if( endLength + fixLength < o.widthLimit ) /* all needed elements are in end and begin */
+      endIndex = Math.floor( ( endIndex ) / 2 ); /* reduce endIndex to move middleIndex left */
+      else if( endLength + fixLength === o.widthLimit )
+      {
+        /*
+          add parts of element that might have been sliced,
+          example : 'aaabbbcccddd' with o.widthLimit = 2 might return 'cddd', but need 'cccddd'
+        */
+        while( o.onLength( end ) + fixLength === o.widthLimit )
+        {
+          end = begin[ begin.length - 1 ] + end;
+          begin = begin.slice( 0, -1 );
+        }
+        src = end.slice( 1 );
+        break;
+      }
     }
+
+    /* Original */
+    // while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+    // {
+    //   if( o.testing )
+    //   o.testingData.counter++;
+    //   src = src.slice( 1 );
+    // }
     return o.prefix + o.infix + src + o.postfix;
   }
   else if( o.cutting === 'right' )
   {
-    while( o.onLength( src ) + fixLength > o.widthLimit )
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let begin = '';
+    let end = '';
+    for( ; startIndex <= endIndex ; )
     {
+      if( o.testingData )
       o.testingData.counter++;
-      src = src.slice( 0, src.length - 1 );
+
+      let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+      begin = src.slice( 0, middleIndex );
+      end = src.slice( middleIndex );
+
+      let beginLength = o.onLength( begin );
+
+      if( beginLength + fixLength > o.widthLimit ) /* all needed elements are in begin */
+      endIndex = middleIndex;
+      else if( beginLength + fixLength < o.widthLimit ) /* all needed elements are in begin and end */
+      startIndex = Math.floor( ( middleIndex + startIndex ) / 2 ); /* increase startIndex to move middleIndex right */
+      else if( beginLength + fixLength === o.widthLimit )
+      {
+        /*
+          add parts of element that might have been sliced,
+          example : 'aaabbbcccddd' with o.widthLimit = 2 might return 'aaab', but need 'aaabbb'
+        */
+        while( o.onLength( begin ) + fixLength === o.widthLimit )
+        {
+          begin += end[ 0 ];
+          end = end.slice( 1 );
+        }
+        src = begin.slice( 0, -1 );
+        break;
+      }
     }
+
+    /* Original */
+    // while( o.onLength( src ) + fixLength > o.widthLimit )
+    // {
+    //   if( o.testing )
+    //   o.testingData.counter++;
+    //   src = src.slice( 0, src.length - 1 );
+    // }
     return o.prefix + src + o.infix + o.postfix;
   }
   else
   {
+    // if( o.onLength( src ) + fixLength <= o.widthLimit )
+    // return o.prefix + src + o.postfix;
+    // let begin = '';
+    // let end = '';
+    // while( o.onLength( src ) + fixLength > o.widthLimit )
+    // {
+    //   /* 'abbcccd|ddd' -> 'adddd' */
+    //   o.testingData.counter++;
+    //   begin = src.slice( 0, Math.floor( src.length / 2 ) );
+    //   end = src.slice( Math.floor( src.length / 2 ) + 1 );
+    //   let beginLength = o.onLength( begin );
+    //   let endLength = o.onLength( end );
+    //   let sum = beginLength + endLength;
+    //   src = begin + end;
+    // }
+    // return o.prefix + begin + o.infix + end + o.postfix;
+
     if( o.onLength( src ) + fixLength <= o.widthLimit )
     return o.prefix + src + o.postfix;
+
     let begin = '';
     let end = '';
+
+    // let startIndex = 0;
+    // let endIndex = src.length - 1;
+    // for( let i = 0; i < src.length; i++ )
+    // {
+    //   if( o.onLength( src ) + fixLength <= o.widthLimit )
+    //   return src;
+
+    //   src = src.slice;
+    // }
+
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      /* 'abbcccd|ddd' -> 'adddd' */
+      if( o.testingData )
       o.testingData.counter++;
-      begin = src.slice( 0, Math.floor( src.length / 2 ) );
-      end = src.slice( Math.floor( src.length / 2 ) + 1 );
+
+      // [ begin, end ] = cutElement( Math.floor( src.length / 2 ) );
+
+      /* find a place between elements, not within element */
+      let center = Math.floor( src.length / 2 );
+      begin = src.slice( 0, center );
+      end = src.slice( center );
+
+      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
+      {
+        center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
+        begin = src.slice( 0, center );
+        end = src.slice( center );
+      }
+
       let beginLength = o.onLength( begin );
       let endLength = o.onLength( end );
-      let sum = beginLength + endLength;
+      /* center is between elements, slice from bigger part until 1 complete element is removed */
+      if( o.onLength( begin ) > o.onLength( end ) )
+      while( o.onLength( begin ) >= beginLength )
+        begin = begin.slice( 0, -1 );
+      else
+      while( o.onLength( end ) >= endLength )
+        end = end.slice( 1 );
+
       src = begin + end;
     }
     return o.prefix + begin + o.infix + end + o.postfix;
+
   }
+
+  /* - */
+
+  // function cutElement( position, direction )
+  // {
+  //   /* find a place between elements, not within element */
+  //   // let center = Math.floor( src.length / 2 );
+  //   let center = position;
+  //   let begin = src.slice( 0, center );
+  //   let end = src.slice( center );
+
+  //   while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
+  //   {
+  //     center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
+  //     begin = src.slice( 0, center );
+  //     end = src.slice( center );
+  //   }
+
+  //   let beginLength = o.onLength( begin );
+  //   let endLength = o.onLength( end );
+  //   /* center is between elements, slice from bigger part until 1 complete element is removed */
+  //   if( o.onLength( begin ) > o.onLength( end ) )
+  //   while( o.onLength( begin ) >= beginLength )
+  //     begin = begin.slice( 0, -1 );
+  //   else
+  //   while( o.onLength( end ) >= endLength )
+  //     end = end.slice( 1 );
+
+  //   return [ begin, end ];
+  // }
 }
 
 strShort3.defaults =

@@ -257,7 +257,7 @@ In the example above, the routine has both branches implemented, but the develop
 
 |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
 | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-|    strShort BISI    | regular |                    |                   |                    |                    |                   |
-| strShortBinary BISI | binary  |                    |                   |                    |                    |                   |
-|    strShort SIBI    | regular |                    |                   |                    |                    |                   |
-| strShortBinary SIBI | binary  |                    |                   |                    |                    |                   |
+|    strShort BISI    | regular |      2.6438s       |                   |                    |                    |                   |
+| strShortBinary BISI | binary  |      0.0009s       |                   |                    |                    |                   |
+|    strShort SIBI    | regular |     0.001037s      |                   |                    |                    |                   |
+| strShortBinary SIBI | binary  |     0.000029s      |                   |                    |                    |                   |

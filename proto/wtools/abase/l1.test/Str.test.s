@@ -2243,7 +2243,6 @@ function strStrShortOptionInfix( test )
 
 function strStrShortOptionsOnLength( test )
 {
-
   test.case = 'true length is smaller';
   var src =
   {
@@ -2255,7 +2254,7 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = '202020';
   test.identical( got, expected );
   test.identical( got.length, 6 );
@@ -2271,7 +2270,7 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = '200';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
@@ -2287,10 +2286,12 @@ function strStrShortOptionsOnLength( test )
       return src.length;
     }
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = '20';
   test.identical( got, expected );
   test.identical( got.length, 2 );
+
+  /* left */
 
   test.case = 'same characters as 1 el, cut left';
   var src =
@@ -2300,9 +2301,35 @@ function strStrShortOptionsOnLength( test )
     cutting : 'left',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'cccdddd';
   test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut left, big input';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'cccdddd';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut left, big input, big width';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'aaaabbbbb00001111222333cccdddd';
+  test.identical( got, expected );
+
+  /* right */
 
   test.case = 'same characters as 1 el, cut right';
   var src =
@@ -2312,8 +2339,32 @@ function strStrShortOptionsOnLength( test )
     cutting : 'right',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'abb';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut right, big input';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = '-----2222';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut right, big input, big width';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = '-----2222aaaabbbbb00001111222333';
   test.identical( got, expected );
 
   /* cut middle */
@@ -2326,7 +2377,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'adddd'; /* ! */
   test.identical( got, expected );
 
@@ -2338,7 +2389,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'abde';
   test.identical( got, expected );
 
@@ -2350,7 +2401,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'aabbdddeee';
   test.identical( got, expected );
 
@@ -2362,7 +2413,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'ac';
   test.identical( got, expected );
 
@@ -2376,7 +2427,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'abbdddd';
   test.identical( got, expected );
 
@@ -2388,7 +2439,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'abe';
   test.identical( got, expected );
 
@@ -2400,7 +2451,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'aabbcccccccccdddeee';
   test.identical( got, expected );
 
@@ -2412,7 +2463,7 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  var got = _.strShort2( src )
+  var got = _.strShort3( src )
   var expected = 'a';
   test.identical( got, expected );
 
@@ -2625,13 +2676,18 @@ function strShortPerformance( test )
   /*
     |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
     | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |    strShort BISI    | regular |                    |                   |                    |                    |                   |
-    | strShortBinary BISI | binary  |                    |                   |                    |                    |                   |
-    |    strShort SIBI    | regular |                    |                   |                    |                    |                   |
-    | strShortBinary SIBI | binary  |                    |                   |                    |                    |                   |
+    |    strShort BISI    | regular |      2.6438s       |                   |                    |                    |                   |
+    | strShortBinary BISI | binary  |      0.0009s       |                   |                    |                    |                   |
+    |    strShort SIBI    | regular |     0.001037s      |                   |                    |                    |                   |
+    | strShortBinary SIBI | binary  |     0.000029s      |                   |                    |                    |                   |
 
     BISI = Big input( length : 5e7 ), small amount of iterations ( 1e1 )
     SIBI = Small input ( length : 5e2 ), big amount of iterations ( 1e4 )
+
+    counter regular BISI : 199900  left, right
+    counter regular SIBI : 390000  left, right
+    counter binary BISI  : 230     left, right
+    counter binary SIBI  : 12000   left, right
   */
 
   test.case = 'long string, 10 iterations';
@@ -2650,15 +2706,19 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    act();
+    let [ resultLeft, resultRigth/*, resultCenter*/ ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( testing.counter, ( stringSize * 3 ) - 12 );
-    testing.counter = 0;
+    test.identical( resultLeft, 'cccdddd' );
+    test.identical( resultRigth, 'abb' );
+    // test.identical( resultCenter, 'adddd' );
+    // test.identical( testing.counter, ( stringSize * 3 ) - 12 );
+    // testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( `Counter = ${testing.counter}` );
   console.log( '----------------------------------------------------' );
 
   /* - */
@@ -2678,35 +2738,47 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    act();
+    let [ resultLeft, resultRigth/*, resultCenter*/ ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( testing.counter, ( stringSize * 3 ) - 12 ); /* CENTER : 'ad', LEFT : 'cccdddd' RIGHT : 'abb' */
-    testing.counter = 0;
+    test.identical( resultLeft, 'cccdddd' );
+    test.identical( resultRigth, 'abb' );
+    // test.identical( resultCenter, 'adddd' );
+    // test.identical( testing.counter, ( stringSize * 3 ) - 12 ); /* CENTER : 'ad', LEFT : 'cccdddd' RIGHT : 'abb' */
+    // testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( `Counter = ${testing.counter}` );
   console.log( '----------------------------------------------------' );
 
-  // console.log( 'CENTER', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testing }) );
-  // console.log( 'LEFT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testing }) );
-  // console.log( 'RIGHT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testing }) );
+  // console.log( 'Counter', testing.counter );
+  // console.log( 'CENTER', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing }) );
+  // console.log( 'Counter', testing.counter );
+  // console.log( 'LEFT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing }) );
+  // console.log( 'Counter', testing.counter );
+  // console.log( 'RIGHT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing }) );
+  // console.log( 'Counter', testing.counter );
 
   /* - */
 
   function act() /* existing implementation with fixed 'center' cutting */
   {
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    // let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+
+    return [ result1, result2 ];
   }
 
   function act2() /* binary search implementation */
   {
-    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
-    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result1 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    let result2 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    // let result3 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+
+    return [ result1, result2 ];
   }
 
   function onLength( src )
