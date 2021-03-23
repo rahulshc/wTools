@@ -637,7 +637,8 @@ function strShort3( o )  /* version with binary search cutting */
       {
         /*
           add parts of element that might have been sliced,
-          example : 'aaabbbcccddd' with o.widthLimit = 2 might return 'cddd', but need 'cccddd'
+          example : onLength considers as 1 element substring of the same characters
+                    'aaabbbcccddd' with o.widthLimit = 2 might return 'cddd', but need 'cccddd'
         */
         while( o.onLength( end ) + fixLength === o.widthLimit )
         {
@@ -683,7 +684,8 @@ function strShort3( o )  /* version with binary search cutting */
       {
         /*
           add parts of element that might have been sliced,
-          example : 'aaabbbcccddd' with o.widthLimit = 2 might return 'aaab', but need 'aaabbb'
+          example : onLength considers as 1 element substring of the same characters
+                    'aaabbbcccddd' with o.widthLimit = 2 might return 'aaab', but need 'aaabbb'
         */
         while( o.onLength( begin ) + fixLength === o.widthLimit )
         {
