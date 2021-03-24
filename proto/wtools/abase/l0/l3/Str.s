@@ -453,6 +453,8 @@ function strShort2( o ) /* version with fixed cutting : center, 1 element cannot
   o.prefix = '';
   if( !o.postfix )
   o.postfix = '';
+  if( o.widthLimit === 0 )
+  o.widthLimit = Infinity;
   if( o.src.length < 1 )
   {
     if( o.prefix.length + o.postfix.length <= o.widthLimit )
@@ -583,6 +585,8 @@ function strShort3( o )  /* version with binary search cutting */
   o.prefix = '';
   if( !o.postfix )
   o.postfix = '';
+  if( o.widthLimit === 0 )
+  o.widthLimit = Infinity;
   if( o.src.length < 1 )
   {
     if( o.prefix.length + o.postfix.length <= o.widthLimit )
@@ -612,11 +616,11 @@ function strShort3( o )  /* version with binary search cutting */
   let fixLength = 0;
   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
+  if( o.onLength( src ) + fixLength <= o.widthLimit ) /* nothing to cut */
+  return o.prefix + src + o.postfix;
+
   if( o.cutting === 'left' )
   {
-    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
-    return o.prefix + src + o.postfix;
-
     let startIndex = 0;
     let endIndex = src.length - 1;
     let begin = '';
@@ -638,7 +642,7 @@ function strShort3( o )  /* version with binary search cutting */
       }
       else if( endLength + fixLength < o.widthLimit ) /* all needed elements are in end and begin */
       {
-        endIndex = Math.floor( ( endIndex ) / 2 ); /* reduce endIndex to move middleIndex left */
+        endIndex--; /* reduce endIndex to move middleIndex left */
       }
       else if( endLength + fixLength === o.widthLimit )
       {
@@ -668,8 +672,7 @@ function strShort3( o )  /* version with binary search cutting */
   }
   else if( o.cutting === 'right' )
   {
-    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
-    return o.prefix + src + o.postfix;
+    // debugger
 
     let startIndex = 0;
     let endIndex = src.length - 1;
@@ -692,7 +695,7 @@ function strShort3( o )  /* version with binary search cutting */
       }
       else if( beginLength + fixLength < o.widthLimit ) /* all needed elements are in begin and end */
       {
-        startIndex = Math.floor( ( middleIndex + startIndex ) / 2 ); /* increase startIndex to move middleIndex right */
+        startIndex++; /* increase startIndex to move middleIndex right */
       }
       else if( beginLength + fixLength === o.widthLimit )
       {
@@ -722,13 +725,14 @@ function strShort3( o )  /* version with binary search cutting */
   }
   else
   {
-    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
-    return o.prefix + src + o.postfix;
+    /* Initialize begin and end */
+    let chunkSize = Math.floor( src.length / 3 );
+    let middleIndexLeft = chunkSize;
+    let middleIndexRight = ( chunkSize * 2 );
 
-    // let startIndex = 0;
-    // let endIndex = src.length - 1;
-    let begin = '';
-    let end = '';
+    let begin = src.slice( 0, middleIndexLeft + 1 );
+    let end = src.slice( middleIndexRight );
+
     let originalStr = src;
     let moveBoundaryLeft = 0;
     let moveBoundaryRight = 0;
@@ -745,27 +749,18 @@ function strShort3( o )  /* version with binary search cutting */
       let middleIndexRight = ( chunkSize * 2 ) + moveBoundaryRight;
       moveBoundaryRight = 0;
 
-      if( begin === '' && end === '' ) /* initialize if empty */
-      {
-        begin = src.slice( 0, middleIndexLeft + 1 );
-        end = src.slice( middleIndexRight );
-      }
-
       if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
       {
         if( o.onLength( begin ) > o.onLength( end ) )
         {
           begin = begin.slice( 0, -1 );
-          // end = end.slice( middleIndexRight );
         }
         else
         {
-          // begin = src.slice( 0, middleIndexLeft+1 );
           if( middleIndexLeft === 0 ) /* src.length < 3, cut right */
           end = '';
           else
           end = end.slice( 1 );
-          // end = src.slice( middleIndexRight+1 );
         }
       }
       else /* begin : first 1/3, end : last 1/3 */
@@ -834,12 +829,11 @@ function strShort3( o )  /* version with binary search cutting */
           }
         }
 
-        src = begin + end;
         break;
       }
     }
 
-    return o.prefix + src + o.postfix;
+    return o.prefix + begin + o.infix + end + o.postfix;
 
   }
 }
