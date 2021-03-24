@@ -614,6 +614,9 @@ function strShort3( o )  /* version with binary search cutting */
 
   if( o.cutting === 'left' )
   {
+    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
+    return o.prefix + src + o.postfix;
+
     let startIndex = 0;
     let endIndex = src.length - 1;
     let begin = '';
@@ -665,6 +668,9 @@ function strShort3( o )  /* version with binary search cutting */
   }
   else if( o.cutting === 'right' )
   {
+    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
+    return o.prefix + src + o.postfix;
+
     let startIndex = 0;
     let endIndex = src.length - 1;
     let begin = '';
@@ -716,116 +722,124 @@ function strShort3( o )  /* version with binary search cutting */
   }
   else
   {
-
-    /* without binary */
-    if( o.onLength( src ) + fixLength <= o.widthLimit )
+    if( o.onLength( src ) + fixLength === o.widthLimit ) /* nothing to cut */
     return o.prefix + src + o.postfix;
 
+    // let startIndex = 0;
+    // let endIndex = src.length - 1;
     let begin = '';
     let end = '';
+    let originalStr = src;
+    let moveBoundaryLeft = 0;
+    let moveBoundaryRight = 0;
 
-    while( o.onLength( src ) + fixLength > o.widthLimit )
+    for( ;; )
     {
       if( o.testingData )
       o.testingData.counter++;
 
-      /* find a place between elements, not within element */
-      let center = Math.floor( src.length / 2 );
-      begin = src.slice( 0, center );
-      end = src.slice( center );
+      let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
 
-      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
+      let middleIndexLeft = chunkSize + moveBoundaryLeft;
+      moveBoundaryLeft = 0;
+      let middleIndexRight = ( chunkSize * 2 ) + moveBoundaryRight;
+      moveBoundaryRight = 0;
+
+      if( begin === '' && end === '' ) /* initialize if empty */
       {
-        center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
-        begin = src.slice( 0, center );
-        end = src.slice( center );
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
+      }
+
+      if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
+      {
+        if( o.onLength( begin ) > o.onLength( end ) )
+        {
+          begin = begin.slice( 0, -1 );
+          // end = end.slice( middleIndexRight );
+        }
+        else
+        {
+          // begin = src.slice( 0, middleIndexLeft+1 );
+          if( middleIndexLeft === 0 ) /* src.length < 3, cut right */
+          end = '';
+          else
+          end = end.slice( 1 );
+          // end = src.slice( middleIndexRight+1 );
+        }
+      }
+      else /* begin : first 1/3, end : last 1/3 */
+      {
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
       }
 
       let beginLength = o.onLength( begin );
       let endLength = o.onLength( end );
-      /* center is between elements, slice from bigger part until 1 complete element is removed */
-      if( o.onLength( begin ) > o.onLength( end ) )
-      while( o.onLength( begin ) >= beginLength )
-        begin = begin.slice( 0, -1 );
-      else
-      while( o.onLength( end ) >= endLength )
-        end = end.slice( 1 );
+      let overallLength = o.onLength( o.prefix + begin + o.infix + end + o.postfix );
 
-      src = begin + end;
+      if( overallLength > o.widthLimit )  /* delete middle, might delete part of the element, check later when desired length is obtained */
+      {
+        src = begin + end;
+      }
+      else if( overallLength < o.widthLimit ) /* shrink middle, because it contains elements needed to satisfy onLength */
+      {
+        if( beginLength > endLength ) /* shrink middle from the right */
+        {
+          moveBoundaryRight = -1;
+        }
+        else /* shrink middle from the left */
+        {
+          moveBoundaryLeft = 1;
+        }
+      }
+      else if( overallLength === o.widthLimit )
+      {
+        let beginInitial = o.onLength( begin );
+        let endInitial = o.onLength( end );
+
+        /*
+          add parts of elements that might have been sliced,
+          example : onLength considers as 1 element substring of the same characters
+                    'aaabbbcccddd' with o.widthLimit = 2 might return 'ad', but need 'aaaddd'
+        */
+
+        let middle = originalStr.slice( begin.length, -end.length );
+
+        if( o.onLength( middle ) === 1 )
+        {
+          if( beginInitial === o.onLength( begin + middle ) )
+          begin += middle;
+          else if( endInitial === o.onLength( middle + end ) )
+          end = middle + end;
+        }
+        else if( o.onLength( middle ) > 1 )
+        {
+          while( true )
+          {
+            if( o.onLength( begin + middle[ 0 ] ) !== beginInitial )
+            break;
+
+            begin += middle[ 0 ];
+            middle = middle.slice( 1 );
+          }
+
+          while( true )
+          {
+            if( o.onLength( middle[ middle.length-1 ] + end ) !== endInitial )
+            break;
+
+            end = middle[ middle.length-1 ] + end;
+            middle = middle.slice( 0, -1 );
+          }
+        }
+
+        src = begin + end;
+        break;
+      }
     }
-    return o.prefix + begin + o.infix + end + o.postfix;
 
-    // /* */
-
-    // let startIndex = 0;
-    // let endIndex = src.length - 1;
-    // let begin = '';
-    // let end = '';
-    // let originalStr = src;
-    // for( ;; )
-    // {
-    //   debugger
-    //   if( o.testingData )
-    //   o.testingData.counter++;
-
-    //   let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is removed */
-
-    //   let middleIndexLeft = chunkSize;
-    //   let middleIndexRight = chunkSize * 2;
-
-    //   begin = begin === src.slice( 0, middleIndexLeft + 1 ) ? begin.slice( 0, begin.length-1 ) : src.slice( 0, middleIndexLeft + 1 );
-    //   end = end === src.slice( middleIndexRight ) ? end.slice( 1 ) : src.slice( middleIndexRight );
-
-    //   let beginLength = o.onLength( begin );
-    //   let endLength = o.onLength( end );
-
-    //   if( beginLength + endLength + fixLength > o.widthLimit ) /* all needed elements are in begin and end, remove middle */
-    //   {
-    //     src = begin + end; /* delete middle, might delete part of the element, check later when desired length is obtained */
-
-    //   }
-    //   else if( beginLength + endLength + fixLength < o.widthLimit ) /* shrink middle, because it contains elements needed to satisfy onLength */
-    //   {
-    //     if( beginLength > endLength ) /* increase middle from the right */
-    //     {
-    //       middleIndexRight -= 1;
-    //     }
-    //     else /* increase middle from the left */
-    //     {
-    //       middleIndexLeft += 1;
-    //     }
-    //   }
-    //   else if( beginLength + endLength + fixLength === o.widthLimit )
-    //   {
-    //     let beginInitial = o.onLength( begin );
-    //     let endInitial = o.onLength( end );
-
-    //     /*
-    //       add parts of elements that might have been sliced,
-    //       example : onLength considers as 1 element substring of the same characters
-    //                 'aaabbbcccddd' with o.widthLimit = 2 might return 'ad', but need 'aaaddd'
-    //     */
-
-    //     let middle = originalStr.slice( begin.length, -end.length );
-
-    //     while( o.onLength( begin ) === beginInitial )
-    //     {
-    //       begin += middle[ 1 ];
-    //       middle = middle.slice( 1 );
-    //     }
-
-    //     while( o.onLength( end ) === endInitial )
-    //     {
-    //       end = middle[ middle.length-1 ] + end;
-    //       middle = middle.slice( 0, -1 );
-    //     }
-
-    //     src = begin.slice( 0, -1 ) + end.slice( 1 );
-    //     break;
-    //   }
-    // }
-
-    // return o.prefix + src + o.infix + o.postfix;
+    return o.prefix + src + o.postfix;
 
   }
 }

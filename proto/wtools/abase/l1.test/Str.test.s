@@ -2243,129 +2243,231 @@ function strStrShortOptionInfix( test )
 
 function strStrShortOptionsOnLength( test )
 {
-  // test.case = 'true length is smaller';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '1' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort3( src )
-  // var expected = '202020';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
+  test.case = 'true length is smaller, cutting : center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is the same';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '10' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort3( src )
-  // var expected = '200';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  test.case = 'true length is smaller, cutting : left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is bigger';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '100' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort3( src )
-  // var expected = '20';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'true length is smaller, cutting : right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // /* left */
+  test.case = 'true length is the same, cutting center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '200';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'same characters as 1 el, cut left';
-  // var src =
-  // {
-  //   src : 'abbcccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'cccdddd';
-  // test.identical( got, expected );
+  test.case = 'true length is the same, cutting left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '020';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'same characters as 1 el, cut left, big input';
-  // var src =
-  // {
-  //   src : '-----2323aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'cccdddd';
-  // test.identical( got, expected );
+  test.case = 'true length is the same, cutting right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '202';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'same characters as 1 el, cut left, big input, big width';
-  // var src =
-  // {
-  //   src : '-----2323aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 8,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'aaaabbbbb00001111222333cccdddd';
-  // test.identical( got, expected );
+  test.case = 'true length is bigger, cutting center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // /* right */
+  test.case = 'true length is bigger, cutting left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // test.case = 'same characters as 1 el, cut right';
-  // var src =
-  // {
-  //   src : 'abbcccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'abb';
-  // test.identical( got, expected );
+  test.case = 'true length is bigger, cutting right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort3( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // test.case = 'same characters as 1 el, cut right, big input';
-  // var src =
-  // {
-  //   src : '-----2222aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = '-----2222';
-  // test.identical( got, expected );
+  /* left */
 
-  // test.case = 'same characters as 1 el, cut right, big input, big width';
-  // var src =
-  // {
-  //   src : '-----2222aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 8,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = '-----2222aaaabbbbb00001111222333';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut left';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 2,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'cccdddd';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut left, big input';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'cccdddd';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut left, big input, big width';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'aaaabbbbb00001111222333cccdddd';
+  test.identical( got, expected );
+
+  /* right */
+
+  test.case = 'same characters as 1 el, cut right';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'abb';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut right, big input';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = '-----2222';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, cut right, big input, big width';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = '-----2222aaaabbbbb00001111222333';
+  test.identical( got, expected );
 
   /* cut middle */
 
@@ -2393,79 +2495,91 @@ function strStrShortOptionsOnLength( test )
   var expected = 'abde';
   test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, big str, cut middle';
-  // var src =
-  // {
-  //   src : 'aabbccccccccc111222333dddeee',
-  //   widthLimit : 4,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'aabbdddeee';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, big str, cut middle';
+  var src =
+  {
+    src : 'aabbccccccccc111222333dddeee',
+    widthLimit : 4,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'aabbdddeee';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, 3 characters, cut middle';
-  // var src =
-  // {
-  //   src : 'abc',
-  //   widthLimit : 2,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'ac';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, big str, check overcut , cut middle';
+  var src =
+  {
+    src : 'aaaaaabcdftgeeeeeee',
+    widthLimit : 4,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'aaaaaabgeeeeeee';
+  test.identical( got, expected );
 
-  // /* */
+  test.case = 'same characters as 1 el, 3 characters, cut middle';
+  var src =
+  {
+    src : 'abc',
+    widthLimit : 2,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'ac';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, cut middle, odd width';
-  // var src =
-  // {
-  //   src : 'abbcccdddd',
-  //   widthLimit : 3,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'abbdddd';
-  // test.identical( got, expected );
+  /* */
 
-  // test.case = 'same characters as 1 el, 5 characters, cut middle, odd width';
-  // var src =
-  // {
-  //   src : 'abcde',
-  //   widthLimit : 3,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'abe';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut middle, odd width';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 3,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'abbdddd';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, big str, cut middle, odd width';
-  // var src =
-  // {
-  //   src : 'aabbccccccccc111222333dddeee',
-  //   widthLimit : 5,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'aabbcccccccccdddeee';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, 5 characters, cut middle, odd width';
+  var src =
+  {
+    src : 'abcde',
+    widthLimit : 3,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'abe';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, 3 characters, cut middle, odd width';
-  // var src =
-  // {
-  //   src : 'abc',
-  //   widthLimit : 1,
-  //   cutting : 'middle',
-  //   onLength
-  // }
-  // var got = _.strShort3( src )
-  // var expected = 'a';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, big str, cut middle, odd width';
+  var src =
+  {
+    src : 'aabbccccccccc111222333dddeee',
+    widthLimit : 5,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'aabbcccccccccdddeee';
+  test.identical( got, expected );
+
+  test.case = 'same characters as 1 el, 3 characters, cut middle, odd width';
+  var src =
+  {
+    src : 'abc',
+    widthLimit : 1,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'a';
+  test.identical( got, expected );
 
   /* - */
 
@@ -2681,6 +2795,15 @@ function strShortPerformance( test )
     |    strShort SIBI    | regular |     0.001037s      |                   |                    |                    |                   |
     | strShortBinary SIBI | binary  |     0.000029s      |                   |                    |                    |                   |
 
+    only center :
+      0.0026s
+      0.000057s
+
+      and
+
+      4.0277s
+      0.001693s
+
     BISI = Big input( length : 5e7 ), small amount of iterations ( 1e1 )
     SIBI = Small input ( length : 5e2 ), big amount of iterations ( 1e4 )
 
@@ -2706,12 +2829,13 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    let [ resultLeft, resultRigth/*, resultCenter*/ ] = act2();
+    // let [ resultLeft, resultRigth, resultCenter ] = act2();
+    let resultCenter = act();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( resultLeft, 'cccdddd' );
-    test.identical( resultRigth, 'abb' );
-    // test.identical( resultCenter, 'adddd' );
+    // test.identical( resultLeft, 'cccdddd' );
+    // test.identical( resultRigth, 'abb' );
+    test.identical( resultCenter, 'adddd' );
     // test.identical( testing.counter, ( stringSize * 3 ) - 12 );
     // testing.counter = 0;
   }
@@ -2738,12 +2862,13 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    let [ resultLeft, resultRigth/*, resultCenter*/ ] = act2();
+    // let [ resultLeft, resultRigth, resultCenter ] = act2();
+    let resultCenter = act();
     var time2 = _.time.now();
     took += time2 - time1;
-    test.identical( resultLeft, 'cccdddd' );
-    test.identical( resultRigth, 'abb' );
-    // test.identical( resultCenter, 'adddd' );
+    // test.identical( resultLeft, 'cccdddd' );
+    // test.identical( resultRigth, 'abb' );
+    test.identical( resultCenter, 'adddd' );
     // test.identical( testing.counter, ( stringSize * 3 ) - 12 ); /* CENTER : 'ad', LEFT : 'cccdddd' RIGHT : 'abb' */
     // testing.counter = 0;
   }
@@ -2765,20 +2890,22 @@ function strShortPerformance( test )
 
   function act() /* existing implementation with fixed 'center' cutting */
   {
-    let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
-    // let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+    // let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    // let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
 
-    return [ result1, result2 ];
+    return result3;
+    // return [ result1, result2, result3 ];
   }
 
   function act2() /* binary search implementation */
   {
-    let result1 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    let result2 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
-    // let result3 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+    // let result1 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    // let result2 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result3 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
 
-    return [ result1, result2 ];
+    return result3;
+    // return [ result1, result2, result3 ];
   }
 
   function onLength( src )
