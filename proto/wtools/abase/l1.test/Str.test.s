@@ -2495,6 +2495,18 @@ function strStrShortOptionsOnLength( test )
   var expected = 'abde';
   test.identical( got, expected );
 
+  test.case = 'same characters as 1 el, 4 characters, cut middle';
+  var src =
+  {
+    src : 'abde',
+    widthLimit : 3,
+    cutting : 'middle',
+    onLength
+  }
+  var got = _.strShort3( src )
+  var expected = 'abe';
+  test.identical( got, expected );
+
   test.case = 'same characters as 1 el, big str, cut middle';
   var src =
   {

@@ -625,7 +625,7 @@ function strShort3( o )  /* version with binary search cutting */
     let endIndex = src.length - 1;
     let begin = '';
     let end = '';
-    for( ; startIndex <= endIndex ; )
+    for( ;; )
     {
       if( o.testingData )
       o.testingData.counter++;
@@ -661,24 +661,15 @@ function strShort3( o )  /* version with binary search cutting */
       }
     }
 
-    /* Original */
-    // while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-    // {
-    //   if( o.testing )
-    //   o.testingData.counter++;
-    //   src = src.slice( 1 );
-    // }
     return o.prefix + o.infix + src + o.postfix;
   }
   else if( o.cutting === 'right' )
   {
-    // debugger
-
     let startIndex = 0;
     let endIndex = src.length - 1;
     let begin = '';
     let end = '';
-    for( ; startIndex <= endIndex ; )
+    for( ;; )
     {
       if( o.testingData )
       o.testingData.counter++;
@@ -714,13 +705,6 @@ function strShort3( o )  /* version with binary search cutting */
       }
     }
 
-    /* Original */
-    // while( o.onLength( src ) + fixLength > o.widthLimit )
-    // {
-    //   if( o.testing )
-    //   o.testingData.counter++;
-    //   src = src.slice( 0, src.length - 1 );
-    // }
     return o.prefix + src + o.infix + o.postfix;
   }
   else
