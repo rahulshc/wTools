@@ -2801,27 +2801,13 @@ function strShortPerformance( test )
   /*
     |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
     | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |    strShort BISI    | regular |      2.6438s       |                   |                    |                    |                   |
-    | strShortBinary BISI | binary  |      0.0009s       |                   |                    |                    |                   |
-    |    strShort SIBI    | regular |     0.001037s      |                   |                    |                    |                   |
-    | strShortBinary SIBI | binary  |     0.000029s      |                   |                    |                    |                   |
+    |    strShort BISI    | regular |      6.5488s       |      5.2201s      |      5.5969s       |      5.1944s       |      5.2801s      |
+    | strShortBinary BISI | binary  |      0.0033s       |      0.0031s      |      0.0029s       |      0.0026s       |      0.0027s      |
+    |    strShort SIBI    | regular |     0.003011s      |     0.002554s     |     0.002522s      |     0.002347s      |     0.002528s     |
+    | strShortBinary SIBI | binary  |     0.000092s      |     0.000101s     |     0.000085s      |     0.000107s      |     0.000095s     |
 
-    only center :
-      0.0026s
-      0.000057s
-
-      and
-
-      4.0277s
-      0.001693s
-
-    BISI = Big input( length : 5e7 ), small amount of iterations ( 1e1 )
-    SIBI = Small input ( length : 5e2 ), big amount of iterations ( 1e4 )
-
-    counter regular BISI : 199900  left, right
-    counter regular SIBI : 390000  left, right
-    counter binary BISI  : 230     left, right
-    counter binary SIBI  : 12000   left, right
+    BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
+    SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )
   */
 
   test.case = 'long string, 10 iterations';
@@ -2840,20 +2826,17 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    // let [ resultLeft, resultRigth, resultCenter ] = act2();
-    let resultCenter = act();
+    let [ resultLeft, resultRigth, resultCenter ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-    // test.identical( resultLeft, 'cccdddd' );
-    // test.identical( resultRigth, 'abb' );
+    test.identical( resultLeft, 'cccdddd' );
+    test.identical( resultRigth, 'abb' );
     test.identical( resultCenter, 'adddd' );
-    // test.identical( testing.counter, ( stringSize * 3 ) - 12 );
-    // testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
-  console.log( `Counter = ${testing.counter}` );
+  // console.log( `Counter = ${testing.counter / times / 3 }` );
   console.log( '----------------------------------------------------' );
 
   /* - */
@@ -2873,50 +2856,37 @@ function strShortPerformance( test )
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
-    // let [ resultLeft, resultRigth, resultCenter ] = act2();
-    let resultCenter = act();
+    let [ resultLeft, resultRigth, resultCenter ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-    // test.identical( resultLeft, 'cccdddd' );
-    // test.identical( resultRigth, 'abb' );
+    test.identical( resultLeft, 'cccdddd' );
+    test.identical( resultRigth, 'abb' );
     test.identical( resultCenter, 'adddd' );
-    // test.identical( testing.counter, ( stringSize * 3 ) - 12 ); /* CENTER : 'ad', LEFT : 'cccdddd' RIGHT : 'abb' */
-    // testing.counter = 0;
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
-  console.log( `Counter = ${testing.counter}` );
+  // console.log( `Counter = ${testing.counter / times / 3}` );
   console.log( '----------------------------------------------------' );
-
-  // console.log( 'Counter', testing.counter );
-  // console.log( 'CENTER', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing }) );
-  // console.log( 'Counter', testing.counter );
-  // console.log( 'LEFT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing }) );
-  // console.log( 'Counter', testing.counter );
-  // console.log( 'RIGHT', _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing }) );
-  // console.log( 'Counter', testing.counter );
 
   /* - */
 
   function act() /* existing implementation with fixed 'center' cutting */
   {
-    // let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    // let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
     let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
 
-    return result3;
-    // return [ result1, result2, result3 ];
+    return [ result1, result2, result3 ];
   }
 
   function act2() /* binary search implementation */
   {
-    // let result1 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-    // let result2 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
+    let result1 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
+    let result2 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
     let result3 = _.strShort3({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
 
-    return result3;
-    // return [ result1, result2, result3 ];
+    return [ result1, result2, result3 ];
   }
 
   function onLength( src )
