@@ -394,8 +394,6 @@ function strShort( o )  /* version with binary search cutting */
     let end = '';
     for( ;; )
     {
-      if( o.testingData )
-      o.testingData.counter++;
 
       let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
       begin = src.slice( 0, middleIndex );
@@ -438,8 +436,6 @@ function strShort( o )  /* version with binary search cutting */
     let end = '';
     for( ;; )
     {
-      if( o.testingData )
-      o.testingData.counter++;
 
       let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
       begin = src.slice( 0, middleIndex );
@@ -490,8 +486,6 @@ function strShort( o )  /* version with binary search cutting */
 
     for( ;; )
     {
-      if( o.testingData )
-      o.testingData.counter++;
 
       let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
 
@@ -763,8 +757,6 @@ function strShort2( o ) /* version with fixed cutting : center, 1 element cannot
   {
     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
     {
-      if( o.testingData )
-      o.testingData.counter++;
       src = src.slice( 1 );
     }
     return o.prefix + o.infix + src + o.postfix;
@@ -773,8 +765,6 @@ function strShort2( o ) /* version with fixed cutting : center, 1 element cannot
   {
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      if( o.testingData )
-      o.testingData.counter++;
       src = src.slice( 0, src.length - 1 );
     }
     return o.prefix + src + o.infix + o.postfix;
@@ -789,8 +779,6 @@ function strShort2( o ) /* version with fixed cutting : center, 1 element cannot
 
     while( o.onLength( src ) + fixLength > o.widthLimit )
     {
-      if( o.testingData )
-      o.testingData.counter++;
 
       /* find a place between elements, not within element */
       let center = Math.floor( src.length / 2 );
