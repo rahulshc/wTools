@@ -2751,25 +2751,26 @@ function mapOnlyOwnBut_( dstMap, srcMap, butMap )
  * @namespace Tools
  */
 
-// function mapOnly( srcMaps, screenMaps )
-// {
-//   if( arguments.length === 1 )
-//   return _.mapsExtend( null, srcMaps );
-//
-//   _.assert( arguments.length === 2, 'Expects single or two arguments' );
-//
-//   return _._mapOnly
-//   ({
-//     srcMaps,
-//     screenMaps,
-//     dstMap : Object.create( null ),
-//   });
-// }
+function mapOnlyOld( srcMaps, screenMaps )
+{
+  if( arguments.length === 1 )
+  return _.mapsExtend( null, srcMaps );
+
+  _.assert( arguments.length === 2, 'Expects single or two arguments' );
+
+  return _._mapOnly
+  ({
+    srcMaps,
+    screenMaps,
+    dstMap : Object.create( null ),
+  });
+}
 
 //
 
 function mapOnly_( dstMap, srcMaps, screenMaps )
 {
+
 
   if( arguments.length === 1 )
   {
@@ -2777,16 +2778,22 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   }
   else if( arguments.length === 2 )
   {
-    if( dstMap === null )
-    return Object.create( null );
 
-    screenMaps = arguments[ 1 ];
-    srcMaps = arguments[ 0 ];
+    return _.mapOnlyOld( srcMaps, screenMaps );
+
+    // qqq : for Dmytro : bad!
+    // if( dstMap === null )
+    // return Object.create( null );
+    // screenMaps = arguments[ 1 ];
+    // srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
     _.assert( 0, 'Expects at least one argument and no more then three arguments' );
   }
+
+  return _.mapOnlyOld( srcMaps, screenMaps );
+  // qqq : for Dmytro : bad!
 
   return _._mapOnly_
   ({
@@ -2942,6 +2949,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
  * @namespace Tools
  */
 
+/* xxx : qqq : for Dmytro : comment out */
 function _mapOnly( o )
 {
   let self = this;
@@ -4954,14 +4962,14 @@ let Extension =
   mapOnlyOwnButOld, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
   mapOnlyOwnBut_, /* qqq : make it accept null in the first argument */
 
-  // mapOnly, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyOld, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
   mapOnly_,  /* qqq : make it accept null in the first argument */
   // mapOnlyOwn, /* !!! : use instead of mapOnlyOwn */ /* Dmytro : covered, coverage is more complex */
   mapOnlyOwn_, /* qqq : make it accept null in the first argument */
   /* qqq : cover */
   // mapOnlyComplementing, /* !!! : use instead of mapOnlyComplementing */ /* Dmytro : covered, coverage is more complex */
   mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
-  // _mapOnly,
+  _mapOnly, /* xxx : qqq : comment out */
   _mapOnly_,
 
   mapDiff,
