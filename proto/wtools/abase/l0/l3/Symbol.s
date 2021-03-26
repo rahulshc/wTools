@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.symbol = _.symbol || Object.create( null );
+const Self = _.symbol = _.symbol || Object.create( null );
 
 // --
 // symbol
@@ -66,12 +66,5 @@ let Extension =
 
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

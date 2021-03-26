@@ -3,10 +3,10 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 _.long_ = _.long_ || Object.create( null );
 
@@ -113,7 +113,7 @@ function like( src ) /* qqq : cover */
 {
   if( _.primitive.is( src ) )
   return false;
-  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // if( _.class.methodIteratorOf( src ) ) /* yyy */
   // // if( !_.mapIs( src ) && _.object.is( src ) )
   // if( !_.mapIs( src ) )
   // return true;
@@ -565,7 +565,7 @@ function eacher( src )
 
   _.assert( _.longLike( src ) );
 
-  if( _.entity.methodIteratorOf( src ) )
+  if( _.class.methodIteratorOf( src ) )
   return eachOf;
   else
   return eachLength;
@@ -685,12 +685,5 @@ let LongExtension =
 //
 
 Object.assign( _.long_, LongExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

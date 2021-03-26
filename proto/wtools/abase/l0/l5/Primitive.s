@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.primitive = _.primitive || Object.create( null );
+const Self = _.primitive = _.primitive || Object.create( null );
 
 // --
 // primitive
@@ -70,12 +70,5 @@ let Extension =
 
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

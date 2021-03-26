@@ -3,7 +3,7 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -229,7 +229,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Lrange, Handler );
+const Self = new Proxy( Lrange, Handler );
 Self.original = Lrange;
 
 // --
@@ -274,10 +274,4 @@ _.assert( _.linterval !== undefined );
 _.mapSupplement( Self, _.linterval );
 _.linterval = Self;
 
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 })();

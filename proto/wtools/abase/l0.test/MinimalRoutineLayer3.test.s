@@ -701,7 +701,7 @@ function assertRoutineOptions( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.MinimalRoutineLayer3',
@@ -717,7 +717,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

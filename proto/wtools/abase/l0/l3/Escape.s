@@ -3,7 +3,7 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -63,27 +63,45 @@ function equalAre( it )
   _.assert( arguments.length === 1 );
 
   if( !it.src )
-  return end( false );
+  return it.stop( false );
   if( !it.src2 )
-  return end( false );
+  return it.stop( false );
+
   if( !it.src instanceof _.Escape )
-  return end( false );
+  return it.stop( false );
   if( !it.src2 instanceof _.Escape )
-  return end( false );
+  return it.stop( false );
 
   if( it.src.val === it.src2.val )
-  return end( true );
+  return it.stop( true );
 
   if( !( it.src.val instanceof _.Escape ) )
-  return end( false );
-  if( !( it.src.val instanceof _.Escape ) )
-  return end( false );
+  return it.stop( false );
+  if( !( it.src2.val instanceof _.Escape ) )
+  return it.stop( false );
 
-  function end( result )
-  {
-    it.result = result;
-    it.continue = false;
-  }
+  // if( !it.src )
+  // return end( false );
+  // if( !it.src2 )
+  // return end( false );
+  // if( !it.src instanceof _.Escape )
+  // return end( false );
+  // if( !it.src2 instanceof _.Escape )
+  // return end( false );
+  //
+  // if( it.src.val === it.src2.val )
+  // return end( true );
+  //
+  // if( !( it.src.val instanceof _.Escape ) )
+  // return end( false );
+  // if( !( it.src.val instanceof _.Escape ) )
+  // return end( false );
+  //
+  // function end( result )
+  // {
+  //   it.result = result;
+  //   it.continue = false;
+  // }
 }
 
 //
@@ -110,19 +128,20 @@ function iterate()
 
 }
 
+// //
 //
+// function TypeNameGet()
+// {
+//   return 'Escape';
+// }
 
-function TypeNameGet()
-{
-  return 'Escape';
-}
-
+// //
 //
-
-function exportStringIgnoringArgs()
-{
-  return this.exportString();
-}
+// function exportStringIgnoringArgs()
+// {
+//   return this[ exportStringSymbol ]();
+//   // return this.exportString();
+// }
 
 //
 
@@ -138,14 +157,6 @@ function exportString()
 // declare
 // --
 
-const iteratorSymbol = Symbol.iterator;
-const typeNameGetterSymbol = Symbol.toStringTag;
-const toPrimitiveSymbol = Symbol.toPrimitive;
-const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
-const equalAreSymbol = Symbol.for( 'equalAre' );
-const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
-const deepCloneSymbol = Symbol.for( 'cloneDeep' );
-
 function Escape( val )
 {
   if( arguments.length !== 1 )
@@ -155,22 +166,14 @@ function Escape( val )
   return this;
 }
 
-Object.setPrototypeOf( Escape.prototype, null );
-Escape.prototype = Object.create( null );
-Escape.prototype[ iteratorSymbol ] = iterate;
-Escape.prototype[ toPrimitiveSymbol ] = exportStringIgnoringArgs;
-Escape.prototype[ toStrNjsSymbol ] = exportStringIgnoringArgs;
-Escape.prototype[ cloneShallowSymbol ] = cloneShallow; /* xxx : reimplement? */
-Escape.prototype[ deepCloneSymbol ] = cloneDeep; /* xxx : implement */
-Escape.prototype[ equalAreSymbol ] = equalAre; /* qqq : cover */
-Escape.prototype.exportString = exportString;
-Escape.prototype.constructor = Escape;
-
-Object.defineProperty( Escape.prototype, typeNameGetterSymbol,
-{
-  enumerable : false,
-  configurable : false,
-  get : TypeNameGet,
+_.class.declareBasic
+({
+  constructor : Escape,
+  iterate,
+  equalAre,
+  exportString,
+  cloneShallow, /* xxx : implement */
+  cloneDeep, /* xxx : implement */
 });
 
 //
@@ -189,12 +192,5 @@ _.escape = Object.create( null );
 _.assert( _.Escape === undefined );
 _.Escape = Escape;
 Object.assign( _.escape, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

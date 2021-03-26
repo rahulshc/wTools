@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 _global.wTools.error = _global.wTools.error || Object.create( null );
 
@@ -533,16 +533,16 @@ function _err( o )
 
   for( let e in o )
   {
-    if( _.error._err.defaults[ e ] === undefined )
+    if( _err.defaults[ e ] === undefined )
     {
       throw Error( `Unknown option::${e}` );
     }
   }
 
-  for( let e in _.error._err.defaults )
+  for( let e in _err.defaults )
   {
     if( o[ e ] === undefined )
-    o[ e ] = _.error._err.defaults[ e ];
+    o[ e ] = _err.defaults[ e ];
   }
 
   if( _.error._errorMaking )
@@ -1161,7 +1161,7 @@ _err.defaults =
 
 function err()
 {
-  return _.error._err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -1172,7 +1172,7 @@ function err()
 
 function brief()
 {
-  return _.error._err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -1184,7 +1184,7 @@ function brief()
 
 function unbrief()
 {
-  return _.error._err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -1196,7 +1196,7 @@ function unbrief()
 
 function process()
 {
-  return _.error._err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -1208,7 +1208,7 @@ function process()
 
 function unprocess()
 {
-  return _.error._err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -1236,7 +1236,7 @@ function _fields( args, fields )
   }
 
   if( args.length !== 1 || !_.error.isStandard( err ) )
-  err = _.error._err
+  err = _._err
   ({
     args,
     level : 2,
@@ -1349,7 +1349,7 @@ function restack( err, level )
   if( !_.number.defined( level ) )
   throw Error( 'Expects defined number' );
 
-  let err2 = _.error._err
+  let err2 = _._err
   ({
     args : [],
     level : level + 1,
@@ -1363,7 +1363,7 @@ function restack( err, level )
 function once( err )
 {
 
-  err = _.error._err
+  err = _._err
   ({
     args : arguments,
     level : 2,
@@ -1533,7 +1533,7 @@ function _log( err, logger )
 function log()
 {
 
-  let err = _.error._err
+  let err = _._err
   ({
     args : arguments,
     level : 2,
@@ -1547,7 +1547,7 @@ function log()
 function logOnce( err )
 {
 
-  err = _.error._err
+  err = _._err
   ({
     args : arguments,
     level : 2,
@@ -1573,7 +1573,7 @@ function tryCatch( routine )
   }
   catch( err )
   {
-    throw _.error._err({ args : [ err ] });
+    throw _._err({ args : [ err ] });
   }
 }
 
@@ -1590,7 +1590,7 @@ function tryCatchBrief( routine )
   }
   catch( err )
   {
-    throw _.error._err({ args : [ err ], brief : 1 });
+    throw _._err({ args : [ err ], brief : 1 });
   }
 }
 
@@ -1606,7 +1606,7 @@ function tryCatchDebug( routine )
   }
   catch( err )
   {
-    throw _.error._err({ args : [ err ], debugging : 1 });
+    throw _._err({ args : [ err ], debugging : 1 });
   }
 }
 
@@ -1616,8 +1616,9 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  // if( _.error.breakpointOnAssertEnabled )
-  // debugger;
+  if( !_.error.breakpointOnAssertEnabled )
+  return;
+  debugger; /* eslint-disable-line no-debugger */
 }
 
 //
@@ -1845,6 +1846,7 @@ function assert( condition )
   {
     if( !_.error.breakpointOnAssertEnabled )
     return;
+    debugger; /* eslint-disable-line no-debugger */
   }
 
 }
@@ -1853,8 +1855,6 @@ function assert( condition )
 
 function assertWithoutBreakpoint( condition )
 {
-
-  /*return;*/
 
   if( Config.debug === false )
   return true;
@@ -2057,7 +2057,7 @@ let ToolsExtension =
   _errFields : _fields,
   errAttend : attend,
   errLogged : logged,
-  errSuspend : suspend, /* qqq : cover, please. should work okay with symbols */
+  errSuspend : suspend,
   errWary : wary,
   errRestack : restack,
   errOnce : once,
@@ -2097,12 +2097,5 @@ Object.assign( _, ToolsExtension );
 /* zzz : improve formatting of stack with table */
 
 Error.stackTraceLimit = Infinity;
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

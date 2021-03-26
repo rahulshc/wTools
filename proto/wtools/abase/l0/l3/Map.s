@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 // --
@@ -795,7 +795,7 @@ function mapFirstPair( srcMap )
 
 //
 
-function mapValsSet( dstMap, val )
+function mapAllValsSet( dstMap, val )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -809,7 +809,7 @@ function mapValsSet( dstMap, val )
 
 //
 
-function mapSelect( srcMap, keys )
+function mapVaslWithKeys( srcMap, keys )
 {
   let result = Object.create( null );
 
@@ -1159,30 +1159,32 @@ let Extension =
 
   // map selector
 
-  _mapKeys,
-  mapKeys,
-  mapOnlyOwnKeys,
-  mapAllKeys,
+  _mapKeys, /* qqq : for Yevhen : cover */
+  mapKeys, /* qqq : for Yevhen : cover */
+  mapOnlyOwnKeys, /* qqq : for Yevhen : cover */
+  // mapOnlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
+  mapAllKeys, /* qqq : for Yevhen : cover */
 
-  _mapVals,
-  mapVals,
-  mapOnlyOwnVals,
-  mapAllVals,
+  _mapVals, /* qqq : for Yevhen : cover */
+  mapVals, /* qqq : for Yevhen : cover */
+  mapOnlyOwnVals, /* qqq : for Yevhen : cover */
+  // mapOnlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
+  mapAllVals, /* qqq : for Yevhen : cover */
 
-  _mapPairs,
-  mapPairs,
-  mapOnlyOwnPairs,
-  mapAllPairs,
+  _mapPairs, /* qqq : for Yevhen : cover */
+  mapPairs, /* qqq : for Yevhen : cover */
+  mapOnlyOwnPairs, /* qqq : for Yevhen : cover */
+  // mapOnlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
+  mapAllPairs, /* qqq : for Yevhen : cover */
 
-  mapFirstPair,
-  mapValsSet,
-  mapSelect,
-
-  mapValWithIndex,
-  mapKeyWithIndex,
-  mapKeyWithValue,
-  // mapIndexWithKey,
-  // mapIndexWithValue,
+  mapFirstPair, /* qqq : for Yevhen : cover */
+  mapAllValsSet, /* qqq : for Yevhen : cover */
+  mapVaslWithKeys, /* qqq : for Yevhen : cover */
+  mapValWithIndex, /* qqq : for Yevhen : cover */
+  mapKeyWithIndex, /* qqq : for Yevhen : cover */
+  mapKeyWithValue, /* qqq : for Yevhen : cover */
+  // mapIndexWithKey, /* qqq : for Yevhen : implement and cover properly */
+  // mapIndexWithValue, /* qqq : for Yevhen : implement and cover properly */
 
   mapOnlyNulls,
   mapButNulls,
@@ -1194,7 +1196,7 @@ let Extension =
   mapSupplementStructureless,
   mapOptionsApplyDefaults,
 
-  /* xxx : review and maybe move out routines */
+  /* xxx : review and maybe move out some routines */
 
 }
 
@@ -1207,12 +1209,5 @@ let ExtensionMap =
 
 Object.assign( Self, Extension );
 Object.assign( _.map, ExtensionMap );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

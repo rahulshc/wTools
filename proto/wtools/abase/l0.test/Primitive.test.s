@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -568,7 +568,7 @@ function exportStringShortDiagnostic( test )
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Primitive',
@@ -588,7 +588,7 @@ var Self =
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

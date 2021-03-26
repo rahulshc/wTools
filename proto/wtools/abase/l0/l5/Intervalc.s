@@ -3,7 +3,7 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -406,7 +406,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Crange, Handler );
+const Self = new Proxy( Crange, Handler );
 Self.original = Crange;
 
 // --
@@ -452,15 +452,8 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-// _.assert( _.cinterval === undefined );
 _.assert( _.cinterval !== undefined );
 _.mapSupplement( Self, _.cinterval );
 _.cinterval = Self;
 
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 })();

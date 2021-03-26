@@ -3,7 +3,7 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -77,7 +77,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Pair, Handler );
+const Self = new Proxy( Pair, Handler );
 Self.original = Pair;
 
 //
@@ -92,14 +92,6 @@ var Extension =
 
 Object.assign( Self, Extension );
 _.assert( _.pair === undefined );
-// _.mapSupplement( Self, _.pair );
 _.pair = Self;
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 
 // --
@@ -192,7 +192,7 @@ function areIdenticalShallow( test )
   var got = _.hashMap.identicalShallow( src1, src2 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'non-primitive, key not same refference. object empty';
   var key1 = {};
@@ -230,7 +230,7 @@ function areIdenticalShallow( test )
   var got = _.hashMap.identicalShallow( src1, src2 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'non-primitive, key not same refference. array empty';
   var key1 = [];
@@ -312,27 +312,61 @@ function exportStringShortDiagnostic( test )
   test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic( new Set() ) );
 }
 
+//
+
+function fromMap( test )
+{
+
+  test.case = 'basic, 1 arg';
+  var src =
+  {
+    a : 1,
+    b : 2,
+  }
+  var got = _.hashMap.fromMap( src );
+  var exp = new HashMap();
+  exp.set( 'a', 1 );
+  exp.set( 'b', 2 );
+  test.identical( got, exp );
+
+  test.case = 'basic, 2 args';
+  var src =
+  {
+    a : 1,
+    b : 2,
+  }
+  var got = _.hashMap.fromMap( null, src );
+  var exp = new HashMap();
+  exp.set( 'a', 1 );
+  exp.set( 'b', 2 );
+  test.identical( got, exp );
+
+}
+
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
-  name : 'Tools.HashMap',
+  name : 'Tools.HashMap', /* xxx : make optional name. deduce if not defined */
   silencing : 1,
 
   tests :
   {
+
     areIdenticalShallow,
-    exportStringShortDiagnostic
+    exportStringShortDiagnostic,
+    fromMap,
+
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

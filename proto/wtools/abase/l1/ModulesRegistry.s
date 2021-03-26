@@ -3,11 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools = _global.wTools || Object.create( null );
+const _global = _global_;
+const _ = _global.wTools = Object.hasOwnProperty.call( _global, 'wTools' ) ? _global.wTools : Object.create( null );
 _.module = _.module || Object.create( null );
-_.module._modulesToRegister = _.module._modulesToRegister || Object.create( null );
-let Self = _.module._modulesToRegister;
+_.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
+const Self = _.module._modulesToPredeclare;
 
 /*
   Temporary solution.
@@ -19,8 +19,17 @@ let Self = _.module._modulesToRegister;
 
 function _entryPath( filePath, name )
 {
-  _.assert( arguments.length === 2 );
-  return [ '../../' + filePath, filePath, name ]; /* xxx : remove first element? */
+  _.assert( arguments.length >= 2 );
+  let result = [];
+  for( let a = 0 ; a < arguments.length-1 ; a++ )
+  {
+    let filePath = arguments[ a ];
+    result.push( '../../' + filePath );
+    result.push( filePath );
+  }
+  // result.push( name );
+  return result;
+  // return [ '../../' + filePath, filePath, name ]; /* xxx : remove first element? */
 }
 
 //
@@ -46,7 +55,7 @@ function _predeclaredNormalizeEach( modules )
 
 let wTools =
 {
-  entryPath : _entryPath( 'abase/Layer1.s', 'wTools' ),
+  entryPath : _entryPath( 'abase/Layer1.s', 'Tools.s', 'wTools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.longHas },
 }
 
@@ -713,7 +722,7 @@ let wStarter =
 
 let wTesting =
 {
-  entryPath : _entryPath( 'atop/testing/entry/Main.s', 'wTesting' ),
+  entryPath : _entryPath( 'atop/testing/entry/Main.s', 'atop/testing/entry/Exec', 'wTesting' ),
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
@@ -963,26 +972,14 @@ let Modules =
 
 }
 
-Object.assign( _.module._modulesToRegister, Modules );
-
-_.module._predeclaredNormalizeEach( _.module._modulesToRegister );
+_.module._predeclaredNormalizeEach( Modules );
+Object.assign( _.module._modulesToPredeclare, Modules );
 if( _.module.predeclareAll )
-_.module.predeclareAll({ modules : _.module._modulesToRegister, basePath : __dirname });
+_.module.predeclareAll({ modules : _.module._modulesToPredeclare, basePath : __dirname });
 
 /*
 xxx : remove isIncluded
 */
-
-// _.mapSupplement( _global.ModulesRegistry, Modules );
-// if( _.module )
-// _.module.registerKnown( _global.ModulesRegistry );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
 

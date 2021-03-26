@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // implementation
@@ -881,6 +881,9 @@ function unrollRemove( dstArray )
 let Extension =
 {
 
+  /* qqq : for Yevhen : duplicate namespace unroll */
+  /* qqq : for Yevhen : make the list of unduplicated namespaces */
+
   unrollMake,
   unrollMakeUndefined,
   unrollFrom,
@@ -899,12 +902,5 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
