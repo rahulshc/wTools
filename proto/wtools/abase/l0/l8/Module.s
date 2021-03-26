@@ -695,8 +695,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
   files = _.arrayAs( files );
   stack.push( ... files );
 
-  if( files[ 0 ] && _.strEnds( files[ 0 ].sourcePath, '/Tools.s' ) )
-  debugger;
+  // if( files[ 0 ] && _.strEnds( files[ 0 ].sourcePath, '/Tools.s' ) )
+  // debugger;
 
   if( disassociating )
   files.forEach( ( file ) => _.module._fileUniversalDisassociateModules( file, false ) );
@@ -1712,9 +1712,7 @@ function _Setup()
   // return;
 
   _.module._trackingEnable();
-  debugger;
   _.module._filesUniversalFrom({ files : [ _.module.rootFile ] });
-  debugger;
 
 }
 
