@@ -11,9 +11,9 @@
 
 //
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.path = _.path || Object.create( null );
+const Self = _.path = _.path || Object.create( null );
 
 // --
 // meta
@@ -1215,12 +1215,5 @@ _.mapSupplement( Self, Parameters );
 _.mapSupplement( Self, Extension );
 
 Self.Init();
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

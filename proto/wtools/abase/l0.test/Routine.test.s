@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
 const __ = _globals_.testing.wTools;
 
@@ -3363,8 +3363,8 @@ function routinesChain( test )
 //   test.equivalent( got.c, {} );
 //   test.identical
 //   (
-//     _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
-//     _.mapBut( _.property.onlyExplicit( {} ), [ '__proto__' ] )
+//     _.mapBut_( null, _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+//     _.mapBut_( null, _.property.onlyExplicit( {} ), [ '__proto__' ] )
 //   );
 //   test.identical( typeof got, 'function' );
 //
@@ -3801,8 +3801,8 @@ function routineExtend( test )
   // test.equivalent( got.c, {} );
   // test.identical
   // (
-  //   _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
-  //   _.mapBut( _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
+  //   _.mapBut_( null, _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+  //   _.mapBut_( null, _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
   // );
   // test.identical( typeof got, 'function' );
   /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
@@ -7701,7 +7701,7 @@ function exportStringShortDiagnostic( test )
 //
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Routine',
@@ -7773,7 +7773,7 @@ var Self =
 
 };
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

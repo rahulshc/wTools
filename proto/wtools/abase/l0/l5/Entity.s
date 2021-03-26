@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.entity = _.entity || Object.create( null );
+const Self = _.entity = _.entity || Object.create( null );
 
 // --
 //
@@ -426,9 +426,9 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
+  else if( _.routine.is( src[ cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
-    return src[ deepCloneSymbol ]();
+    return src[ cloneDeepSymbol ]();
   }
   else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
@@ -817,14 +817,6 @@ _.mapSupplement( _, ToolsExtension );
 // entity extension
 // --
 
-const iteratorSymbol = _.entity.iteratorSymbol;
-const typeNameGetterSymbol = _.entity.typeNameGetterSymbol;
-const toPrimitiveSymbol = _.entity.toPrimitiveSymbol;
-const toStrNjsSymbol = _.entity.toStrNjsSymbol;
-const equalAreSymbol = _.entity.equalAreSymbol;
-const cloneShallowSymbol = _.entity.cloneShallowSymbol;
-const deepCloneSymbol = _.entity.deepCloneSymbol;
-
 let EntityExtension =
 {
   identicalShallow,
@@ -847,12 +839,5 @@ let EntityExtension =
 //
 
 _.mapSupplement( _.entity, EntityExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

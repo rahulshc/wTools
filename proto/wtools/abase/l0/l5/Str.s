@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // decorator
@@ -2524,7 +2524,7 @@ function strSplit_body( o )
 
   if( !o.stripping && !o.quoting && !o.onDelimeter )
   {
-    return _.strSplitFast.body( _.mapOnly( o, _.strSplitFast.defaults ) );
+    return _.strSplitFast.body( _.mapOnly_( null, o, _.strSplitFast.defaults ) );
   }
 
   /* */
@@ -2534,7 +2534,7 @@ function strSplit_body( o )
   /* */
 
   let result = [];
-  let fastOptions = _.mapOnly( o, _.strSplitFast.defaults );
+  let fastOptions = _.mapOnly_( null, o, _.strSplitFast.defaults );
   fastOptions.preservingEmpty = 1;
   fastOptions.preservingDelimeters = 1;
 
@@ -3447,6 +3447,7 @@ function exportStringShort( src, opts )
 
 //
 
+/* xxx : qqq : for Yevhen : take into account throwing cases */
 /* qqq : for Yevhen : optimize. ask how to */
 function _exportStringShort( src, o )
 {
@@ -3691,12 +3692,5 @@ _.mapExtend( Self, Extension );
 _.mapExtend( _.entity, ExtensionEntity );
 
 _.assert( !!_.strSplit.defaults.preservingEmpty );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

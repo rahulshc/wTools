@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools;
-let Self = _global.wTools;
+const _global = _global_;
+const _ = _global.wTools;
+const Self = _global.wTools;
 
 _.assert( !_.Array );
 _.assert( !_.defaultLong );
@@ -78,12 +78,5 @@ _.assert( !_.defaultLong );
 _.assert( _.longDescriptorProducer );
 _.assert( _.LongDescriptors );
 _.assert( _.longDescriptor );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
