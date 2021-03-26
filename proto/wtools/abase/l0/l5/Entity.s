@@ -396,9 +396,9 @@ function cloneShallow( src )
   // {
   //   return src;
   // }
-  else if( _.routine.is( src[ cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
+  else if( _.routine.is( src[ _.class.cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
-    return src[ cloneShallowSymbol ]();
+    return src[ _.class.cloneShallowSymbol ]();
   }
   else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
@@ -426,9 +426,9 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routine.is( src[ cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
+  else if( _.routine.is( src[ _.class.cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
-    return src[ cloneDeepSymbol ]();
+    return src[ _.class.cloneDeepSymbol ]();
   }
   else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
