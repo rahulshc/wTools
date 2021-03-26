@@ -3647,6 +3647,94 @@ function exportStringShortDiagnostic( test )
 
 //
 
+function exportStringShortDiagnosticOptionHeightLimit( test )
+{
+
+  test.case = 'heightLimit = 0';
+  var src = { src : 's\nt\n\nr\ni\nn\ng\n\n\nf\ng', heightLimit : 0 }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 's\nt\n\nr\ni\nn\ng\n\n\nf\ng';
+  test.identical( got, expected );
+
+  test.case = 'src without linebreaks < heightLimit';
+  var src = { src : 'string', heightLimit : 2 }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'string';
+  test.identical( got, expected );
+
+  test.case = 'src without linebreaks = heightLimit';
+  var src = { src : 'string', heightLimit : 1 }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'string';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks < heightLimit';
+  var src = { src : 'a\nb\n', heightLimit : 4 }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nb\n';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks = heightLimit';
+  var src = { src : 'a\nb\n', heightLimit : 3 }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nb\n';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src with linebreaks > heightLimit, cutting left';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'left' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'b\nc';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting left, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'left' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'b\nc\nd\ne';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting right';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'right' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting right, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'right' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = '\n0\n1\na\nb';
+  test.identical( got, expected );
+
+  /* middle */
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even src and limit';
+  var src = { src : 'a\nb\nc\nd', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nd';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even src';
+  var src = { src : 'a\nb\nc\nd', heightLimit : 3, cutting : 'middle' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\nb\nd';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even limit';
+  var src = { src : 'a\nb\nc\nd\ne', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortDiagnostic( src );
+  var expected = 'a\ne';
+  test.identical( got, expected );
+
+}
+
+//
 
 function exportStringShortCode( test )
 {
@@ -4016,6 +4104,95 @@ function exportStringShortCode( test )
   }
 
   function routine () {}
+
+}
+
+//
+
+function exportStringShortCodeOptionHeightLimit( test )
+{
+
+  test.case = 'heightLimit = 0';
+  var src = { src : 's\nt\n\nr\ni\nn\ng\n\n\nf\ng', heightLimit : 0 }
+  var got = _.exportStringShortCode( src );
+  var expected = 's\nt\n\nr\ni\nn\ng\n\n\nf\ng';
+  test.identical( got, expected );
+
+  test.case = 'src without linebreaks < heightLimit';
+  var src = { src : 'string', heightLimit : 2 }
+  var got = _.exportStringShortCode( src );
+  var expected = 'string';
+  test.identical( got, expected );
+
+  test.case = 'src without linebreaks = heightLimit';
+  var src = { src : 'string', heightLimit : 1 }
+  var got = _.exportStringShortCode( src );
+  var expected = 'string';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks < heightLimit';
+  var src = { src : 'a\nb\n', heightLimit : 4 }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nb\n';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks = heightLimit';
+  var src = { src : 'a\nb\n', heightLimit : 3 }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nb\n';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src with linebreaks > heightLimit, cutting left';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'left' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'b\nc';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting left, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'left' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'b\nc\nd\ne';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting right';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'right' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting right, long str';
+  var src = { src : '\n0\n1\na\nb\nc\nd\ne', heightLimit : 4, cutting : 'right' }
+  var got = _.exportStringShortCode( src );
+  var expected = '\n0\n1\na\nb';
+  test.identical( got, expected );
+
+  /* middle */
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle';
+  var src = { src : 'a\nb\nc', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even src and limit';
+  var src = { src : 'a\nb\nc\nd', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nd';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even src';
+  var src = { src : 'a\nb\nc\nd', heightLimit : 3, cutting : 'middle' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\nb\nd';
+  test.identical( got, expected );
+
+  test.case = 'src with linebreaks > heightLimit, cutting middle, even limit';
+  var src = { src : 'a\nb\nc\nd\ne', heightLimit : 2, cutting : 'middle' }
+  var got = _.exportStringShortCode( src );
+  var expected = 'a\ne';
+  test.identical( got, expected );
 
 }
 
@@ -22318,6 +22495,7 @@ var Self =
     // converter
 
     exportStringShortDiagnostic,
+    exportStringShortDiagnosticOptionHeightLimit,
     exportStringShortCode,
     strPrimitive,
     strTypeWithTraitsBasic,
