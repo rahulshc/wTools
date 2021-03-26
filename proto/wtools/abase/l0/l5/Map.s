@@ -3207,6 +3207,16 @@ function _mapOnly_( o )
         if( o.screenMaps[ m ] === key )
         return key;
       }
+      else if( _.aux.is( o.screenMaps[ m ] ) )
+      {
+        if( key in o.screenMaps[ m ] )
+        return key;
+      }
+      // if( _.primitive.is( o.screenMaps[ m ] ) )
+      // {
+      //   if( o.screenMaps[ m ] === key )
+      //   return key;
+      // }
     }
     else
     {
@@ -3216,6 +3226,16 @@ function _mapOnly_( o )
         if( m === key )
         return key;
       }
+      else if( _.aux.is( m ) )
+      {
+        if( key in m )
+        return key;
+      }
+      // if( _.primitive.is( m ) )
+      // {
+      //   if( m === key )
+      //   return key;
+      // }
     }
     // if( _.arrayLike( o.screenMaps ) )
     // {
