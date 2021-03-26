@@ -3265,11 +3265,19 @@ function _mapOnly_( o )
 
   function filterNotIdentical( srcMap )
   {
-    for( let key in srcMap )
+    for( let key in o.screenMaps )
     {
-      if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+      if( o.screenMaps[ key ] === undefined )
+      continue;
+
+      if( key in srcMap )
       o.filter.call( self, o.dstMap, srcMap, key );
     }
+    // for( let key in srcMap )
+    // {
+    //   if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+    //   o.filter.call( self, o.dstMap, srcMap, key );
+    // }
   }
 
   /* */
