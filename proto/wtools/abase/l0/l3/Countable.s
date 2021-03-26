@@ -36,13 +36,13 @@ function like( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.countable.is( src ) );
 
   if( _.vector.is( src ) )
-  return _.vector.exportStringShortDiagnostic( src );
+  return _.vector.exportStringShallowDiagnostic( src );
 
   return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }
@@ -58,12 +58,12 @@ var Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
 }
 

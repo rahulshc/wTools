@@ -385,47 +385,47 @@ function areEquivalentShallow( test )
 
 //
 
-function exportStringShortCode( test )
+function exportStringShallowCode( test )
 {
 
   test.case = 'Number';
   var src = 10;
   var expected = '10';
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'string';
   var src = 'string';
   var expected = '\'string\'';
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'bool';
   var src = true;
   var expected = 'true';
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'bigInt';
   var src = 10n;
   var expected = '10n';
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'Symbol( a )';
   var src = Symbol( 'a' );
   var expected = `Symbol.for( 'a' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
 
   test.case = 'Symbol.for( a )';
   var src = Symbol.for( 'a' );
   var expected = `Symbol.for( 'a' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
@@ -433,34 +433,34 @@ function exportStringShortCode( test )
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = `Symbol.for()`;
-  // var got = _.primitive.exportStringShortCode( src );
+  // var got = _.primitive.exportStringShallowCode( src );
   // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
   var expected = `Symbol.for( 'undefined' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = `Symbol.for( 'null' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = `Symbol.for( 'undefined' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = `Symbol.for( 'nothing' )`;
-  var got = _.primitive.exportStringShortCode( src );
+  var got = _.primitive.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToPrimitive( got ), src );
 
@@ -468,10 +468,10 @@ function exportStringShortCode( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.primitive.exportStringShortCode() );
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShallowCode() );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.primitive.exportStringShortCode( {} ) );
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShallowCode( {} ) );
 
   /* - */
 
@@ -483,84 +483,84 @@ function exportStringShortCode( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'Number';
   var src = 10;
   var expected = '10';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'string';
   var expected = 'string';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'bool';
   var src = true;
   var expected = 'true';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'bigInt';
   var src = 10n;
   var expected = '10n';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol( a )';
   var src = Symbol( 'a' );
   var expected = '{- Symbol a -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol.for( a )';
   var src = Symbol.for( 'a' );
   var expected = '{- Symbol a -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   /* error eslint : Symbol(), passes */
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = '{- Symbol -}';
-  // var got = _.primitive.exportStringShortDiagnostic( src );
+  // var got = _.primitive.exportStringShallowDiagnostic( src );
   // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
   var expected = '{- Symbol undefined -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = '{- Symbol null -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = '{- Symbol undefined -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = '{- Symbol nothing -}';
-  var got = _.primitive.exportStringShortDiagnostic( src );
+  var got = _.primitive.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.primitive.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShallowDiagnostic() );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.primitive.exportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.primitive.exportStringShallowDiagnostic( {} ) );
 }
 
 
@@ -580,8 +580,8 @@ const Proto =
     areIdenticalShallow,
     areEquivalentShallow,
 
-    exportStringShortCode,
-    exportStringShortDiagnostic
+    exportStringShallowCode,
+    exportStringShallowDiagnostic
   }
 
 }
