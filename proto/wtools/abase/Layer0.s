@@ -7,6 +7,8 @@
 if( typeof module !== 'undefined' )
 {
 
+  require( './l0/l0/Global.s' );
+  require( './l0/l1/Config.s' );
   require( './l0/l1/Predefined.s' );
 
   require( './l0/l2/Setup.s' );
@@ -18,6 +20,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/BigInt.s' );
   require( './l0/l3/Bool.s' );
   require( './l0/l3/Buffer.s' );
+  require( './l0/l3/Class.s' );
   require( './l0/l3/Constructible.s' );
   require( './l0/l3/Container.s' );
   require( './l0/l3/Ct.s' );
@@ -113,12 +116,12 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Unroll.s' );
   require( './l0/l5/Vector.s' );
 
-  require( './l0/l6/ContainerAdapter.s' );
+  // require( './l0/l6/ContainerAdapter.s' );
   require( './l0/l6/LongDescriptor.s' );
 
   require( './l0/l7/Compose.s' );
-  require( './l0/l7/ContainerAdapterArray.s' );
-  require( './l0/l7/ContainerAdapterSet.s' );
+  // require( './l0/l7/ContainerAdapterArray.s' );
+  // require( './l0/l7/ContainerAdapterSet.s' );
   require( './l0/l7/PropertyTransformers.s' );
   require( './l0/l7/LongContext.s' );
 
@@ -177,9 +180,9 @@ if( typeof module !== 'undefined' )
 
 }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // export

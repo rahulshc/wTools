@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( null );
+const Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( null );
 
 // --
 // implementation
@@ -126,12 +126,5 @@ _.escape._EscapeMap.set( _.null, _.escape.null );
 _.escape._EscapeMap.set( _.undefined, _.escape.undefined );
 _.escape._EscapeMap.set( undefined, _.undefined );
 _.escape._EscapeMap.set( null, _.null );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.set = _.set || Object.create( null );
+const Self = _.set = _.set || Object.create( null );
 _.set.s = _.set.s || Object.create( null );
 
 // --
@@ -34,6 +34,8 @@ function adapterLike( src )
   return false;
   if( _.set.like( src ) )
   return true;
+  if( !_.containerAdapter || _.containerAdapter.Set )
+  return false;
   if( src instanceof _.containerAdapter.Set )
   return true;
   return false;
@@ -184,6 +186,7 @@ let Extension =
   _setsAreIdenticalShallow,
   identicalShallow : setsAreIdenticalShallow,
   equivalentShallow : setsAreIdenticalShallow,
+  /* qqq : for Yevhen : bad */
 
   // set
 
@@ -217,12 +220,5 @@ let ExtensionS =
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 Object.assign( _.set.s, ExtensionS );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

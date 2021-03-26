@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools;
-let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
+const _global = _global_;
+const _ = _global.wTools;
+const Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 _global.wTools.error = _global.wTools.error || Object.create( null );
 
 // --
@@ -202,12 +202,5 @@ let SetupExtension =
 
 Object.assign( _.setup, SetupExtension );
 Self._Setup9();
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

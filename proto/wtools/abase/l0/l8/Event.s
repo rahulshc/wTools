@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools.event = _global_.wTools.event || Object.create( null );
+const Self = _global_.wTools.event = _global_.wTools.event || Object.create( null );
 
 // --
 //
@@ -21,12 +21,5 @@ let Extension =
 };
 
 _.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

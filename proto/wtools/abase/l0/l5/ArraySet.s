@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.arraySet = _.arraySet || Object.create( null );
+const Self = _.arraySet = _.arraySet || Object.create( null );
 
 // --
 // array set
@@ -133,6 +133,10 @@ function _has( /* src, e, onEvaluate1, onEvaluate2 */ )
 
 //
 
+/* qqq : for Yevhen : should work
+_.arraySet.diff_( null, hashMap1.keys(), hashMap2.keys() )
+*/
+/* qqq : reimplement. dst should be map. first discuss */
 function diff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let dst = arguments[ 0 ];
@@ -145,7 +149,6 @@ function diff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
   _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
-
 
   if( dst === null )
   dst = new src1.constructor();
@@ -1306,12 +1309,5 @@ let Extension =
 
 Object.assign( Self, Extension );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools.error;
+const Self = _global_.wTools.error;
 
 // --
 // implementation
@@ -185,7 +185,7 @@ function _handleUncaught2( o )
       process0.eventGive({ event : 'uncaughtError', args : [ o ] });
       for( let g in _realGlobal_._globals_ )
       {
-        let _global = _realGlobal_._globals_[ g ];
+        const _global = _realGlobal_._globals_[ g ];
         if( _global.wTools && _global.wTools.process && _global.wTools.process.eventGive )
         if( _global.wTools.process !== process0 )
         _global.wTools.process.eventGive({ event : 'uncaughtError', args : [ o ] });
@@ -330,8 +330,8 @@ function _setupUncaughtErrorHandler9()
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
 
-    if( _.error._err )
-    err = _.error._err
+    if( _._err )
+    err = _._err
     ({
       args : [ error || message ],
       level : 1,
@@ -457,12 +457,5 @@ let Extension =
 //
 
 _.mapExtend( _.error, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

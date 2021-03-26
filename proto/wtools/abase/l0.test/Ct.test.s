@@ -158,7 +158,7 @@ function strip( test )
 // declaration
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Ct',
@@ -176,7 +176,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
