@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
 
 // --
 // typing
@@ -37,7 +37,7 @@ function is( src )
 
 //
 
-function like( src ) /* xxx qqq : optimize */
+function like( src ) /* xxx : qqq : for Yevhen : optimize */
 {
 
   if( _.object.is( src ) )
@@ -70,7 +70,7 @@ function like( src ) /* xxx qqq : optimize */
 
 //
 
-function likeStandard( src ) /* xxx qqq : optimize */
+function likeStandard( src ) /* xxx : qqq : for Yevhen : optimize */
 {
 
   // if( _.object.is( src ) )
@@ -105,10 +105,12 @@ function exportStringShortDiagnostic( src )
   _.assert( _.object.like( src ) );
 
   let result = '';
+  let method = _.class.methodExportStringOf( src );
 
-  if( _.routineIs( src.exportString ) )
+  // if( _.routineIs( src.exportString ) )
+  if( method )
   {
-    result = src.exportString({ verbosity : 1, /*, ... o */ });
+    result = method.call( src, { verbosity : 1 } );
     result = _.strShort( result );
   }
   else
@@ -269,12 +271,5 @@ let Extension =
 
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

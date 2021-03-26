@@ -28,7 +28,7 @@ Use routine `_.err` to construct an error object. Source code of the most straig
 
 try
 {
-  throw _.err( 'Simplest error example' );
+  throw _.error.err( 'Simplest error example' );
 }
 catch( err )
 {
@@ -82,7 +82,7 @@ function program()
     if( arg >= 0 )
     return arg-1;
     else
-    throw _.err( 'Example' );
+    throw _.error.err( 'Example' );
   });
   consequence.take( -1 );
 }
@@ -119,7 +119,7 @@ It would be useful to have in the report of error thrown from `routine asyncCall
  = Source code from AsyncStack2.js:16
       14 :     return arg-1;
       15 :     else
-    * 16 :     throw _.err( 'Example' );
+    * 16 :     throw _.error.err( 'Example' );
       17 :   });
       18 :   consequence.take( -1 );
 
@@ -142,12 +142,12 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.err( 'negative!' );
+    throw _.error.err( 'negative!' );
     return i-1;
   }
   catch( err )
   {
-    throw _.err( err, '\nFailed to decrement' );
+    throw _.error.err( err, '\nFailed to decrement' );
   }
 }
 
@@ -156,12 +156,12 @@ function divide( i )
   try
   {
     if( i % 2 === 1 )
-    throw _.err( 'odd!' );
+    throw _.error.err( 'odd!' );
     return decrement( i / 2 );
   }
   catch( err )
   {
-    throw _.err( err, '\nFailed to divide' );
+    throw _.error.err( err, '\nFailed to divide' );
   }
 }
 
@@ -169,7 +169,7 @@ divide( 0 );
 
 ```
 
-This example throws error at line `throw _.err( 'odd!' )`. Line `throw _.err( err, '\nFailed to decrement' )` rethrow the error. Information about that is added to error by routine `_.err`. Same thing happen at line `throw _.err( err, '\nFailed to divide' )`.
+This example throws error at line `throw _.error.err( 'odd!' )`. Line `throw _.error.err( err, '\nFailed to decrement' )` rethrow the error. Information about that is added to error by routine `_.err`. Same thing happen at line `throw _.error.err( err, '\nFailed to divide' )`.
 
 ```
 
@@ -207,12 +207,12 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.err( 'negative!' );
+    throw _.error.err( 'negative!' );
     return i-1;
   }
   catch( err )
   {
-    throw _.err( err, '\nFailed to decrement' );
+    throw _.error.err( err, '\nFailed to decrement' );
   }
 }
 
@@ -221,12 +221,12 @@ function divide( i )
   try
   {
     if( i % 2 === 1 )
-    throw _.err( 'odd!' );
+    throw _.error.err( 'odd!' );
     return decrement( i / 2 );
   }
   catch( err )
   {
-    throw _.err( err, '\nFailed to divide' );
+    throw _.error.err( err, '\nFailed to divide' );
   }
 }
 
@@ -234,7 +234,7 @@ divide( 0 );
 
 ```
 
-Line `throw _.err( 'negative!' )` throws an error. Line `throw _.err( err, '\nFailed to decrement' )` rethrows it amending the message with `Failed to decrement`, and the line `throw _.err( err, '\nFailed to divide' )` rethrows it amending the message with `Failed to divide`. In the log, a developer sees a multiline message which mimics stack of throws.
+Line `throw _.error.err( 'negative!' )` throws an error. Line `throw _.error.err( err, '\nFailed to decrement' )` rethrows it amending the message with `Failed to decrement`, and the line `throw _.error.err( err, '\nFailed to divide' )` rethrows it amending the message with `Failed to divide`. In the log, a developer sees a multiline message which mimics stack of throws.
 
 ```
 = Message of error#1
@@ -255,13 +255,13 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.err( 'negative!' );
+    throw _.error.err( 'negative!' );
     return i-1;
   }
   catch( err )
   {
-    err = _.err( err, '\nFailed to decrement' );
-    if( _.errOnce( err ) )
+    err = _.error.err( err, '\nFailed to decrement' );
+    if( _.error.once( err ) )
     console.log( err );
     throw err;
   }
@@ -272,13 +272,13 @@ function divide( i )
   try
   {
     if( i % 2 === 1 )
-    throw _.err( 'odd!' );
+    throw _.error.err( 'odd!' );
     return decrement( i / 2 );
   }
   catch( err )
   {
-    err = _.err( err );
-    if( _.errOnce( err ) )
+    err = _.error.err( err );
+    if( _.error.once( err ) )
     console.log( err );
     throw err;
   }
@@ -290,14 +290,14 @@ try
 }
 catch( err )
 {
-  err = _.err( err );
-  if( _.errOnce( err ) )
+  err = _.error.err( err );
+  if( _.error.once( err ) )
   console.log( err );
 }
 
 ```
 
-In the example above, you may see that both `catch blocks` tries to log error. But only the first executed `catch block` does it because the error has a state which is changed by routine `_.errOnce`. In the output, you will see only one error, no duplicates.
+In the example above, you may see that both `catch blocks` tries to log error. But only the first executed `catch block` does it because the error has a state which is changed by routine `_.error.once`. In the output, you will see only one error, no duplicates.
 
 ```
 = Message of error#1
@@ -329,7 +329,7 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.errBrief( 'Please, specify a positive number.' );
+    throw _.error.brief( 'Please, specify a positive number.' );
     return i-1;
   }
   catch( err )
@@ -343,7 +343,7 @@ decrement( 0 );
 
 ```
 
-Above, you may see an example. It throws the error constructed with routine `_.errBrief`. The routine set field of the error indicating that the log of the error should have no stack or other extra information. The expected output is a single line of text:
+Above, you may see an example. It throws the error constructed with routine `_.error.brief`. The routine set field of the error indicating that the log of the error should have no stack or other extra information. The expected output is a single line of text:
 
 ```
 Please, specify a positive number.
@@ -364,7 +364,7 @@ It's helpful to have a fragment of source code, which is the initiator of throwi
 ``` js
 try
 {
-  throw _.err( 'Simplest error example' );
+  throw _.error.err( 'Simplest error example' );
 }
 catch( err )
 {
@@ -389,7 +389,7 @@ The code above adds source code to the error report if module `Files` were inclu
 = Source code from /Simplest.js:6
     1 : try
     2 : {
-  * 3 :   throw _.err( 'Simplest error sample' );
+  * 3 :   throw _.error.err( 'Simplest error sample' );
     4 : }
     5 : catch( err )
 ```
@@ -417,7 +417,7 @@ Non-brief error report usually has several sections: message, calls stack, throw
 = Source code from /example/Simplest.js:6
     1 : try
     2 : {
-  * 3 :   throw _.err( 'Simplest error sample' );
+  * 3 :   throw _.error.err( 'Simplest error sample' );
     4 : }
     5 : catch( err )
 ```

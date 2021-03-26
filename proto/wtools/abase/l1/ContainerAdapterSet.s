@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _realGlobal_;
-let _ = _global_.wTools;
+const _global = _realGlobal_;
+const _ = _global_.wTools;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -1159,7 +1159,7 @@ function ExportTo( dstGlobal, srcGlobal )
 // declare
 // --
 
-let Self = _.containerAdapter;
+const Self = _.containerAdapter;
 
 //
 

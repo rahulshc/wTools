@@ -3,19 +3,18 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-// let Self = _global_.wTools;
-let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
-let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+const Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
-let _ArraySlice = Array.prototype.slice;
-let _ArraySplice = Array.prototype.splice;
-let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
-let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _ArraySlice = Array.prototype.slice;
+const _ArraySplice = Array.prototype.splice;
+const _FunctionBind = Function.prototype.bind;
+const _ObjectToString = Object.prototype.toString;
+const _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 
 // --
 // regexp
@@ -705,16 +704,5 @@ let ExtensionS =
 Object.assign( _, ExtensionTools );
 Object.assign( Regexp, Extension );
 Object.assign( Regexps, ExtensionS );
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
-// Object.assign( _, Routines );
-// Object.assign( _, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

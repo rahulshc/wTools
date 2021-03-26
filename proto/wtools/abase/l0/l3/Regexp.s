@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // regexp
@@ -180,7 +180,6 @@ let ExtensionS =
 
 }
 
-
 _.assert( _.regexp === undefined );
 _.regexp = Object.create( null );
 _.assert( _.regexp.s === undefined );
@@ -189,14 +188,5 @@ _.regexp.s = Object.create( null );
 Object.assign( _.regexp, Extension )
 Object.assign( _.regexp.s, ExtensionS )
 Object.assign( Self, ExtensionTools )
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

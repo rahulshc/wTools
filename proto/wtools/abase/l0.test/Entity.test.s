@@ -6,13 +6,13 @@
 if( typeof module !== 'undefined' )
 {
 
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -4774,7 +4774,7 @@ function make( test )
   test.case = 'routine for key shallowSymbol';
   function Constr1(){ this.x = 1; return this };
   var src = new Constr1();
-  src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+  src[ _.class.cloneShallowSymbol ] = () => new Constr1();
   var got = _.entity.make( src );
   var exp = new Constr1();
   test.identical( got.x, exp.x );
@@ -5001,7 +5001,7 @@ function makeLongDescriptor( test )
     test.case = 'routine for key shallowSymbol';
     function Constr1(){ this.x = 1; return this };
     var src = new Constr1();
-    src[ _.entity.shallowCloneSymbol ] = () => new Constr1();
+    src[ _.class.cloneShallowSymbol ] = () => new Constr1();
     var got = descriptor.entityMake( src );
     var exp = new Constr1();
     test.identical( got.x, exp.x );
@@ -5937,478 +5937,11 @@ function entitySize( test )
   test.shouldThrowErrorSync( () => _.entitySize( 1, 'extra' ) );
 }
 
-// //
+// --
 //
-// function iterableIs( test )
-// {
-//   test.case = 'without argument';
-//   var got = _.iterableIs();
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'undefined';
-//   var got = _.iterableIs( undefined );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'null';
-//   var got = _.iterableIs( null );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'false';
-//   var got = _.iterableIs( false );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'empty string';
-//   var got = _.iterableIs( '' );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'zero';
-//   var got = _.iterableIs( 0 );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'NaN';
-//   var got = _.iterableIs( NaN );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'a boolean';
-//   var got = _.iterableIs( true );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'a number';
-//   var got = _.iterableIs( 13 );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'a function';
-//   var got = _.iterableIs( function() {} );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'constructor';
-//   function Constr( x )
-//   {
-//     this.x = x;
-//     return this;
-//   }
-//   var got = _.iterableIs( new Constr( 0 ) );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'a string';
-//   var got = _.iterableIs( 'str' );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'an array';
-//   var got = _.iterableIs( [] );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'an unroll';
-//   var got = _.iterableIs( _.unrollMake( [ 1 ] ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'an argumentsArray';
-//   var got = _.iterableIs( _.argumentsArray.make( [ 1 ] ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'BufferRaw';
-//   var got = _.iterableIs( new BufferRaw( 5 ) );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'BufferView';
-//   var got = _.iterableIs( new BufferView( new BufferRaw( 5 ) ) );
-//   var expected = false;
-//   test.identical( got, expected );
-//
-//   test.case = 'BufferTyped';
-//   var got = _.iterableIs( new U8x( 5 ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   if( Config.interpreter === 'njs' )
-//   {
-//     test.case = 'BufferNode';
-//     var got1 = _.iterableIs( BufferNode.alloc( 5 ) );
-//     var expected1 = true;
-//     test.identical( got1, expected1 );
-//   }
-//
-//   test.case = 'Set';
-//   var got = _.iterableIs( new Set( [ 5 ] ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'Map';
-//   var got = _.iterableIs( new Map( [ [ 1, 2 ] ] ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'pure empty map';
-//   var got = _.iterableIs( Object.create( null ) );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'pure map';
-//   var src = Object.create( null );
-//   src.x = 1;
-//   var got = _.iterableIs( src );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   // test.case = 'map from pure map'; /* qqq for Dmytro : resolve for complex object without constructors */
-//   // var src = Object.create( Object.create( null ) );
-//   // var got = _.iterableIs( src );
-//   // var expected = true;
-//   // test.identical( got, expected );
-//
-//   test.case = 'an empty object';
-//   var got = _.iterableIs( {} );
-//   var expected = true;
-//   test.identical( got, expected );
-//
-//   test.case = 'an object';
-//   var got = _.iterableIs( { a : 7, b : 13 } );
-//   var expected = true;
-//   test.identical( got, expected );
-// }
+// --
 
-//
-
-function methodIteratorOf( test )
-{
-  test.case = 'without argument';
-  var got = _.entity.methodIteratorOf();
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'undefined';
-  var got = _.entity.methodIteratorOf( undefined );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.entity.methodIteratorOf( null );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'false';
-  var got = _.entity.methodIteratorOf( false );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.entity.methodIteratorOf( '' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'zero';
-  var got = _.entity.methodIteratorOf( 0 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'NaN';
-  var got = _.entity.methodIteratorOf( NaN );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a boolean';
-  var got = _.entity.methodIteratorOf( true );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a number';
-  var got = _.entity.methodIteratorOf( 13 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a function';
-  var got = _.entity.methodIteratorOf( function() {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'constructor';
-  var Constr = constr;
-  function constr( x )
-  {
-    this.x = x;
-    return this;
-  }
-  var got = _.entity.methodIteratorOf( new Constr( 0 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a string';
-  var src = 'str';
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'an array';
-  var src = [];
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'an unroll';
-  var src = _.unrollMake( 1 );
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'an argumentsArray';
-  var src = _.argumentsArray.make( 1 );
-  var got = _.entity.methodIteratorOf( _.argumentsArray.make( [ 1 ] ) );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'BufferRaw';
-  var got = _.entity.methodIteratorOf( new BufferRaw( 5 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferView';
-  var got = _.entity.methodIteratorOf( new BufferView( new BufferRaw( 5 ) ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped';
-  var src = new U8x([ 5 ]);
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'BufferNode';
-    var src = BufferNode.alloc( 3 );
-    let got = _.entity.methodIteratorOf( src );
-    var expected = src[ _.entity.iteratorSymbol ];
-    test.identical( got, expected );
-  }
-
-  test.case = 'Set';
-  var src = new Set([ 5 ]);
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'Map';
-  var src = new Map([ [ 1, 2 ] ]);
-  var got = _.entity.methodIteratorOf( src );
-  var expected = src[ _.entity.iteratorSymbol ];
-  test.identical( got, expected );
-
-  test.case = 'pure empty map';
-  var got = _.entity.methodIteratorOf( Object.create( null ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.x = 1;
-  var got = _.entity.methodIteratorOf( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'map from pure map';
-  var src = Object.create( Object.create( null ) );
-  var got = _.entity.methodIteratorOf( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an empty object';
-  var got = _.entity.methodIteratorOf( {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.entity.methodIteratorOf( { a : 7, b : 13 } );
-  var expected = false;
-  test.identical( got, expected );
-}
-
-//
-
-function methodEqualOf( test )
-{
-  test.case = 'without argument';
-  var got = _.entity.methodEqualOf();
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'undefined';
-  var got = _.entity.methodEqualOf( undefined );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.entity.methodEqualOf( null );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'false';
-  var got = _.entity.methodEqualOf( false );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.entity.methodEqualOf( '' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'zero';
-  var got = _.entity.methodEqualOf( 0 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'NaN';
-  var got = _.entity.methodEqualOf( NaN );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a boolean';
-  var got = _.entity.methodEqualOf( true );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a number';
-  var got = _.entity.methodEqualOf( 13 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a function';
-  var got = _.entity.methodEqualOf( function() {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'constructor';
-  var Constr = constr;
-  function constr( x )
-  {
-    this.x = x;
-    return this;
-  }
-  var got = _.entity.methodEqualOf( new Constr( 0 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a string';
-  var got = _.entity.methodEqualOf( 'str' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an array';
-  var got = _.entity.methodEqualOf( [] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an unroll';
-  var got = _.entity.methodEqualOf( _.unrollMake( [ 1 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an argumentsArray';
-  var got = _.entity.methodEqualOf( _.argumentsArray.make( [ 1 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferRaw';
-  var got = _.entity.methodEqualOf( new BufferRaw( 5 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferView';
-  var got = _.entity.methodEqualOf( new BufferView( new BufferRaw( 5 ) ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped';
-  var got = _.entity.methodEqualOf( new U8x( 5 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'BufferNode';
-    let got = _.entity.methodEqualOf( BufferNode.alloc( 5 ) );
-    let expected = false;
-    test.identical( got, expected );
-  }
-
-  test.case = 'Set';
-  var got = _.entity.methodEqualOf( new Set( [ 5 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'Map';
-  var got = _.entity.methodEqualOf( new Map( [ [ 1, 2 ] ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure empty map';
-  var got = _.entity.methodEqualOf( Object.create( null ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.x = 1;
-  var got = _.entity.methodEqualOf( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'map from pure map';
-  var src = Object.create( Object.create( null ) );
-  var got = _.entity.methodEqualOf( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an empty object';
-  var got = _.entity.methodEqualOf( {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.entity.methodEqualOf( { a : 7, b : 13 } );
-  var expected = false;
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'map with routine under symbol equalAreSymbol';
-  var equivalentAre = ( e1, e2 ) => e1 === e2;
-  var src = {};
-  src[ _.entity.equalAreSymbol ] = equivalentAre;
-  var got = _.entity.methodEqualOf( src );
-  test.identical( got, equivalentAre );
-
-  test.case = 'object with routine under symbol equalAreSymbol';
-  var equivalentAre = ( e1, e2 ) => e1 === e2;
-  function Constr1()
-  {
-    this.x = 2;
-    this[ _.entity.equalAreSymbol ] = equivalentAre;
-    return this;
-  };
-  var src = new Constr1();
-  var got = _.entity.methodEqualOf( src );
-  test.identical( got, equivalentAre );
-}
-
-//
-
-let Self =
+const Proto =
 {
 
   name : 'Tools.Entity',
@@ -6416,6 +5949,7 @@ let Self =
 
   tests :
   {
+
     identicalShallowBasic,
     identicalShallowAllTypes,
     equivalentShallowBasic,
@@ -6446,15 +5980,12 @@ let Self =
     lengthOf,
     uncountableSize,
     entitySize,
-    // iterableIs,
-    methodIteratorOf,
-    methodEqualOf,
 
   }
 
 };
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

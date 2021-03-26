@@ -5,12 +5,12 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -237,11 +237,111 @@ function exportStringShortDiagnostic( test )
   test.shouldThrowErrorSync( () => _.set.exportStringShortDiagnostic( new HashMap() ) );
 }
 
+//
+
+/* qqq : extend */
+function but( test )
+{
+
+  // test.case = 'basic, 2 args';
+  // var src1 = new Set([ 1, 2, 3 ]);
+  // var src2 = new Set([ 2, 3, 4 ]);
+  // var got = _.set.but( src1, src2 );
+  // test.true( got !== src1 );
+  // test.true( got !== src2 );
+  // test.true( _.set.is( got ) );
+  // var exp = new Set([ 1 ]);
+  // test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.but( null, src1, src2 );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( _.set.is( got ) );
+  var exp = new Set([ 1 ]);
+  test.identical( got, exp );
+
+}
+
+//
+
+/* qqq : extend */
+function only( test )
+{
+
+  // test.case = 'basic, 2 args';
+  // var src1 = new Set([ 1, 2, 3 ]);
+  // var src2 = new Set([ 2, 3, 4 ]);
+  // var got = _.set.only( src1, src2 );
+  // test.true( got !== src1 );
+  // test.true( got !== src2 );
+  // test.true( _.set.is( got ) );
+  // var exp = new Set([ 2, 3 ]);
+  // test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.only( null, src1, src2 );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( _.set.is( got ) );
+  var exp = new Set([ 2, 3 ]);
+  test.identical( got, exp );
+
+}
+
+//
+
+/* qqq : extend */
+function diff( test )
+{
+
+  test.case = 'basic, 2 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.diff( src1, src2 );
+  test.true( got.src1 !== src1 );
+  test.true( got.src2 !== src2 );
+  test.true( _.mapIs( got ) );
+  test.true( _.set.is( got.src1 ) );
+  test.true( _.set.is( got.src2 ) );
+  var exp =
+  {
+    'src1' : new Set([ 1 ]),
+    'src2' : new Set([ 4 ]),
+    'diff' : new Set([ 1, 4 ]),
+    'identical' : false,
+  }
+  test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.diff( null, src1, src2 );
+  test.true( got.src1 !== src1 );
+  test.true( got.src2 !== src2 );
+  test.true( _.mapIs( got ) );
+  test.true( _.set.is( got.src1 ) );
+  test.true( _.set.is( got.src2 ) );
+  var exp =
+  {
+    'src1' : new Set([ 1 ]),
+    'src2' : new Set([ 4 ]),
+    'diff' : new Set([ 1, 4 ]),
+    'identical' : false,
+  }
+  test.identical( got, exp );
+
+}
+
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Set',
@@ -249,15 +349,21 @@ var Self =
 
   tests :
   {
+
     areIdenticalShallow,
-    exportStringShortDiagnostic
+    exportStringShortDiagnostic,
+
+    but,
+    only,
+    diff,
+
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

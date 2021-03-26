@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 _global_.wTools.vector = _global_.wTools.vector || Object.create( null );
 
 // --
@@ -19,7 +19,7 @@ function is( src )
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.entity.methodIteratorOf( src ) )
+  if( _.class.methodIteratorOf( src ) )
   if( _.number.is( src.length ) ) /* yyy */
   if( !_.mapIs( src ) )
   return true;
@@ -44,7 +44,7 @@ function like( src )
   // if( _.primitive.is( src ) )
   // return false;
   //
-  // if( _.entity.methodIteratorOf( src ) )
+  // if( _.class.methodIteratorOf( src ) )
   // if( !_.mapIs( src ) )
   // return true;
   //
@@ -114,12 +114,5 @@ var ExtensionTools =
 
 Object.assign( _.vector, Extension );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

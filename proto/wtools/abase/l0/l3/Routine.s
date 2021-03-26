@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
 let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
 
@@ -2322,7 +2322,7 @@ function vectorize_body( o )
         if( vectorizingArray )
         _.assert( !_.arrayLike( args[ d ] ), () => 'Arguments should have only arrays or only maps, but not both. Incorrect argument : ' + args[ d ] );
         let arg = Object.create( null );
-        _.objectSetWithKeys( arg, keys, args[ d ] );
+        _.mapSetWithKeys( arg, keys, args[ d ] );
         args[ d ] = arg;
       }
     }
@@ -2372,7 +2372,7 @@ function vectorize_body( o )
       //   args2[ 0 ] = e;
       //   append( routine.apply( this, args2 ) );
       // });
-      // // if( _.entity.methodIteratorOf( src ) )
+      // // if( _.class.methodIteratorOf( src ) )
       // // for( let e of src )
       // // {
       // //   // let e = src[ r ];
@@ -3249,12 +3249,5 @@ let ExtensionS =
 Object.assign( Self, ExtensionTools );
 Object.assign( Routine, Extension );
 Object.assign( RoutineS, ExtensionS );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

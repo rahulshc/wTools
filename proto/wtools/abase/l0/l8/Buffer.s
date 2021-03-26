@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // buffer
@@ -4548,7 +4548,7 @@ let Routines =
   bufferReusingOnly,
   bufferReusingGrow,
   bufferReusingRelength,
-  bufferReusingResize, 
+  bufferReusingResize,
 
   //
 
@@ -4622,12 +4622,5 @@ let Routines =
 //
 
 Object.assign( Self, Routines );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

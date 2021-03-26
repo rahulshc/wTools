@@ -3,14 +3,16 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.global = _global_.wTools.global || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const __ = _realGlobal_.wTools;
+const Self = _global_.wTools.global = _global_.wTools.global || Object.create( null );
 
 // --
 // implementation
 // --
 
+/* xxx : qqq : for Yevhen : dicuss tests */
 function is( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -18,8 +20,8 @@ function is( src )
   if( _.primitive.is( src ) )
   return false;
 
-  if( src === _global_ )
-  return true;
+  // if( src === _global_ )
+  // return true;
 
   if( _.prototype.has( src, _global_ ) )
   return true;
@@ -61,20 +63,24 @@ function isDerivative( src )
 
 var Extension =
 {
+
   is,
   isReal,
-  isDerivative
+  isDerivative,
+
+  new : __.global.new,
+  open : __.global.open,
+  close : __.global.close,
+  openForChildren : __.global.openForChildren,
+  closeForChildren : __.global.closeForChildren,
+  setup : __.global.setup,
+
+  _stack : __.global._stack,
+
 }
 
 //
 
 Object.assign( _.global, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

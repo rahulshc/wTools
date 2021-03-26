@@ -5,7 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
 
   _.include( 'wTesting' );
 
@@ -13,9 +13,9 @@ if( typeof module !== 'undefined' )
 
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
-let __ = _globals_.testing.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 //
@@ -3244,9 +3244,7 @@ function exportStringShortDiagnostic( test )
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = '{- Symbol maybe -}';
-  debugger;
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
-  debugger;
 
   test.case = 'bigint';
   var src = 10n;
@@ -3435,7 +3433,9 @@ function exportStringShortDiagnostic( test )
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var expected = 'Escape( 1 )';
+  debugger;
   test.identical( _.entity.exportStringShortDiagnostic( src ), expected );
+  debugger;
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
@@ -22288,7 +22288,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
 // test suite
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Str',
@@ -22405,7 +22405,7 @@ var Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

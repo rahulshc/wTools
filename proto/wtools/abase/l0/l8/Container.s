@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.container;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.container;
 
 // --
 // routines
@@ -28,12 +28,5 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

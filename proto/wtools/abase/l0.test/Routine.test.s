@@ -5,13 +5,13 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
-let __ = _globals_.testing.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 // context
@@ -1379,7 +1379,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
@@ -1394,7 +1394,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, { unknown : true } ), errCallback );
@@ -1406,7 +1406,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, { known : { objectLike : true } } ), errCallback );
@@ -1418,7 +1418,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {} ), errCallback );
@@ -1429,7 +1429,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {}, { known : undefined } ), errCallback );
@@ -1441,7 +1441,7 @@ function options( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.options( testRoutine, {} ), errCallback );
@@ -1659,7 +1659,7 @@ function options_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptions_( testRoutine, { unknown : true, b : 1 } ), errCallback );
@@ -1670,7 +1670,7 @@ function options_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptions_( {}, { unknown : true } ), errCallback );
@@ -1683,7 +1683,7 @@ function options_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptions_( testRoutine, {} ), errCallback );
@@ -1695,7 +1695,7 @@ function options_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptions_( testRoutine, {} ), errCallback );
@@ -1944,7 +1944,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { unknown : true, b : 1 }, {} ), errCallback );
@@ -1963,7 +1963,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { unknown : true } ), errCallback );
@@ -1975,7 +1975,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {}, { known : true, b : 1 } ), errCallback );
@@ -1987,7 +1987,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, {} ), errCallback );
@@ -1998,7 +1998,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { known : undefined }, { known : 1 } ), errCallback );
@@ -2010,7 +2010,7 @@ function assertOptions( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routine.assertOptions( testRoutine, { known : undefined } ), errCallback );
@@ -2155,7 +2155,7 @@ function assertOptions_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptions_( testRoutine, { unknown : true, b : 1 } ), errCallback );
@@ -2166,7 +2166,7 @@ function assertOptions_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptions_( {}, { unknown : true } ), errCallback );
@@ -2179,7 +2179,7 @@ function assertOptions_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptions_( testRoutine, {} ), errCallback );
@@ -2191,7 +2191,7 @@ function assertOptions_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptions_( testRoutine, { known : undefined } ), errCallback );
@@ -2434,7 +2434,7 @@ function optionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptionsPreservingUndefines_( testRoutine, { unknown : true, b : 1 } ), errCallback );
@@ -2445,7 +2445,7 @@ function optionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.routineOptionsPreservingUndefines_( {}, { unknown : true } ), errCallback );
@@ -2603,7 +2603,7 @@ function assertOptionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, { unknown : true, b : 1 } ), errCallback );
@@ -2614,7 +2614,7 @@ function assertOptionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( {}, { unknown : true } ), errCallback );
@@ -2627,7 +2627,7 @@ function assertOptionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( testRoutine, {} ), errCallback );
@@ -2638,7 +2638,7 @@ function assertOptionsPreservingUndefines_( test )
   var errCallback = ( err, arg ) =>
   {
     test.identical( arg, undefined );
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, msg ), 1 );
   };
   test.shouldThrowErrorSync( () => _.assertRoutineOptionsPreservingUndefines_( { known : true }, {} ), errCallback );
@@ -3363,8 +3363,8 @@ function routinesChain( test )
 //   test.equivalent( got.c, {} );
 //   test.identical
 //   (
-//     _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
-//     _.mapBut( _.property.onlyExplicit( {} ), [ '__proto__' ] )
+//     _.mapBut_( null, _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+//     _.mapBut_( null, _.property.onlyExplicit( {} ), [ '__proto__' ] )
 //   );
 //   test.identical( typeof got, 'function' );
 //
@@ -3801,8 +3801,8 @@ function routineExtend( test )
   // test.equivalent( got.c, {} );
   // test.identical
   // (
-  //   _.mapBut( _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
-  //   _.mapBut( _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
+  //   _.mapBut_( null, _.property.onlyExplicit( got.c ), [ '__proto__' ] ),
+  //   _.mapBut_( null, _.property.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
   // );
   // test.identical( typeof got, 'function' );
   /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
@@ -7701,7 +7701,7 @@ function exportStringShortDiagnostic( test )
 //
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Routine',
@@ -7773,7 +7773,7 @@ var Self =
 
 };
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

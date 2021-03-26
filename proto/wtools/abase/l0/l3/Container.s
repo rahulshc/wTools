@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 //
@@ -50,7 +50,7 @@ function lengthOf( container )
   // if( type && type._lengthGet )
   // return type._lengthGet( container );
 
-  // if( _.entity.methodIteratorOf( container ) )
+  // if( _.class.methodIteratorOf( container ) )
   // return [ ... container ].length;
 
   /* qqq : find optimal solution. write performance test */
@@ -89,7 +89,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Container, Handler );
+const Self = new Proxy( Container, Handler );
 Self.original = Container;
 
 // --
@@ -131,12 +131,5 @@ let ToolsExtension =
 //
 
 Object.assign( _, ToolsExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

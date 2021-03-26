@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-// let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+// const Self = _global_.wTools;
 let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
 let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
@@ -189,12 +189,5 @@ let ExtensionS =
 _.mapSupplement( Regexp, Extension );
 _.mapSupplement( Regexps, ExtensionS );
 _.mapSupplement( _, ExtensionTools ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

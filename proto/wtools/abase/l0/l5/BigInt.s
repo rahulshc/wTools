@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.bigInt = _.bigInt || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.bigInt = _.bigInt || Object.create( null );
 _.bigInt.s = _.bigInt.s || Object.create( null );
 
 // --
@@ -73,12 +73,5 @@ let ExtensionS =
 Object.assign( Self, Extension );
 Object.assign( _.bigInt.s, ExtensionS );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

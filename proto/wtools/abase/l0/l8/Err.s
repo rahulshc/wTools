@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools;
+const _global = _global_;
+const _ = _global.wTools;
 let _err = _._err;
 
 // --
@@ -118,12 +118,5 @@ let ToolsExtension =
 
 Object.assign( _.error, ErrorExtension );
 Object.assign( _, ToolsExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
