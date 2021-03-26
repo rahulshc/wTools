@@ -593,7 +593,6 @@ strShort.defaults =
   infix : null,
   onLength : null,
   cutting : 'center',
-  testingData : null
 }
 
 // function strShort( o )
