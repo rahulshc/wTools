@@ -2779,20 +2779,20 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   else if( arguments.length === 2 )
   {
 
-    return _.mapOnlyOld( srcMaps, screenMaps );
+    // return _.mapOnlyOld( srcMaps, screenMaps );
 
     // qqq : for Dmytro : bad!
-    // if( dstMap === null )
-    // return Object.create( null );
-    // screenMaps = arguments[ 1 ];
-    // srcMaps = arguments[ 0 ];
+    if( dstMap === null )
+    return Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
     _.assert( 0, 'Expects at least one argument and no more then three arguments' );
   }
 
-  return _.mapOnlyOld( srcMaps, screenMaps );
+  // return _.mapOnlyOld( srcMaps, screenMaps );
   // qqq : for Dmytro : bad!
 
   return _._mapOnly_
