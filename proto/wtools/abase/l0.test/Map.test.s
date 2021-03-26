@@ -295,7 +295,8 @@ function typingBasic( test ) /* qqq : extend with construbile* checks */
   test.identical( _.aux.isPopulated( src ), false );
 
   test.case = 'routine';
-  var src = function() {};
+  var src = src_
+  function src_(){};
   test.identical( _.object.is( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
@@ -3036,28 +3037,28 @@ function mapToStr( test )
 {
 
   test.case = 'returns an empty string';
-  var got = _.mapToStr({ src : [], keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : [], keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an object';
-  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = 'a : 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array';
-  var got = _.mapToStr({ src : [ 1, 2, 3 ], keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : [ 1, 2, 3 ], keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array-like object';
   function args() { return arguments };
-  var got = _.mapToStr({ src : args(  1, 2, 3, 4, 5 ), keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : args( 1, 2, 3, 4, 5 ), keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
   test.identical( got, expected );
 
   test.case = 'returns a string representing a string';
-  var got = _.mapToStr({ src : 'abc', keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : 'abc', keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : a; 1 : b; 2 : c';
   test.identical( got, expected );
 
@@ -4114,9 +4115,9 @@ function hashMapExtend( test )
 
   test.case = 'dst and src have identical keys';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var src = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [  2 ] ] ] );
+  var src = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 2 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [  2 ] ] ] );
+  var exp = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [ 2 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
@@ -7861,7 +7862,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
   var dstMap = { c : 3 };
-  var srcMap = { a : undefined, b : undefined};
+  var srcMap = { a : undefined, b : undefined };
   var butMap = _.unrollMake([ 'a', 'b' ]);
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { c : 3 };
@@ -8031,7 +8032,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
   var dstMap = { c : 3 };
-  var srcMap = { a : undefined, b : undefined};
+  var srcMap = { a : undefined, b : undefined };
   var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { c : 3 };
@@ -11650,7 +11651,7 @@ function mapOnlyComplementing_WithTwoArguments( test )
   srcMap.b = undefined;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c'  ] );
+  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c' ] );
   test.identical( got.a, 'abc' );
   test.identical( got.b, undefined );
   test.true( got === srcMap );
@@ -12774,7 +12775,12 @@ function mapsAreIdentical( test )
   });
 
   test.case = 'not object-like arguments';
-  // test.shouldThrowErrorSync( function() /* qqq : for Dmytro : need to investigate, two different namespaces */
+  // test.shouldThrowErrorSync( function() /* aaa : for Dmytro : need to investigate, two different namespaces */
+  /*
+     Dmytro : main aim of routine is to compare objects ( description of the routine ),
+     so it can compare Array like objects and a developer should take responsibility.
+     Also, similar routines in namespaces _.aux and _.property should have more strict type assertions
+  */
   // {
   //   _.mapsAreIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
   // });

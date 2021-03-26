@@ -1789,7 +1789,7 @@ function unite_body( o )
         else
         _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
 
-        result = tail.call( this, result, o );
+        result = tail.call( this, result, o, unitedRoutine );
 
         return result;
       }
