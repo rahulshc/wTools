@@ -9861,6 +9861,56 @@ function mapOnly_DstMapIsNull( test )
 
 //
 
+function mapOnly_DstMapIsNullSrcMapsObjectWithConstructor( test )
+{
+  test.case = 'dstMap - null, srcMap - instance, screenMap - map';
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( srcMap.b, 1 );
+  test.identical( srcMap.c, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  test.case = 'dstMap - not defined, srcMap  - instance, screenMap - map';
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( srcMap, screenMap );
+  test.identical( _.mapKeys( got ), [ 'a' ] );
+  test.identical( got.a, 1 );
+  test.true( got === srcMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  test.case = 'dstMap - map, srcMap  - instance, screenMap - map';
+  var dstMap = {};
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( srcMap.b, 1 );
+  test.identical( srcMap.c, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  /* */
+
+  function Constr( x )
+  {
+    this.a = x;
+    this.b = x;
+    this.c = x;
+    return this;
+  }
+}
+
+//
+
 function mapOnly_DstMapIsMap( test )
 {
   test.open( 'srcMap - map' );
@@ -16798,6 +16848,7 @@ const Proto =
     mapOnly_DstMapIsMap,
     mapOnly_SrcMapsIsVector,
     mapOnly_ScreenMapIsVector,
+    mapOnly_DstMapIsNullSrcMapsObjectWithConstructor,
 
     mapOnlyOwn_WithTwoArguments,
     mapOnlyOwn_DstMapIsNull,
