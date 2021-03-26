@@ -696,129 +696,128 @@ strShort.defaults =
 
 //
 
-function strShort2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
-{
+// function strShort2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
+// {
 
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-  else if( arguments.length === 1 )
-  if( _.strIs( o ) )
-  o = { src : arguments[ 0 ] };
+//   if( arguments.length === 2 )
+//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
+//   else if( arguments.length === 1 )
+//   if( _.strIs( o ) )
+//   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShort2, o );
+//   _.routine.options( strShort2, o );
 
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.number.is( o.widthLimit ) );
-  _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.number.is( o.widthLimit ) );
+//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
+//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
+//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
+//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix )
-  o.infix = '';
-  if( !o.prefix )
-  o.prefix = '';
-  if( !o.postfix )
-  o.postfix = '';
-  if( o.widthLimit === 0 )
-  o.widthLimit = Infinity;
-  if( o.src.length < 1 )
-  {
-    if( o.prefix.length + o.postfix.length <= o.widthLimit )
-    return o.prefix + o.postfix
-    o.src = o.prefix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-  }
-  if( _.bool.likeTrue( o.infix ) )
-  o.infix = '...';
+//   if( !o.infix )
+//   o.infix = '';
+//   if( !o.prefix )
+//   o.prefix = '';
+//   if( !o.postfix )
+//   o.postfix = '';
+//   if( o.widthLimit === 0 )
+//   o.widthLimit = Infinity;
+//   if( o.src.length < 1 )
+//   {
+//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
+//     return o.prefix + o.postfix
+//     o.src = o.prefix + o.postfix;
+//     o.prefix = '';
+//     o.postfix = '';
+//   }
+//   if( _.bool.likeTrue( o.infix ) )
+//   o.infix = '...';
 
-  if( !o.onLength )
-  o.onLength = ( src ) => src.length;
+//   if( !o.onLength )
+//   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-  return o.prefix + o.infix + o.postfix;
+//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
+//   return o.prefix + o.infix + o.postfix;
 
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-  {
-    o.src = o.prefix + o.infix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-    o.infix = '';
-  }
+//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
+//   {
+//     o.src = o.prefix + o.infix + o.postfix;
+//     o.prefix = '';
+//     o.postfix = '';
+//     o.infix = '';
+//   }
 
-  let src = o.src;
-  let fixLength = 0;
-  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+//   let src = o.src;
+//   let fixLength = 0;
+//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  if( o.cutting === 'left' )
-  {
-    while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-    {
-      src = src.slice( 1 );
-    }
-    return o.prefix + o.infix + src + o.postfix;
-  }
-  else if( o.cutting === 'right' )
-  {
-    while( o.onLength( src ) + fixLength > o.widthLimit )
-    {
-      src = src.slice( 0, src.length - 1 );
-    }
-    return o.prefix + src + o.infix + o.postfix;
-  }
-  else
-  {
-    if( o.onLength( src ) + fixLength <= o.widthLimit )
-    return o.prefix + src + o.postfix;
+//   if( o.cutting === 'left' )
+//   {
+//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+//     {
+//       src = src.slice( 1 );
+//     }
+//     return o.prefix + o.infix + src + o.postfix;
+//   }
+//   else if( o.cutting === 'right' )
+//   {
+//     while( o.onLength( src ) + fixLength > o.widthLimit )
+//     {
+//       src = src.slice( 0, src.length - 1 );
+//     }
+//     return o.prefix + src + o.infix + o.postfix;
+//   }
+//   else
+//   {
+//     if( o.onLength( src ) + fixLength <= o.widthLimit )
+//     return o.prefix + src + o.postfix;
 
-    let begin = '';
-    let end = '';
+//     let begin = '';
+//     let end = '';
 
-    while( o.onLength( src ) + fixLength > o.widthLimit )
-    {
+//     while( o.onLength( src ) + fixLength > o.widthLimit )
+//     {
 
-      /* find a place between elements, not within element */
-      let center = Math.floor( src.length / 2 );
-      begin = src.slice( 0, center );
-      end = src.slice( center );
+//       /* find a place between elements, not within element */
+//       let center = Math.floor( src.length / 2 );
+//       begin = src.slice( 0, center );
+//       end = src.slice( center );
 
-      while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
-      {
-        center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
-        begin = src.slice( 0, center );
-        end = src.slice( center );
-      }
+//       while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
+//       {
+//         center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
+//         begin = src.slice( 0, center );
+//         end = src.slice( center );
+//       }
 
-      let beginLength = o.onLength( begin );
-      let endLength = o.onLength( end );
-      /* center is between elements, slice from bigger part until 1 complete element is removed */
-      if( o.onLength( begin ) > o.onLength( end ) )
-      while( o.onLength( begin ) >= beginLength )
-        begin = begin.slice( 0, -1 );
-      else
-      while( o.onLength( end ) >= endLength )
-        end = end.slice( 1 );
+//       let beginLength = o.onLength( begin );
+//       let endLength = o.onLength( end );
+//       /* center is between elements, slice from bigger part until 1 complete element is removed */
+//       if( o.onLength( begin ) > o.onLength( end ) )
+//       while( o.onLength( begin ) >= beginLength )
+//         begin = begin.slice( 0, -1 );
+//       else
+//       while( o.onLength( end ) >= endLength )
+//         end = end.slice( 1 );
 
-      src = begin + end;
-    }
-    return o.prefix + begin + o.infix + end + o.postfix;
-  }
-}
+//       src = begin + end;
+//     }
+//     return o.prefix + begin + o.infix + end + o.postfix;
+//   }
+// }
 
-strShort2.defaults =
-{
-  src : null,
-  widthLimit : 40,
-  heightLimit : 0,
-  prefix : null,
-  postfix : null,
-  infix : null,
-  onLength : null, /* xxx : investigate */
-  cutting : 'center',
-  testingData : null
-}
+// strShort2.defaults =
+// {
+//   src : null,
+//   widthLimit : 40,
+//   heightLimit : 0,
+//   prefix : null,
+//   postfix : null,
+//   infix : null,
+//   onLength : null, /* xxx : investigate */
+//   cutting : 'center',
+// }
 
 //
 
@@ -1687,7 +1686,7 @@ let ExtensionTools =
 
   strStrShort : strShort, /* xxx : remove */
   strShort, /* qqq for Yevhen : cover | aaa : Done. */
-  strShort2, /* non-binary search implementation */
+  // strShort2, /* non-binary search implementation */
   strConcat,
 
   //
