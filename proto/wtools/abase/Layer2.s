@@ -15,9 +15,9 @@ if( typeof module !== 'undefined' && module !== null )
 
 }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // export

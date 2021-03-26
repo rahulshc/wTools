@@ -3,11 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const Self = _global_.wTools;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 // --
 // array
@@ -76,7 +76,7 @@ function arrayLike( src ) /* qqq : cover */
   return true;
   if( _.argumentsArray.is( src ) )
   return true;
-  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // if( _.class.methodIteratorOf( src ) ) /* yyy */
   // // if( !_.mapIs( src ) && _.object.is( src ) )
   // if( !_.mapIs( src ) )
   // return true;
@@ -1968,12 +1968,5 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

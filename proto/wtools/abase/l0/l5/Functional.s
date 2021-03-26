@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // scalar
@@ -546,6 +546,7 @@ function entityOnly( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
+    /* xxx : qqq : for Dmytro : fix that. ask how to */
     _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
@@ -3991,7 +3992,7 @@ let Extension =
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
   entityFilter_,
-  filter_ : entityFilter_,
+  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
   entityFirst,
   first : entityFirst,
   entityLast,
@@ -4008,12 +4009,5 @@ let Extension =
 }
 
 _.mapSupplement( _, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

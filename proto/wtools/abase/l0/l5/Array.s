@@ -3,14 +3,14 @@
 
 'use strict';
 
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayIncludes = Array.prototype.includes;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayIncludes = Array.prototype.includes;
 if( !_ArrayIncludes )
 _ArrayIncludes = function( e ){ _ArrayIndexOf.call( this, e ) }
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 
 /*
                |  can grow   |  can shrink  |   range
@@ -5005,12 +5005,5 @@ let Extension =
 }
 
 _.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

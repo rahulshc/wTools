@@ -5,9 +5,9 @@
 
 //
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.sorted = _.sorted || Object.create( null );
+const Self = _.sorted = _.sorted || Object.create( null );
 
 // --
 // implementation
@@ -50,12 +50,5 @@ let Extension =
 }
 
 _.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

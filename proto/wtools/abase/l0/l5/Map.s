@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _global_.wTools;
+const Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 /* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
@@ -709,7 +709,7 @@ function mapHasOnly( srcMap, screenMaps )
   _.assert( arguments.length === 2 );
 
   let l = arguments.length;
-  let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+  let but = Object.keys( _.mapBut_( null, srcMap, screenMaps ) );
 
   if( but.length > 0 )
   return false;
@@ -719,13 +719,15 @@ function mapHasOnly( srcMap, screenMaps )
 
 //
 
+/* xxx : review */
 function mapOnlyOwnOnly( srcMap, screenMaps )
 {
 
   _.assert( arguments.length === 2 );
 
   let l = arguments.length;
-  let but = Object.keys( _.mapOnlyOwnBut( srcMap, screenMaps ) );
+  // let but = Object.keys( _.mapOnlyOwnBut_( null, srcMap, screenMaps ) );
+  let but = Object.keys( _.mapOnlyOwnButOld( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   return false;
@@ -1625,7 +1627,7 @@ function mapOnlyPrimitives( srcMap )
 // map manipulator
 // --
 
-function objectSetWithKeys( dstMap, key, val )
+function mapSetWithKeys( dstMap, key, val )
 {
   if( dstMap === null )
   dstMap = Object.create( null );
@@ -1664,7 +1666,7 @@ function objectSetWithKeys( dstMap, key, val )
 
 //
 
-function objectSetWithKeyStrictly( dstMap, key, val )
+function mapSetWithKeyStrictly( dstMap, key, val )
 {
   if( dstMap === null )
   dstMap = Object.create( null );
@@ -1964,6 +1966,32 @@ mapToStr.defaults =
   entryDelimeter : ';',
 }
 
+//
+
+function fromHashMap( dstMap, srcMap )
+{
+
+  if( arguments.length === 1 )
+  {
+    srcMap = arguments[ 0 ];
+    dstMap = null;
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.hashMap.is( srcMap ) );
+  _.assert( !_.primitiveIs( dstMap ) || dstMap === null );
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  for( let pair of srcMap )
+  {
+    dstMap[ pair[ 0 ] ] = pair[ 1 ];
+  }
+
+  return dstMap
+}
+
 // --
 // map logical operator
 // --
@@ -1986,7 +2014,7 @@ mapToStr.defaults =
  * @param { ...objectLike } arguments[] - The next objects.
  *
  * @example
- * _.mapButConditional( _.property.mapper.primitive(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+ * _.mapButConditional_( null, _.property.mapper.primitive(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
  * // returns { a : 1, b : "b" }
  *
  * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
@@ -1995,7 +2023,7 @@ mapToStr.defaults =
  * @namespace Tools
  */
 
-function mapButConditional( propertyFilter, srcMap, butMap )
+function mapButConditionalOld( propertyFilter, srcMap, butMap )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( !_.primitive.is( butMap ), 'Expects non primitive {-butMap-}' );
@@ -2156,7 +2184,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
  * Objects to return an object without repeating keys.
  *
  * @example
- * _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+ * _.mapBut_( null, { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  * // returns { c : 3 }
  *
  * Returns new object filled by unique keys
@@ -2167,7 +2195,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
  * @namespace Tools
  */
 
-function mapBut( srcMap, butMap )
+function mapButOld( srcMap, butMap )
 {
   let result = Object.create( null );
 
@@ -2304,6 +2332,7 @@ function mapBut_( dstMap, srcMap, butMap )
 
   /* */
 
+  /* qqq : for Dmytro : bad : not optimal */
   function filterBut( butMap, srcMap, key )
   {
     if( _.aux.is( butMap ) )
@@ -2455,23 +2484,31 @@ function _mapBut_( o )
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( _.primitive.is( o.butMap[ m ] ) )
+      if( _.primitive.is( o.butMap[ m ] ) || _.aux.is( o.butMap[ m ] ) )
       {
         if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
         return;
       }
-
+      // if( _.primitive.is( o.butMap[ m ] ) )
+      // {
+      //   if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      //   return;
+      // }
       o.dstMap[ key ] = o.srcMap[ key ];
     }
     else
     {
       for( let but of o.butMap )
-      if( _.primitive.is( but ) )
+      if( _.primitive.is( but ) || _.aux.is( but ) )
       {
         if( !o.filter( but, o.srcMap, key ) )
         return;
       }
-
+      // if( _.primitive.is( but ) )
+      // {
+      //   if( !o.filter( but, o.srcMap, key ) )
+      //   return;
+      // }
       o.dstMap[ key ] = o.srcMap[ key ];
     }
   }
@@ -2613,14 +2650,14 @@ function mapEmpty( dstMap )
  * @namespace Tools
  */
 
-function mapButIgnoringUndefines( srcMap, butMap )
-{
-  let result = Object.create( null );
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  return _.mapButConditional( _.property.filter.dstUndefinedSrcNotUndefined(), srcMap, butMap );
-}
+// function mapButIgnoringUndefines( srcMap, butMap )
+// {
+//   let result = Object.create( null );
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   return _.mapButConditional_( null, _.property.filter.dstUndefinedSrcNotUndefined(), srcMap, butMap );
+// }
 
 //
 
@@ -2652,7 +2689,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
- * _.mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+ * _.mapBut_( null, { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
  * // returns { a : 7 }
  *
  * @returns { object } Returns new (result) object with unique own keys.
@@ -2661,13 +2698,13 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
  * @namespace Tools
  */
 
-function mapOnlyOwnBut( srcMap, butMap )
+function mapOnlyOwnButOld( srcMap, butMap )
 {
   let result = Object.create( null );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  return _.mapButConditional( _.property.filter.dstNotHasSrcOwn(), srcMap, butMap );
+  return _.mapButConditionalOld( _.property.filter.dstNotHasSrcOwn(), srcMap, butMap );
 }
 
 //
@@ -2704,7 +2741,7 @@ function mapOnlyOwnBut_( dstMap, srcMap, butMap )
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
- * _.mapOnly( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+ * _.mapOnly_( null, { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
  * // returns { a : "abc", c : 33, d : "name" };
  *
  * @returns { Object } Returns the object filled by unique [ key, value ]
@@ -2714,7 +2751,7 @@ function mapOnlyOwnBut_( dstMap, srcMap, butMap )
  * @namespace Tools
  */
 
-function mapOnly( srcMaps, screenMaps )
+function mapOnlyOld( srcMaps, screenMaps )
 {
   if( arguments.length === 1 )
   return _.mapsExtend( null, srcMaps );
@@ -2734,15 +2771,19 @@ function mapOnly( srcMaps, screenMaps )
 function mapOnly_( dstMap, srcMaps, screenMaps )
 {
 
+
   if( arguments.length === 1 )
   {
     return _.mapsExtend( null, dstMap );
   }
   else if( arguments.length === 2 )
   {
+
+    // return _.mapOnlyOld( srcMaps, screenMaps );
+
+    // qqq : for Dmytro : bad!
     if( dstMap === null )
     return Object.create( null );
-
     screenMaps = arguments[ 1 ];
     srcMaps = arguments[ 0 ];
   }
@@ -2750,6 +2791,9 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   {
     _.assert( 0, 'Expects at least one argument and no more then three arguments' );
   }
+
+  // return _.mapOnlyOld( srcMaps, screenMaps );
+  // qqq : for Dmytro : bad!
 
   return _._mapOnly_
   ({
@@ -2760,25 +2804,25 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
 
 }
 
+// //
 //
-
-function mapOnlyOwn( srcMaps, screenMaps )
-{
-
-  if( arguments.length === 1 )
-  return _.mapsExtendConditional( _.property.mapper.srcOwn(), null, srcMaps );
-
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
-
-  return _._mapOnly
-  ({
-    filter : _.property.mapper.srcOwn(),
-    srcMaps,
-    screenMaps,
-    dstMap : Object.create( null ),
-  });
-
-}
+// function mapOnlyOwn( srcMaps, screenMaps )
+// {
+//
+//   if( arguments.length === 1 )
+//   return _.mapsExtendConditional( _.property.mapper.srcOwn(), null, srcMaps );
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
+//
+//   return _._mapOnly
+//   ({
+//     filter : _.property.mapper.srcOwn(),
+//     srcMaps,
+//     screenMaps,
+//     dstMap : Object.create( null ),
+//   });
+//
+// }
 
 //
 
@@ -2814,20 +2858,20 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 
 //
 
-function mapOnlyComplementing( srcMaps, screenMaps )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
-
-  return _._mapOnly
-  ({
-    filter : _.property.mapper.dstNotOwnOrUndefinedAssigning(),
-    srcMaps,
-    screenMaps,
-    dstMap : Object.create( null ),
-  });
-
-}
+// function mapOnlyComplementing( srcMaps, screenMaps )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
+//
+//   return _._mapOnly
+//   ({
+//     filter : _.property.mapper.dstNotOwnOrUndefinedAssigning(),
+//     srcMaps,
+//     screenMaps,
+//     dstMap : Object.create( null ),
+//   });
+//
+// }
 
 //
 
@@ -2905,6 +2949,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
  * @namespace Tools
  */
 
+/* xxx : qqq : for Dmytro : comment out */
 function _mapOnly( o )
 {
   let self = this;
@@ -3170,6 +3215,16 @@ function _mapOnly_( o )
         if( o.screenMaps[ m ] === key )
         return key;
       }
+      else if( _.aux.is( o.screenMaps[ m ] ) )
+      {
+        if( key in o.screenMaps[ m ] )
+        return key;
+      }
+      // if( _.primitive.is( o.screenMaps[ m ] ) )
+      // {
+      //   if( o.screenMaps[ m ] === key )
+      //   return key;
+      // }
     }
     else
     {
@@ -3179,6 +3234,16 @@ function _mapOnly_( o )
         if( m === key )
         return key;
       }
+      else if( _.aux.is( m ) )
+      {
+        if( key in m )
+        return key;
+      }
+      // if( _.primitive.is( m ) )
+      // {
+      //   if( m === key )
+      //   return key;
+      // }
     }
     // if( _.arrayLike( o.screenMaps ) )
     // {
@@ -3208,11 +3273,19 @@ function _mapOnly_( o )
 
   function filterNotIdentical( srcMap )
   {
-    for( let key in srcMap )
+    for( let key in o.screenMaps )
     {
-      if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+      if( o.screenMaps[ key ] === undefined )
+      continue;
+
+      if( key in srcMap )
       o.filter.call( self, o.dstMap, srcMap, key );
     }
+    // for( let key in srcMap )
+    // {
+    //   if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+    //   o.filter.call( self, o.dstMap, srcMap, key );
+    // }
   }
 
   /* */
@@ -3248,7 +3321,7 @@ function _mapOnly_( o )
   //   _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
   //   _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
   //   _.assert( _.vector.is( srcMaps ), 'Expects vector {-srcMaps-}' );
-  //   _.assertMapHasOnly( o, _mapOnly_.defaults );
+  //   _.map.assertHasOnly( o, _mapOnly_.defaults );
   //   _.map.assertHasOnly( o, _mapOnly_.defaults );
   //
   //   for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
@@ -3400,6 +3473,31 @@ _mapOnly_.defaults =
   filter : null,
 }
 
+//
+
+/* qqq : cover */
+function mapDiff( dst, src1, src2 )
+{
+  if( arguments.length === 2 )
+  {
+    dst = null;
+    src1 = arguments[ 0 ];
+    src2 = arguments[ 1 ];
+  }
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( dst === null || _.aux.is( dst ) );
+
+  dst = dst || Object.create( null );
+
+  dst.src1 = _.mapBut_( dst.src1 || null, src1, src2 );
+  dst.src2 = _.mapBut_( dst.src2 || null, src2, src1 );
+  dst.src2 = _.mapExtend( null, dst.src1, dst.src2 );
+  dst.identical = Object.keys( dst.src1 ).length === 0 && Object.keys( dst.src2 ).length === 0;
+
+  return dst;
+}
+
 // --
 // map sure
 // --
@@ -3497,13 +3595,15 @@ function sureHasOnly( srcMap, screenMaps, msg )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+  /* qqq : for Dmytro : bad ! */
+  // let but = Object.keys( _.mapBut_( null, srcMap, screenMaps ) );
+  let but = Object.keys( _.mapButOld( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
     let err;
     if( arguments.length === 2 )
-    err = _.error._err
+    err = _._err
     ({
       args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
@@ -3517,13 +3617,13 @@ function sureHasOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      err = _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-    debugger;
+    debugger; /* eslint-disable-line no-debugger */
     throw err;
     return false;
   }
@@ -3604,16 +3704,20 @@ function sureOwnOnly( srcMap, screenMaps, msg )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOnlyOwnBut( srcMap, screenMaps ) );
+  /* qqq : for Dmytro : bad! */
+  let but = Object.keys( _.mapOnlyOwnButOld( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -3623,13 +3727,14 @@ function sureOwnOnly( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 3,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -3707,16 +3812,19 @@ function sureHasAll( srcMap, all, msg )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapBut( all, srcMap ) );
+  let but = Object.keys( _.mapBut_( null, all, srcMap ) );
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -3726,13 +3834,14 @@ function sureHasAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -3809,16 +3918,19 @@ function sureOwnAll( srcMap, all, msg )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOnlyOwnBut( all, srcMap ) );
+  let but = Object.keys( _.mapOnlyOwnBut_( null, all, srcMap ) );
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -3828,13 +3940,14 @@ function sureOwnAll( srcMap, all, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -3912,16 +4025,19 @@ function sureHasNone( srcMap, screenMaps, msg )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
+  let but = Object.keys( _.mapOnly_( null, srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -3931,13 +4047,14 @@ function sureHasNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -3951,16 +4068,19 @@ function sureOwnNone( srcMap, screenMaps, msg )
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
+  let but = Object.keys( _.mapOnlyOwn_( null, srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 2 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -3970,13 +4090,14 @@ function sureOwnNone( srcMap, screenMaps, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -4055,12 +4176,15 @@ function sureHasNoUndefine( srcMap, msg )
 
   if( but.length > 0 )
   {
+    let err;
     if( arguments.length === 1 )
-    throw _.error._err
-    ({
-      args : [ `${ _.entity.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+    {
+      err = _._err
+      ({
+        args : [ `${ _.entity.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
     else
     {
       let arr = [];
@@ -4070,13 +4194,14 @@ function sureHasNoUndefine( srcMap, msg )
         arguments[ i ] = ( arguments[ i ] )();
         arr.push( arguments[ i ] );
       }
-      throw _.error._err
+      err = _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
         level : 2,
       });
     }
-
+    debugger; /* eslint-disable-line no-debugger */
+    throw err;
     return false;
   }
 
@@ -4087,7 +4212,7 @@ function sureHasNoUndefine( srcMap, msg )
 // map assert
 // --
 
-function assertHasFields( srcMap, screenMaps, msg )
+function assertHasExactly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -4096,7 +4221,7 @@ function assertHasFields( srcMap, screenMaps, msg )
 
 //
 
-function assertOwnFields( srcMap, screenMaps, msg )
+function assertOwnExactly( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
@@ -4248,7 +4373,7 @@ function assertHasOnly( srcMap, screenMaps, msg )
   //
   // function errFromArgs( args )
   // {
-  //   return _.error._err
+  //   return _._err
   //   ({
   //     args,
   //     level : 2,
@@ -4663,7 +4788,7 @@ function assertHasNoUndefine( srcMap, msg )
 
   function errFromArgs( args )
   {
-    return _.error._err
+    return _._err
     ({
       args,
       level : 2,
@@ -4802,9 +4927,10 @@ let Extension =
 
   // map manipulator
 
-  objectSetWithKeys,
-  mapSet : objectSetWithKeys,
-  objectSetWithKeyStrictly,
+  /* xxx */
+  mapSetWithKeys,
+  mapSet : mapSetWithKeys,
+  mapSetWithKeyStrictly,
 
   // map transformer
 
@@ -4815,73 +4941,87 @@ let Extension =
 
   mapToArray,
   mapToStr, /* experimental */
+  mapFromHashMap : fromHashMap,
 
   // map logical operator
 
-  mapButConditional, /* !!! : use instead of mapButConditional */ /* qqq : make it accept null in the first argument */ /* Dmytro : covered, coverage is more complex */
+  mapButConditionalOld, /* !!! : use instead of mapButConditional */ /* qqq : make it accept null in the first argument */ /* Dmytro : covered, coverage is more complex */
   mapButConditional_,
-  mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
+  // mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
   mapBut_, /* qqq : make it accept null in the first argument */
+  mapButOld,
   _mapBut_,
   mapDelete,
   mapEmpty, /* xxx : remove */
-  mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
+  // mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
   mapButIgnoringUndefines_, /* qqq : make it accept null in the first argument */
+  /* qqq : for Dmytro : cover */
+  /* qqq : for Dmytro : mess with problems! */
+  /* xxx : use as default mapBut? */
 
-  mapOnlyOwnBut, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyOwnButOld, /* !!! : use instead of mapOnlyOwnBut */ /* Dmytro : covered, coverage is more complex */
   mapOnlyOwnBut_, /* qqq : make it accept null in the first argument */
 
-  mapOnly, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
+  mapOnlyOld, /* !!! : use instead of mapOnly */ /* Dmytro : covered, coverage is more complex */
   mapOnly_,  /* qqq : make it accept null in the first argument */
-  mapOnlyOwn, /* !!! : use instead of mapOnlyOwn */ /* Dmytro : covered, coverage is more complex */
+  // mapOnlyOwn, /* !!! : use instead of mapOnlyOwn */ /* Dmytro : covered, coverage is more complex */
   mapOnlyOwn_, /* qqq : make it accept null in the first argument */
-  mapOnlyComplementing, /* !!! : use instead of mapOnlyComplementing */ /* Dmytro : covered, coverage is more complex */
+  /* qqq : cover */
+  // mapOnlyComplementing, /* !!! : use instead of mapOnlyComplementing */ /* Dmytro : covered, coverage is more complex */
   mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
-  _mapOnly,
+  _mapOnly, /* xxx : qqq : comment out */
   _mapOnly_,
+
+  mapDiff,
 
   /* qqq xxx : implement mapDiff(), ask how to */
 
-  // map surer
-
-  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
-  sureMapHasExactly : sureHasExactly, /* !!! */
-  sureMapOwnExactly : sureOwnExactly, /* !!! */
-
-  sureMapHasOnly : sureHasOnly, /* !!! */
-  sureMapOwnOnly : sureOwnOnly, /* !!! */
-
-  sureMapHasAll : sureHasAll, /* !!! */
-  sureMapOwnAll : sureOwnAll, /* !!! */
-
-  sureMapHasNone : sureHasNone, /* !!! */
-  sureMapOwnNone : sureOwnNone, /* !!! */
-
-  sureMapHasNoUndefine : sureHasNoUndefine, /* !!! */
-
-  // map assert
-
-  /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
-  assertMapHasFields : assertHasFields, /* !!! */
-  assertMapOwnFields : assertOwnFields, /* !!! */
-
-  assertMapHasOnly : assertHasOnly, /* !!! */
-  assertMapOwnOnly : assertOwnOnly, /* !!! */
-
-  assertMapHasNone : assertHasNone, /* !!! */
-  assertMapOwnNone : assertOwnNone, /* !!! */
-
-  assertMapHasAll : assertHasAll, /* !!! */
-  assertMapOwnAll : assertOwnAll, /* !!! */
-
-  assertMapHasNoUndefine : assertHasNoUndefine, /* !!! */
+  // // map surer
+  //
+  // /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
+  // sureMapHasExactly : sureHasExactly, /* !!! */
+  // sureMapOwnExactly : sureOwnExactly, /* !!! */
+  //
+  // sureMapHasOnly : sureHasOnly, /* !!! */
+  // sureMapOwnOnly : sureOwnOnly, /* !!! */
+  //
+  // sureMapHasAll : sureHasAll, /* !!! */
+  // sureMapOwnAll : sureOwnAll, /* !!! */
+  //
+  // sureMapHasNone : sureHasNone, /* !!! */
+  // sureMapOwnNone : sureOwnNone, /* !!! */
+  //
+  // sureMapHasNoUndefine : sureHasNoUndefine, /* !!! */
+  //
+  // // map assert
+  //
+  // /* qqq for Yevhen : duplicate in namespace _.map.*. dont forget to leave mark::!!! near each such routine | aaa : Done. */
+  // assertMapHasFields : assertHasExactly, /* !!! */
+  // assertMapOwnFields : assertOwnExactly, /* !!! */
+  //
+  // assertMapHasOnly : assertHasOnly, /* !!! */
+  // assertMapOwnOnly : assertOwnOnly, /* !!! */
+  //
+  // assertMapHasNone : assertHasNone, /* !!! */
+  // assertMapOwnNone : assertOwnNone, /* !!! */
+  //
+  // assertMapHasAll : assertHasAll, /* !!! */
+  // assertMapOwnAll : assertOwnAll, /* !!! */
+  //
+  // assertMapHasNoUndefine : assertHasNoUndefine, /* !!! */
 
 }
 
 //
 
+/* qqq : for Yevhen : duplicate all routines */
+
 let ExtensionMap =
 {
+
+  // transformer
+
+  fromHashMap,
 
   // sure
 
@@ -4901,8 +5041,8 @@ let ExtensionMap =
 
   // assert
 
-  assertHasFields,
-  assertOwnFields,
+  assertHasExactly,
+  assertOwnExactly,
 
   assertHasOnly,
   assertOwnOnly,
@@ -4920,12 +5060,7 @@ let ExtensionMap =
 
 _.mapSupplement( _, Extension );
 _.mapSupplement( _.map, ExtensionMap );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.assert( _.aux.is( _.map ) );
 
 })();
+

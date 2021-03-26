@@ -14,6 +14,7 @@ if( typeof module !== 'undefined' )
   require( '../l0/l3/BigInt.s' );
   require( '../l0/l3/Bool.s' );
   require( '../l0/l3/Buffer.s' );
+  require( '../l0/l3/Class.s' );
   require( '../l0/l3/Constructible.s' );
   require( '../l0/l3/Date.s' );
   require( '../l0/l3/Entity.s' );
@@ -434,7 +435,7 @@ function exportStringShortDiagnostic( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.MinimalExportStringLayer3',
@@ -449,7 +450,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

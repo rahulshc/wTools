@@ -3,18 +3,18 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.number = _.number || Object.create( null );
+const Self = _.number = _.number || Object.create( null );
 _.number.s = _.number.s || Object.create( null );
 
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
-let _ArraySlice = Array.prototype.slice;
-let _ArraySplice = Array.prototype.splice;
-let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
-let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _ArraySlice = Array.prototype.slice;
+const _ArraySplice = Array.prototype.splice;
+const _FunctionBind = Function.prototype.bind;
+const _ObjectToString = Object.prototype.toString;
+const _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 let _ceil = Math.ceil;
 let _floor = Math.floor;
 
@@ -652,12 +652,5 @@ let ExtensionS =
 Object.assign( Self, Extension );
 Object.assign( _.number.s, ExtensionS );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -3,7 +3,7 @@
 
 'use strict';
 
-let _global = _realGlobal_;
+const _global = _realGlobal_;
 const _ = _global_.wTools;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
@@ -487,7 +487,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( ContainerAdapterNamespace, Handler );
+const Self = new Proxy( ContainerAdapterNamespace, Handler );
 Self.original = ContainerAdapterNamespace;
 
 //

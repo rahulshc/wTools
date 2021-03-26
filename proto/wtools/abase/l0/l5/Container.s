@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.container;
+const Self = _.container;
 
 // --
 //
@@ -298,7 +298,7 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
     return [ undefined, key, false ];
     return [ [ ... container ][ key ], key, true ];
   }
-  else if( _.entity.methodIteratorOf( container ) && !_.primitive.is( container ) )
+  else if( _.class.methodIteratorOf( container ) && !_.primitive.is( container ) )
   {
     let elements = [ ... container ];
     if( key < elements.length )
@@ -371,7 +371,7 @@ function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : D
     return [ undefined, key, false ];
     return [ [ ... container ][ key ], key, true ];
   }
-  else if( _.number.is( key ) && _.entity.methodIteratorOf( container ) )
+  else if( _.number.is( key ) && _.class.methodIteratorOf( container ) )
   {
     const container2 = [ ... container ];
     if( container2.length > key )
@@ -471,12 +471,5 @@ let Extension =
 }
 
 _.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

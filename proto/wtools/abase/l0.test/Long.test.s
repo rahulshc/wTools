@@ -5,7 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
@@ -17396,7 +17396,7 @@ function loggerProblemExperiment( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Long',
@@ -17585,7 +17585,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

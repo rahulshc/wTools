@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.introspector = _.introspector || Object.create( null );
+const Self = _.introspector = _.introspector || Object.create( null );
 
 // --
 // relation
@@ -30,6 +30,14 @@ let Location =
 // --
 // routines
 // --
+
+/* qqq : for Yevhen : write performance test for this
+let basePath = _.path.dir( _.introspector.location({ level : 2 }).filePath )
+qqq : make it super optimal
+qqq : implement routine _.introspector.dirPathOf( 2 );
+qqq : implement routine _.introspector.filePathOf( 2 );
+dont forget about performance test and optimization
+*/
 
 function location( o )
 {
@@ -957,12 +965,5 @@ let Extnesion =
 //
 
 Object.assign( _.introspector, Extnesion );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

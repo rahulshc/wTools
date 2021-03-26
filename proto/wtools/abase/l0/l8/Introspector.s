@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools;
-let Self = _.introspector = _.introspector || Object.create( null );
+const _global = _global_;
+const _ = _global.wTools;
+const Self = _.introspector = _.introspector || Object.create( null );
 
 // --
 // diagnostics
@@ -161,12 +161,5 @@ let Extension =
 }
 
 Object.assign( _.introspector, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

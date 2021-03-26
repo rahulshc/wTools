@@ -3,10 +3,10 @@
 
 'use strict';
 
-let _global = _global_;
+const _global = _global_;
 const _ = _global_.wTools;
-let Self = _.entity = _.entity || Object.create( null );
-// let Self = _global_.wTools;
+const Self = _.entity = _.entity || Object.create( null );
+// const Self = _global_.wTools;
 
 // --
 // container
@@ -52,25 +52,25 @@ let Self = _.entity = _.entity || Object.create( null );
 
 //
 
-function methodIteratorOf( src )
-{
-  if( !src )
-  return false;
-  if( _.routine.is( src[ iteratorSymbol ] ) )
-  return src[ iteratorSymbol ];
-  return false;
-}
-
+// function methodIteratorOf( src )
+// {
+//   if( !src )
+//   return false;
+//   if( _.routine.is( src[ iteratorSymbol ] ) )
+//   return src[ iteratorSymbol ];
+//   return false;
+// }
 //
-
-function methodEqualOf( src )
-{
-  if( !src )
-  return false;
-  if( _.routine.is( src[ equalAreSymbol ] ) )
-  return src[ equalAreSymbol ];
-  return false;
-}
+// //
+//
+// function methodEqualOf( src )
+// {
+//   if( !src )
+//   return false;
+//   if( _.routine.is( src[ equalAreSymbol ] ) )
+//   return src[ equalAreSymbol ];
+//   return false;
+// }
 
 //
 
@@ -154,13 +154,14 @@ Object.assign( _, ToolsExtension );
 // entity extension
 // --
 
-const iteratorSymbol = Symbol.iterator;
-const typeNameGetterSymbol = Symbol.toStringTag;
-const toPrimitiveSymbol = Symbol.toPrimitive;
-const toStrNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
-const equalAreSymbol = Symbol.for( 'equalAre' );
-const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
-const deepCloneSymbol = Symbol.for( 'cloneDeep' );
+// const iteratorSymbol = Symbol.iterator;
+// const exportTypeNameGetterSymbol = Symbol.toStringTag;
+// const exportPrimitiveSymbol = Symbol.toPrimitive;
+// const exportStringNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
+// const exportStringSymbol = Symbol.for( 'exportString' );
+// const equalAreSymbol = Symbol.for( 'equalAre' );
+// const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
+// const cloneDeepSymbol = Symbol.for( 'cloneDeep' );
 
 // _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
 // _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );
@@ -174,30 +175,23 @@ let EntityExtension =
 
   // container
 
-  // iterableIs,
-  methodIteratorOf,
-  methodEqualOf, /* xxx : add other similar routines */
+  // methodIteratorOf,
+  // methodEqualOf, /* xxx : add other similar routines */
   lengthOf,
 
-  iteratorSymbol,
-  typeNameGetterSymbol,
-  toPrimitiveSymbol,
-  toStrNjsSymbol,
-  equalAreSymbol,
-  cloneShallowSymbol,
-  deepCloneSymbol,
+  // iteratorSymbol,
+  // exportTypeNameGetterSymbol,
+  // exportPrimitiveSymbol,
+  // exportStringNjsSymbol,
+  // exportStringSymbol,
+  // equalAreSymbol,
+  // cloneShallowSymbol,
+  // cloneDeepSymbol,
 
 }
 
 //
 
 Object.assign( _.entity, EntityExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
