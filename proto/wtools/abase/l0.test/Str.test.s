@@ -22497,6 +22497,7 @@ var Self =
     exportStringShortDiagnostic,
     exportStringShortDiagnosticOptionHeightLimit,
     exportStringShortCode,
+    exportStringShortCodeOptionHeightLimit,
     strPrimitive,
     strTypeWithTraitsBasic,
     strTypeWithoutTraitsBasic,

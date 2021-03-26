@@ -3504,8 +3504,7 @@ function _exportStringShort( src, o )
       result = String( src );
     }
 
-    if( o.widthLimit !== 0 )
-    result = _.strShort({ src : result, widthLimit : o.widthLimit });
+    result = _.strShort({ src : result, widthLimit : o.widthLimit, heightLimit : o.heightLimit });
 
   }
   catch( err )
