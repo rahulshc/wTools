@@ -2484,22 +2484,31 @@ function _mapBut_( o )
     if( _.arrayLike( o.butMap ) )
     {
       for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( _.primitive.is( o.butMap[ m ] ) )
+      if( _.primitive.is( o.butMap[ m ] ) || _.aux.is( o.butMap[ m ] ) )
       {
         if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
         return;
       }
+      // if( _.primitive.is( o.butMap[ m ] ) )
+      // {
+      //   if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      //   return;
+      // }
       o.dstMap[ key ] = o.srcMap[ key ];
     }
     else
     {
       for( let but of o.butMap )
-      if( _.primitive.is( but ) )
+      if( _.primitive.is( but ) || _.aux.is( but ) )
       {
         if( !o.filter( but, o.srcMap, key ) )
         return;
       }
-
+      // if( _.primitive.is( but ) )
+      // {
+      //   if( !o.filter( but, o.srcMap, key ) )
+      //   return;
+      // }
       o.dstMap[ key ] = o.srcMap[ key ];
     }
   }
@@ -2770,20 +2779,20 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   else if( arguments.length === 2 )
   {
 
-    return _.mapOnlyOld( srcMaps, screenMaps );
+    // return _.mapOnlyOld( srcMaps, screenMaps );
 
     // qqq : for Dmytro : bad!
-    // if( dstMap === null )
-    // return Object.create( null );
-    // screenMaps = arguments[ 1 ];
-    // srcMaps = arguments[ 0 ];
+    if( dstMap === null )
+    return Object.create( null );
+    screenMaps = arguments[ 1 ];
+    srcMaps = arguments[ 0 ];
   }
   else if( arguments.length !== 3 )
   {
     _.assert( 0, 'Expects at least one argument and no more then three arguments' );
   }
 
-  return _.mapOnlyOld( srcMaps, screenMaps );
+  // return _.mapOnlyOld( srcMaps, screenMaps );
   // qqq : for Dmytro : bad!
 
   return _._mapOnly_
@@ -3206,6 +3215,16 @@ function _mapOnly_( o )
         if( o.screenMaps[ m ] === key )
         return key;
       }
+      else if( _.aux.is( o.screenMaps[ m ] ) )
+      {
+        if( key in o.screenMaps[ m ] )
+        return key;
+      }
+      // if( _.primitive.is( o.screenMaps[ m ] ) )
+      // {
+      //   if( o.screenMaps[ m ] === key )
+      //   return key;
+      // }
     }
     else
     {
@@ -3215,6 +3234,16 @@ function _mapOnly_( o )
         if( m === key )
         return key;
       }
+      else if( _.aux.is( m ) )
+      {
+        if( key in m )
+        return key;
+      }
+      // if( _.primitive.is( m ) )
+      // {
+      //   if( m === key )
+      //   return key;
+      // }
     }
     // if( _.arrayLike( o.screenMaps ) )
     // {
@@ -3244,11 +3273,19 @@ function _mapOnly_( o )
 
   function filterNotIdentical( srcMap )
   {
-    for( let key in srcMap )
+    for( let key in o.screenMaps )
     {
-      if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+      if( o.screenMaps[ key ] === undefined )
+      continue;
+
+      if( key in srcMap )
       o.filter.call( self, o.dstMap, srcMap, key );
     }
+    // for( let key in srcMap )
+    // {
+    //   if( ( key in o.screenMaps ) && o.screenMaps[ key ] !== undefined )
+    //   o.filter.call( self, o.dstMap, srcMap, key );
+    // }
   }
 
   /* */
@@ -5026,3 +5063,4 @@ _.mapSupplement( _.map, ExtensionMap );
 _.assert( _.aux.is( _.map ) );
 
 })();
+

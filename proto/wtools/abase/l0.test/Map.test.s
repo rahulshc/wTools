@@ -6482,7 +6482,7 @@ function mapBut_DstMapIsNull( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = [ { c : 0 }, { a : 0 } ];
   var got = _.mapBut_( null, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
@@ -6577,7 +6577,7 @@ function mapBut_DstMapIsNull( test )
   var srcMap = [ 'a', 'b', 'c' ]
   var butMap = [ { '0' : 0 }, { '1' : 0 } ];
   var got = _.mapBut_( null, srcMap, butMap );
-  var expected = { 0 : 'a', 1 : 'b', 2 : 'c' };
+  var expected = { 2 : 'c' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { '0' : 0 }, { '1' : 0 } ] );
@@ -6695,7 +6695,7 @@ function mapBut_DstMapIsMap( test )
   var srcMap = { a : 3, b : 2 };
   var butMap = [ { c : 0 }, { a : 0 } ];
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 3, b : 2 };
+  var expected = { a : 1, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 3, b : 2 } );
@@ -6800,7 +6800,7 @@ function mapBut_DstMapIsMap( test )
   var srcMap = [ 'a', 'b', 'c' ]
   var butMap = [ { '0' : 0 }, { '1' : 0 } ];
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { 0 : 'a', 1 : 'b',  2 : 'c' };
+  var expected = { 0 : 'some', 2 : 'c' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, [ 'a', 'b', 'c' ] );
@@ -6830,7 +6830,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.unrollMake([ 'c', 'd', { a : 2 } ]) );
@@ -6863,7 +6863,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -6898,7 +6898,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { c : 3, a : 1, b : 2 };
+  var expected = { c : 3, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -6933,7 +6933,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.unrollMake([ 'c', 'd', { a : 2 } ]);
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { a : 3, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -7000,7 +7000,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.identical( srcMap, { a : 1, b : 2 } );
   test.identical( butMap, _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) ) );
@@ -7033,7 +7033,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -7068,7 +7068,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { c : 3, a : 1, b : 2 };
+  var expected = { c : 3, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -7103,7 +7103,7 @@ function mapBut_ButMapIsVector( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = _.containerAdapter.make( new Set([ 'c', 'd', { a : 2 } ]) );
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { a : 3, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -7553,7 +7553,7 @@ function mapButIgnoringUndefines_DstMapNull( test )
   var srcMap = [ undefined, 0, undefined, 1 ];
   var butMap = [ { 1 : 'a' }, '3', 'b', '1', 'c' ];
   var got = _.mapButIgnoringUndefines_( null, srcMap, butMap );
-  var expected = { 0 : undefined, 2 : undefined };
+  var expected = { 3 : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
@@ -8454,7 +8454,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.aa = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, cc : 3 };
+  var expected = { aa : 1 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8464,7 +8464,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.aa = 1;
   var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, cc : 3 };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -8484,7 +8484,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   srcMap.a = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { a : 1, bb : 2, cc : 3 };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8549,7 +8549,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   var srcMap = [ 'a', 'b' ];
   var butMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { 0 : 'a', 1 : 'b' };
+  var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 'b' ] );
@@ -8569,7 +8569,7 @@ function mapOnlyOwnBut_DstMapNull( test )
   var srcMap = [ 'a', 'b' ];
   var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOnlyOwnBut_( null, srcMap, butMap );
-  var expected = { 0 : 'a', 1 : 'b' };
+  var expected = { 0 : 'a' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 'b' ] );
@@ -8641,7 +8641,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.aa = 2;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 2, bb : 2, cc : 3 };
+  var expected = { aa : 2, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8652,7 +8652,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.aa = 1;
   var butMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, cc : 3 };
+  var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -8674,7 +8674,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   srcMap.a = 1;
   var butMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, aa : 1, bb : 2, cc : 3 };
+  var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( butMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
@@ -8745,7 +8745,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   var srcMap = [ 'a', 'b' ];
   var butMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
+  var expected = { aa : 1, bb : 2 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 'b' ] );
@@ -8767,7 +8767,7 @@ function mapOnlyOwnBut_DstMapIsMap( test )
   var srcMap = [ 'a','b' ];
   var butMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
   var got = _.mapOnlyOwnBut_( dstMap, srcMap, butMap );
-  var expected = { aa : 1, bb : 2, 0 : 'a', 1 : 'b' };
+  var expected = { aa : 1, bb : 2, 0 : 'a' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ 'a', 'b' ] );
@@ -9437,10 +9437,10 @@ function mapOnly_WithTwoArguments( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { c : 33, a : 'abc' } );
+  test.identical( srcMap, { c : 33, a : 'abc', d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -9704,7 +9704,7 @@ function mapOnly_DstMapIsNull( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -9820,7 +9820,7 @@ function mapOnly_DstMapIsNull( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -9857,6 +9857,56 @@ function mapOnly_DstMapIsNull( test )
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
+}
+
+//
+
+function mapOnly_DstMapIsNullSrcMapsObjectWithConstructor( test )
+{
+  test.case = 'dstMap - null, srcMap - instance, screenMap - map';
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( srcMap.b, 1 );
+  test.identical( srcMap.c, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  test.case = 'dstMap - not defined, srcMap  - instance, screenMap - map';
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( srcMap, screenMap );
+  test.identical( _.mapKeys( got ), [ 'a' ] );
+  test.identical( got.a, 1 );
+  test.true( got === srcMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  test.case = 'dstMap - map, srcMap  - instance, screenMap - map';
+  var dstMap = {};
+  var srcMap = new Constr( 1 );
+  var screenMap = { a : 13, d : 'name' };
+  var got = _.mapOnly_( dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.true( got === dstMap );
+  test.identical( srcMap.a, 1 );
+  test.identical( srcMap.b, 1 );
+  test.identical( srcMap.c, 1 );
+  test.identical( screenMap, { a : 13, d : 'name' } );
+
+  /* */
+
+  function Constr( x )
+  {
+    this.a = x;
+    this.b = x;
+    this.c = x;
+    return this;
+  }
 }
 
 //
@@ -9947,7 +9997,7 @@ function mapOnly_DstMapIsMap( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33 };
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10074,7 +10124,7 @@ function mapOnly_DstMapIsMap( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33 };
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -10271,7 +10321,7 @@ function mapOnly_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10338,7 +10388,7 @@ function mapOnly_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10950,7 +11000,7 @@ function mapOnlyOwn_DstMapIsNull( test )
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( null, srcMap, screenMap );
-  var expected = {};
+  var expected = { a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc' } );
@@ -11228,7 +11278,7 @@ function mapOnlyOwn_DstMapIsMap( test )
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( dstMap, srcMap, screenMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { a : 'abc', b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc' } );
@@ -11394,7 +11444,7 @@ function mapOnlyOwn_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
   var got = _.mapOnlyOwn_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -11461,7 +11511,7 @@ function mapOnlyOwn_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
   var got = _.mapOnlyOwn_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -11615,7 +11665,7 @@ function mapOnlyComplementing_WithTwoArguments( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'a', 'c', 'd' ] );
+  test.identical( _.mapKeys( got ), [ 'a', 'b', 'd', 'c' ] );
   test.identical( got.a, 'abc' );
   test.identical( got.b, undefined );
   test.true( got === srcMap );
@@ -11654,7 +11704,7 @@ function mapOnlyComplementing_WithTwoArguments( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( srcMap, screenMap );
-  test.identical( _.mapKeys( got ), [ 'd', 'c' ] );
+  test.identical( _.mapKeys( got ), [ 'b', 'd', 'c' ] );
   test.identical( got.b, undefined );
   test.identical( Object.getPrototypeOf( got ), { d : 'name', c : 33 } );
   test.true( got === srcMap );
@@ -11907,7 +11957,7 @@ function mapOnlyComplementing_DstMapIsNull( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.contains( srcMap, { a : 'abc', b : undefined } );
@@ -11943,7 +11993,7 @@ function mapOnlyComplementing_DstMapIsNull( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = {};
+  var expected = { c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.contains( srcMap, { 2 : 'abc', b : undefined } );
@@ -12035,7 +12085,7 @@ function mapOnlyComplementing_DstMapIsNull( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -12071,7 +12121,7 @@ function mapOnlyComplementing_DstMapIsNull( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = {};
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -12178,7 +12228,7 @@ function mapOnlyComplementing_DstMapIsMap( test )
   srcMap.b = undefined;
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33 };
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.contains( srcMap, { a : 'abc', b : undefined } );
@@ -12217,7 +12267,7 @@ function mapOnlyComplementing_DstMapIsMap( test )
   srcMap.b = undefined;
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { 2 : undefined, b : 2 };
+  var expected = { 2 : undefined, b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.contains( srcMap, { 2 : 'abc', b : undefined } );
@@ -12317,7 +12367,7 @@ function mapOnlyComplementing_DstMapIsMap( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33 };
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -12356,7 +12406,7 @@ function mapOnlyComplementing_DstMapIsMap( test )
   var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ];
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
-  var expected = { a : undefined, b : 2 };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap[ 0 ], { a : 'abc', b : undefined } );
@@ -12522,7 +12572,7 @@ function mapOnlyComplementing_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -12589,7 +12639,7 @@ function mapOnlyComplementing_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
   var got = _.mapOnlyComplementing_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -12618,57 +12668,57 @@ function mapOnlyComplementing_ScreenMapIsVector( test )
   test.close( 'containerAdapter' );
 }
 
+// //
 //
-
-function _mapOnly( test )
-{
-
-  test.case = 'an object';
-  var options = {};
-  options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
-  options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
-  var got = _._mapOnly( options );
-  var expected = { a : 33, c : 33, name : 'Mikle' };
-  test.identical( got, expected );
-
-  test.case = 'an object2'
-  var options = {};
-  options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
-  options.srcMaps = { d : 'name', c : 33, a : 'abc' };
-  var got = _._mapOnly( options );
-  var expected = { a : 'abc', c : 33, d : 'name' };
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _._mapOnly();
-  });
-
-  test.case = 'redundant arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _._mapOnly( {}, 'wrong arguments' );
-  });
-
-  test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( function()
-  {
-    _._mapOnly( [] );
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _._mapOnly( 'wrong arguments' );
-  });
-
-}
+// function _mapOnly( test )
+// {
+//
+//   test.case = 'an object';
+//   var options = {};
+//   options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+//   options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+//   var got = _._mapOnly( options );
+//   var expected = { a : 33, c : 33, name : 'Mikle' };
+//   test.identical( got, expected );
+//
+//   test.case = 'an object2'
+//   var options = {};
+//   options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
+//   options.srcMaps = { d : 'name', c : 33, a : 'abc' };
+//   var got = _._mapOnly( options );
+//   var expected = { a : 'abc', c : 33, d : 'name' };
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _._mapOnly();
+//   });
+//
+//   test.case = 'redundant arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _._mapOnly( {}, 'wrong arguments' );
+//   });
+//
+//   test.case = 'wrong type of array';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _._mapOnly( [] );
+//   });
+//
+//   test.case = 'wrong type of arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _._mapOnly( 'wrong arguments' );
+//   });
+//
+// }
 
 //
 
@@ -16798,6 +16848,7 @@ const Proto =
     mapOnly_DstMapIsMap,
     mapOnly_SrcMapsIsVector,
     mapOnly_ScreenMapIsVector,
+    mapOnly_DstMapIsNullSrcMapsObjectWithConstructor,
 
     mapOnlyOwn_WithTwoArguments,
     mapOnlyOwn_DstMapIsNull,
@@ -16811,7 +16862,7 @@ const Proto =
     mapOnlyComplementing_SrcMapsIsVector,
     mapOnlyComplementing_ScreenMapIsVector,
 
-    _mapOnly,
+    // _mapOnly,
 
     mapsAreIdentical,
     mapContain,
@@ -16866,3 +16917,4 @@ if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
 })();
+
