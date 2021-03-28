@@ -1929,6 +1929,7 @@ function assertWarn( condition )
 
 //
 
+/* xxx : qqq : move to diagnostics */
 if( Config.debug )
 Object.defineProperty( _, 'debugger',
 {
@@ -1937,13 +1938,12 @@ Object.defineProperty( _, 'debugger',
   set : function( val )
   {
     _[ Symbol.for( 'debugger' ) ] = val;
-    // return val; /* Setter cannot return a value.eslint(no-setter-return) */
   },
   get : function()
   {
     let val = _[ Symbol.for( 'debugger' ) ];
-    // if( val )
-    // debugger;
+    if( val )
+    debugger; /* eslint-disable-line no-debugger */
     return val;
   },
 });

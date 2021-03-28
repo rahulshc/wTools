@@ -273,43 +273,43 @@ function areIdenticalShallow( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
   test.case = 'empty';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'strings';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'numbers';
   var src = new HashMap([ [ 1, 1 ], [ 2, 2 ], [ 3, 3 ] ]);
   var expected = '{- HashMap with 3 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'bool';
   var src = new HashMap([ [ true, 1 ], [ true, 2 ], [ false, 3 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic() );
 
   test.case = 'redundant args'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic( new HashMap(), new HashMap() ) );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic( new HashMap(), new HashMap() ) );
 
   test.case = 'not hashMap'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic( new Set() ) );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic( new Set() ) );
 }
 
 //
@@ -357,7 +357,7 @@ const Proto =
   {
 
     areIdenticalShallow,
-    exportStringShortDiagnostic,
+    exportStringShallowDiagnostic,
     fromMap,
 
   }

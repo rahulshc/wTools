@@ -99,7 +99,7 @@ function likeStandard( src ) /* xxx : qqq : for Yevhen : optimize */
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.object.like( src ) );
@@ -116,7 +116,7 @@ function exportStringShortDiagnostic( src )
   else
   {
     if( _.countable.is( src ) )
-    result = _.countable.exportStringShortDiagnostic( src );
+    result = _.countable.exportStringShallowDiagnostic( src );
     else
     result = `{- ${_.entity.strType( src )} -}`;
   }
@@ -254,12 +254,12 @@ let Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
   //
 

@@ -212,7 +212,7 @@ function strsEquivalent( src1, src2 )
 // converter
 // --
 
-function exportStringShortDiagnostic( src, o )
+function exportStringShallowDiagnostic( src, o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
 
@@ -220,39 +220,39 @@ function exportStringShortDiagnostic( src, o )
 
   if( _.primitive.is( src ) )
   {
-    result = _.primitive.exportStringShortDiagnostic( src );
+    result = _.primitive.exportStringShallowDiagnostic( src );
   }
   else if( _.date.is( src ) )
   {
-    result = _.date.exportStringShortDiagnostic( src );
+    result = _.date.exportStringShallowDiagnostic( src );
   }
   else if( _.regexpIs( src ) )
   {
-    result = _.regexp.exportStringShortDiagnostic( src );
+    result = _.regexp.exportStringShallowDiagnostic( src );
   }
   else if( _.set.like( src ) )
   {
-    result = _.set.exportStringShortDiagnostic( src );
+    result = _.set.exportStringShallowDiagnostic( src );
   }
   else if( _.hashMap.like( src ) )
   {
-    result = _.hashMap.exportStringShortDiagnostic( src );
+    result = _.hashMap.exportStringShallowDiagnostic( src );
   }
   else if( _.vector.like( src ) )
   {
-    result = _.vector.exportStringShortDiagnostic( src );
+    result = _.vector.exportStringShallowDiagnostic( src );
   }
   else if( _.routine.is( src ) )
   {
-    result = _.routine.exportStringShortDiagnostic( src );
+    result = _.routine.exportStringShallowDiagnostic( src );
   }
   else if( _.aux.like( src ) )
   {
-    result = _.aux.exportStringShortDiagnostic( src );
+    result = _.aux.exportStringShallowDiagnostic( src );
   }
   else if( _.object.like( src ) )
   {
-    result = _.object.exportStringShortDiagnostic( src );
+    result = _.object.exportStringShallowDiagnostic( src );
   }
   else
   {
@@ -1642,12 +1642,12 @@ let ExtensionEntity =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
   strPrimitive,
   strTypeSecondary,

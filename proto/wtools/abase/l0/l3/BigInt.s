@@ -19,7 +19,7 @@ function is( src )
 
 //
 
-function exportStringShortCode( src )
+function exportStringShallowCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.bigInt.is( src ) );
@@ -44,12 +44,12 @@ let Extension =
 
   // export string
 
-  exportString : exportStringShortCode,
-  exportStringShort : exportStringShortCode,
-  exportStringShortCode,
-  exportStringShortDiagnostic : exportStringShortCode,
-  exportStringDiagnostic : exportStringShortCode,
-  exportStringCode : exportStringShortCode
+  exportString : exportStringShallowCode,
+  exportStringShallow : exportStringShallowCode,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic : exportStringShallowCode,
+  exportStringDiagnostic : exportStringShallowCode,
+  exportStringCode : exportStringShallowCode
 }
 
 Object.assign( Self, Extension );
