@@ -2846,13 +2846,38 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
     _.assert( 0, 'Expects at least one argument and no more then three arguments' );
   }
 
-  return _._mapOnly_
+  let o = _._mapOnly_VerifyMapFields
   ({
     filter : _.property.mapper.srcOwn(),
     srcMaps,
     screenMaps,
-    dstMap,
+    dstMap : dstMap || Object.create( null ),
   });
+
+  let iterationRoutine = _._mapOnly_FilterFunctor( o );
+
+  if( _.vector.is( o.srcMaps ) )
+  {
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects no primitive in {-o.srcMaps-}' );
+      iterationRoutine( srcMap );
+    }
+  }
+  else
+  {
+    iterationRoutine( o.srcMaps );
+  }
+
+  return o.dstMap;
+
+  // return _._mapOnly_
+  // ({
+  //   filter : _.property.mapper.srcOwn(),
+  //   srcMaps,
+  //   screenMaps,
+  //   dstMap,
+  // });
 
 }
 
@@ -2891,13 +2916,38 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
     _.assert( 0, 'Expects two or three arguments' );
   }
 
-  return _._mapOnly_
+  let o = _._mapOnly_VerifyMapFields
   ({
     filter : _.property.mapper.dstNotOwnOrUndefinedAssigning(),
     srcMaps,
     screenMaps,
-    dstMap,
+    dstMap : dstMap || Object.create( null ),
   });
+
+  let filterRoutine = _._mapOnly_FilterFunctor( o );
+
+  if( _.vector.is( o.srcMaps ) )
+  {
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects no primitive in {-o.srcMaps-}' );
+      iterationRoutine( srcMap );
+    }
+  }
+  else
+  {
+    iterationRoutine( o.srcMaps );
+  }
+
+  return o.dstMap;
+
+  // return _._mapOnly_
+  // ({
+  //   filter : _.property.mapper.dstNotOwnOrUndefinedAssigning(),
+  //   srcMaps,
+  //   screenMaps,
+  //   dstMap,
+  // });
 
 }
 
@@ -3133,6 +3183,125 @@ _mapOnly.defaults =
   srcMaps : null,
   screenMaps : null,
   filter : null,
+}
+
+//
+
+function _mapOnly_VerifyMapFields( o )
+{
+  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+  _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+  _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+  _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-o.srcMaps-}' );
+  _.map.assertHasOnly( o, _mapOnly_.defaults );
+  _.assert( !_.vector.is( o.dstMap ), 'Expects not a vector {-o.dstMap-}' );
+
+  return o;
+}
+
+//
+
+function _mapOnly_FilterFunctor( o )
+{
+  let self = this;
+  let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
+  let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
+  let filterRoutines = [ filterNotIdentical, filterIdentical, filterWithVectorScreenMap, filterWithVectorScreenMap ];
+  let filterCallback = mapsAreIdentical ?  filterIdenticalMaps : filterNotIdenticalMaps;
+  let key = mapsAreIdentical + screenMapsIsVector;
+
+  return filterRoutines[ key ];
+
+  /* */
+
+  function filterNotIdenticalMaps( src, key, foundKey )
+  {
+    if( foundKey !== undefined )
+    o.filter.call( self, o.dstMap, src, key );
+  }
+
+  /* */
+
+  function filterIdenticalMaps( src, key, foundKey )
+  {
+    if( foundKey === undefined )
+    delete src[ key ];
+    else
+    o.filter.call( self, o.dstMap, src, key );
+  }
+
+  /* */
+
+  function filterWithVectorScreenMap( srcMap )
+  {
+    for( let key in srcMap )
+    {
+      let screenKey = screenMapSearch( key );
+      filterCallback( srcMap, key, screenKey );
+    }
+  }
+
+  /* */
+
+  function screenMapSearch( key )
+  {
+    if( _.arrayLike( o.screenMaps ) )
+    {
+      for( let m = 0 ; m < o.screenMaps.length ; m++ )
+      if( _.primitive.is( o.screenMaps[ m ] ) )
+      {
+        if( o.screenMaps[ m ] === key )
+        return key;
+      }
+      else if( _.aux.is( o.screenMaps[ m ] ) )
+      {
+        if( key in o.screenMaps[ m ] )
+        return key;
+      }
+    }
+    else
+    {
+      for( let m of o.screenMaps )
+      if( _.primitive.is( m ) )
+      {
+        if( m === key )
+        return key;
+      }
+      else if( _.aux.is( m ) )
+      {
+        if( key in m )
+        return key;
+      }
+    }
+  }
+
+  /* */
+
+  function filterNotIdentical( srcMap )
+  {
+    for( let key in o.screenMaps )
+    {
+      if( o.screenMaps[ key ] === undefined )
+      continue;
+
+      if( key in srcMap )
+      o.filter.call( self, o.dstMap, srcMap, key );
+    }
+  }
+
+  /* */
+
+  function filterIdentical( srcMap )
+  {
+    for( let key in srcMap )
+    {
+      if( !( key in o.screenMaps ) )
+      delete srcMap[ key ];
+      else
+      o.filter.call( self, o.dstMap, srcMap, key );
+    }
+  }
 }
 
 //
@@ -4970,6 +5139,8 @@ let Extension =
   // mapOnlyComplementing, /* !!! : use instead of mapOnlyComplementing */ /* Dmytro : covered, coverage is more complex */
   mapOnlyComplementing_, /* qqq : make it accept null in the first argument */
   _mapOnly, /* xxx : qqq : comment out */
+  _mapOnly_VerifyMapFields,
+  _mapOnly_FilterFunctor,
   _mapOnly_,
 
   mapDiff,
