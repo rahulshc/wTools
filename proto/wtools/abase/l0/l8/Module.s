@@ -1675,7 +1675,6 @@ function _trackingEnable()
     }
     catch( err )
     {
-      debugger;
       let error;
       if( parent && parent.filename )
       error = _.err( err, `\nModule file "${parent.filename}" failed to include "${request}"` );
