@@ -205,11 +205,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
+    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShallow( e ) );
     container.splice( index, 1 );
     if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )

@@ -16730,6 +16730,320 @@ function assertMapHasNoUndefine( test )
   test.shouldThrowErrorSync( () => _.map.assertHasNoUndefine( 'wrong' ) );
 }
 
+//
+
+function mapHasNoneMapOnlyPerformance( test )
+{
+  /*
+    |   **Routine**   | type  | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :-------------: | :---: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    | mapHasNone BASI |  for  |      1.3931s       |      1.9093s      |      1.7917s       |      1.8383s       |      2.0569s      |
+    | mapHasNone BASI | forOf |      3.5931s       |      2.0025s      |      1.9753s       |      2.0242s       |      2.1874s      |
+    | mapHasNone SABI |  for  |     0.0000183s     |    0.0000202s     |     0.0000154s     |     0.0000166s     |    0.0000188s     |
+    | mapHasNone SABI | forOf |     0.0000187s     |    0.0000119s     |     0.000012s      |     0.0000155s     |    0.0000185s     |
+    |        -        |       |         -          |         -         |         -          |         -          |         -         |
+    |  _mapOnly BASI  |  for  |      1.2686s       |      1.3045s      |      1.3271s       |      1.4486s       |      1.4252s      |
+    |  _mapOnly BASI  | forOf |      1.4654s       |      1.6092s      |      2.1641s       |      1.6454s       |      1.3312s      |
+    |  _mapOnly SABI  |  for  |     0.0000248s     |    0.0000242s     |     0.0000255s     |     0.0000235s     |    0.0000235s     |
+    |  _mapOnly SABI  | forOf |     0.0000269s     |    0.0000199s     |     0.0000247s     |     0.0000243s     |    0.0000218s     |
+
+    BASI = big array( length : 5e7 ), small amount of iterations ( 1e1 )
+    SABI = small array ( length : 5e2 ), big amount of iterations ( 1e4 )
+  */
+
+  test.case = 'long array, 10 iterations';
+  var times = 1e1;
+  var size = 5e7;
+  var array = new Array( size );
+  var arrayOfNumbers = new Array( size ).fill( 2 );
+
+  var counter = 0;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    /* Routine for testing */
+    // mapHasNoneFor( { a : 1 }, array );
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, size );
+    counter = 0;
+  }
+
+  console.log( `Array length = ${size}, iterations = ${times}` );
+  console.log( `Routine BASI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  test.case = 'short array, 10000 iterations';
+  var times = 1e4;
+  var size = 5e2;
+  var array = new Array( size );
+  var arrayOfNumbers = new Array( size ).fill( 2 );
+  var counter = 0;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    /* Routine for testing */
+    // mapHasNoneFor( { a : 1 }, array );
+    _mapOnlyFor({ srcMaps : { a : 1 }, screenMaps : arrayOfNumbers });
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( counter, size );
+    counter = 0
+  }
+
+  console.log( `Array length = ${size}, iterations = ${times}` );
+  console.log( `Routine SABI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  function mapHasNoneFor( src, screen )
+  {
+    _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+    _.assert( !_.primitive.is( src ) );
+    _.assert( !_.primitive.is( screen ) );
+
+    if( _.vector.is( screen ) )
+    {
+      if( _.longIs( screen ) )
+      {
+        for( let s = 0 ; s < screen.length ; s++ )
+        {
+          if( screen[ s ] in src )
+          return false;
+          counter++; /* check */
+        }
+      }
+      else
+      {
+        for( let value of screen )
+        if( value in src )
+        return false;
+      }
+    }
+    else if( _.aux.is( screen ) )
+    {
+      for( let k in screen )
+      if( k in src )
+      return false;
+    }
+    return true;
+  }
+
+  //
+
+  function mapHasNoneForOf( src, screen )
+  {
+    _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+    _.assert( !_.primitive.is( src ) );
+    _.assert( !_.primitive.is( screen ) );
+
+    if( _.vector.is( screen ) )
+    {
+      for( let value of screen )
+      {
+        if( value in src )
+        return false;
+        counter++;
+      }
+    }
+    else if( _.aux.is( screen ) )
+    {
+      for( let k in screen )
+      if( k in src )
+      return false;
+    }
+    return true;
+  }
+
+  //
+
+  function _mapOnlyFor( o )
+  {
+    let self = this;
+
+    o.dstMap = o.dstMap || Object.create( null );
+    o.filter = o.filter || _.property.mapper.bypass();
+
+    _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+    _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+    _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+    _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
+    // _.map.assertHasOnly( o, _mapOnly.defaults );
+
+    if( _.vector.is( o.srcMaps ) )
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
+
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( srcMap );
+      else
+      filterSrcMap( srcMap );
+    }
+    else
+    {
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( o.srcMaps );
+      else
+      filterSrcMap( o.srcMaps );
+    }
+
+    return o.dstMap;
+
+    /* */
+
+    function filterSrcMapWithVectorScreenMap( srcMap )
+    {
+      for( let key in srcMap )
+      {
+        let screenKey = screenKeySearch( key );
+        if( screenKey )
+        o.filter.call( self, o.dstMap, srcMap, screenKey );
+      }
+    }
+
+    /* */
+
+    function screenKeySearch( key )
+    {
+      if( _.arrayLike( o.screenMaps ) )
+      {
+        for( let m = 0 ; m < o.screenMaps.length ; m++ ) /* check for */
+        if( _.primitive.is( o.screenMaps[ m ] ) )
+        {
+          counter++;
+          if( o.screenMaps[ m ] === key )
+          return key;
+        }
+      }
+      else
+      {
+        for( let m of o.screenMaps )
+        if( _.primitive.is( m ) )
+        {
+          if( m === key )
+          return key;
+        }
+      }
+    }
+
+    /* */
+
+    function filterSrcMap( srcMap )
+    {
+      for( let key in o.screenMaps )
+      {
+        if( o.screenMaps[ key ] === undefined )
+        continue;
+
+        if( key in srcMap )
+        o.filter.call( this, o.dstMap, srcMap, key );
+      }
+    }
+  }
+
+  /* */
+
+  function _mapOnlyForOf( o )
+  {
+    let self = this;
+
+    o.dstMap = o.dstMap || Object.create( null );
+    o.filter = o.filter || _.property.mapper.bypass();
+
+    _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+    _.assert( _.property.mapperIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+    _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+    _.assert( !_.primitive.is( o.screenMaps ), 'Expects non primitive {-o.screenMaps-}' );
+    _.assert( !_.primitive.is( o.srcMaps ), 'Expects non primitive {-srcMap-}' );
+    // _.map.assertHasOnly( o, _mapOnly.defaults );
+
+    if( _.vector.is( o.srcMaps ) )
+    for( let srcMap of o.srcMaps )
+    {
+      _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
+
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( srcMap );
+      else
+      filterSrcMap( srcMap );
+    }
+    else
+    {
+      if( _.vector.is( o.screenMaps ) )
+      filterSrcMapWithVectorScreenMap( o.srcMaps );
+      else
+      filterSrcMap( o.srcMaps );
+    }
+
+    return o.dstMap;
+
+    /* */
+
+    function filterSrcMapWithVectorScreenMap( srcMap )
+    {
+      for( let key in srcMap )
+      {
+        let screenKey = screenKeySearch( key );
+        if( screenKey )
+        o.filter.call( self, o.dstMap, srcMap, screenKey );
+      }
+    }
+
+    /* */
+
+    function screenKeySearch( key )
+    {
+      if( _.arrayLike( o.screenMaps ) ) /* preserve _.arrayLike checking */
+      {
+        // for( let m = 0 ; m < o.screenMaps.length ; m++ )
+        // if( _.primitive.is( o.screenMaps[ m ] ) )
+        // {
+        //   if( o.screenMaps[ m ] === key )
+        //   return key;
+        // }
+      }
+      // else
+      // {
+      for( let m of o.screenMaps ) /* check for of */
+      if( _.primitive.is( m ) )
+      {
+        counter++;
+        if( m === key )
+        return key;
+      }
+      // }
+    }
+
+    /* */
+
+    function filterSrcMap( srcMap )
+    {
+      for( let key in o.screenMaps )
+      {
+        if( o.screenMaps[ key ] === undefined )
+        continue;
+
+        if( key in srcMap )
+        o.filter.call( this, o.dstMap, srcMap, key );
+      }
+    }
+  }
+
+}
+
+mapHasNoneMapOnlyPerformance.timeOut = 1e7;
+mapHasNoneMapOnlyPerformance.experimental = true;
+
 // --
 // define test suite
 // --
@@ -16913,6 +17227,8 @@ const Proto =
 
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
+
+    mapHasNoneMapOnlyPerformance
 
   }
 

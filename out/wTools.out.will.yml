@@ -75,6 +75,7 @@ module:
       download:
         criterion:
           predefined: 1
+        path: ../
       repository:
         path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
@@ -179,7 +180,10 @@ module:
           - ../proto/wtools/abase/Layer1.s
           - ../proto/wtools/abase/Layer2.s
           - ../proto/wtools/abase/l0
+          - ../proto/wtools/abase/l0/l0
+          - ../proto/wtools/abase/l0/l0/Global.s
           - ../proto/wtools/abase/l0/l1
+          - ../proto/wtools/abase/l0/l1/Config.s
           - ../proto/wtools/abase/l0/l1/Predefined.s
           - ../proto/wtools/abase/l0/l2
           - ../proto/wtools/abase/l0/l2/Setup.s
@@ -191,6 +195,7 @@ module:
           - ../proto/wtools/abase/l0/l3/BigInt.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
+          - ../proto/wtools/abase/l0/l3/Class.s
           - ../proto/wtools/abase/l0/l3/Constructible.s
           - ../proto/wtools/abase/l0/l3/Container.s
           - ../proto/wtools/abase/l0/l3/Countable.s
@@ -287,12 +292,9 @@ module:
           - ../proto/wtools/abase/l0/l5/Unroll.s
           - ../proto/wtools/abase/l0/l5/Vector.s
           - ../proto/wtools/abase/l0/l6
-          - ../proto/wtools/abase/l0/l6/ContainerAdapter.s
           - ../proto/wtools/abase/l0/l6/LongDescriptor.s
           - ../proto/wtools/abase/l0/l7
           - ../proto/wtools/abase/l0/l7/Compose.s
-          - ../proto/wtools/abase/l0/l7/ContainerAdapterArray.s
-          - ../proto/wtools/abase/l0/l7/ContainerAdapterSet.s
           - ../proto/wtools/abase/l0/l7/LongContext.s
           - ../proto/wtools/abase/l0/l7/PropertyTransformers.s
           - ../proto/wtools/abase/l0/l8
@@ -356,6 +358,7 @@ module:
           - ../proto/wtools/abase/l0.test/BigInt.test.s
           - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
+          - ../proto/wtools/abase/l0.test/Class.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
@@ -402,6 +405,9 @@ module:
           - ../proto/wtools/abase/l0.test/Unroll.test.s
           - ../proto/wtools/abase/l0.test/Vector.test.s
           - ../proto/wtools/abase/l1
+          - ../proto/wtools/abase/l1/ContainerAdapter.s
+          - ../proto/wtools/abase/l1/ContainerAdapterArray.s
+          - ../proto/wtools/abase/l1/ContainerAdapterSet.s
           - ../proto/wtools/abase/l1/ModulesRegistry.s
           - ../proto/wtools/abase/l1/NameTools.s
           - ../proto/wtools/abase/l1/StrBasic.s
@@ -1160,6 +1166,7 @@ module:
       download:
         criterion:
           predefined: 1
+        path: ./
       repository:
         path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:

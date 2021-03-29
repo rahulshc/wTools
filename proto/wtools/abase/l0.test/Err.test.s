@@ -11,8 +11,8 @@ if( typeof module !== 'undefined' )
 
 const _ = _global_.wTools;
 const __ = _globals_.testing.wTools;
-let fileProvider = __.fileProvider;
-let path = fileProvider.path;
+const fileProvider = __.fileProvider;
+const path = fileProvider.path;
 
 // --
 // context
@@ -39,6 +39,145 @@ function onSuiteEnd()
 // --
 // tests
 // --
+
+function bisectorsBasic( test )
+{
+
+  /* */
+
+  test.case = 'unformed error';
+  var err = new Error( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( !_.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'formed error';
+  var err = _.err( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  console.log( err.message );
+  console.log( err.originalMessage );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  /* */
+
+  test.case = 'formed error, console.log';
+  var err = _.err( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  console.log( err );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( _.error.isAttended( err ) );
+  test.true( _.error.isLogged( err ) );
+
+  /* */
+
+  test.case = 'formed error, attend';
+  var err = _.err( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  _.error.attend( err );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( _.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  /* */
+
+  test.case = 'formed error, logged';
+  var err = _.err( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  _.error.logged( err );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( _.error.isLogged( err ) );
+
+  /* */
+
+}
+
+//
+
+function bissectorBriefUnbrief( test )
+{
+
+  /* */
+
+  test.case = 'formed breif error';
+  var err = _.error.brief( 'Error1' );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( _.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  var err2 = _.error.unbrief( err );
+  test.true( err === err2 );
+
+  test.true( _.error.is( err ) );
+  test.true( _.error.isFormed( err ) );
+  test.true( !_.error.isBrief( err ) );
+  test.true( !_.error.isSuspended( err ) );
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  /* */
+
+}
+
+//
 
 function errArgumentObject( test )
 {
@@ -858,77 +997,77 @@ function _errOptionBrief( test )
 
 //
 
-function _errOptionIsProcess( test )
-{
-  test.case = 'args - Error, without isProcess option';
-  var srcErr = new Error( 'Sample' );
-  var err = _._err
-  ({
-    args : [ srcErr ],
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.isProcess, srcErr.isProcess );
-  test.identical( err.isProcess, false );
-
-  test.case = 'args - Error with isProcess option';
-  var srcErr = new Error( 'Sample' );
-  srcErr.isProcess = true;
-  var err = _._err
-  ({
-    args : [ srcErr ],
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.isProcess, srcErr.isProcess );
-  test.identical( err.isProcess, true );
-
-  test.case = 'args - Error, with isProcess option';
-  var srcErr = new Error( 'Sample' );
-  var err = _._err
-  ({
-    args : [ srcErr ],
-    isProcess : 1
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.isProcess, srcErr.isProcess );
-  test.identical( err.isProcess, true );
-}
+// function _errOptionIsProcess( test )
+// {
+//   test.case = 'args - Error, without isProcess option';
+//   var srcErr = new Error( 'Sample' );
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.isProcess, srcErr.isProcess );
+//   test.identical( err.isProcess, false );
+//
+//   test.case = 'args - Error with isProcess option';
+//   var srcErr = new Error( 'Sample' );
+//   srcErr.isProcess = true;
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.isProcess, srcErr.isProcess );
+//   test.identical( err.isProcess, true );
+//
+//   test.case = 'args - Error, with isProcess option';
+//   var srcErr = new Error( 'Sample' );
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//     isProcess : 1
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.isProcess, srcErr.isProcess );
+//   test.identical( err.isProcess, true );
+// }
 
 //
 
-function _errOptionDebugging( test )
-{
-  test.case = 'args - Error, without debugging option';
-  var srcErr = new Error( 'Sample' );
-  var err = _._err
-  ({
-    args : [ srcErr ],
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.debugging, srcErr.debugging );
-  test.identical( err.debugging, false );
-
-  test.case = 'args - Error with debugging option';
-  var srcErr = new Error( 'Sample' );
-  srcErr.debugging = true;
-  var err = _._err
-  ({
-    args : [ srcErr ],
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.debugging, srcErr.debugging );
-  test.identical( err.debugging, true );
-
-  test.case = 'args - Error, with debugging option';
-  var srcErr = new Error( 'Sample' );
-  var err = _._err
-  ({
-    args : [ srcErr ],
-    debugging : 1
-  });
-  test.true( _.error.is( err ) );
-  test.identical( err.debugging, srcErr.debugging );
-  test.identical( err.debugging, true );
-}
+// function _errOptionDebugging( test )
+// {
+//   test.case = 'args - Error, without debugging option';
+//   var srcErr = new Error( 'Sample' );
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.debugging, srcErr.debugging );
+//   test.identical( err.debugging, false );
+//
+//   test.case = 'args - Error with debugging option';
+//   var srcErr = new Error( 'Sample' );
+//   srcErr.debugging = true;
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.debugging, srcErr.debugging );
+//   test.identical( err.debugging, true );
+//
+//   test.case = 'args - Error, with debugging option';
+//   var srcErr = new Error( 'Sample' );
+//   var err = _._err
+//   ({
+//     args : [ srcErr ],
+//     debugging : 1
+//   });
+//   test.true( _.error.is( err ) );
+//   test.identical( err.debugging, srcErr.debugging );
+//   test.identical( err.debugging, true );
+// }
 
 //
 
@@ -958,7 +1097,7 @@ function _errOptionReason( test )
 
 //
 
-/* qqq : for Dmytro : bad test. option section changes not only err.section. improve */
+/* qqq : for Dmytro : bad test. option sections influences not only err.sections. improve */
 function _errOptionSections( test )
 {
 
@@ -981,7 +1120,7 @@ function _errOptionSections( test )
   });
   test.true( _.error.is( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ] );
 
   test.case = 'args - Error with sections option';
   var srcErr = new Error( 'Sample' );
@@ -992,7 +1131,7 @@ function _errOptionSections( test )
   });
   test.true( _.error.is( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ] );
 
   test.case = 'args - Error, sections option';
   var srcErr = new Error( 'Sample' );
@@ -1101,7 +1240,7 @@ function _errSourceCodeForm( test )
 
 //
 
-function _errOriginalMessageForm( test )
+function _originalMessage( test )
 {
   test.case = 'args - different, simple routine';
   var err = _._err
@@ -1252,7 +1391,7 @@ function _errMessageForm( test )
 
 //
 
-function _errOptionFields( test )
+function _errOptionConcealedBasic( test )
 {
   let context = this;
 
@@ -1260,7 +1399,7 @@ function _errOptionFields( test )
 
   test.case = 'basic';
   var args = [ 'a', 'b' ];
-  var err = _._err({ args : args, fields : { 'field1' : 13 } });
+  var err = _._err({ args : args, concealed : { 'field1' : 13 } });
   var got = _.property.descriptorOwnOf( err, 'field1' );
   var exp =
   {
@@ -1270,6 +1409,177 @@ function _errOptionFields( test )
     'configurable' : true
   }
   test.identical( got, exp );
+
+  /* */
+
+}
+
+//
+
+function errWithExpoesedBasic( test )
+{
+
+  /* */
+
+  test.case = 'non-formed error without exposed properties, empty option exposed';
+  var err = new Error( 'Error1' );
+
+  var err2 = _._err({ args : [ err ], exposed : {} });
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'non-formed error without exposed properties';
+  var err = new Error( 'Error1' );
+
+  var err2 = _.err( err );
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+  /* zzz : use test.contains here */
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'non-formed error with exposed properties';
+  var err = new Error( 'Error1' );
+  err.code = 'code1';
+  err.requireStack = [ 'some', 'stack' ];
+
+  var err2 = _.err( err );
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp =
+`= Exposed
+    code : code1
+    requireStack : {- Array with 2 elements -}`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'non-formed error with exposed properties, empty option exposed';
+  var err = new Error( 'Error1' );
+  err.code = 'code1';
+  err.requireStack = [ 'some', 'stack' ];
+
+  var err2 = _._err({ args : [ err ], exposed : {} });
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp =
+`= Exposed
+    code : code1
+    requireStack : {- Array with 2 elements -}`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'non-formed error with exposed properties, option exposed';
+  var err = new Error( 'Error1' );
+  err.code = 'code1';
+  err.requireStack = [ 'some', 'stack' ];
+
+  var err2 = _._err({ args : [ err ], exposed : { code : 'code2', prop2 : 13 } });
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp =
+`= Exposed
+    code : code2
+    prop2 : 13
+    requireStack : {- Array with 2 elements -}`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
+
+  /* */
+
+  test.case = 'extra section';
+  var err = new Error( 'Error1' );
+  err.f1 = 'val1';
+  err.f2 = 'val2';
+
+  var err2 = _._err({ args : [ err ], exposed : {} });
+  test.true( _.error.is( err ) );
+  test.true( err === err2 );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+
+  var exp = `= Exposed`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp =
+`= Exposed
+    f1 : val1
+    f2 : val2
+
+ = ExtraSection
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  console.log( err.message );
 
   /* */
 
@@ -1399,16 +1709,16 @@ function errCustomError( test )
 
 //
 
-function errInStr( test )
+function _inStr( test )
 {
   let context = this;
 
   test.case = 'basic';
   var err = _.err( 'Some' );
-  test.true( _.error.inStr( String( err ) ) );
-  test.true( _.error.inStr( String( err.message ) ) );
+  test.true( _.error._inStr( String( err ) ) );
+  test.true( _.error._inStr( String( err.message ) ) );
   test.true( err.originalMessage === 'Some' );
-  test.true( !_.error.inStr( String( err.originalMessage ) ) );
+  test.true( !_.error._inStr( String( err.originalMessage ) ) );
 
   test.case = 'wrapped';
   var src =
@@ -1427,7 +1737,7 @@ function errInStr( test )
  -      at Object.configDel (/pro/amid/l5/censor/l1/Namespace.s:526:20)
  -< Stderr"
 `
-  test.true( !_.error.inStr( src ) );
+  test.true( !_.error._inStr( src ) );
 
   test.case = 'non-standard prolog';
   var src =
@@ -1444,7 +1754,7 @@ at Object._sourceIncludeAct (http://127.0.0.1:15000/.starter:6529:19)
 at Worker_js (http://127.0.0.1:15000/workerEnvironment/Worker.js:27:18)
 at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
 `
-  test.true( _.error.inStr( src ) );
+  test.true( _.error._inStr( src ) );
 
 }
 
@@ -3023,6 +3333,220 @@ Exec : program`;
 
 //
 
+function sectionAdd( test )
+{
+
+  /* */
+
+  test.case = 'formed error, explicit head';
+  var err = _.err( 'Error1' );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = `= Extra Section 1`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', head : 'Extra Section 1', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = `= Extra Section 1`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.stack, exp ), 1 );
+
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.toString(), exp ), 1 );
+
+  console.log( err );
+
+  /* */
+
+  test.case = 'non-formed error';
+  var err = new Error( 'Error1' );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', head : 'Extra Section 1', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = `= Extra Section 1`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.stack, exp ), 1 );
+
+  var exp =
+` = Extra Section 1
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.toString(), exp ), 1 );
+
+  console.log( err );
+
+  /* */
+
+  test.case = 'formed error, single options map';
+  var err = _.err( 'Error1' );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = ExtraSection
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+  console.log( err );
+
+  /* */
+
+  test.case = 'formed error, 2 arguments';
+  var err = _.err( 'Error1' );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var err2 = _.error.sectionAdd( err, { name : 'extraSection', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = ExtraSection
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+  console.log( err );
+
+  /* */
+
+  test.case = 'formed error, several sections';
+  var err = _.err( 'Error1' );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+  var err2 = _.error.sectionAdd({ error : err, name : 'secondSection', body : 'second text' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection', 'secondSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = ` = ExtraSection`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = ExtraSection
+    this
+    is extra
+    section`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = ` = SecondSection`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp =
+` = SecondSection
+    second text`;
+  test.identical( _.strCount( err.message, exp ), 1 );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+
+  var exp = ` = SecondSection`;
+  test.identical( _.strCount( err.stack, exp ), 1 );
+  var exp =
+` = SecondSection
+    second text`;
+  test.identical( _.strCount( err.stack, exp ), 1 );
+  var exp = ` = SecondSection`;
+  test.identical( _.strCount( err.toString(), exp ), 1 );
+  var exp =
+` = SecondSection
+    second text`;
+  test.identical( _.strCount( err.toString(), exp ), 1 );
+
+  console.log( err );
+
+  /* */
+
+}
+
+//
+
 function errorFunctorBasic( test )
 {
   let context = this;
@@ -3349,10 +3873,10 @@ function eventUncaughtErrorBasic( test )
         test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 3 : 0 );
         test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 3 : 0 );
         test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
-        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'error.isSuspended:false' ), 1 );
         test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
@@ -3382,10 +3906,10 @@ function eventUncaughtErrorBasic( test )
         test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 3 : 0 );
         test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 3 : 0 );
         test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
-        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'error.isSuspended:false' ), 1 );
         test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
@@ -3415,10 +3939,10 @@ function eventUncaughtErrorBasic( test )
         test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
-        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'error.isSuspended:false' ), 1 );
         test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
@@ -3448,10 +3972,10 @@ function eventUncaughtErrorBasic( test )
         test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
-        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
-        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'error.isWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'error.isSuspended:false' ), 1 );
         test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
         test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
@@ -3485,9 +4009,9 @@ function eventUncaughtErrorBasic( test )
     {
 
       console.log( 'errIs:' + _.error.is( e.err ) );
-      console.log( 'errIsAttended:' + _.error.isAttended( e.err ) );
-      console.log( 'errIsWary:' + _.error.isWary( e.err ) );
-      console.log( 'errIsSuspended:' + _.error.isSuspended( e.err ) );
+      console.log( 'error.isAttended:' + _.error.isAttended( e.err ) );
+      console.log( 'error.isWary:' + _.error.isWary( e.err ) );
+      console.log( 'error.isSuspended:' + _.error.isSuspended( e.err ) );
       console.log( 'origination:' + e.origination );
 
       if( attending )
@@ -3685,6 +4209,9 @@ const Proto =
   tests :
   {
 
+    bisectorsBasic,
+    bissectorBriefUnbrief,
+
     errArgumentObject,
     errFromStringedError, /* qqq : extend the test routine. low priority problem */
     _errWithArgsIncludedRoutine,
@@ -3695,27 +4222,30 @@ const Proto =
     _errArgsHasRoutine,
     _errLocation,
     _errOptionBrief,
-    _errOptionIsProcess,
-    _errOptionDebugging,
+    // _errOptionIsProcess,
+    // _errOptionDebugging,
     _errOptionReason,
     _errOptionSections,
     _errOptionId,
     _errCatchesForm,
     _errSourceCodeForm,
-    _errOriginalMessageForm,
+    _originalMessage,
     _errMessageForm,
-    _errOptionFields,
+    _errOptionConcealedBasic,
+    errWithExpoesedBasic,
     errCatchStackAndMessage,
     errErrorWithoutStack,
     errCustomError,
 
-    errInStr,
+    _inStr,
     errWithMultilineMessage,
     errMessageWithSpacesAndNewLines,
     errMessageSecondLineHasNewLineSymbol,
 
     errBriefFromStrings,
     errBriefFromErr,
+
+    sectionAdd,
 
     errorFunctorBasic,
     errorFunctorExternal,

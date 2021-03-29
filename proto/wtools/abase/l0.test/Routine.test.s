@@ -7688,50 +7688,50 @@ function vectorizeAccessSpecial( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'function';
   var src = plain;
   var expected = '{- routine plain -}';
-  var got = _.routine.exportStringShortDiagnostic( src );
+  var got = _.routine.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'async function';
   var src = async;
   var expected = '{- routine async -}';
-  var got = _.routine.exportStringShortDiagnostic( src );
+  var got = _.routine.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'arrow function';
   var arrow = () => {};
   var src = arrow;
   var expected = '{- routine arrow -}';
-  var got = _.routine.exportStringShortDiagnostic( src );
+  var got = _.routine.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'anonymos function';
   var expected = '{- routine.anonymous -}';
-  var got = _.routine.exportStringShortDiagnostic( function () {} );
+  var got = _.routine.exportStringShallowDiagnostic( function () {} );
   test.identical( got, expected );
 
   test.case = 'anonymos arrow function';
   var expected = '{- routine.anonymous -}';
-  var got = _.routine.exportStringShortDiagnostic( () => {} );
+  var got = _.routine.exportStringShallowDiagnostic( () => {} );
   test.identical( got, expected );
 
   // test.case = 'func expression';
   // var expr = function () {};
   // var src = expr;
   // var expected = '{- routine expr -}';
-  // var got = _.routine.exportStringShortDiagnostic( src );
+  // var got = _.routine.exportStringShallowDiagnostic( src );
   // test.identical( got, expected );
 
   // test.case = 'func expression with name';
   // var expr = function expr2() {};
   // var src = expr;
   // var expected = '{- routine expr2 -}';
-  // var got = _.routine.exportStringShortDiagnostic( src );
+  // var got = _.routine.exportStringShallowDiagnostic( src );
   // test.identical( got, expected );
 
 
@@ -7739,13 +7739,13 @@ function exportStringShortDiagnostic( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( () => {}, () => {} ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( () => {}, () => {} ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( {} ) );
 
   /* - */
 
@@ -7824,7 +7824,7 @@ const Proto =
     vectorizeAccessBasic,
     vectorizeAccessSpecial,
 
-    exportStringShortDiagnostic,
+    exportStringShallowDiagnostic,
 
   }
 

@@ -7,13 +7,13 @@
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of `arrayFlatten` methods has been included in the last row `Flatten` - it is not related with `arrayAppend` ):
 
-  | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
-  | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | dst | dst | dst | index | index | index |
-  | **Element** | dst | dst | dst | appended element | appended element | appended element |
-  | **Array** | dst | dst | dst | number | number | number |
-  | **Arrays** | dst | dst | dst | number | number | number |
-  | **Flatten** | dst | dst | dst | number | number | number |
+  | **arrayAppend** | **-**  | **Once** | **OnceStrictly** | **ed**           | **edOnce**       | **edOnceStrictly** |
+  | :-------------: | :----: | :------: | :--------------: | :--------------: | :--------------: | :----------------: |
+  | **-**           | dst    | dst      | dst              | index            | index            | index              |
+  | **Element**     | dst    | dst      | dst              | appended element | appended element | appended element   |
+  | **Array**       | dst    | dst      | dst              | number           | number           | number             |
+  | **Arrays**      | dst    | dst      | dst              | number           | number           | number             |
+  | **Flatten**     | dst    | dst      | dst              | number           | number           | number             |
 
 ### Where:
 

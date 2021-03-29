@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global.wTools;
-let _err = _._err;
+const _err = _._err;
 
 // --
 // checker
@@ -74,7 +74,7 @@ function assertOwnNoConstructor( ins )
   // args[ 0 ] = _.sureOwnNoConstructor( ins );
   //
   // if( args.length === 1 )
-  // args.push( () => 'Entity should not own constructor, but own ' + _.entity.exportStringShort( ins ) );
+  // args.push( () => 'Entity should not own constructor, but own ' + _.entity.exportStringShallow( ins ) );
   //
   // _.assert.apply( _, args );
 }

@@ -43,16 +43,16 @@ _is.functor = _primitiveIs_functor;
 
 //
 
-function exportStringShortCode( src )
+function exportStringShallowCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShortCode( src );
+  return _.symbol.exportStringShallowCode( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShortCode( src );
+  return _.bigInt.exportStringShallowCode( src );
 
   if( _.strIs( src ) )
   return `'${src}'`;
@@ -62,16 +62,16 @@ function exportStringShortCode( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShortDiagnostic( src );
+  return _.symbol.exportStringShallowDiagnostic( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShortDiagnostic( src );
+  return _.bigInt.exportStringShallowDiagnostic( src );
 
   return String( src );
 }
@@ -95,12 +95,12 @@ let Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortCode,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowCode,
 }
 
 Object.assign( _, ExtensionTools );

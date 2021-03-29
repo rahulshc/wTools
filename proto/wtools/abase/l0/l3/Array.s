@@ -223,7 +223,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -320,7 +320,7 @@ function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -418,7 +418,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
 
   return dstArray;
 }
@@ -1290,7 +1290,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -1342,7 +1342,7 @@ function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ 
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
