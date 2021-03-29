@@ -7,7 +7,6 @@ const _global = _global_;
 const _ = _global.wTools = Object.hasOwnProperty.call( _global, 'wTools' ) ? _global.wTools : Object.create( null );
 _.module = _.module || Object.create( null );
 _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
-const Self = _.module._modulesToPredeclare;
 
 /*
   Temporary solution.

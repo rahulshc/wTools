@@ -4,6 +4,10 @@
 
 ## Proper error handling mechanism
 
+  - Self-accountable error objects
+  - Reach formatting
+  - Mechanisms leveraging asynchronous error handling
+
 ## Proper moduling mechanism
 
 ## Mechanism for vectorization

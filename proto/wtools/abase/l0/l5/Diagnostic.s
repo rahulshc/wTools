@@ -12,13 +12,69 @@ const Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.c
 // --
 
 // --
+// try
+// --
+
+function tryCatch( routine )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.routine.is( routine ) )
+  try
+  {
+    return routine();
+  }
+  catch( err )
+  {
+    throw _._err({ args : [ err ] });
+  }
+}
+
+//
+
+function tryCatchBrief( routine )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.routine.is( routine ) )
+
+  try
+  {
+    return routine();
+  }
+  catch( err )
+  {
+    throw _._err({ args : [ err ], brief : 1 });
+  }
+}
+
+// //
+//
+// function tryCatchDebug( routine )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.routine.is( routine ) )
+//   try
+//   {
+//     return routine();
+//   }
+//   catch( err )
+//   {
+//     throw _._err({ args : [ err ], debugging : 1 });
+//   }
+// }
+
+// --
 // extension
 // --
 
 let ToolsExtension =
 {
 
+  tryCatch,
+  tryCatchBrief,
+
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
@@ -29,7 +85,6 @@ let Extension =
 
 //
 
-Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 
 })();

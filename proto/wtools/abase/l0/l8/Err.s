@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global.wTools;
-let _err = _._err;
+const _err = _._err;
 
 // --
 // checker
