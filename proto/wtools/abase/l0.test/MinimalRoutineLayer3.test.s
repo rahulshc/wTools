@@ -5,11 +5,19 @@
 
 if( typeof module !== 'undefined' )
 {
+
+  require( '../l0/l0/Global.s' );
+  require( '../l0/l1/Config.s' );
   require( '../l0/l1/Predefined.s' );
+  require( '../l0/l3/ArgumentsArray.s' );
   require( '../l0/l3/Array.s' );
+  require( '../l0/l3/Auxiliary.s' );
+  require( '../l0/l3/Diagnostic.s' );
   require( '../l0/l3/Entity.s' ); /* Array.s require */
   require( '../l0/l3/Err.s' );
   require( '../l0/l3/Map.s' );
+  require( '../l0/l3/Object.s' );
+  require( '../l0/l3/Primitive.s' );
   require( '../l0/l3/Routine.s' );
   require( '../l0/l3/Type.s' ); /* Map.s require */
 
