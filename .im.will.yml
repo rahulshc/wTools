@@ -6,11 +6,6 @@ submodule :
     enabled : 0 # submodule
     criterion :
       development : 1
-  wTools :
-    path : hd://.
-    enabled : 0
-    criterion :
-      development : 1
 
 path :
 
