@@ -1678,7 +1678,7 @@ function _trackingEnable()
       debugger;
       let error;
       if( parent && parent.filename )
-      error = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
+      error = _.err( err, `\nModule file "${parent.filename}" failed to include "${request}"` );
       else
       error = _.err( err, `\nFailed to include "${request}"` );
       throw error;
