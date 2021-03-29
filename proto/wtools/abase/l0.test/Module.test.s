@@ -617,6 +617,7 @@ modulesMap wTools wTools wTesting wTesting
     console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
     console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
 
+    debugger;
     let __ = _.include( 'wTesting' );
 
     var testingPath = _.module.resolve( 'wTesting' );
@@ -628,7 +629,7 @@ modulesMap wTools wTools wTesting wTesting
     console.log( `module.fileUniversalIs( moduleFile.moduleNativeFile )`, _.module.fileUniversalIs( moduleFile.moduleNativeFile ) );
     console.log( `module.fileNativeIs( moduleFile.moduleNativeFile )`, _.module.fileNativeIs( moduleFile.moduleNativeFile ) );
     console.log( `moduleFile.sourcePath`, moduleFile.sourcePath );
-    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath );
+    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath ); debugger;
     console.log( `moduleFile.downFile.module`, moduleFile.downFile.module );
     console.log( `module.is( moduleFile.module )`, _.module.is( moduleFile.module ) );
 
@@ -2367,12 +2368,162 @@ orphans
 
 predeclareMain.timeOut = 60000;
 
-/* xxx : write test
-main -> Single1
-main -> Single2 -> Single1
-main -> tools
-predeclare
-*/
+//
+
+function predeclareNpmBasic( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - xxx */
+
+  function act( env )
+  {
+
+    /* */
+
+//     ready.then( () =>
+//     {
+//       test.case = `full relative path, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+//
+//       var programPath = a.program( mainWithFullPath );
+//       a.program
+//       ({
+//         routine : module1,
+//         dirPath : 'node_modules',
+//       });
+//
+//       return a.forkNonThrowing
+//       ({
+//         execPath : programPath,
+//         currentPath : _.path.dir( programPath ),
+//       })
+//     })
+//     .then( ( op ) =>
+//     {
+//       var exp =
+// `
+// main
+// module1
+// `
+//       test.identical( op.exitCode, 0 );
+//       test.equivalent( op.output, exp );
+//       return op;
+//     });
+//
+//     /* */
+//
+//     ready.then( () =>
+//     {
+//       test.case = `require name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+//
+//       var programPath = a.program( mainWithRequireName );
+//       a.program
+//       ({
+//         routine : module1,
+//         dirPath : 'node_modules',
+//       });
+//
+//       return a.forkNonThrowing
+//       ({
+//         execPath : programPath,
+//         currentPath : _.path.dir( programPath ),
+//       })
+//     })
+//     .then( ( op ) =>
+//     {
+//       var exp =
+// `
+// main
+// module1
+// `
+//       test.identical( op.exitCode, 0 );
+//       test.equivalent( op.output, exp );
+//       return op;
+//     });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainWithName );
+      a.program
+      ({
+        routine : module1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+module1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function mainWithFullPath()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : __dirname + '/node_modules/module1' } );
+    _.include( 'Mod1' );
+  }
+
+  /* - */
+
+  function mainWithRequireName()
+  {
+    console.log( 'main' );
+    require( 'module1' );
+  }
+
+  /* - */
+
+  function mainWithName()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : 'module1' } );
+    debugger;
+    _.include( 'Mod1' );
+    debugger;
+  }
+
+  /* - */
+
+  function module1()
+  {
+    console.log( 'module1' );
+  }
+
+  /* - */
+
+}
 
 //
 
@@ -2666,7 +2817,7 @@ dependancyAssumption.experimental = 1;
 const Proto =
 {
 
-  name : 'Tools.ModuleFileNative',
+  name : 'Tools.Module',
   silencing : 1,
 
   onSuiteBegin,
@@ -2694,6 +2845,7 @@ const Proto =
 
     predeclareBasic,
     predeclareMain,
+    predeclareNpmBasic,
 
     moduleIsIncluded,
     dependancyAssumption,

@@ -163,7 +163,10 @@ function predeclare_body( o )
   }
 
   _.assert( o.filePath === null );
-  o.filePath = [ ... o.entryPath, o.alias ];
+  o.filePath = o.filePath || [];
+  _.arrayAppendArray( o.filePath, o.entryPath );
+  _.assert( o.lookPath === undefined );
+  o.lookPath = [ ... o.entryPath, ... o.alias ];
   /* xxx : set? */
 
   o.alias.forEach( ( name ) => _.module.predeclaredWithNameMap.set( name, o ) );
@@ -1194,41 +1197,54 @@ filePathGet.defaults =
 
 //
 
-function resolve( moduleName )
+function _resolve( basePath, downPath, moduleName )
 {
-  let basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
-  /* qqq zzz : optimize for relase build for utility::starter */
 
-  if( arguments.length > 1 )
+  if( _.arrayLike( moduleName ) )
   {
-    let result = [];
-
-    for( let a = 0 ; a < arguments.length ; a++ )
+    // if( moduleName.length === 1 )
+    // {
+    //   moduleName = moduleName[ 0 ];
+    // }
+    // else
     {
-      let moduleName = arguments[ a ];
-
-      if( moduleName === _.optional )
-      continue;
-
-      let r = _.module._resolveFirst
-      ({
-        moduleNames : [ moduleName ],
-        basePath,
-        throwing : 1,
-      });
-      if( r !== undefined )
-      result.push( r );
+      let result = [];
+      for( let a = 0 ; a < moduleName.length ; a++ )
+      {
+        let r = _.module._resolve( basePath, downPath, moduleName[ a ] );
+        if( r !== undefined )
+        result[ a ] = r;
+      }
+      return result;
     }
-
-    return result;
   }
 
-  return _.module._resolveFirst
+  if( moduleName === _.optional )
+  return;
+
+  let r = _.module._resolveFirst
   ({
     moduleNames : [ moduleName ],
+    downPath,
     basePath,
     throwing : 1,
   });
+
+  return r;
+}
+
+//
+
+function resolve( moduleName )
+{
+  let downPath = _.introspector.location({ level : 1 }).filePath;
+  let basePath = _.path.dir( downPath );
+  /* qqq zzz : optimize for relase build for utility::starter */
+  let result = _.module._resolve( basePath, downPath, arguments );
+  _.assert( _.arrayIs( result ) );
+  if( result.length === 1 )
+  return result[ 0 ];
+  return result;
 }
 
 //
@@ -1240,11 +1256,13 @@ function _resolveFirst( o )
   o = { moduleNames : arguments }
   _.routine.options( _resolveFirst, o );
 
-  if( o.basePath === null )
-  o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+  _.assert( _.strDefined( o.downPath ) );
+  _.assert( _.strDefined( o.basePath ) );
+  // if( o.basePath === null )
+  // o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
 
   let sourcePaths = this._moduleNamesToPaths( o.moduleNames );
-  let resolved = this._fileResolve({ sourcePaths, basePath : o.basePath });
+  let resolved = this._fileResolve({ sourcePaths, basePath : o.basePath, downPath : o.downPath });
 
   if( o.throwing )
   if( resolved === undefined && !_.longHas( o.moduleNames, _.optional ) )
@@ -1263,6 +1281,7 @@ function _resolveFirst( o )
 _resolveFirst.defaults =
 {
   moduleNames : null,
+  downPath : null,
   basePath : null,
   throwing : 0,
 }
@@ -1271,10 +1290,13 @@ _resolveFirst.defaults =
 
 function resolveFirst()
 {
+  let downPath = _.introspector.location({ level : 1 }).filePath;
+  let basePath = _.path.dir( downPath );
   return _.module._resolveFirst
   ({
     moduleNames : arguments,
-    basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ),
+    basePath,
+    downPath,
   });
 }
 
@@ -1287,18 +1309,28 @@ function _fileResolve( o )
   if( !_.mapIs( arguments[ 0 ] ) )
   o = { sourcePaths : arguments[ 0 ] }
 
+  // let moduleNativeFile = ModuleFileNative._cache[ _.path.nativize( o.downPath ) ]; /* xxx : use file map */
+  let moduleNativeFile = _.module.nativeFilesMap[ _.path.nativize( o.downPath ) ];
+
   _.routine.options( _fileResolve, o );
   _.assert( arguments.length === 1 );
   _.assert( _.longIs( o.sourcePaths ) );
+  _.strDefined( o.downPath );
+  _.strDefined( o.basePath );
+  _.assert( !!moduleNativeFile );
 
   for( let a = 0 ; a < o.sourcePaths.length ; a++ )
   {
     let sourcePath = o.sourcePaths[ a ];
     let resolved;
 
+    /* xxx : not optimal */
     try
     {
-      resolved = _.module.__fileNativeInclude.resolve( _.path.nativize( sourcePath ) );
+      if( sourcePath === 'module1' )
+      debugger;
+      // resolved = _.module.__fileNativeInclude.resolve( _.path.nativize( sourcePath ) );
+      resolved = ModuleFileNative._resolveFilename( _.path.nativize( sourcePath ), moduleNativeFile, false, undefined );
     }
     catch( err )
     {
@@ -1310,6 +1342,7 @@ function _fileResolve( o )
     return result[ 0 ];
   }
 
+  /* xxx : remove later */
   if( o.basePath )
   {
     o.basePath = _.path.canonize( o.basePath );
@@ -1330,7 +1363,8 @@ function _fileResolve( o )
     try
     {
       let filePath = _.path.nativize( _.path.canonize( o.basePath + '/' + sourcePath ) );
-      resolved = _.module.__fileNativeInclude.resolve( filePath );
+      // resolved = _.module.__fileNativeInclude.resolve( filePath );
+      resolved = ModuleFileNative._resolveFilename( filePath, moduleNativeFile, false, undefined );
     }
     catch( err )
     {
@@ -1351,6 +1385,7 @@ function _fileResolve( o )
 _fileResolve.defaults =
 {
   sourcePaths : null,
+  downPath : null,
   basePath : null,
   all : 0,
 }
@@ -1373,8 +1408,8 @@ function _moduleNamesToPaths( names )
     var descriptor = _.module.predeclaredWithNameMap.get( src );
     if( descriptor )
     {
-      _.assert( _.longIs( descriptor.entryPath ) );
-      _.arrayAppendArray( result, _.arrayAs( descriptor.entryPath ) );
+      _.assert( _.longIs( descriptor.lookPath ) );
+      _.arrayAppendArray( result, descriptor.lookPath );
     }
     else
     {
@@ -1396,7 +1431,7 @@ function toolsPathGet()
 // include
 // --
 
-function _fileIncludeSingle( basePath, filePath )
+function _fileIncludeSingle( downPath, filePath )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( filePath ), 'Expects string' );
@@ -1405,8 +1440,8 @@ function _fileIncludeSingle( basePath, filePath )
   throw _.err( 'Cant include, routine "require" does not exist.' );
 
   let normalizedPath = _.path.nativize( filePath );
-  // let basePath = _.introspector.location({ level : 2 }).filePath;
-  let moduleFile = _.module._fileWithResolvedPath( basePath );
+  // let downPath = _.introspector.location({ level : 2 }).filePath;
+  let moduleFile = _.module._fileWithResolvedPath( downPath );
   if( moduleFile )
   return moduleFile.moduleNativeFile.require( normalizedPath );
   return _.module.__fileNativeInclude( normalizedPath );
@@ -1420,24 +1455,48 @@ function _fileIncludeSingle( basePath, filePath )
 
 //
 
+/* xxx : implement _.path._dir */
+/* xxx : qqq : optimize _.path.dir */
+
 function include()
 {
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( arguments[ 0 ] ) );
-  let resolved = _.module.resolve( ... arguments );
-  let basePath = _.introspector.location({ level : 1 }).filePath;
-  return _.module._fileIncludeSingle( basePath, resolved );
+
+  let downPath = _.introspector.location({ level : 1 }).filePath;
+  let basePath = _.path.dir( downPath );
+  let resolved = _.module._resolve( basePath, downPath, arguments );
+  if( resolved.length === 1 )
+  {
+    return _.module._fileIncludeSingle( downPath, resolved[ 0 ] );
+  }
+  else
+  {
+    debugger;
+    let result = [];
+    for( let i = 0 ; i < resolved.length ; i++ )
+    result[ i ] = _.module._fileIncludeSingle( downPath, resolved[ i ] );
+    return result;
+  }
+
 }
 
 //
 
 function includeFirst()
 {
-  let resolved = _.module.resolveFirst( ... arguments );
+  // let basePath = _.introspector.location({ level : 1 }).filePath;
+  let downPath = _.introspector.location({ level : 1 }).filePath;
+  let basePath = _.path.dir( downPath );
+  let resolved = _.module._resolveFirst
+  ({
+    basePath,
+    downPath,
+    moduleNames : arguments,
+  });
   if( resolved )
   {
-    let basePath = _.introspector.location({ level : 1 }).filePath;
-    return _.module._fileIncludeSingle( basePath, resolved );
+    return _.module._fileIncludeSingle( downPath, resolved );
   }
 }
 
@@ -1659,7 +1718,7 @@ function _trackingEnable()
     });
 
     _.assert( moduleNativeFile === moduleFile.moduleNativeFile );
-    _.assert( moduleNativeFile === ModuleFileNative._cache[ moduleFile.sourcePath ] );
+    _.assert( moduleNativeFile === ModuleFileNative._cache[ moduleFile.sourcePath ] ); /* xxx : introduce nativeSourcePath */
     _.assert( resolving.resolvedPath === sourcePath );
 
     try
@@ -1824,6 +1883,7 @@ var ModuleExtension =
 
   // resolve
 
+  _resolve,
   resolve,
   _resolveFirst,
   resolveFirst,
