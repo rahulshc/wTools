@@ -164,6 +164,8 @@ function predeclare_body( o )
 
   _.assert( o.filePath === null );
   o.filePath = [ ... o.entryPath, o.alias ];
+  _.assert( o.lookPath === undefined );
+  o.lookPath = [ ... o.entryPath, o.alias ];
   /* xxx : set? */
 
   o.alias.forEach( ( name ) => _.module.predeclaredWithNameMap.set( name, o ) );
@@ -1405,8 +1407,8 @@ function _moduleNamesToPaths( names )
     var descriptor = _.module.predeclaredWithNameMap.get( src );
     if( descriptor )
     {
-      _.assert( _.longIs( descriptor.entryPath ) );
-      _.arrayAppendArray( result, _.arrayAs( descriptor.entryPath ) );
+      _.assert( _.longIs( descriptor.lookPath ) );
+      _.arrayAppendArray( result, _.arrayAs( descriptor.lookPath ) );
     }
     else
     {
