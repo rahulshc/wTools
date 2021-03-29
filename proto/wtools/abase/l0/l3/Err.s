@@ -1998,5 +1998,6 @@ _.error._Setup();
 /* zzz : improve formatting of stack with table */
 /* xxx : postpone reading files as late as possible */
 /* xxx : move unhandled error event to namespacer::error */
+/* xxx : add module files stack */
 
 })();
