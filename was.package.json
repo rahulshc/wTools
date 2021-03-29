@@ -38,12 +38,8 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "7.1.0",
-    "wFiles": "delta",
-    "wTesting": "delta",
-    "wTools": "file:.",
-    "wcloner": "delta",
-    "wselector": "delta",
-    "wstringer": "delta"
+    "wTesting": "",
+    "wTools": "file:."
   },
   "keywords": [
     "base",
