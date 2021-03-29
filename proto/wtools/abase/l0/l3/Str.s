@@ -468,26 +468,23 @@ function strShort( o )  /* version with binary search cutting */
   else
   {
     /* Initialize begin and end */
-    let chunkSize = Math.floor( src.length / 3 );
-    let middleIndexLeft = chunkSize;
-    let middleIndexRight = ( chunkSize * 2 );
+    // let chunkSize = Math.floor( src.length / 3 );
+    // let middleIndexLeft = chunkSize;
+    // let middleIndexRight = ( chunkSize * 2 );
 
     let begin = src.slice( 0, middleIndexLeft + 1 );
     let end = src.slice( middleIndexRight );
 
     let originalStr = src;
-    let moveBoundaryLeft = 0;
-    let moveBoundaryRight = 0;
+    // let moveBoundaryLeft = 0;
+    // let moveBoundaryRight = 0;
 
-    for( ;; )
+    while( o.onLength( begin + end ) + fixLength > o.widthLimit ) /* binary */
     {
-
       let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
 
-      let middleIndexLeft = chunkSize + moveBoundaryLeft;
-      moveBoundaryLeft = 0;
-      let middleIndexRight = ( chunkSize * 2 ) + moveBoundaryRight;
-      moveBoundaryRight = 0;
+      let middleIndexLeft = chunkSize;
+      let middleIndexRight = chunkSize * 2;
 
       if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
       {
@@ -509,26 +506,82 @@ function strShort( o )  /* version with binary search cutting */
         end = src.slice( middleIndexRight );
       }
 
-      let beginLength = o.onLength( begin );
-      let endLength = o.onLength( end );
-      let overallLength = o.onLength( o.prefix + begin + o.infix + end + o.postfix );
+      /* delete middle, might delete part of the element, check later when desired length is obtained */
+      src = begin + end;
+    }
 
-      if( overallLength > o.widthLimit )  /* delete middle, might delete part of the element, check later when desired length is obtained */
+    while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
+    {
+      if( o.onLength( begin ) > o.onLength( end ) ) /* shrink middle from the right */
       {
-        src = begin + end;
+        middleIndexRight--;
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
       }
-      else if( overallLength < o.widthLimit ) /* shrink middle, because it contains elements needed to satisfy onLength */
+      else /* shrink middle from the left */
       {
-        if( beginLength > endLength ) /* shrink middle from the right */
-        {
-          moveBoundaryRight = -1;
-        }
-        else /* shrink middle from the left */
-        {
-          moveBoundaryLeft = 1;
-        }
+        middleIndexLeft++;
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
       }
-      else if( overallLength === o.widthLimit )
+    }
+
+    // while( ( o.onLength( begin + end ) + fixLength === o.widthLimit ) )
+    // {
+
+    // }
+
+
+    // for( ;; )
+    // {
+
+      // let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+
+      // let middleIndexLeft = chunkSize + moveBoundaryLeft;
+      // moveBoundaryLeft = 0;
+      // let middleIndexRight = ( chunkSize * 2 ) + moveBoundaryRight;
+      // moveBoundaryRight = 0;
+
+      // if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
+      // {
+      //   if( o.onLength( begin ) > o.onLength( end ) )
+      //   {
+      //     begin = begin.slice( 0, -1 );
+      //   }
+      //   else
+      //   {
+      //     if( middleIndexLeft === 0 ) /* src.length < 3, cut right */
+      //     end = '';
+      //     else
+      //     end = end.slice( 1 );
+      //   }
+      // }
+      // else /* begin : first 1/3, end : last 1/3 */
+      // {
+      //   begin = src.slice( 0, middleIndexLeft + 1 );
+      //   end = src.slice( middleIndexRight );
+      // }
+
+      // let beginLength = o.onLength( begin );
+      // let endLength = o.onLength( end );
+      // let overallLength = o.onLength( o.prefix + begin + o.infix + end + o.postfix );
+
+      // if( overallLength > o.widthLimit )  /* delete middle, might delete part of the element, check later when desired length is obtained */
+      // {
+      //   src = begin + end;
+      // }
+      // else if( overallLength < o.widthLimit ) /* shrink middle, because it contains elements needed to satisfy onLength */
+      // {
+      //   if( beginLength > endLength ) /* shrink middle from the right */
+      //   {
+      //     moveBoundaryRight = -1;
+      //   }
+      //   else /* shrink middle from the left */
+      //   {
+      //     moveBoundaryLeft = 1;
+      //   }
+      // }
+      if( overallLength === o.widthLimit )
       {
         let beginInitial = o.onLength( begin );
         let endInitial = o.onLength( end );
@@ -569,11 +622,11 @@ function strShort( o )  /* version with binary search cutting */
           }
         }
 
-        break;
+      //   break;
+      // }
       }
-    }
 
-    return o.prefix + begin + o.infix + end + o.postfix;
+      return o.prefix + begin + o.infix + end + o.postfix;
 
   }
 }
