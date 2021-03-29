@@ -163,9 +163,10 @@ function predeclare_body( o )
   }
 
   _.assert( o.filePath === null );
-  o.filePath = [ ... o.entryPath, o.alias ];
+  o.filePath = o.filePath || [];
+  _.arrayAppendArray( o.filePath, o.entryPath );
   _.assert( o.lookPath === undefined );
-  o.lookPath = [ ... o.entryPath, o.alias ];
+  o.lookPath = [ ... o.entryPath, ... o.alias ];
   /* xxx : set? */
 
   o.alias.forEach( ( name ) => _.module.predeclaredWithNameMap.set( name, o ) );
@@ -1408,7 +1409,7 @@ function _moduleNamesToPaths( names )
     if( descriptor )
     {
       _.assert( _.longIs( descriptor.lookPath ) );
-      _.arrayAppendArray( result, _.arrayAs( descriptor.lookPath ) );
+      _.arrayAppendArray( result, descriptor.lookPath );
     }
     else
     {
