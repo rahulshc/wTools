@@ -388,6 +388,11 @@ function strShort( o )  /* version with binary search cutting */
 
   let begin = '';
   let end = '';
+  let startIndex = 0;
+  let endIndex = src.length - 1;
+  let beginLength = o.onLength( src );
+  let endLength = o.onLength( src );
+  let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
 
   if( o.cutting === 'left' )
   {
@@ -409,15 +414,9 @@ function strShort( o )  /* version with binary search cutting */
 
   function cutLeft()
   {
-    let startIndex = 0;
-    let endIndex = src.length - 1;
-    let endLength = o.onLength( src );
-    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
-
     while( endLength + fixLength > o.widthLimit ) /* binary */
     {
-      begin = src.slice( 0, middleIndex );
-      end = src.slice( middleIndex );
+      [ begin, end ] = splitInTwo();
       endLength = o.onLength( end );
 
       startIndex = middleIndex; /* all needed elements are in end */
@@ -440,15 +439,9 @@ function strShort( o )  /* version with binary search cutting */
 
   function cutRight()
   {
-    let startIndex = 0;
-    let endIndex = src.length - 1;
-    let beginLength = o.onLength( src );
-    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
-
     while( beginLength + fixLength > o.widthLimit ) /* binary */
     {
-      begin = src.slice( 0, middleIndex );
-      end = src.slice( middleIndex );
+      [ begin, end ] = splitInTwo();
       beginLength = o.onLength( begin );
 
       endIndex = middleIndex; /* all needed elements are in begin */
@@ -563,6 +556,13 @@ function strShort( o )  /* version with binary search cutting */
       }
     }
 
+    return [ begin, end ];
+  }
+
+  function splitInTwo()
+  {
+    let begin = src.slice( 0, middleIndex );
+    let end = src.slice( middleIndex );
     return [ begin, end ];
   }
 
