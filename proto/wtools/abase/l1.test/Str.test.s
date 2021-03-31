@@ -2802,9 +2802,9 @@ function strStrShortOptionsCombination( test )
 //     |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
 //     | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
 //     |    strShort BISI    | regular |      6.5488s       |      5.2201s      |      5.5969s       |      5.1944s       |      5.2801s      |
-//     | strShortBinary BISI | binary  |      0.0033s       |      0.0031s      |      0.0029s       |      0.0026s       |      0.0027s      |
+//     | strShortBinary BISI | binary  |      0.0036s       |      0.0032s      |      0.0029s       |      0.0026s       |      0.0025s      |
 //     |    strShort SIBI    | regular |     0.003011s      |     0.002554s     |     0.002522s      |     0.002347s      |     0.002528s     |
-//     | strShortBinary SIBI | binary  |     0.000092s      |     0.000101s     |     0.000085s      |     0.000107s      |     0.000095s     |
+//     | strShortBinary SIBI | binary  |     0.000092s      |     0.000092s     |      0.0001s       |     0.000078s      |      0.0001s      |
 
 //     BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
 //     SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )
@@ -2873,18 +2873,18 @@ function strStrShortOptionsCombination( test )
 
 //   function act() /* existing implementation with fixed 'center' cutting */
 //   {
-//     let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-//     let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
-//     let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+//     let result1 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'left' });
+//     let result2 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'right' });
+//     let result3 = _.strShort2({ src : string, onLength, widthLimit : 2, cutting : 'center' });
 
 //     return [ result1, result2, result3 ];
 //   }
 
 //   function act2() /* binary search implementation */
 //   {
-//     let result1 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'left', testingData : testing });
-//     let result2 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'right', testingData : testing });
-//     let result3 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'center', testingData : testing });
+//     let result1 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'left' });
+//     let result2 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'right' });
+//     let result3 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'center' });
 
 //     return [ result1, result2, result3 ];
 //   }
