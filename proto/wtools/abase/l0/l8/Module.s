@@ -137,7 +137,8 @@ function predeclare_body( o )
   for( let i = 0 ; i < o.entryPath.length ; i++ )
   {
     let entryPath = o.entryPath[ i ];
-    let was = _.module.predeclaredWithEntryPathMap.get( entryPath );
+    // let was = _.module.predeclaredWithEntryPathMap.get( entryPath );
+    let was = _.module._predeclaredWithEntryPathExact( entryPath );
     _.assert
     (
       !was || was === o, () => `Module ${o.name} is trying to register entry path registered by module ${was.name}\nEntry path : ${entryPath}`
@@ -159,6 +160,9 @@ function predeclare_body( o )
       if( _.path.isAbsolute( normalized ) )
       entryPath = o.entryPath[ i ] = normalized;
     }
+    if( _.path.isRelative( entryPath ) )
+    _.module.predeclaredWithRelativeEntryPathMap.set( entryPath, o );
+    else
     _.module.predeclaredWithEntryPathMap.set( entryPath, o );
   }
 
@@ -263,6 +267,40 @@ predeclareAll.defaults =
   basePath : null,
 }
 
+//
+
+function _predeclaredWithEntryPath( entryPath )
+{
+
+  let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( entryPath );
+  if( predeclaredModule )
+  return predeclaredModule;
+
+  for( let [ k, e ] of _.module.predeclaredWithRelativeEntryPathMap )
+  {
+    // if( _.strEnds( entryPath, '/' + k ) )
+    // debugger;
+    if( _.strEnds( entryPath, '/' + k ) )
+    return e;
+  }
+
+}
+
+//
+
+function _predeclaredWithEntryPathExact( entryPath )
+{
+
+  let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( entryPath );
+  if( predeclaredModule )
+  return predeclaredModule;
+
+  predeclaredModule = _.module.predeclaredWithRelativeEntryPathMap.get( entryPath );
+  if( predeclaredModule )
+  return predeclaredModule;
+
+}
+
 // --
 // file
 // --
@@ -288,7 +326,10 @@ function _fileUniversalFrom( o )
   try
   {
 
-    o.sourcePath = _.path.canonize( o.sourcePath ); /* xxx : qqq : optimize */
+    o.sourcePath = _.path.canonize( o.sourcePath ); /* zzz : qqq : optimize */
+
+    // if( _.strEnds( o.sourcePath, 'testing/entry/Main.s' ) )
+    // debugger;
 
     let moduleFile2 = _.module.filesMap.get( o.sourcePath );
     if( moduleFile2 )
@@ -410,7 +451,8 @@ xxx : test to check the parent has the child and the child has the parent
     o.module = null;
     o.modules = new Set();
 
-    let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( o.sourcePath );
+    // let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( o.sourcePath );
+    let predeclaredModule = _.module._predeclaredWithEntryPath( o.sourcePath );
     if( predeclaredModule )
     {
       _.module._fileUniversalAssociateModule( o, predeclaredModule );
@@ -564,7 +606,8 @@ function _fileUniversalAssociateModule( file, module )
   if( Config.debug )
   {
     _.assert( arguments.length === 2 );
-    let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     _.assert
     (
       module2 === undefined || module2 === module,
@@ -580,6 +623,9 @@ function _fileUniversalAssociateModule( file, module )
 
   _.assert( _.module.fileUniversalIs( file ) );
   _.assert( _.module.is( module ) );
+
+  // if( _.strEnds( file.sourcePath, 'testing/entry/Main.s' ) )
+  // debugger;
 
   file.modules.add( module );
   file.module = file.module || module;
@@ -607,15 +653,18 @@ function _fileUniversalDisassociateModules( file, reassociating )
 {
   let result = 0;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.module.fileUniversalIs( file ) );
-
-  let modules2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
-  _.assert
-  (
-    modules2 === undefined || modules2 !== file.module,
-    `Cant disassociate ${modules2} with ${file} because the file is entry of the module.`
-  );
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( _.module.fileUniversalIs( file ) );
+    // let modules2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    let modules2 = _.module._predeclaredWithEntryPath( file.sourcePath );
+    _.assert
+    (
+      modules2 === undefined || modules2 !== file.module,
+      `Cant disassociate ${modules2} with ${file} because the file is entry of the module.`
+    );
+  }
 
   result += file.modules.size;
 
@@ -744,7 +793,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
       return;
     }
 
-    let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && !modules.has( module2 ) )
     return;
     if( module2 && modules.size > 1 )
@@ -775,7 +825,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     return;
 
-    let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
+    let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && module2 !== module )
     return;
 
@@ -1124,25 +1175,42 @@ let filePathRemove = _.routine.unite( path_head, pathRemove_body );
 function filePathGet( o )
 {
   const ModuleFileNative = require( 'module' );
-  let result = [];
 
-  if( o.moduleFile )
-  o.moduleFile = _.module.fileNativeFrom( o.moduleFile );
+  if( !_.mapIs( o ) )
+  o = { moduleFile : o }
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   o = _.routine.options( filePathGet, o );
+
+  if( o.all === null )
+  o.all = o.locally && o.globally;
+
+  let result = Object.create( null );
+  if( o.locally )
+  result.local = [];
+  if( o.globally )
+  result.global = [];
+  if( o.all )
+  result.all = [];
+
+  if( o.moduleFile )
+  o.moduleFile = _.module.fileNativeFrom( o.moduleFile );
   o.moduleFile = o.moduleFile || module;
 
   if( o.globally )
   {
     _.assert( _.arrayIs( ModuleFileNative.globalPaths ) );
-    result.push( ... ModuleFileNative.globalPaths );
+    result.global.push( ... ModuleFileNative.globalPaths );
+    if( result.all )
+    result.all.push( ... ModuleFileNative.globalPaths );
   }
 
   if( o.locally )
   {
     _.assert( _.arrayIs( o.moduleFile.paths ) );
-    result.push( ... o.moduleFile.paths );
+    result.local.push( ... o.moduleFile.paths );
+    if( result.all )
+    result.all.push( ... o.moduleFile.paths );
   }
 
   return result;
@@ -1152,8 +1220,20 @@ filePathGet.defaults =
 {
   moduleFile : null,
   globally : 1,
-  locally : 0,
+  locally : 1,
+  all : null,
 }
+
+// //
+//
+// function _filePathGet( o )
+// {
+//
+//     let ModuleFileNative = require( 'module' );
+//     ModuleFileNative.globalPaths.push( '/program1/global' );
+//     module.paths.push( '/program1/local' );
+//     console.log( `program1.before.globalPaths\n  ${ModuleFileNative.globalPaths.join( '\n  ' )}` );
+//     console.log( `program1.before.paths\n  ${module.paths.join( '\n  ' )}` );
 
 // --
 //
@@ -1264,13 +1344,16 @@ function _resolveFirst( o )
   let sourcePaths = this._moduleNamesToPaths( o.moduleNames );
   let resolved = this._fileResolve({ sourcePaths, basePath : o.basePath, downPath : o.downPath });
 
+  if( o.moduleNames[ 0 ] === 'wTesting' )
+  debugger;
+
   if( o.throwing )
   if( resolved === undefined && !_.longHas( o.moduleNames, _.optional ) )
   {
     debugger;
     throw _.err
     (
-      `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module' )}.`
+      `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module::' )}.`
       + `\nLooked at:\n - ${sourcePaths.join( '\n - ' )}`
     );
   }
@@ -1852,8 +1935,11 @@ var ModuleExtension =
   with : _with,
   withName,
   withPath,
+
   predeclare,
   predeclareAll,
+  _predeclaredWithEntryPath,
+  _predeclaredWithEntryPathExact,
 
   // file
 
@@ -1913,6 +1999,7 @@ var ModuleExtension =
   rootFile : null,
   predeclaredWithNameMap : new HashMap,
   predeclaredWithEntryPathMap : new HashMap,
+  predeclaredWithRelativeEntryPathMap : new HashMap,
   modulesMap : new HashMap,
   filesMap : new HashMap,
   _setupRequireDone : null,
