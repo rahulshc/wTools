@@ -386,12 +386,13 @@ function strShort( o )  /* version with binary search cutting */
   if( o.onLength( src ) + fixLength <= o.widthLimit ) /* nothing to cut */
   return o.prefix + src + o.postfix;
 
+  let begin = '';
+  let end = '';
+
   if( o.cutting === 'left' )
   {
     let startIndex = 0;
     let endIndex = src.length - 1;
-    let begin = '';
-    let end = '';
     let endLength = o.onLength( src );
     let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
 
@@ -405,18 +406,10 @@ function strShort( o )  /* version with binary search cutting */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
     }
 
-    while( endLength + fixLength < o.widthLimit ) /* overcut */
-    {
-      middleIndex--; /* all needed elements are in end and begin, move middleIndex left */
-      end = src.slice( middleIndex );
-      begin = src.slice( 0, middleIndex );
-      endLength = o.onLength( end );
-    }
-
-    while( o.onLength( end ) + fixLength === o.widthLimit ) /* add cutted parts of 1 element */
+    while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
     {
       /*
-        add parts of element that might have been sliced,
+        add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
                   'aaabbbcccddd' with o.widthLimit = 2 might return 'cddd', but need 'cccddd'
       */
@@ -430,8 +423,6 @@ function strShort( o )  /* version with binary search cutting */
   {
     let startIndex = 0;
     let endIndex = src.length - 1;
-    let begin = '';
-    let end = '';
     let beginLength = o.onLength( src );
     let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
 
@@ -445,18 +436,10 @@ function strShort( o )  /* version with binary search cutting */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
     }
 
-    while( beginLength + fixLength < o.widthLimit ) /* overcut */
-    {
-      middleIndex++; /* all needed elements are in end and begin, move middleIndex right */
-      begin = src.slice( 0, middleIndex );
-      end = src.slice( middleIndex );
-      beginLength = o.onLength( begin );
-    }
-
-    while( o.onLength( begin ) + fixLength === o.widthLimit ) /* add cutted parts of 1 element */
+    while( o.onLength( begin ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
     {
       /*
-        add parts of element that might have been sliced,
+        add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
                   'aaabbbcccddd' with o.widthLimit = 2 might return 'aaab', but need 'aaabbb'
       */
@@ -481,10 +464,10 @@ function strShort( o )  /* version with binary search cutting */
 
     while( o.onLength( begin + end ) + fixLength > o.widthLimit ) /* binary */
     {
-      let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
 
-      let middleIndexLeft = chunkSize;
-      let middleIndexRight = chunkSize * 2;
+      middleIndexLeft = chunkSize;
+      middleIndexRight = chunkSize * 2;
 
       if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
       {
@@ -513,49 +496,51 @@ function strShort( o )  /* version with binary search cutting */
     while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
     {
       if( o.onLength( begin ) > o.onLength( end ) ) /* shrink middle from the right */
-      middleIndexRight--;
+      {
+        end = originalStr.slice( -end.length - 1 );
+      }
       else                                          /* shrink middle from the left */
-      middleIndexLeft++;
+      {
+        begin = originalStr.slice( 0, begin.length + 1 );
+      }
 
-      begin = src.slice( 0, middleIndexLeft + 1 );
-      end = src.slice( middleIndexRight );
     }
 
     let beginInitial = o.onLength( begin );
     let endInitial = o.onLength( end );
-    let middle = originalStr.slice( begin.length, -end.length );
+    let middleInitial = originalStr.slice( begin.length, -end.length );
+    let middleLength = o.onLength( middleInitial );
 
     /*
       add parts of elements that might have been sliced,
       example : onLength considers as 1 element substring of the same characters
                 'aaabbbcccddd' with o.widthLimit = 2 might return 'ad', but need 'aaaddd'
     */
-
-    if( o.onLength( middle ) === 1 )
+    if( middleLength === 1 ) /* middle consists of 1 element, add if o.widthLimit allow */
     {
-      if( beginInitial === o.onLength( begin + middle ) )
-      begin += middle;
-      else if( endInitial === o.onLength( middle + end ) )
-      end = middle + end;
+      if( o.onLength( begin + middleInitial + end ) + fixLength <= o.widthLimit )
+      {
+        begin += middleInitial;
+      }
     }
-    else if( o.onLength( middle ) > 1 )
+    else if( middleLength > 1 )
     {
       while( true ) /* try to increase begin */
       {
-        if( o.onLength( begin + middle[ 0 ] ) !== beginInitial )
+        if( o.onLength( begin + middleInitial[ 0 ] ) > beginInitial )
         break;
 
-        begin += middle[ 0 ];
-        middle = middle.slice( 1 );
+        begin += middleInitial[ 0 ];
+        middleInitial = middleInitial.slice( 1 );
       }
 
       while( true ) /* try to increase end */
       {
-        if( o.onLength( middle[ middle.length-1 ] + end ) !== endInitial )
+        if( o.onLength( middleInitial[ middleInitial.length-1 ] + end ) > endInitial )
         break;
 
-        end = middle[ middle.length-1 ] + end;
-        middle = middle.slice( 0, -1 );
+        end = middleInitial[ middleInitial.length-1 ] + end;
+        middleInitial = middleInitial.slice( 0, -1 );
       }
 
     }
