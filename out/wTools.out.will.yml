@@ -173,6 +173,8 @@ module:
         path:
           - ../proto
           - ../proto/Integration.test.ss
+          - ../proto/node_modules
+          - ../proto/node_modules/wTools
           - ../proto/wtools
           - ../proto/wtools/Tools.s
           - ../proto/wtools/abase
@@ -1811,6 +1813,4 @@ module:
       ../.im.will.yml:
         hash: 88e580716d60fd794cfc5b4e905143ab
         size: 5180
-      wTools.out.will.yml:
-        hash: 91013254f67713f5f1a1a14bda0a2272
-        size: 51899
+      wTools.out.will.yml: *ref_0
