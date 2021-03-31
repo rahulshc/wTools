@@ -173,11 +173,3 @@
   </a></summary>
     Modularization of the system has several effects on the workflow.
 </details>
-
-
-|     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
-| :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-|    strShort BISI    | regular |      6.5488s       |      5.2201s      |      5.5969s       |      5.1944s       |      5.2801s      |
-| strShortBinary BISI | binary  |      0.0036s       |      0.0032s      |      0.0029s       |      0.0026s       |      0.0025s      |
-|    strShort SIBI    | regular |     0.003011s      |     0.002554s     |     0.002522s      |     0.002347s      |     0.002528s     |
-| strShortBinary SIBI | binary  |     0.0000111s     |     0.000092s     |      0.0001s       |     0.000078s      |      0.0001s      |
