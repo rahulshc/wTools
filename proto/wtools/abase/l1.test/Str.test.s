@@ -2250,231 +2250,231 @@ function strStrShortOptionInfix( test )
 
 function strStrShortOptionsOnLength( test )
 {
-  // test.case = 'true length is smaller, cutting : center';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '1' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '202020';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
+  test.case = 'true length is smaller, cutting : center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is smaller, cutting : left';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'left',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '1' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '202020';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
+  test.case = 'true length is smaller, cutting : left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is smaller, cutting : right';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'right',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '1' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '202020';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
+  test.case = 'true length is smaller, cutting : right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
 
-  // test.case = 'true length is the same, cutting center';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '10' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '200';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  test.case = 'true length is the same, cutting center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '200';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'true length is the same, cutting left';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'left',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '10' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '020';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  test.case = 'true length is the same, cutting left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '020';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'true length is the same, cutting right';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'right',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '10' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '202';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  test.case = 'true length is the same, cutting right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '202';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
 
-  // test.case = 'true length is bigger, cutting center';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '100' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '20';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'true length is bigger, cutting center';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // test.case = 'true length is bigger, cutting left';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'left',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '100' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '20';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'true length is bigger, cutting left';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'left',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // test.case = 'true length is bigger, cutting right';
-  // var src =
-  // {
-  //   src : '202020',
-  //   widthLimit : 3,
-  //   cutting : 'right',
-  //   onLength : ( src ) =>
-  //   {
-  //     src = src.replace( /20/mg, '100' );
-  //     return src.length;
-  //   }
-  // }
-  // var got = _.strShort( src )
-  // var expected = '20';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'true length is bigger, cutting right';
+  var src =
+  {
+    src : '202020',
+    widthLimit : 3,
+    cutting : 'right',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
+  var got = _.strShort( src )
+  var expected = '20';
+  test.identical( got, expected );
+  test.identical( got.length, 2 );
 
-  // /* left */
+  /* left */
 
-  // test.case = 'same characters as 1 el, cut left';
-  // var src =
-  // {
-  //   src : 'abbcccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = 'cccdddd';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut left';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 2,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = 'cccdddd';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, cut left, big input';
-  // var src =
-  // {
-  //   src : '-----2323aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = 'cccdddd';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut left, big input';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = 'cccdddd';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, cut left, big input, big width';
-  // var src =
-  // {
-  //   src : '-----2323aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 8,
-  //   cutting : 'left',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = 'aaaabbbbb00001111222333cccdddd';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut left, big input, big width';
+  var src =
+  {
+    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'left',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = 'aaaabbbbb00001111222333cccdddd';
+  test.identical( got, expected );
 
-  // /* right */
+  /* right */
 
-  // test.case = 'same characters as 1 el, cut right';
-  // var src =
-  // {
-  //   src : 'abbcccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = 'abb';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut right';
+  var src =
+  {
+    src : 'abbcccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = 'abb';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, cut right, big input';
-  // var src =
-  // {
-  //   src : '-----2222aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 2,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = '-----2222';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut right, big input';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 2,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = '-----2222';
+  test.identical( got, expected );
 
-  // test.case = 'same characters as 1 el, cut right, big input, big width';
-  // var src =
-  // {
-  //   src : '-----2222aaaabbbbb00001111222333cccdddd',
-  //   widthLimit : 8,
-  //   cutting : 'right',
-  //   onLength
-  // }
-  // var got = _.strShort( src )
-  // var expected = '-----2222aaaabbbbb00001111222333';
-  // test.identical( got, expected );
+  test.case = 'same characters as 1 el, cut right, big input, big width';
+  var src =
+  {
+    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    widthLimit : 8,
+    cutting : 'right',
+    onLength
+  }
+  var got = _.strShort( src )
+  var expected = '-----2222aaaabbbbb00001111222333';
+  test.identical( got, expected );
 
   /* cut middle */
 
@@ -2486,9 +2486,8 @@ function strStrShortOptionsOnLength( test )
     cutting : 'middle',
     onLength
   }
-  debugger
   var got = _.strShort( src )
-  var expected = 'adddd'; /* ! */
+  var expected = 'adddd';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, 5 characters, cut middle';
