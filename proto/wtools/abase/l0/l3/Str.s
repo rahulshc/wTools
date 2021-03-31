@@ -391,6 +391,24 @@ function strShort( o )  /* version with binary search cutting */
 
   if( o.cutting === 'left' )
   {
+    let end = cutLeft();
+    return o.prefix + o.infix + end + o.postfix;
+  }
+  else if( o.cutting === 'right' )
+  {
+    let begin = cutRight();
+    return o.prefix + begin + o.infix + o.postfix;
+  }
+  else
+  {
+    let [ begin, end ] = cutMiddle();
+    return o.prefix + begin + o.infix + end + o.postfix;
+  }
+
+  /* - */
+
+  function cutLeft()
+  {
     let startIndex = 0;
     let endIndex = src.length - 1;
     let endLength = o.onLength( src );
@@ -417,9 +435,10 @@ function strShort( o )  /* version with binary search cutting */
       begin = begin.slice( 0, -1 );
     }
 
-    return o.prefix + o.infix + end.slice( 1 ) + o.postfix;
+    return end.slice( 1 );
   }
-  else if( o.cutting === 'right' )
+
+  function cutRight()
   {
     let startIndex = 0;
     let endIndex = src.length - 1;
@@ -447,10 +466,10 @@ function strShort( o )  /* version with binary search cutting */
       end = end.slice( 1 );
     }
 
-    return o.prefix + begin.slice( 0, -1 ) + o.infix + o.postfix;
-
+    return begin.slice( 0, -1 );
   }
-  else
+
+  function cutMiddle()
   {
     /* Initialize begin and end */
     let chunkSize = Math.floor( src.length / 3 );
@@ -542,11 +561,11 @@ function strShort( o )  /* version with binary search cutting */
         end = middleInitial[ middleInitial.length-1 ] + end;
         middleInitial = middleInitial.slice( 0, -1 );
       }
-
     }
 
-    return o.prefix + begin + o.infix + end + o.postfix;
+    return [ begin, end ];
   }
+
 }
 
 strShort.defaults =
