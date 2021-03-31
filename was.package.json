@@ -24,7 +24,8 @@
     "proto/wtools/abase/Layer0.s",
     "proto/wtools/abase/Layer1.s",
     "proto/wtools/abase/Layer2.s",
-    "out"
+    "out",
+    "proto/node_modules"
   ],
   "scripts" : { "test" : "wtest .run \"proto/**\" rapidity:-1", "docgen" : "wdocgen proto" },
   "repository" : { "type" : "git", "url" : "https://github.com/Wandalen/wTools.git" },
@@ -33,7 +34,7 @@
     "url" : "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies" : {},
-  "devDependencies" : { "eslint" : "7.1.0", "wTesting" : "", "wTools" : "file:." },
+  "devDependencies" : { "eslint" : "7.1.0", "wTesting" : "" },
   "keywords" :
   [
     "base",
