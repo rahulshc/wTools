@@ -295,12 +295,14 @@ function includedModuleSourcePathValid( test )
       ({
         routine : _program0,
         tempPath : a.abs( '.' ),
+        moduleFile : _.module.fileWith( 0 ),
       });
 
       let program1 = __.program.write
       ({
         routine : _program1,
         tempPath : a.abs( '.' ),
+        moduleFile : _.module.fileWith( 0 ),
       });
       console.log( _.strLinesNumber( program1.sourceCode ) );
 
@@ -308,12 +310,14 @@ function includedModuleSourcePathValid( test )
       ({
         routine : _program2,
         tempPath : a.abs( '.' ),
+        moduleFile : _.module.fileWith( 0 ),
       });
 
       let program3 = __.program.write
       ({
         routine : _program3,
         tempPath : a.abs( '.' ),
+        moduleFile : _.module.fileWith( 0 ),
       });
 
       return start
@@ -487,6 +491,101 @@ program0.end
 
 //
 
+function inheritedModuleFilePaths( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    ready.then( () =>
+    {
+      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( program1 );
+      a.program( program2 );
+      a.program({ routine : program3, dirPath : 'dir', });
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+
+      var exp =
+`
+program1.paths
+  ${trailOf( __dirname, a.abs( '.' ) )}
+program2.paths
+  ${trailOf( __dirname, a.abs( '.' ) )}
+program3.paths
+  ${trailOf( __dirname, a.abs( 'dir' ) )}
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+  }
+
+  /* - */
+
+  function program1()
+  {
+    console.log( `program1.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './program2' );
+  }
+
+  /* - */
+
+  function program2()
+  {
+    console.log( `program2.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './dir/program3' );
+  }
+
+  /* - */
+
+  function program3()
+  {
+    console.log( `program3.paths\n  ${module.paths.join( '\n  ' )}` );
+  }
+
+  /* - */
+
+  function trailOf()
+  {
+    let result = [];
+    for( let a = arguments.length-1 ; a >= 0 ; a-- )
+    {
+      let filePath = arguments[ a ];
+      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( __.path.traceToRoot( filePath ), 'node_modules' ) ).reverse() );
+    }
+    return '  ' + result.join( '\n  ' );
+  }
+
+  /* - */
+
+}
+
+/* xxx : duplicate test routine in module::wIntrospectorBasics */
+inheritedModuleFilePaths.description =
+`
+program should inherit path of parent
+`
+
+//
+
 function modulingLogistic( test )
 {
   let context = this;
@@ -617,7 +716,6 @@ modulesMap wTools wTools wTesting wTesting
     console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
     console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
 
-    debugger;
     let __ = _.include( 'wTesting' );
 
     var testingPath = _.module.resolve( 'wTesting' );
@@ -629,7 +727,7 @@ modulesMap wTools wTools wTesting wTesting
     console.log( `module.fileUniversalIs( moduleFile.moduleNativeFile )`, _.module.fileUniversalIs( moduleFile.moduleNativeFile ) );
     console.log( `module.fileNativeIs( moduleFile.moduleNativeFile )`, _.module.fileNativeIs( moduleFile.moduleNativeFile ) );
     console.log( `moduleFile.sourcePath`, moduleFile.sourcePath );
-    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath ); debugger;
+    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath );
     console.log( `moduleFile.downFile.module`, moduleFile.downFile.module );
     console.log( `module.is( moduleFile.module )`, _.module.is( moduleFile.module ) );
 
@@ -2509,9 +2607,7 @@ module1
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'module1' } );
-    debugger;
     _.include( 'Mod1' );
-    debugger;
   }
 
   /* - */
@@ -2565,6 +2661,7 @@ function moduleIsIncluded( test )
       ({
         routine : env.routine,
         withSubmodules : 1,
+        moduleFile : _.module.fileWith( 0 ),
         tempPath : a.abs( '.' ),
       });
 
@@ -2663,6 +2760,7 @@ function programWriteOptionWithSubmodule( test )
       let program = __.program.write
       ({
         routine : env.routine,
+        moduleFile : _.module.fileWith( 0 ),
         withSubmodules : 1,
       });
 
@@ -2729,7 +2827,76 @@ function programWriteOptionWithSubmodule( test )
 //
 
 /* qqq xxx : make test from this */
-function dependancyAssumption( test )
+function localPathAssumption( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+
+  programWrite( program1 );
+  programWrite( program2 );
+  programWrite( program3 );
+
+  return a.fork({ execPath : a.abs( 'program1' ) })
+  .then( ( op ) =>
+  {
+    var exp =
+`
+xxx
+`
+    test.equivalent( op.output, exp );
+    test.identical( op.exitCode, 0 );
+    return op;
+  });
+
+  /* */
+
+  function programWrite( program )
+  {
+    var postfix =
+    `
+    ${program.name}();
+    `
+    __.fileProvider.fileWrite( a.abs( program.name ), program.toString() + postfix );
+  }
+
+  /* */
+
+  function program1()
+  {
+    module.paths.push( '/pro' );
+    console.log( `program1.before.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './program2' );
+    console.log( `program1.after.paths\n  ${module.paths.join( '\n  ' )}` );
+  }
+
+  /* */
+
+  function program2()
+  {
+    module.paths.push( '/program2/local' );
+    console.log( `program2.before.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './program3' );
+    console.log( `program2.after.paths\n  ${module.paths.join( '\n  ' )}` );
+  }
+
+  /* */
+
+  function program3()
+  {
+    module.paths.push( '/program3/local' );
+    console.log( `program3.paths\n  ${module.paths.join( '\n  ' )}` );
+  }
+
+  /* */
+
+}
+
+localPathAssumption.experimental = 1;
+
+//
+
+/* qqq xxx : make test from this */
+function globalPathAssumption( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -2808,7 +2975,7 @@ xxx
 
 }
 
-dependancyAssumption.experimental = 1;
+globalPathAssumption.experimental = 1;
 
 // --
 // test suite definition
@@ -2841,6 +3008,7 @@ const Proto =
     toolsPathGetTester,
 
     includedModuleSourcePathValid,
+    inheritedModuleFilePaths,
     modulingLogistic,
 
     predeclareBasic,
@@ -2848,7 +3016,8 @@ const Proto =
     predeclareNpmBasic,
 
     moduleIsIncluded,
-    dependancyAssumption,
+    localPathAssumption,
+    globalPathAssumption,
 
   }
 

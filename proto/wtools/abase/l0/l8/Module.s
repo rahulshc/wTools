@@ -96,7 +96,12 @@ function is( src )
 {
   if( !src )
   return false;
-  return src instanceof _.module.Module;
+  if( Reflect.hasOwnProperty( src, 'constructor' ) )
+  return false;
+  // if( !Reflect.has( src, 'constructor' ) )
+  // return false;
+  // return src instanceof _.module.Module;
+  return src[ ModuleSymbol ] === true;
 }
 
 //
@@ -882,8 +887,15 @@ function fileWithResolvedPath( sourcePath )
 
 function fileWith( relativeSourcePath )
 {
-
   let absoluteSourcePath = relativeSourcePath;
+
+  if( _.numberIs( relativeSourcePath ) )
+  {
+    _.assert( relativeSourcePath >= 0 );
+    absoluteSourcePath = _.introspector.location({ level : relativeSourcePath + 1 }).filePath;
+    return _.module._fileWithResolvedPath( absoluteSourcePath );
+  }
+
   if( _.path.isDotted( relativeSourcePath ) )
   {
     /* zzz : qqq : optimize _.introspector.location({ level : 1 }).filePath */
@@ -897,6 +909,42 @@ function fileWith( relativeSourcePath )
   }
 
   let moduleFile = _.module._fileWithResolvedPath( absoluteSourcePath );
+  return moduleFile;
+}
+
+//
+
+function _fileNativeWithResolvedNativePath( caninicalSourcePath, nativeFilesMap )
+{
+  nativeFilesMap = nativeFilesMap || _.module.nativeFilesMap;
+  let result = nativeFilesMap[ caninicalSourcePath ];
+  return result;
+}
+
+//
+
+function fileNativeWith( relativeSourcePath, nativeFilesMap )
+{
+  let absoluteSourcePath = relativeSourcePath;
+
+  if( _.numberIs( relativeSourcePath ) )
+  {
+    _.assert( relativeSourcePath >= 0 );
+    absoluteSourcePath = _.introspector.location({ level : relativeSourcePath + 1 }).filePath;
+    return _.module._fileNativeWithResolvedNativePath( _.path.nativize( absoluteSourcePath ), nativeFilesMap );
+  }
+
+  if( _.path.isDotted( relativeSourcePath ) )
+  {
+    let basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+    absoluteSourcePath = _.path.nativize( _.path.canonize( basePath + '/' + absoluteSourcePath ) );
+  }
+  else
+  {
+    absoluteSourcePath = _.path.nativze( absoluteSourcePath );
+  }
+
+  let moduleFile = _.module._fileNativeWithResolvedNativePath( absoluteSourcePath, nativeFilesMap );
   return moduleFile;
 }
 
@@ -940,9 +988,10 @@ function pathAmend_body( o )
 
   if( o.moduleFile )
   if( typeof _ !== 'undefined' )
-  o.moduleFile = _.module.fileNativeFrom( o.moduleFile );
+  o.moduleFile = fileNativeFrom( o.moduleFile );
 
-  let filePathAmend = o.amending === 'prepend' ? pathsPrependOnce : pathsAppendOnce;
+  // let filePathAmend = o.amending === 'prepend' ? pathsPrependOnce : pathsAppendOnce;
+  let filePathAmend = o.amending === 'prepend' ? arrayPrependedArrayOnce : arrayAppendedArrayOnce;
 
   if( o.globally )
   filePathAmend( ModuleFileNative.globalPaths, o.paths );
@@ -952,10 +1001,16 @@ function pathAmend_body( o )
 
   if( o.locally && o.permanent )
   {
-    if( o.amending === 'prepend' )
-    _.module._prependPath = _.arrayPrependArray( _.module._prependPath, o.paths );
-    if( o.amending === 'append' )
-    _.module._appendPath = _.arrayAppendArray( _.module._appendPath, o.paths );
+    if( o.amending === 'prepend' ) /* qqq : cover please */
+    {
+      _.module._prependPath = _.module._prependPath || [];
+      filePathAmend( _.module._prependPath, o.paths );
+    }
+    else if( o.amending === 'append' ) /* qqq : cover please */
+    {
+      _.module._appendPath = _.module._appendPath || [];
+      filePathAmend( _.module._appendPath, o.paths );
+    }
   }
 
   if( o.locally && o.recursive && o.moduleFile )
@@ -972,7 +1027,7 @@ function pathAmend_body( o )
     if( o.recursive >= 2 )
     while( _module.parent )
     {
-      _module = _module.parent; debugger;
+      _module = _module.parent;
     }
 
     _children1( _module, paths, visited );
@@ -1021,24 +1076,72 @@ function pathAmend_body( o )
 
   /* - */
 
-  function pathsAppendOnce( dst, src )
+  // function pathsAppendOnce( dst, src )
+  // {
+  //   for( let p = 0 ; p < src.length ; p++ )
+  //   {
+  //     if( dst.indexOf( src[ p ] ) === -1 )
+  //     dst.push( src[ p ] );
+  //   }
+  // }
+  //
+  // /* - */
+  //
+  // function pathsPrependOnce( dst, src )
+  // {
+  //   for( let p = 0 ; p < src.length ; p++ )
+  //   {
+  //     if( dst.indexOf( src[ p ] ) === -1 )
+  //     dst.unshift( src[ p ] );
+  //   }
+  // }
+
+  /* - */
+
+  function fileNativeFrom( src )
   {
-    for( let p = 0 ; p < src.length ; p++ )
-    {
-      if( dst.indexOf( src[ p ] ) === -1 )
-      dst.push( src[ p ] );
-    }
+    if( _.module.fileNativeFrom )
+    return _.module.fileNativeFrom( src );
+    return src;
   }
 
   /* - */
 
-  function pathsPrependOnce( dst, src )
+  function arrayAppendedArrayOnce( dstArray, insArray )
   {
-    for( let p = 0 ; p < src.length ; p++ )
+    let result = 0;
+
+    for( let i = 0, len = insArray.length ; i < len ; i++ )
     {
-      if( dst.indexOf( src[ p ] ) === -1 )
-      dst.unshift( src[ p ] );
+      if( dstArray.indexOf( insArray[ i ] ) === -1 )
+      {
+        dstArray.push( insArray[ i ] );
+        result += 1;
+      }
     }
+
+    return result;
+  }
+
+  /* - */
+
+  function arrayPrependedArrayOnce( dstArray, insArray )
+  {
+    let result = 0;
+
+    for( let i = insArray.length - 1 ; i >= 0 ; i-- )
+    {
+      let index = i;
+      if( dstArray === insArray )
+      index = i + result;
+      if( dstArray.indexOf( insArray[ index ] ) === -1 )
+      {
+        dstArray.unshift( insArray[ index ] );
+        result += 1;
+      }
+    }
+
+    return result;
   }
 
   /* - */
@@ -1095,7 +1198,7 @@ function pathRemove_body( o )
     if( o.recursive >= 2 )
     while( _module.parent )
     {
-      _module = _module.parent; debugger;
+      _module = _module.parent;
     }
 
     _children1( _module, paths, visited );
@@ -1344,8 +1447,8 @@ function _resolveFirst( o )
   let sourcePaths = this._moduleNamesToPaths( o.moduleNames );
   let resolved = this._fileResolve({ sourcePaths, basePath : o.basePath, downPath : o.downPath });
 
-  if( o.moduleNames[ 0 ] === 'wTesting' )
-  debugger;
+  // if( o.moduleNames[ 0 ] === 'wTesting' )
+  // debugger;
 
   if( o.throwing )
   if( resolved === undefined && !_.longHas( o.moduleNames, _.optional ) )
@@ -1832,13 +1935,17 @@ function _Setup()
   if( typeof require === 'undefined' )
   return;
 
-  _.module.rootFile = module;
-  while( _.module.rootFile.parent )
-  _.module.rootFile = _.module.rootFile.parent; /* xxx : use universal file? */
-
   if( !ModuleFileNative )
   ModuleFileNative = require( 'module' );
 
+  if( !_.module.rootFile )
+  {
+    _.module.rootFile = module;
+    while( _.module.rootFile.parent )
+    _.module.rootFile = _.module.rootFile.parent; /* xxx : use universal file? */
+  }
+
+  if( !_.module.nativeFilesMap )
   _.module.nativeFilesMap = ModuleFileNative._cache;
 
   if( _.module._setupRequireDone )
@@ -1858,6 +1965,8 @@ function _Setup()
 // Module
 // --
 
+const ModuleSymbol = Symbol.for( 'Module' );
+
 function Module()
 {
   _.assert( 0, 'not implemented' );
@@ -1873,9 +1982,19 @@ _.class.declareBasic
   exportString : moduleExportString,
 });
 
+Object.defineProperty( Module.prototype, ModuleSymbol,
+{
+  enumerable : false,
+  configurable : false,
+  writable : false,
+  value : true,
+});
+
 // --
 // Module File
 // --
+
+const ModuleFileSymbol = Symbol.for( 'ModuleFile' );
 
 function ModuleFile()
 {
@@ -1890,6 +2009,14 @@ _.class.declareBasic
 ({
   constructor : ModuleFile,
   exportString : moduleFileExportString,
+});
+
+Object.defineProperty( ModuleFile.prototype, ModuleFileSymbol,
+{
+  enumerable : false,
+  configurable : false,
+  writable : false,
+  value : true,
 });
 
 /* xxx : qqq : for Yevhen : cover */
@@ -1946,7 +2073,6 @@ var ModuleExtension =
   fileIs,
   fileNativeIs : __.module.fileNativeIs,
   fileUniversalIs : __.module.fileUniversalIs,
-  fileNativeFrom : __.module.fileNativeFrom,
   _fileUniversalFrom,
   _filesUniversalFrom,
   _fileUniversalAssociateFile,
@@ -1956,6 +2082,10 @@ var ModuleExtension =
   _fileWithResolvedPath,
   fileWithResolvedPath,
   fileWith,
+
+  fileNativeFrom : __.module.fileNativeFrom,
+  _fileNativeWithResolvedNativePath,
+  fileNativeWith,
 
   // file path
 
@@ -1999,8 +2129,9 @@ var ModuleExtension =
   rootFile : null,
   predeclaredWithNameMap : new HashMap,
   predeclaredWithEntryPathMap : new HashMap,
-  predeclaredWithRelativeEntryPathMap : new HashMap,
+  predeclaredWithRelativeEntryPathMap : new HashMap, /* xxx : remove later */
   modulesMap : new HashMap,
+  nativeFilesMap : null,
   filesMap : new HashMap,
   _setupRequireDone : null,
 
