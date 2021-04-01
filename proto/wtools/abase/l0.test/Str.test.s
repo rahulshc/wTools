@@ -2336,19 +2336,19 @@ function strsEquivalentAll( test )
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
-  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
+  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
@@ -2414,19 +2414,19 @@ function strsEquivalentAll( test )
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bbb', 'aaa' ];
-  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'bb', 'aa' ];
+  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc', 'aaa', 'bbb' ];
+  var src2 = [ 'abc d', 'abc', 'aa', 'bb' ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aaa', 'bbb' ];
+  var src1 = [ 'abc d', 'abc', 'aa', 'bb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, false );
@@ -2558,19 +2558,19 @@ function strsEquivalentAny( test )
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'a', 'b' ];
+  var src2 = [ 'ab', 'ab', 'aa', 'b' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc d', 'aaa d', 'bbb d' ];
+  var src2 = [ 'abc', 'abc d', 'aa d', 'bb d' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aaa d', 'bbb' ];
+  var src1 = [ 'abc d', 'abc d', 'aa d', 'bbb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, true );
@@ -2636,19 +2636,19 @@ function strsEquivalentAny( test )
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bbb', 'aaa' ];
+  var src1 = [ 'abc', 'abc', 'bbb', 'a' ];
   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aaa d', 'bbb d' ];
+  var src2 = [ 'abc d', 'abc d', 'aa d', 'bbb d' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aaa', 'bbb d' ];
+  var src1 = [ 'abc d', 'abc', 'aa', 'bbb d' ];
   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
@@ -2780,19 +2780,19 @@ function strsEquivalentNone( test )
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bbb', 'aaa' ];
+  var src1 = [ 'abc', 'abc', 'bbb', 'a' ];
   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aaa d', 'bbb d' ];
+  var src2 = [ 'abc d', 'abc d', 'aa d', 'bbb d' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aaa', 'bbb d' ];
+  var src1 = [ 'abc d', 'abc', 'aa', 'bbb d' ];
   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
@@ -2858,19 +2858,19 @@ function strsEquivalentNone( test )
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'aa'+'a', 'bbb' ];
   var src2 = [ 'ab', 'ab', 'aa', 'bbb' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc d', 'aaa d', 'bbb d' ];
+  var src2 = [ 'abc', 'abc d', 'aa'+'a d', 'bbb d' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aaa d', 'bbb' ];
+  var src1 = [ 'abc d', 'abc d', 'aa'+'a d', 'bbb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
@@ -10114,7 +10114,7 @@ function strReplaceSrcIsString( test )
 
   test.case = 'src is palindrom';
   var got = _.strReplace( 'abcdcba', [ 'd', 'c', 'b', 'a' ], 'a' );
-  var expected = 'aaaaaaa';
+  var expected = 'aa'+'aa'+'aa'+'a';
   test.identical( got, expected );
 
   test.close( 'src - string, ins - array of strings, sub - string' );
@@ -10322,7 +10322,7 @@ function strReplaceSrcIsString( test )
 
   test.case = 'src is palindrom';
   var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/, /\s*b/m, /c/ ], 'a' );
-  var expected = 'aaaaaaa';
+  var expected = 'aa'+'aa'+'aa'+'a';
   test.identical( got, expected );
 
   test.close( 'src - string, ins - array of strings and RegExp, sub - string' );
@@ -13719,7 +13719,7 @@ function strIsolateInsidePairs( test )
 
   test.case = 'string, nothing found';
   var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
-  var got = _.strIsolateInside( 'aa_aa_bb_bb_cc_cc', 'aaa' );
+  var got = _.strIsolateInside( 'aa_aa_bb_bb_cc_cc', 'aa'+'a' );
   test.identical( got, expected );
 
   test.case = 'all empty';

@@ -1789,7 +1789,7 @@ function strRandom( test )
   }
 
   test.case = 'set with single symbol';
-  var got = _.strRandom( { length : 2, alphabet : 'aaa' } );
+  var got = _.strRandom( { length : 2, alphabet : 'aa'+'a' } );
   test.identical( got, 'aa' );
 
   if( !Config.debug )
@@ -2094,23 +2094,23 @@ function strStrShortOptionsPrefixPostfix( test )
   test.identical( got.length, src.widthLimit );
 
   test.case = 'prefix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<<<' }
+  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' }
   var got = _.strShort( src );
-  var expected = '<<<<s';
+  var expected = '<<' + '<<s';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'prefix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<<<<' }
+  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' + '<' }
   var got = _.strShort( src );
-  var expected = '<<<<<';
+  var expected = '<<' + '<<' + '<';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'prefix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<<<<<<<<<' }
+  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' + '<<' + '<<' + '<<' }
   var got = _.strShort( src );
-  var expected = '<<<<<';
+  var expected = '<<' + '<<' + '<';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
@@ -2135,23 +2135,23 @@ function strStrShortOptionsPrefixPostfix( test )
   test.identical( got.length, src.widthLimit );
 
   test.case = 'postfix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>>>' }
+  var src = { src : 'string', widthLimit : 5, postfix : '>>' + '>>' }
   var got = _.strShort( src );
-  var expected = 's>>>>';
+  var expected = 's>>' + '>>';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'postfix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>>>>' }
+  var src = { src : 'string', widthLimit : 5, postfix : '>>' + '>>' + '>' }
   var got = _.strShort( src );
-  var expected = '>>>>>';
+  var expected = '>>' + '>>' + '>';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'postfix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>>>>>>>>>' }
+  var src = { src : 'string', widthLimit : 5, postfix : '>>'+'>>'+'>>'+'>>'+'>>' }
   var got = _.strShort( src );
-  var expected = '>>>>>';
+  var expected = '>>' + '>>' + '>';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
@@ -2176,9 +2176,9 @@ function strStrShortOptionsPrefixPostfix( test )
   test.identical( got.length, src.widthLimit );
 
   test.case = 'postfix & prefix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<<', postfix : '>>>' }
+  var src = { src : 'string', widthLimit : 5, prefix : '<<<', postfix : '>>'+'>' }
   var got = _.strShort( src );
-  var expected = '<<<>>';
+  var expected = '<<' + '<>>';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
@@ -2222,23 +2222,23 @@ function strStrShortOptionInfix( test )
   test.identical( got.length, src.widthLimit );
 
   test.case = 'infix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, infix : '....' }
+  var src = { src : 'string', widthLimit : 5, infix : '..'+'..' }
   var got = _.strShort( src );
-  var expected = 's....';
+  var expected = 's..'+'..';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'infix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, infix : '.....' }
+  var src = { src : 'string', widthLimit : 5, infix : '..'+'..'+'.' }
   var got = _.strShort( src );
-  var expected = '.....';
+  var expected = '..'+'..'+'.';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
   test.case = 'infix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, infix : '..........' }
+  var src = { src : 'string', widthLimit : 5, infix : '..'+'..'+'..'+'..'+'..' }
   var got = _.strShort( src );
-  var expected = '.....';
+  var expected = '..'+'..'+'.';
   test.identical( got, expected );
   test.identical( got.length, src.widthLimit );
 
@@ -2405,37 +2405,37 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut left';
   var src =
   {
-    src : 'abbcccdddd',
+    src : 'abbcc' + 'cdd' + 'dd',
     widthLimit : 2,
     cutting : 'left',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'cccdddd';
+  var expected = 'cc'+'cdd'+'dd';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, cut left, big input';
   var src =
   {
-    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    src : '--' + '--' + '-2323aa' + 'aabb' + 'bb' + 'b00' + '0011' + '1122' + '233' + '3cc' + 'cdd' + 'dd',
     widthLimit : 2,
     cutting : 'left',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'cccdddd';
+  var expected = 'cc'+'cd'+'dd'+'d';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, cut left, big input, big width';
   var src =
   {
-    src : '-----2323aaaabbbbb00001111222333cccdddd',
+    src : '--' + '--' + '-2323aa' + 'aabb' + 'bb' + 'b00' + '0011' + '1122' + '233' + '3cc' + 'cdd' + 'dd',
     widthLimit : 8,
     cutting : 'left',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'aaaabbbbb00001111222333cccdddd';
+  var expected = 'aa'+'aa'+'bb'+'bb'+'b00'+'001'+'11'+'122'+'233'+'3cc'+'cdd'+'dd';
   test.identical( got, expected );
 
   /* right */
@@ -2443,7 +2443,7 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut right';
   var src =
   {
-    src : 'abbcccdddd',
+    src : 'abbcc'+'cdd'+'dd',
     widthLimit : 2,
     cutting : 'right',
     onLength
@@ -2455,25 +2455,25 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut right, big input';
   var src =
   {
-    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    src : '--'+'--'+'-22'+'22aa'+'aab'+'bb'+'bb00'+'0011'+'1122'+'233'+'3cc'+'cdd'+'dd',
     widthLimit : 2,
     cutting : 'right',
     onLength
   }
   var got = _.strShort( src )
-  var expected = '-----2222';
+  var expected = '--'+'--'+'-22'+'22';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, cut right, big input, big width';
   var src =
   {
-    src : '-----2222aaaabbbbb00001111222333cccdddd',
+    src : '--'+'--'+'-22'+'22aa'+'aab'+'bb'+'bb00'+'0011'+'1122'+'23'+'33cc'+'cdd'+'dd',
     widthLimit : 8,
     cutting : 'right',
     onLength
   }
   var got = _.strShort( src )
-  var expected = '-----2222aaaabbbbb00001111222333';
+  var expected = '--'+'--'+'-22'+'22aa'+'aabb'+'bb'+'b00'+'0011'+'1122'+'233'+'3';
   test.identical( got, expected );
 
   /* cut middle */
@@ -2481,13 +2481,13 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut middle';
   var src =
   {
-    src : 'abbcccdddd',
+    src : 'abbcc'+'cdd'+'dd',
     widthLimit : 2,
     cutting : 'middle',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'adddd';
+  var expected = 'add'+'dd';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, 5 characters, cut middle';
@@ -2517,25 +2517,25 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, big str, cut middle';
   var src =
   {
-    src : 'aabbccccccccc111222333dddeee',
+    src : 'aabbcc'+'cc'+'cc'+'cc'+'c11'+'122'+'233'+'3dd'+'dee'+'e',
     widthLimit : 4,
     cutting : 'middle',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'aabbdddeee';
+  var expected = 'aabbdd'+'dee'+'e';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, big str, check overcut , cut middle';
   var src =
   {
-    src : 'aaaaaabcdftgeeeeeee',
+    src : 'aa'+'aa'+'aabcdftgee'+'ee'+'ee'+'e',
     widthLimit : 4,
     cutting : 'middle',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'aaaaaabgeeeeeee';
+  var expected = 'aa'+'aa'+'aa'+'bge'+'ee'+'ee'+'ee';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, 3 characters, cut middle';
@@ -2555,13 +2555,13 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, cut middle, odd width';
   var src =
   {
-    src : 'abbcccdddd',
+    src : 'abbcc'+'cdd'+'dd',
     widthLimit : 3,
     cutting : 'middle',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'abbdddd';
+  var expected = 'abbdd'+'dd';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, 5 characters, cut middle, odd width';
@@ -2579,13 +2579,13 @@ function strStrShortOptionsOnLength( test )
   test.case = 'same characters as 1 el, big str, cut middle, odd width';
   var src =
   {
-    src : 'aabbccccccccc111222333dddeee',
+    src : 'aabbcc'+'cc'+'cc'+'cc'+'c11'+'122'+'233'+'3dd'+'dee'+'e',
     widthLimit : 5,
     cutting : 'middle',
     onLength
   }
   var got = _.strShort( src )
-  var expected = 'aabbcccccccccdddeee';
+  var expected = 'aabbcc'+'cc'+'cc'+'cc'+'cdd'+'dee'+'e';
   test.identical( got, expected );
 
   test.case = 'same characters as 1 el, 3 characters, cut middle, odd width';
@@ -2820,7 +2820,7 @@ function strStrShortOptionsCombination( test )
 //   test.case = 'long string, 10 iterations';
 //   var times = 1e1;
 //   var size = 1e3;
-//   var filler = 'abbcccdddd';
+//   var filler = 'abbcc'+'cdd'+'dd';
 //   var string = new Array( size )
 //   .fill( filler )
 //   .join( '' );
@@ -2836,9 +2836,9 @@ function strStrShortOptionsCombination( test )
 //     let [ resultLeft, resultRigth, resultCenter ] = act2();
 //     var time2 = _.time.now();
 //     took += time2 - time1;
-//     test.identical( resultLeft, 'cccdddd' );
+//     test.identical( resultLeft, 'cc'+'cdd'+'dd' );
 //     test.identical( resultRigth, 'abb' );
-//     test.identical( resultCenter, 'adddd' );
+//     test.identical( resultCenter, 'add'+'dd' );
 //   }
 
 //   console.log( `String length = ${stringSize}, iterations = ${times}` );
@@ -2851,7 +2851,7 @@ function strStrShortOptionsCombination( test )
 //   test.case = 'short string, 1000 iterations';
 //   var times = 1e3;
 //   var size = 2e1;
-//   var filler = 'abbcccdddd';
+//   var filler = 'abbcc'+'cdd'+'dd';
 //   var string = new Array( size )
 //   .fill( filler )
 //   .join( '' );
@@ -2866,9 +2866,9 @@ function strStrShortOptionsCombination( test )
 //     let [ resultLeft, resultRigth, resultCenter ] = act2();
 //     var time2 = _.time.now();
 //     took += time2 - time1;
-//     test.identical( resultLeft, 'cccdddd' );
+//     test.identical( resultLeft, 'cc'+'cdd'+'dd' );
 //     test.identical( resultRigth, 'abb' );
-//     test.identical( resultCenter, 'adddd' );
+//     test.identical( resultCenter, 'add'+'dd' );
 //   }
 
 //   console.log( `String length = ${stringSize}, iterations = ${times}` );
@@ -5996,33 +5996,33 @@ function strButInsIsLong( test )
   test.open( 'range - number' );
 
   test.case = '|negative number| >= src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa' + 'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, -5, [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  var expected = [ [ 'bbaa' + 'aa', 'ddaa' + 'aa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = '|-1| < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa' + 'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, -1, [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabb', 'aaadd' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
+  var expected = [ [ 'aa' + 'abb', 'aa' + 'add' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range === 0';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, 0, [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  var expected = [ [ 'bba'+'aa', 'dda'+'aa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range === 1 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, 1, [ 'bb', 'dd' ] );
   var expected = [ [ 'abbaa', 'addaa' ], [ 'bb', 'dd' ], [ 'cbb\ncc', 'cdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range >= src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, 5, [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.close( 'range - number' );
@@ -6049,37 +6049,37 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, -6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'aa', 'ddaa'+'aa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === -2 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, -2 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bba', 'dda' ], [ 'bb', 'dd' ], [ 'bbc', 'ddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, -1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'aa', 'ddaa'+'aa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 0, range[ 1 ] === range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, 0 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'a', 'ddaa'+'a' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 0, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, 1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bbaa', 'ddaa' ], [ 'bb', 'dd' ], [ 'bb\ncc', 'dd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 0, src.length < range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 0, 6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
   test.identical( got, expected );
@@ -6087,75 +6087,75 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === -1, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, -6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  var expected = [ [ 'aa'+'abba', 'aa'+'adda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -1, range[ 1 ] === -2 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, -2 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  var expected = [ [ 'aa'+'abba', 'aa'+'adda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -1, range[ 0 ] === range[ 1 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, -1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  var expected = [ [ 'aa'+'abba', 'aa'+'adda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -1, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, 0 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  var expected = [ [ 'aa'+'abba', 'aa'+'adda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -1, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, 1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabba', 'aaadda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
+  var expected = [ [ 'aa'+'abba', 'aa'+'adda' ], [ 'bb', 'dd' ], [ 'cc\ncbbc', 'cc\ncddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -1, src.length < range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -1, 6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaabb', 'aaadd' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
+  var expected = [ [ 'aa'+'abb', 'aa'+'add' ], [ 'bb', 'dd' ], [ 'cc\ncbb', 'cc\ncdd' ] ];
   test.identical( got, expected );
 
   /* */
 
   test.case = 'range[ 0 ] === -2, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, -6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -2, range[ 1 ] === range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, -2 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabba', 'aadda' ], [ 'bb', 'dd' ], [ 'cc\nbbc', 'cc\nddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -2, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, -1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -2, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, 0 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -2, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, 1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'cc\nbbcc', 'cc\nddcc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -2, src.length < range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -2, 6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabb', 'aadd' ], [ 'bb', 'dd' ], [ 'cc\nbb', 'cc\ndd' ] ];
   test.identical( got, expected );
@@ -6163,37 +6163,37 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ] < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, -6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'aa', 'ddaa'+'aa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -6, range[ 1 ] === range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, -2 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bba', 'dda' ], [ 'bb', 'dd' ], [ 'bbc', 'ddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -6, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, -1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaaa', 'ddaaaa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'aa', 'ddaa'+'aa' ], [ 'bb', 'dd' ], [ 'bbcc\ncc', 'ddcc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -6, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, 0 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'bbaaa', 'ddaaa' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
+  var expected = [ [ 'bbaa'+'a', 'ddaa'+'a' ], [ 'bb', 'dd' ], [ 'bbc\ncc', 'ddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -6, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, 1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bbaa', 'ddaa' ], [ 'bb', 'dd' ], [ 'bb\ncc', 'dd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === -6, src.length < range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ -6, 6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'bb', 'dd' ], [ 'bb', 'dd' ], [ 'bb', 'dd' ] ];
   test.identical( got, expected );
@@ -6201,37 +6201,37 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === 1, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, -6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  var expected = [ [ 'abbaa'+'a', 'addaa'+'a' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 1, range[ 1 ] === -2 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, -2 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'abba', 'adda' ], [ 'bb', 'dd' ], [ 'cbbc', 'cddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 1, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, -1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  var expected = [ [ 'abbaa'+'a', 'addaa'+'a' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 1, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, 0 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'abbaaa', 'addaaa' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
+  var expected = [ [ 'abbaa'+'a', 'addaa'+'a' ], [ 'bb', 'dd' ], [ 'cbbc\ncc', 'cddc\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 1, src.length > range[ 1 ] === range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, 1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'abbaa', 'addaa' ], [ 'bb', 'dd' ], [ 'cbb\ncc', 'cdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 1, src.length < range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 1, 6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'abb', 'add' ], [ 'bb', 'dd' ], [ 'cbb', 'cdd' ] ];
   test.identical( got, expected );
@@ -6239,37 +6239,37 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === 2, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, -6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 2, range[ 1 ] === -2 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, -2 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabba', 'aadda' ], [ 'bb', 'dd' ], [ 'ccbbc', 'ccddc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 2, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, -1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 2, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, 0 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 2, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, 1 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabbaa', 'aaddaa' ], [ 'bb', 'dd' ], [ 'ccbb\ncc', 'ccdd\ncc' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 2, src.length < range[ 1 ] < range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 2, 6 ], [ 'bb', 'dd' ] );
   var expected = [ [ 'aabb', 'aadd' ], [ 'bb', 'dd' ], [ 'ccbb', 'ccdd' ] ];
   test.identical( got, expected );
@@ -6277,39 +6277,39 @@ function strButInsIsLong( test )
   /* */
 
   test.case = 'range[ 0 ] === 6, range[ 1 ] === -6 > src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, -6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 6, range[ 1 ] === -2 < src.length';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, -2 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 6, range[ 1 ] === -1';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, -1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 6, range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, 0 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 6, src.length > range[ 1 ] > range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, 1 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.case = 'range[ 0 ] === 6, src.length < range[ 1 ] < range[ 0 ]';
-  var src = [ 'aaaa', '', 'cc\ncc' ];
+  var src = [ 'aa'+'aa', '', 'cc\ncc' ];
   var got = _.strBut( src, [ 6, 6 ], [ 'bb', 'dd' ] );
-  var expected = [ [ 'aaaabb', 'aaaadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
+  var expected = [ [ 'aa'+'aabb', 'aa'+'aadd' ], [ 'bb', 'dd' ], [ 'cc\nccbb', 'cc\nccdd' ] ];
   test.identical( got, expected );
 
   test.close( 'range is cinterval' );
@@ -8937,8 +8937,8 @@ function strLinesNumberOptionHighlighting( test )
   test.identical( got, expected );
 
   test.case = 'a few lines, different amount of letters in lines';
-  var got = _.strLinesNumber({ src : '1\nbcd\n3ef\naaaaaa', highlighting : 2 });
-  var expected = '  1 : 1\n* 2 : bcd\n  3 : 3ef\n  4 : aaaaaa';
+  var got = _.strLinesNumber({ src : '1\nbcd\n3ef\naa'+'aa'+'aa', highlighting : 2 });
+  var expected = '  1 : 1\n* 2 : bcd\n  3 : 3ef\n  4 : aa'+'aa'+'aa';
   test.identical( got, expected );
 
   test.close( 'change src' )
@@ -11883,7 +11883,7 @@ function strLinesSize( test )
     src : 'ab\ncde\nfghk',
     onLength : ( src ) =>
     {
-      src = src.replace( /fghk/mg, 'aaaa' );
+      src = src.replace( /fghk/mg, 'aa'+'aa' );
       return src.length;
     }
   };
@@ -11897,7 +11897,7 @@ function strLinesSize( test )
     src : 'ab\ncde\nfghk',
     onLength : ( src ) =>
     {
-      src = src.replace( /ab/mg, 'aaaaaa' );
+      src = src.replace( /ab/mg, 'aa'+'aa'+'aa' );
       return src.length;
     }
   };

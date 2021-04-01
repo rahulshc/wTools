@@ -428,7 +428,7 @@ function strShort( o )  /* version with binary search cutting */
       /*
         add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
-                  'aaabbbcccddd' with o.widthLimit = 2 might return 'cddd', but need 'cccddd'
+                  'aabbccdd' with o.widthLimit = 2 might return 'cdd', but need 'ccdd'
       */
       end = begin[ begin.length - 1 ] + end;
       begin = begin.slice( 0, -1 );
@@ -453,7 +453,7 @@ function strShort( o )  /* version with binary search cutting */
       /*
         add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
-                  'aaabbbcccddd' with o.widthLimit = 2 might return 'aaab', but need 'aaabbb'
+                  'aabbccdd' with o.widthLimit = 2 might return 'aab', but need 'aabb'
       */
       begin += end[ 0 ];
       end = end.slice( 1 );
@@ -505,31 +505,23 @@ function strShort( o )  /* version with binary search cutting */
     /*
       add parts of elements that might have been sliced,
       example : onLength considers as 1 element substring of the same characters
-                'aaabbbcccddd' with o.widthLimit = 2 might return 'ad', but need 'aaaddd'
+                'aabbccdd' with o.widthLimit = 2 might return 'ad', but need 'aadd'
     */
 
     let beginInitial = o.onLength( begin );
     let endInitial = o.onLength( end );
 
-    while( true ) /* try to increase begin */
+    while( o.onLength( begin ) === beginInitial ) /* try to increase begin */
     {
-      let increasedBegin = originalStr.slice( 0, begin.length + 1 );
-      if( o.onLength( increasedBegin ) > beginInitial )
-      break;
-
-      begin = increasedBegin;
+      begin = originalStr.slice( 0, begin.length + 1 );;
     }
 
-    while( true ) /* try to increase end */
+    while( o.onLength( end ) === endInitial ) /* try to increase end */
     {
-      let increasedEnd = originalStr.slice( -end.length - 1 );
-      if( o.onLength( increasedEnd ) > endInitial )
-      break;
-
-      end = increasedEnd;
+      end = originalStr.slice( -end.length - 1 );
     }
 
-    return [ begin, end ];
+    return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
   }
 
   function splitInTwo()
