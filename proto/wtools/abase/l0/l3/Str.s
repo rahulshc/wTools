@@ -464,21 +464,14 @@ function strShort( o )  /* version with binary search cutting */
 
   function cutMiddle()
   {
-    let chunkSize = Math.floor( src.length / 3 );
-    let middleIndexLeft = chunkSize;
-    let middleIndexRight = ( chunkSize * 2 );
-
-    let begin = src.slice( 0, middleIndexLeft + 1 );
-    let end = src.slice( middleIndexRight );
-
     let originalStr = src;
 
-    while( o.onLength( begin + end ) + fixLength > o.widthLimit ) /* binary */
+    while( o.onLength( src ) + fixLength > o.widthLimit ) /* binary */
     {
-      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
 
-      middleIndexLeft = chunkSize;
-      middleIndexRight = chunkSize * 2;
+      let middleIndexLeft = chunkSize;
+      let middleIndexRight = chunkSize * 2;
 
       if( middleIndexLeft <= 1 ) /* src.length <= 5, indexes overlap, cut 1 element from bigger part or right if equal */
       {
