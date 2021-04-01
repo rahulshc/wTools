@@ -2688,6 +2688,71 @@ function strStrShortOptionCutting( test )
 
 //
 
+function strStrShortOptionHeightLimit( test )
+{
+  test.open( 'cutting : left, heightLimit : 0' )
+
+  test.case = 'cut nothing';
+  var src = { src : 'string\nstring\nstring\n', widthLimit : 6, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'string\nstring\nstring\n';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.case = 'cut 1 letter';
+  var src = { src : 'string\nstring\nstring\n', widthLimit : 5, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'tring\ntring\ntring\n';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.case = 'cut a few letters';
+  var src = { src : 'string\nstring\nstring\n', widthLimit : 3, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'ing\ning\ning\n';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.close( 'cutting : left, heightLimit : 0' )
+
+  /* - */
+
+  // test.open( 'cutting : right' )
+
+  // test.case = 'cut nothing';
+  // var src = { src : 'string', widthLimit : 6, cutting : 'right' }
+  // var got = _.strShort( src );
+  // var expected = 'string\nstring\nstring\n';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'cut 1 letter';
+  // var src = { src : 'string\nstring\nstring\n', widthLimit : 5, cutting : 'right' }
+  // var got = _.strShort( src );
+  // var expected = 'strin';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'cut a few letters';
+  // var src = { src : 'string\nstring\nstring\n', widthLimit : 3, cutting : 'right' }
+  // var got = _.strShort( src );
+  // var expected = 'str';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'cut nothing';
+  // var src = { src : 'string\nstring\nstring\n', widthLimit : 0, cutting : 'right' }
+  // var got = _.strShort( src );
+  // var expected = 'string';
+  // test.identical( got, expected );
+  // test.identical( got.length, 6 );
+
+  // test.close( 'cutting : right' )
+
+}
+
+//
+
 function strStrShortOptionsCombination( test )
 {
   test.open( 'prefix, postfix, infix' )
@@ -11959,6 +12024,7 @@ const Proto =
     strStrShortOptionInfix,
     strStrShortOptionsOnLength,
     strStrShortOptionCutting,
+    strStrShortOptionHeightLimit,
     strStrShortOptionsCombination,
     // strShortPerformance,
 
