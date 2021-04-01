@@ -27,6 +27,7 @@ __.module = __.module || Object.create( null );
 Module
 ModuleFile
 EntryFile
+ModulesEnvironment
 
 */
 
@@ -326,6 +327,40 @@ function fileIs( src )
 
 //
 
+function _fileUniversalFinit( file )
+{
+  _.assert( _.module.fileUniversalIs( file ) );
+
+  file.status = -1;
+
+  file.moduleNativeFile.children.forEach( ( nativeFile, index ) =>
+  {
+    if( nativeFile.universal )
+    _.module._fileUniversalDisassociateFile( nativeFile.universal, file );
+  });
+
+  file.downFiles.forEach( ( file2 ) =>
+  {
+    _.module._fileUniversalDisassociateFile( file, file2 );
+  });
+
+  _.module._fileUniversalDisassociateModules( file, false );
+
+  if( Config.debug )
+  {
+    let file2 = _.module.filesMap.get( file.sourcePath );
+    _.assert( file2 === undefined || file2 === file );
+    _.assert( file.downFiles.size === 0 );
+    _.assert( file.upFiles.size === 0 );
+    _.assert( file.modules.size === 0 );
+  }
+
+  _.module.filesMap.delete( file.sourcePath );
+  Object.freeze( file );
+}
+
+//
+
 function _fileUniversalFrom( o )
 {
   try
@@ -430,7 +465,8 @@ xxx : test to check the parent has the child and the child has the parent
       o.downFile = null;
     }
 
-    o.upFiles = [];
+    // o.upFiles = [];
+    o.upFiles = new Set;
 
     // o.moduleNativeFile.id -- "/pro/builder/proto/wtools/atop/testing/include/Top.s"
     // xxx : test to check the module file has universal file for each children
@@ -595,10 +631,32 @@ function _fileUniversalAssociateFile( upFile, downFile )
 
   upFile.downFile = upFile.downFile || downFile;
   upFile.downFiles.add( downFile );
-  let index = downFile.moduleNativeFile.children.indexOf( upFile.moduleNativeFile );
-  _.assert( index >= 0 );
-  _.assert( downFile.upFiles[ index ] === undefined || downFile.upFiles[ index ] === upFile );
-  downFile.upFiles[ index ] = upFile;
+
+  downFile.upFiles.add( upFile );
+  // let index = downFile.moduleNativeFile.children.indexOf( upFile.moduleNativeFile );
+  // _.assert( index >= 0 );
+  // _.assert( downFile.upFiles[ index ] === undefined || downFile.upFiles[ index ] === upFile );
+  // downFile.upFiles[ index ] = upFile;
+
+}
+
+//
+
+function _fileUniversalDisassociateFile( upFile, downFile )
+{
+
+  /*
+  files could belong to different environments
+  */
+
+  _.assert( _.module.fileUniversalIs( upFile ) );
+  _.assert( _.module.fileUniversalIs( downFile) );
+
+  upFile.downFiles.delete( downFile );
+  if( upFile.downFile === downFile )
+  upFile.downFile = [ ... upFile.downFiles ][ 0 ] || null;
+
+  downFile.upFiles.delete( upFile );
 
 }
 
@@ -789,7 +847,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     visited.add( file );
 
     _.assert( _.module.fileUniversalIs( file ) );
-    _.assert( _.arrayIs( file.upFiles ) );
+    // _.assert( _.arrayIs( file.upFiles ) );
+    _.assert( _.setIs( file.upFiles ) );
     _.assert( file.moduleNativeFilesMap === _.module.nativeFilesMap );
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
@@ -825,7 +884,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     let module = modules;
 
     _.assert( _.module.fileUniversalIs( file ) );
-    _.assert( _.arrayIs( file.upFiles ) );
+    _.assert( _.setIs( file.upFiles ) );
+    // _.assert( _.arrayIs( file.upFiles ) );
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     return;
@@ -852,13 +912,16 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
   function singleAssociate( file, module )
   {
 
-    for( let i = file.upFiles.length-1 ; i >= 0 ; i-- )
+    // for( let i = file.upFiles.length-1 ; i >= 0 ; i-- )
+    file.upFiles.forEach( ( file2 ) =>
     {
-      let file2 = file.upFiles[ i ];
+      // let file2 = file.upFiles[ i ];
       if( file2 === undefined )
-      continue;
+      debugger; /* xxx */
+      if( file2 === undefined )
+      return;
       stack.push( file2 );
-    }
+    });
 
     _.module._fileUniversalAssociateModule( file, module );
   }
@@ -941,7 +1004,7 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
   }
   else
   {
-    absoluteSourcePath = _.path.nativze( absoluteSourcePath );
+    absoluteSourcePath = _.path.nativize( absoluteSourcePath );
   }
 
   let moduleFile = _.module._fileNativeWithResolvedNativePath( absoluteSourcePath, nativeFilesMap );
@@ -1412,8 +1475,11 @@ function _resolve( basePath, downPath, moduleName )
     moduleNames : [ moduleName ],
     downPath,
     basePath,
-    throwing : 1,
+    throwing : 0,
   });
+
+  // if( r === undefined )
+  // return [];
 
   return r;
 }
@@ -1427,7 +1493,7 @@ function resolve( moduleName )
   /* qqq zzz : optimize for relase build for utility::starter */
   let result = _.module._resolve( basePath, downPath, arguments );
   _.assert( _.arrayIs( result ) );
-  if( result.length === 1 )
+  if( result.length <= 1 )
   return result[ 0 ];
   return result;
 }
@@ -1496,8 +1562,8 @@ function _fileResolve( o )
   if( !_.mapIs( arguments[ 0 ] ) )
   o = { sourcePaths : arguments[ 0 ] }
 
-  // let moduleNativeFile = ModuleFileNative._cache[ _.path.nativize( o.downPath ) ]; /* xxx : use file map */
   let moduleNativeFile = _.module.nativeFilesMap[ _.path.nativize( o.downPath ) ];
+  moduleNativeFile = moduleNativeFile || module; /* xxx : comment out? */
 
   _.routine.options( _fileResolve, o );
   _.assert( arguments.length === 1 );
@@ -1762,7 +1828,7 @@ function _trackingEnable()
 
   function _loadModuling( request, parent, isMain )
   {
-    let result;
+    let result, err;
     const counter = loading.counter;
 
     loading.request = request;
@@ -1773,20 +1839,30 @@ function _trackingEnable()
     {
       result = NjsLoad1.apply( this, arguments );
     }
-    finally
+    catch( _err )
+    {
+      debugger;
+      err = _err;
+    }
+
+    if( !err )
     {
       try
       {
         if( loading.counter === counter )
         second( request, parent );
       }
-      finally
+      catch( err2 )
       {
-        loading.request = null;
-        loading.parent = null;
+        console.error( err2 );
       }
     }
 
+    loading.request = null;
+    loading.parent = null;
+
+    if( err )
+    throw err;
     return result;
   }
 
@@ -1877,7 +1953,6 @@ function _trackingEnable()
 
   function moduleFileLoad( nativeSourcePath )
   {
-
     loading.counter += 1;
 
     /*
@@ -1910,10 +1985,19 @@ function _trackingEnable()
     catch( err )
     {
       err = _.err( err );
-      moduleFile.error = moduleFile.error || err;
+      try
+      {
+        moduleFile.error = moduleFile.error || err;
+        _.module._fileUniversalFinit( moduleFile );
+      }
+      catch( err2 )
+      {
+        console.error( _.err( err2 ) );
+      }
       throw err;
     }
-    finally
+
+    if( moduleFile.status !== -1 )
     {
       moduleFile.status = 2;
       _.assert( Object.is( moduleFile.returned, moduleNativeFile.exports ) );
@@ -1921,6 +2005,8 @@ function _trackingEnable()
 
     return result;
   }
+
+  /* - */
 
 }
 
@@ -2073,9 +2159,11 @@ var ModuleExtension =
   fileIs,
   fileNativeIs : __.module.fileNativeIs,
   fileUniversalIs : __.module.fileUniversalIs,
+  _fileUniversalFinit,
   _fileUniversalFrom,
   _filesUniversalFrom,
   _fileUniversalAssociateFile,
+  _fileUniversalDisassociateFile,
   _fileUniversalAssociateModule,
   _fileUniversalDisassociateModules,
   _filesUniversalAssociateModule,

@@ -261,6 +261,251 @@ function toolsPathGetTester( test )
 
 //
 
+/* xxx : add testing of section "module files stack" */
+function nativeIncludeErrors( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainThrowing );
+      a.program( throwing1 )
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      test.nil( op.exitCode, 0 );
+
+      var exp =
+`    error1
+    Module file "${a.abs( './mainThrowing' )}" failed to include "./throwing1"`
+      test.true( _.strHas( op.output, exp ) );
+
+      var exp =
+`main
+throwing1`
+      test.true( _.strHas( op.output, exp ) );
+
+
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `throwing, catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainThrowingCatching );
+      a.program( throwing1 )
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      test.nil( op.exitCode, 0 );
+
+      var exp =
+`    error1
+    Module file "${a.abs( './mainThrowingCatching' )}" failed to include "./throwing1"`
+      test.true( _.strHas( op.output, exp ) );
+
+      var exp =
+`main.begin
+throwing1
+fileNativeWith( throwing1 ) : undefined
+fileWith( throwing1 ) : undefined
+throwing1`
+      test.true( _.strHas( op.output, exp ) );
+
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `syntax error ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      let syntax1 =
+      `
+      function syntax1()
+      {
+        console.log( 'syntax1' );
+        console.log( 'a' 'b' 'c' );
+      }
+      `
+
+      var programPath = a.program( mainSyntax );
+      a.program({ sourceCode : syntax1, name : 'syntax1' })
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      test.nil( op.exitCode, 0 );
+
+      var exp =
+`main
+--------------- uncaught error --------------->
+
+ = Message of error#1
+    missing ) after argument list
+    Module file "${a.abs( './mainSyntax' )}" failed to include "./syntax1"`
+      test.true( _.strHas( op.output, exp ) );
+
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `syntax error catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      let syntax1 =
+      `
+      function syntax1()
+      {
+        console.log( 'syntax1' );
+        console.log( 'a' 'b' 'c' );
+      }
+      `
+
+      var programPath = a.program( mainSyntaxCatching );
+      a.program({ sourceCode : syntax1, name : 'syntax1' })
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      test.nil( op.exitCode, 0 );
+
+      var exp =
+`main.begin
+fileNativeWith( syntax1 ) : undefined
+fileWith( syntax1 ) : undefined
+--------------- uncaught error --------------->
+
+ = Message of error#2
+    missing ) after argument list
+    Module file "${a.abs( './mainSyntaxCatching' )}" failed to include "./syntax1"`
+      test.true( _.strHas( op.output, exp ) );
+
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function mainThrowing()
+  {
+    console.log( 'main' );
+    let _ = require( toolsPath );
+    require( './throwing1' );
+  }
+
+  /* - */
+
+  function mainThrowingCatching()
+  {
+    console.log( 'main.begin' );
+    let _ = require( toolsPath );
+    try
+    {
+      require( './throwing1' );
+    }
+    catch( err )
+    {
+    }
+    console.log( 'fileNativeWith( throwing1 ) :', _.module.fileNativeWith( __dirname + '/throwing1' ) );
+    console.log( 'fileWith( throwing1 ) :', _.module.fileWith( __dirname + '/throwing1' ) );
+    require( './throwing1' );
+    console.log( 'main.end' );
+  }
+
+  /* - */
+
+  function throwing1()
+  {
+    console.log( 'throwing1' );
+    throw Error( 'error1' );
+  }
+
+  /* - */
+
+  function mainSyntax()
+  {
+    console.log( 'main' );
+    let _ = require( toolsPath );
+    require( './syntax1' );
+  }
+
+  /* - */
+
+  function mainSyntaxCatching()
+  {
+    console.log( 'main.begin' );
+    let _ = require( toolsPath );
+    try
+    {
+      require( './syntax1' );
+    }
+    catch( err )
+    {
+    }
+    console.log( 'fileNativeWith( syntax1 ) :', _.module.fileNativeWith( __dirname + '/syntax1' ) );
+    console.log( 'fileWith( syntax1 ) :', _.module.fileWith( __dirname + '/syntax1' ) );
+    require( './syntax1' );
+    console.log( 'main.end' );
+  }
+
+  /* - */
+
+}
+
+nativeIncludeErrors.description =
+`
+- module file throwing error does not get neithe native file descriptor nor universal file descriptor
+`
+
+//
+
 function includedModuleSourcePathValid( test )
 {
   let context = this;
@@ -654,10 +899,7 @@ function modulingLogistic( test )
     {
       test.case = `external program, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
 
-      var programPath = a.program
-      ({
-        routine : program1,
-      });
+      var programPath = a.program( program1 );
 
       return a.forkNonThrowing
       ({
@@ -2728,6 +2970,91 @@ function moduleIsIncluded( test )
 
 //
 
+function moduleResolveFromAnotherGlobal( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( main1 );
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      test.identical( op.exitCode, 0 );
+
+      var exp =
+`
+_.module.resolve( Main1 ) : ${ a.abs( 'main1' ) }
+__.module.resolve( Main1 ) : undefined
+_.module.resolve( Main1 ) : ${ a.abs( 'main1' ) }
+__.module.resolve( Main1 ) : ${ a.abs( 'main1' ) }
+`
+      test.equivalent( op.output, exp );
+
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function main1()
+  {
+    let _ = require( toolsPath );
+    let __ = _.include( 'wTesting' );
+
+    _.module.predeclare
+    ({
+      name : 'Main1',
+      entryPath : __filename,
+    });
+    console.log( `_.module.resolve( Main1 ) : ${_.module.resolve( 'Main1' )}` );
+    console.log( `__.module.resolve( Main1 ) : ${__.module.resolve( 'Main1' )}` );
+
+    __.module.predeclare
+    ({
+      name : 'Main1',
+      entryPath : __filename,
+    });
+    console.log( `_.module.resolve( Main1 ) : ${_.module.resolve( 'Main1' )}` );
+    console.log( `__.module.resolve( Main1 ) : ${__.module.resolve( 'Main1' )}` );
+  }
+
+  /* - */
+
+}
+
+moduleResolveFromAnotherGlobal.description =
+`
+- global namespace::testing have its own space of modules, so __.module.resolve will throw error, unless this special case is handled somehow
+- if error not throwen then __.module.resolve after declaration of module should give correct path
+`
+
+//
+
 /* xxx : move the test to introspector */
 function programWriteOptionWithSubmodule( test )
 {
@@ -3007,6 +3334,7 @@ const Proto =
     toolsPathGetBasic,
     toolsPathGetTester,
 
+    nativeIncludeErrors,
     includedModuleSourcePathValid,
     inheritedModuleFilePaths,
     modulingLogistic,
@@ -3016,6 +3344,7 @@ const Proto =
     predeclareNpmBasic,
 
     moduleIsIncluded,
+    moduleResolveFromAnotherGlobal,
     localPathAssumption,
     globalPathAssumption,
 
