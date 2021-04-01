@@ -160,6 +160,127 @@ location.defaults =
 
 //
 
+function location_( o )
+{
+
+  if( _.number.is( o ) )
+  o = { level : o }
+  else if( _.strIs( o ) )
+  o = { stack : o, level : 0 }
+  else if( _.error.is( o ) )
+  o = { error : o, level : 0 }
+  else if( o === undefined )
+  o = { stack : _.introspector.stack([ 1, Infinity ]) };
+
+  /* */
+
+  if( location_.defaults )
+  for( let e in o )
+  {
+    if( location_.defaults[ e ] === undefined )
+    throw Error( 'Unknown option ' + e );
+  }
+
+  if( location_.defaults )
+  for( let e in location_.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = location_.defaults[ e ];
+  }
+
+  if( !( arguments.length === 0 || arguments.length === 1 ) )
+  throw Error( 'Expects single argument or none' );
+
+  if( !_.mapIs( o ) )
+  throw Error( 'Expects options map' );
+
+  if( !o.level )
+  o.level = 0;
+
+  /* */
+
+  if( !o.location )
+  o.location = Object.create( null );
+
+  /* */
+
+  if( o.error )
+  {
+    let location2 = o.error.location || Object.create( null );
+
+    var args0 =
+    [
+      location2.filePath,
+      o.location.filePath,
+      o.error.filename,
+      o.error.fileName
+    ];
+    o.location.filePath = _.longLeftDefined( args0 ).element;
+
+    var args1 =
+    [
+      location2.line,
+      o.location.line,
+      o.error.line,
+      o.error.linenumber,
+      o.error.lineNumber,
+      o.error.lineNo,
+      o.error.lineno
+    ];
+    o.location.line = _.longLeftDefined( args1 ).element;
+
+    var args2 =
+    [
+      location2.col,
+      o.location.col,
+      o.error.col,
+      o.error.colnumber,
+      o.error.colNumber,
+      o.error.colNo,
+      o.error.colno
+    ];
+    o.location.col = _.longLeftDefined( args2 ).element;
+
+  }
+
+  /* */
+
+  if( !o.stack )
+  {
+    if( o.error )
+    {
+      o.stack = _.introspector.stack( o.error, undefined );
+    }
+    else
+    {
+      o.stack = _.introspector.stack();
+      o.level += 1;
+    }
+  }
+
+  if( o.stack === null || o.stack === undefined )
+  return o.location;
+
+  _.assert( _.strIs( o.stack ) || _.arrayIs( o.stack ) );
+
+  let stack = o.stack;
+  if( _.strIs( stack ) )
+  stack = stack.split( '\n' );
+  let stackFrame = stack[ o.level ];
+
+  return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
+}
+
+location_.defaults =
+{
+  level : 0,
+  stack : null,
+  error : null,
+  location : null,
+}
+
+//
+
 function locationFromStackFrame( o )
 {
 
@@ -948,6 +1069,7 @@ let Extnesion =
   Location,
 
   location,
+  location_,
   locationFromStackFrame,
   locationNormalize, /* aaa for Dmytro : write good test */ /* Dmytro : covered */
   locationToStack,
