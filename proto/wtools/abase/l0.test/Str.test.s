@@ -2570,7 +2570,7 @@ function strsEquivalentAny( test )
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aa d', 'bbb' ];
+  var src1 = [ 'abc d', 'abc d', 'aa d', 'bb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, true );
@@ -2636,19 +2636,19 @@ function strsEquivalentAny( test )
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bbb', 'a' ];
+  var src1 = [ 'abc', 'abc', 'b', 'a' ];
   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aa d', 'bbb d' ];
+  var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aa', 'bbb d' ];
+  var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
   var got = _.strsEquivalentAny( src1, src2 );
   test.identical( got, false );
@@ -2780,19 +2780,19 @@ function strsEquivalentNone( test )
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bbb', 'a' ];
+  var src1 = [ 'abc', 'abc', 'b', 'a' ];
   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aa d', 'bbb d' ];
+  var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aa', 'bbb d' ];
+  var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, true );
@@ -2858,19 +2858,19 @@ function strsEquivalentNone( test )
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aa'+'a', 'bbb' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'bbb' ];
+  var src1 = [ 'abc', 'abc', 'aa'+'a', 'bb' ];
+  var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of regexp, vector of strings';
   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc d', 'aa'+'a d', 'bbb d' ];
+  var src2 = [ 'abc', 'abc d', 'aa'+'a d', 'bb d' ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aa'+'a d', 'bbb' ];
+  var src1 = [ 'abc d', 'abc d', 'aa'+'a d', 'bb' ];
   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
   var got = _.strsEquivalentNone( src1, src2 );
   test.identical( got, false );
@@ -2929,7 +2929,7 @@ function strBeginOf( test )
   test.identical( got, expected )
 
   test.case = 'begin - array strings, not begins';
-  var got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
+  var got = _.strBeginOf( 'abcc'+'c', [ 'c', 'cc'+'c' ] );
   var expected = undefined;
   test.identical( got, expected )
 
@@ -3026,7 +3026,7 @@ function strEndOf( test )
 
   /**/
 
-  got = _.strEndOf( 'abccc', [ 'a', 'ab' ] );
+  got = _.strEndOf( 'abcc'+'c', [ 'a', 'ab' ] );
   expected = undefined;
   test.identical( got, expected )
 
@@ -10383,7 +10383,7 @@ function strReplaceSrcIsString( test )
 
   test.case = 'ins - string, a few entries, sub - string';
   var got = _.strReplace( 'ca cb cc', [ /ca/, /\wb/, /\s\wc/, /\s/ ], 'd' );
-  var expected = 'dddd';
+  var expected = 'dd'+'dd';
   test.identical( got, expected );
 
   test.case = 'ins - string, a few entries, sub - string';

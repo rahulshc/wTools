@@ -1200,7 +1200,7 @@ function strRemove( test )
 //   test.identical( got, expected );
 //
 //   got = _.strReplace( [ 'abc', 'cab', 'cba' ], [ 'a', 'b', 'c' ], [ 'c', 'c', 'c' ] );
-//   expected = [ 'ccc', 'ccc', 'ccc' ];
+//   expected = [ 'cc'+'c', 'cc'+'c', 'cc'+'c' ];
 //   test.identical( got, expected );
 //
 //   got = _.strReplace( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
