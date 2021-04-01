@@ -391,7 +391,7 @@ function strShort( o )  /* version with binary search cutting */
   let startIndex = 0;
   let endIndex = src.length - 1;
   let beginLength = o.onLength( src );
-  let endLength = o.onLength( src );
+  let endLength = beginLength;
   let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
 
   if( o.cutting === 'left' )
@@ -464,7 +464,6 @@ function strShort( o )  /* version with binary search cutting */
 
   function cutMiddle()
   {
-    /* Initialize begin and end */
     let chunkSize = Math.floor( src.length / 3 );
     let middleIndexLeft = chunkSize;
     let middleIndexRight = ( chunkSize * 2 );
@@ -481,19 +480,12 @@ function strShort( o )  /* version with binary search cutting */
       middleIndexLeft = chunkSize;
       middleIndexRight = chunkSize * 2;
 
-      if( middleIndexLeft <= 1 ) /* src.length < 6, no middle, cut 1 element from bigger part or right if equal */
+      if( middleIndexLeft <= 1 ) /* src.length <= 5, indexes overlap, cut 1 element from bigger part or right if equal */
       {
         if( o.onLength( begin ) > o.onLength( end ) )
-        {
-          begin = begin.slice( 0, -1 );
-        }
+        begin = begin.slice( 0, -1 );
         else
-        {
-          if( middleIndexLeft === 0 ) /* src.length < 3, cut right */
-          end = '';
-          else
-          end = end.slice( 1 );
-        }
+        end = end.slice( 1 );
       }
       else /* begin : first 1/3, end : last 1/3 */
       {
@@ -515,45 +507,33 @@ function strShort( o )  /* version with binary search cutting */
       {
         begin = originalStr.slice( 0, begin.length + 1 );
       }
-
     }
-
-    let beginInitial = o.onLength( begin );
-    let endInitial = o.onLength( end );
-    let middleInitial = originalStr.slice( begin.length, -end.length );
-    let middleLength = o.onLength( middleInitial );
 
     /*
       add parts of elements that might have been sliced,
       example : onLength considers as 1 element substring of the same characters
                 'aaabbbcccddd' with o.widthLimit = 2 might return 'ad', but need 'aaaddd'
     */
-    if( middleLength === 1 ) /* middle consists of 1 element, add if o.widthLimit allow */
+
+    let beginInitial = o.onLength( begin );
+    let endInitial = o.onLength( end );
+
+    while( true ) /* try to increase begin */
     {
-      if( o.onLength( begin + middleInitial + end ) + fixLength <= o.widthLimit )
-      {
-        begin += middleInitial;
-      }
+      let increasedBegin = originalStr.slice( 0, begin.length + 1 );
+      if( o.onLength( increasedBegin ) > beginInitial )
+      break;
+
+      begin = increasedBegin;
     }
-    else if( middleLength > 1 )
+
+    while( true ) /* try to increase end */
     {
-      while( true ) /* try to increase begin */
-      {
-        if( o.onLength( begin + middleInitial[ 0 ] ) > beginInitial )
-        break;
+      let increasedEnd = originalStr.slice( -end.length - 1 );
+      if( o.onLength( increasedEnd ) > endInitial )
+      break;
 
-        begin += middleInitial[ 0 ];
-        middleInitial = middleInitial.slice( 1 );
-      }
-
-      while( true ) /* try to increase end */
-      {
-        if( o.onLength( middleInitial[ middleInitial.length-1 ] + end ) > endInitial )
-        break;
-
-        end = middleInitial[ middleInitial.length-1 ] + end;
-        middleInitial = middleInitial.slice( 0, -1 );
-      }
+      end = increasedEnd;
     }
 
     return [ begin, end ];
