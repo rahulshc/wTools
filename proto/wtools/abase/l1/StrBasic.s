@@ -538,7 +538,7 @@ function strCommonLeft( ins )
  * // returns 'e'
  *
  * @example
- * _.strCommonRight( 'add', 'ddd', 'hdd' );
+ * _.strCommonRight( 'add', 'dd'+'d', 'hdd' );
  * // returns 'dd'
  *
  * @example
