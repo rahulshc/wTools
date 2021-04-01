@@ -341,6 +341,12 @@ function strShort( o )  /* version with binary search cutting */
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.widthLimit ) );
   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
+  _.assert
+  (
+    o.heightLimit === null
+    || ( _.number.is( o.heightLimit ) && o.heightLimit >= 0 ),
+    'If provided option::o.heightLimit must be greater or equal to zero'
+  );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
@@ -388,35 +394,95 @@ function strShort( o )  /* version with binary search cutting */
 
   let begin = '';
   let end = '';
-  let startIndex = 0;
-  let endIndex = src.length - 1;
-  let beginLength = o.onLength( src );
-  let endLength = beginLength;
-  let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
 
   if( o.cutting === 'left' )
   {
-    let end = cutLeft();
-    return o.prefix + o.infix + end + o.postfix;
+    if( o.heightLimit === null )
+    {
+      let end = cutLeft( src );
+      return o.prefix + o.infix + end + o.postfix;
+    }
+    else
+    {
+      debugger;
+      let splittedStr = src.split( '\n' );
+
+      /* cut redundant lines */
+
+      splittedStr = splittedStr.map( ( el ) =>
+      {
+        if( o.onLength( el ) + fixLength <= o.widthLimit )
+        return o.prefix + el + o.postfix;
+
+        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+      });
+
+      return splittedStr.join( '\n' );
+    }
   }
   else if( o.cutting === 'right' )
   {
-    let begin = cutRight();
-    return o.prefix + begin + o.infix + o.postfix;
+    if( o.heightLimit === null )
+    {
+      let begin = cutRight( src );
+      return o.prefix + begin + o.infix + o.postfix;
+    }
+    else
+    {
+      let splittedStr = src.split( '\n' );
+
+      /* cut redundant lines */
+
+      splittedStr = splittedStr.map( ( el ) =>
+      {
+        if( o.onLength( el ) + fixLength <= o.widthLimit )
+        return o.prefix + el + o.postfix;
+
+        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+      });
+
+      return splittedStr.join( '\n' );
+    }
   }
   else
   {
-    let [ begin, end ] = cutMiddle();
-    return o.prefix + begin + o.infix + end + o.postfix;
+    if( o.heightLimit === null )
+    {
+      let [ begin, end ] = cutMiddle( src );
+      return o.prefix + begin + o.infix + end + o.postfix;
+    }
+    else
+    {
+      let splittedStr = src.split( '\n' );
+
+      /* cut redundant lines */
+
+      splittedStr = splittedStr.map( ( el ) =>
+      {
+        if( o.onLength( el ) + fixLength <= o.widthLimit )
+        return o.prefix + el + o.postfix;
+
+        let [ begin, end ] = cutMiddle( src );
+
+        return o.prefix + begin + o.infix + end + o.postfix;
+      });
+
+      return splittedStr.join( '\n' );
+    }
   }
 
   /* - */
 
-  function cutLeft()
+  function cutLeft( src )
   {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let endLength = o.onLength( src );
+    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+
     while( endLength + fixLength > o.widthLimit ) /* binary */
     {
-      [ begin, end ] = splitInTwo();
+      [ begin, end ] = splitInTwo( src, middleIndex === 0 ? 1 : middleIndex );
       endLength = o.onLength( end );
 
       startIndex = middleIndex; /* all needed elements are in end */
@@ -437,11 +503,16 @@ function strShort( o )  /* version with binary search cutting */
     return end.slice( 1 );
   }
 
-  function cutRight()
+  function cutRight( src )
   {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let beginLength = o.onLength( src );
+    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+
     while( beginLength + fixLength > o.widthLimit ) /* binary */
     {
-      [ begin, end ] = splitInTwo();
+      [ begin, end ] = splitInTwo( src, middleIndex === 0 ? 1 : middleIndex );
       beginLength = o.onLength( begin );
 
       endIndex = middleIndex; /* all needed elements are in begin */
@@ -462,7 +533,7 @@ function strShort( o )  /* version with binary search cutting */
     return begin.slice( 0, -1 );
   }
 
-  function cutMiddle()
+  function cutMiddle( src )
   {
     let originalStr = src;
 
@@ -524,10 +595,10 @@ function strShort( o )  /* version with binary search cutting */
     return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
   }
 
-  function splitInTwo()
+  function splitInTwo( src, middle )
   {
-    let begin = src.slice( 0, middleIndex );
-    let end = src.slice( middleIndex );
+    let begin = src.slice( 0, middle );
+    let end = src.slice( middle );
     return [ begin, end ];
   }
 
@@ -537,12 +608,12 @@ strShort.defaults =
 {
   src : null,
   widthLimit : 40,
-  heightLimit : 0,
+  heightLimit : null,
   prefix : null,
   postfix : null,
   infix : null,
   onLength : null,
-  cutting : 'center',
+  cutting : 'center', /* cutting : { lines : 'left', line : 'right' } */
 }
 
 // function strShort( o )

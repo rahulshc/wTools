@@ -2690,64 +2690,76 @@ function strStrShortOptionCutting( test )
 
 function strStrShortOptionHeightLimit( test )
 {
-  test.open( 'cutting : left, heightLimit : 0' )
+  test.open( 'cutting : left' );
 
-  test.case = 'cut nothing';
+  test.case = 'cut 1 letter, hl : null';
+  var src = { src : 'string\nstring\nstring', widthLimit : 5, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'tring';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'cut nothing, hl : 0';
   var src = { src : 'string\nstring\nstring\n', widthLimit : 6, heightLimit : 0, cutting : 'left' }
   var got = _.strShort( src );
   var expected = 'string\nstring\nstring\n';
   test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
 
-  test.case = 'cut 1 letter';
+  test.case = 'cut 1 letter, hl : 0';
   var src = { src : 'string\nstring\nstring\n', widthLimit : 5, heightLimit : 0, cutting : 'left' }
   var got = _.strShort( src );
   var expected = 'tring\ntring\ntring\n';
   test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
 
-  test.case = 'cut a few letters';
+  test.case = 'cut a few letters, hl : 0, empty str at the end';
   var src = { src : 'string\nstring\nstring\n', widthLimit : 3, heightLimit : 0, cutting : 'left' }
   var got = _.strShort( src );
   var expected = 'ing\ning\ning\n';
   test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
 
-  test.close( 'cutting : left, heightLimit : 0' )
+  test.case = 'cut a few letters, hl : 0, empty str at the start and end';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 3, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = '\ning\ning\ning\n';
+  test.identical( got, expected );
+
+  test.case = 'hl : 0, wl < str overall, wl = 1 line length';
+  var src = { src : 'ab\ncd\neg', widthLimit : 2, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'ab\ncd\neg';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol, hl : 0, wl < str overall, wl = 1 line length';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 0, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'b\nd\ng';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'cut 1 symbol, cut 1 line';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'd\ng';
+  test.identical( got, expected );
+
+  test.close( 'cutting : left' );
 
   /* - */
 
   // test.open( 'cutting : right' )
 
-  // test.case = 'cut nothing';
-  // var src = { src : 'string', widthLimit : 6, cutting : 'right' }
-  // var got = _.strShort( src );
-  // var expected = 'string\nstring\nstring\n';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // test.case = 'cut 1 letter';
-  // var src = { src : 'string\nstring\nstring\n', widthLimit : 5, cutting : 'right' }
-  // var got = _.strShort( src );
-  // var expected = 'strin';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // test.case = 'cut a few letters';
-  // var src = { src : 'string\nstring\nstring\n', widthLimit : 3, cutting : 'right' }
-  // var got = _.strShort( src );
-  // var expected = 'str';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // test.case = 'cut nothing';
-  // var src = { src : 'string\nstring\nstring\n', widthLimit : 0, cutting : 'right' }
-  // var got = _.strShort( src );
-  // var expected = 'string';
-  // test.identical( got, expected );
-  // test.identical( got.length, 6 );
-
   // test.close( 'cutting : right' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong heightLimit'
+  test.shouldThrowErrorSync( () => _.strShort({ src : 'abc', heightLimit : 'hello' }) )
+  test.shouldThrowErrorSync( () => _.strShort({ src : 'abc', heightLimit : -5 }) )
 
 }
 
