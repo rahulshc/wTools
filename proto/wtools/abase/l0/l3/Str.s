@@ -478,7 +478,7 @@ function strShort( o )  /* version with binary search cutting */
     let startIndex = 0;
     let endIndex = src.length - 1;
     let endLength = o.onLength( src );
-    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    let middleIndex = src.length - o.widthLimit; /* optimize default option::onLength */
 
     while( endLength + fixLength > o.widthLimit ) /* binary */
     {
@@ -508,7 +508,7 @@ function strShort( o )  /* version with binary search cutting */
     let startIndex = 0;
     let endIndex = src.length - 1;
     let beginLength = o.onLength( src );
-    let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    let middleIndex = o.widthLimit; /* optimize default option::onLength */
 
     while( beginLength + fixLength > o.widthLimit ) /* binary */
     {
@@ -536,14 +536,20 @@ function strShort( o )  /* version with binary search cutting */
   function cutMiddle( src )
   {
     let originalStr = src;
+    // let left = Math.floor( ( src.length - o.widthLimit ) / 2 );
+    // let middleIndexLeft = left-1;
+    // let middleIndexRight = -left;
+    let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+    let middleIndexLeft = chunkSize;
+    let middleIndexRight = chunkSize * 2;
+
+    /* a b [c d e] g f     len 7, desired 3 | left=2 */
+    /* a b [c d e g] f     len 7, desired 4 | left=1 */
+    /* a b c [d e g] f i   len 8, desired 3 | left=2 */
+    /* a b [c d e g] f i   len 8, desired 4 | left=2 */
 
     while( o.onLength( src ) + fixLength > o.widthLimit ) /* binary */
     {
-      let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
-
-      let middleIndexLeft = chunkSize;
-      let middleIndexRight = chunkSize * 2;
-
       if( middleIndexLeft <= 1 ) /* src.length <= 5, indexes overlap, cut 1 element from bigger part or right if equal */
       {
         if( o.onLength( begin ) > o.onLength( end ) )
@@ -559,6 +565,10 @@ function strShort( o )  /* version with binary search cutting */
 
       /* delete middle, might delete part of the element, check later when desired length is obtained */
       src = begin + end;
+
+      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      middleIndexLeft = chunkSize;
+      middleIndexRight = chunkSize * 2;
     }
 
     while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
@@ -613,7 +623,8 @@ strShort.defaults =
   postfix : null,
   infix : null,
   onLength : null,
-  cutting : 'center', /* cutting : { lines : 'left', line : 'right' } */
+  cutting : 'center',
+  cuttingHeight : 'center',
 }
 
 // function strShort( o )

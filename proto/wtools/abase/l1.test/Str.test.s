@@ -2698,6 +2698,12 @@ function strStrShortOptionHeightLimit( test )
   var expected = 'tring';
   test.identical( got, expected );
 
+  test.case = 'cut 1 letter, hl : null';
+  var src = { src : 'string\nstring\nstring', widthLimit : 5, cutting : 'right' }
+  var got = _.strShort( src );
+  var expected = 'strin';
+  test.identical( got, expected );
+
   /* */
 
   test.case = 'cut nothing, hl : 0';
@@ -2738,11 +2744,11 @@ function strStrShortOptionHeightLimit( test )
 
   /* */
 
-  test.case = 'cut 1 symbol, cut 1 line';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left' }
-  var got = _.strShort( src );
-  var expected = 'd\ng';
-  test.identical( got, expected );
+  // test.case = 'cut 1 symbol, cut 1 line';
+  // var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left' }
+  // var got = _.strShort( src );
+  // var expected = 'd\ng';
+  // test.identical( got, expected );
 
   test.close( 'cutting : left' );
 
