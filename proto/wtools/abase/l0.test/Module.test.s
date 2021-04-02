@@ -1175,6 +1175,10 @@ modulingGlobalNamespaces.description =
 
 //
 
+/*
+xxx : test for include lower and upper case
+*/
+
 function preload( test )
 {
   let context = this;

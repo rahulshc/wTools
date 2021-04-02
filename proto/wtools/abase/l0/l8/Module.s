@@ -1333,7 +1333,7 @@ function pathAmend_body( o )
 
 pathAmend_body.defaults =
 {
-  module : null,
+  module : null, /* xxx : rename */
   paths : null,
   permanent : 0,
   globally : 1,
