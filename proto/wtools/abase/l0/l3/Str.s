@@ -401,64 +401,22 @@ function strShort( o )  /* version with binary search cutting */
   if( o.heightLimit !== null )
   {
     splitted = src.split( '\n' );
-
-    if( splitted.length > o.heightLimit )
-    {
-      if( o.cuttingHeight === 'left' )
-      {
-        splitted = splitted.slice( -o.heightLimit );
-      }
-      else if( o.cuttingHeight === 'right' )
-      {
-        splitted = splitted.slice( 0, o.heightLimit );
-      }
-      else
-      {
-        splitted = handleCuttingHeightCenter( splitted );
-      }
-    }
-
+    splitted = cutSplitted( splitted );
   }
 
   if( o.cutting === 'left' )
   {
     if( o.heightLimit === null )
-    {
-      let end = cutLeft( src );
-      return o.prefix + o.infix + end + o.postfix;
-    }
+    return o.prefix + o.infix + cutLeft( src ) + o.postfix;
     else
-    {
-      splitted = splitted.map( ( el ) =>
-      {
-        if( o.onLength( el ) + fixLength <= o.widthLimit )
-        return o.prefix + el + o.postfix;
-
-        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
-      });
-
-      return splitted.join( '\n' );
-    }
+    return handleMultilineCutting( splitted, 'left' );
   }
   else if( o.cutting === 'right' )
   {
     if( o.heightLimit === null )
-    {
-      let begin = cutRight( src );
-      return o.prefix + begin + o.infix + o.postfix;
-    }
+    return o.prefix + cutRight( src ) + o.infix + o.postfix;
     else
-    {
-      splitted = splitted.map( ( el ) =>
-      {
-        if( o.onLength( el ) + fixLength <= o.widthLimit )
-        return o.prefix + el + o.postfix;
-
-        return o.prefix + cutRight( el ) + o.infix + o.postfix;
-      });
-
-      return splitted.join( '\n' );
-    }
+    return handleMultilineCutting( splitted, 'right' );
   }
   else
   {
@@ -469,17 +427,7 @@ function strShort( o )  /* version with binary search cutting */
     }
     else
     {
-      splitted = splitted.map( ( el ) =>
-      {
-        if( o.onLength( el ) + fixLength <= o.widthLimit )
-        return o.prefix + el + o.postfix;
-
-        let [ begin, end ] = cutMiddle( src );
-
-        return o.prefix + begin + o.infix + end + o.postfix;
-      });
-
-      return splitted.join( '\n' );
+      return handleMultilineCutting( splitted, 'center' );
     }
   }
 
@@ -515,6 +463,8 @@ function strShort( o )  /* version with binary search cutting */
     return end.slice( 1 );
   }
 
+  //
+
   function cutRight( src )
   {
     let startIndex = 0;
@@ -544,6 +494,8 @@ function strShort( o )  /* version with binary search cutting */
 
     return begin.slice( 0, -1 );
   }
+
+  //
 
   function cutMiddle( src )
   {
@@ -617,12 +569,39 @@ function strShort( o )  /* version with binary search cutting */
     return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
   }
 
+  //
+
   function splitInTwo( src, middle )
   {
     let begin = src.slice( 0, middle );
     let end = src.slice( middle );
     return [ begin, end ];
   }
+
+  //
+
+  function cutSplitted( splitted )
+  {
+    if( splitted.length > o.heightLimit )
+    {
+      if( o.cuttingHeight === 'left' )
+      {
+        splitted = splitted.slice( -o.heightLimit );
+      }
+      else if( o.cuttingHeight === 'right' )
+      {
+        splitted = splitted.slice( 0, o.heightLimit );
+      }
+      else
+      {
+        splitted = handleCuttingHeightCenter( splitted );
+      }
+    }
+
+    return splitted;
+  }
+
+  //
 
   function handleCuttingHeightCenter( src )
   {
@@ -649,6 +628,33 @@ function strShort( o )  /* version with binary search cutting */
     src = splittedLeft.concat( splittedRight );
 
     return src;
+  }
+
+  //
+
+  function handleMultilineCutting( src, from )
+  {
+    src = src.map( ( el ) =>
+    {
+      if( o.onLength( el ) + fixLength <= o.widthLimit )
+      return o.prefix + el + o.postfix;
+
+      if( from === 'left' )
+      {
+        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+      }
+      else if( from === 'right' )
+      {
+        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+      }
+      else if( from === 'center' )
+      {
+        let [ begin, end ] = cutMiddle( el );
+        return o.prefix + begin + o.infix + end + o.postfix;
+      }
+    });
+
+    return src.join( '\n' );
   }
 
 }
