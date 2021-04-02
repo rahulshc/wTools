@@ -1175,6 +1175,44 @@ modulingGlobalNamespaces.description =
 
 //
 
+function preload( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let program1Path = a.program( program1 );
+
+  xxx
+
+  /* xxx */
+
+  a.appStartNonThrowing({ execPath : `-r ${_ToolsPath_} ${program1Path}` })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    test.identical( _.strCount( op.output, 'program.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'program.end' ), 1 );
+    test.identical( _.strCount( op.output, _.module.toolsPathGet() ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program1()
+  {
+    console.log( 'program.begin' );
+    let _ = _global_.wTools;
+    console.log( _.path.normalize( _.module.toolsPathGet() ) )
+    console.log( 'program.end' );
+  }
+}
+
+//
+
 function predeclareBasic( test )
 {
   let context = this;
@@ -1367,9 +1405,7 @@ function predeclareMain( test )
     })
     .then( ( op ) =>
     {
-      var exp = `Module Common2 is trying to register entry path registered by module Common1`;
-      test.true( _.strHas( op.output, exp ) );
-      var exp = `Entry path : ${a.abs( 'common' )}`;
+      var exp = `Module Common2 is trying to register entry path ${a.abs( 'common' )} which is registered for {- Module Common1 -}`;
       test.true( _.strHas( op.output, exp ) );
       test.nil( op.exitCode, 0 );
       return op;
@@ -3621,6 +3657,7 @@ const Proto =
     modulingNativeIncludeErrors,
     modulingSourcePathValid,
     modulingGlobalNamespaces,
+    preload,
 
     predeclareBasic,
     predeclareMain,

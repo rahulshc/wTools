@@ -193,6 +193,13 @@ function predeclare_body( o )
   {
     if( _.path.isDotted( entryPath ) )
     {
+      if( o.basePath === null )
+      debugger;
+      /* xxx : cover basePath : null */
+      if( o.basePath === null )
+      o.basePath = _.path.dir( _.introspector.location({ level : 4 }).filePath );
+      /* xxx : use _.introspector.dirPath */
+      /* xxx : qqq : make sure _.introspector.location works properly for built-in routines ( without files ) */
       _.assert( _.strDefined( o.basePath ), '{-o.basePath-} is required if path is relative' );
       entryPath = o.entryPath[ i ] = _.path.canonize( o.basePath + '/' + entryPath );
     }
@@ -207,7 +214,7 @@ function predeclare_body( o )
     _.assert
     (
       !module2 || module2.name === o.name,
-      () => `Entry path ${entryPath} is registered for ${module2}`
+      () => `Module ${o.name} is trying to register entry path ${entryPath} which is registered for ${module2}`
     );
     _.module.predeclaredWithEntryPathMap.set( entryPath, o );
   });
@@ -1944,7 +1951,7 @@ function _trackingEnable()
 
     loading.request = request;
     loading.parent = parent;
-    loading.childrenLength = parent.children.length;
+    loading.childrenLength = parent ? parent.children.length : 0;
 
     try
     {
@@ -1952,7 +1959,6 @@ function _trackingEnable()
     }
     catch( _err )
     {
-      debugger;
       err = _err;
     }
 
@@ -2031,6 +2037,7 @@ function _trackingEnable()
     const originalModuleNativeFiles = ModuleFileNative._cache;
     const originalGlobal = _realGlobal_._global_;
 
+    if( parent )
     if( parent._virtualEnvironment )
     {
       if( parent._virtualEnvironment.moduleNativeFilesMap )
