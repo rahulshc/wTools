@@ -3136,6 +3136,78 @@ function strStrShortOptionsCombination( test )
   test.identical( got, expected );
   test.identical( got.length, src.src.length );
 
+  /* multiline */
+
+  test.case = 'cut left, with prefix';
+  var src = { src : 'string\nstring\nstring', widthLimit : 4, heightLimit : 0, cutting : 'left', prefix : '<' }
+  var got = _.strShort( src );
+  var expected = '<ing\n<ing\n<ing';
+  test.identical( got, expected );
+
+  test.case = 'cut left, with prefix, postfix, infix';
+  var src = { src : 'string\nstring\nstring', widthLimit : 5, heightLimit : 0, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShort( src );
+  var expected = '<.ng>\n<.ng>\n<.ng>';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'cut right, with prefix';
+  var src = { src : 'string\nstring\nstring', widthLimit : 4, heightLimit : 0, cutting : 'right', prefix : '<' }
+  var got = _.strShort( src );
+  var expected = '<str\n<str\n<str';
+  test.identical( got, expected );
+
+  test.case = 'cut right, with prefix, postfix, infix';
+  var src = { src : 'string\nstring\nstring', widthLimit : 5, heightLimit : 0, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShort( src );
+  var expected = '<st.>\n<st.>\n<st.>';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src = widthLimit - 1, infix length = 1';
+  var src = { src : 'string\nstring\nstring', widthLimit : 7, heightLimit : 0, infix : '.' }
+  var got = _.strShort( src );
+  var expected = 'string\nstring\nstring';
+  test.identical( got, expected );
+
+  /* multiline with empty lines from both sides */
+
+  test.case = 'cut left, with prefix';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 4, heightLimit : 0, cutting : 'left', prefix : '<' }
+  var got = _.strShort( src );
+  var expected = '<\n<ing\n<ing\n<ing\n<';
+  test.identical( got, expected );
+
+  test.case = 'cut left, with prefix, postfix, infix';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 5, heightLimit : 0, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShort( src );
+  var expected = '<>\n<.ng>\n<.ng>\n<.ng>\n<>';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'cut right, with prefix';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 4, heightLimit : 0, cutting : 'right', prefix : '<' }
+  var got = _.strShort( src );
+  var expected = '<\n<str\n<str\n<str\n<';
+  test.identical( got, expected );
+
+  test.case = 'cut right, with prefix, postfix, infix';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 5, heightLimit : 0, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShort( src );
+  var expected = '<>\n<st.>\n<st.>\n<st.>\n<>';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src = widthLimit - 1, infix length = 1';
+  var src = { src : '\nstring\nstring\nstring\n', widthLimit : 7, heightLimit : 0, infix : '.' }
+  var got = _.strShort( src );
+  var expected = '\nstring\nstring\nstring\n';
+  test.identical( got, expected );
+
   test.close( 'change cutting, prefix, infix, postfix' )
 
 }

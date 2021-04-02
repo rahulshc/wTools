@@ -668,7 +668,7 @@ strShort.defaults =
   postfix : null,
   infix : null,
   onLength : null,
-  cutting : 'center',
+  cutting : 'center', /* xxx qqq : rename to 'cuttingWidth' */
   cuttingHeight : 'center',
 }
 
