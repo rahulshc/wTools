@@ -2952,7 +2952,7 @@ function strStrShortOptionHeightLimit( test )
   var expected = 'b\nd\ng';
   test.identical( got, expected );
 
-  /* */
+  /* cuttingHeight & cutting */
 
   test.case = 'cut 1 symbol left, cut 1 line left';
   var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'left' }
