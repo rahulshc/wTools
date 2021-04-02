@@ -438,18 +438,15 @@ function strShort( o )  /* version with binary search cutting */
     let startIndex = 0;
     let endIndex = src.length - 1;
     let endLength = o.onLength( src );
-    let middleIndex = src.length - o.widthLimit; /* optimize default option::onLength */
+    let middleIndex = src.length - o.widthLimit - 1; /* optimize default option::onLength */
 
     while( endLength + fixLength > o.widthLimit ) /* binary */
     {
-      [ begin, end ] = splitInTwo( src, middleIndex );
+      [ begin, end ] = splitInTwo( src, middleIndex + 1 );
       endLength = o.onLength( end );
 
       startIndex = middleIndex; /* all needed elements are in end */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
-
-      if( middleIndex === src.length - 2 ) /* when o.widthLimit = 1: loop stuck on prefinal index. string -> str | ing ===> stri | ng ===> stri | ng ... no further cutting */
-      middleIndex++;
     }
 
     while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
