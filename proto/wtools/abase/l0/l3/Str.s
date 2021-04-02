@@ -672,6 +672,699 @@ strShort.defaults =
   cuttingHeight : 'center',
 }
 
+//
+
+function strShortWidth( o )  /* version with binary search cutting */
+{
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
+
+  _.routine.options( strShortWidth, o );
+
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.number.is( o.widthLimit ) );
+  _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
+  _.assert
+  (
+    o.heightLimit === null
+    || ( _.number.is( o.heightLimit ) && o.heightLimit >= 0 ),
+    'If provided option::o.heightLimit must be greater or equal to zero'
+  );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( !o.infix )
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
+  if( o.widthLimit === 0 )
+  o.widthLimit = Infinity;
+  if( o.heightLimit === 0 )
+  o.heightLimit = Infinity;
+  if( o.src.length < 1 )
+  {
+    if( o.prefix.length + o.postfix.length <= o.widthLimit )
+    return o.prefix + o.postfix
+    o.src = o.prefix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+  }
+  if( _.bool.likeTrue( o.infix ) )
+  o.infix = '...';
+
+  if( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
+  return o.prefix + o.infix + o.postfix;
+
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
+  {
+    o.src = o.prefix + o.infix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+    o.infix = '';
+  }
+
+  let src = o.src;
+  let fixLength = 0;
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+
+  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && o.heightLimit === null ) /* nothing to cut */
+  return o.prefix + src + o.postfix;
+
+  let begin = '';
+  let end = '';
+  let splitted;
+
+  if( o.heightLimit !== null )
+  {
+    splitted = src.split( '\n' );
+    splitted = cutSplitted( splitted );
+  }
+
+  if( o.cutting === 'left' )
+  {
+    if( o.heightLimit === null )
+    return o.prefix + o.infix + cutLeft( src ) + o.postfix;
+    else
+    return handleMultilineCutting( splitted, 'left' );
+  }
+  else if( o.cutting === 'right' )
+  {
+    if( o.heightLimit === null )
+    return o.prefix + cutRight( src ) + o.infix + o.postfix;
+    else
+    return handleMultilineCutting( splitted, 'right' );
+  }
+  else
+  {
+    if( o.heightLimit === null )
+    {
+      let [ begin, end ] = cutMiddle( src );
+      return o.prefix + begin + o.infix + end + o.postfix;
+    }
+    else
+    {
+      return handleMultilineCutting( splitted, 'center' );
+    }
+  }
+
+  /* - */
+
+  function cutLeft( src )
+  {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let endLength = o.onLength( src );
+    let middleIndex = src.length - o.widthLimit - 1; /* optimize default option::onLength */
+
+    while( endLength + fixLength > o.widthLimit ) /* binary */
+    {
+      [ begin, end ] = splitInTwo( src, middleIndex + 1 );
+      endLength = o.onLength( end );
+
+      startIndex = middleIndex; /* all needed elements are in end */
+      middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    }
+
+    while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    {
+      /*
+        add elements and parts of element that might have been sliced,
+        example : onLength considers as 1 element substring of the same characters
+                  'aabbccdd' with o.widthLimit = 2 might return 'cdd', but need 'ccdd'
+      */
+      end = begin[ begin.length - 1 ] + end;
+      begin = begin.slice( 0, -1 );
+    }
+
+    return end.slice( 1 );
+  }
+
+  //
+
+  function cutRight( src )
+  {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let beginLength = o.onLength( src );
+    let middleIndex = o.widthLimit; /* optimize default option::onLength */
+
+    while( beginLength + fixLength > o.widthLimit ) /* binary */
+    {
+      [ begin, end ] = splitInTwo( src, middleIndex );
+      beginLength = o.onLength( begin );
+
+      endIndex = middleIndex; /* all needed elements are in begin */
+      middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    }
+
+    while( o.onLength( begin ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    {
+      /*
+        add elements and parts of element that might have been sliced,
+        example : onLength considers as 1 element substring of the same characters
+                  'aabbccdd' with o.widthLimit = 2 might return 'aab', but need 'aabb'
+      */
+      begin += end[ 0 ];
+      end = end.slice( 1 );
+    }
+
+    return begin.slice( 0, -1 );
+  }
+
+  //
+
+  function cutMiddle( src )
+  {
+    let originalStr = src;
+    let chunkSize, middleIndexLeft, middleIndexRight;
+
+    if( o.widthLimit % 2 === 0 ) /* optimize default option::onLength */
+    {
+      middleIndexLeft = ( o.widthLimit / 2 ) - 1;
+      middleIndexRight = ( -o.widthLimit / 2 ) + src.length;
+    }
+    else
+    {
+      middleIndexLeft = Math.floor( ( o.widthLimit / 2 ) );
+      middleIndexRight = Math.ceil( ( -o.widthLimit / 2 ) ) + src.length;
+    }
+
+    while( o.onLength( src ) + fixLength > o.widthLimit ) /* binary */
+    {
+      if( src.length <= 5 ) /* src.length = 4 || 3 || 2, base case */
+      {
+        let index = Math.floor( src.length / 2 );
+        begin = src.slice( 0, index );
+        end = src.slice( index+1 );
+      }
+      else /* begin : first 1/3, end : last 1/3 */
+      {
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
+      }
+
+      /* delete middle, might delete part of the element, check later when desired length is obtained */
+      src = begin + end;
+
+      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      middleIndexLeft = chunkSize;
+      middleIndexRight = chunkSize * 2;
+    }
+
+    while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
+    {
+      if( o.onLength( begin ) > o.onLength( end ) ) /* shrink middle from the right */
+      {
+        end = originalStr.slice( -end.length - 1 );
+      }
+      else                                          /* shrink middle from the left */
+      {
+        begin = originalStr.slice( 0, begin.length + 1 );
+      }
+    }
+
+    /*
+      add parts of elements that might have been sliced,
+      example : onLength considers as 1 element substring of the same characters
+                'aabbccdd' with o.widthLimit = 2 might return 'ad', but need 'aadd'
+    */
+
+    let beginInitial = o.onLength( begin );
+    let endInitial = o.onLength( end );
+
+    while( o.onLength( begin ) === beginInitial ) /* try to increase begin */
+    {
+      begin = originalStr.slice( 0, begin.length + 1 );;
+    }
+
+    while( o.onLength( end ) === endInitial ) /* try to increase end */
+    {
+      end = originalStr.slice( -end.length - 1 );
+    }
+
+    return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
+  }
+
+  //
+
+  function splitInTwo( src, middle )
+  {
+    let begin = src.slice( 0, middle );
+    let end = src.slice( middle );
+    return [ begin, end ];
+  }
+
+  //
+
+  function cutSplitted( splitted )
+  {
+    if( splitted.length > o.heightLimit )
+    {
+      if( o.cuttingHeight === 'left' )
+      {
+        splitted = splitted.slice( -o.heightLimit );
+      }
+      else if( o.cuttingHeight === 'right' )
+      {
+        splitted = splitted.slice( 0, o.heightLimit );
+      }
+      else
+      {
+        splitted = handleCuttingHeightCenter( splitted );
+      }
+    }
+
+    return splitted;
+  }
+
+  //
+
+  function handleCuttingHeightCenter( src )
+  {
+    let indexLeft, indexRight;
+
+    if( o.heightLimit === 1 )
+    {
+      return src.slice( 0, 1 );
+    }
+    else if( o.heightLimit % 2 === 0 )
+    {
+      indexLeft = o.heightLimit / 2;
+      indexRight = -indexLeft;
+    }
+    else
+    {
+      indexLeft = Math.floor( ( o.heightLimit / 2 ) ) + 1;
+      indexRight = -indexLeft + 1;
+    }
+
+    let splittedLeft = src.slice( 0, indexLeft );
+    let splittedRight = src.slice( indexRight );
+
+    src = splittedLeft.concat( splittedRight );
+
+    return src;
+  }
+
+  //
+
+  function handleMultilineCutting( src, from )
+  {
+    src = src.map( ( el ) =>
+    {
+      if( o.onLength( el ) + fixLength <= o.widthLimit )
+      return o.prefix + el + o.postfix;
+
+      if( from === 'left' )
+      {
+        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+      }
+      else if( from === 'right' )
+      {
+        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+      }
+      else if( from === 'center' )
+      {
+        let [ begin, end ] = cutMiddle( el );
+        return o.prefix + begin + o.infix + end + o.postfix;
+      }
+    });
+
+    return src.join( '\n' );
+  }
+
+}
+
+strShortWidth.defaults =
+{
+  src : null,
+  widthLimit : 40,
+  heightLimit : null,
+  prefix : null,
+  postfix : null,
+  infix : null,
+  onLength : null,
+  cutting : 'center', /* xxx qqq : rename to 'cuttingWidth' */
+  cuttingHeight : 'center',
+}
+
+//
+
+function strShortHeight( o )  /* version with binary search cutting */
+{
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
+
+  _.routine.options( strShortHeight, o );
+
+  _.assert( _.strIs( o.src ) );
+  _.assert
+  (
+    o.limit === null
+    || ( _.number.is( o.limit ) && o.limit >= 0 ),
+    'If provided option::o.limit must be greater or equal to zero'
+  );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( !o.infix )
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
+  if( o.limit === 0 )
+  o.limit = Infinity;
+  // if( o.src.length < 1 )
+  // {
+  //   if( o.prefix.length + o.postfix.length <= o.widthLimit )
+  //   return o.prefix + o.postfix
+  //   o.src = o.prefix + o.postfix;
+  //   o.prefix = '';
+  //   o.postfix = '';
+  // }
+  if( _.bool.likeTrue( o.infix ) )
+  o.infix = '...';
+
+  // if( !o.onLength )
+  // o.onLength = ( src ) => src.length;
+
+  // if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
+  // return o.prefix + o.infix + o.postfix;
+
+  // if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
+  // {
+  //   o.src = o.prefix + o.infix + o.postfix;
+  //   o.prefix = '';
+  //   o.postfix = '';
+  //   o.infix = '';
+  // }
+
+  let src = o.src;
+  let fixLength = 0;
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+
+  // if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && o.heightLimit === null ) /* nothing to cut */
+  // return o.prefix + src + o.postfix;
+
+  let begin = '';
+  let end = '';
+  let splitted;
+
+  if( o.heightLimit !== null )
+  {
+    splitted = src.split( '\n' );
+    splitted = cutSplitted( splitted );
+  }
+
+  if( o.cutting === 'left' )
+  {
+    if( o.heightLimit === null )
+    return o.prefix + o.infix + cutLeft( src ) + o.postfix;
+    else
+    return handleMultilineCutting( splitted, 'left' );
+  }
+  else if( o.cutting === 'right' )
+  {
+    if( o.heightLimit === null )
+    return o.prefix + cutRight( src ) + o.infix + o.postfix;
+    else
+    return handleMultilineCutting( splitted, 'right' );
+  }
+  else
+  {
+    if( o.heightLimit === null )
+    {
+      let [ begin, end ] = cutMiddle( src );
+      return o.prefix + begin + o.infix + end + o.postfix;
+    }
+    else
+    {
+      return handleMultilineCutting( splitted, 'center' );
+    }
+  }
+
+  /* - */
+
+  function cutLeft( src )
+  {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let endLength = o.onLength( src );
+    let middleIndex = src.length - o.widthLimit - 1; /* optimize default option::onLength */
+
+    while( endLength + fixLength > o.widthLimit ) /* binary */
+    {
+      [ begin, end ] = splitInTwo( src, middleIndex + 1 );
+      endLength = o.onLength( end );
+
+      startIndex = middleIndex; /* all needed elements are in end */
+      middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    }
+
+    while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    {
+      /*
+        add elements and parts of element that might have been sliced,
+        example : onLength considers as 1 element substring of the same characters
+                  'aabbccdd' with o.widthLimit = 2 might return 'cdd', but need 'ccdd'
+      */
+      end = begin[ begin.length - 1 ] + end;
+      begin = begin.slice( 0, -1 );
+    }
+
+    return end.slice( 1 );
+  }
+
+  //
+
+  function cutRight( src )
+  {
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let beginLength = o.onLength( src );
+    let middleIndex = o.widthLimit; /* optimize default option::onLength */
+
+    while( beginLength + fixLength > o.widthLimit ) /* binary */
+    {
+      [ begin, end ] = splitInTwo( src, middleIndex );
+      beginLength = o.onLength( begin );
+
+      endIndex = middleIndex; /* all needed elements are in begin */
+      middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+    }
+
+    while( o.onLength( begin ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    {
+      /*
+        add elements and parts of element that might have been sliced,
+        example : onLength considers as 1 element substring of the same characters
+                  'aabbccdd' with o.widthLimit = 2 might return 'aab', but need 'aabb'
+      */
+      begin += end[ 0 ];
+      end = end.slice( 1 );
+    }
+
+    return begin.slice( 0, -1 );
+  }
+
+  //
+
+  function cutMiddle( src )
+  {
+    let originalStr = src;
+    let chunkSize, middleIndexLeft, middleIndexRight;
+
+    if( o.widthLimit % 2 === 0 ) /* optimize default option::onLength */
+    {
+      middleIndexLeft = ( o.widthLimit / 2 ) - 1;
+      middleIndexRight = ( -o.widthLimit / 2 ) + src.length;
+    }
+    else
+    {
+      middleIndexLeft = Math.floor( ( o.widthLimit / 2 ) );
+      middleIndexRight = Math.ceil( ( -o.widthLimit / 2 ) ) + src.length;
+    }
+
+    while( o.onLength( src ) + fixLength > o.widthLimit ) /* binary */
+    {
+      if( src.length <= 5 ) /* src.length = 4 || 3 || 2, base case */
+      {
+        let index = Math.floor( src.length / 2 );
+        begin = src.slice( 0, index );
+        end = src.slice( index+1 );
+      }
+      else /* begin : first 1/3, end : last 1/3 */
+      {
+        begin = src.slice( 0, middleIndexLeft + 1 );
+        end = src.slice( middleIndexRight );
+      }
+
+      /* delete middle, might delete part of the element, check later when desired length is obtained */
+      src = begin + end;
+
+      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      middleIndexLeft = chunkSize;
+      middleIndexRight = chunkSize * 2;
+    }
+
+    while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
+    {
+      if( o.onLength( begin ) > o.onLength( end ) ) /* shrink middle from the right */
+      {
+        end = originalStr.slice( -end.length - 1 );
+      }
+      else                                          /* shrink middle from the left */
+      {
+        begin = originalStr.slice( 0, begin.length + 1 );
+      }
+    }
+
+    /*
+      add parts of elements that might have been sliced,
+      example : onLength considers as 1 element substring of the same characters
+                'aabbccdd' with o.widthLimit = 2 might return 'ad', but need 'aadd'
+    */
+
+    let beginInitial = o.onLength( begin );
+    let endInitial = o.onLength( end );
+
+    while( o.onLength( begin ) === beginInitial ) /* try to increase begin */
+    {
+      begin = originalStr.slice( 0, begin.length + 1 );;
+    }
+
+    while( o.onLength( end ) === endInitial ) /* try to increase end */
+    {
+      end = originalStr.slice( -end.length - 1 );
+    }
+
+    return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
+  }
+
+  //
+
+  function splitInTwo( src, middle )
+  {
+    let begin = src.slice( 0, middle );
+    let end = src.slice( middle );
+    return [ begin, end ];
+  }
+
+  //
+
+  function cutSplitted( splitted )
+  {
+    if( splitted.length > o.heightLimit )
+    {
+      if( o.cuttingHeight === 'left' )
+      {
+        splitted = splitted.slice( -o.heightLimit );
+      }
+      else if( o.cuttingHeight === 'right' )
+      {
+        splitted = splitted.slice( 0, o.heightLimit );
+      }
+      else
+      {
+        splitted = handleCuttingHeightCenter( splitted );
+      }
+    }
+
+    return splitted;
+  }
+
+  //
+
+  function handleCuttingHeightCenter( src )
+  {
+    let indexLeft, indexRight;
+
+    if( o.heightLimit === 1 )
+    {
+      return src.slice( 0, 1 );
+    }
+    else if( o.heightLimit % 2 === 0 )
+    {
+      indexLeft = o.heightLimit / 2;
+      indexRight = -indexLeft;
+    }
+    else
+    {
+      indexLeft = Math.floor( ( o.heightLimit / 2 ) ) + 1;
+      indexRight = -indexLeft + 1;
+    }
+
+    let splittedLeft = src.slice( 0, indexLeft );
+    let splittedRight = src.slice( indexRight );
+
+    src = splittedLeft.concat( splittedRight );
+
+    return src;
+  }
+
+  //
+
+  function handleMultilineCutting( src, from )
+  {
+    src = src.map( ( el ) =>
+    {
+      if( o.onLength( el ) + fixLength <= o.widthLimit )
+      return o.prefix + el + o.postfix;
+
+      if( from === 'left' )
+      {
+        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+      }
+      else if( from === 'right' )
+      {
+        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+      }
+      else if( from === 'center' )
+      {
+        let [ begin, end ] = cutMiddle( el );
+        return o.prefix + begin + o.infix + end + o.postfix;
+      }
+    });
+
+    return src.join( '\n' );
+  }
+
+}
+
+strShortHeight.defaults =
+{
+  src : null,
+  // widthLimit : 40,
+  // heightLimit : null,
+  limit : null,
+  prefix : null,
+  postfix : null,
+  infix : null,
+  // onLength : null,
+  cutting : 'center', /* xxx qqq : rename to 'cuttingWidth' */
+  // cuttingHeight : 'center',
+}
+
+//
+
 // function strShort( o )
 // {
 
@@ -1763,6 +2456,8 @@ let ExtensionTools =
 
   strStrShort : strShort, /* xxx : remove */
   strShort, /* qqq for Yevhen : cover | aaa : Done. */
+  strShortWidth,
+  strShortHeight,
   // strShort2, /* non-binary search implementation */
   strConcat,
 
