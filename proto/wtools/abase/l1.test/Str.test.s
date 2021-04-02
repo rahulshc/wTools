@@ -2689,6 +2689,70 @@ function strStrShortOptionCutting( test )
 //
 
 
+function strStrShortOptionCuttingHeight( test )
+{
+  test.case = 'cut 1 symbol left, cut 1 line left';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'left' }
+  var got = _.strShort( src );
+  var expected = 'd\ng';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol left, cut 1 line right';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'right' }
+  var got = _.strShort( src );
+  var expected = 'b\nd';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol left, cut 1 line center';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'center' }
+  var got = _.strShort( src );
+  var expected = 'b\ng';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'cut 1 symbol right, cut 1 line left';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'left' }
+  var got = _.strShort( src );
+  var expected = 'c\ne';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol right, cut 1 line right';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'right' }
+  var got = _.strShort( src );
+  var expected = 'a\nc';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol right, cut 1 line center';
+  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'center' }
+  var got = _.strShort( src );
+  var expected = 'a\ne';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'cut 1 symbol center, cut 1 line left';
+  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'left' }
+  var got = _.strShort( src );
+  var expected = 'c2\ne3';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol center, cut 1 line right';
+  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'right' }
+  var got = _.strShort( src );
+  var expected = 'a1\nc2';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 symbol center, cut 1 line center';
+  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'center' }
+  var got = _.strShort( src );
+  var expected = 'a1\ne3';
+  test.identical( got, expected );
+
+}
+
+//
+
 function strStrShortOptionWidthLimit( test )
 {
 
@@ -2950,66 +3014,6 @@ function strStrShortOptionHeightLimit( test )
   var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 0, cutting : 'left' }
   var got = _.strShort( src );
   var expected = 'b\nd\ng';
-  test.identical( got, expected );
-
-  /* cuttingHeight & cutting */
-
-  test.case = 'cut 1 symbol left, cut 1 line left';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'left' }
-  var got = _.strShort( src );
-  var expected = 'd\ng';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol left, cut 1 line right';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'right' }
-  var got = _.strShort( src );
-  var expected = 'b\nd';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol left, cut 1 line center';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'left', cuttingHeight : 'center' }
-  var got = _.strShort( src );
-  var expected = 'b\ng';
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'cut 1 symbol right, cut 1 line left';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'left' }
-  var got = _.strShort( src );
-  var expected = 'c\ne';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol right, cut 1 line right';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'right' }
-  var got = _.strShort( src );
-  var expected = 'a\nc';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol right, cut 1 line center';
-  var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', cuttingHeight : 'center' }
-  var got = _.strShort( src );
-  var expected = 'a\ne';
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'cut 1 symbol center, cut 1 line left';
-  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'left' }
-  var got = _.strShort( src );
-  var expected = 'c2\ne3';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol center, cut 1 line right';
-  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'right' }
-  var got = _.strShort( src );
-  var expected = 'a1\nc2';
-  test.identical( got, expected );
-
-  test.case = 'cut 1 symbol center, cut 1 line center';
-  var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', cuttingHeight : 'center' }
-  var got = _.strShort( src );
-  var expected = 'a1\ne3';
   test.identical( got, expected );
 
   /* - */
@@ -12368,6 +12372,7 @@ const Proto =
     strStrShortOptionInfix,
     strStrShortOptionsOnLength,
     strStrShortOptionCutting,
+    strStrShortOptionCuttingHeight,
     strStrShortOptionWidthLimit,
     strStrShortOptionHeightLimit,
     strStrShortOptionsCombination,
