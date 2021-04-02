@@ -26,9 +26,7 @@ function _entryPath( filePath, name )
     result.push( '../../' + filePath );
     result.push( filePath );
   }
-  // result.push( name );
   return result;
-  // return [ '../../' + filePath, filePath, name ]; /* xxx : remove first element? */
 }
 
 //
@@ -793,181 +791,181 @@ Object.assign( _.module, Extension );
 let Modules =
 {
 
-  // base / l1
-
-  wTools,
-
-  // base / l2
-
-  wBlueprint,
-  wEntityBasic,
-  wLooker,
-  wPathBasic,
-  wIntrospectorBasic,
-
-  // base / l3
-
-  wProto,
-  wStringer,
-
-  // base / l4
-
-  wReplicator,
-  wLookerExtra,
-  wArraySorted,
-  wArraySparse,
-  wProcess,
-  wUriBasic,
-  wTraverser,
-  wBaseEncoder,
-
-  // base / l5
-
-  wPathTools,
-  wSelector,
-  wWebUriBasic,
-  wCloner,
-  wStringsExtra,
-  wProcessWatcher,
-
-  // base / l6
-
-  wResolver,
-  wEqualer,
-  wSelectorExtra,
-
-  // base / l7
-
-  wResolverExtra,
-
-  // base / l7_mixin
-
-  wConsequizer,
-  wCopyable,
-  wInstancing,
-  wEventHandler,
-  wFieldsStack,
-
-  // base / l8
-
-  wProcedure,
-
-  // base / l9
-
-  wLogger,
-  wPrinterToFile,
-  wPrinterToJs,
-  wConsequence,
-
-  // base_dom
-
-  wDomBaseLayer1,
-  wDomBaseLayer3,
-  wDomBaseLayer5,
-
-  // mid
-
-  // mid / l1
-
-  wGdf,
-  wGraphBasic,
-  wGraphTools,
-  wRegexpObject,
-  wVocabulary,
-  wSchema,
-  wStxt,
-
-  wLoggerSocket,
-  wHttp,
-
-  // mid / l3
-
-  wStager,
-  wIntrospector,
-  wPersistent,
-  wRemote,
-  wGitTools,
-  wNpmTools,
-  wYamlTools,
-
-  // mid / l3 / image
-
-  /* xxx : move to l4 */
-
-  wImage,
-  wImageReader,
-  wImageWriter,
-  wImageReaderPng,
-  wImageReaderPngjs,
-
-  // amid / l4 / files
-
-  wFiles,
-  wFilesArchive,
-  wFilesEncoders,
-  wFilesExtract,
-  wFilesHardDrive,
-  wFilesNpm,
-  wFilesGit,
-  wFilesSvn,
-  wFilesImap,
-
-  // amid / l5
-
-  wCensorBasic,
-  wBitmask,
-  wPathTranslator,
-  wNameMapper,
-  wTemplateTreeResolver,
-  // wTemplateTreeResolverAdv,
-  wTemplateTreeEnvironment,
-  wTemplateFileWriter,
-
+  // // base / l1
   //
-
-  wColor,
-  wColor256,
-  wChangeTransactor,
-  wCommandsAggregator,
-  wCommandsConfig,
-
-  wFileExecutor,
-  wFileExecutorHtmlFormatters,
-
-  wTimeMarker,
-  wVerbal,
-  wStateStorage,
-  wStateSession,
-
-  wScriptLauncher,
-  wExchangePoint,
-  wCommunicator,
-  wIncubator,
-  wCollectionOfInstances,
-  wServletTools,
-  wDocParser,
-
-  // math
-
-  wMathScalar,
-  wMathVector,
-  wMathMatrix,
-  wMathGeometric,
-  wMathModels,
-
-  // top
-
-  willbe,
-  wStarter,
-  wTesting,
-  wTranspile,
-  wFilesOperationsDirector,
-  wFilesLinker,
-  wBaker,
-  wBakerWithFileExecutor,
-  wMaker,
-  wPuppet,
-  wCensor,
+  // wTools,
+  //
+  // // base / l2
+  //
+  // wBlueprint,
+  // wEntityBasic,
+  // wLooker,
+  // wPathBasic,
+  // wIntrospectorBasic,
+  //
+  // // base / l3
+  //
+  // wProto,
+  // wStringer,
+  //
+  // // base / l4
+  //
+  // wReplicator,
+  // wLookerExtra,
+  // wArraySorted,
+  // wArraySparse,
+  // wProcess,
+  // wUriBasic,
+  // wTraverser,
+  // wBaseEncoder,
+  //
+  // // base / l5
+  //
+  // wPathTools,
+  // wSelector,
+  // wWebUriBasic,
+  // wCloner,
+  // wStringsExtra,
+  // wProcessWatcher,
+  //
+  // // base / l6
+  //
+  // wResolver,
+  // wEqualer,
+  // wSelectorExtra,
+  //
+  // // base / l7
+  //
+  // wResolverExtra,
+  //
+  // // base / l7_mixin
+  //
+  // wConsequizer,
+  // wCopyable,
+  // wInstancing,
+  // wEventHandler,
+  // wFieldsStack,
+  //
+  // // base / l8
+  //
+  // wProcedure,
+  //
+  // // base / l9
+  //
+  // wLogger,
+  // wPrinterToFile,
+  // wPrinterToJs,
+  // wConsequence,
+  //
+  // // base_dom
+  //
+  // wDomBaseLayer1,
+  // wDomBaseLayer3,
+  // wDomBaseLayer5,
+  //
+  // // mid
+  //
+  // // mid / l1
+  //
+  // wGdf,
+  // wGraphBasic,
+  // wGraphTools,
+  // wRegexpObject,
+  // wVocabulary,
+  // wSchema,
+  // wStxt,
+  //
+  // wLoggerSocket,
+  // wHttp,
+  //
+  // // mid / l3
+  //
+  // wStager,
+  // wIntrospector,
+  // wPersistent,
+  // wRemote,
+  // wGitTools,
+  // wNpmTools,
+  // wYamlTools,
+  //
+  // // mid / l3 / image
+  //
+  // /* xxx : move to l4 */
+  //
+  // wImage,
+  // wImageReader,
+  // wImageWriter,
+  // wImageReaderPng,
+  // wImageReaderPngjs,
+  //
+  // // amid / l4 / files
+  //
+  // wFiles,
+  // wFilesArchive,
+  // wFilesEncoders,
+  // wFilesExtract,
+  // wFilesHardDrive,
+  // wFilesNpm,
+  // wFilesGit,
+  // wFilesSvn,
+  // wFilesImap,
+  //
+  // // amid / l5
+  //
+  // wCensorBasic,
+  // wBitmask,
+  // wPathTranslator,
+  // wNameMapper,
+  // wTemplateTreeResolver,
+  // // wTemplateTreeResolverAdv,
+  // wTemplateTreeEnvironment,
+  // wTemplateFileWriter,
+  //
+  // //
+  //
+  // wColor,
+  // wColor256,
+  // wChangeTransactor,
+  // wCommandsAggregator,
+  // wCommandsConfig,
+  //
+  // wFileExecutor,
+  // wFileExecutorHtmlFormatters,
+  //
+  // wTimeMarker,
+  // wVerbal,
+  // wStateStorage,
+  // wStateSession,
+  //
+  // wScriptLauncher,
+  // wExchangePoint,
+  // wCommunicator,
+  // wIncubator,
+  // wCollectionOfInstances,
+  // wServletTools,
+  // wDocParser,
+  //
+  // // math
+  //
+  // wMathScalar,
+  // wMathVector,
+  // wMathMatrix,
+  // wMathGeometric,
+  // wMathModels,
+  //
+  // // top
+  //
+  // willbe,
+  // wStarter,
+  // wTesting,
+  // wTranspile,
+  // wFilesOperationsDirector,
+  // wFilesLinker,
+  // wBaker,
+  // wBakerWithFileExecutor,
+  // wMaker,
+  // wPuppet,
+  // wCensor,
 
 }
 

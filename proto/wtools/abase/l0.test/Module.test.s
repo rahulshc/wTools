@@ -40,7 +40,7 @@ function onSuiteEnd()
 // test routines implementation
 // --
 
-function withIsIncluded( test )
+function modulePredeclareBasic( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -84,7 +84,7 @@ function withIsIncluded( test )
     _.module.predeclare
     ({
       name : 'program1',
-      isIncluded : () => !!_global_.program1,
+      // isIncluded : () => !!_global_.program1,
       entryPath : program1Path,
       basePath : '.',
     });
@@ -97,7 +97,7 @@ function withIsIncluded( test )
 
 //
 
-function withoutIsIncluded( test )
+function modulePredeclareBasic2( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -197,19 +197,23 @@ moduleExportsUndefined.description  =
 
 //
 
-function resolve( test )
+/* qqq : rewrite test with several programs in differen dirs */
+/* qqq : write test with several programs in differen dirs and declaring of modules */
+function resolveBasic( test )
 {
   let context = this;
 
-  var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
+  // var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
+  // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/wTools' ) );
+  var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../wtools/Tools.s' ) );
   var got = _.module.resolve( 'wTools' );
   test.identical( got, exp );
 
 }
 
-resolve.description  =
+resolveBasic.description  =
 `
-  Routine _.module.resolve return path to include path of the specified module.
+  Routine _.module.resolve return path to include path of module::wTools.
 `
 
 //
@@ -220,11 +224,27 @@ function toolsPathGetBasic( test )
 
   /* */
 
-  test.case = 'basic';
+  test.case = 'toolsPathGet';
   var got = _.module.toolsPathGet();
   var exp = _.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
   test.identical( got, exp );
-  console.log( `toolsPath : ${got}` );
+  console.log( `toolsPathGet : ${got}` );
+
+  /* */
+
+  test.case = 'toolsDirGet';
+  var got = _.module.toolsDirGet();
+  var exp = _.path.nativize( __.path.join( __dirname, '../..' ) );
+  test.identical( got, exp );
+  console.log( `toolsDirGet : ${got}` );
+
+  /* */
+
+  test.case = 'resolve wTools';
+  var got = _.module.resolve( 'wTools' );
+  var exp = _.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
+  test.identical( got, exp );
+  console.log( `resolved : ${got}` );
 
   /* */
 
@@ -232,7 +252,8 @@ function toolsPathGetBasic( test )
 
 //
 
-function toolsPathGetTester( test )
+/* xxx : extend */
+function toolsPathGetProgram( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -261,8 +282,179 @@ function toolsPathGetTester( test )
 
 //
 
+/* xxx : duplicate test in utility::Testing */
+function modulingLogistic( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  var toolsPath = _.module.resolve( 'wTools' ); /* xxx : cover this and pathToolsGet() */
+  var testingPath = _.module.resolve( 'wTesting' );
+  var moduleFile = _.module.fileWithResolvedPath( testingPath );
+  test.true( _.module.fileIs( moduleFile ) );
+  test.true( _.module.fileUniversalIs( moduleFile ) );
+  test.true( !_.module.fileNativeIs( moduleFile ) );
+  test.true( _.module.fileIs( moduleFile.native ) );
+  test.true( !_.module.fileUniversalIs( moduleFile.native ) );
+  test.true( _.module.fileNativeIs( moduleFile.native ) );
+  test.identical( moduleFile.sourcePath, testingPath );
+  test.true( _.module.is( moduleFile.module ) );
+
+  var module = _.module.withPath( testingPath );
+  // test.identical( _.lengthOf( module.files ), 2 );
+  test.identical( _.lengthOf( module.files ), 4 );
+  test.identical( _.lengthOf( module.alias ), 2 );
+  var exp =
+  [
+    'proto/node_modules/wTesting',
+    'proto/wtools/atop/testing/entry/Main.s',
+    'proto/wtools/atop/testing/include/Top.s',
+    'proto/wtools/abase/l0/l0/Global.s',
+  ]
+  // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
+  var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
+  test.identical( __.path.s.relative( testingPath + '/../../..', files ), exp );
+  var module2 = _.module.withName( 'wTesting' );
+  test.true( module === module2 );
+  var module2 = _.module.withName( 'wtesting' );
+  test.true( module === module2 );
+
+  var module = _.module.withName( 'wTools' );
+  test.gt( _.lengthOf( module.files ), 100 );
+  test.identical( _.lengthOf( module.files ), 171 );
+  test.identical( _.lengthOf( module.alias ), 2 );
+  test.true( _.module.filesMap.has( toolsPath ) );
+  test.true( module.files.has( toolsPath ) );
+  test.true( _.module.filesMap.has( __.path.join( toolsPath, '../abase/l0/l0/Global.s' ) ) );
+  test.true( module.files.has( __.path.join( toolsPath, '../abase/l0/l0/Global.s' ) ) );
+  var module2 = _.module.withName( 'wTools' );
+  test.true( module === module2 );
+  var module2 = _.module.withName( 'wtools' );
+  test.true( module === module2 );
+
+  test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
+  test.ge( _.lengthOf( _.module.modulesMap ), 4 );
+
+  console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
+  console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
+  console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
+  console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
+  console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
+  var diff = _.arraySet.diff_( null, [ ... _.module.filesMap.keys() ], [ ... _.module.withName( 'wTools' ).files.keys() ] )
+  console.log( `filesMap but tools.files\n  ${diff.join( '\n  ' )}` );
+
+  act({});
+
+  return ready;
+
+  /* - xxx */
+
+  function act( env )
+  {
+
+    ready.then( () =>
+    {
+      test.case = `external program, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( program1 );
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      /*
+      extra moddule file is program
+      */
+      var exp =
+`
+lengthOf( _modulesToPredeclare ) 0
+lengthOf( predeclaredWithNameMap ) 2
+lengthOf( predeclaredWithEntryPathMap ) 1
+lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
+lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )-1}
+module.fileIs( moduleFile ) true
+module.fileUniversalIs( moduleFile ) true
+module.fileNativeIs( moduleFile ) false
+module.fileIs( moduleFile.native ) true
+module.fileUniversalIs( moduleFile.native ) false
+module.fileNativeIs( moduleFile.native ) true
+moduleFile.sourcePath ${testingPath}
+moduleFile.downFile.sourcePath ${a.abs( 'program1' )}
+moduleFile.downFile.module null
+module.is( moduleFile.module ) true
+filesOfTesting ../node_modules/wTesting atop/testing/entry/Main.s atop/testing/include/Top.s abase/l0/l0/Global.s
+lengthOf( _modulesToPredeclare ) 0
+lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap )}
+lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap )}
+lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias ) + _.lengthOf( _.module.withName( 'wTesting' ).alias )}
+lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + _.lengthOf( _.module.withName( 'wTesting' ).files)}
+modulesMap wTools wTools wTesting wTesting
+`
+
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+  }
+
+  /* - */
+
+  function program1()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+
+    console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
+    console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
+    console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
+    console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
+    console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
+
+    let __ = _.include( 'wTesting' );
+
+    var testingPath = _.module.resolve( 'wTesting' );
+    var moduleFile = _.module.fileWithResolvedPath( testingPath );
+    console.log( `module.fileIs( moduleFile )`, _.module.fileIs( moduleFile ) );
+    console.log( `module.fileUniversalIs( moduleFile )`, _.module.fileUniversalIs( moduleFile ) );
+    console.log( `module.fileNativeIs( moduleFile )`, _.module.fileNativeIs( moduleFile ) );
+    console.log( `module.fileIs( moduleFile.native )`, _.module.fileIs( moduleFile.native ) );
+    console.log( `module.fileUniversalIs( moduleFile.native )`, _.module.fileUniversalIs( moduleFile.native ) );
+    console.log( `module.fileNativeIs( moduleFile.native )`, _.module.fileNativeIs( moduleFile.native ) );
+    console.log( `moduleFile.sourcePath`, moduleFile.sourcePath );
+    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath );
+    console.log( `moduleFile.downFile.module`, moduleFile.downFile.module );
+    console.log( `module.is( moduleFile.module )`, _.module.is( moduleFile.module ) );
+
+    var module = _.module.withPath( testingPath );
+    var filesOfTesting = __.path.s.relative( __.module.toolsDirGet(), __.select( [ ... module.files.values() ], '*/sourcePath' ) );
+    console.log( 'filesOfTesting', filesOfTesting.join( ' ' ) );
+
+    console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
+    console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
+    console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
+    console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
+    console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
+    console.log( 'modulesMap', [ ... _.module.modulesMap.values() ].map( ( m ) => m.name ).join( ' ' ) );
+
+  }
+
+}
+
+modulingLogistic.description =
+`
+- relations between module files is sane
+`
+
+//
+
 /* xxx : add testing of section "module files stack" */
-function nativeIncludeErrors( test )
+function modulingNativeIncludeErrors( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -499,14 +691,14 @@ fileWith( syntax1 ) : undefined
 
 }
 
-nativeIncludeErrors.description =
+modulingNativeIncludeErrors.description =
 `
 - module file throwing error does not get neithe native file descriptor nor universal file descriptor
 `
 
 //
 
-function includedModuleSourcePathValid( test )
+function modulingSourcePathValid( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -650,14 +842,14 @@ program0.end
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program0' );
     console.log( `program1.begin : program0 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.begin : program0 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.begin : program0 : moduleFile : ${moduleFile.moduleNativeFile === module.parent}` );
+    console.log( `program1.begin : program0 : moduleFile : ${moduleFile.native === module.parent}` );
     console.log( `program1.begin : program0 : returned : ${moduleFile.returned}` );
     console.log( `program1.begin : program0 : module : ${moduleFile.module}` );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program1' );
     console.log( `program1.begin : program1 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.begin : program1 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.begin : program1 : moduleFile : ${moduleFile.moduleNativeFile === module}` );
+    console.log( `program1.begin : program1 : moduleFile : ${moduleFile.native === module}` );
     console.log( `program1.begin : program1 : returned : ${moduleFile.returned}` );
     console.log( `program1.begin : program1 : module : ${moduleFile.module}` );
 
@@ -667,28 +859,28 @@ program0.end
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program0' );
     console.log( `program1.after : program0 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.after : program0 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.after : program0 : moduleFile : ${moduleFile.moduleNativeFile === module.parent}` );
+    console.log( `program1.after : program0 : moduleFile : ${moduleFile.native === module.parent}` );
     console.log( `program1.after : program0 : returned : ${moduleFile.returned}` );
     console.log( `program1.after : program0 : module : ${moduleFile.module}` );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program1' );
     console.log( `program1.after : program1 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.after : program1 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.after : program1 : moduleFile : ${moduleFile.moduleNativeFile === module}` );
+    console.log( `program1.after : program1 : moduleFile : ${moduleFile.native === module}` );
     console.log( `program1.after : program1 : returned : ${moduleFile.returned}` );
     console.log( `program1.after : program1 : module : ${moduleFile.module}` );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program2' );
     console.log( `program1.after : program2 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.after : program2 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.after : program2 : moduleFile : ${moduleFile.moduleNativeFile === module.children[ 1 ]}` );
+    console.log( `program1.after : program2 : moduleFile : ${moduleFile.native === module.children[ 1 ]}` );
     console.log( `program1.after : program2 : returned : ${moduleFile.returned}` );
     console.log( `program1.after : program2 : module : ${moduleFile.module}` );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program3' );
     console.log( `program1.after : program3 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program1.after : program3 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program1.after : program3 : moduleFile : ${moduleFile.moduleNativeFile === module.children[ 1 ].children[ 0 ]}` );
+    console.log( `program1.after : program3 : moduleFile : ${moduleFile.native === module.children[ 1 ].children[ 0 ]}` );
     console.log( `program1.after : program3 : returned : ${moduleFile.returned}` );
     console.log( `program1.after : program3 : module : ${moduleFile.module}` );
 
@@ -717,14 +909,14 @@ program0.end
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program2' );
     console.log( `program3 : program2 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program3 : program2 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program3 : program2 : moduleFile : ${moduleFile.moduleNativeFile === module.parent}` );
+    console.log( `program3 : program2 : moduleFile : ${moduleFile.native === module.parent}` );
     console.log( `program3 : program2 : returned : ${moduleFile.returned}` );
     console.log( `program3 : program2 : module : ${moduleFile.module}` );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program3' );
     console.log( `program3 : program3 : sourcePath : ${moduleFile.sourcePath}` );
     console.log( `program3 : program3 : requestedSourcePath : ${moduleFile.requestedSourcePath}` );
-    console.log( `program3 : program3 : moduleFile : ${moduleFile.moduleNativeFile === module}` );
+    console.log( `program3 : program3 : moduleFile : ${moduleFile.native === module}` );
     console.log( `program3 : program3 : returned : ${moduleFile.returned}` );
     console.log( `program3 : program3 : module : ${moduleFile.module}` );
 
@@ -736,13 +928,20 @@ program0.end
 
 //
 
-function inheritedModuleFilePaths( test )
+function modulingGlobalNamespaces( test )
 {
   let context = this;
   let a = test.assetFor( false );
   let ready = __.take( null );
 
-  act({});
+  act({ adeclaration : 'none', bdeclaration : 'before' });
+  act({ adeclaration : 'none', bdeclaration : 'after' });
+
+  act({ adeclaration : 'before', bdeclaration : 'before' });
+  act({ adeclaration : 'before', bdeclaration : 'after' });
+
+  act({ adeclaration : 'after', bdeclaration : 'before' });
+  act({ adeclaration : 'after', bdeclaration : 'after' });
 
   return ready;
 
@@ -755,9 +954,14 @@ function inheritedModuleFilePaths( test )
     {
       test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
 
-      var programPath = a.program( program1 );
-      a.program( program2 );
-      a.program({ routine : program3, dirPath : 'dir', });
+      var programPath = a.program({ routine : program1, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program2, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program2b, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program3, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program4, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program5, locals : _.mapExtend( null, env ) });
+      a.program({ routine : program6, locals : _.mapExtend( null, env ) });
+
       return a.forkNonThrowing
       ({
         execPath : programPath,
@@ -769,12 +973,68 @@ function inheritedModuleFilePaths( test )
 
       var exp =
 `
-program1.paths
-  ${trailOf( __dirname, a.abs( '.' ) )}
-program2.paths
-  ${trailOf( __dirname, a.abs( '.' ) )}
-program3.paths
-  ${trailOf( __dirname, a.abs( 'dir' ) )}
+program1
+program2
+program3
+program4
+program5.global : space2
+program5._global_.wTools : 2
+program6 : global : space2
+program6 : wTools : space2
+
+program6 : ./program1 : undefined
+program6 : ./program2 : undefined
+program6 : ./program2b : undefined
+program6 : ./program3 : undefined
+program6 : ./program4 : undefined
+program6 : ./program5 : {- ModuleFile ./program5 -}
+  downFiles
+    {- ModuleFile ./program4 -}
+  upFiles
+    {- ModuleFile /pro/builder/proto/wtools/Tools.s -}
+    {- ModuleFile ./program6 -}
+program6 : ./program6 : {- ModuleFile ./program6 -}
+  downFiles
+    {- ModuleFile ./program5 -}
+
+program2b
+
+program1 : ./program1 : {- ModuleFile ./program1 -}
+  upFiles
+    {- ModuleFile /pro/builder/proto/wtools/Tools.s -}
+    {- ModuleFile ./program2 -}
+    {- ModuleFile ./program2b -}
+program1 : ./program2 : {- ModuleFile ./program2 -}
+  ${ env.adeclaration === 'none' ? '' : 'modules' }
+  ${ env.adeclaration === 'none' ? '' : '{- Module Module1 -}' }
+  downFiles
+    {- ModuleFile ./program1 -}
+  upFiles
+    {- ModuleFile ./program3 -}
+program1 : ./program2b : {- ModuleFile ./program2b -}
+  modules
+    {- Module Module1 -}
+  downFiles
+    {- ModuleFile ./program1 -}
+  upFiles
+    {- ModuleFile ./program3 -}
+program1 : ./program3 : {- ModuleFile ./program3 -}
+  modules
+    {- Module Module1 -}
+  downFiles
+    {- ModuleFile ./program2 -}
+    {- ModuleFile ./program2b -}
+  upFiles
+    {- ModuleFile ./program4 -}
+program1 : ./program4 : {- ModuleFile ./program4 -}
+  modules
+    {- Module Module1 -}
+  downFiles
+    {- ModuleFile ./program3 -}
+  upFiles
+    {- ModuleFile ./program5 -}
+program1 : ./program5 : undefined
+program1 : ./program6 : undefined
 `
       test.identical( op.exitCode, 0 );
       test.equivalent( op.output, exp );
@@ -787,210 +1047,130 @@ program3.paths
 
   function program1()
   {
-    console.log( `program1.paths\n  ${module.paths.join( '\n  ' )}` );
+    console.log( 'program1' );
+    const _ = require( toolsPath );
     require( './program2' );
+    require( './program2b' );
+
+    console.log( '' );
+    log( './program1' );
+    log( './program2' );
+    log( './program2b' );
+    log( './program3' );
+    log( './program4' );
+    log( './program5' );
+    log( './program6' );
+    console.log( '' );
+
+    function log( filePath )
+    {
+      let prefix = 'program1'
+      let moduleFile = _.module.fileWith( filePath );
+      if( !moduleFile )
+      return console.log( `${prefix} : ${filePath} : ${moduleFile}` );
+      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
+      console.log( `${prefix} : ${filePath} : ${output}` );
+    }
   }
 
   /* - */
 
   function program2()
   {
-    console.log( `program2.paths\n  ${module.paths.join( '\n  ' )}` );
-    require( './dir/program3' );
+    console.log( 'program2' );
+    const _ = _global_.wTools;
+    if( adeclaration === 'before' )
+    _.module.predeclare( 'Module1', __dirname + '/program2' );
+    require( './program3' );
+    if( adeclaration === 'after' )
+    _.module.predeclare( 'Module1', __dirname + '/program2' );
+  }
+
+  /* - */
+
+  function program2b()
+  {
+    console.log( 'program2b' );
+    const _ = _global_.wTools;
+    if( bdeclaration === 'before' )
+    _.module.predeclare( 'Module1', __dirname + '/program2b' );
+    require( './program3' );
+    if( bdeclaration === 'after' )
+    _.module.predeclare( 'Module1', __dirname + '/program2b' );
   }
 
   /* - */
 
   function program3()
   {
-    console.log( `program3.paths\n  ${module.paths.join( '\n  ' )}` );
+    console.log( 'program3' );
+    require( './program4' );
   }
 
   /* - */
 
-  function trailOf()
+  function program4()
   {
-    let result = [];
-    for( let a = arguments.length-1 ; a >= 0 ; a-- )
+    console.log( 'program4' );
+    const _ = _global_.wTools;
+    _.global.new( 'space2' );
+    _.global.open( 'space2' );
+    _.module.fileSetEnvironment( module, 'space2' );
+    require( './program5' );
+    _.global.close( 'space2' );
+  }
+
+  /* - */
+
+  function program5()
+  {
+    console.log( `program5.global : ${_global_.__GLOBAL_NAME__}` );
+    console.log( `program5._global_.wTools : ${Object.keys( _global_.wTools ).length}` );
+    const _ = require( toolsPath );
+    require( './program6' );
+  }
+
+  /* - */
+
+  function program6()
+  {
+    console.log( `program6 : global : ${_global_.__GLOBAL_NAME__}` );
+    console.log( `program6 : wTools : ${_global_.wTools.__GLOBAL_NAME__}` );
+
+    const _ = _global_.wTools;
+
+    console.log( '' );
+    log( './program1' );
+    log( './program2' );
+    log( './program2b' );
+    log( './program3' );
+    log( './program4' );
+    log( './program5' );
+    log( './program6' );
+    console.log( '' );
+
+    function log( filePath )
     {
-      let filePath = arguments[ a ];
-      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( __.path.traceToRoot( filePath ), 'node_modules' ) ).reverse() );
+      let prefix = 'program6'
+      let moduleFile = _.module.fileWith( filePath );
+      if( !moduleFile )
+      return console.log( `${prefix} : ${filePath} : ${moduleFile}` );
+      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
+      console.log( `${prefix} : ${filePath} : ${output}` );
     }
-    return '  ' + result.join( '\n  ' );
   }
 
   /* - */
 
 }
 
-/* xxx : duplicate test routine in module::wIntrospectorBasics */
-inheritedModuleFilePaths.description =
+modulingGlobalNamespaces.description =
 `
-program should inherit path of parent
-`
-
-//
-
-function modulingLogistic( test )
-{
-  let context = this;
-  let a = test.assetFor( false );
-  let ready = __.take( null );
-
-  var toolsPath = _.module.resolve( 'wTools' ); /* xxx : cover this and pathToolsGet() */
-  var testingPath = _.module.resolve( 'wTesting' );
-  var moduleFile = _.module.fileWithResolvedPath( testingPath );
-  test.true( _.module.fileIs( moduleFile ) );
-  test.true( _.module.fileUniversalIs( moduleFile ) );
-  test.true( !_.module.fileNativeIs( moduleFile ) );
-  test.true( _.module.fileIs( moduleFile.moduleNativeFile ) );
-  test.true( !_.module.fileUniversalIs( moduleFile.moduleNativeFile ) );
-  test.true( _.module.fileNativeIs( moduleFile.moduleNativeFile ) );
-  test.identical( moduleFile.sourcePath, testingPath );
-  test.true( _.module.is( moduleFile.module ) );
-
-  var module = _.module.withName( 'wTools' );
-  test.gt( _.lengthOf( module.files ), 100 );
-  test.identical( _.lengthOf( module.files ), 169 );
-  test.identical( _.lengthOf( module.alias ), 2 );
-  console.log( __.path.join( toolsPath, '../../abase/l0/l0/Global.s' ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsPath, '../../Tools.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsPath, '../../Tools.s' ) ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsPath, '../../abase/l0/l0/Global.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsPath, '../../abase/l0/l0/Global.s' ) ) );
-  var module2 = _.module.withName( 'wTools' );
-  test.true( module === module2 );
-  var module2 = _.module.withName( 'wtools' );
-  test.true( module === module2 );
-
-  var module = _.module.withPath( testingPath );
-  // test.identical( _.lengthOf( module.files ), 2 );
-  test.identical( _.lengthOf( module.alias ), 2 );
-  // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
-  // var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
-  // test.identical( __.path.s.relative( testingPath + '/../../..', files ), exp );
-  // xxx
-  var module2 = _.module.withName( 'wTesting' );
-  test.true( module === module2 );
-  var module2 = _.module.withName( 'wtesting' );
-  test.true( module === module2 );
-
-  test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
-  test.ge( _.lengthOf( _.module.modulesMap ), 4 );
-
-  console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
-  console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
-  console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
-  console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-  console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
-  var diff = _.arraySet.diff_( null, [ ... _.module.filesMap.keys() ], [ ... _.module.withName( 'wTools' ).files.keys() ] )
-  console.log( `filesMap but tools.files\n  ${diff.join( '\n  ' )}` );
-
-  act({});
-
-  return ready;
-
-  /* - xxx */
-
-  function act( env )
-  {
-
-    ready.then( () =>
-    {
-      test.case = `external program, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
-
-      var programPath = a.program( program1 );
-
-      return a.forkNonThrowing
-      ({
-        execPath : programPath,
-        currentPath : _.path.dir( programPath ),
-      })
-    })
-    .then( ( op ) =>
-    {
-      /*
-      extra moddule file is program
-      */
-      var exp =
-`
-lengthOf( _modulesToPredeclare ) 0
-lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap )}
-lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap )}
-lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )+1}
-module.fileIs( moduleFile ) true
-module.fileUniversalIs( moduleFile ) true
-module.fileNativeIs( moduleFile ) false
-module.fileIs( moduleFile.moduleNativeFile ) true
-module.fileUniversalIs( moduleFile.moduleNativeFile ) false
-module.fileNativeIs( moduleFile.moduleNativeFile ) true
-moduleFile.sourcePath ${a.path.join( testingPath, '../Main.s' )}
-moduleFile.downFile.sourcePath ${a.abs( 'program1' )}
-moduleFile.downFile.module null
-module.is( moduleFile.module ) true
-filesOfTesting testing/entry/Main.s testing/include/Top.s ../abase/l0/l0/Global.s
-lengthOf( _modulesToPredeclare ) 0
-lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap )}
-lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap )}
-lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias ) + _.lengthOf( _.module.withName( 'wTesting' ).alias )}
-modulesMap wTools wTools wTesting wTesting
-`
-// xxx : add
-// lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + _.lengthOf( _.module.withName( 'wTesting' ).files)}
-      test.identical( op.exitCode, 0 );
-      test.equivalent( op.output, exp );
-      return op;
-    });
-
-  }
-
-  /* - */
-
-  function program1()
-  {
-    let _ = require( toolsPath );
-    let ModuleFileNative = require( 'module' );
-
-    console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
-    console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
-    console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
-    console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
-
-    let __ = _.include( 'wTesting' );
-
-    var testingPath = _.module.resolve( 'wTesting' );
-    var moduleFile = _.module.fileWithResolvedPath( testingPath );
-    console.log( `module.fileIs( moduleFile )`, _.module.fileIs( moduleFile ) );
-    console.log( `module.fileUniversalIs( moduleFile )`, _.module.fileUniversalIs( moduleFile ) );
-    console.log( `module.fileNativeIs( moduleFile )`, _.module.fileNativeIs( moduleFile ) );
-    console.log( `module.fileIs( moduleFile.moduleNativeFile )`, _.module.fileIs( moduleFile.moduleNativeFile ) );
-    console.log( `module.fileUniversalIs( moduleFile.moduleNativeFile )`, _.module.fileUniversalIs( moduleFile.moduleNativeFile ) );
-    console.log( `module.fileNativeIs( moduleFile.moduleNativeFile )`, _.module.fileNativeIs( moduleFile.moduleNativeFile ) );
-    console.log( `moduleFile.sourcePath`, moduleFile.sourcePath );
-    console.log( `moduleFile.downFile.sourcePath`, moduleFile.downFile.sourcePath );
-    console.log( `moduleFile.downFile.module`, moduleFile.downFile.module );
-    console.log( `module.is( moduleFile.module )`, _.module.is( moduleFile.module ) );
-
-    var module = _.module.withPath( testingPath );
-    var filesOfTesting = __.path.s.relative( testingPath + '/../../..', __.select( [ ... module.files.values() ], '*/sourcePath' ) );
-    console.log( 'filesOfTesting', filesOfTesting.join( ' ' ) );
-
-    console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
-    console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
-    console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
-    console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    // console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
-    console.log( 'modulesMap', [ ... _.module.modulesMap.values() ].map( ( m ) => m.name ).join( ' ' ) );
-
-  }
-
-}
-
-modulingLogistic.description =
-`
-- relations between module files is sane
+- virtual environment in inherited from parent modules
+- module is stay in its environment
+- no error or unhandled case
 `
 
 //
@@ -1039,18 +1219,17 @@ function predeclareBasic( test )
       */
       var exp =
 `
-main.before / lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap )}
-main.before / lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap )}
+main.before / lengthOf( predeclaredWithNameMap ) 2
+main.before / lengthOf( predeclaredWithEntryPathMap ) 1
 main.before / lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-main.before / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + 1}
 main.before / filesMap but tools.files
   ${a.abs( 'main' ) }
 main.mid / predeclared.program1 : Module.constructible
 main.mid / predeclared.program2 : Module.constructible
-main.mid / lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap ) + 2}
-main.mid / lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap ) + 2}
-main.mid / lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-main.mid / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + 1}
+main.mid / lengthOf( predeclaredWithNameMap ) 4
+main.mid / lengthOf( predeclaredWithEntryPathMap ) 3
+main.mid / lengthOf( modulesMap ) 2
+main.mid / lengthOf( filesMap ) 0
 main.mid / isIncluded( Program1 ) false
 main.mid / isIncluded( Program2 ) false
 program1 / isIncluded( Program1 ) true
@@ -1065,10 +1244,10 @@ Program2
   ${a.abs( 'program2' )}
 orphans
   ${a.abs( 'main' )}
-main.after / lengthOf( predeclaredWithNameMap ) ${_.lengthOf( _.module.predeclaredWithNameMap ) + 2}
-main.after / lengthOf( predeclaredWithEntryPathMap ) ${_.lengthOf( _.module.predeclaredWithEntryPathMap ) + 2}
-main.after / lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias ) + 2}
-main.after / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + 3}
+main.after / lengthOf( predeclaredWithNameMap ) 4
+main.after / lengthOf( predeclaredWithEntryPathMap ) 3
+main.after / lengthOf( modulesMap ) 4
+main.after / lengthOf( filesMap ) 2
 `
       test.identical( op.exitCode, 0 );
       test.equivalent( op.output, exp );
@@ -1085,11 +1264,11 @@ main.after / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).fi
   {
     let _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
+    let wasFilesMap = _.lengthOf( _.module.filesMap );
 
     console.log( 'main.before / lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
     console.log( 'main.before / lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
     console.log( 'main.before / lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    console.log( 'main.before / lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
     var diff = _.arraySet.diff_( null, [ ... _.module.filesMap.keys() ], [ ... _.module.withName( 'wTools' ).files.keys() ] )
     console.log( `main.before / filesMap but tools.files\n  ${diff.join( '\n  ' )}` );
 
@@ -1104,7 +1283,7 @@ main.after / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).fi
     console.log( 'main.mid / lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
     console.log( 'main.mid / lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
     console.log( 'main.mid / lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    console.log( 'main.mid / lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
+    console.log( 'main.mid / lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) - wasFilesMap );
 
     console.log( 'main.mid / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'main.mid / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
@@ -1124,7 +1303,7 @@ main.after / lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).fi
     console.log( 'main.after / lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
     console.log( 'main.after / lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
     console.log( 'main.after / lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    console.log( 'main.after / lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
+    console.log( 'main.after / lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) - wasFilesMap );
 
   }
 
@@ -1168,7 +1347,7 @@ function predeclareMain( test )
 
   return ready;
 
-  /* - xxx2 */
+  /* - */
 
   function special( env )
   {
@@ -3153,6 +3332,101 @@ function programWriteOptionWithSubmodule( test )
 
 //
 
+function programInheritedModuleFilePaths( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    ready.then( () =>
+    {
+      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( program1 );
+      a.program( program2 );
+      a.program({ routine : program3, dirPath : 'dir', });
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+
+      var exp =
+`
+program1.paths
+  ${trailOf( __dirname, a.abs( '.' ) )}
+program2.paths
+  ${trailOf( __dirname, a.abs( '.' ) )}
+program3.paths
+  ${trailOf( __dirname, a.abs( 'dir' ) )}
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+  }
+
+  /* - */
+
+  function program1()
+  {
+    console.log( `program1.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './program2' );
+  }
+
+  /* - */
+
+  function program2()
+  {
+    console.log( `program2.paths\n  ${module.paths.join( '\n  ' )}` );
+    require( './dir/program3' );
+  }
+
+  /* - */
+
+  function program3()
+  {
+    console.log( `program3.paths\n  ${module.paths.join( '\n  ' )}` );
+  }
+
+  /* - */
+
+  function trailOf()
+  {
+    let result = [];
+    for( let a = arguments.length-1 ; a >= 0 ; a-- )
+    {
+      let filePath = arguments[ a ];
+      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( __.path.traceToRoot( filePath ), 'node_modules' ) ).reverse() );
+    }
+    return '  ' + result.join( '\n  ' );
+  }
+
+  /* - */
+
+}
+
+/* xxx : duplicate test routine in module::wIntrospectorBasics */
+programInheritedModuleFilePaths.description =
+`
+program should inherit path of parent
+`
+
+//
+
 /* qqq xxx : make test from this */
 function localPathAssumption( test )
 {
@@ -3304,6 +3578,15 @@ xxx
 
 globalPathAssumption.experimental = 1;
 
+//
+
+function experiment( test )
+{
+  test.true( true ); debugger;
+}
+
+experiment.experimental = 1;
+
 // --
 // test suite definition
 // --
@@ -3327,17 +3610,17 @@ const Proto =
   tests :
   {
 
-    withIsIncluded,
-    withoutIsIncluded,
+    modulePredeclareBasic,
+    modulePredeclareBasic2,
     moduleExportsUndefined,
-    resolve,
+    resolveBasic,
     toolsPathGetBasic,
-    toolsPathGetTester,
+    toolsPathGetProgram,
 
-    nativeIncludeErrors,
-    includedModuleSourcePathValid,
-    inheritedModuleFilePaths,
     modulingLogistic,
+    modulingNativeIncludeErrors,
+    modulingSourcePathValid,
+    modulingGlobalNamespaces,
 
     predeclareBasic,
     predeclareMain,
@@ -3345,8 +3628,11 @@ const Proto =
 
     moduleIsIncluded,
     moduleResolveFromAnotherGlobal,
+
+    programInheritedModuleFilePaths,
     localPathAssumption,
     globalPathAssumption,
+    experiment,
 
   }
 
