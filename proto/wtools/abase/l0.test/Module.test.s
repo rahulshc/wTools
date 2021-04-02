@@ -3304,6 +3304,42 @@ xxx
 
 globalPathAssumption.experimental = 1;
 
+//
+
+function preload( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let program1Path = a.program( program1 );
+
+  /* */
+
+  a.appStartNonThrowing({ execPath : `-r ${_ToolsPath_} ${program1Path}` })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    test.identical( _.strCount( op.output, 'program.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'program.end' ), 1 );
+    test.identical( _.strCount( op.output, _.module.toolsPathGet() ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program1()
+  {
+    console.log( 'program.begin' );
+    let _ = _global_.wTools;
+    console.log( _.path.normalize( _.module.toolsPathGet() ) )
+    console.log( 'program.end' );
+  }
+}
+
 // --
 // test suite definition
 // --
@@ -3347,6 +3383,8 @@ const Proto =
     moduleResolveFromAnotherGlobal,
     localPathAssumption,
     globalPathAssumption,
+
+    preload
 
   }
 
