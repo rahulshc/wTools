@@ -2648,6 +2648,18 @@ function strStrShortOptionCutting( test )
   test.identical( got, expected );
   test.identical( got.length, 6 );
 
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'string', widthLimit : 1, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'g';
+  test.identical( got, expected );
+
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'ab', widthLimit : 1, cutting : 'left' }
+  var got = _.strShort( src );
+  var expected = 'b';
+  test.identical( got, expected );
+
   test.close( 'cutting : left' )
 
   /* - */
@@ -2682,7 +2694,65 @@ function strStrShortOptionCutting( test )
   test.identical( got, expected );
   test.identical( got.length, 6 );
 
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'string', widthLimit : 1, cutting : 'right' }
+  var got = _.strShort( src );
+  var expected = 's';
+  test.identical( got, expected );
+
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'ab', widthLimit : 1, cutting : 'right' }
+  var got = _.strShort( src );
+  var expected = 'a';
+  test.identical( got, expected );
+
   test.close( 'cutting : right' )
+
+  /* - */
+
+  test.open( 'cutting : center' )
+
+  test.case = 'cut nothing';
+  var src = { src : 'string', widthLimit : 6, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 'string';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.case = 'cut 1 letter';
+  var src = { src : 'string', widthLimit : 5, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 'strng';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.case = 'cut a few letters';
+  var src = { src : 'string', widthLimit : 3, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 'stg';
+  test.identical( got, expected );
+  test.identical( got.length, src.widthLimit );
+
+  test.case = 'cut nothing';
+  var src = { src : 'string', widthLimit : 0, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 'string';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
+
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'string', widthLimit : 1, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 's';
+  test.identical( got, expected );
+
+  test.case = 'cut to 1, widthLimit : 1';
+  var src = { src : 'ab', widthLimit : 1, cutting : 'center' }
+  var got = _.strShort( src );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.close( 'cutting : center' )
 
 }
 

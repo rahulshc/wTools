@@ -442,11 +442,14 @@ function strShort( o )  /* version with binary search cutting */
 
     while( endLength + fixLength > o.widthLimit ) /* binary */
     {
-      [ begin, end ] = splitInTwo( src, middleIndex === 0 ? 1 : middleIndex );
+      [ begin, end ] = splitInTwo( src, middleIndex );
       endLength = o.onLength( end );
 
       startIndex = middleIndex; /* all needed elements are in end */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
+
+      if( middleIndex === src.length - 2 ) /* when o.widthLimit = 1: loop stuck on prefinal index. string -> str | ing ===> stri | ng ===> stri | ng ... no further cutting */
+      middleIndex++;
     }
 
     while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
@@ -474,7 +477,7 @@ function strShort( o )  /* version with binary search cutting */
 
     while( beginLength + fixLength > o.widthLimit ) /* binary */
     {
-      [ begin, end ] = splitInTwo( src, middleIndex === 0 ? 1 : middleIndex );
+      [ begin, end ] = splitInTwo( src, middleIndex );
       beginLength = o.onLength( begin );
 
       endIndex = middleIndex; /* all needed elements are in begin */
