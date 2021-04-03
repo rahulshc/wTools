@@ -41,7 +41,7 @@ dont forget about performance test and optimization
 
 function location( o )
 {
-
+  // debugger;
   if( _.number.is( o ) )
   o = { level : o }
   else if( _.strIs( o ) )
@@ -85,6 +85,7 @@ function location( o )
 
   if( o.error )
   {
+    debugger;
     let location2 = o.error.location || Object.create( null );
 
     var args0 =
@@ -174,19 +175,20 @@ function location_( o )
 
   /* */
 
-  if( location_.defaults )
-  for( let e in o )
-  {
-    if( location_.defaults[ e ] === undefined )
-    throw Error( 'Unknown option ' + e );
-  }
+  _.routine.options( location_, o );
+  // if( location_.defaults )
+  // for( let e in o )
+  // {
+  //   if( location_.defaults[ e ] === undefined )
+  //   throw Error( 'Unknown option ' + e );
+  // }
 
-  if( location_.defaults )
-  for( let e in location_.defaults )
-  {
-    if( o[ e ] === undefined )
-    o[ e ] = location_.defaults[ e ];
-  }
+  // if( location_.defaults )
+  // for( let e in location_.defaults )
+  // {
+  //   if( o[ e ] === undefined )
+  //   o[ e ] = location_.defaults[ e ];
+  // }
 
   if( !( arguments.length === 0 || arguments.length === 1 ) )
   throw Error( 'Expects single argument or none' );
@@ -268,7 +270,11 @@ function location_( o )
   stack = stack.split( '\n' );
   let stackFrame = stack[ o.level ];
 
-  return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
+  o.location.original = o.stackFrame;
+  _.introspector.locationNormalize( o.location );
+  return o.location;
+
+  // return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
 }
 
 location_.defaults =

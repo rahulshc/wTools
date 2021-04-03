@@ -2950,6 +2950,170 @@ function locationToStackWithOtherOptions( test )
 
 //
 
+
+function locationPerformance( test )
+{
+  /*
+    |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    |    location BISI    | regular |      6.5488s       |      5.2201s      |      5.5969s       |      5.1944s       |      5.2801s      |
+    | locationBinary BISI | binary  |      0.0036s       |      0.0032s      |      0.0029s       |      0.0026s       |      0.0025s      |
+    |    location SIBI    | regular |     0.003011s      |     0.002554s     |     0.002522s      |     0.002347s      |     0.002528s     |
+    | locationBinary SIBI | binary  |     0.000092s      |     0.000092s     |      0.0001s       |     0.000078s      |      0.0001s      |
+
+    BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
+    SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )
+  */
+
+  test.case = 'long string, 10 iterations';
+  var times = 1e1;
+  var size = 1e5;
+  var filler =
+`at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0/l3/Introspector.s:668:7)
+at Proxy.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:51)
+at Proxy._shouldDo_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:2782:24)
+at Proxy.shouldThrowErrorSync_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:3221:14)
+at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:8)
+at Proxy._run (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:323:26)
+at wConsequence.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:20)
+at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
+at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
+at wConsequence.__handleResourceSoon (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4082:10)
+at wConsequence.thenKeep (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:378:8)
+at wTestSuite._testRoutineRun (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:4)
+at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:540:18)
+at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l3/Routine.s:259:28)
+at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
+at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
+at wConsequence.take (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:3756:8)
+at /Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:1510:12
+at Object._time (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:61:22)
+at Object.time [as _time] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wProcedure/proto/wtools/abase/l8_procedure/Namespace.s:310:20)
+at Timeout.time [as _onTimeout] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:107:11)
+at listOnTimeout (internal/timers.js:554:17)
+at processTimers (internal/timers.js:497:7)`;
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+  test.true( true );
+
+  var testing = { counter : 0 };
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    let result = act2();
+    // let [ resultLeft, resultRigth, resultCenter ] = act2();
+    var time2 = _.time.now();
+    took += time2 - time1;
+    // console.log( result );
+    // test.identical( resultLeft, 'cc'+'cdd'+'dd' );
+    // test.identical( resultRigth, 'abb' );
+    // test.identical( resultCenter, 'add'+'dd' );
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  // console.log( `Counter = ${testing.counter / times / 3 }` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  test.case = 'short string, 1000 iterations';
+  var times = 1e5;
+  var size = 2e1;
+  var filler =
+`at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0/l3/Introspector.s:668:7)
+at Proxy.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:51)
+at Proxy._shouldDo_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:2782:24)
+at Proxy.shouldThrowErrorSync_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:3221:14)
+at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:8)
+at Proxy._run (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:323:26)
+at wConsequence.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:20)
+at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
+at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
+at wConsequence.__handleResourceSoon (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4082:10)
+at wConsequence.thenKeep (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:378:8)
+at wTestSuite._testRoutineRun (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:4)
+at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:540:18)
+at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l3/Routine.s:259:28)
+at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
+at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
+at wConsequence.take (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:3756:8)
+at /Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:1510:12
+at Object._time (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:61:22)
+at Object.time [as _time] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wProcedure/proto/wtools/abase/l8_procedure/Namespace.s:310:20)
+at Timeout.time [as _onTimeout] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:107:11)
+at listOnTimeout (internal/timers.js:554:17)
+at processTimers (internal/timers.js:497:7)`;
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+
+  var testing = { counter : 0 }
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    let result = act2();
+    // let [ resultLeft, resultRigth, resultCenter ] = act2();
+    var time2 = _.time.now();
+    took += time2 - time1;
+
+    // console.log( result );
+    // test.identical( resultLeft, 'cc'+'cdd'+'dd' );
+    // test.identical( resultRigth, 'abb' );
+    // test.identical( resultCenter, 'add'+'dd' );
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  // console.log( `Counter = ${testing.counter / times / 3}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  function act() /* existing implementation with fixed 'center' cutting */
+  {
+    let result = _.introspector.location({ stack : string });
+    return result;
+    // let result2 = _.introspector.location_({ src : string, onLength, widthLimit : 2, cutting : 'right' });
+    // let result3 = _.introspector.location_({ src : string, onLength, widthLimit : 2, cutting : 'center' });
+
+    // return [ result1, result2, result3 ];
+  }
+
+  function act2() /* binary search implementation */
+  {
+    let result = _.introspector.location_({ stack : string });
+    return result;
+    // let result2 = _.location({ src : string, onLength, widthLimit : 2, cutting : 'right' });
+    // let result3 = _.location({ src : string, onLength, widthLimit : 2, cutting : 'center' });
+
+    // return [ result1, result2, result3 ];
+  }
+
+  function onLength( src )
+  {
+    let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
+
+    if( match === null ) /* prefix, postfix, infix */
+    return src.length;
+
+    return match.length;
+  }
+
+}
+
+locationPerformance.timeOut = 1e7;
+locationPerformance.experimental = true;
+
+//
+
 function stackBasic( test )
 {
 
@@ -4164,6 +4328,8 @@ const Proto =
     locationToStackOptionFilePath,
     locationToStackOptionsRoutineNameAndRoutineAlias,
     locationToStackWithOtherOptions,
+
+    locationPerformance,
 
     stackBasic,
     stack,
