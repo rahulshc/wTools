@@ -5257,7 +5257,9 @@ function mapButConditional_WithThreeArguments( test )
 
   test.close( 'srcMap - map' );
 
-    // test.open( 'srcMap - array' );
+  /* - */
+
+  // test.open( 'srcMap - array' );
   //
   // test.case = 'srcMap - empty map, butMap - empty map';
   // var srcMap = [];
