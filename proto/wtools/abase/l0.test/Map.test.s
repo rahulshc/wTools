@@ -5257,12 +5257,98 @@ function mapButConditional_WithThreeArguments( test )
 
   test.close( 'srcMap - map' );
 
+    // test.open( 'srcMap - array' );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty map';
+  // var srcMap = [];
+  // var butMap = {};
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, {} );
+  //
+  // test.case = 'srcMap - empty map, butMap - empty array';
+  // var srcMap = [];
+  // var butMap = [];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [] );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled map';
+  // var srcMap = [];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - empty map, butMap - filled array';
+  // var srcMap = [];
+  // var butMap = [ 'a', 0, 'b', 1 ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [] );
+  // test.identical( butMap, [ 'a', 0, 'b', 1 ] );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = { a : 13, b : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, { a : 13, b : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = [ 'a', 'b', 'c', 'd' ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = { 1 : 0, 3 : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, [ 'a', 'b', 'c', 'd' ] );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+  //
+  // test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  // var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  // var butMap = [ 'a', '3', 'b', '1' ];
+  // var got = _.mapButConditional_( filter, srcMap, butMap );
+  // var expected = {};
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  // test.identical( butMap, [ 'a', '3', 'b', '1' ] );
+  //
+  // test.close( 'srcMap - array' );
+
+  /* - */
+
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'without argument';
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.mapButConditional_() );
 
   test.case = 'not enough arguments';
@@ -5287,48 +5373,6 @@ function mapButConditional_WithThreeArguments( test )
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], '' ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, [], '' ) );
 
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
