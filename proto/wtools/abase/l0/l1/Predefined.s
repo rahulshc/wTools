@@ -12,10 +12,11 @@ const _global = _global_;
 if( _global_.__GLOBAL_NAME__ === 'real' )
 {
 
-  if( _global_.wBase )
+  // if( _global_.wBase )
+  if( _global_.wTools && _global_.wTools.Module )
   {
     debugger;
-    throw new Error( 'wTools was included several times' );
+    throw new Error( 'module::wTools was included several times' );
   }
 
 }
@@ -87,6 +88,6 @@ _realGlobal_.HashMapWeak = WeakMap;
 
 _global[ 'wTools' ] = Self;
 _global.wTools = Self;
-_global.wBase = Self;
+// _global.wBase = Self;
 
 })();
