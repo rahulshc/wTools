@@ -5345,8 +5345,6 @@ function mapButConditional_WithThreeArguments( test )
 
   /* - */
 
-  /* - */
-
   if( !Config.debug )
   return;
 
