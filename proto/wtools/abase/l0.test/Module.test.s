@@ -6,9 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( '../../Tools.s' );
-  debugger;
   _.include( 'wTesting' );
-  debugger;
 }
 
 const _ = _global_.wTools;
