@@ -926,20 +926,14 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     return;
     visited.add( file );
 
-    // console.log( `modulesAssociate ${[ ... modules ][ 0 ]} ${file} ${file.global.__GLOBAL_NAME__}` ); /* xxx2 */
-
     _.assert( _.module.fileUniversalIs( file ) );
-    // _.assert( _.arrayIs( file.upFiles ) );
     _.assert( _.setIs( file.upFiles ) );
-    // _.assert( file.moduleNativeFilesMap === _.module.nativeFilesMap ); /* xxx2 : write test */
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     {
-      // _.assert( 0, 'not tested' ); /* xxx2 : write test */
       return;
     }
 
-    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && !modules.has( module2 ) )
     return;
@@ -1561,7 +1555,9 @@ function _resolveFirst( o )
   _.assert( _.strDefined( o.downPath ) );
   _.assert( _.strDefined( o.basePath ) );
 
-  // if( o.moduleNames[ 0 ] === 'wTesting' )
+  // if( o.moduleNames[ 0 ] === 'wEqualer' )
+  // debugger;
+  // if( o.moduleNames[ 0 ] === 'wLooker' && o.downPath === '/pro/module/wEqualer/proto/wtools/abase/l6/Equaler.s' )
   // debugger;
   let sourcePaths = this._moduleNamesToPaths( o.moduleNames );
   let resolved = this._fileResolve
@@ -1576,7 +1572,7 @@ function _resolveFirst( o )
   if( o.throwing )
   if( resolved === undefined && !_.longHas( o.moduleNames, _.optional ) )
   {
-    debugger;
+    /* xxx : take care of section module files stack */
     throw _.err
     (
       `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module::' )}.`
@@ -1691,7 +1687,13 @@ function _fileResolve( o )
     /* xxx : not optimal */
     try
     {
+      // xxx2
+      // if( sourcePath === 'wequaler' )
+      // debugger;
+      if( _.path.isAbsolute( sourcePath ) )
       return ModuleFileNative._resolveFilename( _.path.nativize( sourcePath ), native, false, undefined );
+      else
+      return ModuleFileNative._resolveFilename( sourcePath, native, false, undefined );
     }
     catch( err )
     {
@@ -1978,14 +1980,6 @@ function _trackingEnable()
       native = ModuleFileNative._cache[ resolvedPath ];
       _.assert( !!native.parent );
     }
-
-    // console.log( 'second', native.filename || native.id ); /* xxx2 */
-    // if( _.strEnds( native.filename || native.id, 'testing/entry/Main.s' ) )
-    // debugger;
-    // if( _.strEnds( native.filename || native.id, 'program3' ) )
-    // debugger;
-    // if( _.strEnds( native.filename || native.id, 'program4' ) )
-    // debugger;
 
     if( native.parent !== parent )
     {
