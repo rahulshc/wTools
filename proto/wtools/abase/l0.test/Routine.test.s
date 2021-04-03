@@ -7356,9 +7356,9 @@ function vectorizeAny( test )
   test.identical( got.number, isOdd.number );
   test.identical( got.routine, isOdd.routine );
   test.true( _.routine.is( got ) );
-  test.identical( got([ 0, 1, 2, 3 ]), 1 );
+  test.identical( got([ 0, 1, 2, 3 ]), true );
   test.identical( got([ 0, 2 ]), false );
-  test.identical( got([ 1, 3 ]), 1 );
+  test.identical( got([ 1, 3 ]), true );
 }
 
 //
