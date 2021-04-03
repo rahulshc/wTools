@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _realGlobal_;
-let _ = _global_.wTools;
+const _global = _realGlobal_;
+const _ = _global_.wTools;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -489,7 +489,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
           }
           else
           {
-            _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
+            _.assert( 0, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' );
           }
         }
       }
@@ -531,7 +531,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         }
         else
         {
-          _.assert( 0, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' )
+          _.assert( 0, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' )
         }
       }
     }
@@ -1159,7 +1159,7 @@ function ExportTo( dstGlobal, srcGlobal )
 // declare
 // --
 
-let Self = _.containerAdapter;
+const Self = _.containerAdapter;
 
 //
 

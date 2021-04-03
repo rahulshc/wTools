@@ -5,18 +5,18 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
-function setsAreIdenticalShallow( test )
+function areIdenticalShallow( test )
 {
   test.open( 'identical' );
 
@@ -197,51 +197,151 @@ function setsAreIdenticalShallow( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'empty';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  var got = _.set.exportStringShortDiagnostic( src );
+  var got = _.set.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'strings';
   var src = new Set([ 'str1', 'str2' ]);
   var expected = '{- Set with 2 elements -}';
-  var got = _.set.exportStringShortDiagnostic( src );
+  var got = _.set.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'numbers';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  var got = _.set.exportStringShortDiagnostic( src );
+  var got = _.set.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'bool';
   var src = new Set([ true, false, true, false ]);
   var expected = '{- Set with 2 elements -}';
-  var got = _.set.exportStringShortDiagnostic( src );
+  var got = _.set.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.set.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic() );
 
   test.case = 'redundant args'
-  test.shouldThrowErrorSync( () => _.set.exportStringShortDiagnostic( new Set(), new Set() ) );
+  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic( new Set(), new Set() ) );
 
   test.case = 'not set'
-  test.shouldThrowErrorSync( () => _.set.exportStringShortDiagnostic( new HashMap() ) );
+  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic( new HashMap() ) );
+}
+
+//
+
+/* qqq : extend */
+function but( test )
+{
+
+  // test.case = 'basic, 2 args';
+  // var src1 = new Set([ 1, 2, 3 ]);
+  // var src2 = new Set([ 2, 3, 4 ]);
+  // var got = _.set.but( src1, src2 );
+  // test.true( got !== src1 );
+  // test.true( got !== src2 );
+  // test.true( _.set.is( got ) );
+  // var exp = new Set([ 1 ]);
+  // test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.but( null, src1, src2 );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( _.set.is( got ) );
+  var exp = new Set([ 1 ]);
+  test.identical( got, exp );
+
+}
+
+//
+
+/* qqq : extend */
+function only( test )
+{
+
+  // test.case = 'basic, 2 args';
+  // var src1 = new Set([ 1, 2, 3 ]);
+  // var src2 = new Set([ 2, 3, 4 ]);
+  // var got = _.set.only( src1, src2 );
+  // test.true( got !== src1 );
+  // test.true( got !== src2 );
+  // test.true( _.set.is( got ) );
+  // var exp = new Set([ 2, 3 ]);
+  // test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.only( null, src1, src2 );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( _.set.is( got ) );
+  var exp = new Set([ 2, 3 ]);
+  test.identical( got, exp );
+
+}
+
+//
+
+/* qqq : extend */
+function diff( test )
+{
+
+  test.case = 'basic, 2 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.diff( src1, src2 );
+  test.true( got.src1 !== src1 );
+  test.true( got.src2 !== src2 );
+  test.true( _.mapIs( got ) );
+  test.true( _.set.is( got.src1 ) );
+  test.true( _.set.is( got.src2 ) );
+  var exp =
+  {
+    'src1' : new Set([ 1 ]),
+    'src2' : new Set([ 4 ]),
+    'diff' : new Set([ 1, 4 ]),
+    'identical' : false,
+  }
+  test.identical( got, exp );
+
+  test.case = 'basic, 3 args';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.diff( null, src1, src2 );
+  test.true( got.src1 !== src1 );
+  test.true( got.src2 !== src2 );
+  test.true( _.mapIs( got ) );
+  test.true( _.set.is( got.src1 ) );
+  test.true( _.set.is( got.src2 ) );
+  var exp =
+  {
+    'src1' : new Set([ 1 ]),
+    'src2' : new Set([ 4 ]),
+    'diff' : new Set([ 1, 4 ]),
+    'identical' : false,
+  }
+  test.identical( got, exp );
+
 }
 
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Set',
@@ -249,15 +349,21 @@ var Self =
 
   tests :
   {
-    setsAreIdenticalShallow,
-    exportStringShortDiagnostic
+
+    areIdenticalShallow,
+    exportStringShallowDiagnostic,
+
+    but,
+    only,
+    diff,
+
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

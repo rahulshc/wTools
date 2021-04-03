@@ -4,12 +4,13 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
   _.include( 'wSelector' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
+_.assert( _.routineIs( _.select ) );
 
 //--
 // scalar
@@ -14660,7 +14661,7 @@ function entityAny( test )
 
   var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v, i ) => v >= 5 );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v, i, c ) => v > 3 && c.size > 3 );
@@ -14672,7 +14673,7 @@ function entityAny( test )
 
   var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v ) => undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Set( [ _.nothing, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v ) => v );
@@ -14684,7 +14685,7 @@ function entityAny( test )
 
   var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
   var got = _.entityAny( src, ( v, k ) => v === k );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Map( [ [ 'a', 'a' ], [ '4', '4' ], [ 'true', 'true' ] ] );
   var got = _.entityAny( src, ( v, k ) => v === k );
@@ -14700,7 +14701,7 @@ function entityAny( test )
 
   var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
   var got = _.entityAny( src, ( v, k, src ) => src.size === v );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Map( [ [ 1, _.nothing ], [ 'c', 4 ], [ 'a', undefined ] ] );
   var got = _.entityAny( src, ( v, k, src ) => v );
@@ -14714,13 +14715,13 @@ function entityAny( test )
   test.identical( got, true );
 
   var got = _.entityAny( [ false, false, undefined ], ( v, i ) => !!v && i + 2 < 6 );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( [ 1, 'str', { 'a' : 2 }, false ], ( v, i ) => !!v && i + 2 < 6 );
   test.identical( got, true );
 
   var got = _.entityAny( [ 1, 'str', 3, null ], () => undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( [ _.nothing, 1, 'str', 3, null ], ( v ) => v );
   test.identical( got, _.nothing );
@@ -14735,7 +14736,7 @@ function entityAny( test )
 
   var src = _.unrollMake( [ undefined, false, _.unrollFrom( null ) ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = _.unrollMake( [ undefined, false, _.unrollFrom( [ 'str' ] ) ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
@@ -14743,7 +14744,7 @@ function entityAny( test )
 
   var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
   var got = _.entityAny( src, () => undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = _.unrollMake( [ _.nothing, 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
   var got = _.entityAny( src, ( v ) => v );
@@ -14759,7 +14760,7 @@ function entityAny( test )
 
   var src = _.argumentsArray.make( [ false, null, undefined ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], false, 4 ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
@@ -14767,7 +14768,7 @@ function entityAny( test )
 
   var src = _.argumentsArray.make( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, () => undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = _.argumentsArray.make( [ _.nothing, 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, ( v ) => v );
@@ -14783,7 +14784,7 @@ function entityAny( test )
 
   var src = new F32x( [ 'a', undefined, false, null ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new F32x( [ 1, 2, [ 8 ], false, 4 ] );
   var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
@@ -14791,26 +14792,26 @@ function entityAny( test )
 
   var src = new F32x( [ 1, 2, [ 8 ], 3, 4 ] );
   var got = _.entityAny( src, () => undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
   test.case = 'Aux';
 
   var got = _.entityAny( { '1' : 2, 'c' : 4, 'a' : undefined }, ( v, k ) => v === k );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( { 'a' : false, '4' : false, 'true' : 'true' }, ( v, k ) => v === k );
   test.identical( got, true );
 
   var got = _.entityAny( { '1' : 2, '2' : 3, 'a' : null }, ( v, k ) => typeof v === typeof k );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( { 'a' : [], 'b' : 'str' }, ( v, k ) => typeof v === typeof k );
   test.identical( got, true );
 
   var got = _.entityAny( { 'a' : 1, 'b' : false }, ( v, k ) => v === k );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( { 'a' : 1, 'b' : false }, ( v, k, u ) => v !== u );
   test.identical( got, true );
@@ -14823,16 +14824,16 @@ function entityAny( test )
   test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAny( undefined, ( src, u ) => src !== u );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( null, ( src, u ) => src === u );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( 1, ( src, u ) => src !== u );
   test.identical( got, true );
 
   var got = _.entityAny( 'str', ( src, u ) => src === u );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( false, ( src, u ) => src !== u );
   test.identical( got, true );
@@ -14856,7 +14857,7 @@ function entityAny( test )
 
   var src = new Set( [ false, undefined, '' ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Set( [ 1, 2, [ false ], 3, 4 ] );
   var got = _.entityAny( src );
@@ -14872,7 +14873,7 @@ function entityAny( test )
 
   var src = new Map( [ [ 1, '' ], [ 'c', null ], [ 'a', undefined ] ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var src = new Map( [ [ 'a', 1 ], [ '4', [ false ] ], [ 'true', 'true' ] ] );
   var got = _.entityAny( src );
@@ -14880,7 +14881,7 @@ function entityAny( test )
 
   var src = new Map( [ [ 1, false ], [ 2, 0 ], [ 'a', '' ] ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -14893,7 +14894,7 @@ function entityAny( test )
   test.identical( got, 'str' );
 
   var got = _.entityAny( [ false, null, undefined ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -14909,7 +14910,7 @@ function entityAny( test )
 
   var src = _.unrollMake( [ null, undefined, false ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -14925,7 +14926,7 @@ function entityAny( test )
 
   var src = _.argumentsArray.make( [ null, false, undefined ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -14941,7 +14942,7 @@ function entityAny( test )
 
   var src = new F32x( [ 'str', undefined, { 'a' : 2 } ] );
   var got = _.entityAny( src );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -14954,7 +14955,7 @@ function entityAny( test )
   test.identical( got, 2 );
 
   var got = _.entityAny( { 'a' : false, 'b' : null, 'c' : undefined } );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( { 'a' : 'a', 'b' : 'str' } );
   test.identical( got, 'a' );
@@ -14967,10 +14968,10 @@ function entityAny( test )
   test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAny( undefined );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( null );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( 1 );
   test.identical( got, 1 );
@@ -14979,7 +14980,7 @@ function entityAny( test )
   test.identical( got, 'str' );
 
   var got = _.entityAny( false );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   var got = _.entityAny( true );
   test.identical( got, true );
@@ -15002,6 +15003,7 @@ function entityAny( test )
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityAny( { 'a' : 2 }, [] ) );
+
 }
 
 //
@@ -26038,7 +26040,7 @@ function swapsCount( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Functional',
@@ -26184,7 +26186,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

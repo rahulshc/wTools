@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.arraySet = _.arraySet || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.arraySet = _.arraySet || Object.create( null );
 
 // --
 // array set
@@ -57,7 +57,7 @@ let Self = _.arraySet = _.arraySet || Object.create( null );
 
 //
 
-function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
+function _has( /* src, e, onEvaluate1, onEvaluate2 */ )
 {
   let src = arguments[ 0 ];
   let e = arguments[ 1 ];
@@ -133,7 +133,11 @@ function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
+/* qqq : for Yevhen : should work
+_.arraySet.diff_( null, hashMap1.keys(), hashMap2.keys() )
+*/
+/* qqq : reimplement. dst should be map. first discuss */
+function diff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let dst = arguments[ 0 ];
   let src1 = arguments[ 1 ];
@@ -145,7 +149,6 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( _.longIs( dst ) || _.set.is( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.set.is( src1 ) );
   _.assert( _.longIs( src2 ) || _.set.is( src2 ) || _.routine.is( src2 ) || src2 === undefined );
-
 
   if( dst === null )
   dst = new src1.constructor();
@@ -167,7 +170,7 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
       if( _.longLeftIndex( dst, e, onEvaluate1, onEvaluate2 ) === -1 )
       temp.push( e );
       for( let i = dst.length - 1; i >= 0; i-- )
-      if( _arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 )
       for( let i = 0; i < temp.length; i++ )
       dst.push( temp[ i ] );
@@ -175,10 +178,10 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     else if( _.set.like( dst ) )
     {
       for( let e of src2 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       temp.push( e );
       for( let e of dst )
-      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
       for( let i = 0; i < temp.length; i++ )
       dst.add( temp[ i ] );
@@ -192,7 +195,7 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
       if( _.longLeftIndex( dst, e, onEvaluate1, onEvaluate2 ) === -1 )
       temp.push( e );
       for( let i = dst.length - 1; i >= 0; i-- )
-      if( _arraySetHas( src1, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      if( _has( src1, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 )
       for( let i = 0; i < temp.length; i++ )
       dst.push( temp[ i ] );
@@ -200,10 +203,10 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       temp.push( e );
       for( let e of dst )
-      if( _arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
+      if( _has( src1, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
       for( let i = 0; i < temp.length; i++ )
       dst.add( temp[ i ] );
@@ -214,19 +217,19 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
       for( let e of src2 )
-      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src1, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
       for( let e of src2 )
-      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src1, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -296,7 +299,7 @@ function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
+function but_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let dst = arguments[ 0 ];
   let src1 = arguments[ 1 ];
@@ -345,13 +348,13 @@ function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let i = dst.length - 1; i >= 0; i-- )
-      if( _arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of dst )
-      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
     }
   }
@@ -360,13 +363,13 @@ function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -436,7 +439,7 @@ function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
+function intersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let dst = arguments[ 0 ];
   let src1 = arguments[ 1 ];
@@ -484,13 +487,13 @@ function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ 
     if( _.longLike( dst ) )
     {
       for( let i = dst.length - 1; i >= 0; i-- )
-      if( !_arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of dst )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
     }
   }
@@ -499,13 +502,13 @@ function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ 
     if( _.longLike( dst ) )
     {
       for( let e of src1 )
-      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      if( _has( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -551,7 +554,7 @@ function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ 
 
 //
 
-function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
+function union_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let dst = arguments[ 0 ];
   let src1 = arguments[ 1 ];
@@ -591,13 +594,13 @@ function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let e of src2 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src2 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -606,13 +609,13 @@ function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -621,19 +624,19 @@ function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
     if( _.longLike( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
       for( let e of src2 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.push( e );
     }
     else if( _.set.like( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
       for( let e of src2 )
-      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      if( !_has( dst, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -726,7 +729,7 @@ function arraySetContainAll( src )
 
 //
 
-function arraySetContainAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -864,7 +867,7 @@ function arraySetContainAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetContainAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -943,7 +946,7 @@ function arraySetContainAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetContainNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -996,7 +999,7 @@ function arraySetContainNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetContainSetsAll( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containSetsAll( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -1008,7 +1011,7 @@ function arraySetContainSetsAll( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( _.arrayIs( src2 ) || _.set.is( src2 ) );
 
   for( let e of src2 )
-  if( arraySetContainAll_( src1, e, onEvaluate1, onEvaluate2 ) === false )
+  if( containAll_( src1, e, onEvaluate1, onEvaluate2 ) === false )
   return false;
 
   return true;
@@ -1016,7 +1019,7 @@ function arraySetContainSetsAll( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetContainSetsAny( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containSetsAny( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -1028,7 +1031,7 @@ function arraySetContainSetsAny( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( _.arrayIs( src2 ) || _.set.is( src2 ) );
 
   for( let e of src2 )
-  if( arraySetContainAny_( src1, e, onEvaluate1, onEvaluate2 ) === true )
+  if( containAny_( src1, e, onEvaluate1, onEvaluate2 ) === true )
   return true;
 
   return false;
@@ -1036,7 +1039,7 @@ function arraySetContainSetsAny( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetContainSetsNone( /* src1, src2, onEvaluate1, onEvaluate2 */ )
+function containSetsNone( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
   let src1 = arguments[ 0 ];
   let src2 = arguments[ 1 ];
@@ -1048,7 +1051,7 @@ function arraySetContainSetsNone( /* src1, src2, onEvaluate1, onEvaluate2 */ )
   _.assert( _.arrayIs( src2 ) || _.set.is( src2 ) );
 
   for( let e of src2 )
-  if( arraySetContainNone_( src1, e, onEvaluate1, onEvaluate2 ) === false )
+  if( containNone_( src1, e, onEvaluate1, onEvaluate2 ) === false )
   return false;
 
   return true;
@@ -1071,13 +1074,13 @@ function arraySetContainSetsNone( /* src1, src2, onEvaluate1, onEvaluate2 */ )
  * // returns true
  *
  * @returns { Boolean } Result of comparison as boolean.
- * @function arraySetIdentical
+ * @function identical
  * @throws { Error } If one of arguments is not an ArrayLike entity.
  * @throws { Error } If arguments length is not 2.
  * @namespace Tools
  */
 
-function arraySetIdentical( ins1, ins2 )
+function identical( ins1, ins2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -1094,7 +1097,7 @@ function arraySetIdentical( ins1, ins2 )
 
 //
 
-function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
+function left( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -1152,7 +1155,7 @@ function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 
 //
 
-function arraySetRight( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
+function right( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 {
   let arr = arguments[ 0 ];
   let ins = arguments[ 1 ];
@@ -1215,27 +1218,27 @@ let ExtensionTools =
   // array set
 
   // arraySetDiff, /* !!! : use instead of arraySetDiff */
-  arraySetDiff_,
+  arraySetDiff_ : diff_,
   // arraySetBut, /* !!! : use instead of arraySetBut */
-  arraySetBut_,
+  arraySetBut_ : but_,
   // arraySetIntersection, /* !!! : use instead of arraySetIntersection */
-  arraySetIntersection_,
+  arraySetIntersection_ : intersection_,
   // arraySetUnion, /* !!! : use instead of arraySetUnion */
-  arraySetUnion_,
+  arraySetUnion_ : union_,
 
   // arraySetContainAll, /* !!! : use instead of arraySetContainAll */
-  arraySetContainAll_,
+  arraySetContainAll_ : containAll_,
   // arraySetContainAny, /* !!! : use instead of arraySetContainAny */
-  arraySetContainAny_,
+  arraySetContainAny_ : containAny_,
   // arraySetContainNone, /* !!! : use instead of arraySetContainNone */
-  arraySetContainNone_,
-  arraySetContainSetsAll,
-  arraySetContainSetsAny,
-  arraySetContainSetsNone,
-  arraySetIdentical,
+  arraySetContainNone_ : containNone_,
+  arraySetContainSetsAll : containSetsAll,
+  arraySetContainSetsAny : containSetsAny,
+  arraySetContainSetsNone : containSetsNone,
+  arraySetIdentical : identical,
 
-  arraySetLeft,
-  arraySetRight,
+  arraySetLeft : left,
+  arraySetRight : right,
 
   // to replace
 
@@ -1278,27 +1281,27 @@ let Extension =
   // array set
 
   // arraySetDiff, /* !!! : use instead of arraySetDiff */
-  diff_ : arraySetDiff_,
+  diff_,
   // arraySetBut, /* !!! : use instead of arraySetBut */
-  but_ : arraySetBut_,
+  but_,
   // arraySetIntersection, /* !!! : use instead of arraySetIntersection */
-  intersection_ : arraySetIntersection_,
+  intersection_,
   // arraySetUnion, /* !!! : use instead of arraySetUnion */
-  union_ : arraySetUnion_,
+  union_,
 
   // arraySetContainAll, /* !!! : use instead of arraySetContainAll */
-  containAll_ : arraySetContainAll_,
+  containAll_,
   // arraySetContainAny, /* !!! : use instead of arraySetContainAny */
-  containAny_ : arraySetContainAny_,
+  containAny_,
   // arraySetContainNone, /* !!! : use instead of arraySetContainNone */
-  containNone_ : arraySetContainNone_,
-  containSetsAll : arraySetContainSetsAll,
-  containSetsAny : arraySetContainSetsAny,
-  containSetsNone : arraySetContainSetsNone,
-  identical : arraySetIdentical,
+  containNone_,
+  containSetsAll,
+  containSetsAny,
+  containSetsNone,
+  identical,
 
-  left : arraySetLeft,
-  right : arraySetRight,
+  left,
+  right,
 
   // to replace
 
@@ -1306,12 +1309,5 @@ let Extension =
 
 Object.assign( Self, Extension );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

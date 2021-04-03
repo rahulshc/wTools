@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 // --
 // typing
@@ -55,12 +55,5 @@ var AuxiliaryExtension =
 }
 
 Object.assign( _.aux, AuxiliaryExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

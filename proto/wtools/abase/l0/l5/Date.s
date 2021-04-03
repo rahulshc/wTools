@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
 // typing
@@ -59,12 +59,5 @@ let Extension =
 
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

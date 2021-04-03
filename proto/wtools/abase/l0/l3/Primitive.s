@@ -3,15 +3,15 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.primitive = _.primitive || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.primitive = _.primitive || Object.create( null );
 
 // --
 // primitive
 // --
 
-function primitiveIs( src )
+function is( src )
 {
   if( !src )
   return true;
@@ -38,21 +38,21 @@ function _primitiveIs_functor()
 
 }
 
-let _primitiveIs = _primitiveIs_functor();
-_primitiveIs.functor = _primitiveIs_functor;
+let _is = _primitiveIs_functor();
+_is.functor = _primitiveIs_functor;
 
 //
 
-function exportStringShortCode( src )
+function exportStringShallowCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShortCode( src );
+  return _.symbol.exportStringShallowCode( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShortCode( src );
+  return _.bigInt.exportStringShallowCode( src );
 
   if( _.strIs( src ) )
   return `'${src}'`;
@@ -62,16 +62,16 @@ function exportStringShortCode( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShortDiagnostic( src );
+  return _.symbol.exportStringShallowDiagnostic( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShortDiagnostic( src );
+  return _.bigInt.exportStringShallowDiagnostic( src );
 
   return String( src );
 }
@@ -82,35 +82,28 @@ function exportStringShortDiagnostic( src )
 
 let ExtensionTools =
 {
-  primitiveIs,
-  _primitiveIs,
+  primitiveIs : is,
+  _primitiveIs : _is,
 }
 
 //
 
 let Extension =
 {
-  is : primitiveIs,
-  _is : _primitiveIs,
+  is,
+  _is,
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortCode,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowCode,
 }
 
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

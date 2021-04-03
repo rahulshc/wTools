@@ -5,12 +5,12 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -236,39 +236,39 @@ function auxsAreIdentical( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'pure empty map';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'pure map';
   var src = Object.create( null );
   var expected = '{- Map.pure with 1 elements -}';
   src.x = 1;
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'empty polluted map';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
   var expected = '{- Map.polluted with 2 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
   var expected = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from pure map deep';
@@ -276,7 +276,7 @@ function exportStringShortDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var expected = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from pure map deep with props';
@@ -287,14 +287,14 @@ function exportStringShortDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var expected = '{- Aux.pure.prototyped with 2 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
   var expected = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from polluted map deep';
@@ -302,7 +302,7 @@ function exportStringShortDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var expected = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'prototyped from polluted map deep with props';
@@ -313,7 +313,7 @@ function exportStringShortDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var expected = '{- Aux.polluted.prototyped with 2 elements -}';
-  var got = _.aux.exportStringShortDiagnostic( src );
+  var got = _.aux.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
 
@@ -321,13 +321,13 @@ function exportStringShortDiagnostic( test )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.aux.exportStringShallowDiagnostic() );
 
   test.case = 'redundant args'
-  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic( {}, {} ) );
+  test.shouldThrowErrorSync( () => _.aux.exportStringShallowDiagnostic( {}, {} ) );
 
   test.case = 'not aux'
-  test.shouldThrowErrorSync( () => _.aux.exportStringShortDiagnostic( [] ) );
+  test.shouldThrowErrorSync( () => _.aux.exportStringShallowDiagnostic( [] ) );
 }
 
 
@@ -335,7 +335,7 @@ function exportStringShortDiagnostic( test )
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Auxiliary',
@@ -345,14 +345,14 @@ var Self =
   {
     is,
     auxsAreIdentical,
-    exportStringShortDiagnostic
+    exportStringShallowDiagnostic
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

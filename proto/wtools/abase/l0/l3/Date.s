@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
 // typing
@@ -42,7 +42,7 @@ function _identicalShallow( src1, src2 )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.date.is( src ) );
@@ -52,7 +52,7 @@ function exportStringShortDiagnostic( src )
 
 //
 
-function exportStringShortCode( src )
+function exportStringShallowCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.date.is( src ) );
@@ -82,24 +82,17 @@ let Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortCode
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowCode
 }
 
 //
 
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

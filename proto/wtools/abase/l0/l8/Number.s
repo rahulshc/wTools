@@ -3,18 +3,18 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.number = _.number || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.number = _.number || Object.create( null );
 _.number.s = _.number.s || Object.create( null );
 
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
-let _ArraySlice = Array.prototype.slice;
-let _ArraySplice = Array.prototype.splice;
-let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
-let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _ArraySlice = Array.prototype.slice;
+const _ArraySplice = Array.prototype.splice;
+const _FunctionBind = Function.prototype.bind;
+const _ObjectToString = Object.prototype.toString;
+const _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 let _ceil = Math.ceil;
 let _floor = Math.floor;
 
@@ -38,7 +38,7 @@ function numbersTotal( numbers )
 
 //
 
-function numberFrom( src )
+function from( src )
 {
   _.assert( arguments.length === 1 );
   if( _.strIs( src ) )
@@ -84,7 +84,7 @@ function numbersFrom( src )
 
 //
 
-function numberFromStr( src )
+function fromStr( src )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ) )
@@ -95,7 +95,7 @@ function numberFromStr( src )
 //
 
 // function numberFromStrMaybe( src )
-function numberFromStrMaybe( src )
+function fromStrMaybe( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) || _.number.is( src ) );
@@ -182,7 +182,7 @@ function numbersSlice( src, f, l )
  * @namespace Tools
  */
 
-function numberRandom( range )
+function random( range )
 {
 
   if( _.number.is( range ) )
@@ -593,14 +593,14 @@ let ExtensionTools =
 
   numbersTotal,
 
-  numberFrom,
+  numberFrom : from,
   numbersFrom,
-  numberFromStr,
-  numberFromStrMaybe, /* qqq : cover */
+  numberFromStr : fromStr,
+  numberFromStrMaybe : fromStrMaybe, /* qqq : cover */
 
   numbersSlice,
 
-  numberRandom,
+  numberRandom : random,
   intRandom,
   intRandomBut, /* dubious */
 
@@ -619,11 +619,11 @@ let Extension =
 {
 
 
-  from : numberFrom,
-  fromStr : numberFromStr,
-  fromStrMaybe : numberFromStrMaybe, /* qqq : cover */
+  from,
+  fromStr,
+  fromStrMaybe, /* qqq : cover */
 
-  random : numberRandom,
+  random,
   intRandom,
   intRandomBut, /* dubious */
 
@@ -652,12 +652,5 @@ let ExtensionS =
 Object.assign( Self, Extension );
 Object.assign( _.number.s, ExtensionS );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

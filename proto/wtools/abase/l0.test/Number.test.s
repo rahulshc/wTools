@@ -15,7 +15,7 @@ let _ = wTools;
 // l0/l3/Number.s
 //--
 
-function numberIs( test )
+function is( test )
 {
   test.case = 'null';
   var got = _.number.is( null );
@@ -120,7 +120,7 @@ function numberIs( test )
 
 //
 
-function numberIsNotNan( test )
+function isNotNan( test )
 {
   test.case = 'null';
   var got = _.number.isNotNan( null );
@@ -255,7 +255,7 @@ function numberIsNotNan( test )
 
 //
 
-function numberIsFinite( test )
+function isFinite( test )
 {
   test.case = 'null';
   var got = _.number.isFinite( null );
@@ -390,7 +390,7 @@ function numberIsFinite( test )
 
 //
 
-function numberIsInfinite( test )
+function isInfinite( test )
 {
   test.case = 'null';
   var got = _.number.isInfinite( null );
@@ -676,7 +676,7 @@ function intIs( test )
 
 /* - */
 
-function numbersAreAll( test )
+function areAll( test )
 {
   test.case = 'empty array';
   var got = _.number.s.areAll( [] );
@@ -735,7 +735,7 @@ function numbersAreAll( test )
 
 //
 
-function numbersAreIdentical( test )
+function areIdentical( test )
 {
   test.case = 'empty strings';
   var got = _.number.s.areIdentical( '', '' );
@@ -821,7 +821,7 @@ function numbersAreIdentical( test )
 
 //
 
-function numbersAreIdenticalNotStrictly( test )
+function areIdenticalNotStrictly( test )
 {
   test.case = 'empty strings';
   var got = _.number.s.areIdenticalNotStrictly( '', '' );
@@ -907,7 +907,7 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
-function numbersAreEquivalentBasic( test )
+function areEquivalentBasic( test )
 {
 
   test.case = 'empty strings';
@@ -1009,7 +1009,7 @@ function numbersAreEquivalentBasic( test )
 
 /* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` */
 
-function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
+function areEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
 {
   test.open( 'positive numbers' )
 
@@ -1171,7 +1171,7 @@ function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name
 
 //
 
-function numbersAreFinite( test )
+function areFinite( test )
 {
 
   test.case = 'empty array';
@@ -1234,7 +1234,7 @@ function numbersAreFinite( test )
 
 //
 
-function numbersArePositive( test )
+function arePositive( test )
 {
   test.case = '1 1 1';
   var got = _.number.s.arePositive([ 1, 1, 1 ]);
@@ -1278,7 +1278,7 @@ function numbersArePositive( test )
 
 //
 
-function numbersAreInt( test )
+function areInt( test )
 {
   test.case = '1 1 1';
   var got = _.number.s.areInt([ 1, 1, 1 ]);
@@ -1468,7 +1468,7 @@ function numbersTotal( test )
 
 //
 
-function numberFrom( test )
+function from( test )
 {
   test.case = 'null';
   var got = _.number.from( null );
@@ -1829,7 +1829,7 @@ function numbersFrom( test )
 
 //
 
-function numberFromStr( test )
+function fromStr( test )
 {
   test.case = 'src - empty string';
   var src = '';
@@ -1948,7 +1948,7 @@ function numberFromStr( test )
 
 //
 
-function numberFromStrMaybe( test )
+function fromStrMaybe( test )
 {
   test.case = 'src - number integer';
   var src = 1;
@@ -2207,7 +2207,7 @@ function numbersSlice( test )
 
 //
 
-function numberRandom( test )
+function random( test )
 {
   test.case = 'range - 0';
   var got = _.number.random( 0 );
@@ -2725,7 +2725,7 @@ function numbersFromInt( test )
 // declaration
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Number',
@@ -2737,34 +2737,35 @@ let Self =
 
     // l0/l3/Number.s
 
-    numberIs,
-    numberIsNotNan,
-    numberIsFinite,
-    numberIsInfinite,
+    is,
+    isNotNan,
+    isFinite,
+    isInfinite,
     intIs,
-    numbersAreAll,
-    numbersAreIdentical,
-    numbersAreIdenticalNotStrictly,
-    numbersAreEquivalentBasic,
-    numbersAreEquivalentOptionAccuracy,
-    numbersAreFinite,
-    numbersArePositive,
-    numbersAreInt,
+    areAll,
+    areIdentical,
+    areIdenticalNotStrictly,
+    areEquivalentBasic,
+    areEquivalentOptionAccuracy,
+    areFinite,
+    arePositive,
+    areInt,
 
     // l0/l8/Number.s
+
     bigIntFrom,
 
     // l0/l8/Number.s
 
     numbersTotal,
-    numberFrom,
+    from,
     numbersFrom,
-    numberFromStr,
-    numberFromStrMaybe,
+    fromStr,
+    fromStrMaybe,
 
     numbersSlice,
 
-    numberRandom,
+    random,
     intRandom,
 
     numbersMake,
@@ -2775,7 +2776,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

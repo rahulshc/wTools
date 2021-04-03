@@ -3,16 +3,16 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
 
 // --
 // typing
 // --
 
 /**
- * Function objectIs checks incoming param whether it is object.
+ * Function is checks incoming param whether it is object.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
  * @example
@@ -26,18 +26,18 @@ let Self = _global_.wTools.object = _global_.wTools.object || Object.create( nul
  *
  * @param { * } src.
  * @return { Boolean }.
- * @function objectIs
+ * @function is
  * @namespace Tools
  */
 
-function objectIs( src )
+function is( src )
 {
   return Object.prototype.toString.call( src ) === '[object Object]';
 }
 
 //
 
-function objectLike( src ) /* xxx qqq : optimize */
+function like( src ) /* xxx : qqq : for Yevhen : optimize */
 {
 
   if( _.object.is( src ) )
@@ -70,7 +70,7 @@ function objectLike( src ) /* xxx qqq : optimize */
 
 //
 
-function objectLikeStandard( src ) /* xxx qqq : optimize */
+function likeStandard( src ) /* xxx : qqq : for Yevhen : optimize */
 {
 
   // if( _.object.is( src ) )
@@ -99,22 +99,24 @@ function objectLikeStandard( src ) /* xxx qqq : optimize */
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.object.like( src ) );
 
   let result = '';
+  let method = _.class.methodExportStringOf( src );
 
-  if( _.routineIs( src.exportString ) )
+  // if( _.routineIs( src.exportString ) )
+  if( method )
   {
-    result = src.exportString({ verbosity : 1, /*, ... o */ });
+    result = method.call( src, { verbosity : 1 } );
     result = _.strShort( result );
   }
   else
   {
     if( _.countable.is( src ) )
-    result = _.countable.exportStringShortDiagnostic( src );
+    result = _.countable.exportStringShallowDiagnostic( src );
     else
     result = `{- ${_.entity.strType( src )} -}`;
   }
@@ -231,9 +233,9 @@ let ToolsExtension =
 
   // typing
 
-  objectIs, /* qqq : optimize */
-  objectLike, /* qqq : optimize */
-  objectLikeStandard, /* qqq : optimize */
+  objectIs : is, /* qqq : optimize */
+  objectLike : like, /* qqq : optimize */
+  objectLikeStandard : likeStandard, /* qqq : optimize */
 
   //
 
@@ -246,18 +248,18 @@ let Extension =
 
   // typing
 
-  is : objectIs,
-  like : objectLike,
-  likeStandard : objectLikeStandard,
+  is,
+  like,
+  likeStandard,
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
   //
 
@@ -269,12 +271,5 @@ let Extension =
 
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

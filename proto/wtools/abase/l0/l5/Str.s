@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // decorator
@@ -2524,7 +2524,7 @@ function strSplit_body( o )
 
   if( !o.stripping && !o.quoting && !o.onDelimeter )
   {
-    return _.strSplitFast.body( _.mapOnly( o, _.strSplitFast.defaults ) );
+    return _.strSplitFast.body( _.mapOnly_( null, o, _.strSplitFast.defaults ) );
   }
 
   /* */
@@ -2534,7 +2534,7 @@ function strSplit_body( o )
   /* */
 
   let result = [];
-  let fastOptions = _.mapOnly( o, _.strSplitFast.defaults );
+  let fastOptions = _.mapOnly_( null, o, _.strSplitFast.defaults );
   fastOptions.preservingEmpty = 1;
   fastOptions.preservingDelimeters = 1;
 
@@ -3413,22 +3413,22 @@ function exportStringSimple()
 
 //
 
-function exportStringShort( src, opts )
+function exportStringShallow( src, opts )
 {
   let result = '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.entity.exportStringShortDiagnostic( src );
+  result = _.entity.exportStringShallowDiagnostic( src );
   // result = _.entity.exportStringSimple( src );
-  // result = _.entity.exportStringShort( src ); xxx
+  // result = _.entity.exportStringShallow( src ); xxx
   return result;
 }
 
-// exportStringShort.fields = exportStringShort;
-// exportStringShort.routines = exportStringShort;
+// exportStringShallow.fields = exportStringShallow;
+// exportStringShallow.routines = exportStringShallow;
 
 // //
 //
-// function _exportStringShort_head( routine, args )
+// function _exportStringShallow_head( routine, args )
 // {
 //
 //   let o = args[ 0 ];
@@ -3447,11 +3447,12 @@ function exportStringShort( src, opts )
 
 //
 
+/* xxx : qqq : for Yevhen : take into account throwing cases */
 /* qqq : for Yevhen : optimize. ask how to */
-function _exportStringShort( src, o )
+function _exportStringShallow( src, o )
 {
 
-  _.assertRoutineOptions( _exportStringShort, o );
+  _.assertRoutineOptions( _exportStringShallow, o );
   _.assert( arguments.length === 2 );
   _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
   _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
@@ -3459,7 +3460,7 @@ function _exportStringShort( src, o )
   _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
 
   let result = '';
-  let method = o.format === 'string.diagnostic' ? 'exportStringShortDiagnostic' : 'exportStringShortCode'
+  let method = o.format === 'string.diagnostic' ? 'exportStringShallowDiagnostic' : 'exportStringShallowCode'
 
   try
   {
@@ -3517,7 +3518,7 @@ function _exportStringShort( src, o )
   return result;
 }
 
-_exportStringShort.defaults =
+_exportStringShallow.defaults =
 {
   // src : null,
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
@@ -3525,26 +3526,26 @@ _exportStringShort.defaults =
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
-// let _exportStringShort = _.routine.unite( _exportStringShort_head, _exportStringShort_body );
-// _exportStringShort.defaults.format = 'string.diagnostic';
+// let _exportStringShallow = _.routine.unite( _exportStringShallow_head, _exportStringShallow_body );
+// _exportStringShallow.defaults.format = 'string.diagnostic';
 
-// let _exportStringShortCode = _.routine.uniteCloning( _exportStringShort_head, _exportStringShort_body );
-// _exportStringShortCode.defaults.format = 'string.code';
+// let _exportStringShallowCode = _.routine.uniteCloning( _exportStringShallow_head, _exportStringShallow_body );
+// _exportStringShallowCode.defaults.format = 'string.code';
 
 //
 
 /* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShortCode( src, o ) /* */
+function exportStringShallowCode( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routineOptions( exportStringShortCode, o );
-  o.format = o.format || exportStringShortCode.defaults.format;
+  o = _.routineOptions( exportStringShallowCode, o );
+  o.format = o.format || exportStringShallowCode.defaults.format;
 
-  return _.entity._exportStringShort( src, o );
+  return _.entity._exportStringShallow( src, o );
 }
 
-exportStringShortCode.defaults =
+exportStringShallowCode.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
@@ -3554,17 +3555,17 @@ exportStringShortCode.defaults =
 //
 
 /* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShortDiagnostic( src, o ) /* */
+function exportStringShallowDiagnostic( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routineOptions( exportStringShortDiagnostic, o );
-  o.format = o.format || exportStringShortDiagnostic.defaults.format;
+  o = _.routineOptions( exportStringShallowDiagnostic, o );
+  o.format = o.format || exportStringShallowDiagnostic.defaults.format;
 
-  return _.entity._exportStringShort( src, o );
+  return _.entity._exportStringShallow( src, o );
 }
 
-exportStringShortDiagnostic.defaults =
+exportStringShallowDiagnostic.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
@@ -3573,18 +3574,18 @@ exportStringShortDiagnostic.defaults =
 
 //
 
-// function exportStringShortCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
+// function exportStringShallowCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
 // {
 //   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 //
 //   // if( o )
 //   // {
 //   //   o.src = src;
-//   //   return _.entity._exportStringShortCode( o );
+//   //   return _.entity._exportStringShallowCode( o );
 //   // }
 //   // else
 //   // {
-//   return _.entity._exportStringShortCode({ src });
+//   return _.entity._exportStringShallowCode({ src });
 //   // }
 // }
 
@@ -3673,14 +3674,14 @@ let ExtensionEntity =
 {
 
   exportStringSimple, /* xxx : deprecate? */
-  exportStringShort,
-  _exportStringShort,
-  exportString : exportStringShort,
-  exportStringShortFine : exportStringShortDiagnostic, /* xxx : remove */
-  // exportStringShortCode, /* qqq xxx : introduce | aaa : Done. qqq for Yevhen : bad! */
-  // _exportStringShortCode,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
+  exportStringShallow,
+  _exportStringShallow,
+  exportString : exportStringShallow,
+  exportStringShallowFine : exportStringShallowDiagnostic, /* xxx : remove */
+  // exportStringShallowCode, /* qqq xxx : introduce | aaa : Done. qqq for Yevhen : bad! */
+  // _exportStringShallowCode,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic,
 }
 
 /* xxx : duplicate exportString in namespace::diagnostic? */
@@ -3691,12 +3692,5 @@ _.mapExtend( Self, Extension );
 _.mapExtend( _.entity, ExtensionEntity );
 
 _.assert( !!_.strSplit.defaults.preservingEmpty );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

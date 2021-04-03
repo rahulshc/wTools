@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.process = _.process || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.process = _.process || Object.create( null );
 
 // --
 //
@@ -183,12 +183,5 @@ let Extension =
 //
 
 Object.assign( _.process, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -5,7 +5,7 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.errBrief( 'Please, specify a positive number.' );
+    throw _.error.brief( 'Please, specify a positive number.' );
     return i-1;
   }
   catch( err )

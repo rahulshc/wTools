@@ -3,11 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 // --
 // array
@@ -76,7 +76,7 @@ function arrayLike( src ) /* qqq : cover */
   return true;
   if( _.argumentsArray.is( src ) )
   return true;
-  // if( _.entity.methodIteratorOf( src ) ) /* yyy */
+  // if( _.class.methodIteratorOf( src ) ) /* yyy */
   // // if( !_.mapIs( src ) && _.object.is( src ) )
   // if( !_.mapIs( src ) )
   // return true;
@@ -223,7 +223,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -320,7 +320,7 @@ function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -418,7 +418,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
 
   return dstArray;
 }
@@ -1290,7 +1290,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -1342,7 +1342,7 @@ function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ 
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShort( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
   }
   else
   {
@@ -1968,12 +1968,5 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

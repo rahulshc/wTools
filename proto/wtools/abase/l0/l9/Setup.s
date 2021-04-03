@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global.wTools;
-let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
+const _global = _global_;
+const _ = _global.wTools;
+const Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 _global.wTools.error = _global.wTools.error || Object.create( null );
 
 // --
@@ -161,6 +161,22 @@ function _setupTime()
 
 //
 
+function _validate()
+{
+
+  if( !Config.debug )
+  return;
+
+  if( !Object.hasOwnProperty.call( _global_, 'wTools' ) || !_global_.wTools.maybe )
+  {
+    debugger;
+    throw new Error( 'Failed to include module::wTools' );
+  }
+
+}
+
+//
+
 function _Setup9()
 {
 
@@ -174,6 +190,7 @@ function _Setup9()
     _.setup._setupTesterPlaceholder();
     _.setup._setupProcedure();
     _.setup._setupTime();
+    _.setup._validate();
   }
 
 }
@@ -190,6 +207,7 @@ let SetupExtension =
   _setupTesterPlaceholder,
   _setupProcedure,
   _setupTime,
+  _validate,
 
   _Setup9,
 
@@ -202,12 +220,5 @@ let SetupExtension =
 
 Object.assign( _.setup, SetupExtension );
 Self._Setup9();
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

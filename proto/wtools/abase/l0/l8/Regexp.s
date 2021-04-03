@@ -3,19 +3,18 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-// let Self = _global_.wTools;
-let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
-let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+const Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
-let _ArrayIndexOf = Array.prototype.indexOf;
-let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
-let _ArraySlice = Array.prototype.slice;
-let _ArraySplice = Array.prototype.splice;
-let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
-let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
+const _ArrayIndexOf = Array.prototype.indexOf;
+const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+const _ArraySlice = Array.prototype.slice;
+const _ArraySplice = Array.prototype.splice;
+const _FunctionBind = Function.prototype.bind;
+const _ObjectToString = Object.prototype.toString;
+const _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 
 // --
 // regexp
@@ -29,18 +28,18 @@ let regexpsEscape = null;
  * Make regexp from string.
  *
  * @example
- * _.regexpFrom( 'Hello. How are you?' );
+ * _.regexp.from( 'Hello. How are you?' );
  * // returns /Hello\. How are you\?/
  *
  * @param {RegexpLike} src - string or regexp
  * @returns {String} Regexp
  * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
  if src not string-like ( string or regexp )
- * @function regexpFrom
+ * @function from
  * @namespace Tools
  */
 
-function regexpFrom( src, flags )
+function from( src, flags )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -56,14 +55,14 @@ function regexpFrom( src, flags )
 
 //
 
-function regexpMaybeFrom( o )
+function maybeFrom( o )
 {
   if( !_.mapIs( o ) )
   o = { srcStr : arguments[ 0 ] }
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( o.srcStr ) || _.regexpIs( o.srcStr ) );
-  _.routine.options( regexpMaybeFrom, o );
+  _.routine.options( maybeFrom, o );
 
   let result = o.srcStr;
   let strips;
@@ -107,7 +106,7 @@ function regexpMaybeFrom( o )
   return result;
 }
 
-regexpMaybeFrom.defaults =
+maybeFrom.defaults =
 {
   srcStr : null,
   stringWithRegexp : 1,
@@ -117,7 +116,7 @@ regexpMaybeFrom.defaults =
 
 //
 
-let regexpsMaybeFrom = _.routineVectorize_functor( { routine : regexpMaybeFrom, select : 'srcStr' } );
+let regexpsMaybeFrom = _.routineVectorize_functor( { routine : maybeFrom, select : 'srcStr' } );
 
 //
 
@@ -453,17 +452,17 @@ regexpsAll.defaults =
  * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
  *
  * @example
- * _.regexpArrayMake( ['red', 'white', /[a-z]/] );
+ * _.regexp.arrayMake( ['red', 'white', /[a-z]/] );
  * // returns [ /red/, /white/, /[a-z]/ ]
  *
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
  * @throw {Error} if `src` in not string, regexp, or array
- * @function regexpArrayMake
+ * @function arrayMake
  * @namespace Tools
  */
 
-function regexpArrayMake( src )
+function arrayMake( src )
 {
 
   _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
@@ -490,13 +489,13 @@ function regexpArrayMake( src )
 //
 
 /**
- * Routine regexpArrayIndex() returns the index of the first regular expression that matches substring
+ * Routine arrayIndex() returns the index of the first regular expression that matches substring
  * Otherwise, it returns -1.
  *
  * @example
  * let str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  * let regArr1 = [/white/, /green/, /blue/];
- * _.regexpArrayIndex(regArr1, str);
+ * _.regexp.arrayIndex(regArr1, str);
  * // returns 1
  *
  * @param {RegExp[]} arr Array for regular expressions.
@@ -505,11 +504,11 @@ function regexpArrayMake( src )
  * @throws {Error} If first argument is not array.
  * @throws {Error} If second argument is not string.
  * @throws {Error} If element of array is not RegExp.
- * @function regexpArrayIndex
+ * @function arrayIndex
  * @namespace Tools
  */
 
-function regexpArrayIndex( arr, ins )
+function arrayIndex( arr, ins )
 {
   _.assert( _.arrayIs( arr ) );
   _.assert( _.strIs( ins ) );
@@ -536,12 +535,12 @@ function regexpArrayIndex( arr, ins )
  * @example
  * let str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  * let regArr2 = [/yellow/, /blue/, /red/];
- * _.regexpArrayAny(regArr2, str, false);
+ * _.arrayAny(regArr2, str, false);
  * // returns 1
  *
  * @example
  * let regArr3 = [/yellow/, /white/, /greey/]
- * _.regexpArrayAny(regArr3, str, false);
+ * _.regexp.arrayAny(regArr3, str, false);
  * // returns false
  *
  * @param {String[]} arr Array of regular expressions strings
@@ -549,11 +548,11 @@ function regexpArrayIndex( arr, ins )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @function regexpArrayAny
+ * @function arrayAny
  * @namespace Tools
  */
 
-function regexpArrayAny( arr, ins, ifEmpty )
+function arrayAny( arr, ins, ifEmpty )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -581,12 +580,12 @@ function regexpArrayAny( arr, ins, ifEmpty )
  * @example
  * let str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  * let regArr1 = [/red/, /green/, /blue/];
- * _.regexpArrayAll(regArr1, str, false);
+ * _.regexp.arrayAll(regArr1, str, false);
  * // returns true
  *
  * @example
  * let regArr2 = [/yellow/, /blue/, /red/];
- * _.regexpArrayAll(regArr2, str, false);
+ * _.regexp.arrayAll(regArr2, str, false);
  * // returns 0
  *
  * @param {String[]} arr Array of regular expressions strings
@@ -594,11 +593,11 @@ function regexpArrayAny( arr, ins, ifEmpty )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @function regexpArrayAll
+ * @function arrayAll
  * @namespace Tools
  */
 
-function regexpArrayAll( arr, ins, ifEmpty )
+function arrayAll( arr, ins, ifEmpty )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -615,7 +614,7 @@ function regexpArrayAll( arr, ins, ifEmpty )
 
 //
 
-function regexpArrayNone( arr, ins, ifEmpty )
+function arrayNone( arr, ins, ifEmpty )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -639,9 +638,9 @@ function regexpArrayNone( arr, ins, ifEmpty )
 let ExtensionTools =
 {
 
-  regexpFrom,
+  regexpFrom : from,
 
-  regexpMaybeFrom,
+  regexpMaybeFrom : maybeFrom,
   regexpsMaybeFrom,
 
   regexpsSources,
@@ -654,11 +653,11 @@ let ExtensionTools =
   regexpsAny,
   regexpsAll,
 
-  regexpArrayMake,
-  regexpArrayIndex,
-  regexpArrayAny,
-  regexpArrayAll,
-  regexpArrayNone,
+  regexpArrayMake : arrayMake,
+  regexpArrayIndex : arrayIndex,
+  regexpArrayAny : arrayAny,
+  regexpArrayAll : arrayAll,
+  regexpArrayNone : arrayNone,
 
 }
 
@@ -669,15 +668,15 @@ let Extension =
 
   // regexp
 
-  from : regexpFrom,
+  from,
 
-  maybeFrom : regexpMaybeFrom,
+  maybeFrom,
 
-  arrayMake : regexpArrayMake,
-  arrayIndex : regexpArrayIndex,
-  arrayAny : regexpArrayAny,
-  arrayAll : regexpArrayAll,
-  arrayNone : regexpArrayNone,
+  arrayMake,
+  arrayIndex,
+  arrayAny,
+  arrayAll,
+  arrayNone,
 
 }
 
@@ -705,16 +704,5 @@ let ExtensionS =
 Object.assign( _, ExtensionTools );
 Object.assign( Regexp, Extension );
 Object.assign( Regexps, ExtensionS );
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
-// Object.assign( _, Routines );
-// Object.assign( _, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

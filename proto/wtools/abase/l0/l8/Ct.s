@@ -11,9 +11,9 @@ CT -- colorful text.
 
 //
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.ct = _.ct || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.ct = _.ct || Object.create( null );
 
 // --
 // implementation
@@ -376,12 +376,5 @@ let Extension =
 }
 
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

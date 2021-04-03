@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-// let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+// const Self = _global_.wTools;
 let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
 let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
@@ -14,7 +14,7 @@ let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.crea
 // regexp
 // --
 
-function _regexpTest( regexp, str )
+function _test( regexp, str )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.regexpLike( regexp ) );
@@ -29,60 +29,60 @@ function _regexpTest( regexp, str )
 
 //
 
-function regexpTest( regexp, strs )
+function test( regexp, strs )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._regexpTest( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.map( ( str ) => _._regexpTest( regexp, str ) )
+  return strs.map( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
 
 //
 
-function regexpTestAll( regexp, strs )
+function testAll( regexp, strs )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._regexpTest( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.every( ( str ) => _._regexpTest( regexp, str ) )
+  return strs.every( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
 
 //
 
-function regexpTestAny( regexp, strs )
+function testAny( regexp, strs )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return _._regexpTest( regexp, strs );
+  return _.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.some( ( str ) => _._regexpTest( regexp, str ) )
+  return strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
 
 //
 
-function regexpTestNone( regexp, strs )
+function testNone( regexp, strs )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return !_._regexpTest( regexp, strs );
+  return !_.regexp._test( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return !strs.some( ( str ) => _._regexpTest( regexp, str ) )
+  return !strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
 }
@@ -140,12 +140,12 @@ let ExtensionTools =
 
   regexpsEscape : _.vectorize( _.regexpEscape ),
 
-  _regexpTest,
-  regexpTest,
+  _regexpTest : _test,
+  regexpTest : test,
 
-  regexpTestAll,
-  regexpTestAny,
-  regexpTestNone,
+  regexpTestAll : testAll,
+  regexpTestAny : testAny,
+  regexpTestNone : testNone,
 
   regexpsTestAll,
   regexpsTestAny,
@@ -160,12 +160,12 @@ let Extension =
 
   // regexp
 
-  _test : _regexpTest,
-  test : regexpTest,
+  _test,
+  test,
 
-  testAll : regexpTestAll,
-  testAny : regexpTestAny,
-  testNone : regexpTestNone,
+  testAll,
+  testAny,
+  testNone,
 
 }
 
@@ -189,12 +189,5 @@ let ExtensionS =
 _.mapSupplement( Regexp, Extension );
 _.mapSupplement( Regexps, ExtensionS );
 _.mapSupplement( _, ExtensionTools ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

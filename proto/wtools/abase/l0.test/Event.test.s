@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // chain
@@ -1803,7 +1803,7 @@ function eventGive( test )
   },
   ( err, arg ) =>
   {
-    test.true( _.errIs( err ) );
+    test.true( _.error.is( err ) );
     test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
   });
 }
@@ -1812,7 +1812,7 @@ function eventGive( test )
 // declare
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Event',
@@ -1848,7 +1848,7 @@ var Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

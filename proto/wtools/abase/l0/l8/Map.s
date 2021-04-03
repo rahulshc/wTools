@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 _global_.wTools.map = _global_.wTools.map || Object.create( null );
 
 // --
@@ -30,12 +30,6 @@ let ExtensionMap =
 
 Object.assign( Self, ExtensionTools );
 Object.assign( _.map, ExtensionMap );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.assert( _.aux.is( _.map ) );
 
 })();

@@ -5,18 +5,18 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
-function hashMapsAreIdenticalShallow( test )
+function areIdenticalShallow( test )
 {
   test.open( 'identical' );
 
@@ -192,7 +192,7 @@ function hashMapsAreIdenticalShallow( test )
   var got = _.hashMap.identicalShallow( src1, src2 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'non-primitive, key not same refference. object empty';
   var key1 = {};
@@ -230,7 +230,7 @@ function hashMapsAreIdenticalShallow( test )
   var got = _.hashMap.identicalShallow( src1, src2 );
   test.identical( got, false );
 
-  //
+  /* */
 
   test.case = 'non-primitive, key not same refference. array empty';
   var key1 = [];
@@ -273,66 +273,100 @@ function hashMapsAreIdenticalShallow( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
   test.case = 'empty';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'strings';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'numbers';
   var src = new HashMap([ [ 1, 1 ], [ 2, 2 ], [ 3, 3 ] ]);
   var expected = '{- HashMap with 3 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'bool';
   var src = new HashMap([ [ true, 1 ], [ true, 2 ], [ false, 3 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  var got = _.hashMap.exportStringShortDiagnostic( src );
+  var got = _.hashMap.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic() );
 
   test.case = 'redundant args'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic( new HashMap(), new HashMap() ) );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic( new HashMap(), new HashMap() ) );
 
   test.case = 'not hashMap'
-  test.shouldThrowErrorSync( () => _.hashMap.exportStringShortDiagnostic( new Set() ) );
+  test.shouldThrowErrorSync( () => _.hashMap.exportStringShallowDiagnostic( new Set() ) );
+}
+
+//
+
+function fromMap( test )
+{
+
+  test.case = 'basic, 1 arg';
+  var src =
+  {
+    a : 1,
+    b : 2,
+  }
+  var got = _.hashMap.fromMap( src );
+  var exp = new HashMap();
+  exp.set( 'a', 1 );
+  exp.set( 'b', 2 );
+  test.identical( got, exp );
+
+  test.case = 'basic, 2 args';
+  var src =
+  {
+    a : 1,
+    b : 2,
+  }
+  var got = _.hashMap.fromMap( null, src );
+  var exp = new HashMap();
+  exp.set( 'a', 1 );
+  exp.set( 'b', 2 );
+  test.identical( got, exp );
+
 }
 
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
-  name : 'Tools.HashMap',
+  name : 'Tools.HashMap', /* xxx : make optional name. deduce if not defined */
   silencing : 1,
 
   tests :
   {
-    hashMapsAreIdenticalShallow,
-    exportStringShortDiagnostic
+
+    areIdenticalShallow,
+    exportStringShallowDiagnostic,
+    fromMap,
+
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

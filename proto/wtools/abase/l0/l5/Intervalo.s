@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // checker
@@ -27,83 +27,6 @@ function isPopulated( ointerval )
   return false;
   return ointerval[ 0 ] !== ointerval[ 1 ];
 }
-
-// //
-//
-// function inInclusive( ointerval, srcNumber )
-// {
-//
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < ointerval[ 0 ] )
-//   return false;
-//   if( srcNumber >= ointerval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inExclusive( ointerval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber <= ointerval[ 0 ] )
-//   return false;
-//   if( srcNumber > ointerval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveLeft( ointerval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < ointerval[ 0 ] )
-//   return false;
-//   if( srcNumber >= ointerval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function inInclusiveRight( ointerval, srcNumber )
-// {
-//   if( _.longIs( srcNumber ) )
-//   srcNumber = srcNumber.length;
-//
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.intervalIs( ointerval ) );
-//   _.assert( _.number.is( srcNumber ) );
-//
-//   if( srcNumber < ointerval[ 0 ] )
-//   return false;
-//   if( srcNumber >= ointerval[ 1 ] )
-//   return false;
-//
-//   return true;
-// }
 
 //
 
@@ -306,7 +229,7 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Orange, Handler );
+const Self = new Proxy( Orange, Handler );
 Self.original = Orange;
 
 // --
@@ -324,11 +247,6 @@ let Extension =
   isEmpty,
   isPopulated,
 
-  // inInclusive,
-  // inExclusive,
-  // inInclusiveLeft,
-  // inInclusiveRight,
-  // has : inInclusiveLeft,
   has,
 
   sureIn,
@@ -352,15 +270,11 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-// _.assert( _.ointerval === undefined );
 _.assert( _.ointerval !== undefined );
 _.mapSupplement( Self, _.ointerval );
 _.ointerval = Self;
+// _.assert( _.auxIs( _.ointerval ) ); /* xxx : uncomment? */
 
-// --
-// export
-// --
+/* xxx : qqq : for Dmytro : bad : [ 1, 3 ] instanceof _.ointerval is not covered and does not work! */
 
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 })();

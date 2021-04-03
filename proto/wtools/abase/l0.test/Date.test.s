@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 //--
 // tests
@@ -170,124 +170,124 @@ function is( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
   test.case = 'new Date( 1000 )';
   var src = new Date( 1000 );
   var expected = '1970-01-01T00:00:01.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( \'01 Jan 1970 00:00:00 GMT\' )';
   var src = new Date( '01 Jan 1970 00:00:00 GMT' );
   var expected = '1970-01-01T00:00:00.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( 2011, 1 )';
   var src = new Date( Date.UTC( 2011, 1 ) );
   var expected = '2011-02-01T00:00:00.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( Date.UTC( 2011, 1, 1 )';
   var src = new Date( Date.UTC( 2011, 1, 1 ) );
   var expected = '2011-02-01T00:00:00.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( Date.UTC( 2011, 1, 1, 1 ) )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1 ) );
   var expected = '2011-02-01T01:00:00.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1 ) )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1 ) );
   var expected = '2011-02-01T01:01:00.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) );
   var expected = '2011-02-01T01:01:01.000Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) );
   var expected = '2011-02-01T01:01:01.001Z';
-  var got = _.date.exportStringShortDiagnostic( src );
+  var got = _.date.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowDiagnostic() );
 
   test.case = 'not a date';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortDiagnostic( 11314 ) );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowDiagnostic( 11314 ) );
 
 }
 
 //
 
-function exportStringShortCode( test )
+function exportStringShallowCode( test )
 {
   test.case = 'new Date( 1000 )';
   var src = new Date( 1000 );
   var expected = `new Date( '1970-01-01T00:00:01.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( \'01 Jan 1970 00:00:00 GMT\' )';
   var src = new Date( '01 Jan 1970 00:00:00 GMT' );
   var expected = `new Date( '1970-01-01T00:00:00.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1 )';
   var src = new Date( Date.UTC( 2011, 1 ) );
   var expected = `new Date( '2011-02-01T00:00:00.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1';
   var src = new Date( Date.UTC( 2011, 1, 1 ) );
   var expected = `new Date( '2011-02-01T00:00:00.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1 )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1 ) );
   var expected = `new Date( '2011-02-01T01:00:00.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1 )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1 ) );
   var expected = `new Date( '2011-02-01T01:01:00.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1, 1 )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1 ) );
   var expected = `new Date( '2011-02-01T01:01:01.000Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
   test.case = 'new Date( 2011, 1, 1, 1, 1, 1, 1 )';
   var src = new Date( Date.UTC( 2011, 1, 1, 1, 1, 1, 1 ) );
   var expected = `new Date( '2011-02-01T01:01:01.001Z' )`;
-  var got = _.date.exportStringShortCode( src );
+  var got = _.date.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToDate( got ), src );
 
@@ -295,10 +295,10 @@ function exportStringShortCode( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode() );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode() );
 
   test.case = 'not a date';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode( 11314 ) );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode( 11314 ) );
 
   /* - */
 
@@ -312,7 +312,7 @@ function exportStringShortCode( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Date',
@@ -322,13 +322,13 @@ let Self =
   tests :
   {
     is,
-    exportStringShortDiagnostic,
-    exportStringShortCode
+    exportStringShallowDiagnostic,
+    exportStringShallowCode
   }
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

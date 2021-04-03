@@ -3,15 +3,15 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.number = _.number || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.number = _.number || Object.create( null );
 
 // --
 // number
 // --
 
-function numberClamp( src, low, high )
+function clamp( src, low, high )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.number.is( src ) );
@@ -34,7 +34,7 @@ function numberClamp( src, low, high )
 
 //
 
-function numberMix( ins1, ins2, progress )
+function mix( ins1, ins2, progress )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   return ins1*( 1-progress ) + ins2*( progress );
@@ -50,8 +50,8 @@ zzz : review and merge with similar routines _.range.*
 
 let ExtensionTools =
 {
-  numberClamp, /* teach it to accept cintervals */
-  numberMix,
+  numberClamp : clamp, /* teach it to accept cintervals */
+  numberMix : mix,
 
 }
 
@@ -59,19 +59,12 @@ let ExtensionTools =
 
 let Extension =
 {
-  clamp : numberClamp,
-  mix : numberMix,
+  clamp,
+  mix,
 
 }
 
 Object.assign( Self, Extension );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

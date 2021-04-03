@@ -5,12 +5,12 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -31,50 +31,50 @@ function checks( test ) /* qqq for Yevhen : extend */
 
 }
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
   test.case = 'array empty';
   var src = [];
   var expected = '{- Array with 0 elements -}';
-  var got = _.vector.exportStringShortDiagnostic( src );
+  var got = _.vector.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'array non-empty';
   var src = [ 1, 2, 3 ];
   var expected = '{- Array with 3 elements -}';
-  var got = _.vector.exportStringShortDiagnostic( src );
+  var got = _.vector.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'unroll empty';
   var src = _.unrollMake([]);
   var expected = '{- Array.unroll with 0 elements -}';
-  var got = _.vector.exportStringShortDiagnostic( src );
+  var got = _.vector.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'unroll non-empty';
   var src = _.unrollMake([ 1, 2, 3 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  var got = _.vector.exportStringShortDiagnostic( src );
+  var got = _.vector.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShortDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic( {} ) );
 }
 
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Vector',
@@ -83,14 +83,14 @@ var Self =
   tests :
   {
     checks,
-    exportStringShortDiagnostic
+    exportStringShallowDiagnostic
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

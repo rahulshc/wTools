@@ -5,19 +5,19 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function bigIntIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.bigInt.is();
@@ -124,33 +124,33 @@ function bigIntIs( test )
 
 //
 
-function exportStringShortCode( test )
+function exportStringShallowCode( test )
 {
   test.case = '1n';
   var src = 1n;
   var expected = '1n';
-  var got = _.bigInt.exportStringShortCode( src );
+  var got = _.bigInt.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = '1000n';
   var src = 1000n;
   var expected = '1000n';
-  var got = _.bigInt.exportStringShortCode( src );
+  var got = _.bigInt.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = 'BigInt( 5 )';
   var src = BigInt( 5 );
   var expected = '5n'
-  var got = _.bigInt.exportStringShortCode( src );
+  var got = _.bigInt.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = 'BigInt( \'5\' )';
   var src = BigInt( '5' );
   var expected = '5n'
-  var got = _.bigInt.exportStringShortCode( src );
+  var got = _.bigInt.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
@@ -158,10 +158,10 @@ function exportStringShortCode( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode() );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode() );
 
   test.case = 'not a bigInt';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShortCode( 1 ) );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode( 1 ) );
 
   /* - */
 
@@ -176,7 +176,7 @@ function exportStringShortCode( test )
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.BigInt',
@@ -184,15 +184,15 @@ var Self =
 
   tests :
   {
-    bigIntIs,
-    exportStringShortCode
+    is,
+    exportStringShallowCode
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

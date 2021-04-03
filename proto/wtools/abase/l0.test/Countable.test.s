@@ -5,12 +5,12 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
@@ -1286,67 +1286,67 @@ function countablesAreEquivalentShallow( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
   test.case = 'array empty';
   var src = [];
   var expected = '{- Array with 0 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'array non-empty';
   var src = [ 1, 2, 3 ];
   var expected = '{- Array with 3 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'unroll empty';
   var src = _.unrollMake([]);
   var expected = '{- Array.unroll with 0 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'unroll non-empty';
   var src = _.unrollMake([ 1, 2, 3 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'vector & vectorLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'countable & countableLike';
   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = countableMake( null, { elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
-  var got = _.countable.exportStringShortDiagnostic( src );
+  var got = _.countable.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( {} ) );
 
   /* - */
 
@@ -1396,7 +1396,7 @@ function exportStringShortDiagnostic( test )
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Countable',
@@ -1410,7 +1410,7 @@ var Self =
     typingExtended,
     countablesAreIdenticalShallow,
     countablesAreEquivalentShallow,
-    exportStringShortDiagnostic
+    exportStringShallowDiagnostic
 
   }
 
@@ -1418,7 +1418,7 @@ var Self =
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

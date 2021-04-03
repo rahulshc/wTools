@@ -5,14 +5,14 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
-let __ = _globals_.testing.wTools;
-let fileProvider = __.fileProvider;
-let path = fileProvider.path;
+const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
+const fileProvider = __.fileProvider;
+const path = fileProvider.path;
 
 // --
 // context
@@ -4133,7 +4133,7 @@ function stackFilter( test )
 // declare
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Introspector',
@@ -4175,7 +4175,7 @@ let Self =
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

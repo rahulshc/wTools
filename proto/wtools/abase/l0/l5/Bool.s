@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.bool = _.bool || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.bool = _.bool || Object.create( null );
 _.bool.s = _.bool.s || Object.create( null );
 
 // --
@@ -67,7 +67,7 @@ function anyAre( src )
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
   return _.bool.is( src );
-  return _.any( src.filter( ( e ) => _.bool.is( e ) ) );
+  return !!_.any( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //
@@ -142,12 +142,5 @@ let ExtensionS =
 Object.assign( _, ExtensionTools );
 Object.assign( _.bool, Extension );
 Object.assign( _.bool.s, ExtensionS );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

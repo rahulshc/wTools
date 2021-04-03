@@ -3,21 +3,21 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.symbol = _.symbol || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.symbol = _.symbol || Object.create( null );
 
 // --
 // symbol
 // --
 
-function symbolIs( src )
+function is( src )
 {
   let result = Object.prototype.toString.call( src ) === '[object Symbol]';
   return result;
 }
 
-function exportStringShortCode( src )
+function exportStringShallowCode( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.symbol.is( src ) );
@@ -29,7 +29,7 @@ function exportStringShortCode( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.symbol.is( src ) );
@@ -45,33 +45,26 @@ function exportStringShortDiagnostic( src )
 
 let ExtensionTools =
 {
-  symbolIs
+  symbolIs : is
 }
 
 //
 
 let Extension =
 {
-  is : symbolIs,
+  is,
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortCode
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowCode,
+  exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowCode
 }
 
 Object.assign( _, ExtensionTools );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

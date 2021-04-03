@@ -3,84 +3,34 @@
 
 'use strict';
 
-/**
- *  */
-
-/**
-  Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind. Tools contain hundreds of routines to operate effectively with Array, SortedArray, Map, RegExp, Buffer, Time, String, Number, Routine, Error and other fundamental types. The module provides advanced tools for diagnostics and errors handling. Use it to have a stronger foundation for the application.
-  @module Tools/base/Fundamental
-*/
-
-/**
- * wTools - Generic purpose tools of base level for solving problems in Java Script.
- * @namespace Tools
- * @module Tools/base/Fundamental
- */
-
 // global
 
-let _global = undefined;
-if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
-_global = _global_;
-else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
-_global = globalThis;
-else if( typeof Global !== 'undefined' && Global.Global === Global )
-_global = Global;
-else if( typeof global !== 'undefined' && global.global === global )
-_global = global;
-else if( typeof window !== 'undefined' && window.window === window )
-_global = window;
-else if( typeof self   !== 'undefined' && self.self === self )
-_global = self;
-if( !_global._globals_ )
-{
-  _global._globals_ = Object.create( null );
-  _global._globals_.real = _global;
-  _global._realGlobal_ = _global;
-  _global._global_ = _global;
-}
+const _global = _global_;
 
 // verification
 
 if( _global_.__GLOBAL_NAME__ === 'real' )
 {
 
-  if( _global_.wBase )
+  // if( _global_.wBase )
+  if( _global_.wTools && _global_.wTools.Module )
   {
     debugger;
-    throw new Error( 'wTools was included several times' );
+    throw new Error( 'module::wTools was included several times' );
   }
 
 }
 
-// config
+// setup current global namespace
 
-if( _realGlobal_.__GLOBAL_NAME__ === undefined )
-_realGlobal_.__GLOBAL_NAME__ = 'real';
+if( !_global.__GLOBAL_NAME__ )
+throw Error( 'Current global does not have name. Something wrong!' );
 
-if( !_realGlobal_.Config )
-_realGlobal_.Config = { debug : true }
-if( _realGlobal_.Config.debug === undefined )
-_realGlobal_.Config.debug = true;
-if( _realGlobal_.Config.interpreter === undefined )
-if( ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) )
-_realGlobal_.Config.interpreter = 'njs';
-else
-_realGlobal_.Config.interpreter = 'browser';
-if( _realGlobal_.Config.isWorker === undefined )
-if( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' )
-_realGlobal_.Config.isWorker = true;
-else
-_realGlobal_.Config.isWorker = false;
+const Self = _global.wTools;
+let _ = Self;
+Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
 
-if( !_global_.Config )
-_global_.Config = { debug : true }
-if( _global_.Config.debug === undefined )
-_global_.Config.debug = true;
-if( _global_.Config.interpreter === undefined )
-_global_.Config.interpreter = _realGlobal_.Config.interpreter;
-if( _global_.Config.isWorker === undefined )
-_global_.Config.isWorker = _realGlobal_.Config.isWorker
+// name conflict
 
 if( _global_.__GLOBAL_NAME__ === 'real' )
 if( _global_._ )
@@ -88,21 +38,6 @@ if( _global_._ )
   _global_.Underscore = _global_._;
   delete _global_._;
 }
-
-// if( Object.hasOwnProperty.call( _global, 'wTools' ) && _global !== _realGlobal_ )
-// {
-//   debugger;
-//   throw Error( 'wTools was already defined' );
-// }
-
-//
-
-_global.wTools = Object.hasOwnProperty.call( _global, 'wTools' ) ? _global.wTools : Object.create( null );
-_realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
-let Self = _global.wTools;
-let _ = Self;
-
-Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
 
 // special tokens
 
@@ -153,9 +88,6 @@ _realGlobal_.HashMapWeak = WeakMap;
 
 _global[ 'wTools' ] = Self;
 _global.wTools = Self;
-_global.wBase = Self;
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+// _global.wBase = Self;
 
 })();

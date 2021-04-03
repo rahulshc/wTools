@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // array set
@@ -153,7 +153,7 @@ let _ = _global_.wTools;
 
 //
 
-function arraySetDiff_( test )
+function diff_( test )
 {
   test.open( 'array' );
 
@@ -1093,7 +1093,7 @@ function arraySetDiff_( test )
 
 //
 
-function arraySetBut_( test )
+function but_( test )
 {
   test.case = 'one argument, null';
   var got = _.arraySet.but_( null );
@@ -1699,7 +1699,7 @@ function arraySetBut_( test )
 
 //
 
-function arraySetIntersection_( test )
+function intersection_( test )
 {
   test.case = 'one argument, null';
   var got = _.arraySet.intersection_( null );
@@ -2281,7 +2281,7 @@ function arraySetIntersection_( test )
 
 //
 
-function arraySetUnion_( test )
+function union_( test )
 {
   test.case = 'one argument, null';
   var got = _.arraySet.union_( null );
@@ -2894,7 +2894,7 @@ function arraySetUnion_( test )
 
 //
 
-function arraySetContainAll_( test )
+function containAll_( test )
 {
   test.open( 'array' );
 
@@ -3655,7 +3655,7 @@ function arraySetContainAll_( test )
 
 //
 
-function arraySetContainAny_( test )
+function containAny_( test )
 {
   test.open( 'array' );
 
@@ -4176,7 +4176,7 @@ function arraySetContainAny_( test )
 
 //
 
-function arraySetContainNone_( test )
+function containNone_( test )
 {
   test.open( 'array' );
 
@@ -4697,7 +4697,7 @@ function arraySetContainNone_( test )
 
 //
 
-function arraySetContainSetsAll( test )
+function containSetsAll( test )
 {
   test.open( 'array' );
 
@@ -5254,7 +5254,7 @@ function arraySetContainSetsAll( test )
 
 //
 
-function arraySetContainSetsAny( test )
+function containSetsAny( test )
 {
   test.open( 'array' );
 
@@ -5805,7 +5805,7 @@ function arraySetContainSetsAny( test )
 
 //
 
-function arraySetContainSetsNone( test )
+function containSetsNone( test )
 {
   test.open( 'array' );
 
@@ -6362,7 +6362,7 @@ function arraySetContainSetsNone( test )
 
 //
 
-function arraySetIdentical( test )
+function identical( test )
 {
 
   console.log( 'xxx' );
@@ -6523,7 +6523,7 @@ function arraySetIdentical( test )
 
 //
 
-function arraySetLeft( test )
+function left( test )
 {
   test.open( 'Set' );
 
@@ -6806,7 +6806,7 @@ function arraySetLeft( test )
 
 //
 
-function arraySetRight( test )
+function right( test )
 {
   test.open( 'Set' );
 
@@ -7091,7 +7091,7 @@ function arraySetRight( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.ArraySet',
@@ -7105,33 +7105,33 @@ let Self =
 
     /* xxx : move out */
     // arraySetDiff,
-    arraySetDiff_,
+    diff_,
     // arraySetBut,
-    arraySetBut_,
+    but_,
     // arraySetIntersection,
-    arraySetIntersection_,
+    intersection_,
     // arraySetUnion,
-    arraySetUnion_,
+    union_,
 
     // arraySetContainAll,
-    arraySetContainAll_,
+    containAll_,
     // arraySetContainAny,
-    arraySetContainAny_,
-    arraySetContainNone_,
-    arraySetIdentical,
+    containAny_,
+    containNone_,
+    identical,
 
-    arraySetContainSetsAll,
-    arraySetContainSetsAny,
-    arraySetContainSetsNone,
+    containSetsAll,
+    containSetsAny,
+    containSetsNone,
 
-    arraySetLeft,
-    arraySetRight,
+    left,
+    right,
 
   }
 
 }
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

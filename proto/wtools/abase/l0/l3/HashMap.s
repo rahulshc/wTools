@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
 
 // --
 // implementation
@@ -80,7 +80,7 @@ function _identicalShallow( src1, src2 )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.hashMap.is( src ) );
@@ -114,23 +114,16 @@ let Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
 }
 
 Object.assign( _, ToolsExtension );
 Object.assign( _.hashMap, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

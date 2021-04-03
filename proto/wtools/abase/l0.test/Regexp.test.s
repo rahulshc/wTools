@@ -5,12 +5,12 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 /* qqq xxx : implement test routine _.regexp.isEmpty()
 
@@ -22,7 +22,7 @@ let _ = _global_.wTools;
 // routines
 // --
 
-function regexpLike( test )
+function like( test )
 {
 
   test.case = 'undefined';
@@ -159,7 +159,7 @@ function regexpLike( test )
 
 //
 
-function regexpIdentical( test )
+function identical( test )
 {
   var context = this;
 
@@ -232,7 +232,7 @@ function regexpIdentical( test )
 
 //
 
-function regexpEquivalent( test )
+function equivalent( test )
 {
   test.case = 'null';
   var expected = false;
@@ -298,7 +298,7 @@ function regexpEquivalent( test )
 
 //
 
-function regexpMaybeFrom( test )
+function maybeFrom( test )
 {
   test.open( 'default options, without options map' );
 
@@ -1173,7 +1173,7 @@ function regexpsAll( test )
 
 //
 
-function _regexpTest( test )
+function _test( test )
 {
   var context = this;
 
@@ -1265,7 +1265,7 @@ function _regexpTest( test )
 
 //
 
-function regexpTest( test )
+function test( test )
 {
   var context = this;
 
@@ -1357,7 +1357,7 @@ function regexpTest( test )
 
 //
 
-function regexpTestAll( test )
+function testAll( test )
 {
   var context = this;
 
@@ -1496,7 +1496,7 @@ function regexpTestAll( test )
 
 //
 
-function regexpTestAny( test )
+function testAny( test )
 {
   var context = this;
 
@@ -1643,7 +1643,7 @@ function regexpTestAny( test )
 
 //
 
-function regexpTestNone( test )
+function testNone( test )
 {
   var context = this;
 
@@ -2176,45 +2176,45 @@ function regexpsTestNone( test )
 
 }
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'regexp without flags';
   var src = /regexp/;
   var expected = '/regexp/';
-  var got = _.regexp.exportStringShortDiagnostic( src );
+  var got = _.regexp.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'regexp with flags';
   var src = /regexp/gi;
   var expected = '/regexp/gi';
-  var got = _.regexp.exportStringShortDiagnostic( src );
+  var got = _.regexp.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'regexp complex';
   var src = /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}1\d{4}/gi;
   var expected = '/(?:\\d{3}|\\(\\d{3}\\))([-\\/\\.])\\d{3}1\\d{4}/gi';
-  var got = _.regexp.exportStringShortDiagnostic( src );
+  var got = _.regexp.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( /hello/, /hello/ ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( /hello/, /hello/ ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShortDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( {} ) );
 }
 
 // --
 // suite definition
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.l1.Regexp',
@@ -2222,12 +2222,12 @@ let Self =
 
   tests :
   {
-    regexpLike,
+    like,
 
-    regexpIdentical,
-    regexpEquivalent,
+    identical,
+    equivalent,
 
-    regexpMaybeFrom,
+    maybeFrom,
 
     regexpsSources,
     regexpsJoin,
@@ -2237,24 +2237,24 @@ let Self =
     regexpsAny,
     regexpsAll,
 
-    _regexpTest,
-    regexpTest,
+    _test,
+    test,
 
-    regexpTestAll,
-    regexpTestAny,
-    regexpTestNone,
+    testAll,
+    testAny,
+    testNone,
 
     regexpsTestAll,
     regexpsTestAny,
     regexpsTestNone,
 
-    exportStringShortDiagnostic
+    exportStringShallowDiagnostic
 
   }
 
 };
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

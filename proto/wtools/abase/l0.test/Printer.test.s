@@ -5,19 +5,19 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function printerIs( test )
+function is( test )
 {
   test.case = 'check null';
   var got = _.printer.is( null );
@@ -156,7 +156,7 @@ function printerIs( test )
 
 //
 
-function printerLike( test )
+function like( test )
 {
   test.case = 'check null';
   var got = _.printer.like( null );
@@ -305,7 +305,7 @@ function printerLike( test )
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Printer',
@@ -313,15 +313,15 @@ var Self =
 
   tests :
   {
-    printerIs,
-    printerLike,
+    is,
+    like,
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

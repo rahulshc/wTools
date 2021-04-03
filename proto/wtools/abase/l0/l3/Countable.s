@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 _global_.wTools.countable = _global_.wTools.countable || Object.create( null );
 
 // --
@@ -20,7 +20,7 @@ function is( src )
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.entity.methodIteratorOf( src ) )
+  if( _.class.methodIteratorOf( src ) )
   if( !_.mapIs( src ) )
   return true;
 
@@ -36,13 +36,13 @@ function like( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.countable.is( src ) );
 
   if( _.vector.is( src ) )
-  return _.vector.exportStringShortDiagnostic( src );
+  return _.vector.exportStringShallowDiagnostic( src );
 
   return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }
@@ -58,12 +58,12 @@ var Extension =
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 
 }
 
@@ -79,12 +79,5 @@ var ExtensionTools =
 
 Object.assign( _.countable, Extension );
 Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

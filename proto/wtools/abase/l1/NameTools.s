@@ -3,14 +3,14 @@
 
 'use strict';
 
-let Self = _global_.wTools;
-let _global = _global_;
-let _ = _global_.wTools;
+const Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
-var _ObjectHasOwnProperty = Object.hasOwnProperty;
+const _ObjectHasOwnProperty = Object.hasOwnProperty;
 var _arraySlice = _.longSlice;
 
 // --
@@ -281,7 +281,7 @@ var idWithInt = (function()
 // declare
 // --
 
-var Proto =
+const Proto =
 {
 
   // name and symbol

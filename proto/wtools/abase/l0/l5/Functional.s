@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // scalar
@@ -546,6 +546,7 @@ function entityOnly( dst, src, onEach )
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
+    /* xxx : qqq : for Dmytro : fix that. ask how to */
     _.assert( _.routine.is( _.select ) );
     _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
     selector = _.strRemoveBegin( selector, '*/' );
@@ -2904,14 +2905,13 @@ function entityAll( src, onEach )
   /* */
 
   return true;
-
 }
 
 //
 
 function entityAny( src, onEach )
 {
-  let result = false;
+  let result = undefined;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
@@ -3025,7 +3025,9 @@ function entityAny( src, onEach )
 
   /* */
 
-  return false;
+  /* qqq : for Dmytro : should return undefined in such cases */
+  // return false;
+  return undefined;
 }
 
 //
@@ -3964,6 +3966,7 @@ let Extension =
   // entityEachKey,
   // eachKey : entityEachKey,
 
+  /* qqq : for Dmytro : implementations with null-convention? */
   entityOnly,
   only : entityOnly,
   entityBut,
@@ -3991,7 +3994,7 @@ let Extension =
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
   entityFilter_,
-  filter_ : entityFilter_,
+  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
   entityFirst,
   first : entityFirst,
   entityLast,
@@ -4008,12 +4011,5 @@ let Extension =
 }
 
 _.mapSupplement( _, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

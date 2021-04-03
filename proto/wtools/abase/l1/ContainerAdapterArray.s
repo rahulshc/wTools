@@ -3,8 +3,8 @@
 
 'use strict';
 
-let _global = _realGlobal_;
-let _ = _global_.wTools;
+const _global = _realGlobal_;
+const _ = _global_.wTools;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -205,11 +205,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
+    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShallow( e ) );
     container.splice( index, 1 );
     if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )
@@ -769,7 +769,7 @@ function ExportTo( dstGlobal, srcGlobal )
 // declare
 // --
 
-let Self = _.containerAdapter;
+const Self = _.containerAdapter;
 
 //
 

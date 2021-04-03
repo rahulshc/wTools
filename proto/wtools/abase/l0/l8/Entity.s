@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // entity getter
@@ -60,7 +60,7 @@ function uncountableSize( src )
   // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine countableIs has different behavior */
   // return 8;
   if( !_.aux.is( src ) )
-  if( !_.entity.methodIteratorOf( src ) )
+  if( !_.class.methodIteratorOf( src ) )
   return 8;
 
   return NaN;
@@ -108,13 +108,13 @@ function entitySize( src )
 
   // if( _.primitive.is( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) ) /* yyy */
   // if( _.primitive.is( src ) || _.bufferAnyIs( src ) ) /* Dmytro : added branch for routine iterableIs, routine countableIs has different behavior */
-  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
+  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
   return _.uncountableSize( src );
 
   if( _.look )
   // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
   // if( _.containerIs( src ) )
-  if( _.containerIs( src ) || !( _.mapIs( src ) || _.entity.methodIteratorOf( src ) ) )
+  if( _.containerIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
   {
     _.look({ src, onUp : onEach, withCountable : 1 });
   }
@@ -175,12 +175,5 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -5,19 +5,19 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // tests
 // --
 
 
-function symbolIs( test )
+function is( test )
 {
   test.case = 'without argument';
   var got = _.symbol.is();
@@ -124,18 +124,18 @@ function symbolIs( test )
 
 //
 
-function exportStringShortCode( test )
+function exportStringShallowCode( test )
 {
   test.case = 'Symbol( a )';
   var src = Symbol( 'a' );
   var expected = `Symbol.for( 'a' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
 
   test.case = 'Symbol.for( a )';
   var src = Symbol.for( 'a' );
   var expected = `Symbol.for( 'a' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
@@ -143,34 +143,34 @@ function exportStringShortCode( test )
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = `Symbol.for()`;
-  // var got = _.symbol.exportStringShortCode( src );
+  // var got = _.symbol.exportStringShallowCode( src );
   // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
   var expected = `Symbol.for( 'undefined' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = `Symbol.for( 'null' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = `Symbol.for( 'undefined' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = `Symbol.for( 'nothing' )`;
-  var got = _.symbol.exportStringShortCode( src );
+  var got = _.symbol.exportStringShallowCode( src );
   test.identical( got, expected );
   test.identical( strToSymbol( got ), src );
 
@@ -178,10 +178,10 @@ function exportStringShortCode( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.symbol.exportStringShortCode() );
+  test.shouldThrowErrorSync( () => _.symbol.exportStringShallowCode() );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.symbol.exportStringShortCode( 1 ) );
+  test.shouldThrowErrorSync( () => _.symbol.exportStringShallowCode( 1 ) );
 
   /* - */
 
@@ -193,67 +193,67 @@ function exportStringShortCode( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'Symbol( a )';
   var src = Symbol( 'a' );
   var expected = '{- Symbol a -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol.for( a )';
   var src = Symbol.for( 'a' );
   var expected = '{- Symbol a -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   /* error eslint : Symbol(), passes */
   // test.case = 'Symbol()';
   // var src = Symbol();
   // var expected = '{- Symbol -}';
-  // var got = _.symbol.exportStringShortDiagnostic( src );
+  // var got = _.symbol.exportStringShallowDiagnostic( src );
   // test.identical( got, expected );
 
   test.case = 'Symbol.for()';
   var src = Symbol.for();
   var expected = '{- Symbol undefined -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = '{- Symbol null -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = '{- Symbol undefined -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = '{- Symbol nothing -}';
-  var got = _.symbol.exportStringShortDiagnostic( src );
+  var got = _.symbol.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.symbol.exportStringShortDiagnostic() );
+  test.shouldThrowErrorSync( () => _.symbol.exportStringShallowDiagnostic() );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.symbol.exportStringShortDiagnostic( 1 ) );
+  test.shouldThrowErrorSync( () => _.symbol.exportStringShallowDiagnostic( 1 ) );
 }
 
 // --
 // declaration
 // --
 
-var Self =
+const Proto =
 {
 
   name : 'Tools.Symbol',
@@ -261,16 +261,16 @@ var Self =
 
   tests :
   {
-    symbolIs,
-    exportStringShortCode,
-    exportStringShortDiagnostic
+    is,
+    exportStringShallowCode,
+    exportStringShallowDiagnostic
   }
 
 }
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

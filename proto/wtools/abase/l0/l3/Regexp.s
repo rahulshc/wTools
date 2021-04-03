@@ -3,22 +3,22 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // regexp
 // --
 
-function regexpIs( src )
+function is( src )
 {
   return Object.prototype.toString.call( src ) === '[object RegExp]';
 }
 
 //
 
-function regexpObjectIs( src )
+function objectIs( src )
 {
   if( !_.RegexpObject )
   return false;
@@ -27,9 +27,9 @@ function regexpObjectIs( src )
 
 //
 
-function regexpLike( src )
+function like( src )
 {
-  if( _.regexpIs( src ) || _.strIs( src ) )
+  if( _.regexp.is( src ) || _.strIs( src ) )
   return true;
   return false;
 }
@@ -48,19 +48,19 @@ function regexpLike( src )
 
 //
 
-function regexpsLikeAll( src )
+function likeAll( src )
 {
   _.assert( arguments.length === 1 );
 
   if( _.arrayLike( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !_.regexpLike( src[ s ] ) )
+    if( !_.regexp.like( src[ s ] ) )
     return false;
     return true;
   }
 
-  return _.regexpLike( src );
+  return _.regexp.like( src );
 }
 
 //
@@ -68,7 +68,7 @@ function regexpsLikeAll( src )
 function identicalShallow( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
+  if( !_.regexp.is( src1 ) || !_.regexp.is( src2 ) )
   return false;
 
   return _.regexp._identicalShallow( src1, src2 );
@@ -97,16 +97,16 @@ function equivalentShallow( src1, src2 )
  * Escapes special characters with a slash ( \ ). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
  * @example
- * _.regexpEscape( 'Hello. How are you?' );
+ * _.regexp.escape( 'Hello. How are you?' );
  * // returns "Hello\. How are you\?"
  *
  * @param {String} src Regexp string
  * @returns {String} Escaped string
- * @function regexpEscape
+ * @function escape
  * @namespace Tools
  */
 
-function regexpEscape( src )
+function escape( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -115,7 +115,7 @@ function regexpEscape( src )
 
 //
 
-function exportStringShortDiagnostic( src )
+function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.regexp.is( src ) );
@@ -130,14 +130,14 @@ function exportStringShortDiagnostic( src )
 let ExtensionTools =
 {
 
-  regexpIs,
-  regexpObjectIs,
-  regexpLike,
-  regexpsLikeAll,
+  regexpIs : is,
+  regexpObjectIs : objectIs,
+  regexpLike : like,
+  regexpsLikeAll : likeAll,
   regexpIdentical : identicalShallow, /* qqq : cover please */
   regexpEquivalent : equivalentShallow, /* qqq : cover please | Done. Yevhen S. */
 
-  regexpEscape,
+  regexpEscape : escape,
 
 }
 
@@ -148,25 +148,25 @@ let Extension =
 
   // regexp
 
-  is : regexpIs,
-  objectIs : regexpObjectIs,
-  like : regexpLike,
+  is,
+  objectIs,
+  like,
   identical : identicalShallow,
   equivalent : equivalentShallow,
   equivalentShallow,
   identicalShallow,
   _identicalShallow,
 
-  escape : regexpEscape,
+  escape,
 
   // export string
 
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+  exportString : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
+  exportStringCode : exportStringShallowDiagnostic,
 }
 
 //
@@ -176,10 +176,9 @@ let ExtensionS =
 
   // regexps
 
-  likeAll : regexpsLikeAll,
+  likeAll,
 
 }
-
 
 _.assert( _.regexp === undefined );
 _.regexp = Object.create( null );
@@ -189,14 +188,5 @@ _.regexp.s = Object.create( null );
 Object.assign( _.regexp, Extension )
 Object.assign( _.regexp.s, ExtensionS )
 Object.assign( Self, ExtensionTools )
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

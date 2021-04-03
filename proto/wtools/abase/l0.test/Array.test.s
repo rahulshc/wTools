@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer1.s' );
+  const _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
 }
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 //--
 //
@@ -26541,7 +26541,7 @@ function arrayUpdate( test )
 //
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Array',
@@ -26780,7 +26780,7 @@ let Self =
 
 /* qqq for Dmytro : this test suite fails with shoulding:0. check also other test suites */
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

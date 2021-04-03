@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // scalar
@@ -1856,9 +1856,9 @@ let Routines =
 
   eachSample_, /* xxx : review */
   eachPermutation_, /* xxx : move out */
-  swapsCount,
-  _factorial,
-  factorial,
+  swapsCount, /* xxx : move out */
+  _factorial, /* xxx : move out */
+  factorial, /* xxx : move out */
 
   _entityFilterDeep,
   entityFilterDeep,
@@ -1894,12 +1894,5 @@ let Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();
