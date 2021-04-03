@@ -6787,8 +6787,7 @@ function mapBut_WithTwoArguments( test )
   var got = _.mapBut_( srcMap, butMap );
   var expected = { a : 1, b : 2 };
   test.identical( got, expected );
-  test.true( got !== srcMap );
-  test.identical( butMap, [ { '0' : 0 }, { '1' : 0 } ] );
+  test.true( got === srcMap );
 
   test.close( 'srcMap - map' );
 
@@ -6898,7 +6897,6 @@ function mapBut_WithTwoArguments( test )
   var expected = {};
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, {} );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
@@ -6907,7 +6905,6 @@ function mapBut_WithTwoArguments( test )
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
@@ -6916,7 +6913,6 @@ function mapBut_WithTwoArguments( test )
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { aa : 1, bb : 2, cc : 3 } );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
@@ -6925,7 +6921,6 @@ function mapBut_WithTwoArguments( test )
   var expected = { cc : 3 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { a : 1, b : 2, cc : 3 } );
 
   test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
   var srcMap = { a : 1, b : 2 };
@@ -6933,7 +6928,6 @@ function mapBut_WithTwoArguments( test )
   var got = _.mapBut_( srcMap, butMap );
   var expected = { b : 2 };
   test.true( got === srcMap );
-  test.identical( butMap, [ { c : 0 }, { a : 0 } ] );
 
   test.close( 'countable' );
 
@@ -7781,7 +7775,7 @@ function mapBut_ButMapIsCountable( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.identical( srcMap, { a : 1, b : 2 } );
 
@@ -7811,7 +7805,7 @@ function mapBut_ButMapIsCountable( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { a : 1, b : 2 };
+  var expected = { b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -7843,7 +7837,7 @@ function mapBut_ButMapIsCountable( test )
   var srcMap = { a : 1, b : 2 };
   var butMap = new countableConstructor({ elements : [ 'c', 'd', { a : 2 } ], withIterator : 1 });
   var got = _.mapBut_( dstMap, srcMap, butMap );
-  var expected = { c : 3, a : 1, b : 2 };
+  var expected = { c : 3, b : 2 };
   test.identical( got, expected );
   test.true( got === dstMap );
   test.identical( srcMap, { a : 1, b : 2 } );
@@ -11287,7 +11281,7 @@ function mapOnly_ScreenMapIsCountable( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = new countableConstructor({ elements : [ 'a', 'c', { d : 7 } ], withIterator : 1 });
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33 };
+  var expected = { d : 'name', c : 33, a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
