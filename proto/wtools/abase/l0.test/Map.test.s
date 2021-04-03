@@ -5372,7 +5372,6 @@ function mapButConditional_WithThreeArguments( test )
   test.case = 'wrong type of butMap';
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], '' ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, [], '' ) );
-
 }
 
 //
