@@ -2954,12 +2954,12 @@ function locationToStackWithOtherOptions( test )
 function locationPerformance( test )
 {
   /*
-    |     **Routine**     |  type   | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
-    | :-----------------: | :-----: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |    location BISI    | regular |      6.5488s       |      5.2201s      |      5.5969s       |      5.1944s       |      5.2801s      |
-    | locationBinary BISI | binary  |      0.0036s       |      0.0032s      |      0.0029s       |      0.0026s       |      0.0025s      |
-    |    location SIBI    | regular |     0.003011s      |     0.002554s     |     0.002522s      |     0.002347s      |     0.002528s     |
-    | locationBinary SIBI | binary  |     0.000092s      |     0.000092s     |      0.0001s       |     0.000078s      |      0.0001s      |
+    |      **Routine**       |   type    | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :--------------------: | :-------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    |     location BISI      |  regular  |      0.3946s       |      0.3803s      |                    |      0.3273s       |                   |
+    | locationOptimized BISI | optimized |      0.3708s       |      0.372s       |                    |      0.3152s       |                   |
+    |     location SIBI      |  regular  |    0.00002622s     |      0.3803s      |                    |    0.00002571s     |                   |
+    | locationOptimized SIBI | optimized |    0.00002646s     |    0.00002495s    |                    |    0.00002608s     |                   |
 
     BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
     SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )

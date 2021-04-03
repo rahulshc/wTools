@@ -41,7 +41,6 @@ dont forget about performance test and optimization
 
 function location( o )
 {
-  // debugger;
   if( _.number.is( o ) )
   o = { level : o }
   else if( _.strIs( o ) )
@@ -85,7 +84,6 @@ function location( o )
 
   if( o.error )
   {
-    debugger;
     let location2 = o.error.location || Object.create( null );
 
     var args0 =
@@ -206,44 +204,44 @@ function location_( o )
 
   /* */
 
-  if( o.error )
-  {
-    let location2 = o.error.location || Object.create( null );
+  // if( o.error )
+  // {
+  //   let location2 = o.error.location || Object.create( null );
 
-    var args0 =
-    [
-      location2.filePath,
-      o.location.filePath,
-      o.error.filename,
-      o.error.fileName
-    ];
-    o.location.filePath = _.longLeftDefined( args0 ).element;
+  //   var args0 =
+  //   [
+  //     location2.filePath,
+  //     o.location.filePath,
+  //     o.error.filename,
+  //     o.error.fileName
+  //   ];
+  //   o.location.filePath = _.longLeftDefined( args0 ).element;
 
-    var args1 =
-    [
-      location2.line,
-      o.location.line,
-      o.error.line,
-      o.error.linenumber,
-      o.error.lineNumber,
-      o.error.lineNo,
-      o.error.lineno
-    ];
-    o.location.line = _.longLeftDefined( args1 ).element;
+  //   var args1 =
+  //   [
+  //     location2.line,
+  //     o.location.line,
+  //     o.error.line,
+  //     o.error.linenumber,
+  //     o.error.lineNumber,
+  //     o.error.lineNo,
+  //     o.error.lineno
+  //   ];
+  //   o.location.line = _.longLeftDefined( args1 ).element;
 
-    var args2 =
-    [
-      location2.col,
-      o.location.col,
-      o.error.col,
-      o.error.colnumber,
-      o.error.colNumber,
-      o.error.colNo,
-      o.error.colno
-    ];
-    o.location.col = _.longLeftDefined( args2 ).element;
+  //   var args2 =
+  //   [
+  //     location2.col,
+  //     o.location.col,
+  //     o.error.col,
+  //     o.error.colnumber,
+  //     o.error.colNumber,
+  //     o.error.colNo,
+  //     o.error.colno
+  //   ];
+  //   o.location.col = _.longLeftDefined( args2 ).element;
 
-  }
+  // }
 
   /* */
 
@@ -270,7 +268,7 @@ function location_( o )
   stack = stack.split( '\n' );
   let stackFrame = stack[ o.level ];
 
-  o.location.original = o.stackFrame;
+  o.location.original = stackFrame;
   _.introspector.locationNormalize( o.location );
   return o.location;
 
