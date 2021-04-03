@@ -209,14 +209,29 @@ function predeclare_body( o )
       if( _.path.isAbsolute( normalized ) )
       entryPath = o.entryPath[ i ] = normalized;
     }
-    _.assert( _.path.isAbsolute( entryPath ) );
-    let module2 = _.module.predeclaredWithEntryPathMap.get( entryPath );
-    _.assert
-    (
-      !module2 || module2.name === o.name,
-      () => `Module ${o.name} is trying to register entry path ${entryPath} which is registered for ${module2}`
-    );
-    _.module.predeclaredWithEntryPathMap.set( entryPath, o );
+
+    if( _.path.isAbsolute( entryPath ) )
+    {
+      let module2 = _.module.predeclaredWithEntryPathMap.get( entryPath );
+      _.assert
+      (
+        !module2 || module2.name === o.name,
+        () => `Module ${o.name} is trying to register entry path ${entryPath} which is registered for ${module2}`
+      );
+      _.module.predeclaredWithEntryPathMap.set( entryPath, o );
+    }
+    else
+    {
+      _.assert( !_.path.isDotted( entryPath ) );
+      let module2 = _.module.predeclaredWithEntryPathMap.get( entryPath );
+      _.assert
+      (
+        !module2 || module2.name === o.name,
+        () => `Module ${o.name} is trying to register entry path ${entryPath} which is registered for ${module2}`
+      );
+      _.module.predeclaredWithEntryPathMap.set( entryPath, o );
+    }
+
   });
 
   let module2 = _.module.predeclaredWithNameMap.get( o.name );
@@ -229,8 +244,6 @@ function predeclare_body( o )
     _.arrayAppendArrayOnce( module2.lookPath, o.entryPath );
     _.arrayAppendArrayOnce( module2.lookPath, o.alias );
 
-    // o.entryPath.forEach( ( entryPath ) => _.module.predeclaredWithEntryPathMap.set( entryPath, module2 ) );
-    // o.alias.forEach( ( name ) => _.module.predeclaredWithNameMap.set( name, module2 ) );
     register( module2, o.entryPath, o.alias );
 
     let files = _.module._filesWhichEnds( o.entryPath )
@@ -240,13 +253,6 @@ function predeclare_body( o )
   }
 
   register( o, o.entryPath, o.alias );
-  // o.entryPath.forEach( ( entryPath ) => _.module.predeclaredWithEntryPathMap.set( entryPath, o ) );
-  // o.alias.forEach( ( name ) =>
-  // {
-  //   let module3 = _.module.predeclaredWithNameMap.get( name ) ;
-  //   _.assert( module3 === undefined || module3 === o );
-  //   _.module.predeclaredWithNameMap.set( name, o )
-  // });
 
   _.assert( o.files === undefined );
   o.files = null;
@@ -264,14 +270,6 @@ function predeclare_body( o )
 
   let files = _.module._filesWhichEnds( o.entryPath )
   _.module._filesUniversalAssociateModule( files, o, true );
-
-  // for( let i = 0 ; i < o.entryPath.length ; i++ )
-  // {
-  //   let filePath = o.entryPath[ i ];
-  //   let file = _.module.filesMap.get( filePath );
-  //   if( file )
-  //   _.module._filesUniversalAssociateModule( file, o, true );
-  // }
 
   return o;
 
@@ -292,9 +290,7 @@ predeclare_body.defaults =
   name : null,
   alias : null,
   entryPath : null,
-  // filePath : null,
   basePath : null,
-  // isIncluded : null,
 }
 
 const predeclare = _.routine.unite( predeclare_head, predeclare_body );
@@ -340,11 +336,11 @@ function _predeclaredWithEntryPath( entryPath )
   if( predeclaredModule )
   return predeclaredModule;
 
-  for( let [ k, e ] of _.module.predeclaredWithRelativeEntryPathMap )
-  {
-    if( _.strEnds( entryPath, '/' + k ) )
-    return e;
-  }
+  // for( let [ k, e ] of _.module.predeclaredWithRelativeEntryPathMap )
+  // {
+  //   if( _.strEnds( entryPath, '/' + k ) )
+  //   return e;
+  // }
 
 }
 
@@ -357,9 +353,9 @@ function _predeclaredWithEntryPathExact( entryPath )
   if( predeclaredModule )
   return predeclaredModule;
 
-  predeclaredModule = _.module.predeclaredWithRelativeEntryPathMap.get( entryPath );
-  if( predeclaredModule )
-  return predeclaredModule;
+  // predeclaredModule = _.module.predeclaredWithRelativeEntryPathMap.get( entryPath );
+  // if( predeclaredModule )
+  // return predeclaredModule;
 
 }
 
@@ -540,11 +536,6 @@ o.native.parent.id - "/pro/builder/proto/wtools/atop/testing/include/Top.s"
 xxx : test to check the parent has the child and the child has the parent
 */
 
-    // if( _.strEnds( o.sourcePath, '/program4' ) )
-    // debugger;
-    // if( _.strEnds( o.sourcePath, '/program5' ) )
-    // debugger;
-
     o.downFiles = new Set;
 
     if( o.native.parent && o.native.parent.universal )
@@ -581,7 +572,6 @@ xxx : test to check the parent has the child and the child has the parent
     o.module = null;
     o.modules = new Set();
 
-    // let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( o.sourcePath );
     let predeclaredModule = _.module._predeclaredWithEntryPath( o.sourcePath );
     if( predeclaredModule )
     {
@@ -1156,7 +1146,6 @@ function path_head( routine, args )
     for( var p = 0 ; p < o.paths.length ; p++ )
     {
       o.paths[ p ] = _.path.nativize( _.path.canonize( o.paths[ p ] ) );
-      // console.log( 'usePathGlobally', o.paths[ p ] );
     }
   }
 
@@ -1173,7 +1162,6 @@ function pathAmend_body( o )
   if( typeof _ !== 'undefined' )
   o.moduleFile = fileNativeFrom( o.moduleFile );
 
-  // let filePathAmend = o.amending === 'prepend' ? pathsPrependOnce : pathsAppendOnce;
   let filePathAmend = o.amending === 'prepend' ? arrayPrependedArrayOnce : arrayAppendedArrayOnce;
 
   if( o.globally )
@@ -1259,28 +1247,6 @@ function pathAmend_body( o )
 
   /* - */
 
-  // function pathsAppendOnce( dst, src )
-  // {
-  //   for( let p = 0 ; p < src.length ; p++ )
-  //   {
-  //     if( dst.indexOf( src[ p ] ) === -1 )
-  //     dst.push( src[ p ] );
-  //   }
-  // }
-  //
-  // /* - */
-  //
-  // function pathsPrependOnce( dst, src )
-  // {
-  //   for( let p = 0 ; p < src.length ; p++ )
-  //   {
-  //     if( dst.indexOf( src[ p ] ) === -1 )
-  //     dst.unshift( src[ p ] );
-  //   }
-  // }
-
-  /* - */
-
   function fileNativeFrom( src )
   {
     if( _.module.fileNativeFrom )
@@ -1333,7 +1299,7 @@ function pathAmend_body( o )
 
 pathAmend_body.defaults =
 {
-  module : null, /* xxx : rename */
+  moduleFile : null,
   paths : null,
   permanent : 0,
   globally : 1,
@@ -1514,7 +1480,6 @@ filePathGet.defaults =
 //
 // --
 
-// function _resolve( basePath, o.downPath, moduleName )
 function _resolve( o )
 {
 
@@ -2347,7 +2312,7 @@ var ModuleExtension =
   rootFile : null,
   predeclaredWithNameMap : new HashMap,
   predeclaredWithEntryPathMap : new HashMap,
-  predeclaredWithRelativeEntryPathMap : new HashMap, /* xxx : remove later */
+  // predeclaredWithRelativeEntryPathMap : new HashMap, /* xxx : remove later */
   modulesMap : new HashMap,
   nativeFilesMap : null,
   filesMap : new HashMap,

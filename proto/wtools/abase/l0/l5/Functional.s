@@ -2905,14 +2905,13 @@ function entityAll( src, onEach )
   /* */
 
   return true;
-
 }
 
 //
 
 function entityAny( src, onEach )
 {
-  let result = false;
+  let result = undefined;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routine.is( onEach ) && onEach.length <= 3 ) );
@@ -3026,7 +3025,9 @@ function entityAny( src, onEach )
 
   /* */
 
-  return false;
+  /* qqq : for Dmytro : should return undefined in such cases */
+  // return false;
+  return undefined;
 }
 
 //
@@ -3965,6 +3966,7 @@ let Extension =
   // entityEachKey,
   // eachKey : entityEachKey,
 
+  /* qqq : for Dmytro : implementations with null-convention? */
   entityOnly,
   only : entityOnly,
   entityBut,

@@ -14,7 +14,7 @@
     "Pablo Garcimartin <pablogarcimartinruiz@gmail.com>",
     "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
   ],
-  "main" : "proto/wtools/abase/Layer2.s",
+  "main" : "/pro/module/wTools/proto/node_modules/wTools",
   "files" :
   [
     "proto/wtools/Tools.s",

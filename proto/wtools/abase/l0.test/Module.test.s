@@ -1186,8 +1186,6 @@ function preload( test )
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
   let program1Path = a.program( program1 );
 
-  xxx
-
   /* xxx */
 
   a.appStartNonThrowing({ execPath : `-r ${_ToolsPath_} ${program1Path}` })
@@ -2966,7 +2964,7 @@ predeclareMain.timeOut = 60000;
 
 //
 
-function predeclareNpmBasic( test )
+function predeclareRelative( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -2976,80 +2974,49 @@ function predeclareNpmBasic( test )
 
   return ready;
 
-  /* - xxx */
+  /* - */
 
   function act( env )
   {
 
     /* */
 
-//     ready.then( () =>
-//     {
-//       test.case = `full relative path, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
-//
-//       var programPath = a.program( mainWithFullPath );
-//       a.program
-//       ({
-//         routine : module1,
-//         dirPath : 'node_modules',
-//       });
-//
-//       return a.forkNonThrowing
-//       ({
-//         execPath : programPath,
-//         currentPath : _.path.dir( programPath ),
-//       })
-//     })
-//     .then( ( op ) =>
-//     {
-//       var exp =
-// `
-// main
-// module1
-// `
-//       test.identical( op.exitCode, 0 );
-//       test.equivalent( op.output, exp );
-//       return op;
-//     });
-//
-//     /* */
-//
-//     ready.then( () =>
-//     {
-//       test.case = `require name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
-//
-//       var programPath = a.program( mainWithRequireName );
-//       a.program
-//       ({
-//         routine : module1,
-//         dirPath : 'node_modules',
-//       });
-//
-//       return a.forkNonThrowing
-//       ({
-//         execPath : programPath,
-//         currentPath : _.path.dir( programPath ),
-//       })
-//     })
-//     .then( ( op ) =>
-//     {
-//       var exp =
-// `
-// main
-// module1
-// `
-//       test.identical( op.exitCode, 0 );
-//       test.equivalent( op.output, exp );
-//       return op;
-//     });
+    ready.then( () =>
+    {
+      test.case = `full relative path, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainWithFullPath );
+      a.program
+      ({
+        routine : module1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+module1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
 
     /* */
 
     ready.then( () =>
     {
-      test.case = `name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `require name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
 
-      var programPath = a.program( mainWithName );
+      var programPath = a.program( mainWithRequireName );
       a.program
       ({
         routine : module1,
@@ -3099,17 +3066,6 @@ module1
 
   /* - */
 
-  function mainWithName()
-  {
-    let _ = require( toolsPath );
-    let ModuleFileNative = require( 'module' );
-    console.log( 'main' );
-    _.module.predeclare({ name : 'Mod1', entryPath : 'module1' } );
-    _.include( 'Mod1' );
-  }
-
-  /* - */
-
   function module1()
   {
     console.log( 'module1' );
@@ -3118,6 +3074,295 @@ module1
   /* - */
 
 }
+
+//
+
+function predeclareAbsolute( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `assumption, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainAssuption );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+file1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainProperCasedModule );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+file1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `upper cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainUpperCasedModule );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`= Message of error#1
+    Cant resolve module::MOD1.
+    Looked at:
+     - MOD1`
+      test.nil( op.exitCode, 0 );
+      test.true( _.strHas( op.output, exp ) );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `lower cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainLowerCasedModule );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`= Message of error#1
+    Cant resolve module::mod1.
+    Looked at:
+     - mod1`
+      test.nil( op.exitCode, 0 );
+      test.true( _.strHas( op.output, exp ) );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `upper cased include, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainUpperCaseInclude );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'node_modules',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+file1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `relative, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( mainRelative );
+      a.program
+      ({
+        routine : file1,
+        dirPath : 'dir1',
+      });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+file1
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function mainAssuption()
+  {
+    console.log( 'main' );
+    require( 'file1' );
+  }
+
+  /* - */
+
+  function mainProperCasedModule()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
+    _.include( 'Mod1' );
+  }
+
+  /* - */
+
+  function mainUpperCasedModule()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
+    _.include( 'MOD1' );
+  }
+
+  /* - */
+
+  function mainLowerCasedModule()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
+    _.include( 'mod1' );
+  }
+
+  /* - */
+
+  function mainUpperCaseInclude()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.include( 'FILE1' );
+  }
+
+  /* - */
+
+  function mainRelative()
+  {
+    let _ = require( toolsPath );
+    let ModuleFileNative = require( 'module' );
+    console.log( 'main' );
+    _.module.predeclare({ name : 'Mod1', entryPath : './dir1/file1' } );
+    _.include( 'Mod1' );
+  }
+
+  /* - */
+
+  function file1()
+  {
+    console.log( 'file1' );
+  }
+
+  /* - */
+
+}
+
+predeclareAbsolute.description =
+`
+  - assumed npm can find file with relative path without dot if such put in node_modules directory
+  - it is possible to declare module with name of file ( not absolute path )
+  - include with upper-cased name of module cant find the module
+  - but include of upper-cased name of npm module works
+  - delcaring of module with relative entry path based on path of the current module file
+`
 
 //
 
@@ -3659,7 +3904,7 @@ globalPathAssumption.experimental = 1;
 
 function experiment( test )
 {
-  test.true( true ); debugger;
+  test.true( true );
 }
 
 experiment.experimental = 1;
@@ -3703,7 +3948,8 @@ const Proto =
 
     predeclareBasic,
     predeclareMain,
-    predeclareNpmBasic,
+    predeclareRelative,
+    predeclareAbsolute,
 
     moduleIsIncluded,
     moduleResolveFromAnotherGlobal,
