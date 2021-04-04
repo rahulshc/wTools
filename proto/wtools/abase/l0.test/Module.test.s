@@ -393,12 +393,15 @@ moduleFile.sourcePath ${testingPath}
 moduleFile.downFile.sourcePath ${a.abs( 'program1' )}
 moduleFile.downFile.module null
 module.is( moduleFile.module ) true
-filesOfTesting ../node_modules/wTesting atop/testing/entry/Main.s atop/testing/include/Top.s abase/l0/l0/Global.s
+filesOfTesting
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '.' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/entry/Main.s' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/include/Top.s' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/Global.s' ) }
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 4
 lengthOf( predeclaredWithEntryPathMap ) 3
 lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias ) + _.lengthOf( _.module.withName( 'wTesting' ).alias )}
-lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + _.lengthOf( _.module.withName( 'wTesting' ).files)}
 modulesMap wTools wTools wTesting wTesting
 `
 
@@ -438,14 +441,13 @@ modulesMap wTools wTools wTesting wTesting
     console.log( `module.is( moduleFile.module )`, _.module.is( moduleFile.module ) );
 
     var module = _.module.withPath( testingPath );
-    var filesOfTesting = __.path.s.relative( __.module.toolsDirGet(), __.select( [ ... module.files.values() ], '*/sourcePath' ) );
-    console.log( 'filesOfTesting', filesOfTesting.join( ' ' ) );
+    var filesOfTesting = __.select( [ ... module.files.values() ], '*/sourcePath' );
+    console.log( `filesOfTesting\n  ${filesOfTesting.join( '\n  ' )}` );
 
     console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
     console.log( 'lengthOf( predeclaredWithNameMap )', _.lengthOf( _.module.predeclaredWithNameMap ) );
     console.log( 'lengthOf( predeclaredWithEntryPathMap )', _.lengthOf( _.module.predeclaredWithEntryPathMap ) );
     console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
-    console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
     console.log( 'modulesMap', [ ... _.module.modulesMap.values() ].map( ( m ) => m.name ).join( ' ' ) );
 
   }
