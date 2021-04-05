@@ -2829,19 +2829,19 @@ function strStrShortOptionWidthLimit( test )
   test.case = 'cut 1 letter, hl : null';
   var src = { src : 'string\nstring\nstring', widthLimit : 5, cutting : 'left' }
   var got = _.strShort( src );
-  var expected = 'tring';
+  var expected = 'tring\ntring\ntring';
   test.identical( got, expected );
 
   test.case = 'cut 1 letter, hl : null';
   var src = { src : 'string\nstring\nstring', widthLimit : 5, cutting : 'right' }
   var got = _.strShort( src );
-  var expected = 'strin';
+  var expected = 'strin\nstrin\nstrin';
   test.identical( got, expected );
 
   test.case = 'cut 1 letter, hl : null';
   var src = { src : 'string\nstring\nstring', widthLimit : 5, cutting : 'center' }
   var got = _.strShort( src );
-  var expected = 'strng';
+  var expected = 'strng\nstrng\nstrng';
   test.identical( got, expected );
 
   /* wl */
@@ -3510,19 +3510,19 @@ function strShortWidthOptionCutting( test )
   test.case = 'cut 1 letter';
   var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'left' }
   var got = _.strShortWidth( src );
-  var expected = 'tring';
+  var expected = 'tring\ntring\ntring';
   test.identical( got, expected );
 
   test.case = 'cut 1 letter';
   var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'right' }
   var got = _.strShortWidth( src );
-  var expected = 'strin';
+  var expected = 'strin\nstrin\nstrin';
   test.identical( got, expected );
 
   test.case = 'cut 1 letter';
   var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'center' }
   var got = _.strShortWidth( src );
-  var expected = 'strng';
+  var expected = 'strng\nstrng\nstrng';
   test.identical( got, expected );
 
   test.open( 'cutting : left' )

@@ -343,8 +343,7 @@ function strShort( o )  /* version with binary search cutting */
   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
   _.assert
   (
-    o.heightLimit === null
-    || ( _.number.is( o.heightLimit ) && o.heightLimit >= 0 ),
+    _.number.is( o.heightLimit ) && o.heightLimit >= 0,
     'If provided option::o.heightLimit must be greater or equal to zero'
   );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
@@ -391,10 +390,11 @@ function strShort( o )  /* version with binary search cutting */
   let fixLength = 0;
   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && o.heightLimit === null ) /* nothing to cut */
+  let splitted = o.src.split( '\n' );
+
+  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && splitted.length === 1 ) /* nothing to cut in a single line */
   return o.prefix + src + o.postfix;
 
-  let cutted;
   let options = Object.create( null );
   options.limit = o.widthLimit;
   options.prefix = o.prefix;
@@ -403,23 +403,18 @@ function strShort( o )  /* version with binary search cutting */
   options.onLength = o.onLength;
   options.cutting = o.cutting;
 
-  if( o.heightLimit === null )
+  if( splitted.length <= o.heightLimit )
   {
     options.src = src;
     return _.strShortWidth( options );
   }
   else
   {
-    cutted = _.strShortHeight({ src, cutting : o.cuttingHeight, limit : o.heightLimit });
-    let splitted = cutted.split( '\n' );
+    let cutted = _._strShortHeight({ src : splitted, cutting : o.cuttingHeight, limit : o.heightLimit });
+    options.src = cutted;
+    cutted = _._strShortWidth( options );
 
-    splitted = splitted.map( ( el ) =>
-    {
-      options.src = el;
-      return _.strShortWidth( options );
-    });
-
-    return splitted.join( '\n' );
+    return cutted.join( '\n' );
   }
 }
 
@@ -427,7 +422,7 @@ strShort.defaults =
 {
   src : null,
   widthLimit : 40,
-  heightLimit : null,
+  heightLimit : 0,
   prefix : null,
   postfix : null,
   infix : null,
@@ -438,7 +433,7 @@ strShort.defaults =
 
 //
 
-function strShortWidth( o )  /* version with binary search cutting */
+function strShortWidth( o )
 {
 
   if( arguments.length === 2 )
@@ -491,29 +486,66 @@ function strShortWidth( o )  /* version with binary search cutting */
     o.infix = '';
   }
 
-  let src = o.src;
-  let fixLength = 0;
-  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+  let options = _.mapExtend( null, o );
+  let splitted = o.src.split( '\n' );
+  options.src = splitted;
 
-  if( ( o.onLength( src ) + fixLength <= o.limit ) ) /* nothing to cut */
-  return o.prefix + src + o.postfix;
+  let cutted = _._strShortWidth( options );
+  return cutted.join( '\n' );
+}
+
+strShortWidth.defaults =
+{
+  src : null,
+  limit : 40,
+  prefix : null,
+  postfix : null,
+  infix : null,
+  onLength : null,
+  cutting : 'center',
+}
+
+//
+
+function _strShortWidth( o )
+{
+  /*
+    input : array of lines
+    output : array of lines ( each cutted down to o.limit )
+  */
+
+  _.assert( _.arrayIs( o.src ) );
+  _.routine.options( _strShortWidth, o );
 
   let begin = '';
   let end = '';
+  let fixLength = o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  if( o.cutting === 'left' )
+  o.src = o.src.map( ( el ) =>
   {
-    return o.prefix + o.infix + cutLeft( src ) + o.postfix;
-  }
-  else if( o.cutting === 'right' )
-  {
-    return o.prefix + cutRight( src ) + o.infix + o.postfix;
-  }
-  else
-  {
-    let [ begin, end ] = cutMiddle( src );
-    return o.prefix + begin + o.infix + end + o.postfix;
-  }
+    if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
+    {
+      return o.prefix + el + o.postfix;
+    }
+    else
+    {
+      if( o.cutting === 'left' )
+      {
+        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+      }
+      else if( o.cutting === 'right' )
+      {
+        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+      }
+      else
+      {
+        let [ begin, end ] = cutMiddle( el );
+        return o.prefix + begin + o.infix + end + o.postfix;
+      }
+    }
+  });
+
+  return o.src;
 
   /* - */
 
@@ -664,7 +696,7 @@ function strShortWidth( o )  /* version with binary search cutting */
 
 }
 
-strShortWidth.defaults =
+_strShortWidth.defaults =
 {
   src : null,
   limit : 40,
@@ -677,7 +709,7 @@ strShortWidth.defaults =
 
 //
 
-function strShortHeight( o )  /* version with binary search cutting */
+function strShortHeight( o )
 {
 
   if( arguments.length === 2 )
@@ -699,16 +731,36 @@ function strShortHeight( o )  /* version with binary search cutting */
   if( o.limit === 0 )
   o.limit = Infinity;
 
-  let src = o.src;
+  let splitted = o.src.split( '\n' );
+  let cutted = _._strShortHeight({ src : splitted, limit : o.limit, cutting : o.cutting });
 
-  let splitted = src.split( '\n' );
-  splitted = cutSplitted( splitted );
+  return cutted.join( '\n' );
+}
 
-  return splitted.join( '\n' );
+strShortHeight.defaults =
+{
+  src : null,
+  limit : null,
+  cutting : 'center',
+}
+
+//
+
+function _strShortHeight( o )  /* version with binary search cutting */
+{
+  /*
+    input : array of lines
+    output : array of lines ( cutted down to o.limit )
+  */
+
+  _.assert( _.arrayIs( o.src ) );
+  _.routine.options( strShortHeight, o );
+
+  return cut( o.src );
 
   /* - */
 
-  function cutSplitted( src )
+  function cut( src )
   {
     if( src.length > o.limit )
     {
@@ -760,7 +812,7 @@ function strShortHeight( o )  /* version with binary search cutting */
 
 }
 
-strShortHeight.defaults =
+_strShortHeight.defaults =
 {
   src : null,
   limit : null,
@@ -1861,7 +1913,9 @@ let ExtensionTools =
   strStrShort : strShort, /* xxx : remove */
   strShort, /* qqq for Yevhen : cover | aaa : Done. */
   strShortWidth,
+  _strShortWidth,
   strShortHeight,
+  _strShortHeight,
   // strShort2, /* non-binary search implementation */
   strConcat,
 
