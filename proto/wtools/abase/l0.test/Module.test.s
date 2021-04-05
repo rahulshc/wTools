@@ -999,7 +999,7 @@ program6 : ./program5 : {- ModuleFile ./program5 -}
   downFiles
     {- ModuleFile ./program4 -}
   upFiles
-    {- ModuleFile /pro/builder/proto/wtools/Tools.s -}
+    {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./program6 -}
 program6 : ./program6 : {- ModuleFile ./program6 -}
   downFiles
@@ -1009,7 +1009,7 @@ program2b
 
 program1 : ./program1 : {- ModuleFile ./program1 -}
   upFiles
-    {- ModuleFile /pro/builder/proto/wtools/Tools.s -}
+    {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./program2 -}
     {- ModuleFile ./program2b -}
 program1 : ./program2 : {- ModuleFile ./program2 -}
