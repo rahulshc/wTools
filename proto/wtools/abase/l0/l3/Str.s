@@ -390,9 +390,9 @@ function strShort( o )  /* version with binary search cutting */
   let fixLength = 0;
   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  let splitted = o.src.split( '\n' );
+  let isOneLine = o.src.indexOf( '\n' ) === -1;
 
-  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && splitted.length === 1 ) /* nothing to cut in a single line */
+  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
   return o.prefix + src + o.postfix;
 
   let options = Object.create( null );
@@ -403,13 +403,14 @@ function strShort( o )  /* version with binary search cutting */
   options.onLength = o.onLength;
   options.cutting = o.cutting;
 
-  if( splitted.length <= o.heightLimit )
+  if( isOneLine )
   {
     options.src = src;
     return _.strShortWidth( options );
   }
   else
   {
+    let splitted = o.src.split( '\n' );
     let cutted = _._strShortHeight({ src : splitted, cutting : o.cuttingHeight, limit : o.heightLimit });
     options.src = cutted;
     cutted = _._strShortWidth( options );
@@ -728,11 +729,19 @@ function strShortHeight( o )
   );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
+  if( !o.infix )
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
   if( o.limit === 0 )
   o.limit = Infinity;
 
   let splitted = o.src.split( '\n' );
-  let cutted = _._strShortHeight({ src : splitted, limit : o.limit, cutting : o.cutting });
+  let options = _.mapExtend( null, o );
+  options.src = splitted;
+  let cutted = _._strShortHeight( options );
 
   return cutted.join( '\n' );
 }
@@ -742,6 +751,9 @@ strShortHeight.defaults =
   src : null,
   limit : null,
   cutting : 'center',
+  prefix : null,
+  postfix : null,
+  infix : null,
 }
 
 //
@@ -752,9 +764,15 @@ function _strShortHeight( o )  /* version with binary search cutting */
     input : array of lines
     output : array of lines ( cutted down to o.limit )
   */
-
+  debugger;
   _.assert( _.arrayIs( o.src ) );
   _.routine.options( strShortHeight, o );
+
+  let prefixLength = o.prefix.indexOf( '\n' ) === -1 ? 1 : o.prefix.split( '\n' ).length;
+  let postfixLength = o.postfix.indexOf( '\n' ) === -1 ? 1 : o.postfix.split( '\n' ).length;
+  let infixLength = o.infix.indexOf( '\n' ) === -1 ? 1 : o.infix.split( '\n' ).length;
+
+  let fixLength = prefixLength + postfixLength + infixLength; /* one line */
 
   return cut( o.src );
 
@@ -762,19 +780,71 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   function cut( src )
   {
-    if( src.length > o.limit )
+    if( fixLength > o.limit )
+    {
+
+    }
+    if( src.length + fixLength > o.limit )
     {
       if( o.cutting === 'left' )
       {
-        src = src.slice( -o.limit );
+        src = src.slice( - ( o.limit - fixLength ) );
+        let result = [];
+
+        if( o.prefix !== '' )
+        result.push( o.prefix )
+
+        if( o.infix !== '' )
+        result.push( o.infix )
+
+        result.push( ... src );
+
+        if( o.postfix !== '' )
+        result.push( o.postfix )
+
+        src = result;
+
+        // src = [ o.prefix, o.infix, ... src, o.postfix ]
       }
       else if( o.cutting === 'right' )
       {
-        src = src.slice( 0, o.limit );
+        src = src.slice( 0, o.limit - fixLength );
+        let result = [];
+
+        if( o.prefix !== '' )
+        result.push( o.prefix );
+
+        result.push( ... src );
+
+        if( o.infix !== '' )
+        result.push( o.infix );
+
+        if( o.postfix !== '' )
+        result.push( o.postfix );
+
+        src = result;
       }
       else
       {
-        src = handleCuttingHeightCenter( src );
+        let [ left, right ] = handleCuttingHeightCenter( src );
+        let result = [];
+
+        if( o.prefix !== '' )
+        result.push( o.prefix );
+
+        result.push( ... left );
+
+        if( o.infix !== '' )
+        result.push( o.infix );
+
+        result.push( ... right );
+
+        if( o.postfix !== '' )
+        result.push( o.postfix );
+
+        src = result;
+
+        // src = [ o.prefix, ... left, o.infix, ... right, o.postfix ]
       }
     }
 
@@ -787,27 +857,31 @@ function _strShortHeight( o )  /* version with binary search cutting */
   {
     let indexLeft, indexRight;
 
-    if( o.limit === 1 )
+    let limit = o.limit - fixLength;
+
+    if( limit === 1 )
     {
       return src.slice( 0, 1 );
     }
-    else if( o.limit % 2 === 0 )
+    else if( limit % 2 === 0 )
     {
-      indexLeft = o.limit / 2;
+      indexLeft = limit / 2;
       indexRight = -indexLeft;
     }
     else
     {
-      indexLeft = Math.floor( ( o.limit / 2 ) ) + 1;
+      indexLeft = Math.floor( ( limit / 2 ) ) + 1;
       indexRight = -indexLeft + 1;
     }
 
     let splittedLeft = src.slice( 0, indexLeft );
     let splittedRight = src.slice( indexRight );
 
-    src = splittedLeft.concat( splittedRight );
+    // src = splittedLeft.concat( splittedRight );
 
-    return src;
+    // return src;
+
+    return [ splittedLeft, splittedRight ];
   }
 
 }
@@ -817,6 +891,9 @@ _strShortHeight.defaults =
   src : null,
   limit : null,
   cutting : 'center',
+  prefix : null,
+  postfix : null,
+  infix : null,
 }
 
 //

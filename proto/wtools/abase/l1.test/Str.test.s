@@ -3698,6 +3698,193 @@ function strShortHeightOptionCutting( test )
 
 }
 
+//
+
+function strShortHeightDelimiters( test )
+{
+  // test.open( 'prefix, postfix, infix' )
+
+  /* prefix */
+
+  test.case = 'cut left with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\nstring';
+  test.identical( got, expected );
+
+  test.case = 'cut right with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\nstring';
+  test.identical( got, expected );
+
+  test.case = 'cut center with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\nstring';
+  test.identical( got, expected );
+
+  /* postfix */
+
+  test.case = 'cut left with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring\nstring\nstring\n>';
+  test.identical( got, expected );
+
+  test.case = 'cut right with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring\nstring\nstring\n';
+  test.identical( got, expected );
+
+  test.case = 'cut center with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring\nstring\nstring\n';
+  test.identical( got, expected );
+
+  /* prefix & postfix */
+
+  test.case = 'cut left with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\n>';
+  test.identical( got, expected );
+
+  test.case = 'cut right with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\n>';
+  test.identical( got, expected );
+
+  test.case = 'cut center with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<', postfix : '>' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\nstring\n>';
+  test.identical( got, expected );
+
+  /* prefix & postfix & infix */
+
+  test.case = 'cut left with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShortHeight( src );
+  var expected = '<\n.\nstring\nstring\n>';
+  test.identical( got, expected );
+
+  test.case = 'cut right with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\nstring\n.\n>';
+  test.identical( got, expected );
+
+  test.case = 'cut center with delimiters';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strShortHeight( src );
+  var expected = '<\nstring\n.\nstring\n>';
+  test.identical( got, expected );
+
+  // test.case = 'prefix & postfix & infix = widthLimit';
+  // var src = { src : 'string', widthLimit : 3, prefix : '<', postfix : '>', infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '<.>';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'prefix & postfix & infix > widthLimit';
+  // var src = { src : 'string', widthLimit : 3, prefix : '<<', postfix : '>>', infix : '..' }
+  // var got = _.strShort( src );
+  // var expected = '<<>';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.close( 'prefix, postfix, infix' )
+
+  // /* - */
+
+  // test.open( 'src is empty, prefix or postfix or infix or all' )
+
+  // test.case = 'src is empty, prefix < widthLimit'
+  // var src = { src : '', widthLimit : 3, prefix : '<' }
+  // var got = _.strShort( src );
+  // var expected = '<';
+  // test.identical( got, expected );
+  // test.identical( got.length, 1 );
+
+  // test.case = 'src is empty, postfix < widthLimit'
+  // var src = { src : '', widthLimit : 3, postfix : '>' }
+  // var got = _.strShort( src );
+  // var expected = '>';
+  // test.identical( got, expected );
+  // test.identical( got.length, 1 );
+
+  // test.case = 'src is empty, infix < widthLimit'
+  // var src = { src : '', widthLimit : 3, infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '';
+  // test.identical( got, expected );
+  // test.identical( got.length, 0 );
+
+  // test.case = 'src is empty, prefix, postfix, infix < widthLimit'
+  // var src = { src : '', widthLimit : 4, prefix : '<', postfix : '>', infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '<>';
+  // test.identical( got, expected );
+  // test.identical( got.length, 2 );
+
+  // test.case = 'src is empty, prefix, postfix, infix > widthLimit'
+  // var src = { src : '', widthLimit : 2, prefix : '<', postfix : '>', infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '<>';
+  // test.identical( got, expected );
+  // test.identical( got.length, 2 );
+
+  // test.close( 'src is empty, prefix or postfix or infix or all' )
+
+  // /* - */
+
+  // test.open( 'change cutting, prefix, infix, postfix' )
+
+  // test.case = 'cut left, with prefix';
+  // var src = { src : 'string', widthLimit : 4, cutting : 'left', prefix : '<' }
+  // var got = _.strShort( src );
+  // var expected = '<ing';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'cut left, with prefix, postfix, infix';
+  // var src = { src : 'string', widthLimit : 5, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '<.ng>';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // /* */
+
+  // test.case = 'cut right, with prefix';
+  // var src = { src : 'string', widthLimit : 4, cutting : 'right', prefix : '<' }
+  // var got = _.strShort( src );
+  // var expected = '<str';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // test.case = 'cut right, with prefix, postfix, infix';
+  // var src = { src : 'string', widthLimit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = '<st.>';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.widthLimit );
+
+  // /* */
+
+  // test.case = 'src = widthLimit - 1, infix length = 1';
+  // var src = { src : 'string', widthLimit : 7, infix : '.' }
+  // var got = _.strShort( src );
+  // var expected = 'string';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.src.length );
+}
+
 // function strShortPerformance( test )
 // {
 //   /*
@@ -12862,6 +13049,7 @@ const Proto =
     strShortHeight,
     strShortWidthOptionCutting,
     strShortHeightOptionCutting,
+    strShortHeightDelimiters,
 
     // strShortPerformance,
 
