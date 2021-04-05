@@ -509,7 +509,7 @@ function _fileUniversalFrom( o )
     _.assert( !o.native.moduleNativeFilesMap );
     _.assert
     (
-      _.module.nativeFilesMap[ _.path.nativize( o.sourcePath ) ] === o.native,
+      _.module.nativeFilesMap[ _.path.nativizeMinimal( o.sourcePath ) ] === o.native,
       `Module file ${o.sourcePath} is not in the current module files list`
     );
   }
@@ -926,20 +926,14 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     return;
     visited.add( file );
 
-    // console.log( `modulesAssociate ${[ ... modules ][ 0 ]} ${file} ${file.global.__GLOBAL_NAME__}` ); /* xxx2 */
-
     _.assert( _.module.fileUniversalIs( file ) );
-    // _.assert( _.arrayIs( file.upFiles ) );
     _.assert( _.setIs( file.upFiles ) );
-    // _.assert( file.moduleNativeFilesMap === _.module.nativeFilesMap ); /* xxx2 : write test */
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     {
-      // _.assert( 0, 'not tested' ); /* xxx2 : write test */
       return;
     }
 
-    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && !modules.has( module2 ) )
     return;
@@ -1104,17 +1098,17 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
   {
     _.assert( relativeSourcePath >= 0 );
     absoluteSourcePath = _.introspector.location({ level : relativeSourcePath + 1 }).filePath;
-    return _.module._fileNativeWithResolvedNativePath( _.path.nativize( absoluteSourcePath ), nativeFilesMap );
+    return _.module._fileNativeWithResolvedNativePath( _.path.nativizeMinimal( absoluteSourcePath ), nativeFilesMap );
   }
 
   if( _.path.isDotted( relativeSourcePath ) )
   {
     let basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
-    absoluteSourcePath = _.path.nativize( _.path.canonize( basePath + '/' + absoluteSourcePath ) );
+    absoluteSourcePath = _.path.nativizeMinimal( _.path.canonize( basePath + '/' + absoluteSourcePath ) );
   }
   else
   {
-    absoluteSourcePath = _.path.nativize( absoluteSourcePath );
+    absoluteSourcePath = _.path.nativizeMinimal( absoluteSourcePath );
   }
 
   let moduleFile = _.module._fileNativeWithResolvedNativePath( absoluteSourcePath, nativeFilesMap );
@@ -1141,11 +1135,11 @@ function path_head( routine, args )
   _.assert( _.arrayIs( o.paths ) );
   _.routine.options( filePathAmend, o );
 
-  if( _.path.nativize && _.path.canonize )
+  if( _.path.nativizeMinimal && _.path.canonize )
   {
     for( var p = 0 ; p < o.paths.length ; p++ )
     {
-      o.paths[ p ] = _.path.nativize( _.path.canonize( o.paths[ p ] ) );
+      o.paths[ p ] = _.path.nativizeMinimal( _.path.canonize( o.paths[ p ] ) );
     }
   }
 
@@ -1561,7 +1555,9 @@ function _resolveFirst( o )
   _.assert( _.strDefined( o.downPath ) );
   _.assert( _.strDefined( o.basePath ) );
 
-  // if( o.moduleNames[ 0 ] === 'wTesting' )
+  // if( o.moduleNames[ 0 ] === 'wEqualer' )
+  // debugger;
+  // if( o.moduleNames[ 0 ] === 'wLooker' && o.downPath === '/pro/module/wEqualer/proto/wtools/abase/l6/Equaler.s' )
   // debugger;
   let sourcePaths = this._moduleNamesToPaths( o.moduleNames );
   let resolved = this._fileResolve
@@ -1576,7 +1572,7 @@ function _resolveFirst( o )
   if( o.throwing )
   if( resolved === undefined && !_.longHas( o.moduleNames, _.optional ) )
   {
-    debugger;
+    /* xxx : take care of section module files stack */
     throw _.err
     (
       `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module::' )}.`
@@ -1620,7 +1616,7 @@ function _fileResolve( o )
   if( !_.mapIs( arguments[ 0 ] ) )
   o = { sourcePaths : arguments[ 0 ] }
 
-  let native = _.module.nativeFilesMap[ _.path.nativize( o.downPath ) ];
+  let native = _.module.nativeFilesMap[ _.path.nativizeMinimal( o.downPath ) ];
   native = native || module; /* xxx : comment out? */
 
   _.map.assertHasAll( o, _fileResolve.defaults );
@@ -1668,7 +1664,7 @@ function _fileResolve( o )
   //
   //   try
   //   {
-  //     let filePath = _.path.nativize( _.path.canonize( o.basePath + '/' + sourcePath ) );
+  //     let filePath = _.path.nativizeMinimal( _.path.canonize( o.basePath + '/' + sourcePath ) );
   //     resolved = ModuleFileNative._resolveFilename( filePath, native, false, undefined );
   //   }
   //   catch( err )
@@ -1691,7 +1687,13 @@ function _fileResolve( o )
     /* xxx : not optimal */
     try
     {
-      return ModuleFileNative._resolveFilename( _.path.nativize( sourcePath ), native, false, undefined );
+      // xxx2
+      // if( sourcePath === 'wTesting' || sourcePath === 'wtesting' )
+      // debugger;
+      if( _.path.isAbsolute( sourcePath ) )
+      return ModuleFileNative._resolveFilename( _.path.nativizeMinimal( sourcePath ), native, false, undefined );
+      else
+      return ModuleFileNative._resolveFilename( sourcePath, native, false, undefined );
     }
     catch( err )
     {
@@ -1768,7 +1770,7 @@ function _fileIncludeSingle( downPath, filePath )
   if( !hasModuleFileDescriptor )
   throw _.err( 'Cant include, routine "require" does not exist.' );
 
-  let normalizedPath = _.path.nativize( filePath );
+  let normalizedPath = _.path.nativizeMinimal( filePath );
   let moduleFile = _.module._fileWithResolvedPath( downPath );
   if( moduleFile )
   return moduleFile.native.require( normalizedPath );
@@ -1978,14 +1980,6 @@ function _trackingEnable()
       native = ModuleFileNative._cache[ resolvedPath ];
       _.assert( !!native.parent );
     }
-
-    // console.log( 'second', native.filename || native.id ); /* xxx2 */
-    // if( _.strEnds( native.filename || native.id, 'testing/entry/Main.s' ) )
-    // debugger;
-    // if( _.strEnds( native.filename || native.id, 'program3' ) )
-    // debugger;
-    // if( _.strEnds( native.filename || native.id, 'program4' ) )
-    // debugger;
 
     if( native.parent !== parent )
     {

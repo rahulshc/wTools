@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wTools.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wTools.out.will.yml: &ref_0
+    hash: dade34d624931d54b782e448632dabe8
+    size: 52208
+  ../.ex.will.yml: &ref_1
     hash: 14a2b825ae2a6e7da9828855e8cb3a63
     size: 2101
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: 9eebf415e24ba7a828bcfd4dad7224e0
     size: 5240
 module:
@@ -19,11 +22,11 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - base
         - basic
         - core
@@ -34,14 +37,14 @@ module:
         - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@01.school>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wTools
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -218,6 +221,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Intervall.s
           - ../proto/wtools/abase/l0/l3/Intervalo.s
           - ../proto/wtools/abase/l0/l3/Introspector.s
+          - ../proto/wtools/abase/l0/l3/Logger.s
           - ../proto/wtools/abase/l0/l3/Long.s
           - ../proto/wtools/abase/l0/l3/Map.s
           - ../proto/wtools/abase/l0/l3/Module.s
@@ -380,6 +384,7 @@ module:
           - ../proto/wtools/abase/l0.test/HashMap.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
+          - ../proto/wtools/abase/l0.test/Logger.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
           - ../proto/wtools/abase/l0.test/Map.test.s
@@ -951,6 +956,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          filePath: 'reflector::exported.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          filePath: 'reflector::exported.files.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -1061,8 +1084,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wTools.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wTools
@@ -1073,13 +1097,31 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - base
+        - basic
+        - core
+        - platform
+        - tools
+        - wTools
+        - wBase
+        - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@01.school>
+        - Volodymyr M. <volodymyr.migdal@gmail.com>
+        - Ihor O. <iostashvxi@gmail.com>
+        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
+        - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wTools
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1781,3 +1823,4 @@ module:
       ../.im.will.yml:
         hash: 9eebf415e24ba7a828bcfd4dad7224e0
         size: 5240
+      wTools.out.will.yml: *ref_0
