@@ -556,7 +556,6 @@ function _nativizeMinimalPosix( filePath )
 {
   let self = this;
   let result = filePath;
-  _.assert( _.strIs( filePath ), 'Expects string' );
   return result;
 }
 

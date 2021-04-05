@@ -509,7 +509,7 @@ function _fileUniversalFrom( o )
     _.assert( !o.native.moduleNativeFilesMap );
     _.assert
     (
-      _.module.nativeFilesMap[ _.path.nativize( o.sourcePath ) ] === o.native,
+      _.module.nativeFilesMap[ _.path.nativizeMinimal( o.sourcePath ) ] === o.native,
       `Module file ${o.sourcePath} is not in the current module files list`
     );
   }
@@ -1098,17 +1098,17 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
   {
     _.assert( relativeSourcePath >= 0 );
     absoluteSourcePath = _.introspector.location({ level : relativeSourcePath + 1 }).filePath;
-    return _.module._fileNativeWithResolvedNativePath( _.path.nativize( absoluteSourcePath ), nativeFilesMap );
+    return _.module._fileNativeWithResolvedNativePath( _.path.nativizeMinimal( absoluteSourcePath ), nativeFilesMap );
   }
 
   if( _.path.isDotted( relativeSourcePath ) )
   {
     let basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
-    absoluteSourcePath = _.path.nativize( _.path.canonize( basePath + '/' + absoluteSourcePath ) );
+    absoluteSourcePath = _.path.nativizeMinimal( _.path.canonize( basePath + '/' + absoluteSourcePath ) );
   }
   else
   {
-    absoluteSourcePath = _.path.nativize( absoluteSourcePath );
+    absoluteSourcePath = _.path.nativizeMinimal( absoluteSourcePath );
   }
 
   let moduleFile = _.module._fileNativeWithResolvedNativePath( absoluteSourcePath, nativeFilesMap );
@@ -1135,11 +1135,11 @@ function path_head( routine, args )
   _.assert( _.arrayIs( o.paths ) );
   _.routine.options( filePathAmend, o );
 
-  if( _.path.nativize && _.path.canonize )
+  if( _.path.nativizeMinimal && _.path.canonize )
   {
     for( var p = 0 ; p < o.paths.length ; p++ )
     {
-      o.paths[ p ] = _.path.nativize( _.path.canonize( o.paths[ p ] ) );
+      o.paths[ p ] = _.path.nativizeMinimal( _.path.canonize( o.paths[ p ] ) );
     }
   }
 
@@ -1616,7 +1616,7 @@ function _fileResolve( o )
   if( !_.mapIs( arguments[ 0 ] ) )
   o = { sourcePaths : arguments[ 0 ] }
 
-  let native = _.module.nativeFilesMap[ _.path.nativize( o.downPath ) ];
+  let native = _.module.nativeFilesMap[ _.path.nativizeMinimal( o.downPath ) ];
   native = native || module; /* xxx : comment out? */
 
   _.map.assertHasAll( o, _fileResolve.defaults );
@@ -1664,7 +1664,7 @@ function _fileResolve( o )
   //
   //   try
   //   {
-  //     let filePath = _.path.nativize( _.path.canonize( o.basePath + '/' + sourcePath ) );
+  //     let filePath = _.path.nativizeMinimal( _.path.canonize( o.basePath + '/' + sourcePath ) );
   //     resolved = ModuleFileNative._resolveFilename( filePath, native, false, undefined );
   //   }
   //   catch( err )
@@ -1688,10 +1688,10 @@ function _fileResolve( o )
     try
     {
       // xxx2
-      // if( sourcePath === 'wequaler' )
+      // if( sourcePath === 'wTesting' || sourcePath === 'wtesting' )
       // debugger;
       if( _.path.isAbsolute( sourcePath ) )
-      return ModuleFileNative._resolveFilename( _.path.nativize( sourcePath ), native, false, undefined );
+      return ModuleFileNative._resolveFilename( _.path.nativizeMinimal( sourcePath ), native, false, undefined );
       else
       return ModuleFileNative._resolveFilename( sourcePath, native, false, undefined );
     }
@@ -1770,7 +1770,7 @@ function _fileIncludeSingle( downPath, filePath )
   if( !hasModuleFileDescriptor )
   throw _.err( 'Cant include, routine "require" does not exist.' );
 
-  let normalizedPath = _.path.nativize( filePath );
+  let normalizedPath = _.path.nativizeMinimal( filePath );
   let moduleFile = _.module._fileWithResolvedPath( downPath );
   if( moduleFile )
   return moduleFile.native.require( normalizedPath );
