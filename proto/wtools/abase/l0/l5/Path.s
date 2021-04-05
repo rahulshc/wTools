@@ -543,7 +543,7 @@ function _nativizeWindows( filePath )
   let result = filePath;
 
   _.assert( _.routine.is( self.unescape ) );
-  result = self.unescape( result ); /* yyy */
+  result = self.unescape( result ); /* xxx : remove from here */
 
   result = self._nativizeMinimalWindows( result );
 
@@ -556,7 +556,6 @@ function _nativizeMinimalPosix( filePath )
 {
   let self = this;
   let result = filePath;
-  _.assert( _.strIs( filePath ), 'Expects string' );
   return result;
 }
 
@@ -568,7 +567,7 @@ function _nativizePosix( filePath )
   let result = filePath;
   _.assert( _.strIs( filePath ), 'Expects string' );
   _.assert( _.routine.is( self.unescape ) );
-  result = self.unescape( result ); /* yyy */
+  result = self.unescape( result ); /* xxx : remove from here */
   return result;
 }
 

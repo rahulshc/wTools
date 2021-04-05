@@ -11,7 +11,6 @@ const Self = _.printer = _.printer || Object.create( null );
 // printer
 // --
 
-
 function is( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -49,7 +48,6 @@ function like( src )
 
   return false;
 }
-
 
 // --
 // extension

@@ -221,6 +221,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Intervall.s
           - ../proto/wtools/abase/l0/l3/Intervalo.s
           - ../proto/wtools/abase/l0/l3/Introspector.s
+          - ../proto/wtools/abase/l0/l3/Logger.s
           - ../proto/wtools/abase/l0/l3/Long.s
           - ../proto/wtools/abase/l0/l3/Map.s
           - ../proto/wtools/abase/l0/l3/Module.s
@@ -383,6 +384,7 @@ module:
           - ../proto/wtools/abase/l0.test/HashMap.test.s
           - ../proto/wtools/abase/l0.test/Interval.test.s
           - ../proto/wtools/abase/l0.test/Introspector.test.s
+          - ../proto/wtools/abase/l0.test/Logger.test.s
           - ../proto/wtools/abase/l0.test/Long.test.s
           - ../proto/wtools/abase/l0.test/LongDescriptor.test.s
           - ../proto/wtools/abase/l0.test/Map.test.s
