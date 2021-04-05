@@ -173,20 +173,19 @@ function location_( o )
 
   /* */
 
-  _.routine.options( location_, o );
-  // if( location_.defaults )
-  // for( let e in o )
-  // {
-  //   if( location_.defaults[ e ] === undefined )
-  //   throw Error( 'Unknown option ' + e );
-  // }
+  if( location_.defaults )
+  for( let e in o )
+  {
+    if( location_.defaults[ e ] === undefined )
+    throw Error( 'Unknown option ' + e );
+  }
 
-  // if( location_.defaults )
-  // for( let e in location_.defaults )
-  // {
-  //   if( o[ e ] === undefined )
-  //   o[ e ] = location_.defaults[ e ];
-  // }
+  if( location_.defaults )
+  for( let e in location_.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = location_.defaults[ e ];
+  }
 
   if( !( arguments.length === 0 || arguments.length === 1 ) )
   throw Error( 'Expects single argument or none' );
@@ -204,44 +203,44 @@ function location_( o )
 
   /* */
 
-  // if( o.error )
-  // {
-  //   let location2 = o.error.location || Object.create( null );
+  if( o.error )
+  {
+    let location2 = o.error.location || Object.create( null );
 
-  //   var args0 =
-  //   [
-  //     location2.filePath,
-  //     o.location.filePath,
-  //     o.error.filename,
-  //     o.error.fileName
-  //   ];
-  //   o.location.filePath = _.longLeftDefined( args0 ).element;
+    var args0 =
+    [
+      location2.filePath,
+      o.location.filePath,
+      o.error.filename,
+      o.error.fileName
+    ];
+    o.location.filePath = _.longLeftDefined( args0 ).element;
 
-  //   var args1 =
-  //   [
-  //     location2.line,
-  //     o.location.line,
-  //     o.error.line,
-  //     o.error.linenumber,
-  //     o.error.lineNumber,
-  //     o.error.lineNo,
-  //     o.error.lineno
-  //   ];
-  //   o.location.line = _.longLeftDefined( args1 ).element;
+    var args1 =
+    [
+      location2.line,
+      o.location.line,
+      o.error.line,
+      o.error.linenumber,
+      o.error.lineNumber,
+      o.error.lineNo,
+      o.error.lineno
+    ];
+    o.location.line = _.longLeftDefined( args1 ).element;
 
-  //   var args2 =
-  //   [
-  //     location2.col,
-  //     o.location.col,
-  //     o.error.col,
-  //     o.error.colnumber,
-  //     o.error.colNumber,
-  //     o.error.colNo,
-  //     o.error.colno
-  //   ];
-  //   o.location.col = _.longLeftDefined( args2 ).element;
+    var args2 =
+    [
+      location2.col,
+      o.location.col,
+      o.error.col,
+      o.error.colnumber,
+      o.error.colNumber,
+      o.error.colNo,
+      o.error.colno
+    ];
+    o.location.col = _.longLeftDefined( args2 ).element;
 
-  // }
+  }
 
   /* */
 
@@ -268,11 +267,12 @@ function location_( o )
   stack = stack.split( '\n' );
   let stackFrame = stack[ o.level ];
 
+  // return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
+
   o.location.original = stackFrame;
   _.introspector.locationNormalize( o.location );
   return o.location;
 
-  // return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
 }
 
 location_.defaults =

@@ -2956,157 +2956,74 @@ function locationPerformance( test )
   /*
     |      **Routine**       |   type    | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
     | :--------------------: | :-------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
-    |     location BISI      |  regular  |      0.3946s       |      0.3803s      |                    |      0.3273s       |                   |
-    | locationOptimized BISI | optimized |      0.3708s       |      0.372s       |                    |      0.3152s       |                   |
-    |     location SIBI      |  regular  |    0.00002622s     |      0.3803s      |                    |    0.00002571s     |                   |
-    | locationOptimized SIBI | optimized |    0.00002646s     |    0.00002495s    |                    |    0.00002608s     |                   |
+    |     location BISI      |  regular  |      0.3257s       |      0.3005s      |      0.2623s       |      0.2374s       |      0.2347s      |
+    | locationOptimized BISI | optimized |      0.3256s       |      0.3328s      |      0.2524s       |       0.253s       |      0.2376s      |
+    |     location SIBI      |  regular  |     0.0000471s     |    0.0000415s     |     0.0000457s     |     0.0000373s     |    0.0000348s     |
+    | locationOptimized SIBI | optimized |     0.0000431s     |    0.0000432s     |     0.0000433s     |     0.0000403s     |    0.0000371s     |
 
     BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
     SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )
   */
 
   test.case = 'long string, 10 iterations';
-  var times = 1e1;
   var size = 1e5;
-  var filler =
-`at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0/l3/Introspector.s:668:7)
-at Proxy.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:51)
-at Proxy._shouldDo_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:2782:24)
-at Proxy.shouldThrowErrorSync_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:3221:14)
-at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:8)
-at Proxy._run (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:323:26)
-at wConsequence.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:20)
-at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
-at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
-at wConsequence.__handleResourceSoon (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4082:10)
-at wConsequence.thenKeep (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:378:8)
-at wTestSuite._testRoutineRun (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:4)
-at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:540:18)
-at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l3/Routine.s:259:28)
-at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
-at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
-at wConsequence.take (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:3756:8)
-at /Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:1510:12
-at Object._time (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:61:22)
-at Object.time [as _time] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wProcedure/proto/wtools/abase/l8_procedure/Namespace.s:310:20)
-at Timeout.time [as _onTimeout] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:107:11)
-at listOnTimeout (internal/timers.js:554:17)
-at processTimers (internal/timers.js:497:7)`;
+  var times = 1e1;
+  var filler = new Error().stack;
   var string = new Array( size )
   .fill( filler )
   .join( '' );
   var stringSize = string.length;
-  test.true( true );
-
-  var testing = { counter : 0 };
   var took = 0;
 
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
     let result = act2();
-    // let [ resultLeft, resultRigth, resultCenter ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-    // console.log( result );
-    // test.identical( resultLeft, 'cc'+'cdd'+'dd' );
-    // test.identical( resultRigth, 'abb' );
-    // test.identical( resultCenter, 'add'+'dd' );
+    test.identical( result.original, 'Error' );
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
-  // console.log( `Counter = ${testing.counter / times / 3 }` );
   console.log( '----------------------------------------------------' );
 
   /* - */
 
-  test.case = 'short string, 1000 iterations';
-  var times = 1e5;
+  test.case = 'short string, 1e4 iterations';
+  var times = 1e4;
   var size = 2e1;
-  var filler =
-`at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0/l3/Introspector.s:668:7)
-at Proxy.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:51)
-at Proxy._shouldDo_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:2782:24)
-at Proxy.shouldThrowErrorSync_ (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:3221:14)
-at Object.locationToStack (/Users/jackiejo/main/BFS/wTools/wTools/proto/wtools/abase/l0.test/Introspector.test.s:2654:8)
-at Proxy._run (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Routine.s:323:26)
-at wConsequence.<anonymous> (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:20)
-at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
-at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
-at wConsequence.__handleResourceSoon (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4082:10)
-at wConsequence.thenKeep (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:378:8)
-at wTestSuite._testRoutineRun (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:1097:4)
-at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTesting/proto/wtools/atop/testing/l5/Suite.s:540:18)
-at wConsequence.handleRoutine (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l3/Routine.s:259:28)
-at __iteration (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4215:47)
-at wConsequence.__handleResourceNow (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:4097:12)
-at wConsequence.take (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:3756:8)
-at /Users/jackiejo/main/BFS/wTools/wTools/node_modules/wConsequence/proto/wtools/abase/l9/consequence/Consequence.s:1510:12
-at Object._time (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:61:22)
-at Object.time [as _time] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wProcedure/proto/wtools/abase/l8_procedure/Namespace.s:310:20)
-at Timeout.time [as _onTimeout] (/Users/jackiejo/main/BFS/wTools/wTools/node_modules/wTools/proto/wtools/abase/l0/l5/Time.s:107:11)
-at listOnTimeout (internal/timers.js:554:17)
-at processTimers (internal/timers.js:497:7)`;
+  var filler = new Error().stack;
   var string = new Array( size )
   .fill( filler )
   .join( '' );
   var stringSize = string.length;
-
-  var testing = { counter : 0 }
   var took = 0;
 
   for( let i = times; i > 0; i-- )
   {
     var time1 = _.time.now();
     let result = act2();
-    // let [ resultLeft, resultRigth, resultCenter ] = act2();
     var time2 = _.time.now();
     took += time2 - time1;
-
-    // console.log( result );
-    // test.identical( resultLeft, 'cc'+'cdd'+'dd' );
-    // test.identical( resultRigth, 'abb' );
-    // test.identical( resultCenter, 'add'+'dd' );
+    test.identical( result.original, 'Error' );
   }
 
   console.log( `String length = ${stringSize}, iterations = ${times}` );
   console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
-  // console.log( `Counter = ${testing.counter / times / 3}` );
   console.log( '----------------------------------------------------' );
 
   /* - */
 
-  function act() /* existing implementation with fixed 'center' cutting */
+  function act()
   {
-    let result = _.introspector.location({ stack : string });
-    return result;
-    // let result2 = _.introspector.location_({ src : string, onLength, widthLimit : 2, cutting : 'right' });
-    // let result3 = _.introspector.location_({ src : string, onLength, widthLimit : 2, cutting : 'center' });
-
-    // return [ result1, result2, result3 ];
+    return _.introspector.location({ stack : string });
   }
 
-  function act2() /* binary search implementation */
+  function act2()
   {
-    let result = _.introspector.location_({ stack : string });
-    return result;
-    // let result2 = _.location({ src : string, onLength, widthLimit : 2, cutting : 'right' });
-    // let result3 = _.location({ src : string, onLength, widthLimit : 2, cutting : 'center' });
-
-    // return [ result1, result2, result3 ];
+    return _.introspector.location_({ stack : string });
   }
-
-  function onLength( src )
-  {
-    let match = src.match( /(.)\1*/g ); /* match one character or same characters repeating as 1 */
-
-    if( match === null ) /* prefix, postfix, infix */
-    return src.length;
-
-    return match.length;
-  }
-
 }
 
 locationPerformance.timeOut = 1e7;
