@@ -72,8 +72,8 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - /pro/module/wTools/proto/wtools/abase/Layer2.s
-    - /pro/module/wTools/proto/node_modules/wTools
+    - proto/wtools/abase/Layer2.s
+    - proto/node_modules/wTools
 reflector:
   reflect.proto:
     inherit: predefined.*
