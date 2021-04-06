@@ -3506,7 +3506,7 @@ function _exportStringShallow( src, o )
     }
 
     if( o.widthLimit !== 0 )
-    result = _.strShort({ src : result, widthLimit : o.widthLimit });
+    result = _.strShort_({ src : result, widthLimit : o.widthLimit });
 
   }
   catch( err )
@@ -3522,7 +3522,7 @@ _exportStringShallow.defaults =
 {
   // src : null,
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -3548,7 +3548,7 @@ function exportStringShallowCode( src, o ) /* */
 exportStringShallowCode.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -3568,7 +3568,7 @@ function exportStringShallowDiagnostic( src, o ) /* */
 exportStringShallowDiagnostic.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 

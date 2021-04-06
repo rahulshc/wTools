@@ -257,7 +257,7 @@ function exportStringShallowDiagnostic( src, o )
   else
   {
     result = String( src );
-    result = _.strShort( result );
+    result = _.strShort_( result );
   }
 
   return result;
@@ -282,38 +282,38 @@ function exportStringShallowDiagnostic( src, o )
  * @returns {string} Returns simplified source string.
  *
  * @example
- * _.strShort( 'string', 4 );
+ * _.strShort_( 'string', 4 );
  * // returns 'stng'
  *
  * @example
- * _.strShort( 'a\nb', 3 );
+ * _.strShort_( 'a\nb', 3 );
  * // returns 'a\nb'
  *
  * @example
- * _.strShort( 'string', 0 );
+ * _.strShort_( 'string', 0 );
  * // returns ''
  *
  * @example
- * _.strShort({ src : 'string', limit : 4 });g
+ * _.strShort_({ src : 'string', limit : 4 });g
  * // returns 'stng'
  *
  * @example
- *  _.strShort({ src : 'simple', limit : 4, prefix : '<' });
+ *  _.strShort_({ src : 'simple', limit : 4, prefix : '<' });
  * // returns '<ile'
  *
  * @example
- *  _.strShort({ src : 'string', limit : 5, infix : '.' });
+ *  _.strShort_({ src : 'string', limit : 5, infix : '.' });
  * // returns 'st.ng'
  *
  * @example
- *  _.strShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
+ *  _.strShort_({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
  * // returns '<s.g>'
  *
  * @example
- *  _.strShort({ src : 'string', limit : 3, cutting : 'right' });
+ *  _.strShort_({ src : 'string', limit : 3, cutting : 'right' });
  * // returns 'str'
  *
- * @method strShort
+ * @method strShort_
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -327,7 +327,7 @@ function exportStringShallowDiagnostic( src, o )
  *
  */
 
-function strShort( o )  /* version with binary search cutting */
+function strShort_( o )  /* version with binary search cutting */
 {
 
   if( arguments.length === 2 )
@@ -336,7 +336,7 @@ function strShort( o )  /* version with binary search cutting */
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShort, o );
+  _.routine.options( strShort_, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.widthLimit ) );
@@ -419,7 +419,7 @@ function strShort( o )  /* version with binary search cutting */
   }
 }
 
-strShort.defaults =
+strShort_.defaults =
 {
   src : null,
   widthLimit : 40,
@@ -696,9 +696,6 @@ _strShortWidth.defaults =
 {
   src : null,
   limit : 40,
-  // prefix : null,
-  // postfix : null,
-  // infix : null,
   delimiter : null,
   onLength : null,
   cutting : 'center',
@@ -852,108 +849,108 @@ _strShortHeight.defaults =
 
 //
 
-// function strShort( o )
-// {
+function strShort( o ) /* version without binary search cutting */
+{
 
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-//   else if( arguments.length === 1 )
-//   if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] };
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
 
-//   _.routine.options( strShort, o );
+  _.routine.options( strShort, o );
 
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.number.is( o.widthLimit ) );
-//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
-//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.number.is( o.widthLimit ) );
+  _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-//   if( !o.infix )
-//   o.infix = '';
-//   if( !o.prefix )
-//   o.prefix = '';
-//   if( !o.postfix )
-//   o.postfix = '';
-//   if( o.src.length < 1 )
-//   {
-//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
-//     return o.prefix + o.postfix
-//     o.src = o.prefix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//   }
-//   if( _.bool.likeTrue( o.infix ) )
-//   o.infix = '...';
+  if( !o.infix )
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
+  if( o.src.length < 1 )
+  {
+    if( o.prefix.length + o.postfix.length <= o.widthLimit )
+    return o.prefix + o.postfix
+    o.src = o.prefix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+  }
+  if( _.bool.likeTrue( o.infix ) )
+  o.infix = '...';
 
-//   if( !o.onLength )
-//   o.onLength = ( src ) => src.length;
+  if( !o.onLength )
+  o.onLength = ( src ) => src.length;
 
-//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-//   return o.prefix + o.infix + o.postfix;
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
+  return o.prefix + o.infix + o.postfix;
 
-//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-//   {
-//     o.src = o.prefix + o.infix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//     o.infix = '';
-//   }
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
+  {
+    o.src = o.prefix + o.infix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+    o.infix = '';
+  }
 
-//   let src = o.src;
-//   let fixLength = 0;
-//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+  let src = o.src;
+  let fixLength = 0;
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-//   if( o.cutting === 'left' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-//     {
-//       src = src.slice( 1 );
-//     }
-//     return o.prefix + o.infix + src + o.postfix;
-//   }
-//   else if( o.cutting === 'right' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       src = src.slice( 0, src.length - 1 );
-//     }
-//     return o.prefix + src + o.infix + o.postfix;
-//   }
-//   else
-//   {
-//     if( o.onLength( src ) + fixLength <= o.widthLimit )
-//     return o.prefix + src + o.postfix;
-//     let begin = '';
-//     let end = '';
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       begin = src.slice( 0, Math.floor( src.length / 2 ) );
-//       end = src.slice( Math.floor( src.length / 2 ) + 1 );
-//       src = begin + end;
-//     }
-//     return o.prefix + begin + o.infix + end + o.postfix;
-//   }
+  if( o.cutting === 'left' )
+  {
+    while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
+    {
+      src = src.slice( 1 );
+    }
+    return o.prefix + o.infix + src + o.postfix;
+  }
+  else if( o.cutting === 'right' )
+  {
+    while( o.onLength( src ) + fixLength > o.widthLimit )
+    {
+      src = src.slice( 0, src.length - 1 );
+    }
+    return o.prefix + src + o.infix + o.postfix;
+  }
+  else
+  {
+    if( o.onLength( src ) + fixLength <= o.widthLimit )
+    return o.prefix + src + o.postfix;
+    let begin = '';
+    let end = '';
+    while( o.onLength( src ) + fixLength > o.widthLimit )
+    {
+      begin = src.slice( 0, Math.floor( src.length / 2 ) );
+      end = src.slice( Math.floor( src.length / 2 ) + 1 );
+      src = begin + end;
+    }
+    return o.prefix + begin + o.infix + end + o.postfix;
+  }
 
-// }
+}
 
-// strShort.defaults =
-// {
-//   src : null,
-//   widthLimit : 40,
-//   heightLimit : 0,
-//   prefix : null,
-//   postfix : null,
-//   infix : null,
-//   onLength : null, /* xxx : investigate */
-//   cutting : 'center',
-// }
+strShort.defaults =
+{
+  src : null,
+  widthLimit : 40,
+  heightLimit : 0,
+  prefix : null,
+  postfix : null,
+  infix : null,
+  onLength : null, /* xxx : investigate */
+  cutting : 'center',
+}
 
 //
 
-// function strShort2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
+// function strShort_2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
 // {
 
 //   if( arguments.length === 2 )
@@ -962,7 +959,7 @@ _strShortHeight.defaults =
 //   if( _.strIs( o ) )
 //   o = { src : arguments[ 0 ] };
 
-//   _.routine.options( strShort2, o );
+//   _.routine.options( strShort_2, o );
 
 //   _.assert( _.strIs( o.src ) );
 //   _.assert( _.number.is( o.widthLimit ) );
@@ -1064,7 +1061,7 @@ _strShortHeight.defaults =
 //   }
 // }
 
-// strShort2.defaults =
+// strShort_2.defaults =
 // {
 //   src : null,
 //   widthLimit : 40,
@@ -1941,13 +1938,14 @@ let ExtensionTools =
 
   // converter
 
-  strStrShort : strShort, /* xxx : remove */
-  strShort, /* qqq for Yevhen : cover | aaa : Done. */
+  strstrShort_ : strShort_, /* xxx : remove */
+  strShort_, /* qqq for Yevhen : cover | aaa : Done. */
   strShortWidth,
   _strShortWidth,
   strShortHeight,
   _strShortHeight,
-  // strShort2, /* non-binary search implementation */
+  strShort, /* original version without binary search cutting */
+  // strShort_2, /* non-binary search implementation */
   strConcat,
 
   //

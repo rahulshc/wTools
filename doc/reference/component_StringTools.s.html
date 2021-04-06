@@ -252,7 +252,7 @@ var _toStrFine = function _toStrFine( src,options )
 
   if( options.level >= options.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _tostrShort_( src,options ), simple : 1 };
   }
 
   var isAtomic = _.atomicIs( src );
@@ -354,7 +354,7 @@ var _toStrFine = function _toStrFine( src,options )
 
 //
 
-var _toStrShort = function( src,options )
+var _tostrShort_ = function( src,options )
 {
   var result = '';
 
@@ -494,7 +494,7 @@ var _toStrFromArray = function( src,options )
 
   if( options.level >= options.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _tostrShort_( src,options ), simple : 1 };
   }
 
   if( src.length === 0 )
@@ -548,7 +548,7 @@ var _toStrFromObject = function( src,options )
 
   if( options.level >= options.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _tostrShort_( src,options ), simple : 1 };
   }
 
   if( options.noObject )
@@ -2318,7 +2318,7 @@ var Proto =
   toStrFine_gen : toStrFine_gen,
   _toStrFine : _toStrFine,
 
-  _toStrShort : _toStrShort,
+  _tostrShort_ : _tostrShort_,
   _toStrFromNumber : _toStrFromNumber,
   _toStrFromStr : _toStrFromStr,
   _toStrFromArray : _toStrFromArray,
