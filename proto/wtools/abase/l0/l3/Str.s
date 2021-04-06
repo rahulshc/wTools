@@ -358,29 +358,13 @@ function strShort_( o )  /* version with binary search cutting */
   if( o.heightLimit === 0 )
   o.heightLimit = Infinity;
 
-  // if( o.src.length < 1 )
-  // {
-  //   if( o.prefix.length + o.postfix.length <= o.widthLimit )
-  //   return o.prefix + o.postfix
-  //   o.src = o.prefix + o.postfix;
-  //   o.prefix = '';
-  //   o.postfix = '';
-  // }
   if( _.bool.likeTrue( o.delimiter ) )
   o.delimiter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  // if( o.delimiter.length > o.widthLimit )
-  // {
-  //   o.src = o.delimiter;
-  //   o.delimiter = '';
-  // }
-
-  debugger;
   let src = o.src;
-  let fixLength = o.onLength( o.delimiter );
 
   let isOneLine = o.src.indexOf( '\n' ) === -1;
 
@@ -391,9 +375,6 @@ function strShort_( o )  /* version with binary search cutting */
 
     return o;
   }
-
-  // if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
-  // return o.prefix + src + o.postfix;
 
   let options = Object.create( null );
   options.limit = o.widthLimit;
@@ -472,7 +453,7 @@ function strShortWidth( o )
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  debugger
+
   if( !o.delimiter )
   o.delimiter = '';
   if( o.limit === 0 )

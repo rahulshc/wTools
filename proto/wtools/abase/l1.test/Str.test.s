@@ -3089,11 +3089,11 @@ function strShort_OptionsCombination( test )
   test.identical( got.result, expected );
 
   test.case = 'src is empty, delimiter = widthLimit'
-  var src = { src : '\n\n\n', widthLimit : 3, delimiter : '...' }
+  var src = { src : '\n\n', widthLimit : 3, delimiter : '...' }
   var got = _.strShort_( src );
-  var expected = '\n\n\n';
+  var expected = '...\n...\n...';
   test.identical( got.result, expected );
-  test.identical( got.changed, false );
+  test.identical( got.changed, true );
 
   /* */
 
