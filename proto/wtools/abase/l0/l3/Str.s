@@ -472,7 +472,7 @@ function strShortWidth( o )
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
   _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
-
+  debugger
   if( !o.delimiter )
   o.delimiter = '';
   if( o.limit === 0 )
@@ -511,7 +511,6 @@ function _strShortWidth( o )
     input : array of lines
     output : array of lines ( each cutted down to o.limit )
   */
-
   _.assert( _.arrayIs( o.src ) );
   _.routine.options( _strShortWidth, o );
 
@@ -524,11 +523,11 @@ function _strShortWidth( o )
     let delimiter = o.delimiter;
     fixLength = o.onLength( o.delimiter );
 
-    if( o.onLength( delimiter ) === o.limit )
+    if( fixLength === o.limit )
     {
-      return delimiter;
+      return o.delimiter;
     }
-    else if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
+    else if( o.onLength( el ) + fixLength <= o.limit ) /* nothing to cut */
     {
       return el;
     }
