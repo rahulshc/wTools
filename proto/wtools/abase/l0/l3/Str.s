@@ -346,76 +346,91 @@ function strShort_( o )  /* version with binary search cutting */
     _.number.is( o.heightLimit ) && o.heightLimit >= 0,
     'If provided option::o.heightLimit must be greater or equal to zero'
   );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix )
-  o.infix = '';
-  if( !o.prefix )
-  o.prefix = '';
-  if( !o.postfix )
-  o.postfix = '';
+  if( !o.delimiter )
+  o.delimiter = '';
   if( o.widthLimit === 0 )
   o.widthLimit = Infinity;
   if( o.heightLimit === 0 )
   o.heightLimit = Infinity;
-  if( o.src.length < 1 )
-  {
-    if( o.prefix.length + o.postfix.length <= o.widthLimit )
-    return o.prefix + o.postfix
-    o.src = o.prefix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-  }
-  if( _.bool.likeTrue( o.infix ) )
-  o.infix = '...';
+
+  // if( o.src.length < 1 )
+  // {
+  //   if( o.prefix.length + o.postfix.length <= o.widthLimit )
+  //   return o.prefix + o.postfix
+  //   o.src = o.prefix + o.postfix;
+  //   o.prefix = '';
+  //   o.postfix = '';
+  // }
+  if( _.bool.likeTrue( o.delimiter ) )
+  o.delimiter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-  return o.prefix + o.infix + o.postfix;
+  // if( o.onLength( o.delimiter ) === o.widthLimit )
+  // return o.delimiter;
 
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-  {
-    o.src = o.prefix + o.infix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-    o.infix = '';
-  }
+  // if( o.delimiter.length > o.widthLimit )
+  // {
+  //   o.src = o.delimiter;
+  //   o.delimiter = '';
+  // }
 
   let src = o.src;
-  let fixLength = 0;
-  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+  let fixLength = o.onLength( o.delimiter );
 
   let isOneLine = o.src.indexOf( '\n' ) === -1;
 
-  if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
-  return o.prefix + src + o.postfix;
+  // if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
+  // return o.prefix + src + o.postfix;
 
   let options = Object.create( null );
   options.limit = o.widthLimit;
-  options.prefix = o.prefix;
-  options.infix = o.infix;
-  options.postfix = o.postfix;
+  options.delimiter = o.delimiter;
   options.onLength = o.onLength;
   options.cutting = o.cutting;
 
   if( isOneLine )
   {
     options.src = src;
-    return _.strShortWidth( options );
+    let result = _.strShortWidth( options );
+
+    if( result === o.src )
+    o.changed = false;
+    else if( result !== o.src )
+    o.changed = true;
+
+    o.result = result;
+
+    return o;
   }
   else
   {
     let splitted = o.src.split( '\n' );
-    let cutted = _._strShortHeight({ src : splitted, cutting : o.cuttingHeight, limit : o.heightLimit });
+
+    let options2 = Object.create( null );
+    options2.src = splitted;
+    options2.limit = o.heightLimit;
+    options2.delimiter = o.heightDelimiter;
+    options2.cutting = o.heightCutting;
+
+    let cutted = _._strShortHeight( options2 );
+
     options.src = cutted;
     cutted = _._strShortWidth( options );
+    let result = cutted.join( '\n' );
 
-    return cutted.join( '\n' );
+    if( result === o.src )
+    o.changed = false;
+    else if( result !== o.src )
+    o.changed = true;
+
+    o.result = result;
+
+    return o;
   }
 }
 
@@ -424,12 +439,11 @@ strShort_.defaults =
   src : null,
   widthLimit : 40,
   heightLimit : 0,
-  prefix : null,
-  postfix : null,
-  infix : null,
+  delimiter : null, /* xxx qqq : rename to 'widthDelimiter' */
+  heightDelimiter : null,
   onLength : null,
-  cutting : 'center', /* xxx qqq : rename to 'cuttingWidth' */
-  cuttingHeight : 'center',
+  cutting : 'center', /* xxx qqq : rename to 'widthCutting' */
+  heightCutting : 'center',
 }
 
 //
@@ -779,7 +793,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
       }
       else
       {
-        let [ left, right ] = handleCuttingHeightCenter( src );
+        let [ left, right ] = handleheightCuttingCenter( src );
         let result = [];
 
         result.push( ... left );
@@ -800,7 +814,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   //
 
-  function handleCuttingHeightCenter( src )
+  function handleheightCuttingCenter( src )
   {
     let indexLeft, indexRight;
 

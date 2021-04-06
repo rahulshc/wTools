@@ -1974,43 +1974,49 @@ function strShort_( test )
   var src = { src : '', widthLimit : 4 }
   var got = _.strShort_( src );
   var expected = '';
-  test.identical( got, expected );
-  test.identical( got.length, src.src.length );
+  test.identical( got.result, expected );
+  test.identical( got.changed, false );
+  test.identical( got.src, '' );
 
   test.case = 'src length > widthLimit';
   var src = { src : 'string', widthLimit : 4 }
   var got = _.strShort_( src );
   var expected = 'stng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'src length > widthLimit & src length is odd, widthLimit = 1';
   var src = { src : 'pie', widthLimit : 1 }
   var got = _.strShort_( src );
   var expected = 'p';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'pie' );
 
   test.case = 'src length > widthLimit & src length is even, widthLimit = 1';
   var src = { src : 'apie', widthLimit : 1 }
   var got = _.strShort_( src );
   var expected = 'a';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'apie' );
 
   test.case = 'src length < widthLimit';
   var src = { src : 'pie', widthLimit : 4 }
   var got = _.strShort_( src );
   var expected = 'pie';
-  test.identical( got, expected );
-  test.identical( got.length, src.src.length );
+  test.identical( got.result, expected );
+  test.identical( got.changed, false );
+  test.identical( got.src, 'pie' );
 
   test.case = 'src length = widthLimit';
   var src = { src : 'pie', widthLimit : 4 }
   var got = _.strShort_( src );
   var expected = 'pie';
-  test.identical( got, expected );
-  test.identical( got.length, src.src.length );
+  test.identical( got.result, expected );
+  test.identical( got.changed, false );
+  test.identical( got.src, 'pie' );
 
   test.close( 'change src' );
 
@@ -2022,22 +2028,25 @@ function strShort_( test )
   var src = { src : 'string', widthLimit : 0 }
   var got = _.strShort_( src );
   var expected = 'string';
-  test.identical( got, expected );
-  test.identical( got.length, 6 );
+  test.identical( got.result, expected );
+  test.identical( got.changed, false );
+  test.identical( got.src, 'string' );
 
   test.case = 'src length > widthLimit, widthLimit = 3';
   var src = { src : 'string', widthLimit : 3 }
   var got = _.strShort_( src );
   var expected = 'stg';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'src length > widthLimit, widthLimit = 3';
   var src = { src : '{- Map.pure with 0 elements -}', widthLimit : 10 }
   var got = _.strShort_( src );
   var expected = '{- Mats -}';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, '{- Map.pure with 0 elements -}' );
 
   test.close( 'change widthLimit' );
 
@@ -2074,175 +2083,122 @@ function strShort_( test )
 
 //
 
-function strstrShort_OptionsPrefixPostfix( test )
+function strShort_OptionDelimiter( test )
 {
-
-  test.open( 'change prefix' )
-
-  test.case = 'prefix is empty string';
-  var src = { src : 'string', widthLimit : 5, prefix : '' }
-  var got = _.strShort_( src );
-  var expected = 'strng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'prefix < widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<' }
-  var got = _.strShort_( src );
-  var expected = '<stng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'prefix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' }
-  var got = _.strShort_( src );
-  var expected = '<<' + '<<s';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'prefix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' + '<' }
-  var got = _.strShort_( src );
-  var expected = '<<' + '<<' + '<';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'prefix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<' + '<<' + '<<' + '<<' + '<<' }
-  var got = _.strShort_( src );
-  var expected = '<<' + '<<' + '<';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.close( 'change prefix' )
-
-  /* - */
-
-  test.open( 'change postfix' )
-
-  test.case = 'postfix is empty string';
-  var src = { src : 'string', widthLimit : 5, postfix : '' }
-  var got = _.strShort_( src );
-  var expected = 'strng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix < widthLimit';
-  var src = { src : 'string', widthLimit : 5, postfix : '>' }
-  var got = _.strShort_( src );
-  var expected = 'stng>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>' + '>>' }
-  var got = _.strShort_( src );
-  var expected = 's>>' + '>>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>' + '>>' + '>' }
-  var got = _.strShort_( src );
-  var expected = '>>' + '>>' + '>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, postfix : '>>'+'>>'+'>>'+'>>'+'>>' }
-  var got = _.strShort_( src );
-  var expected = '>>' + '>>' + '>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.close( 'change postfix' )
-
-  /* - */
-
-  test.open( 'prefix & postfix changed' )
-
-  test.case = 'postfix & prefix < widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<', postfix : '>' }
-  var got = _.strShort_( src );
-  var expected = '<stg>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix & prefix = widthLimit';
-  var src = { src : 'string', widthLimit : 4, prefix : '<<', postfix : '>>' }
-  var got = _.strShort_( src );
-  var expected = '<<>>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.case = 'postfix & prefix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, prefix : '<<<', postfix : '>>'+'>' }
-  var got = _.strShort_( src );
-  var expected = '<<' + '<>>';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
-
-  test.close( 'prefix & postfix changed' )
-
-}
-
-//
-
-function strstrShort_OptionInfix( test )
-{
-
-  test.open( 'change infix' )
 
   test.case = 'infix is empty string';
-  var src = { src : 'string', widthLimit : 5, infix : '' }
+  var src = { src : 'string', widthLimit : 5, delimiter : '' }
   var got = _.strShort_( src );
   var expected = 'strng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix is default';
-  var src = { src : 'string', widthLimit : 5, infix : 1 }
+  var src = { src : 'string', widthLimit : 5, delimiter : 1 }
   var got = _.strShort_( src );
   var expected = 's...g';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix < widthLimit';
-  var src = { src : 'string', widthLimit : 5, infix : '.' }
+  var src = { src : 'string', widthLimit : 5, delimiter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.ng';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix < widthLimit, even length in the output';
-  var src = { src : 'string', widthLimit : 4, infix : '.' }
+  var src = { src : 'string', widthLimit : 4, delimiter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.g';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, infix : '..'+'..' }
+  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..' }
   var got = _.strShort_( src );
   var expected = 's..'+'..';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, infix : '..'+'..'+'.' }
+  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..'+'.' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
   test.case = 'infix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, infix : '..'+'..'+'..'+'..'+'..' }
+  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..'+'..'+'..'+'..' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.';
-  test.identical( got, expected );
-  test.identical( got.length, src.widthLimit );
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string' );
 
-  test.close( 'change infix' )
+  /* delimiter multiline */
+
+  test.case = 'infix is empty string';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '' }
+  var got = _.strShort_( src );
+  var expected = 'strng\nstrng\nstrng\nstrng';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix is default';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : 1 }
+  var got = _.strShort_( src );
+  var expected = 's...g\ns...g\ns...g\ns...g';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix < widthLimit';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '.' }
+  var got = _.strShort_( src );
+  var expected = 'st.ng\nst.ng\nst.ng\nst.ng';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix < widthLimit, even length in the output';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 4, delimiter : '.' }
+  var got = _.strShort_( src );
+  var expected = 'st.g\nst.g\nst.g\nst.g';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix = widthLimit + 1';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..' }
+  var got = _.strShort_( src );
+  var expected = 's..'+'..' + '\n' + 's..'+'..' + '\n' + 's..'+'..' + '\n' + 's..'+'..' ;
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix = widthLimit';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..'+'.' }
+  var got = _.strShort_( src );
+  var expected = '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
+
+  test.case = 'infix > widthLimit';
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..'+'..'+'..'+'..' }
+  var got = _.strShort_( src );
+  var expected = '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.';
+  test.identical( got.result, expected );
+  test.identical( got.changed, true );
+  test.identical( got.src, 'string\nstring\nstring\nstring' );
 
 }
 
@@ -13099,8 +13055,7 @@ const Proto =
     strstrShort_Special,
 
     strShort_, /* qqq : rewrite and enable */
-    strstrShort_OptionsPrefixPostfix,
-    strstrShort_OptionInfix,
+    strShort_OptionDelimiter,
     strstrShort_OptionsOnLength,
     strstrShort_OptionCutting,
     strstrShort_OptionCuttingHeight,
