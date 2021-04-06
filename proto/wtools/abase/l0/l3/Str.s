@@ -448,43 +448,37 @@ function strShortWidth( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix )
-  o.infix = '';
-  if( !o.prefix )
-  o.prefix = '';
-  if( !o.postfix )
-  o.postfix = '';
+  if( !o.delimiter )
+  o.delimiter = '';
   if( o.limit === 0 )
   o.limit = Infinity;
 
   if( o.src.length < 1 )
   {
     if( o.prefix.length + o.postfix.length <= o.limit )
-    return o.prefix + o.postfix
-    o.src = o.prefix + o.postfix;
+    return o.postfix
+    o.src = o.postfix;
     o.prefix = '';
     o.postfix = '';
   }
-  if( _.bool.likeTrue( o.infix ) )
-  o.infix = '...';
+  if( _.bool.likeTrue( o.delimiter ) )
+  o.delimiter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
-  return o.prefix + o.infix + o.postfix;
+  if( o.onLength( o.delimiter ) === o.limit )
+  return o.delimiter + o.postfix;
 
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
+  if( o.prefix.length + o.postfix.length + o.delimiter.length > o.limit )
   {
-    o.src = o.prefix + o.infix + o.postfix;
+    o.src = o.delimiter + o.postfix;
     o.prefix = '';
     o.postfix = '';
-    o.infix = '';
+    o.delimiter = '';
   }
 
   let options = _.mapExtend( null, o );
@@ -520,28 +514,29 @@ function _strShortWidth( o )
 
   let begin = '';
   let end = '';
-  let fixLength = o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+  // let fixLength = o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
+  let fixLength = o.onLength( o.delimiter );
 
   o.src = o.src.map( ( el ) =>
   {
     if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
     {
-      return o.prefix + el + o.postfix;
+      return el;
     }
     else
     {
       if( o.cutting === 'left' )
       {
-        return o.prefix + o.infix + cutLeft( el ) + o.postfix;
+        return o.delimiter + cutLeft( el );
       }
       else if( o.cutting === 'right' )
       {
-        return o.prefix + cutRight( el ) + o.infix + o.postfix;
+        return cutRight( el ) + o.delimiter;
       }
       else
       {
         let [ begin, end ] = cutMiddle( el );
-        return o.prefix + begin + o.infix + end + o.postfix;
+        return begin + o.delimiter + end;
       }
     }
   });
@@ -701,9 +696,10 @@ _strShortWidth.defaults =
 {
   src : null,
   limit : 40,
-  prefix : null,
-  postfix : null,
-  infix : null,
+  // prefix : null,
+  // postfix : null,
+  // infix : null,
+  delimiter : null,
   onLength : null,
   cutting : 'center',
 }
@@ -729,21 +725,18 @@ function strShortHeight( o )
   );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix )
-  o.infix = '';
-  if( !o.prefix )
-  o.prefix = '';
-  if( !o.postfix )
-  o.postfix = '';
-  if( o.limit === 0 )
-  o.limit = Infinity;
+  if( !o.delimiter )
+  o.delimiter = '';
 
   let splitted = o.src.split( '\n' );
   let options = _.mapExtend( null, o );
   options.src = splitted;
   let cutted = _._strShortHeight( options );
 
-  return cutted.join( '\n' );
+  o.result = cutted.join( '\n' );
+  // return cutted.join( '\n' );
+
+  return o;
 }
 
 strShortHeight.defaults =
@@ -751,9 +744,7 @@ strShortHeight.defaults =
   src : null,
   limit : null,
   cutting : 'center',
-  prefix : null,
-  postfix : null,
-  infix : null,
+  delimiter : null,
 }
 
 //
@@ -768,11 +759,12 @@ function _strShortHeight( o )  /* version with binary search cutting */
   _.assert( _.arrayIs( o.src ) );
   _.routine.options( strShortHeight, o );
 
-  let prefixLength = o.prefix.indexOf( '\n' ) === -1 ? 1 : o.prefix.split( '\n' ).length;
-  let postfixLength = o.postfix.indexOf( '\n' ) === -1 ? 1 : o.postfix.split( '\n' ).length;
-  let infixLength = o.infix.indexOf( '\n' ) === -1 ? 1 : o.infix.split( '\n' ).length;
+  let delimiterLength = o.delimiter === '' ? 0 : 1;
 
-  let fixLength = prefixLength + postfixLength + infixLength; /* one line */
+  if( delimiterLength === o.limit )
+  {
+    return [ o.delimiter ];
+  }
 
   return cut( o.src );
 
@@ -780,71 +772,37 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   function cut( src )
   {
-    if( fixLength > o.limit )
-    {
-
-    }
-    if( src.length + fixLength > o.limit )
+    if( src.length + delimiterLength > o.limit )
     {
       if( o.cutting === 'left' )
       {
-        src = src.slice( - ( o.limit - fixLength ) );
-        let result = [];
+        src = src.slice( - ( o.limit - delimiterLength ) );
 
-        if( o.prefix !== '' )
-        result.push( o.prefix )
-
-        if( o.infix !== '' )
-        result.push( o.infix )
-
-        result.push( ... src );
-
-        if( o.postfix !== '' )
-        result.push( o.postfix )
-
-        src = result;
-
-        // src = [ o.prefix, o.infix, ... src, o.postfix ]
+        if( o.delimiter !== '' )
+        src.unshift( o.delimiter );
       }
       else if( o.cutting === 'right' )
       {
-        src = src.slice( 0, o.limit - fixLength );
-        let result = [];
+        src = src.slice( 0, o.limit - delimiterLength );
 
-        if( o.prefix !== '' )
-        result.push( o.prefix );
-
-        result.push( ... src );
-
-        if( o.infix !== '' )
-        result.push( o.infix );
-
-        if( o.postfix !== '' )
-        result.push( o.postfix );
-
-        src = result;
+        if( o.delimiter !== '' )
+        src.push( o.delimiter );
       }
       else
       {
         let [ left, right ] = handleCuttingHeightCenter( src );
         let result = [];
 
-        if( o.prefix !== '' )
-        result.push( o.prefix );
-
         result.push( ... left );
 
-        if( o.infix !== '' )
-        result.push( o.infix );
+        if( o.delimiter !== '' )
+        result.push( o.delimiter );
 
+        if( right !== undefined ) /* no right when o.limit = 2 and there is a delimiter */
         result.push( ... right );
-
-        if( o.postfix !== '' )
-        result.push( o.postfix );
 
         src = result;
 
-        // src = [ o.prefix, ... left, o.infix, ... right, o.postfix ]
       }
     }
 
@@ -857,11 +815,11 @@ function _strShortHeight( o )  /* version with binary search cutting */
   {
     let indexLeft, indexRight;
 
-    let limit = o.limit - fixLength;
+    let limit = o.limit - delimiterLength;
 
     if( limit === 1 )
     {
-      return src.slice( 0, 1 );
+      return [ src.slice( 0, 1 ) ];
     }
     else if( limit % 2 === 0 )
     {
@@ -876,10 +834,6 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
     let splittedLeft = src.slice( 0, indexLeft );
     let splittedRight = src.slice( indexRight );
-
-    // src = splittedLeft.concat( splittedRight );
-
-    // return src;
 
     return [ splittedLeft, splittedRight ];
   }

@@ -3700,189 +3700,129 @@ function strShortHeightOptionCutting( test )
 
 //
 
-function strShortHeightDelimiters( test )
+function strShortHeightOptionDelimiter( test )
 {
-  // test.open( 'prefix, postfix, infix' )
 
-  /* prefix */
-
-  test.case = 'cut left with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<' }
+  test.case = 'cut left, o.limit=1';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\nstring';
-  test.identical( got, expected );
+  var expected = '.';
+  test.identical( got.result, expected );
 
-  test.case = 'cut right with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<' }
+  test.case = 'cut right, o.limit=1';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\nstring';
-  test.identical( got, expected );
+  var expected = '.';
+  test.identical( got.result, expected );
 
-  test.case = 'cut center with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<' }
+  test.case = 'cut center, o.limit=1';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\nstring';
-  test.identical( got, expected );
+  var expected = '.';
+  test.identical( got.result, expected );
 
-  /* postfix */
+  //
 
-  test.case = 'cut left with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', postfix : '>' }
+  test.case = 'cut left, o.limit=2';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = 'string\nstring\nstring\nstring\n>';
-  test.identical( got, expected );
+  var expected = '.\nstring';
+  test.identical( got.result, expected );
 
-  test.case = 'cut right with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', postfix : '>' }
+  test.case = 'cut right, o.limit=2';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = 'string\nstring\nstring\nstring\n';
-  test.identical( got, expected );
+  var expected = 'string\n.';
+  test.identical( got.result, expected );
 
-  test.case = 'cut center with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', postfix : '>' }
+  test.case = 'cut center, o.limit=2';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'center', delimiter : '.' }
+  // debugger;
   var got = _.strShortHeight( src );
-  var expected = 'string\nstring\nstring\nstring\n';
-  test.identical( got, expected );
+  var expected = 'string\n.';
+  test.identical( got.result, expected );
 
-  /* prefix & postfix */
+  //
 
-  test.case = 'cut left with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<', postfix : '>' }
+  test.case = 'cut left, o.limit=3';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\n>';
-  test.identical( got, expected );
+  var expected = '.\nstring\nstring';
+  test.identical( got.result, expected );
 
-  test.case = 'cut right with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<', postfix : '>' }
+  test.case = 'cut right, o.limit=3';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\n>';
-  test.identical( got, expected );
+  var expected = 'string\nstring\n.';
+  test.identical( got.result, expected );
 
-  test.case = 'cut center with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<', postfix : '>' }
+  test.case = 'cut center, o.limit=3';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\nstring\n>';
-  test.identical( got, expected );
+  var expected = 'string\n.\nstring';
+  test.identical( got.result, expected );
 
-  /* prefix & postfix & infix */
+  //
 
-  test.case = 'cut left with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  test.case = 'cut left, o.limit=4';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\n.\nstring\nstring\n>';
-  test.identical( got, expected );
+  var expected = '.\nstring\nstring\nstring';
+  test.identical( got.result, expected );
 
-  test.case = 'cut right with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  test.case = 'cut right, o.limit=4';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\nstring\n.\n>';
-  test.identical( got, expected );
+  var expected = 'string\nstring\nstring\n.';
+  test.identical( got.result, expected );
 
-  test.case = 'cut center with delimiters';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 5, cutting : 'center', prefix : '<', postfix : '>', infix : '.' }
+  test.case = 'cut center, o.limit=4';
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
-  var expected = '<\nstring\n.\nstring\n>';
-  test.identical( got, expected );
+  var expected = 'string\nstring\n.\nstring';
+  test.identical( got.result, expected );
 
-  // test.case = 'prefix & postfix & infix = widthLimit';
-  // var src = { src : 'string', widthLimit : 3, prefix : '<', postfix : '>', infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '<.>';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
 
-  // test.case = 'prefix & postfix & infix > widthLimit';
-  // var src = { src : 'string', widthLimit : 3, prefix : '<<', postfix : '>>', infix : '..' }
-  // var got = _.strShort( src );
-  // var expected = '<<>';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
+  //
 
-  // test.close( 'prefix, postfix, infix' )
+  test.case = 'cut left, o.limit > str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // /* - */
+  test.case = 'cut right, o.limit > str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // test.open( 'src is empty, prefix or postfix or infix or all' )
+  test.case = 'cut center, o.limit > str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // test.case = 'src is empty, prefix < widthLimit'
-  // var src = { src : '', widthLimit : 3, prefix : '<' }
-  // var got = _.strShort( src );
-  // var expected = '<';
-  // test.identical( got, expected );
-  // test.identical( got.length, 1 );
+  //
 
-  // test.case = 'src is empty, postfix < widthLimit'
-  // var src = { src : '', widthLimit : 3, postfix : '>' }
-  // var got = _.strShort( src );
-  // var expected = '>';
-  // test.identical( got, expected );
-  // test.identical( got.length, 1 );
+  test.case = 'cut left, o.limit = str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // test.case = 'src is empty, infix < widthLimit'
-  // var src = { src : '', widthLimit : 3, infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '';
-  // test.identical( got, expected );
-  // test.identical( got.length, 0 );
+  test.case = 'cut right, o.limit = str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // test.case = 'src is empty, prefix, postfix, infix < widthLimit'
-  // var src = { src : '', widthLimit : 4, prefix : '<', postfix : '>', infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '<>';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
+  test.case = 'cut center, o.limit = str.length, delimiter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
+  var got = _.strShortHeight( src );
+  var expected = 'string\nstring';
+  test.identical( got.result, expected );
 
-  // test.case = 'src is empty, prefix, postfix, infix > widthLimit'
-  // var src = { src : '', widthLimit : 2, prefix : '<', postfix : '>', infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '<>';
-  // test.identical( got, expected );
-  // test.identical( got.length, 2 );
-
-  // test.close( 'src is empty, prefix or postfix or infix or all' )
-
-  // /* - */
-
-  // test.open( 'change cutting, prefix, infix, postfix' )
-
-  // test.case = 'cut left, with prefix';
-  // var src = { src : 'string', widthLimit : 4, cutting : 'left', prefix : '<' }
-  // var got = _.strShort( src );
-  // var expected = '<ing';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // test.case = 'cut left, with prefix, postfix, infix';
-  // var src = { src : 'string', widthLimit : 5, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '<.ng>';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // /* */
-
-  // test.case = 'cut right, with prefix';
-  // var src = { src : 'string', widthLimit : 4, cutting : 'right', prefix : '<' }
-  // var got = _.strShort( src );
-  // var expected = '<str';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // test.case = 'cut right, with prefix, postfix, infix';
-  // var src = { src : 'string', widthLimit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = '<st.>';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.widthLimit );
-
-  // /* */
-
-  // test.case = 'src = widthLimit - 1, infix length = 1';
-  // var src = { src : 'string', widthLimit : 7, infix : '.' }
-  // var got = _.strShort( src );
-  // var expected = 'string';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.src.length );
 }
 
 // function strShortPerformance( test )
@@ -13049,7 +12989,7 @@ const Proto =
     strShortHeight,
     strShortWidthOptionCutting,
     strShortHeightOptionCutting,
-    strShortHeightDelimiters,
+    strShortHeightOptionDelimiter,
 
     // strShortPerformance,
 
