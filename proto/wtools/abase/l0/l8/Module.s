@@ -799,13 +799,15 @@ function _fileUniversalDisassociateModules( file, reassociating )
   {
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.module.fileUniversalIs( file ) );
-    // let modules2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
-    let modules2 = _.module._predeclaredWithEntryPath( file.sourcePath );
-    _.assert
-    (
-      modules2 === undefined || modules2 !== file.module,
-      `Cant disassociate ${modules2} with ${file} because the file is entry of the module.`
-    );
+    // let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
+    // if( module2 === file.module )
+    // console.log( `Cant disassociate ${module2} with ${file} because the file is entry of the module.` );
+    // xxx
+    // _.assert
+    // (
+    //   module2 === undefined || module2 !== file.module,
+    //   `Cant disassociate ${module2} with ${file} because the file is entry of the module.`
+    // );
   }
 
   result += file.modules.size;
@@ -1743,7 +1745,7 @@ function _moduleNamesToPaths( names )
 
 //
 
-const _toolsPath = _.path.canonize( __dirname + '/../../../../wtools/Tools.s' );
+const _toolsPath = _.path.canonize( __dirname + '/../../../../node_modules/Tools' );
 function toolsPathGet()
 {
   return _toolsPath;
@@ -2313,6 +2315,8 @@ var ModuleExtension =
   _setupRequireDone : null,
 
 }
+
+/* xxx : move to l3/l5 */
 
 _.mapSupplement( _.module, ModuleExtension );
 _.mapSupplement( _, ToolsExtension );

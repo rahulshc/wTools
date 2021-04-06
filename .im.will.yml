@@ -44,8 +44,6 @@ path:
       debug: release
       raw: compiled
       content: prime
-  entry:
-    path: wtools/abase/Layer2.s
   entry.proto.no.tests:
     path: 'proto/{path::entry}'
     criterion:
@@ -72,7 +70,7 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - proto/wtools/abase/Layer2.s
+    - proto/wtools/abase/Layer1.s
     - proto/node_modules/wTools
 reflector:
   reflect.proto:

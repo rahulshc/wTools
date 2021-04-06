@@ -5,10 +5,8 @@
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( '../../Tools.s' );
-  debugger;
+  const _ = require( 'Tools' );
   _.include( 'wTesting' );
-  debugger;
 }
 
 const _ = _global_.wTools;
@@ -207,7 +205,7 @@ function resolveBasic( test )
 
   // var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
   // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/wTools' ) );
-  var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../wtools/Tools.s' ) );
+  var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/Tools' ) );
   var got = _.module.resolve( 'wTools' );
   test.identical( got, exp );
 
@@ -228,7 +226,7 @@ function toolsPathGetBasic( test )
 
   test.case = 'toolsPathGet';
   var got = _.module.toolsPathGet();
-  var exp = _.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
+  var exp = _.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
   test.identical( got, exp );
   console.log( `toolsPathGet : ${got}` );
 
@@ -244,7 +242,7 @@ function toolsPathGetBasic( test )
 
   test.case = 'resolve wTools';
   var got = _.module.resolve( 'wTools' );
-  var exp = _.path.nativize( __.path.join( __dirname, '../../Tools.s' ) );
+  var exp = _.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
   test.identical( got, exp );
   console.log( `resolved : ${got}` );
 
@@ -268,9 +266,9 @@ function toolsPathGetProgram( test )
     test.identical( op.exitCode, 0 );
     var exp =
 `
-toolsPath : ${__.path.join( __dirname, '../../Tools.s' )}
-module.resolve( wTools ) : ${__.path.join( __dirname, '../../Tools.s' )}
-module.toolsPathGet : ${__.path.join( __dirname, '../../Tools.s' )}
+toolsPath : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
+module.resolve( wTools ) : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
+module.toolsPathGet : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
 module.toolsirGet : ${__.path.join( __dirname, '../..' )}
 `
     test.equivalent( op.output, exp );
@@ -298,6 +296,7 @@ function modulingLogistic( test )
   let ready = __.take( null );
 
   var toolsPath = _.module.resolve( 'wTools' );
+  var toolsDirPath = _.module.toolsDirGet();
   var testingPath = _.module.resolve( 'wTesting' );
   var moduleFile = _.module.fileWithResolvedPath( testingPath );
   test.true( _.module.fileIs( moduleFile ) );
@@ -330,16 +329,17 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.lengthOf( module.files ), 100 );
-  test.identical( _.lengthOf( module.files ), 172 );
+  test.identical( _.lengthOf( module.files ), 171 );
   test.identical( _.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsPath, '../abase/l0/l0/Global.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsPath, '../abase/l0/l0/Global.s' ) ) );
+  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
+  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
   var module2 = _.module.withName( 'wTools' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtools' );
   test.true( module === module2 );
+  log( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) );
 
   test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
   test.ge( _.lengthOf( _.module.modulesMap ), 4 );
@@ -384,7 +384,7 @@ lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 2
 lengthOf( predeclaredWithEntryPathMap ) 1
 lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )-1}
+lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )}
 module.fileIs( moduleFile ) true
 module.fileUniversalIs( moduleFile ) true
 module.fileNativeIs( moduleFile ) false
@@ -453,6 +453,20 @@ modulesMap wTools wTools wTesting wTesting
     console.log( 'modulesMap', [ ... _.module.modulesMap.values() ].map( ( m ) => m.name ).join( ' ' ) );
 
   }
+
+  /* - */
+
+  function log( filePath )
+  {
+    let moduleFile = _.module.fileWith( filePath );
+    if( !moduleFile )
+    return console.log( `${filePath} : ${moduleFile}` );
+    let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+    output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
+    console.log( `${filePath} : ${output}` );
+  }
+
+  /* - */
 
 }
 
@@ -3372,6 +3386,387 @@ predeclareAbsolute.description =
 
 //
 
+function predeclareRedeclaring( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({});
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program( main1 );
+      a.program( file1 );
+      a.program( file2 );
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+main
+file1
+file2
+./main1 : {- ModuleFile ./main1 -}
+  modules
+    {- Module Module1 -}
+  upFiles
+    {- ModuleFile ${_.module.toolsPathGet()} -}
+    {- ModuleFile ./file1 -}
+    {- ModuleFile ./file2 -}
+./file1 : {- ModuleFile ./file1 -}
+  modules
+    {- Module Module1 -}
+  downFiles
+    {- ModuleFile ./main1 -}
+    {- ModuleFile ./file2 -}
+./file2 : {- ModuleFile ./file2 -}
+  modules
+    {- Module Module1 -}
+  downFiles
+    {- ModuleFile ./main1 -}
+  upFiles
+    {- ModuleFile ./file1 -}
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function main1()
+  {
+    console.log( 'main' );
+    let _ = require( toolsPath );
+
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+
+    require( './file1' );
+    require( './file2' );
+
+    log( './main1' );
+    log( './file1' );
+    log( './file2' );
+
+    function log( filePath )
+    {
+      let moduleFile = _.module.fileWith( filePath );
+      if( !moduleFile )
+      return console.log( `${filePath} : ${moduleFile}` );
+      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
+      console.log( `${filePath} : ${output}` );
+    }
+
+  }
+
+  /* - */
+
+  function file1()
+  {
+    console.log( 'file1' );
+  }
+
+  /* - */
+
+  function file2()
+  {
+    console.log( 'file2' );
+    let _ = require( toolsPath );
+
+    require( './file1' );
+
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+
+  }
+
+  /* - */
+
+}
+
+predeclareRedeclaring.description =
+`
+  - redeclaring of module does not thow any error
+  - module graph is proper after redeclaring
+`
+
+//
+
+function predeclareRedeclaringSharedFile( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let ready = __.take( null );
+
+  act({ after : 0 });
+  act({ after : 1 });
+
+  return ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
+      a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
+      a.program({ routine : file1, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
+      a.program({ routine : file2, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+module1
+file1
+module2
+file2
+./module1 : {- ModuleFile ./module1 -}
+  modules
+    {- Module Module1 -}
+  upFiles
+    {- ModuleFile ${_.module.toolsPathGet()} -}
+    {- ModuleFile ./file1 -}
+    {- ModuleFile ./module2 -}
+./module2 : {- ModuleFile ./module2 -}
+  modules
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module1 -}
+  upFiles
+    {- ModuleFile ./file2 -}
+    {- ModuleFile ./file1 -}
+./file1 : {- ModuleFile ./file1 -}
+  modules
+    {- Module Module1 -}
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module1 -}
+    {- ModuleFile ./module2 -}
+./file2 : {- ModuleFile ./file2 -}
+  modules
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module2 -}
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+
+      var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ routine : file1, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ routine : file2, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ routine : file3, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
+
+      return a.forkNonThrowing
+      ({
+        execPath : programPath,
+        currentPath : _.path.dir( programPath ),
+      })
+    })
+    .then( ( op ) =>
+    {
+      var exp =
+`
+module1
+file1
+module2
+file2
+file3
+./module1 : {- ModuleFile ./module1 -}
+  modules
+    {- Module Module1 -}
+  upFiles
+    {- ModuleFile ${_.module.toolsPathGet()} -}
+    {- ModuleFile ./file1 -}
+    {- ModuleFile ./module2 -}
+    {- ModuleFile ./file3 -}
+./module2 : {- ModuleFile ./module2 -}
+  modules
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module1 -}
+  upFiles
+    {- ModuleFile ./file2 -}
+    {- ModuleFile ./file1 -}
+./file1 : {- ModuleFile ./file1 -}
+  modules
+    {- Module Module1 -}
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module1 -}
+    {- ModuleFile ./module2 -}
+    {- ModuleFile ./file3 -}
+./file2 : {- ModuleFile ./file2 -}
+  modules
+    {- Module Module2 -}
+  downFiles
+    {- ModuleFile ./module2 -}
+`
+      test.identical( op.exitCode, 0 );
+      test.equivalent( op.output, exp );
+      return op;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function module1()
+  {
+    console.log( 'module1' );
+    let _ = require( toolsPath );
+
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+
+    require( './file1' );
+    require( './module2' );
+
+    if( withRedeclaring )
+    require( './file3' );
+
+    log( './module1' );
+    log( './module2' );
+    log( './file1' );
+    log( './file2' );
+
+    function log( filePath )
+    {
+      let moduleFile = _.module.fileWith( filePath );
+      if( !moduleFile )
+      return console.log( `${filePath} : ${moduleFile}` );
+      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
+      console.log( `${filePath} : ${output}` );
+    }
+
+  }
+
+  /* - */
+
+  function file1()
+  {
+    console.log( 'file1' );
+  }
+
+  /* - */
+
+  function module2()
+  {
+    console.log( 'module2' );
+    let _ = _global_.wTools;
+
+    if( !after )
+    _.module.predeclare
+    ({
+      name : 'Module2',
+      entryPath : __filename,
+    });
+
+    require( './file2' );
+    require( './file1' );
+
+    if( after )
+    _.module.predeclare
+    ({
+      name : 'Module2',
+      entryPath : __filename,
+    });
+
+  }
+
+  /* - */
+
+  function file2()
+  {
+    console.log( 'file2' );
+
+  }
+
+  /* - */
+
+  function file3()
+  {
+    console.log( 'file3' );
+    let _ = require( toolsPath );
+
+    require( './file1' );
+
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+
+  }
+
+  /* - */
+
+}
+
+predeclareRedeclaringSharedFile.description =
+`
+  - redeclaring of module does not unshare shared module file
+`
+
+//
+
 function moduleIsIncluded( test )
 {
   let context = this;
@@ -3753,6 +4148,83 @@ program should inherit path of parent
 
 //
 
+function selfFindAssumption( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+
+  programWrite( '.', program1, 'program1' );
+  programWrite( 'dir1/dir2', program2, 'program2' );
+  programWrite( 'dir1/node_modules', program3a, 'program3' );
+  programWrite( 'node_modules', program3b, 'program3' );
+
+  return a.fork({ execPath : a.abs( 'program1' ) })
+  .then( ( op ) =>
+  {
+    var exp =
+`
+program1
+program2
+program3a
+`
+    test.equivalent( op.output, exp );
+    test.identical( op.exitCode, 0 );
+    return op;
+  });
+
+  /* */
+
+  function programWrite( dirPath, program, name )
+  {
+    var postfix =
+    `
+    ${program.name}();
+    `
+    __.fileProvider.fileWrite( a.abs( dirPath, name ), program.toString() + postfix );
+  }
+
+  /* */
+
+  function program1()
+  {
+    console.log( 'program1' );
+    require( './dir1/dir2/program2' );
+  }
+
+  /* */
+
+  function program2()
+  {
+    console.log( 'program2' );
+    require( 'program3' );
+  }
+
+  /* */
+
+  function program3a()
+  {
+    console.log( 'program3a' );
+    require( 'program3' );
+  }
+
+  /* */
+
+  function program3b()
+  {
+    console.log( 'program3b' );
+  }
+
+  /* */
+
+}
+
+selfFindAssumption.description =
+`
+  - include of a file with the same name as itself from node_modules dir does not find it, but find itself
+`
+
+//
+
 function localPathAssumption( test )
 {
   let context = this;
@@ -3995,11 +4467,14 @@ const Proto =
     predeclareMain,
     predeclareRelative,
     predeclareAbsolute,
+    predeclareRedeclaring,
+    predeclareRedeclaringSharedFile,
 
     moduleIsIncluded,
     moduleResolveFromAnotherGlobal,
 
     programInheritedModuleFilePaths,
+    selfFindAssumption,
     localPathAssumption,
     globalPathAssumption,
     experiment,

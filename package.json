@@ -23,7 +23,6 @@
     "proto/wtools/abase/l2",
     "proto/wtools/abase/Layer0.s",
     "proto/wtools/abase/Layer1.s",
-    "proto/wtools/abase/Layer2.s",
     "out",
     "proto/node_modules"
   ],
