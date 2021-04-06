@@ -257,7 +257,7 @@ function exportStringShallowDiagnostic( src, o )
   else
   {
     result = String( src );
-    result = _.strShort_( result );
+    result = _.strShort_( result ).result;
   }
 
   return result;

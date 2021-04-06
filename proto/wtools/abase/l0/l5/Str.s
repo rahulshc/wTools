@@ -3506,7 +3506,7 @@ function _exportStringShallow( src, o )
     }
 
     if( o.widthLimit !== 0 )
-    result = _.strShort_({ src : result, widthLimit : o.widthLimit });
+    result = _.strShort_({ src : result, widthLimit : o.widthLimit }).result;
 
   }
   catch( err )
