@@ -351,6 +351,8 @@ function strShort_( o )  /* version with binary search cutting */
 
   if( !o.delimiter )
   o.delimiter = '';
+  if( !o.heightDelimiter )
+  o.heightDelimiter = '';
   if( o.widthLimit === 0 )
   o.widthLimit = Infinity;
   if( o.heightLimit === 0 )
@@ -370,19 +372,24 @@ function strShort_( o )  /* version with binary search cutting */
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  // if( o.onLength( o.delimiter ) === o.widthLimit )
-  // return o.delimiter;
-
   // if( o.delimiter.length > o.widthLimit )
   // {
   //   o.src = o.delimiter;
   //   o.delimiter = '';
   // }
 
+  debugger;
   let src = o.src;
   let fixLength = o.onLength( o.delimiter );
 
   let isOneLine = o.src.indexOf( '\n' ) === -1;
+
+  if( isOneLine && o.onLength( o.src ) < o.widthLimit )
+  {
+    o.changed = false;
+    o.result = o.src;
+  }
+  // return o.delimiter;
 
   // if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
   // return o.prefix + src + o.postfix;
