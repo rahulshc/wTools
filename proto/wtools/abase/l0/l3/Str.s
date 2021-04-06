@@ -388,8 +388,9 @@ function strShort_( o )  /* version with binary search cutting */
   {
     o.changed = false;
     o.result = o.src;
+
+    return o;
   }
-  // return o.delimiter;
 
   // if( ( o.onLength( src ) + fixLength <= o.widthLimit ) && isOneLine ) /* nothing to cut in a single line */
   // return o.prefix + src + o.postfix;
