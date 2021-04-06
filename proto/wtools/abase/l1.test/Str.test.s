@@ -3368,143 +3368,6 @@ function strShortWidth( test )
 
 //
 
-function strShortHeight( test )
-{
-  test.case = 'a b [c d e] g f, len 7, desired 4';
-  var src = { src : 'a\nb\nc\nd\ne\ng\nf', limit : 4, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\ng\nf';
-  test.identical( got, expected );
-
-  test.case = 'a b b [c d e] g f g, len 9, desired 6';
-  var src = { src : 'a\nb\nb\nc\nd\ne\ng\nf\ng', limit : 6, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\nb\ng\nf\ng';
-  test.identical( got, expected );
-
-  test.case = 'a b [c d e g] f, len 7, desired 3';
-  var src = { src : 'a\nb\nc\nd\ne\ng\nf', limit : 3, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\nf';
-  test.identical( got, expected );
-
-  test.case = 'a b c [d e g] f i, len 8, desired 5';
-  var src = { src : 'a\nb\nc\nd\ne\ng\nf\ni', limit : 5, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\nc\nf\ni';
-  test.identical( got, expected );
-
-  test.case = 'a b [c d e g] f i, len 8, desired 4';
-  var src = { src : 'a\nb\nc\nd\ne\ng\nf\ni', limit : 4, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\nf\ni';
-  test.identical( got, expected );
-
-  test.case = 'a b [c] d, len 4';
-  var src = { src : 'a\nb\nc\nd', limit : 3, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nb\nd';
-  test.identical( got, expected );
-
-  test.case = 'a [bc] d, len 4';
-  var src = { src : 'a\nb\nc\nd', limit : 2, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\nd';
-  test.identical( got, expected );
-
-  test.case = 'a [bcd], len 4';
-  var src = { src : 'a\nb\nc\nd', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'a [b] i, len 3, desired 2';
-  var src = { src : 'a\nb\ni', limit : 2, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a\ni';
-  test.identical( got, expected );
-
-  test.case = 'a [i], len 2, desired 1';
-  var src = { src : 'a\ni', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'a';
-  var src = { src : 'a', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  /* empty str from both sides */
-
-  test.case = 'a b [c d e] g f, len 7, desired 4';
-  var src = { src : '\na\nb\nc\nd\ne\ng\nf\n', limit : 4, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\na\nf\n';
-  test.identical( got, expected );
-
-  test.case = 'a b b [c d e] g f g, len 9, desired 6';
-  var src = { src : '\na\nb\nb\nc\nd\ne\ng\nf\ng\n', limit : 6, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\na\nb\nf\ng\n';
-  test.identical( got, expected );
-
-  test.case = 'a b [c d e g] f, len 7, desired 3';
-  var src = { src : '\na\nb\nc\nd\ne\ng\nf\n', limit : 3, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\na\n';
-  test.identical( got, expected );
-
-  test.case = 'a b [c] d, len 4';
-  var src = { src : '\na\nb\nc\nd\n', limit : 3, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\na\n';
-  test.identical( got, expected );
-
-  test.case = 'a [bc] d, len 4';
-  var src = { src : '\na\nb\nc\nd\n', limit : 2, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\n';
-  test.identical( got, expected );
-
-  test.case = 'a [bcd], len 4';
-  var src = { src : '\na\nb\nc\nd\n', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'a [b] i, len 3, desired 2';
-  var src = { src : '\na\nb\ni\n', limit : 2, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '\n';
-  test.identical( got, expected );
-
-  test.case = 'a [i], len 2, desired 1';
-  var src = { src : '\na\ni\n', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'a';
-  var src = { src : '\na\n', limit : 1, cutting : 'center' }
-  var got = _.strShortHeight( src );
-  var expected = '';
-  test.identical( got, expected );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'wrong limit'
-  test.shouldThrowErrorSync( () => _.strShortHeight({ src : 'abc', limit : 'hello' }) )
-  test.shouldThrowErrorSync( () => _.strShortHeight({ src : 'abc', limit : -5 }) )
-
-}
-
-//
-
 function strShortWidthOptionCutting( test )
 {
   test.case = 'cut 1 letter';
@@ -3655,6 +3518,265 @@ function strShortWidthOptionCutting( test )
 
 //
 
+function strShortWidthOptionDelimiter( test )
+{
+
+  test.case = 'a b [c d e] g f, len 7, desired 4';
+  var src = { src : 'abcdegf', limit : 4, cutting : 'center', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'ab.f';
+  test.identical( got, expected );
+
+  test.case = 'a b b [c d e] g f g, len 9, desired 6';
+  var src = { src : 'abbcdegfg', limit : 6, cutting : 'center', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'abb.fg';
+  test.identical( got, expected );
+
+  test.case = 'a b [c d e g] f, len 7, desired 3';
+  var src = { src : 'abcdegf', limit : 3, cutting : 'center', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'a.f';
+  test.identical( got, expected );
+
+  test.case = 'a b c [d e g] f i, len 8, desired 5';
+  var src = { src : 'abcdegfi', limit : 5, cutting : 'center', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'ab.fi';
+  test.identical( got, expected );
+
+  test.case = 'a b [c d e g] f i, len 8, desired 4';
+  var src = { src : 'abcdegfi', limit : 4, cutting : 'center', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = 'a..i';
+  test.identical( got, expected );
+
+  test.case = 'a b [c] d, len 4';
+  var src = { src : 'abcd', limit : 3, cutting : 'center', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = 'a..';
+  test.identical( got, expected );
+
+  test.case = 'a [bc] d, len 4';
+  var src = { src : 'abcd', limit : 2, cutting : 'center', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = '..';
+  test.identical( got, expected );
+
+  test.case = 'a [bcd], len 4';
+  var src = { src : 'abcd', limit : 1, cutting : 'center', delimiter : '....' }
+  var got = _.strShortWidth( src );
+  var expected = '.';
+  test.identical( got, expected );
+
+  /* multiline */
+
+  test.case = 'cut 1 letter left';
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'left', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = '.ring\n.ring\n.ring';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter right';
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'right', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'stri.\nstri.\nstri.';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter center';
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'center', delimiter : '.' }
+  var got = _.strShortWidth( src );
+  var expected = 'st.ng\nst.ng\nst.ng';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'cut 1 letter, delimiter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter, delimiter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter, delimiter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimiter : '..' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'cut 1 letter, delimiter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimiter : '...' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter, delimiter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimiter : '...' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+
+  test.case = 'cut 1 letter, delimiter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimiter : '...' }
+  var got = _.strShortWidth( src );
+  var expected = '..\n..\n..';
+  test.identical( got, expected );
+}
+
+//
+
+function strShortHeight( test )
+{
+
+  test.case = 'cut nothing';
+  var src = { src : 'a\nb\nc', limit : 4, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'a b [c d e] g f, len 7, desired 4';
+  var src = { src : 'a\nb\nc\nd\ne\ng\nf', limit : 4, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\ng\nf';
+  test.identical( got, expected );
+
+  test.case = 'a b b [c d e] g f g, len 9, desired 6';
+  var src = { src : 'a\nb\nb\nc\nd\ne\ng\nf\ng', limit : 6, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nb\ng\nf\ng';
+  test.identical( got, expected );
+
+  test.case = 'a b [c d e g] f, len 7, desired 3';
+  var src = { src : 'a\nb\nc\nd\ne\ng\nf', limit : 3, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nf';
+  test.identical( got, expected );
+
+  test.case = 'a b c [d e g] f i, len 8, desired 5';
+  var src = { src : 'a\nb\nc\nd\ne\ng\nf\ni', limit : 5, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nc\nf\ni';
+  test.identical( got, expected );
+
+  test.case = 'a b [c d e g] f i, len 8, desired 4';
+  var src = { src : 'a\nb\nc\nd\ne\ng\nf\ni', limit : 4, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nf\ni';
+  test.identical( got, expected );
+
+  test.case = 'a b [c] d, len 4';
+  var src = { src : 'a\nb\nc\nd', limit : 3, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nb\nd';
+  test.identical( got, expected );
+
+  test.case = 'a [bc] d, len 4';
+  var src = { src : 'a\nb\nc\nd', limit : 2, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\nd';
+  test.identical( got, expected );
+
+  test.case = 'a [bcd], len 4';
+  var src = { src : 'a\nb\nc\nd', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'a [b] i, len 3, desired 2';
+  var src = { src : 'a\nb\ni', limit : 2, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a\ni';
+  test.identical( got, expected );
+
+  test.case = 'a [i], len 2, desired 1';
+  var src = { src : 'a\ni', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'a';
+  var src = { src : 'a', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  /* empty str from both sides */
+
+  test.case = 'a b [c d e] g f, len 7, desired 4';
+  var src = { src : '\na\nb\nc\nd\ne\ng\nf\n', limit : 4, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\na\nf\n';
+  test.identical( got, expected );
+
+  test.case = 'a b b [c d e] g f g, len 9, desired 6';
+  var src = { src : '\na\nb\nb\nc\nd\ne\ng\nf\ng\n', limit : 6, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\na\nb\nf\ng\n';
+  test.identical( got, expected );
+
+  test.case = 'a b [c d e g] f, len 7, desired 3';
+  var src = { src : '\na\nb\nc\nd\ne\ng\nf\n', limit : 3, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\na\n';
+  test.identical( got, expected );
+
+  test.case = 'a b [c] d, len 4';
+  var src = { src : '\na\nb\nc\nd\n', limit : 3, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\na\n';
+  test.identical( got, expected );
+
+  test.case = 'a [bc] d, len 4';
+  var src = { src : '\na\nb\nc\nd\n', limit : 2, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\n';
+  test.identical( got, expected );
+
+  test.case = 'a [bcd], len 4';
+  var src = { src : '\na\nb\nc\nd\n', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'a [b] i, len 3, desired 2';
+  var src = { src : '\na\nb\ni\n', limit : 2, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '\n';
+  test.identical( got, expected );
+
+  test.case = 'a [i], len 2, desired 1';
+  var src = { src : '\na\ni\n', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'a';
+  var src = { src : '\na\n', limit : 1, cutting : 'center' }
+  var got = _.strShortHeight( src );
+  var expected = '';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong limit'
+  test.shouldThrowErrorSync( () => _.strShortHeight({ src : 'abc', limit : 'hello' }) )
+  test.shouldThrowErrorSync( () => _.strShortHeight({ src : 'abc', limit : -5 }) )
+
+}
+
+//
 
 function strShortHeightOptionCutting( test )
 {
@@ -3707,19 +3829,19 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit=1';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit=1';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   //
 
@@ -3727,20 +3849,20 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit=2';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\n.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit=2';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'center', delimiter : '.' }
   // debugger;
   var got = _.strShortHeight( src );
   var expected = 'string\n.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   //
 
@@ -3748,19 +3870,19 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit=3';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\n.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit=3';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\n.\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   //
 
@@ -3768,19 +3890,19 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring\nstring\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit=4';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\nstring\n.';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit=4';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\n.\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
 
   //
@@ -3789,19 +3911,19 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit > str.length, delimiter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit > str.length, delimiter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   //
 
@@ -3809,19 +3931,19 @@ function strShortHeightOptionDelimiter( test )
   var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut right, o.limit = str.length, delimiter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
   test.case = 'cut center, o.limit = str.length, delimiter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
-  test.identical( got.result, expected );
+  test.identical( got, expected );
 
 }
 
@@ -12986,8 +13108,9 @@ const Proto =
     strstrShort_OptionHeightLimit,
     strstrShort_OptionsCombination,
     strShortWidth,
-    strShortHeight,
     strShortWidthOptionCutting,
+    strShortWidthOptionDelimiter,
+    strShortHeight,
     strShortHeightOptionCutting,
     strShortHeightOptionDelimiter,
 

@@ -456,14 +456,6 @@ function strShortWidth( o )
   if( o.limit === 0 )
   o.limit = Infinity;
 
-  if( o.src.length < 1 )
-  {
-    if( o.prefix.length + o.postfix.length <= o.limit )
-    return o.postfix
-    o.src = o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-  }
   if( _.bool.likeTrue( o.delimiter ) )
   o.delimiter = '...';
 
@@ -471,13 +463,13 @@ function strShortWidth( o )
   o.onLength = ( src ) => src.length;
 
   if( o.onLength( o.delimiter ) === o.limit )
-  return o.delimiter + o.postfix;
-
-  if( o.prefix.length + o.postfix.length + o.delimiter.length > o.limit )
   {
-    o.src = o.delimiter + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
+    return o.delimiter;
+  }
+
+  if( o.onLength( o.delimiter ) > o.limit )
+  {
+    o.src = o.delimiter;
     o.delimiter = '';
   }
 
@@ -486,18 +478,18 @@ function strShortWidth( o )
   options.src = splitted;
 
   let cutted = _._strShortWidth( options );
-  return cutted.join( '\n' );
+  let result = cutted.join( '\n' );
+
+  return result;
 }
 
 strShortWidth.defaults =
 {
   src : null,
   limit : 40,
-  prefix : null,
-  postfix : null,
-  infix : null,
   onLength : null,
   cutting : 'center',
+  delimiter : null
 }
 
 //
@@ -514,11 +506,17 @@ function _strShortWidth( o )
 
   let begin = '';
   let end = '';
-  // let fixLength = o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
   let fixLength = o.onLength( o.delimiter );
 
   o.src = o.src.map( ( el ) =>
   {
+    // let delimeter = o.delimeter;
+    // if( delimeter )
+    if( o.onLength( o.delimiter ) )
+    {
+
+    }
+
     if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
     {
       return el;
@@ -730,10 +728,8 @@ function strShortHeight( o )
   options.src = splitted;
   let cutted = _._strShortHeight( options );
 
-  o.result = cutted.join( '\n' );
-  // return cutted.join( '\n' );
+  return cutted.join( '\n' );
 
-  return o;
 }
 
 strShortHeight.defaults =
@@ -752,7 +748,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
     input : array of lines
     output : array of lines ( cutted down to o.limit )
   */
-  debugger;
+
   _.assert( _.arrayIs( o.src ) );
   _.routine.options( strShortHeight, o );
 
