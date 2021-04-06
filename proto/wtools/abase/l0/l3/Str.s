@@ -462,17 +462,6 @@ function strShortWidth( o )
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.delimiter ) === o.limit )
-  {
-    return o.delimiter;
-  }
-
-  if( o.onLength( o.delimiter ) > o.limit )
-  {
-    o.src = o.delimiter;
-    o.delimiter = '';
-  }
-
   let options = _.mapExtend( null, o );
   let splitted = o.src.split( '\n' );
   options.src = splitted;
@@ -510,31 +499,38 @@ function _strShortWidth( o )
 
   o.src = o.src.map( ( el ) =>
   {
-    // let delimeter = o.delimeter;
-    // if( delimeter )
-    if( o.onLength( o.delimiter ) )
+    let delimiter = o.delimiter;
+    fixLength = o.onLength( o.delimiter );
+
+    if( o.onLength( delimiter ) === o.limit )
     {
-
+      return delimiter;
     }
-
-    if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
+    else if( ( o.onLength( el ) + fixLength <= o.limit ) ) /* nothing to cut */
     {
       return el;
     }
     else
     {
+      if( o.onLength( delimiter ) > o.limit )
+      {
+        el = delimiter;
+        delimiter = '';
+        fixLength = 0;
+      }
+
       if( o.cutting === 'left' )
       {
-        return o.delimiter + cutLeft( el );
+        return delimiter + cutLeft( el );
       }
       else if( o.cutting === 'right' )
       {
-        return cutRight( el ) + o.delimiter;
+        return cutRight( el ) + delimiter;
       }
       else
       {
         let [ begin, end ] = cutMiddle( el );
-        return begin + o.delimiter + end;
+        return begin + delimiter + end;
       }
     }
   });
