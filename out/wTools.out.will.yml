@@ -1818,6 +1818,4 @@ module:
       ../.im.will.yml:
         hash: cb1860cb74f146ed31c11f1c38938b04
         size: 5161
-      wTools.out.will.yml:
-        hash: 9c4bb587904c1f5cf608f6225a40229b
-        size: 52173
+      wTools.out.will.yml: *ref_0
