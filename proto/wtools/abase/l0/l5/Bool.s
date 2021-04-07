@@ -67,7 +67,7 @@ function anyAre( src )
   _.assert( arguments.length === 1 );
   if( !_.arrayIs( src ) )
   return _.bool.is( src );
-  return _.any( src.filter( ( e ) => _.bool.is( e ) ) );
+  return !!_.any( src.filter( ( e ) => _.bool.is( e ) ) );
 }
 
 //

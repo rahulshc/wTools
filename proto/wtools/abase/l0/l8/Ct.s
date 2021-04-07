@@ -303,6 +303,26 @@ parse.defaults =
   preservingInlined : 1,
 }
 
+//
+
+let StripAnsi;
+function _stripAnsi( src )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
+
+  if( StripAnsi === undefined )
+  StripAnsi = require( 'strip-ansi' );
+  /* xxx : move to module::wCt, routine _.ct.stripAnsi() with lazy including of strip-ansi */
+  /* qqq : implement without dependency */
+  /* qqq : implement routine _.ct.fromAnsi() */
+
+  return StripAnsi( src );
+}
+
+let stripAnsi = _.vectorize( _stripAnsi );
+
 // --
 // relation
 // --
@@ -315,7 +335,7 @@ let Style =
 
   'path' : { fg : 'dark cyan' },
   'code' : { fg : 'dark green' },
-  'entity' : { fg : 'bright blue' }, /* zzz : why cant i specify [ 0,0,0 ] ? */
+  'entity' : { fg : 'bright blue' },
 
   'topic.up' : { fg : 'white', bg : 'dark blue' },
   'topic.down' : { fg : 'dark black', bg : 'dark blue' },
@@ -367,7 +387,10 @@ let Extension =
   formatFinal : format,
 
   strip,
-  parse, /* qqq : implement | Done. Yevhen S.*/
+  parse, /* qqq : for Yevhen : test? */
+
+  _stripAnsi,
+  stripAnsi, /* xxx : qqq : move out to module::wCtBasic */
 
   // fields
 

@@ -18,6 +18,7 @@ const __ = _globals_.testing.wTools;
 const fileProvider = __.fileProvider;
 const path = fileProvider.path;
 
+
 // --
 // context
 // --
@@ -77,7 +78,7 @@ function production( test )
   });
 
   if( !samplePath.length )
-  throw __.err( `Sample with name "Sample.(s|ss|js)" does not exist in directory ${ sampleDir }` );
+  throw _.err( `Sample with name "Sample.(s|ss|js)" does not exist in directory ${ sampleDir }` );
 
   /* */
 
@@ -103,7 +104,7 @@ function production( test )
   version = mdl.version;
 
   if( !version )
-  throw __.err( 'Cannot obtain version to install' );
+  throw _.err( 'Cannot obtain version to install' );
 
   let structure = { dependencies : { [ mdl.name ] : version } };
   a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : structure, encoding : 'json' });
@@ -182,19 +183,18 @@ function production( test )
         return null;
       })
     });
-
   }
 
   /* */
 
   function handleDownloadingError( err )
   {
-    if( __.strHas( err.message, 'npm ERR! ERROR: Repository not found' ) )
+    if( _.strHas( err.message, 'npm ERR! ERROR: Repository not found' ) )
     {
-      __.error.attend( err );
+      _.error.attend( err );
       return a.shell( `npm i --production` );
     }
-    throw __.err( err );
+    throw _.err( err );
   }
 }
 
@@ -406,7 +406,7 @@ function build( test )
   ({
     remotePath,
     localPath : a.routinePath,
-    verbosity : 2,
+    logger : 2,
     sync : 0
   })
 

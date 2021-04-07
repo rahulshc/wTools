@@ -63,7 +63,7 @@ function tryCatchBrief( routine )
 // }
 
 // --
-// extension
+// declare
 // --
 
 let ToolsExtension =

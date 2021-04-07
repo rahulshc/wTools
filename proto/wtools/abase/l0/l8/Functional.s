@@ -1856,9 +1856,9 @@ let Routines =
 
   eachSample_, /* xxx : review */
   eachPermutation_, /* xxx : move out */
-  swapsCount,
-  _factorial,
-  factorial,
+  swapsCount, /* xxx : move out */
+  _factorial, /* xxx : move out */
+  factorial, /* xxx : move out */
 
   _entityFilterDeep,
   entityFilterDeep,
