@@ -684,7 +684,7 @@ function mapHasExactly( srcMap, screenMaps )
   result = result && _.mapHasOnly( srcMap, screenMaps );
   result = result && _.mapHasAll( srcMap, screenMaps );
 
-  return true;
+  return result;
 }
 
 //
@@ -698,7 +698,7 @@ function mapOnlyOwnExactly( srcMap, screenMaps )
   result = result && _.mapOnlyOwnOnly( srcMap, screenMaps );
   result = result && _.mapOnlyOwnAll( srcMap, screenMaps );
 
-  return true;
+  return result;
 }
 
 //
@@ -2060,7 +2060,6 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
 
   function filterWithVectorButMap( s )
   {
-    debugger;
     for( let but of butMap )
     if( !propertyFilter( but, srcMap, s ) )
     return s;

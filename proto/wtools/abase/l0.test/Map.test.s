@@ -16047,19 +16047,19 @@ function mapHasExactlyCountable( test )
   var src = { a : 1 };
   var screen = { b : 2 };
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - empty countable';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - same vector';
   var src = { a : 1, b : 2 };
@@ -16077,49 +16077,49 @@ function mapHasExactlyCountable( test )
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1, length : 2 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable > src';
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a', 'b', 'c' ], withIterator : 1 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - vector < src';
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1, length : 2 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable < src';
   var src = { a : 1, b : 2 };
   var screen = new countableConstructor({ elements : [ 'a' ], withIterator : 1 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable = src, some the same el';
   var src = { a : 1, c : 2, d : 3, f : 4 };
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1, length : 2 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable = src, some the same el';
   var src = { a : 1, c : 2, d : 3, f : 4 };
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable = src, different';
   var src = { a : 1, c : 2 };
   var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1, length : 2 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   test.case = 'screen - countable = src, different';
   var src = { a : 1, c : 2 };
   var screen = new countableConstructor({ elements : [ 'b', 'r' ], withIterator : 1 });
   var got = _.mapHasExactly( src, screen );
-  test.true( got );
+  test.true( !got );
 
   /* - */
 
@@ -16424,23 +16424,33 @@ function mapHasOnlyCountable( test )
 function mapOnlyOwnOnlyCountable( test )
 {
 
-  // test.case = 'screen - empty vector';
-  // var src = { a : 1 };
-  // var screen = { b : 2 };
-  // var got = _.mapOnlyOwnOnly( src, screen );
-  // test.true( !got );
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = { b : 2 };
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
 
-  // test.case = 'screen - empty vector';
-  // var src = { a : 1 };
-  // var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
-  // var got = _.mapOnlyOwnOnly( src, screen );
-  // test.true( !got );
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
 
-  // test.case = 'screen - empty countable';
-  // var src = { a : 1 };
-  // var screen = new countableConstructor({ elements : [], withIterator : 1 });
-  // var got = _.mapOnlyOwnOnly( src, screen );
-  // test.true( !got );
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  /* */
+
+  test.case = 'screen - same array';
+  var src = { a : 1, b : 2 };
+  var screen = [ 'a', 'b' ];
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  /* */
 
   test.case = 'screen - same vector';
   var src = { a : 1, b : 2 };
@@ -19190,10 +19200,10 @@ const Proto =
     mapOnlyOwnAnyCountable,
     mapOnlyOwnNone,
     mapOnlyOwnNoneCountable,
-    mapHasExactlyCountable, /* always true */
-    mapOnlyOwnExactlyCountable, /* always true */
+    mapHasExactlyCountable,
+    mapOnlyOwnExactlyCountable, /* not working with array ( and countable ) */
     mapHasOnlyCountable,
-    mapOnlyOwnOnlyCountable,
+    mapOnlyOwnOnlyCountable, /* not working with array ( and countable ) */
 
     // test sureMap*
 
