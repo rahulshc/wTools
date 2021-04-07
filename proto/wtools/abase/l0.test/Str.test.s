@@ -22422,7 +22422,7 @@ const Proto =
     strSplitInlinedOptionOnInlined,
     strSplitInlinedCombineOnInlinedAndPreservingEmpty,
 
-    strSplitInlinedStereo,
+    // strSplitInlinedStereo,
     strSplitInlinedStereo_Basic,
     strSplitInlinedStereo_OptionPrefixPostfix,
     strSplitInlinedStereo_OptionStripping,
