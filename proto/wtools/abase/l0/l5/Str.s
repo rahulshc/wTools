@@ -3093,7 +3093,7 @@ function strSplitInlinedStereo_( o )
     return false;
   }
 
-  //
+  /* */
 
   function escapeInlined( func )
   {
@@ -3103,7 +3103,7 @@ function strSplitInlinedStereo_( o )
     }
   }
 
-  //
+  /* */
 
   function preprocessBeforeJoin( array )
   {
@@ -3173,7 +3173,7 @@ function strSplitInlinedStereo_( o )
     }
   }
 
-  //
+  /* */
 
   function handlePreservingEmpty()
   {
