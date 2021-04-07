@@ -3605,7 +3605,7 @@ function errorFunctorExternal( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     let SomeError = _.error.error_functor( 'SomeError', _onSomeError );
 
@@ -3693,7 +3693,7 @@ function sourceCode( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _.include( 'wFiles' );
     throw Error( 'Uncaught error' );
   }
@@ -3895,7 +3895,7 @@ function eventUncaughtErrorBasic( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let rethrowing = process.argv.includes( 'rethrowing:1' );
     let attending = process.argv.includes( 'attending:1' );
     let throwingSync = process.argv.includes( `throwing:sync` );
@@ -4000,7 +4000,7 @@ function eventUncaughtErrorOnce( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     let once = process.argv.includes( 'how:once' );
     let off = process.argv.includes( 'how:off' );
@@ -4078,7 +4078,7 @@ function entryProcedureStack( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( _.setup._entryProcedureStack );
   }
 
