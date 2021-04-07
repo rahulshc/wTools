@@ -20,7 +20,7 @@ const _FunctionBind = Function.prototype.bind;
 const _ObjectToString = Object.prototype.toString;
 const _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-let _arraySlice = _.longSlice;
+const _longSlice = _.longSlice;
 let strType = _.entity.strType;
 
 // --
@@ -538,7 +538,7 @@ function strCommonLeft( ins )
  * // returns 'e'
  *
  * @example
- * _.strCommonRight( 'add', 'ddd', 'hdd' );
+ * _.strCommonRight( 'add', 'dd'+'d', 'hdd' );
  * // returns 'dd'
  *
  * @example

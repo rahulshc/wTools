@@ -325,7 +325,29 @@ function assertWarn( condition )
 }
 
 // --
-// extension
+// declare
+// --
+
+if( Config.debug )
+Object.defineProperty( _, 'debugger',
+{
+  enumerable : false,
+  configurable : false,
+  set : function( val )
+  {
+    _[ Symbol.for( 'debugger' ) ] = val;
+  },
+  get : function()
+  {
+    let val = _[ Symbol.for( 'debugger' ) ];
+    if( val )
+    debugger; /* eslint-disable-line no-debugger */
+    return val;
+  },
+});
+
+// --
+// declare
 // --
 
 let ToolsExtension =

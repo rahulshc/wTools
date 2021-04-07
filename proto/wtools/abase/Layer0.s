@@ -39,6 +39,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l3/Intervall.s' );
   require( './l0/l3/Intervalo.s' );
   require( './l0/l3/Introspector.s' );
+  require( './l0/l3/Logger.s' );
   require( './l0/l3/Long.s' );
   require( './l0/l3/Map.s' );
   require( './l0/l3/Module.s' );

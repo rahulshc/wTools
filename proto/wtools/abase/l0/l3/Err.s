@@ -1435,8 +1435,6 @@ function process( err )
   if( arguments.length !== 1 || !_.error.isFormed( err ) )
   err = _.err( ... arguments );
 
-  debugger;
-
   if( _.process && _.process.entryPointInfo )
   _.error.sectionAdd( err, { name : 'process', body : _.process.entryPointInfo() });
 
@@ -1652,9 +1650,6 @@ function reason( err, value )
 function restack( err, level )
 {
 
-  // if( err && err.debugging )
-  // debugger;
-
   if( !( arguments.length === 1 || arguments.length === 2 ) )
   throw Error( 'Expects single argument or none' );
 
@@ -1762,9 +1757,6 @@ function _log( err, logger )
   logger = logger || _global.logger || _global.console;
 
   /* */
-
-  // if( err && err.debugging )
-  // debugger;
 
   if( _.routine.is( err.toString ) )
   {

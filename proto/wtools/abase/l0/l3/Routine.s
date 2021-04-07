@@ -2912,7 +2912,7 @@ function vectorizeAny_body( o )
   function any()
   {
     let result = routine1.apply( this, arguments );
-    return _.any( result );
+    return !!_.any( result );
   }
 
 }

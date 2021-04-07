@@ -231,39 +231,40 @@ function streamIs( src )
 }
 
 //
-
-function consoleIs( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( console.Console )
-  if( src && src instanceof console.Console )
-  return true;
-
-  if( src !== console )
-  return false;
-
-  let result = Object.prototype.toString.call( src );
-  if( result === '[object Console]' || result === '[object Object]' )
-  return true;
-
-  return false;
-}
-
+// xxx : remove from here
 //
-
-function loggerIs( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( !_.Logger )
-  return false;
-
-  if( src instanceof _.Logger )
-  return true;
-
-  return false;
-}
+// function consoleIs( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( console.Console )
+//   if( src && src instanceof console.Console )
+//   return true;
+//
+//   if( src !== console )
+//   return false;
+//
+//   let result = Object.prototype.toString.call( src );
+//   if( result === '[object Console]' || result === '[object Object]' )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function loggerIs( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( !_.Logger )
+//   return false;
+//
+//   if( src instanceof _.Logger )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -372,8 +373,8 @@ let Routines =
 
   workerIs,
   streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
-  consoleIs,
-  loggerIs,
+  // consoleIs,
+  // loggerIs,
   processIs,
   procedureIs,
 

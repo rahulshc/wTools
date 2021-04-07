@@ -161,6 +161,22 @@ function _setupTime()
 
 //
 
+function _validate()
+{
+
+  if( !Config.debug )
+  return;
+
+  if( !Object.hasOwnProperty.call( _global_, 'wTools' ) || !_global_.wTools.maybe )
+  {
+    debugger;
+    throw new Error( 'Failed to include module::wTools' );
+  }
+
+}
+
+//
+
 function _Setup9()
 {
 
@@ -174,6 +190,7 @@ function _Setup9()
     _.setup._setupTesterPlaceholder();
     _.setup._setupProcedure();
     _.setup._setupTime();
+    _.setup._validate();
   }
 
 }
@@ -190,6 +207,7 @@ let SetupExtension =
   _setupTesterPlaceholder,
   _setupProcedure,
   _setupTime,
+  _validate,
 
   _Setup9,
 

@@ -5,6 +5,9 @@
 
 if( typeof module !== 'undefined' )
 {
+
+  require( '../l0/l0/Global.s' );
+  require( '../l0/l1/Config.s' );
   require( '../l0/l1/Predefined.s' );
   require( '../l0/l2/Setup.s' );
 
@@ -18,6 +21,7 @@ if( typeof module !== 'undefined' )
   require( '../l0/l3/Constructible.s' );
   require( '../l0/l3/Date.s' );
   require( '../l0/l3/Entity.s' );
+  require( '../l0/l3/Diagnostic.s' );
   require( '../l0/l3/Err.s' );
   require( '../l0/l3/Escape.s' );
   require( '../l0/l3/HashMap.s' );

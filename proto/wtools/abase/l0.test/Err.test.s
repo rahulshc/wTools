@@ -5,7 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( '../../Tools.s' );
+  const _ = require( 'Tools' );
   _.include( 'wTesting' );
 }
 
@@ -4061,7 +4061,7 @@ function entryProcedureStack( test )
         test.identical( _.strCount( op.output, 'ncaught' ), 0 );
         test.identical( _.strCount( op.output, 'rror' ), 0 );
         test.identical( _.strCount( op.output, 'program' ), 1 );
-        test.identical( _.strCount( op.output, 'program:9' ), 1 );
+        test.identical( _.strCount( op.output, '/program:' ), 1 );
         test.identical( _.strCount( op.output, 'at ' ), 1 );
         return null;
       });
