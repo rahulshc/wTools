@@ -4484,6 +4484,11 @@ const Proto =
 
 }
 
+/*
+xxx : test to include file which does not exist to reproduce problem of throwing assert:
+_.assert( native === moduleFile.native );
+*/
+
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );

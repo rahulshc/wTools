@@ -2061,8 +2061,8 @@ function _trackingEnable()
       status : 1,
     });
 
-    _.assert( native === moduleFile.native );
     _.assert( native === ModuleFileNative._cache[ moduleFile.nativeSourcePath ] );
+    _.assert( native === moduleFile.native );
     _.assert( resolving.resolvedPath === nativeSourcePath );
 
     try
