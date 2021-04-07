@@ -5,7 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( '../../Tools.s' );
+  const _ = require( 'Tools' );
   _.include( 'wTesting' );
 }
 
@@ -2950,6 +2950,87 @@ function locationToStackWithOtherOptions( test )
 
 //
 
+
+function locationPerformance( test )
+{
+  /*
+    |      **Routine**       |   type    | **Njs : v10.23.0** | **Njs : v12.9.1** | **Njs : v13.14.0** | **Njs : v14.15.1** | **Njs : v15.4.0** |
+    | :--------------------: | :-------: | :----------------: | :---------------: | :----------------: | :----------------: | :---------------: |
+    |     location BISI      |  regular  |      0.3257s       |      0.3005s      |      0.2623s       |      0.2374s       |      0.2347s      |
+    | locationOptimized BISI | optimized |      0.3256s       |      0.3328s      |      0.2524s       |       0.253s       |      0.2376s      |
+    |     location SIBI      |  regular  |     0.0000471s     |    0.0000415s     |     0.0000457s     |     0.0000373s     |    0.0000348s     |
+    | locationOptimized SIBI | optimized |     0.0000431s     |    0.0000432s     |     0.0000433s     |     0.0000403s     |    0.0000371s     |
+
+    BISI = Big input( length : 1e4 ), small amount of iterations ( 1e1 )
+    SIBI = Small input ( length : 2e2 ), big amount of iterations ( 1e3 )
+  */
+
+  test.case = 'long string, 10 iterations';
+  var size = 1e5;
+  var times = 1e1;
+  var filler = new Error().stack;
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    let result = act2();
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( result.original, 'Error' );
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine BISI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  test.case = 'short string, 1e4 iterations';
+  var times = 1e4;
+  var size = 2e1;
+  var filler = new Error().stack;
+  var string = new Array( size )
+  .fill( filler )
+  .join( '' );
+  var stringSize = string.length;
+  var took = 0;
+
+  for( let i = times; i > 0; i-- )
+  {
+    var time1 = _.time.now();
+    let result = act2();
+    var time2 = _.time.now();
+    took += time2 - time1;
+    test.identical( result.original, 'Error' );
+  }
+
+  console.log( `String length = ${stringSize}, iterations = ${times}` );
+  console.log( `Routine SIBI took : ${took / ( times * 1000 )}s on Njs ${process.version}` );
+  console.log( '----------------------------------------------------' );
+
+  /* - */
+
+  function act()
+  {
+    return _.introspector.location({ stack : string });
+  }
+
+  function act2()
+  {
+    return _.introspector.location_({ stack : string });
+  }
+}
+
+locationPerformance.timeOut = 1e7;
+locationPerformance.experimental = true;
+
+//
+
 function stackBasic( test )
 {
 
@@ -4164,6 +4245,8 @@ const Proto =
     locationToStackOptionFilePath,
     locationToStackOptionsRoutineNameAndRoutineAlias,
     locationToStackWithOtherOptions,
+
+    locationPerformance,
 
     stackBasic,
     stack,
