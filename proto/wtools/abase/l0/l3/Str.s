@@ -376,7 +376,7 @@ function strShort_( o )  /* version with binary search cutting */
     return o;
   }
 
-  let options = Object.create( null );
+  let options = Object.create( null ); /* width cutting options */
   options.limit = o.widthLimit;
   options.delimiter = o.delimiter;
   options.onLength = o.onLength;
@@ -385,14 +385,10 @@ function strShort_( o )  /* version with binary search cutting */
   if( isOneLine )
   {
     options.src = src;
-    let result = _.strShortWidth( options );
+    _.strShortWidth( options );
 
-    if( result === o.src )
-    o.changed = false;
-    else if( result !== o.src )
-    o.changed = true;
-
-    o.result = result;
+    o.result = options.result;
+    o.changed = options.changed;
 
     return o;
   }
@@ -400,17 +396,18 @@ function strShort_( o )  /* version with binary search cutting */
   {
     let splitted = o.src.split( '\n' );
 
-    let options2 = Object.create( null );
+    let options2 = Object.create( null );  /* height cutting */
     options2.src = splitted;
     options2.limit = o.heightLimit;
     options2.delimiter = o.heightDelimiter;
     options2.cutting = o.heightCutting;
+    _._strShortHeight( options2 );
 
-    let cutted = _._strShortHeight( options2 );
+    options.src = options2.result;
 
-    options.src = cutted;
-    cutted = _._strShortWidth( options );
-    let result = cutted.join( '\n' );
+    _._strShortWidth( options );
+
+    let result = options.result.join( '\n' );
 
     if( result === o.src )
     o.changed = false;
@@ -454,6 +451,8 @@ function strShortWidth( o )
   _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
+  let originalSrc = o.src;
+
   if( !o.delimiter )
   o.delimiter = '';
   if( o.limit === 0 )
@@ -465,14 +464,15 @@ function strShortWidth( o )
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  let options = _.mapExtend( null, o );
   let splitted = o.src.split( '\n' );
-  options.src = splitted;
 
-  let cutted = _._strShortWidth( options );
-  let result = cutted.join( '\n' );
+  o.src = splitted;
+  _._strShortWidth( o );
 
-  return result;
+  o.src = originalSrc;
+  o.result = o.result.join( '\n' );
+
+  return o;
 }
 
 strShortWidth.defaults =
@@ -499,13 +499,16 @@ function _strShortWidth( o )
   let end = '';
   let fixLength = o.onLength( o.delimiter );
 
-  o.src = o.src.map( ( el ) =>
+  o.changed = false;
+
+  let result = o.src.map( ( el ) =>
   {
     let delimiter = o.delimiter;
     fixLength = o.onLength( o.delimiter );
 
     if( fixLength === o.limit )
     {
+      o.changed = true;
       return o.delimiter;
     }
     else if( o.onLength( el ) + fixLength <= o.limit ) /* nothing to cut */
@@ -520,6 +523,8 @@ function _strShortWidth( o )
         delimiter = '';
         fixLength = 0;
       }
+
+      o.changed = true;
 
       if( o.cutting === 'left' )
       {
@@ -537,7 +542,9 @@ function _strShortWidth( o )
     }
   });
 
-  return o.src;
+  o.result = result;
+
+  return o;
 
   /* - */
 
@@ -718,15 +725,19 @@ function strShortHeight( o )
   );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
+  let originalSrc = o.src;
+  let splitted = o.src.split( '\n' );
+
   if( !o.delimiter )
   o.delimiter = '';
 
-  let splitted = o.src.split( '\n' );
-  let options = _.mapExtend( null, o );
-  options.src = splitted;
-  let cutted = _._strShortHeight( options );
+  o.src = splitted;
 
-  return cutted.join( '\n' );
+  _._strShortHeight( o );
+  o.src = originalSrc;
+  o.result = o.result.join( '\n' );
+
+  return o;
 
 }
 
@@ -750,14 +761,22 @@ function _strShortHeight( o )  /* version with binary search cutting */
   _.assert( _.arrayIs( o.src ) );
   _.routine.options( strShortHeight, o );
 
+  o.changed = false;
+
   let delimiterLength = o.delimiter === '' ? 0 : 1;
 
   if( delimiterLength === o.limit )
   {
-    return [ o.delimiter ];
+    o.changed = true;
+    o.result = [ o.delimiter ];
+
+    return o;
   }
 
-  return cut( o.src );
+  let result = cut( o.src.slice() );
+  o.result = result;
+
+  return o;
 
   /* - */
 
@@ -765,6 +784,8 @@ function _strShortHeight( o )  /* version with binary search cutting */
   {
     if( src.length + delimiterLength > o.limit )
     {
+      o.changed = true;
+
       if( o.cutting === 'left' )
       {
         src = src.slice( - ( o.limit - delimiterLength ) );
