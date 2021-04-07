@@ -3197,7 +3197,7 @@ function strSplitInlinedStereo_( o )
     }
   }
 
-  //
+  /* */
 
   function unescape()
   {
