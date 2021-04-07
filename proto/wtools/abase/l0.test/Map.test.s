@@ -14336,8 +14336,61 @@ function mapHasAll( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
 
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  test.close( 'containerAdapter' );
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAll( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAll( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAll( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapHasAllCountable( test )
+{
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
@@ -14397,59 +14450,6 @@ function mapHasAll( test )
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
   var got = _.mapHasAll( src, screen );
   test.true( !got );
-
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapHasAll( src, screen );
-  test.true( got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapHasAll( src, screen );
-  test.true( got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapHasAll( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapHasAll( src, screen );
-  test.true( !got );
-
-  test.close( 'containerAdapter' );
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAll( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAll( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAll( {}, {}, {} );
-    });
-  }
 
   /* - */
 
@@ -14626,8 +14626,63 @@ function mapHasAny( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
 
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.close( 'containerAdapter' );
+
+  /* */
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAny( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAny( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasAny( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapHasAnyCountable( test )
+{
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
@@ -14687,61 +14742,6 @@ function mapHasAny( test )
   var screen = new countableConstructor({ elements : [ 'b', 'r', 'a', 'c' ], withIterator : 1 });
   var got = _.mapHasAny( src, screen );
   test.true( got );
-
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapHasAny( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapHasAny( src, screen );
-  test.true( got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapHasAny( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapHasAny( src, screen );
-  test.true( got );
-
-  test.close( 'containerAdapter' );
-
-  /* */
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAny( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAny( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasAny( {}, {}, {} );
-    });
-  }
 
   /* - */
 
@@ -14922,8 +14922,63 @@ function mapHasNone( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
 
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.close( 'containerAdapter' );
+
+  /* */
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasNone( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasNone( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapHasNone( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapHasNoneCountable( test )
+{
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
@@ -14996,61 +15051,6 @@ function mapHasNone( test )
   var got = _.mapHasNone( src, screen );
   test.true( got );
 
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapHasNone( src, screen );
-  test.true( got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapHasNone( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapHasNone( src, screen );
-  test.true( got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapHasNone( src, screen );
-  test.true( !got );
-
-  test.close( 'containerAdapter' );
-
-  /* */
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasNone( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasNone( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapHasNone( {}, {}, {} );
-    });
-  }
-
   /* - */
 
   function _iterate()
@@ -15093,7 +15093,6 @@ function mapHasNone( test )
     dst[ Symbol.iterator ] = _iterate;
     return dst;
   }
-
 }
 
 //
@@ -15219,8 +15218,80 @@ function mapOnlyOwnAll( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
 
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.close( 'containerAdapter' );
+
+  /* */
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAll( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAll( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAll( {}, {}, {} );
+    });
+
+    test.case = 'src is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnAll( a, { a : 1 } );
+    });
+
+    test.case = 'screen is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnAll( { a : 1 }, a );
+    });
+  }
+}
+
+//
+
+function mapOnlyOwnAllCountable( test )
+{
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
@@ -15293,79 +15364,6 @@ function mapOnlyOwnAll( test )
   var got = _.mapOnlyOwnAll( src, screen );
   test.true( !got );
 
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapOnlyOwnAll( src, screen );
-  test.true( got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapOnlyOwnAll( src, screen );
-  test.true( got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapOnlyOwnAll( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapOnlyOwnAll( src, screen );
-  test.true( !got );
-
-  test.close( 'containerAdapter' );
-
-  /* */
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAll( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAll( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAll( {}, {}, {} );
-    });
-
-    test.case = 'src is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnAll( a, { a : 1 } );
-    });
-
-    test.case = 'screen is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnAll( { a : 1 }, a );
-    });
-  }
-
   /* - */
 
   function _iterate()
@@ -15408,7 +15406,6 @@ function mapOnlyOwnAll( test )
     dst[ Symbol.iterator ] = _iterate;
     return dst;
   }
-
 }
 
 //
@@ -15534,8 +15531,81 @@ function mapOnlyOwnAny( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
 
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.close( 'containerAdapter' );
+
+  /* */
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAny( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAny( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnAny( {}, {}, {} );
+    });
+
+    test.case = 'src is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnAny( a, { a : 1 } );
+    });
+
+    test.case = 'screen is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnAny( { a : 1 }, a );
+    });
+  }
+
+}
+
+//
+
+function mapOnlyOwnAnyCountable( test )
+{
   test.case = 'screen - empty vector';
   var src = { a : 1 };
   var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
@@ -15608,79 +15678,6 @@ function mapOnlyOwnAny( test )
   var got = _.mapOnlyOwnAny( src, screen );
   test.true( !got );
 
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapOnlyOwnAny( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapOnlyOwnAny( src, screen );
-  test.true( got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapOnlyOwnAny( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapOnlyOwnAny( src, screen );
-  test.true( got );
-
-  test.close( 'containerAdapter' );
-
-  /* */
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAny( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAny( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnAny( {}, {}, {} );
-    });
-
-    test.case = 'src is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnAny( a, { a : 1 } );
-    });
-
-    test.case = 'screen is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnAny( { a : 1 }, a );
-    });
-  }
-
   /* - */
 
   function _iterate()
@@ -15724,6 +15721,7 @@ function mapOnlyOwnAny( test )
     return dst;
   }
 
+ 
 }
 
 //
@@ -15849,7 +15847,80 @@ function mapOnlyOwnNone( test )
 
   /* - */
 
-  test.open( 'countable' );
+  test.open( 'containerAdapter' );
+
+  test.case = 'screen - empty';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [] ) );
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - different';
+  var src = { a : 1 };
+  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - some the same';
+  var src = { a : 1, b : 2, c : 3, d : 4 };
+  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.close( 'containerAdapter' );
+
+  /* */
+
+  if( Config.degub )
+  {
+    test.case = 'src is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnNone( 1, {} );
+    });
+
+    test.case = 'screen is no object like';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnNone( {}, 1 );
+    });
+
+    test.case = 'too much args';
+    test.shouldThrowErrorSync( function()
+    {
+      _.mapOnlyOwnNone( {}, {}, {} );
+    });
+
+    test.case = 'src is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnNone( a, { a : 1 } );
+    });
+
+    test.case = 'screen is not a map';
+    test.shouldThrowErrorSync( function()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOnlyOwnNone( { a : 1 }, a );
+    });
+  }
+}
+
+//
+
+function mapOnlyOwnNoneCountable( test )
+{
 
   test.case = 'screen - empty vector';
   var src = { a : 1 };
@@ -15923,79 +15994,6 @@ function mapOnlyOwnNone( test )
   var got = _.mapOnlyOwnNone( src, screen );
   test.true( got );
 
-  test.close( 'countable' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  test.case = 'screen - empty';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [] ) );
-  var got = _.mapOnlyOwnNone( src, screen );
-  test.true( got );
-
-  test.case = 'screen - same';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'a' ] ) );
-  var got = _.mapOnlyOwnNone( src, screen );
-  test.true( !got );
-
-  test.case = 'screen - different';
-  var src = { a : 1 };
-  var screen = _.containerAdapter.make( new Set( [ 'b' ] ) );
-  var got = _.mapOnlyOwnNone( src, screen );
-  test.true( got );
-
-  test.case = 'screen - some the same';
-  var src = { a : 1, b : 2, c : 3, d : 4 };
-  var screen = _.containerAdapter.make( new Set( [ 'b', 'a', 'x', 'y' ] ) );
-  var got = _.mapOnlyOwnNone( src, screen );
-  test.true( !got );
-
-  test.close( 'containerAdapter' );
-
-  /* */
-
-  if( Config.degub )
-  {
-    test.case = 'src is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnNone( 1, {} );
-    });
-
-    test.case = 'screen is no object like';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnNone( {}, 1 );
-    });
-
-    test.case = 'too much args';
-    test.shouldThrowErrorSync( function()
-    {
-      _.mapOnlyOwnNone( {}, {}, {} );
-    });
-
-    test.case = 'src is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnNone( a, { a : 1 } );
-    });
-
-    test.case = 'screen is not a map';
-    test.shouldThrowErrorSync( function()
-    {
-      var a = {};
-      var b = { a : 1 };
-      Object.setPrototypeOf( a, b )
-      _.mapOnlyOwnNone( { a : 1 }, a );
-    });
-  }
-
   /* - */
 
   function _iterate()
@@ -16038,7 +16036,6 @@ function mapOnlyOwnNone( test )
     dst[ Symbol.iterator ] = _iterate;
     return dst;
   }
-
 }
 
 // --
@@ -18673,12 +18670,18 @@ const Proto =
     mapOnlyOwnKey,
 
     mapHasAll,
+    mapHasAllCountable,
     mapHasAny,
+    mapHasAnyCountable,
     mapHasNone,
+    mapHasNoneCountable,
 
     mapOnlyOwnAll,
+    mapOnlyOwnAllCountable,
     mapOnlyOwnAny,
+    mapOnlyOwnAnyCountable,
     mapOnlyOwnNone,
+    mapOnlyOwnNoneCountable,
 
     // test sureMap*
 
