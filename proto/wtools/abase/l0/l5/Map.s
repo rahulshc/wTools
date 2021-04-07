@@ -2060,6 +2060,7 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
 
   function filterWithVectorButMap( s )
   {
+    debugger;
     for( let but of butMap )
     if( !propertyFilter( but, srcMap, s ) )
     return s;
