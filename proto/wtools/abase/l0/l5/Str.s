@@ -2830,117 +2830,117 @@ _strSplitInlined_body.defaults =
 
 let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
+// //
 //
-
-/**
- * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
- *
- * Returns result as array of strings.
- *
- * Function extracts words in two attempts:
- * First by splitting source string by ( o.prefix ).
- * Second by splitting each element of the result of first attempt by( o.postfix ).
- * If splitting by ( o.prefix ) gives only single element then second attempt is skipped, otherwise function
- * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
- * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
- * with ( o.prefix ) prepended to the last element of result array.
- *
- * @param {string} src - Source string.
- * @param {object} o - Options map.
- * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
- * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
- * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
- *
- * @example
- * _.strSplitInlinedStereo( '#abc#' );
- * // returns [ '', 'abc', '' ]
- *
- * @example
- * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
- * // returns [ 'abc' ]
- *
- * @example
- * function onInlined( strip )
- * {
- *   if( strip.length )
- *   return strip.toUpperCase();
- * }
- * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
- * // returns [ 'ABC' ]
- *
- * @method strSplitInlinedStereo
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @namespace Tools
- *
- */
-
-function strSplitInlinedStereo( o )
-{
-
-  if( _.strIs( o ) )
-  o = { src : o };
-
-  _.assert( this === _ );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.object.is( o ) );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routine.options( strSplitInlinedStereo, o );
-
-  let result = [];
-  let splitted = o.src.split( o.prefix );
-
-  if( splitted.length === 1 )
-  return splitted;
-
-  /* */
-
-  if( splitted[ 0 ] )
-  result.push( splitted[ 0 ] );
-
-  /* */
-
-  for( let i = 1; i < splitted.length; i++ )
-  {
-    let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-    let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-
-    _.assert( halfs.length === 3 );
-
-    if( strip !== undefined )
-    {
-      result.push( strip );
-      if( halfs[ 2 ] )
-      result.push( halfs[ 2 ] );
-    }
-    else
-    {
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
-    }
-
-  }
-
-  return result;
-}
-
-strSplitInlinedStereo.defaults =
-{
-  src : null,
-  prefix : '#',
-  postfix : '#',
-  // prefix : '❮',
-  // postfix : '❯',
-  onInlined : null,
-}
+// /**
+//  * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
+//  * Function can be called in two ways:
+//  * - First to pass only source string and use default options;
+//  * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
+//  *
+//  * Returns result as array of strings.
+//  *
+//  * Function extracts words in two attempts:
+//  * First by splitting source string by ( o.prefix ).
+//  * Second by splitting each element of the result of first attempt by( o.postfix ).
+//  * If splitting by ( o.prefix ) gives only single element then second attempt is skipped, otherwise function
+//  * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
+//  * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
+//  * with ( o.prefix ) prepended to the last element of result array.
+//  *
+//  * @param {string} src - Source string.
+//  * @param {object} o - Options map.
+//  * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
+//  * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
+//  * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
+//  * @returns {object} Returns an array of strings separated by( o.delimeter ).
+//  *
+//  * @example
+//  * _.strSplitInlinedStereo( '#abc#' );
+//  * // returns [ '', 'abc', '' ]
+//  *
+//  * @example
+//  * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
+//  * // returns [ 'abc' ]
+//  *
+//  * @example
+//  * function onInlined( strip )
+//  * {
+//  *   if( strip.length )
+//  *   return strip.toUpperCase();
+//  * }
+//  * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
+//  * // returns [ 'ABC' ]
+//  *
+//  * @method strSplitInlinedStereo
+//  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+//  * @throws { Exception } Throw an exception if( o.src ) is not a String.
+//  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+//  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+//  * @namespace Tools
+//  *
+//  */
+//
+// function strSplitInlinedStereo( o )
+// {
+//
+//   if( _.strIs( o ) )
+//   o = { src : o };
+//
+//   _.assert( this === _ );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.object.is( o ) );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.routine.options( strSplitInlinedStereo, o );
+//
+//   let result = [];
+//   let splitted = o.src.split( o.prefix );
+//
+//   if( splitted.length === 1 )
+//   return splitted;
+//
+//   /* */
+//
+//   if( splitted[ 0 ] )
+//   result.push( splitted[ 0 ] );
+//
+//   /* */
+//
+//   for( let i = 1; i < splitted.length; i++ )
+//   {
+//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+//
+//     _.assert( halfs.length === 3 );
+//
+//     if( strip !== undefined )
+//     {
+//       result.push( strip );
+//       if( halfs[ 2 ] )
+//       result.push( halfs[ 2 ] );
+//     }
+//     else
+//     {
+//       if( result.length )
+//       result[ result.length-1 ] += o.prefix + splitted[ i ];
+//       else
+//       result.push( o.prefix + splitted[ i ] );
+//     }
+//
+//   }
+//
+//   return result;
+// }
+//
+// strSplitInlinedStereo.defaults =
+// {
+//   src : null,
+//   prefix : '#',
+//   postfix : '#',
+//   // prefix : '❮',
+//   // postfix : '❯',
+//   onInlined : null,
+// }
 
 //
 
@@ -3497,7 +3497,7 @@ strSplitInlinedStereo_.defaults =
   preservingQuoting : 1,
   preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
-  inliningDelimeters : 0, /* new */
+  inliningDelimeters : 1, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
   /* qqq for Yevhen : ? */
@@ -4200,7 +4200,7 @@ let Extension =
   // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
-  strSplitInlinedStereo, /* !!! xxx : deprecate after fix of strSplitInlinedStereo_ */
+  // strSplitInlinedStereo, /* !!! xxx : deprecate after fix of strSplitInlinedStereo_ */
   strSplitInlinedStereo_,
 
   // converter

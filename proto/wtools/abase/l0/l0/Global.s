@@ -158,7 +158,7 @@ function setup( global, name )
   if( !global.wTools.module.rootFile )
   {
     global.wTools.module.rootFile = module;
-    while( global.wTools.module.rootFile.parent )
+    while( global.wTools.module.rootFile.parent && global.wTools.module.rootFile.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     global.wTools.module.rootFile = global.wTools.module.rootFile.parent; /* xxx : use universal file? */
   }
 
