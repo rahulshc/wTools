@@ -76,7 +76,10 @@ function relative( src, delta )
   let result = src;
 
   _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
-  _.assert( delta === undefined || _.numberDefined( delta ) );
+  _.assert( delta === undefined || _.numberDefined( delta ) || _.logger.like( delta ) );
+
+  if( _.logger.like( delta ) )
+  return delta;
 
   delta = delta || 0;
 
@@ -109,6 +112,49 @@ function relative( src, delta )
   return result;
 }
 
+//
+
+function verbosityFrom( src )
+{
+  let result = src;
+
+  _.assert( _.boolIs( result ) || _.numberIs( result ) );
+  _.assert( arguments.length === 1 );
+
+  if( _.boolIs( result ) )
+  {
+    result = 1;
+  }
+
+  return result;
+}
+
+//
+
+function verbosityRelative( src, delta )
+{
+  let result = src;
+
+  _.assert( _.boolIs( result ) || _.numberIs( result ) );
+  _.assert( delta === undefined || _.numberDefined( delta ) );
+
+  delta = delta || 0;
+
+  if( _.boolIs( result ) )
+  {
+    if( result )
+    result = 1 + delta;
+    else
+    result = delta;
+  }
+  else if( _.numberIs( result ) )
+  {
+    result += delta;
+  }
+
+  return result;
+}
+
 // --
 // tools extension
 // --
@@ -132,8 +178,10 @@ let LoggerExtension =
 {
   is,
   like,
-  from,
-  relative,
+  from, /* qqq : cover */
+  relative, /* qqq : cover */
+  verbosityFrom, /* qqq : cover */
+  verbosityRelative, /* qqq : cover */
 }
 
 //
