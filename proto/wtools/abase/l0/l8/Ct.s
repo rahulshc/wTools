@@ -263,7 +263,8 @@ function _strip( srcStr )
     src : srcStr,
     preservingEmpty : 0,
     stripping : 0,
-    preservingInlined : 0
+    preservingInlined : 0,
+    inliningDelimeters : 1,
   });
 
   return splitted.join( '' );
@@ -283,6 +284,12 @@ let strip = _.vectorize( _strip );
 
 function parse( o )
 {
+  if( _.strIs( arguments[ 0 ] ) )
+  o = { src : arguments[ 0 ] };
+  _.routineOptions( parse, o );
+  o.inliningDelimeters = 1;
+  o.preservingOrdinary = 1;
+  o.preservingInlined = 1;
   return _.strSplitInlinedStereo_( o );
 }
 
@@ -293,14 +300,10 @@ parse.defaults =
   postfix : '❯',
   onInlined : ( e ) => [ e ],
   onOrdinary : null,
-
   stripping : 0,
   quoting : 0,
-
-  preservingEmpty : 1,
   preservingDelimeters : 0,
-  preservingOrdinary : 1,
-  preservingInlined : 1,
+  preservingEmpty : 0,
 }
 
 //

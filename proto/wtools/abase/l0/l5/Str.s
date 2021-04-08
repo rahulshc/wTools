@@ -3466,7 +3466,7 @@ strSplitInlinedStereo_.defaults =
   preservingQuoting : 1,
   preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
-  inliningDelimeters : 0, /* new */
+  inliningDelimeters : 1, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
   /* qqq for Yevhen : ? */
