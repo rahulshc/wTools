@@ -3136,7 +3136,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'left',
     heightCutting : 'left'
   }
@@ -3151,7 +3151,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'left',
     heightCutting : 'right'
   }
@@ -3166,7 +3166,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'left',
     heightCutting : 'center'
   }
@@ -3183,7 +3183,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'right',
     heightCutting : 'left'
   }
@@ -3198,7 +3198,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'right',
     heightCutting : 'right'
   }
@@ -3213,7 +3213,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'right',
     heightCutting : 'center'
   }
@@ -3230,7 +3230,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'center',
     heightCutting : 'left'
   }
@@ -3245,7 +3245,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'center',
     heightCutting : 'right'
   }
@@ -3260,7 +3260,7 @@ function strShort_OptionsCombination( test )
     widthLimit : 3,
     heightLimit : 3,
     delimeter : '.',
-    heightdelimeter : '*',
+    heightDelimeter : '*',
     cutting : 'center',
     heightCutting : 'center'
   }
