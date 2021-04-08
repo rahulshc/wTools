@@ -2830,117 +2830,117 @@ _strSplitInlined_body.defaults =
 
 let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
+// //
 //
-
-/**
- * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
- *
- * Returns result as array of strings.
- *
- * Function extracts words in two attempts:
- * First by splitting source string by ( o.prefix ).
- * Second by splitting each element of the result of first attempt by( o.postfix ).
- * If splitting by ( o.prefix ) gives only single element then second attempt is skipped, otherwise function
- * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
- * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
- * with ( o.prefix ) prepended to the last element of result array.
- *
- * @param {string} src - Source string.
- * @param {object} o - Options map.
- * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
- * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
- * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
- *
- * @example
- * _.strSplitInlinedStereo( '#abc#' );
- * // returns [ '', 'abc', '' ]
- *
- * @example
- * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
- * // returns [ 'abc' ]
- *
- * @example
- * function onInlined( strip )
- * {
- *   if( strip.length )
- *   return strip.toUpperCase();
- * }
- * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
- * // returns [ 'ABC' ]
- *
- * @method strSplitInlinedStereo
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @namespace Tools
- *
- */
-
-function strSplitInlinedStereo( o )
-{
-
-  if( _.strIs( o ) )
-  o = { src : o };
-
-  _.assert( this === _ );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.object.is( o ) );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routine.options( strSplitInlinedStereo, o );
-
-  let result = [];
-  let splitted = o.src.split( o.prefix );
-
-  if( splitted.length === 1 )
-  return splitted;
-
-  /* */
-
-  if( splitted[ 0 ] )
-  result.push( splitted[ 0 ] );
-
-  /* */
-
-  for( let i = 1; i < splitted.length; i++ )
-  {
-    let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-    let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-
-    _.assert( halfs.length === 3 );
-
-    if( strip !== undefined )
-    {
-      result.push( strip );
-      if( halfs[ 2 ] )
-      result.push( halfs[ 2 ] );
-    }
-    else
-    {
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
-    }
-
-  }
-
-  return result;
-}
-
-strSplitInlinedStereo.defaults =
-{
-  src : null,
-  prefix : '#',
-  postfix : '#',
-  // prefix : '❮',
-  // postfix : '❯',
-  onInlined : null,
-}
+// /**
+//  * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
+//  * Function can be called in two ways:
+//  * - First to pass only source string and use default options;
+//  * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
+//  *
+//  * Returns result as array of strings.
+//  *
+//  * Function extracts words in two attempts:
+//  * First by splitting source string by ( o.prefix ).
+//  * Second by splitting each element of the result of first attempt by( o.postfix ).
+//  * If splitting by ( o.prefix ) gives only single element then second attempt is skipped, otherwise function
+//  * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
+//  * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
+//  * with ( o.prefix ) prepended to the last element of result array.
+//  *
+//  * @param {string} src - Source string.
+//  * @param {object} o - Options map.
+//  * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
+//  * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
+//  * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
+//  * @returns {object} Returns an array of strings separated by( o.delimeter ).
+//  *
+//  * @example
+//  * _.strSplitInlinedStereo( '#abc#' );
+//  * // returns [ '', 'abc', '' ]
+//  *
+//  * @example
+//  * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
+//  * // returns [ 'abc' ]
+//  *
+//  * @example
+//  * function onInlined( strip )
+//  * {
+//  *   if( strip.length )
+//  *   return strip.toUpperCase();
+//  * }
+//  * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
+//  * // returns [ 'ABC' ]
+//  *
+//  * @method strSplitInlinedStereo
+//  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+//  * @throws { Exception } Throw an exception if( o.src ) is not a String.
+//  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+//  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+//  * @namespace Tools
+//  *
+//  */
+//
+// function strSplitInlinedStereo( o )
+// {
+//
+//   if( _.strIs( o ) )
+//   o = { src : o };
+//
+//   _.assert( this === _ );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.object.is( o ) );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.routine.options( strSplitInlinedStereo, o );
+//
+//   let result = [];
+//   let splitted = o.src.split( o.prefix );
+//
+//   if( splitted.length === 1 )
+//   return splitted;
+//
+//   /* */
+//
+//   if( splitted[ 0 ] )
+//   result.push( splitted[ 0 ] );
+//
+//   /* */
+//
+//   for( let i = 1; i < splitted.length; i++ )
+//   {
+//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+//
+//     _.assert( halfs.length === 3 );
+//
+//     if( strip !== undefined )
+//     {
+//       result.push( strip );
+//       if( halfs[ 2 ] )
+//       result.push( halfs[ 2 ] );
+//     }
+//     else
+//     {
+//       if( result.length )
+//       result[ result.length-1 ] += o.prefix + splitted[ i ];
+//       else
+//       result.push( o.prefix + splitted[ i ] );
+//     }
+//
+//   }
+//
+//   return result;
+// }
+//
+// strSplitInlinedStereo.defaults =
+// {
+//   src : null,
+//   prefix : '#',
+//   postfix : '#',
+//   // prefix : '❮',
+//   // postfix : '❯',
+//   onInlined : null,
+// }
 
 //
 
@@ -3005,10 +3005,12 @@ function strSplitInlinedStereo_( o )
     New delimiter.
     was : 'this #background:red#is#background:default# text and is not'.
     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
-  */
+    */
 
   if( _.strIs( o ) )
   o = { src : o };
+  o.quotingPrefixes = o.quotingPrefixes || [ '"' ];
+  o.quotingPostfixes = o.quotingPostfixes || [ '"' ];
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
@@ -3016,214 +3018,179 @@ function strSplitInlinedStereo_( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
 
-  if( o.prefix === o.postfix )
-  {
-    o.delimeter = o.prefix;
-    delete o.prefix;
-    delete o.postfix;
-    return _.strSplitInlined( o );
-  }
+  /* Trivial cases */
+  let end = handleTrivial();
+  if( end !== false )
+  return end;
 
-  let result = [];
-  let splitted = [];
-  let src = o.src.slice();
-  let replacementForQuotes = '\u{20331}';
-  let positionsInlined = [];
+  let replacementForPrefix = '\u{20330}';
+  let isReplacedPrefix = false;
+  let splitOptions = _.mapOnly_( null, o, strSplit.defaults );
+  splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
+  splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
+  splitOptions.stripping = 0;
+  splitOptions.preservingEmpty = 1;
 
-  let delimLeftPosition = getNextPos( src, o.prefix );
-  let delimRightPosition = getNextPos( src, o.postfix );
+  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  result = preprocessBeforeJoin( result );
 
-  if( delimLeftPosition === -1 || delimRightPosition === -1 )
-  {
-    if( !o.preservingOrdinary )
-    return [];
-    else
-    return [ o.src ];
-  }
-
-  if( !o.preservingOrdinary && !o.preservingInlined )
-  return [];
-
-  if( o.quoting )
-  {
-    src = src.replace( /"❮"/g, replacementForQuotes );
-    splitted = src.split( o.prefix );
-  }
-  else
-  {
-    splitted = src.split( o.prefix );
-  }
-
-  if( splitted.length === 1 )
-  {
-    if( !o.preservingOrdinary )
-    return [];
-    else
-    return [ o.src ];
-  }
-
-  if( splitted[ 0 ] )
-  result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
-
-  for( let i = 1; i < splitted.length; i++ )
-  {
-    let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-
-    if( halfs[ 1 ] === undefined )
-    {
-      if( result[ result.length - 1 ] !== undefined )
-      {
-        let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
-
-        if( !_.arrayLike( result[ result.length - 1 ] ) )
-        {
-          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
-        }
-        else
-        {
-          result.push( o.prefix + tempStr );
-        }
-      }
-      else
-      {
-        result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
-      }
-      continue;
-    }
-
-    let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-    let ordinary = halfs[ 2 ];
-
-    _.assert( halfs.length === 3 );
-
-    if( strip !== undefined )
-    {
-      if( o.preservingDelimeters )
-      {
-        if( o.stripping )
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
-        {
-          return o.prefix + el.trim() + o.postfix;
-        } ) : o.prefix + strip + o.postfix );
-        else
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
-        {
-          return o.prefix + el + o.postfix;
-        } ) : o.prefix + strip + o.postfix );
-      }
-      else
-      {
-        if( o.stripping )
-        result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
-        else
-        result.push( strip );
-      }
-
-      positionsInlined.push( result.length - 1 );
-
-      if( ordinary )
-      {
-        if( o.stripping )
-        {
-          if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
-          {
-            result.push( ordinary.trim() );
-          }
-          else
-          {
-            splitted[ i + 1 ] !== undefined ? result.push( ordinary.trimStart() ) : result.push( ordinary.trim() )
-          }
-        }
-        else
-        {
-          result.push( ordinary );
-        }
-      }
-    }
-    else
-    {
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
-    }
-  }
-
-  if( o.quoting )
-  handleQuoting();
-
-  if( o.preservingOrdinary && o.onOrdinary )
-  handleOnOrdinary();
-
-  if( !o.preservingInlined )
-  removeInlined();
-
-  if( !o.preservingOrdinary )
-  removeOrdinary();
+  if( o.inliningDelimeters ) /* new */
+  result = _.strSplitsQuotedRejoin
+  ({
+    splits : result,
+    delimeter : [ o.prefix, o.postfix ],
+    quoting : 1,
+    quotingPrefixes : [ o.prefix ],
+    quotingPostfixes : [ o.postfix ],
+    preservingQuoting : o.preservingDelimeters,
+    inliningQuoting : 0,
+    onQuoting : o.preservingEmpty ? escapeInlined( o.onInlined ) : o.onInlined
+  });
 
   if( o.preservingEmpty )
-  handleEmptyLines();
+  handlePreservingEmpty();
+
+  unescape();
+
+  if( isReplacedPrefix )
+  result = result.map( ( el ) =>
+  {
+    if( _.strIs( el ) )
+    return el.replace( replacementForPrefix, o.prefix )
+    else
+    return el;
+  });
 
   return result;
 
   /* - */
 
-  function getNextPos( str, delim )
+  function handleTrivial()
   {
-    return str.indexOf( delim );
+    let delimLeftPosition = o.src.indexOf( o.prefix );
+    let delimRightPosition = o.src.indexOf( o.postfix );
+
+    if( delimLeftPosition === -1 || delimRightPosition === -1 )
+    {
+      if( o.preservingOrdinary )
+      return [ o.src ];
+      else
+      return [];
+    }
+
+    if( !o.preservingOrdinary && !o.preservingInlined )
+    return [];
+
+    let splitted = o.src.split( o.prefix );
+
+    if( splitted.length === 1 )
+    {
+      if( o.preservingOrdinary )
+      return [ o.src ];
+      else
+      return [];
+    }
+
+    return false;
   }
 
-  /* - */
+  /* */
 
-  function handleQuoting()
+  function escapeInlined( func )
   {
-    let reg = new RegExp( replacementForQuotes, 'g' );
-
-    result = result.map( ( el ) =>
+    return function ( el )
     {
-      if( !_.arrayLike( el ) )
-      {
-        if( el.indexOf( replacementForQuotes ) !== -1 )
-        return el.replace( reg, '"❮"' )
-      }
-      return el;
-    } )
+      return _.escape.wrap( func( el ) );
+    }
   }
 
-  /* - */
+  /* */
 
-  function handleOnOrdinary()
+  function preprocessBeforeJoin( array )
   {
-    result = result.map( ( el ) =>
+    let ordinary = '';
+    let result = []
+    for( let i = 0; i < array.length; i++ )
     {
-      if( !_.arrayLike( el ) )
+      /*
+        [ '', '❮', ' ', '❮', ' ', '❮', 'inline1', '❯', ' ', '❯', ' inline2' ]
+        into
+        [ '❮ ❮ ', '❮', 'inline1', '❯', ' ❯ inline2' ]
+      */
+      if( array[ i ] === o.prefix )
       {
-        let res = o.onOrdinary( el );
-        if( res !== undefined )
-        return res;
+        if( array[ i + 2 ] === o.postfix )
+        {
+          /* push concatenated ordinary string */
+          pushOrdinary( result, ordinary );
+          /* push inlined : '❮', 'inline1', '❯' */
+          if( o.preservingInlined )
+          {
+            result.push( array[ i ] );
+            result.push( o.stripping ? array[ i+1 ].trim() : array[ i+1 ] );
+            result.push( array[ i+2 ] );
+          }
+          i += 2;
+          ordinary = '';
+        }
         else
-        return el;
+        {
+          ordinary += array[ i ];
+        }
       }
       else
       {
-        return el;
+        ordinary += array[ i ];
       }
-    } )
+    }
+
+    pushOrdinary( result, ordinary );
+
+    return result;
   }
 
-  /* - */
+  /* */
 
-  function handleEmptyLines()
+  function pushOrdinary( result, ordinary )
   {
-    if( _.arrayLike( result[ 0 ] ) )
-    result.unshift( '' );
-    if( _.arrayLike( result[ result.length-1 ] ) )
-    result.push( '' );
+    if( o.preservingOrdinary && ordinary )
+    {
+      if( ordinary === o.prefix )
+      {
+        result.push( replacementForPrefix );
+        isReplacedPrefix = true;
+      }
+      else
+      {
+        ordinary = o.stripping ? ordinary.trim() : ordinary;
+        if( o.onOrdinary )
+        {
+          let ordinary1 = o.onOrdinary( ordinary );
+          ordinary = ordinary1 ? ordinary1 : ordinary;
+        }
+
+        result.push( ordinary );
+      }
+    }
+  }
+
+  /* */
+
+  function handlePreservingEmpty()
+  {
+    if( _.escape.is( result[ 0 ] ) )
+    {
+      result.unshift( '' );
+    }
+    if( _.escape.is( result[ result.length-1 ] ) )
+    {
+      result.push( '' );
+    }
     let len = result.length;
     for( let i = 0; i < len; i++ )
     {
-      if( _.arrayLike( result[ i ] ) )
-      if( _.arrayLike( result[ i + 1 ] ) )
+      if( _.escape.is( result[ i ] ) )
+      if( _.escape.is( result[ i + 1 ] ) )
       {
         result.splice( i + 1, 0, '' );
         len++;
@@ -3231,19 +3198,255 @@ function strSplitInlinedStereo_( o )
     }
   }
 
-  /* - */
+  /* */
 
-  function removeInlined()
+  function unescape()
   {
-    result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
+    for( let i = 0; i < result.length; i++ )
+    {
+      if( _.escape.is( result[ i ] ) )
+      result[ i ] = _.escape.unwrap( result[ i ] );
+    }
   }
 
-  /* - */
+  /* Previous version */
+  // if( _.strIs( o ) )
+  // o = { src : o };
 
-  function removeOrdinary()
-  {
-    result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
-  }
+  // _.assert( this === _ );
+  // _.assert( _.strIs( o.src ) );
+  // _.assert( _.object.is( o ) );
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // _.routine.options( strSplitInlinedStereo_, o );
+
+  // if( o.prefix === o.postfix )
+  // {
+  //   o.delimeter = o.prefix;
+  //   delete o.prefix;
+  //   delete o.postfix;
+  //   return _.strSplitInlined( o );
+  // }
+
+  // let result = [];
+  // let splitted = [];
+  // let src = o.src.slice();
+  // let replacementForQuotes = '\u{20331}';
+  // let positionsInlined = [];
+
+  // let delimLeftPosition = getNextPos( src, o.prefix );
+  // let delimRightPosition = getNextPos( src, o.postfix );
+
+  // if( delimLeftPosition === -1 || delimRightPosition === -1 )
+  // {
+  //   if( !o.preservingOrdinary )
+  //   return [];
+  //   else
+  //   return [ o.src ];
+  // }
+
+  // if( !o.preservingOrdinary && !o.preservingInlined )
+  // return [];
+
+  // if( o.quoting )
+  // {
+  //   src = src.replace( /"❮"/g, replacementForQuotes );
+  //   splitted = src.split( o.prefix );
+  // }
+  // else
+  // {
+  //   splitted = src.split( o.prefix );
+  // }
+
+  // if( splitted.length === 1 )
+  // {
+  //   if( !o.preservingOrdinary )
+  //   return [];
+  //   else
+  //   return [ o.src ];
+  // }
+
+  // if( splitted[ 0 ] )
+  // result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
+
+  // for( let i = 1; i < splitted.length; i++ )
+  // {
+  //   let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+
+  //   if( halfs[ 1 ] === undefined )
+  //   {
+  //     if( result[ result.length - 1 ] !== undefined )
+  //     {
+  //       let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+
+  //       if( !_.arrayLike( result[ result.length - 1 ] ) )
+  //       {
+  //         result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+  //       }
+  //       else
+  //       {
+  //         result.push( o.prefix + tempStr );
+  //       }
+  //     }
+  //     else
+  //     {
+  //       result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
+  //     }
+  //     continue;
+  //   }
+
+  //   let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+  //   let ordinary = halfs[ 2 ];
+
+  //   _.assert( halfs.length === 3 );
+
+  //   if( strip !== undefined )
+  //   {
+  //     if( o.preservingDelimeters )
+  //     {
+  //       if( o.stripping )
+  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //       {
+  //         return o.prefix + el.trim() + o.postfix;
+  //       } ) : o.prefix + strip + o.postfix );
+  //       else
+  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //       {
+  //         return o.prefix + el + o.postfix;
+  //       } ) : o.prefix + strip + o.postfix );
+  //     }
+  //     else
+  //     {
+  //       if( o.stripping )
+  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+  //       else
+  //       result.push( strip );
+  //     }
+
+  //     positionsInlined.push( result.length - 1 );
+
+  //     if( ordinary )
+  //     {
+  //       if( o.stripping )
+  //       {
+  //         if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
+  //         {
+  //           result.push( ordinary.trim() );
+  //         }
+  //         else
+  //         {
+  //           splitted[ i + 1 ] !== undefined ? result.push( ordinary.trimStart() ) : result.push( ordinary.trim() )
+  //         }
+  //       }
+  //       else
+  //       {
+  //         result.push( ordinary );
+  //       }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if( result.length )
+  //     result[ result.length-1 ] += o.prefix + splitted[ i ];
+  //     else
+  //     result.push( o.prefix + splitted[ i ] );
+  //   }
+  // }
+
+  // if( o.quoting )
+  // handleQuoting();
+
+  // if( o.preservingOrdinary && o.onOrdinary )
+  // handleOnOrdinary();
+
+  // if( !o.preservingInlined )
+  // removeInlined();
+
+  // if( !o.preservingOrdinary )
+  // removeOrdinary();
+
+  // if( o.preservingEmpty )
+  // handleEmptyLines();
+
+  // return result;
+
+  // /* - */
+
+  // function getNextPos( str, delim )
+  // {
+  //   return str.indexOf( delim );
+  // }
+
+  // /* - */
+
+  // function handleQuoting()
+  // {
+  //   let reg = new RegExp( replacementForQuotes, 'g' );
+
+  //   result = result.map( ( el ) =>
+  //   {
+  //     if( !_.arrayLike( el ) )
+  //     {
+  //       if( el.indexOf( replacementForQuotes ) !== -1 )
+  //       return el.replace( reg, '"❮"' )
+  //     }
+  //     return el;
+  //   } )
+  // }
+
+  // /* - */
+
+  // function handleOnOrdinary()
+  // {
+  //   result = result.map( ( el ) =>
+  //   {
+  //     if( !_.arrayLike( el ) )
+  //     {
+  //       let res = o.onOrdinary( el );
+  //       if( res !== undefined )
+  //       return res;
+  //       else
+  //       return el;
+  //     }
+  //     else
+  //     {
+  //       return el;
+  //     }
+  //   } )
+  // }
+
+  // /* - */
+
+  // function handleEmptyLines()
+  // {
+  //   if( _.arrayLike( result[ 0 ] ) )
+  //   result.unshift( '' );
+  //   if( _.arrayLike( result[ result.length-1 ] ) )
+  //   result.push( '' );
+  //   let len = result.length;
+  //   for( let i = 0; i < len; i++ )
+  //   {
+  //     if( _.arrayLike( result[ i ] ) )
+  //     if( _.arrayLike( result[ i + 1 ] ) )
+  //     {
+  //       result.splice( i + 1, 0, '' );
+  //       len++;
+  //     }
+  //   }
+  // }
+
+  // /* - */
+
+  // function removeInlined()
+  // {
+  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
+  // }
+
+  // /* - */
+
+  // function removeOrdinary()
+  // {
+  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
+  // }
 
 }
 
@@ -3257,15 +3460,353 @@ strSplitInlinedStereo_.defaults =
 
   stripping : 0,
   quoting : 0,
+  quotingPrefixes : null,
+  quotingPostfixes : null,
 
-  preservingEmpty : 1,
+  preservingQuoting : 1,
+  preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
+  inliningDelimeters : 1, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
-
   /* qqq for Yevhen : ? */
-
 }
+
+// function strSplitInlinedStereo_( o )
+// {
+//   /*
+//     New delimiter.
+//     was : 'this #background:red#is#background:default# text and is not'.
+  //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
+  // */
+
+  //   if( _.strIs( o ) )
+  //   o = { src : o };
+
+  //   _.assert( this === _ );
+  //   _.assert( _.strIs( o.src ) );
+  //   _.assert( _.object.is( o ) );
+  //   _.assert( arguments.length === 1, 'Expects single argument' );
+  //   _.routine.options( strSplitInlinedStereo_, o );
+
+  // if( o.prefix === o.postfix )
+  // {
+  //   o.delimeter = o.prefix;
+  //   delete o.prefix;
+  //   delete o.postfix;
+//     return _.strSplitInlined( o );
+//   }
+
+//   let result = [];
+//   let splitted = [];
+//   let src = o.src.slice();
+//   // let replacementForQuotes = '\u{20331}';
+//   let replacementForPrefix = '\u{20330}';
+//   let replacementForPostfix = '\u{20331}';
+//   let positionsInlined = [];
+//   let positionsPrefixes = [];
+//   let positionsPostfixes = [];
+//   let positionsQuotesPrefix = [];
+//   let positionsQuotesPostfix = [];
+//   // let positionsQuotes = [];
+//   let delimLeftPosition = getNextPos( src, o.prefix );
+//   let delimRightPosition = getNextPos( src, o.postfix );
+
+//   if( o.quoting )
+//   handleQuoting();
+
+//   let end = handleTrivial();
+//   if( end !== false )
+//   return end;
+
+//   if( splitted[ 0 ] )
+//   result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
+
+//   for( let i = 1; i < splitted.length; i++ )
+//   {
+//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+//     // [ leftOfPostfix, postfix, rightOfPostfix ]
+//     // console.log( 'splitted[ i ] : ', splitted[ i ] )
+//     // console.log( 'halfs : ', halfs )
+//     // console.log( '-----------------' )
+
+//     if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
+//     {
+//       if( result[ result.length - 1 ] === undefined )
+//       {
+//         result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
+//       }
+//       else
+//       {
+//         let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+
+//         if( _.arrayLike( result[ result.length - 1 ] ) )
+//         {
+//           result.push( o.prefix + tempStr );
+//         }
+//         else
+//         {
+//           result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+//         }
+//       }
+//       continue;
+//     }
+
+//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+//     let ordinary = halfs[ 2 ];
+
+//     _.assert( halfs.length === 3 );
+
+//     if( strip === undefined )
+//     {
+//       if( result.length )
+//       result[ result.length-1 ] += o.prefix + splitted[ i ];
+//       else
+//       result.push( o.prefix + splitted[ i ] );
+//     }
+//     else
+//     {
+//       handlePreservingDelimeters( strip );
+
+//       positionsInlined.push( result.length - 1 );
+
+//       if( ordinary )
+//       {
+//         if( o.stripping )
+//         {
+//           if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
+//           {
+//             result.push( ordinary.trim() );
+//           }
+//           else
+//           {
+//             splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
+//           }
+//         }
+//         else
+//         {
+//           result.push( ordinary );
+//         }
+//       }
+//     }
+//   }
+
+//   // if( o.quoting )
+//   // {
+//   //   console.log( result )
+//   //   result = _.strSplitsQuotedRejoin
+//   //   ({
+//   //     splits : result,
+//   //     quoting : 1,
+//   //     quotingPrefixes : [ o.quotingPrefix ],
+//   //     quotingPostfixes : [ o.quotingPostfix ],
+//   //     preservingQuoting : o.preservingQuoting,
+//   //     inliningQuoting : 0,
+//   //   });
+//   // }
+//   // handleQuoting();
+
+//   if( o.preservingOrdinary && o.onOrdinary )
+//   handleOnOrdinary();
+
+//   if( !o.preservingInlined )
+//   removeInlined();
+
+//   if( !o.preservingOrdinary )
+//   removeOrdinary();
+
+//   if( o.preservingEmpty )
+//   handleEmptyLines();
+
+//   // console.log( '=================' )
+//   return result;
+
+//   /* - */
+
+//   function getNextPos( str, delim )
+//   {
+//     return str.indexOf( delim );
+//   }
+
+//   /* */
+
+//   function handleTrivial()
+//   {
+//     if( delimLeftPosition === -1 || delimRightPosition === -1 )
+//     {
+//       if( o.preservingOrdinary )
+//       return [ o.src ];
+//       else
+//       return [];
+//     }
+
+//     if( !o.preservingOrdinary && !o.preservingInlined )
+//     return [];
+
+//     splitted = src.split( o.prefix );
+
+//     if( splitted.length === 1 )
+//     {
+//       if( o.preservingOrdinary )
+//       return [ o.src ];
+//       else
+//       return [];
+//     }
+
+//     return false;
+//   }
+
+//   /* */
+
+//   function findIndexes()
+//   {
+//     let isQuotesIdentical = o.quotingPrefix === o.quotingPostfix;
+
+//     for( let i = 0; i < o.src.length; i++ )
+//     {
+//       if( o.src[ i ] === o.prefix )
+//       positionsPrefixes.push( i );
+//       else if( o.src[ i ] === o.postfix )
+//       positionsPostfixes.push( i );
+//       else if( isQuotesIdentical && o.src[ i ] === o.quotingPrefix )
+//       i % 2 === 0 ? positionsQuotesPrefix.push( i ) : positionsQuotesPostfix.push( i );
+//       else if( o.src[ i ] === o.quotingPrefix )
+//       positionsQuotesPrefix.push( i );
+//       else if( o.src[ i ] === o.quotingPostfix )
+//       positionsQuotesPostfix.push( i );
+//       else
+//       continue;
+//     }
+//   }
+
+//   /* */
+
+//   function handleQuoting()
+//   {
+//     if( o.src.indexOf( '"' ) === -1 )
+//     return;
+
+//     findIndexes();
+
+//     console.log( 'pref : ', positionsPrefixes );
+//     console.log( 'post : ', positionsPostfixes );
+//     console.log( 'quotesPre : ', positionsQuotesPrefix );
+//     console.log( 'quotesPost : ', positionsQuotesPostfix );
+//     console.log( '=================' )
+
+//     /*      0               1            2              3                       4
+//       [ 'this "', [ 'background:red], '"is', [ 'background:default' ], ' text and is not' ];
+//       [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' text and is not' ];
+//       [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' "text and is not' ];
+//     */
+
+//   }
+
+//   /* */
+
+//   function handleOnOrdinary()
+//   {
+//     result = result.map( ( el ) =>
+//     {
+//       if( _.arrayLike( el ) )
+//       {
+//         return el;
+//       }
+//       else
+//       {
+//         let res = o.onOrdinary( el );
+//         if( res === undefined )
+//         return el;
+//         else
+//         return res;
+//       }
+//     })
+//   }
+
+//   /* */
+
+//   function handleEmptyLines()
+//   {
+//     if( _.arrayLike( result[ 0 ] ) )
+//     result.unshift( '' );
+//     if( _.arrayLike( result[ result.length-1 ] ) )
+//     result.push( '' );
+//     let len = result.length;
+//     for( let i = 0; i < len; i++ )
+//     {
+//       if( _.arrayLike( result[ i ] ) )
+//       if( _.arrayLike( result[ i + 1 ] ) )
+//       {
+//         result.splice( i + 1, 0, '' );
+//         len++;
+//       }
+//     }
+//   }
+
+//   /* */
+
+//   function handlePreservingDelimeters( strip )
+//   {
+//     if( o.preservingDelimeters )
+//     {
+//       if( o.stripping )
+//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+//       {
+//         return o.prefix + el.trim() + o.postfix;
+//       }) : o.prefix + strip + o.postfix );
+//       else
+//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+//       {
+//         return o.prefix + el + o.postfix;
+//       }) : o.prefix + strip + o.postfix );
+//     }
+//     else
+//     {
+//       if( o.stripping )
+//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+//       else
+//       result.push( strip );
+//     }
+//   }
+
+//   /* */
+
+//   function removeInlined()
+//   {
+//     result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
+//   }
+
+//   /* */
+
+//   function removeOrdinary()
+//   {
+//     result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
+//   }
+
+// }
+
+// strSplitInlinedStereo_.defaults =
+// {
+//   src : null,
+//   prefix : '❮',
+//   postfix : '❯',
+//   onInlined : ( e ) => [ e ],
+//   onOrdinary : null,
+
+//   stripping : 0,
+//   quoting : 0,
+//   // quotingPrefix : '"',
+//   // quotingPostfix : '"',
+
+//   preservingQuoting : 1,
+//   preservingEmpty : 1,
+//   preservingDelimeters : 0,
+//   preservingOrdinary : 1,
+//   preservingInlined : 1,
+
+//   /* qqq for Yevhen : ? */
+
+// }
 
 // function strSplitWithDefaultDelimeter( o )
 // {
@@ -3418,32 +3959,8 @@ function exportStringShallow( src, opts )
   let result = '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   result = _.entity.exportStringShallowDiagnostic( src );
-  // result = _.entity.exportStringSimple( src );
-  // result = _.entity.exportStringShallow( src ); xxx
   return result;
 }
-
-// exportStringShallow.fields = exportStringShallow;
-// exportStringShallow.routines = exportStringShallow;
-
-// //
-//
-// function _exportStringShallow_head( routine, args )
-// {
-//
-//   let o = args[ 0 ];
-//
-//   _.routine.optionsPreservingUndefines( routine, o );
-//   _.assert
-//   (
-//     o.format === 'string.diagnostic' || o.format === 'string.code',
-//     `Allowed values for format : [ 'string.diagnostic', 'string.code' ]`
-//   );
-//   _.assert( args.length === 1 );
-//   _.assert( arguments.length === 2 );
-//
-//   return o;
-// }
 
 //
 
@@ -3520,17 +4037,10 @@ function _exportStringShallow( src, o )
 
 _exportStringShallow.defaults =
 {
-  // src : null,
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
-
-// let _exportStringShallow = _.routine.unite( _exportStringShallow_head, _exportStringShallow_body );
-// _exportStringShallow.defaults.format = 'string.diagnostic';
-
-// let _exportStringShallowCode = _.routine.uniteCloning( _exportStringShallow_head, _exportStringShallow_body );
-// _exportStringShallowCode.defaults.format = 'string.code';
 
 //
 
@@ -3659,7 +4169,7 @@ let Extension =
   // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
-  strSplitInlinedStereo, /* !!! xxx : deprecate */
+  // strSplitInlinedStereo, /* !!! xxx : deprecate after fix of strSplitInlinedStereo_ */
   strSplitInlinedStereo_,
 
   // converter
@@ -3678,8 +4188,6 @@ let ExtensionEntity =
   _exportStringShallow,
   exportString : exportStringShallow,
   exportStringShallowFine : exportStringShallowDiagnostic, /* xxx : remove */
-  // exportStringShallowCode, /* qqq xxx : introduce | aaa : Done. qqq for Yevhen : bad! */
-  // _exportStringShallowCode,
   exportStringShallowCode,
   exportStringShallowDiagnostic,
 }

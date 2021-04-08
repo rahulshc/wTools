@@ -1945,6 +1945,7 @@ let ExtensionTools =
   strDefined,
   strsDefined,
 
+  strType : strTypeWithTraits,
   strHas,
 
   strEquivalent, /* qqq : for Yevhen : bad */

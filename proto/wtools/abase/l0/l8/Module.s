@@ -1192,7 +1192,7 @@ function pathAmend_body( o )
     return;
 
     if( o.recursive >= 2 )
-    while( _module.parent )
+    while( _module.parent && _module.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     {
       _module = _module.parent;
     }
@@ -1341,7 +1341,7 @@ function pathRemove_body( o )
     return;
 
     if( o.recursive >= 2 )
-    while( _module.parent )
+    while( _module.parent && _module.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     {
       _module = _module.parent;
     }
@@ -2061,8 +2061,8 @@ function _trackingEnable()
       status : 1,
     });
 
-    _.assert( native === moduleFile.native );
     _.assert( native === ModuleFileNative._cache[ moduleFile.nativeSourcePath ] );
+    _.assert( native === moduleFile.native );
     _.assert( resolving.resolvedPath === nativeSourcePath );
 
     try
@@ -2114,7 +2114,7 @@ function _Setup()
   if( !_.module.rootFile )
   {
     _.module.rootFile = module;
-    while( _.module.rootFile.parent )
+    while( _.module.rootFile.parent && _.module.rootFile.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     _.module.rootFile = _.module.rootFile.parent; /* xxx : use universal file? */
   }
 
@@ -2291,6 +2291,8 @@ var ModuleExtension =
   includeFirst,
 
   isIncluded,
+
+  // etc
 
   // setup
 

@@ -6,6 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
+  // _.include( 'wSelector' );
   _.include( 'wTesting' );
 }
 
@@ -71,7 +72,7 @@ function modulePredeclareBasic( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
   }
@@ -79,7 +80,7 @@ function modulePredeclareBasic( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( _ToolsPath_ );
+    const _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.predeclare
     ({
@@ -128,7 +129,7 @@ function modulePredeclareBasic2( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
   }
@@ -136,7 +137,7 @@ function modulePredeclareBasic2( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( _ToolsPath_ );
+    const _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.predeclare
     ({
@@ -183,7 +184,7 @@ function moduleExportsUndefined( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     var importedModule = require( './module.js' );
     console.log( 'importedModule:', importedModule)
     console.log( 'program1.end' );
@@ -382,9 +383,9 @@ function modulingLogistic( test )
 `
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 2
-lengthOf( predeclaredWithEntryPathMap ) 1
+lengthOf( predeclaredWithEntryPathMap ) 2
 lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )}
+lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + 1}
 module.fileIs( moduleFile ) true
 module.fileUniversalIs( moduleFile ) true
 module.fileNativeIs( moduleFile ) false
@@ -418,7 +419,7 @@ modulesMap wTools wTools wTesting wTesting
 
   function program1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
@@ -652,7 +653,7 @@ fileWith( syntax1 ) : undefined
   function mainThrowing()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     require( './throwing1' );
   }
 
@@ -661,7 +662,7 @@ fileWith( syntax1 ) : undefined
   function mainThrowingCatching()
   {
     console.log( 'main.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     try
     {
       require( './throwing1' );
@@ -688,7 +689,7 @@ fileWith( syntax1 ) : undefined
   function mainSyntax()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     require( './syntax1' );
   }
 
@@ -697,7 +698,7 @@ fileWith( syntax1 ) : undefined
   function mainSyntaxCatching()
   {
     console.log( 'main.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     try
     {
       require( './syntax1' );
@@ -860,7 +861,7 @@ program0.end
 
   function _program1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'program1.begin' );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program0' );
@@ -1317,14 +1318,14 @@ function predeclareBasic( test )
       var exp =
 `
 main.before / lengthOf( predeclaredWithNameMap ) 2
-main.before / lengthOf( predeclaredWithEntryPathMap ) 1
+main.before / lengthOf( predeclaredWithEntryPathMap ) 2
 main.before / lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
 main.before / filesMap but tools.files
   ${a.abs( 'main' ) }
 main.mid / predeclared.program1 : Module.constructible
 main.mid / predeclared.program2 : Module.constructible
 main.mid / lengthOf( predeclaredWithNameMap ) 4
-main.mid / lengthOf( predeclaredWithEntryPathMap ) 3
+main.mid / lengthOf( predeclaredWithEntryPathMap ) 4
 main.mid / lengthOf( modulesMap ) 2
 main.mid / lengthOf( filesMap ) 0
 main.mid / isIncluded( Program1 ) false
@@ -1342,7 +1343,7 @@ Program2
 orphans
   ${a.abs( 'main' )}
 main.after / lengthOf( predeclaredWithNameMap ) 4
-main.after / lengthOf( predeclaredWithEntryPathMap ) 3
+main.after / lengthOf( predeclaredWithEntryPathMap ) 4
 main.after / lengthOf( modulesMap ) 4
 main.after / lengthOf( filesMap ) 2
 `
@@ -1359,7 +1360,7 @@ main.after / lengthOf( filesMap ) 2
 
   function main()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     let wasFilesMap = _.lengthOf( _.module.filesMap );
 
@@ -1408,7 +1409,7 @@ main.after / lengthOf( filesMap ) 2
 
   function program1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program1 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program1 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
     require( '../program2' );
@@ -1418,7 +1419,7 @@ main.after / lengthOf( filesMap ) 2
 
   function program2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program2 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program2 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
   }
@@ -2147,7 +2148,7 @@ orphans
 
   function mainSingleBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Single1', __dirname + '/single1' );
@@ -2182,7 +2183,7 @@ orphans
 
   function single1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'single1 / isIncluded( Single1 )', _.module.isIncluded( 'Single1' ) );
     console.log( 'single1 / isIncluded( Single2 )', _.module.isIncluded( 'Single2' ) );
 
@@ -2197,7 +2198,7 @@ orphans
 
   function single2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'single2 / isIncluded( Single1 )', _.module.isIncluded( 'Single1' ) );
     console.log( 'single2 / isIncluded( Single2 )', _.module.isIncluded( 'Single2' ) );
   }
@@ -2315,7 +2316,7 @@ orphans
 
   function mainDeepBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Deep1b', __dirname + '/deep1b' );
@@ -2342,7 +2343,7 @@ orphans
 
   function deep1a()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1a / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1a / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2357,7 +2358,7 @@ orphans
 
   function deep1b()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1b / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1b / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2369,7 +2370,7 @@ orphans
 
   function deep1c()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1c / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1c / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2384,7 +2385,7 @@ orphans
 
   function deep1d()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1d / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1d / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2396,7 +2397,7 @@ orphans
 
   function deep1e()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1e / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1e / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
   }
@@ -2528,7 +2529,7 @@ orphans
 
   function mainMultipleDeclare()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Common1', __dirname + '/common' );
@@ -2540,7 +2541,7 @@ orphans
 
   function mainBeforeCommonSubFile()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Common1', __dirname + '/common1' );
@@ -2648,7 +2649,7 @@ orphans
 
   function mainBeforeCommonSubFileDeep()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Deep2', __dirname + '/deep2a' );
@@ -2779,7 +2780,7 @@ orphans
 
   function mainBranchingBefore1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Branching1', __dirname + '/branching1a' );
@@ -2814,7 +2815,7 @@ orphans
 
   function mainBranchingBefore2()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Branching1', __dirname + '/branching1a' );
@@ -3069,7 +3070,7 @@ module1
 
   function mainWithFullPath()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : __dirname + '/node_modules/module1' } );
@@ -3314,7 +3315,7 @@ file1
 
   function mainProperCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3325,7 +3326,7 @@ file1
 
   function mainUpperCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3336,7 +3337,7 @@ file1
 
   function mainLowerCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3347,7 +3348,7 @@ file1
 
   function mainUpperCaseInclude()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.include( 'FILE1' );
@@ -3357,7 +3358,7 @@ file1
 
   function mainRelative()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : './dir1/file1' } );
@@ -3459,7 +3460,7 @@ file2
   function main1()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     _.module.predeclare
     ({
@@ -3498,7 +3499,7 @@ file2
   function file2()
   {
     console.log( 'file2' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     require( './file1' );
 
@@ -3667,7 +3668,7 @@ file3
   function module1()
   {
     console.log( 'module1' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     _.module.predeclare
     ({
@@ -3744,7 +3745,7 @@ file3
   function file3()
   {
     console.log( 'file3' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     require( './file1' );
 
@@ -3836,7 +3837,7 @@ isIncluded( wlooker ) true
 
   function _programWithRequire()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'wLooker' );
@@ -3848,7 +3849,7 @@ isIncluded( wlooker ) true
 
   function _programWithIncludeLower()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'wlooker' );
@@ -3860,7 +3861,7 @@ isIncluded( wlooker ) true
 
   function _programWithIncludeUpper()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'WLOOKER' );
@@ -3927,7 +3928,7 @@ __.module.resolve( Main1 ) : ${ a.abs( 'main1' ) }
 
   function main1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let __ = _.include( 'wTesting' );
 
     _.module.predeclare
@@ -4019,7 +4020,7 @@ function programWriteOptionWithSubmodule( test )
 
   function mainRegisterBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main / before / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'main / before / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
@@ -4032,7 +4033,7 @@ function programWriteOptionWithSubmodule( test )
 
   function program1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program1 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program1 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
     require( '../program2' );
@@ -4042,7 +4043,7 @@ function programWriteOptionWithSubmodule( test )
 
   function program2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program2 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program2 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
   }
@@ -4435,6 +4436,7 @@ const Proto =
 
   name : 'Tools.Module',
   silencing : 1,
+  routineTimeOut : 30000,
 
   onSuiteBegin,
   onSuiteEnd,
@@ -4482,6 +4484,11 @@ const Proto =
   }
 
 }
+
+/*
+xxx : test to include file which does not exist to reproduce problem of throwing assert:
+_.assert( native === moduleFile.native );
+*/
 
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )

@@ -9,7 +9,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-let _ = wTools;
+const _ = _global_.wTools;
 
 //--
 // interval l0/l3/Interval.s
