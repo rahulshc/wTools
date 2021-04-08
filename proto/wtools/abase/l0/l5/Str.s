@@ -3043,12 +3043,8 @@ function strSplitInlinedStereo_( o )
   splitOptions.stripping = 0;
   splitOptions.preservingEmpty = 1;
 
-  debugger
   let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
-  debugger;
   result = preprocessBeforeJoin( result );
-
-  debugger;
 
   result = _.strSplitsQuotedRejoin
   ({
@@ -3497,7 +3493,7 @@ strSplitInlinedStereo_.defaults =
   preservingQuoting : 1,
   preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
-  inliningDelimeters : 1, /* new */
+  inliningDelimeters : 0, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
   /* qqq for Yevhen : ? */
