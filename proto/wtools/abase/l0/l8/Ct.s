@@ -263,7 +263,7 @@ function _strip( srcStr )
     src : srcStr,
     preservingEmpty : 0,
     stripping : 0,
-    preservingInlined : 0
+    preservingInlined : 0,
   });
 
   return splitted.join( '' );

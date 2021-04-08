@@ -3018,6 +3018,18 @@ function strSplitInlinedStereo_( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
 
+  let isDefaultOnInlined = true;
+
+  if( o.onInlined === null )
+  {
+    o.onInlined = ( e ) => [ e ];
+  }
+  else
+  {
+    _.assert( _.routine.is( o.onInlined ), 'Expects a routine as option::onInlined' );
+    isDefaultOnInlined = false;
+  }
+
   /* Trivial cases */
   let end = handleTrivial();
   if( end !== false )
@@ -3031,10 +3043,13 @@ function strSplitInlinedStereo_( o )
   splitOptions.stripping = 0;
   splitOptions.preservingEmpty = 1;
 
+  debugger
   let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  debugger;
   result = preprocessBeforeJoin( result );
 
-  if( o.inliningDelimeters ) /* new */
+  debugger;
+
   result = _.strSplitsQuotedRejoin
   ({
     splits : result,
@@ -3051,6 +3066,9 @@ function strSplitInlinedStereo_( o )
   handlePreservingEmpty();
 
   unescape();
+
+  if( o.preservingDelimeters && !o.inliningDelimeters && isDefaultOnInlined ) /* for default onInlined */
+  splitInlined();
 
   if( isReplacedPrefix )
   result = result.map( ( el ) =>
@@ -3092,6 +3110,19 @@ function strSplitInlinedStereo_( o )
     }
 
     return false;
+  }
+
+  /* */
+
+  function splitInlined()
+  {
+    result = result.map( ( el ) =>
+    {
+      if( _.arrayIs( el ) )
+      el = [ o.prefix, el[ 0 ].slice( 1, -1 ), o.postfix ];
+
+      return el;
+    });
   }
 
   /* */
@@ -3455,7 +3486,7 @@ strSplitInlinedStereo_.defaults =
   src : null,
   prefix : '❮',
   postfix : '❯',
-  onInlined : ( e ) => [ e ],
+  onInlined : null,
   onOrdinary : null,
 
   stripping : 0,
