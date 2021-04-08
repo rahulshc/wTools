@@ -1987,16 +1987,16 @@ function strShort_( test )
 
   //
 
-  test.case = 'nothing to cut = limit, with delimiter';
-  var src = { src : 'string', widthLimit : 6, delimiter : '.' }
+  test.case = 'nothing to cut = limit, with delimeter';
+  var src = { src : 'string', widthLimit : 6, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'str.ng';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
   test.identical( got.src, 'string' );
 
-  test.case = 'nothing to cut < limit, with delimiter';
-  var src = { src : 'string', widthLimit : 7, delimiter : '.' }
+  test.case = 'nothing to cut < limit, with delimeter';
+  var src = { src : 'string', widthLimit : 7, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'string';
   test.identical( got.result, expected );
@@ -2120,11 +2120,11 @@ function strShort_( test )
 
 //
 
-function strShort_OptionDelimiter( test )
+function strShort_Optiondelimeter( test )
 {
 
   test.case = 'infix is empty string';
-  var src = { src : 'string', widthLimit : 5, delimiter : '' }
+  var src = { src : 'string', widthLimit : 5, delimeter : '' }
   var got = _.strShort_( src );
   var expected = 'strng';
   test.identical( got.result, expected );
@@ -2132,7 +2132,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix is default';
-  var src = { src : 'string', widthLimit : 5, delimiter : 1 }
+  var src = { src : 'string', widthLimit : 5, delimeter : 1 }
   var got = _.strShort_( src );
   var expected = 's...g';
   test.identical( got.result, expected );
@@ -2140,7 +2140,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix < widthLimit';
-  var src = { src : 'string', widthLimit : 5, delimiter : '.' }
+  var src = { src : 'string', widthLimit : 5, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.ng';
   test.identical( got.result, expected );
@@ -2148,7 +2148,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix < widthLimit, even length in the output';
-  var src = { src : 'string', widthLimit : 4, delimiter : '.' }
+  var src = { src : 'string', widthLimit : 4, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.g';
   test.identical( got.result, expected );
@@ -2156,7 +2156,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix = widthLimit + 1';
-  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..' }
+  var src = { src : 'string', widthLimit : 5, delimeter : '..'+'..' }
   var got = _.strShort_( src );
   var expected = 's..'+'..';
   test.identical( got.result, expected );
@@ -2164,7 +2164,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix = widthLimit';
-  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..'+'.' }
+  var src = { src : 'string', widthLimit : 5, delimeter : '..'+'..'+'.' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.';
   test.identical( got.result, expected );
@@ -2172,17 +2172,17 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string' );
 
   test.case = 'infix > widthLimit';
-  var src = { src : 'string', widthLimit : 5, delimiter : '..'+'..'+'..'+'..'+'..' }
+  var src = { src : 'string', widthLimit : 5, delimeter : '..'+'..'+'..'+'..'+'..' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
   test.identical( got.src, 'string' );
 
-  /* delimiter multiline */
+  /* delimeter multiline */
 
   test.case = 'infix is empty string';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : '' }
   var got = _.strShort_( src );
   var expected = 'strng\nstrng\nstrng\nstrng';
   test.identical( got.result, expected );
@@ -2190,7 +2190,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix is default';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : 1 }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : 1 }
   var got = _.strShort_( src );
   var expected = 's...g\ns...g\ns...g\ns...g';
   test.identical( got.result, expected );
@@ -2198,7 +2198,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix < widthLimit';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.ng\nst.ng\nst.ng\nst.ng';
   test.identical( got.result, expected );
@@ -2206,7 +2206,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix < widthLimit, even length in the output';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 4, delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 4, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'st.g\nst.g\nst.g\nst.g';
   test.identical( got.result, expected );
@@ -2214,7 +2214,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix = widthLimit + 1';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : '..'+'..' }
   var got = _.strShort_( src );
   var expected = 's..'+'..' + '\n' + 's..'+'..' + '\n' + 's..'+'..' + '\n' + 's..'+'..' ;
   test.identical( got.result, expected );
@@ -2222,7 +2222,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix = widthLimit';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..'+'.' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : '..'+'..'+'.' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.';
   test.identical( got.result, expected );
@@ -2230,7 +2230,7 @@ function strShort_OptionDelimiter( test )
   test.identical( got.src, 'string\nstring\nstring\nstring' );
 
   test.case = 'infix > widthLimit';
-  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimiter : '..'+'..'+'..'+'..'+'..' }
+  var src = { src : 'string\nstring\nstring\nstring', widthLimit : 5, delimeter : '..'+'..'+'..'+'..'+'..' }
   var got = _.strShort_( src );
   var expected = '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.' + '\n' + '..'+'..'+'.';
   test.identical( got.result, expected );
@@ -3074,22 +3074,22 @@ function strShort_OptionHeightLimit( test )
 function strShort_OptionsCombination( test )
 {
 
-  test.case = 'src is empty, delimiter < widthLimit'
-  var src = { src : '', widthLimit : 3, delimiter : '.' }
+  test.case = 'src is empty, delimeter < widthLimit'
+  var src = { src : '', widthLimit : 3, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = '';
   test.identical( got.result, expected );
 
   /* */
 
-  test.case = 'src is empty, delimiter = widthLimit'
-  var src = { src : '', widthLimit : 3, delimiter : '...' }
+  test.case = 'src is empty, delimeter = widthLimit'
+  var src = { src : '', widthLimit : 3, delimeter : '...' }
   var got = _.strShort_( src );
   var expected = '';
   test.identical( got.result, expected );
 
-  test.case = 'src is empty, delimiter = widthLimit'
-  var src = { src : '\n\n', widthLimit : 3, delimiter : '...' }
+  test.case = 'src is empty, delimeter = widthLimit'
+  var src = { src : '\n\n', widthLimit : 3, delimeter : '...' }
   var got = _.strShort_( src );
   var expected = '...\n...\n...';
   test.identical( got.result, expected );
@@ -3097,23 +3097,23 @@ function strShort_OptionsCombination( test )
 
   /* */
 
-  test.case = 'src is not empty, delimiter < widthLimit'
-  var src = { src : 'abc', widthLimit : 4, delimiter : '.' }
+  test.case = 'src is not empty, delimeter < widthLimit'
+  var src = { src : 'abc', widthLimit : 4, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'abc';
   test.identical( got.result, expected );
 
   /* multiline */
 
-  test.case = 'src is empty, delimiter < widthLimit'
-  var src = { src : '\n\n\n', widthLimit : 3, delimiter : '.' }
+  test.case = 'src is empty, delimeter < widthLimit'
+  var src = { src : '\n\n\n', widthLimit : 3, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = '\n\n\n';
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  test.case = 'src is not empty, delimiter < widthLimit'
-  var src = { src : 'abc\nabc\nabc', widthLimit : 4, delimiter : '.' }
+  test.case = 'src is not empty, delimeter < widthLimit'
+  var src = { src : 'abc\nabc\nabc', widthLimit : 4, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'abc\nabc\nabc';
   test.identical( got.result, expected );
@@ -3121,8 +3121,8 @@ function strShort_OptionsCombination( test )
 
   /* */
 
-  test.case = 'src = widthLimit - 1, delimiter length = 1';
-  var src = { src : 'string', widthLimit : 7, delimiter : '.' }
+  test.case = 'src = widthLimit - 1, delimeter length = 1';
+  var src = { src : 'string', widthLimit : 7, delimeter : '.' }
   var got = _.strShort_( src );
   var expected = 'string';
   test.identical( got.result, expected );
@@ -3135,8 +3135,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'left',
     heightCutting : 'left'
   }
@@ -3150,8 +3150,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'left',
     heightCutting : 'right'
   }
@@ -3165,8 +3165,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'left',
     heightCutting : 'center'
   }
@@ -3182,8 +3182,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'right',
     heightCutting : 'left'
   }
@@ -3197,8 +3197,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'right',
     heightCutting : 'right'
   }
@@ -3212,8 +3212,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'right',
     heightCutting : 'center'
   }
@@ -3229,8 +3229,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'center',
     heightCutting : 'left'
   }
@@ -3244,8 +3244,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'center',
     heightCutting : 'right'
   }
@@ -3259,8 +3259,8 @@ function strShort_OptionsCombination( test )
     src : 'ab12\ncd34\nef56\ngh78\nkl90',
     widthLimit : 3,
     heightLimit : 3,
-    delimiter : '.',
-    heightDelimiter : '*',
+    delimeter : '.',
+    heightdelimeter : '*',
     cutting : 'center',
     heightCutting : 'center'
   }
@@ -3545,60 +3545,60 @@ function strShortWidthOptionCutting( test )
 
 //
 
-function strShortWidthOptionDelimiter( test )
+function strShortWidthOptiondelimeter( test )
 {
 
   test.case = 'a b [c d e] g f, len 7, desired 4';
-  var src = { src : 'abcdegf', limit : 4, cutting : 'center', delimiter : '.' }
+  var src = { src : 'abcdegf', limit : 4, cutting : 'center', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'ab.f';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a b b [c d e] g f g, len 9, desired 6';
-  var src = { src : 'abbcdegfg', limit : 6, cutting : 'center', delimiter : '.' }
+  var src = { src : 'abbcdegfg', limit : 6, cutting : 'center', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'abb.fg';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a b [c d e g] f, len 7, desired 3';
-  var src = { src : 'abcdegf', limit : 3, cutting : 'center', delimiter : '.' }
+  var src = { src : 'abcdegf', limit : 3, cutting : 'center', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'a.f';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a b c [d e g] f i, len 8, desired 5';
-  var src = { src : 'abcdegfi', limit : 5, cutting : 'center', delimiter : '.' }
+  var src = { src : 'abcdegfi', limit : 5, cutting : 'center', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'ab.fi';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a b [c d e g] f i, len 8, desired 4';
-  var src = { src : 'abcdegfi', limit : 4, cutting : 'center', delimiter : '..' }
+  var src = { src : 'abcdegfi', limit : 4, cutting : 'center', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = 'a..i';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a b [c] d, len 4';
-  var src = { src : 'abcd', limit : 3, cutting : 'center', delimiter : '..' }
+  var src = { src : 'abcd', limit : 3, cutting : 'center', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = 'a..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a [bc] d, len 4';
-  var src = { src : 'abcd', limit : 2, cutting : 'center', delimiter : '..' }
+  var src = { src : 'abcd', limit : 2, cutting : 'center', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = '..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'a [bcd], len 4';
-  var src = { src : 'abcd', limit : 1, cutting : 'center', delimiter : '....' }
+  var src = { src : 'abcd', limit : 1, cutting : 'center', delimeter : '....' }
   var got = _.strShortWidth( src );
   var expected = '.';
   test.identical( got.result, expected );
@@ -3607,21 +3607,21 @@ function strShortWidthOptionDelimiter( test )
   /* multiline */
 
   test.case = 'cut 1 letter left';
-  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'left', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'left', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = '.ring\n.ring\n.ring';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut 1 letter right';
-  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'right', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'right', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'stri.\nstri.\nstri.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut 1 letter center';
-  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'center', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring', limit : 5, cutting : 'center', delimeter : '.' }
   var got = _.strShortWidth( src );
   var expected = 'st.ng\nst.ng\nst.ng';
   test.identical( got.result, expected );
@@ -3629,22 +3629,22 @@ function strShortWidthOptionDelimiter( test )
 
   //
 
-  test.case = 'cut 1 letter, delimiter = o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimiter : '..' }
+  test.case = 'cut 1 letter, delimeter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  test.case = 'cut 1 letter, delimiter = o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimiter : '..' }
+  test.case = 'cut 1 letter, delimeter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  test.case = 'cut 1 letter, delimiter = o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimiter : '..' }
+  test.case = 'cut 1 letter, delimeter = o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimeter : '..' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
@@ -3652,22 +3652,22 @@ function strShortWidthOptionDelimiter( test )
 
   //
 
-  test.case = 'cut 1 letter, delimiter > o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimiter : '...' }
+  test.case = 'cut 1 letter, delimeter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimeter : '...' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  test.case = 'cut 1 letter, delimiter > o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimiter : '...' }
+  test.case = 'cut 1 letter, delimeter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'right', delimeter : '...' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  test.case = 'cut 1 letter, delimiter > o.src';
-  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimiter : '...' }
+  test.case = 'cut 1 letter, delimeter > o.src';
+  var src = { src : 'st\nst\nst', limit : 2, cutting : 'center', delimeter : '...' }
   var got = _.strShortWidth( src );
   var expected = '..\n..\n..';
   test.identical( got.result, expected );
@@ -3914,25 +3914,25 @@ function strShortHeightOptionCutting( test )
 
 //
 
-function strShortHeightOptionDelimiter( test )
+function strShortHeightOptiondelimeter( test )
 {
 
   test.case = 'cut left, o.limit=1';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'left', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut right, o.limit=1';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'right', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut center, o.limit=1';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'center', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 1, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.';
   test.identical( got.result, expected );
@@ -3941,21 +3941,21 @@ function strShortHeightOptionDelimiter( test )
   //
 
   test.case = 'cut left, o.limit=2';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'left', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut right, o.limit=2';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'right', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\n.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut center, o.limit=2';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'center', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\n.';
   test.identical( got.result, expected );
@@ -3964,21 +3964,21 @@ function strShortHeightOptionDelimiter( test )
   //
 
   test.case = 'cut left, o.limit=3';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'left', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut right, o.limit=3';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'right', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\n.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut center, o.limit=3';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'center', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\n.\nstring';
   test.identical( got.result, expected );
@@ -3987,21 +3987,21 @@ function strShortHeightOptionDelimiter( test )
   //
 
   test.case = 'cut left, o.limit=4';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'left', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = '.\nstring\nstring\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut right, o.limit=4';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'right', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\nstring\n.';
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
   test.case = 'cut center, o.limit=4';
-  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'center', delimiter : '.' }
+  var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring\n.\nstring';
   test.identical( got.result, expected );
@@ -4010,22 +4010,22 @@ function strShortHeightOptionDelimiter( test )
 
   //
 
-  test.case = 'cut left, o.limit > str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
+  test.case = 'cut left, o.limit > str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  test.case = 'cut right, o.limit > str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
+  test.case = 'cut right, o.limit > str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  test.case = 'cut center, o.limit > str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
+  test.case = 'cut center, o.limit > str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
@@ -4033,22 +4033,22 @@ function strShortHeightOptionDelimiter( test )
 
   //
 
-  test.case = 'cut left, o.limit = str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimiter : '.' }
+  test.case = 'cut left, o.limit = str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  test.case = 'cut right, o.limit = str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimiter : '.' }
+  test.case = 'cut right, o.limit = str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'right', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  test.case = 'cut center, o.limit = str.length, delimiter is not placed';
-  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimiter : '.' }
+  test.case = 'cut center, o.limit = str.length, delimeter is not placed';
+  var src = { src : 'string\nstring', limit : 4, cutting : 'center', delimeter : '.' }
   var got = _.strShortHeight( src );
   var expected = 'string\nstring';
   test.identical( got.result, expected );
@@ -13208,7 +13208,7 @@ const Proto =
     strShort_Special,
 
     strShort_, /* qqq : rewrite and enable */
-    strShort_OptionDelimiter,
+    strShort_Optiondelimeter,
     strShort_OptionsOnLength,
     strShort_OptionCutting,
     strShort_OptionHeightCutting,
@@ -13217,10 +13217,10 @@ const Proto =
     strShort_OptionsCombination,
     strShortWidth,
     strShortWidthOptionCutting,
-    strShortWidthOptionDelimiter,
+    strShortWidthOptiondelimeter,
     strShortHeight,
     strShortHeightOptionCutting,
-    strShortHeightOptionDelimiter,
+    strShortHeightOptiondelimeter,
 
     // strShort_Performance,
 

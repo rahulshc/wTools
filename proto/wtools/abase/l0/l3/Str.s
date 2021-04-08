@@ -270,48 +270,38 @@ function exportStringShallowDiagnostic( src, o )
  * For example: src : 'string', limit : 4, result -> 'stng'.
  * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '.', postfix : '>' }).
+ * - Second to pass all options map. Example: ({ src : 'string', limit : 5, delimeter : '.' }).
  *
  * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
- * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
- * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
- * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
+ * @param {string} [ o.delimeter=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
  * @param {function} [ o.onLength=null ] - callback function that calculates a length based on .
  * @returns {string} Returns simplified source string.
  *
  * @example
  * _.strShort_( 'string', 4 );
- * // returns 'stng'
+ * // returns o, o.result = 'stng'
  *
  * @example
  * _.strShort_( 'a\nb', 3 );
- * // returns 'a\nb'
+ * // returns o, o.result = 'a\nb'
  *
  * @example
  * _.strShort_( 'string', 0 );
- * // returns ''
+ * // returns o, o.result = ''
  *
  * @example
- * _.strShort_({ src : 'string', limit : 4 });g
- * // returns 'stng'
- *
- * @example
- *  _.strShort_({ src : 'simple', limit : 4, prefix : '<' });
- * // returns '<ile'
- *
- * @example
- *  _.strShort_({ src : 'string', limit : 5, infix : '.' });
- * // returns 'st.ng'
- *
- * @example
- *  _.strShort_({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
- * // returns '<s.g>'
+ * _.strShort_({ src : 'string', limit : 4 });
+ * // returns o, o.result = 'stng'
  *
  * @example
  *  _.strShort_({ src : 'string', limit : 3, cutting : 'right' });
- * // returns 'str'
+ * // returns o, o.result = 'str'
+ *
+ * @example
+ * _.strShort_({ src : 'st\nri\nng', limit : 1, heightLimit : 2, cutting : 'left', heightCutting : 'right' });
+ * // returns o, o.result = 't\ni'
  *
  * @method strShort_
  * @throws { Exception } If no argument provided.
@@ -319,9 +309,7 @@ function exportStringShallowDiagnostic( src, o )
  * @throws { Exception } If( o ) is extended with unknown property.
  * @throws { Exception } If( o.src ) is not a String.
  * @throws { Exception } If( o.limit ) is not a Number.
- * @throws { Exception } If( o.prefix ) is not a String or null.
- * @throws { Exception } If( o.infix ) is not a String or null or boolLikeTrue.
- * @throws { Exception } If( o.postfix ) is not a String or null.
+ * @throws { Exception } If( o.delimeter ) is not a String or null or boolLikeTrue.
  *
  * @namespace Tools
  *
@@ -346,20 +334,20 @@ function strShort_( o )  /* version with binary search cutting */
     _.number.is( o.heightLimit ) && o.heightLimit >= 0,
     'If provided option::o.heightLimit must be greater or equal to zero'
   );
-  _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
+  _.assert( o.delimeter === null || _.strIs( o.delimeter ) || _.bool.likeTrue( o.delimeter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.delimiter )
-  o.delimiter = '';
-  if( !o.heightDelimiter )
-  o.heightDelimiter = '';
+  if( !o.delimeter )
+  o.delimeter = '';
+  if( !o.heightdelimeter )
+  o.heightdelimeter = '';
   if( o.widthLimit === 0 )
   o.widthLimit = Infinity;
   if( o.heightLimit === 0 )
   o.heightLimit = Infinity;
 
-  if( _.bool.likeTrue( o.delimiter ) )
-  o.delimiter = '...';
+  if( _.bool.likeTrue( o.delimeter ) )
+  o.delimeter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
@@ -378,7 +366,7 @@ function strShort_( o )  /* version with binary search cutting */
 
   let options = Object.create( null ); /* width cutting options */
   options.limit = o.widthLimit;
-  options.delimiter = o.delimiter;
+  options.delimeter = o.delimeter;
   options.onLength = o.onLength;
   options.cutting = o.cutting;
 
@@ -399,7 +387,7 @@ function strShort_( o )  /* version with binary search cutting */
     let options2 = Object.create( null );  /* height cutting */
     options2.src = splitted;
     options2.limit = o.heightLimit;
-    options2.delimiter = o.heightDelimiter;
+    options2.delimeter = o.heightdelimeter;
     options2.cutting = o.heightCutting;
     _._strShortHeight( options2 );
 
@@ -425,8 +413,8 @@ strShort_.defaults =
   src : null,
   widthLimit : 40,
   heightLimit : 0,
-  delimiter : null, /* xxx qqq : rename to 'widthDelimiter' */
-  heightDelimiter : null,
+  delimeter : null, /* xxx qqq : rename to 'widthdelimeter' */
+  heightdelimeter : null,
   onLength : null,
   cutting : 'center', /* xxx qqq : rename to 'widthCutting' */
   heightCutting : 'center',
@@ -448,18 +436,18 @@ function strShortWidth( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
   _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
-  _.assert( o.delimiter === null || _.strIs( o.delimiter ) || _.bool.likeTrue( o.delimiter ));
+  _.assert( o.delimeter === null || _.strIs( o.delimeter ) || _.bool.likeTrue( o.delimeter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   let originalSrc = o.src;
 
-  if( !o.delimiter )
-  o.delimiter = '';
+  if( !o.delimeter )
+  o.delimeter = '';
   if( o.limit === 0 )
   o.limit = Infinity;
 
-  if( _.bool.likeTrue( o.delimiter ) )
-  o.delimiter = '...';
+  if( _.bool.likeTrue( o.delimeter ) )
+  o.delimeter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
@@ -481,7 +469,7 @@ strShortWidth.defaults =
   limit : 40,
   onLength : null,
   cutting : 'center',
-  delimiter : null
+  delimeter : null
 }
 
 //
@@ -497,19 +485,19 @@ function _strShortWidth( o )
 
   let begin = '';
   let end = '';
-  let fixLength = o.onLength( o.delimiter );
+  let fixLength = o.onLength( o.delimeter );
 
   o.changed = false;
 
   let result = o.src.map( ( el ) =>
   {
-    let delimiter = o.delimiter;
-    fixLength = o.onLength( o.delimiter );
+    let delimeter = o.delimeter;
+    fixLength = o.onLength( o.delimeter );
 
     if( fixLength === o.limit )
     {
       o.changed = true;
-      return o.delimiter;
+      return o.delimeter;
     }
     else if( o.onLength( el ) + fixLength <= o.limit ) /* nothing to cut */
     {
@@ -517,10 +505,10 @@ function _strShortWidth( o )
     }
     else
     {
-      if( o.onLength( delimiter ) > o.limit )
+      if( o.onLength( delimeter ) > o.limit )
       {
-        el = delimiter;
-        delimiter = '';
+        el = delimeter;
+        delimeter = '';
         fixLength = 0;
       }
 
@@ -528,16 +516,16 @@ function _strShortWidth( o )
 
       if( o.cutting === 'left' )
       {
-        return delimiter + cutLeft( el );
+        return delimeter + cutLeft( el );
       }
       else if( o.cutting === 'right' )
       {
-        return cutRight( el ) + delimiter;
+        return cutRight( el ) + delimeter;
       }
       else
       {
         let [ begin, end ] = cutMiddle( el );
-        return begin + delimiter + end;
+        return begin + delimeter + end;
       }
     }
   });
@@ -699,7 +687,7 @@ _strShortWidth.defaults =
 {
   src : null,
   limit : 40,
-  delimiter : null,
+  delimeter : null,
   onLength : null,
   cutting : 'center',
 }
@@ -728,8 +716,8 @@ function strShortHeight( o )
   let originalSrc = o.src;
   let splitted = o.src.split( '\n' );
 
-  if( !o.delimiter )
-  o.delimiter = '';
+  if( !o.delimeter )
+  o.delimeter = '';
 
   o.src = splitted;
 
@@ -746,7 +734,7 @@ strShortHeight.defaults =
   src : null,
   limit : null,
   cutting : 'center',
-  delimiter : null,
+  delimeter : null,
 }
 
 //
@@ -763,12 +751,12 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   o.changed = false;
 
-  let delimiterLength = o.delimiter === '' ? 0 : 1;
+  let delimeterLength = o.delimeter === '' ? 0 : 1;
 
-  if( delimiterLength === o.limit )
+  if( delimeterLength === o.limit )
   {
     o.changed = true;
-    o.result = [ o.delimiter ];
+    o.result = [ o.delimeter ];
 
     return o;
   }
@@ -782,23 +770,23 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   function cut( src )
   {
-    if( src.length + delimiterLength > o.limit )
+    if( src.length + delimeterLength > o.limit )
     {
       o.changed = true;
 
       if( o.cutting === 'left' )
       {
-        src = src.slice( - ( o.limit - delimiterLength ) );
+        src = src.slice( - ( o.limit - delimeterLength ) );
 
-        if( o.delimiter !== '' )
-        src.unshift( o.delimiter );
+        if( o.delimeter !== '' )
+        src.unshift( o.delimeter );
       }
       else if( o.cutting === 'right' )
       {
-        src = src.slice( 0, o.limit - delimiterLength );
+        src = src.slice( 0, o.limit - delimeterLength );
 
-        if( o.delimiter !== '' )
-        src.push( o.delimiter );
+        if( o.delimeter !== '' )
+        src.push( o.delimeter );
       }
       else
       {
@@ -807,10 +795,10 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
         result.push( ... left );
 
-        if( o.delimiter !== '' )
-        result.push( o.delimiter );
+        if( o.delimeter !== '' )
+        result.push( o.delimeter );
 
-        if( right !== undefined ) /* no right when o.limit = 2 and there is a delimiter */
+        if( right !== undefined ) /* no right when o.limit = 2 and there is a delimeter */
         result.push( ... right );
 
         src = result;
@@ -827,7 +815,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
   {
     let indexLeft, indexRight;
 
-    let limit = o.limit - delimiterLength;
+    let limit = o.limit - delimeterLength;
 
     if( limit === 1 )
     {

@@ -3002,7 +3002,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
 function strSplitInlinedStereo_( o )
 {
   /*
-    New delimiter.
+    New delimeter.
     was : 'this #background:red#is#background:default# text and is not'.
     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
     */
@@ -3031,7 +3031,7 @@ function strSplitInlinedStereo_( o )
   splitOptions.stripping = 0;
   splitOptions.preservingEmpty = 1;
 
-  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimeters */
   result = preprocessBeforeJoin( result );
 
   if( o.inliningDelimeters ) /* new */
@@ -3475,7 +3475,7 @@ strSplitInlinedStereo_.defaults =
 // function strSplitInlinedStereo_( o )
 // {
 //   /*
-//     New delimiter.
+//     New delimeter.
 //     was : 'this #background:red#is#background:default# text and is not'.
   //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
   // */

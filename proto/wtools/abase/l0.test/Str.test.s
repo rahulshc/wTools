@@ -14720,7 +14720,7 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'prefix & postfix are different, no matching postfix first, with delimiter';
+  test.case = 'prefix & postfix are different, no matching postfix first, with delimeter';
 
   var delimeter = [ '|' ];
   var splits = [ `<`, `r1`, `|`, `<`, `r2`, `>` ];
@@ -14739,7 +14739,7 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'prefix & postfix are different, no matching postfix last, with delimiter';
+  test.case = 'prefix & postfix are different, no matching postfix last, with delimeter';
 
   var delimeter = [ '|' ];
   var splits = [ `<`, `r1`, `>`, `|`, `<`, `r2` ];
@@ -15052,7 +15052,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `prefix & postfix are different, no matching postfix first, with delimiter, return 'el : ' + el`;
+  test.case = `prefix & postfix are different, no matching postfix first, with delimeter, return 'el : ' + el`;
 
   var delimeter = [ '|' ];
   var splits = [ `<`, `r1`, `|`, `<`, `r2`, `>` ];
@@ -15072,7 +15072,7 @@ function strSplitsQuotedRejoinOptionOnQuoting( test )
 
   /* */
 
-  test.case = `prefix & postfix are different, no matching postfix last, with delimiter, return 'el : ' + el`;
+  test.case = `prefix & postfix are different, no matching postfix last, with delimeter, return 'el : ' + el`;
 
   var delimeter = [ '|' ];
   var splits = [ `<`, `r1`, `>`, `|`, `<`, `r2` ];
@@ -20736,7 +20736,7 @@ function strSplitInlinedStereo_Basic( test )
 
   /* - */
 
-  test.open( 'single delimiter' )
+  test.open( 'single delimeter' )
 
   test.case = '❮ at the start';
   var srcStr = '❮inline1 inline2';
@@ -20762,11 +20762,11 @@ function strSplitInlinedStereo_Basic( test )
   var expected = [ 'inline1 inline2❯' ];
   test.identical( got, expected );
 
-  test.close( 'single delimiter' )
+  test.close( 'single delimeter' )
 
   /* - */
 
-  test.open( 'wrong delimiter enclosing' )
+  test.open( 'wrong delimeter enclosing' )
 
   test.case = 'same open and close delimeter ❮';
   var srcStr = '❮inline1❮ inline2';
@@ -20838,7 +20838,7 @@ function strSplitInlinedStereo_Basic( test )
   var expected = [ '❮', [ 'inline1' ], '❯❯ inline2 ❮❮', [ 'inline1' ], '❯' ];
   test.identical( got, expected );
 
-  test.close( 'wrong delimiter enclosing' )
+  test.close( 'wrong delimeter enclosing' )
 
 }
 
@@ -21178,7 +21178,7 @@ function strSplitInlinedStereo_OptionPrefixPostfix( test )
 
   /* - */
 
-  test.open( 'single delimiter' )
+  test.open( 'single delimeter' )
 
   test.case = '# at the start';
   var srcStr = '#inline1 inline2';
@@ -21204,11 +21204,11 @@ function strSplitInlinedStereo_OptionPrefixPostfix( test )
   var expected = [ 'inline1 inline2#' ];
   test.identical( got, expected );
 
-  test.close( 'single delimiter' )
+  test.close( 'single delimeter' )
 
   /* - */
 
-  test.open( 'wrong delimiter enclosing' )
+  test.open( 'wrong delimeter enclosing' )
 
   test.case = '3 delimeters';
   var srcStr = '#inline1 #inline2#';
@@ -21248,7 +21248,7 @@ function strSplitInlinedStereo_OptionPrefixPostfix( test )
   var expected = [ [ '' ], 'inline1', [ '' ], [ ' inline2 ' ], [ '' ], 'inline1', [ '' ] ];
   test.identical( got, expected );
 
-  test.close( 'wrong delimiter enclosing' )
+  test.close( 'wrong delimeter enclosing' )
 
   /* - */
 
@@ -21322,7 +21322,7 @@ function strSplitInlinedStereo_OptionPreservingDelimeters( test )
 
   /* - */
 
-  test.open( 'single delimiter' )
+  test.open( 'single delimeter' )
 
   test.case = '❮ at the start';
   var srcStr = '❮inline1 inline2';
@@ -21348,11 +21348,11 @@ function strSplitInlinedStereo_OptionPreservingDelimeters( test )
   var expected = [ 'inline1 inline2❯' ];
   test.identical( got, expected );
 
-  test.close( 'single delimiter' )
+  test.close( 'single delimeter' )
 
   /* - */
 
-  test.open( 'wrong delimiter enclosing' )
+  test.open( 'wrong delimeter enclosing' )
 
   test.case = 'same open and close delimeter ❮';
   var srcStr = '❮inline1❮ inline2';
@@ -21424,9 +21424,9 @@ function strSplitInlinedStereo_OptionPreservingDelimeters( test )
   var expected = [ '❮', [ '❮', 'inline1', '❯' ], '❯❯ inline2 ❮❮', [ '❮', 'inline1', '❯' ], '❯' ];
   test.identical( got, expected );
 
-  test.close( 'wrong delimiter enclosing' )
+  test.close( 'wrong delimeter enclosing' )
 
-  test.case = 'text with spaces inside delimiters';
+  test.case = 'text with spaces inside delimeters';
   var srcStr = '❮  inline1 \n❯ ❮ inline2\t❯❯';
   var got = _.strSplitInlinedStereo_( { src : srcStr, preservingDelimeters : 1 } );
   var expected = [ '', [ '❮', '  inline1 \n', '❯' ], ' ', [ '❮', ' inline2\t', '❯' ], '❯' ];
@@ -21808,7 +21808,7 @@ function strSplitInlinedStereo_OptionPreservingOrdinary( test )
 
   /* - */
 
-  test.open( 'single delimiter' )
+  test.open( 'single delimeter' )
 
   test.case = '❮ at the start';
   var srcStr = '❮inline1 inline2';
@@ -21838,11 +21838,11 @@ function strSplitInlinedStereo_OptionPreservingOrdinary( test )
   [];
   test.identical( got, expected );
 
-  test.close( 'single delimiter' )
+  test.close( 'single delimeter' )
 
   /* - */
 
-  test.open( 'wrong delimiter enclosing' )
+  test.open( 'wrong delimeter enclosing' )
 
   test.case = 'same open and close delimeter ❮';
   var srcStr = '❮inline1❮ inline2';
@@ -21917,7 +21917,7 @@ function strSplitInlinedStereo_OptionPreservingOrdinary( test )
   var expected = [ [ 'inline1' ], [ 'inline2' ] ];
   test.identical( got, expected );
 
-  test.close( 'wrong delimiter enclosing' )
+  test.close( 'wrong delimeter enclosing' )
 
 }
 
@@ -21988,7 +21988,7 @@ function strSplitInlinedStereo_OptionPreservingInlined( test )
 
   /* - */
 
-  test.open( 'single delimiter' )
+  test.open( 'single delimeter' )
 
   test.case = '❮ at the start';
   var srcStr = '❮inline1 inline2';
@@ -22014,11 +22014,11 @@ function strSplitInlinedStereo_OptionPreservingInlined( test )
   var expected = [ 'inline1 inline2❯' ];
   test.identical( got, expected );
 
-  test.close( 'single delimiter' )
+  test.close( 'single delimeter' )
 
   /* - */
 
-  test.open( 'wrong delimiter enclosing' )
+  test.open( 'wrong delimeter enclosing' )
 
   test.case = 'same open and close delimeter ❮';
   var srcStr = '❮inline1❮ inline2';
@@ -22090,7 +22090,7 @@ function strSplitInlinedStereo_OptionPreservingInlined( test )
   var expected = [ '❮', '❯❯ inline2 ❮❮', '❯' ];
   test.identical( got, expected );
 
-  test.close( 'wrong delimiter enclosing' )
+  test.close( 'wrong delimeter enclosing' )
 
 }
 
