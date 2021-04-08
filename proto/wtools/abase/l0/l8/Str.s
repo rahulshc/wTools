@@ -808,19 +808,10 @@ function strIsolateInside( src, begin, end )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-
-let Routines =
+let Extension =
 {
 
 
@@ -837,9 +828,6 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 })();
