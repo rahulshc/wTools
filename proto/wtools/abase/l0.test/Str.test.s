@@ -21696,12 +21696,6 @@ function strSplitInlinedStereo_OptionOnInlined( test )
 
   var onInlined2 = ( part ) =>
   {
-
-    // var temp = part.split( ':' );
-
-    // if( temp.length === 2 )
-    // return temp;
-
     return '++' + part + '++';
   };
 
