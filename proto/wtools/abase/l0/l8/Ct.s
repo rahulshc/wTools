@@ -168,12 +168,6 @@ function _formatAffixes( styles )
   result.head = '';
   result.post = '';
 
-  // let StyleObjectOptions =
-  // {
-  //   fg : null,
-  //   bg : null,
-  // }
-
   styles = _.arrayAs( styles );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -185,16 +179,8 @@ function _formatAffixes( styles )
 
     if( _.object.is( style ) )
     {
-      // let obj = style[ s ];
-      // _.map.assertHasOnly( obj, StyleObjectOptions );
-      // if( obj.fg )
-      // result = join( result, _.ct._formatAffixesForeground( obj.fg ) );
-      // if( obj.bg )
-      // result = join( result, _.ct._formatAffixesBackground( obj.bg ) );
-
       let affixes = _.ct._formatAffixesForStyleObject( style );
       _.ct._affixesJoin( result, affixes );
-
       continue;
     }
 
@@ -203,31 +189,12 @@ function _formatAffixes( styles )
     let styleObject = _.ct.styleObjectFor( style );
     _.assert( !!styleObject, 'Unknown style', _.strQuote( style ) );
 
-    // if( styleObject.fg )
-    // result = join( result, _.ct._formatAffixesForeground( styleObject.fg ) );
-    //
-    // if( styleObject.bg )
-    // result = join( result, _.ct._formatAffixesBackground( styleObject.bg ) );
-
     let affixes = _.ct._formatAffixesForStyleObject( styleObject );
     _.ct._affixesJoin( result, affixes );
 
   }
 
   return result;
-
-  /* */
-
-  // function join()
-  // {
-  //   for( let a = 1 ; a < arguments.length ; a++ )
-  //   {
-  //     arguments[ 0 ].head = arguments[ a ].head + arguments[ 0 ].head;
-  //     arguments[ 0 ].post = arguments[ 0 ].post + arguments[ a ].post;
-  //   }
-  //   return arguments[ 0 ];
-  // }
-
 }
 
 //
@@ -254,7 +221,6 @@ let format = _.routineVectorize_functor( _format );
 
 function _strip( srcStr )
 {
-  // let result = '';
 
   _.assert( _.strIs( srcStr ) );
 
@@ -268,14 +234,6 @@ function _strip( srcStr )
   });
 
   return splitted.join( '' );
-
-  // for( let i = 0 ; i < splitted.length ; i++ )
-  // {
-  //   if( _.strIs( splitted[ i ] ) )
-  //   result += splitted[ i ];
-  // }
-
-  // return result;
 }
 
 let strip = _.vectorize( _strip );
@@ -349,6 +307,8 @@ let Style =
   'highlighted' : { fg : 'white', bg : 'dark black' },
   'selected' : { fg : 'dark yellow', bg : 'dark blue' },
   'neutral' : { fg : 'smoke', bg : 'dim' },
+  'secondary' : { fg : 'silver' },
+  'tertiary' : { fg : 'gray' },
 
   'pipe.neutral' : { fg : 'dark magenta' },
   'pipe.negative' : { fg : 'dark red' },
