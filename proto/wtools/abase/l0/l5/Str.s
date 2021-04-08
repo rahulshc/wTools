@@ -3034,6 +3034,7 @@ function strSplitInlinedStereo_( o )
   let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
   result = preprocessBeforeJoin( result );
 
+  if( o.inliningDelimeters ) /* new */
   result = _.strSplitsQuotedRejoin
   ({
     splits : result,
@@ -3121,7 +3122,7 @@ function strSplitInlinedStereo_( o )
         if( array[ i + 2 ] === o.postfix )
         {
           /* push concatenated ordinary string */
-          pushOrdinary( ordinary );
+          pushOrdinary( result, ordinary );
           /* push inlined : '❮', 'inline1', '❯' */
           if( o.preservingInlined )
           {
@@ -3143,32 +3144,32 @@ function strSplitInlinedStereo_( o )
       }
     }
 
-    pushOrdinary( ordinary );
+    pushOrdinary( result, ordinary );
 
     return result;
+  }
 
-    /* - */
+  /* */
 
-    function pushOrdinary( ordinary )
+  function pushOrdinary( result, ordinary )
+  {
+    if( o.preservingOrdinary && ordinary )
     {
-      if( o.preservingOrdinary && ordinary )
+      if( ordinary === o.prefix )
       {
-        if( ordinary === o.prefix )
+        result.push( replacementForPrefix );
+        isReplacedPrefix = true;
+      }
+      else
+      {
+        ordinary = o.stripping ? ordinary.trim() : ordinary;
+        if( o.onOrdinary )
         {
-          result.push( replacementForPrefix );
-          isReplacedPrefix = true;
+          let ordinary1 = o.onOrdinary( ordinary );
+          ordinary = ordinary1 ? ordinary1 : ordinary;
         }
-        else
-        {
-          ordinary = o.stripping ? ordinary.trim() : ordinary;
-          if( o.onOrdinary )
-          {
-            let ordinary1 = o.onOrdinary( ordinary );
-            ordinary = ordinary1 ? ordinary1 : ordinary;
-          }
 
-          result.push( ordinary );
-        }
+        result.push( ordinary );
       }
     }
   }
@@ -3463,8 +3464,9 @@ strSplitInlinedStereo_.defaults =
   quotingPostfixes : null,
 
   preservingQuoting : 1,
-  preservingEmpty : 1,
+  preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
+  inliningDelimeters : 0, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
   /* qqq for Yevhen : ? */
