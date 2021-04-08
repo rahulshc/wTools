@@ -339,8 +339,8 @@ function strShort_( o )  /* version with binary search cutting */
 
   if( !o.delimeter )
   o.delimeter = '';
-  if( !o.heightdelimeter )
-  o.heightdelimeter = '';
+  if( !o.heightDelimeter )
+  o.heightDelimeter = '';
   if( o.widthLimit === 0 )
   o.widthLimit = Infinity;
   if( o.heightLimit === 0 )
@@ -387,7 +387,7 @@ function strShort_( o )  /* version with binary search cutting */
     let options2 = Object.create( null );  /* height cutting */
     options2.src = splitted;
     options2.limit = o.heightLimit;
-    options2.delimeter = o.heightdelimeter;
+    options2.delimeter = o.heightDelimeter;
     options2.cutting = o.heightCutting;
     _._strShortHeight( options2 );
 
@@ -414,7 +414,7 @@ strShort_.defaults =
   widthLimit : 40,
   heightLimit : 0,
   delimeter : null, /* xxx qqq : rename to 'widthdelimeter' */
-  heightdelimeter : null,
+  heightDelimeter : null,
   onLength : null,
   cutting : 'center', /* xxx qqq : rename to 'widthCutting' */
   heightCutting : 'center',

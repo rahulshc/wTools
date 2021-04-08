@@ -3545,7 +3545,7 @@ function strShortWidthOptionCutting( test )
 
 //
 
-function strShortWidthOptiondelimeter( test )
+function strShortWidthOptionDelimeter( test )
 {
 
   test.case = 'a b [c d e] g f, len 7, desired 4';
@@ -3914,7 +3914,7 @@ function strShortHeightOptionCutting( test )
 
 //
 
-function strShortHeightOptiondelimeter( test )
+function strShortHeightOptionDelimeter( test )
 {
 
   test.case = 'cut left, o.limit=1';
@@ -13217,10 +13217,10 @@ const Proto =
     strShort_OptionsCombination,
     strShortWidth,
     strShortWidthOptionCutting,
-    strShortWidthOptiondelimeter,
+    strShortWidthOptionDelimeter,
     strShortHeight,
     strShortHeightOptionCutting,
-    strShortHeightOptiondelimeter,
+    strShortHeightOptionDelimeter,
 
     // strShort_Performance,
 
