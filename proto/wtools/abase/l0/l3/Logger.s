@@ -85,7 +85,7 @@ function relative( src, delta )
 
   if( result === null )
   {
-    result = new _.Logger({ output : _global_.logger });
+    result = new _.Logger({ output : _global_.logger, verbosity : 1 + delta });
   }
   else if( _.boolIs( result ) )
   {
@@ -106,6 +106,49 @@ function relative( src, delta )
   {
     if( delta !== 0 )
     result = new _.Logger({ output : result, verbosity : result.verbosity + delta });
+  }
+  else _.assert( 0 );
+
+  return result;
+}
+
+//
+
+function absolute( src, verbosity )
+{
+  let result = src;
+
+  _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
+  _.assert( verbosity === undefined || _.numberDefined( verbosity ) || _.logger.like( verbosity ) );
+
+  if( _.logger.like( verbosity ) )
+  return verbosity;
+
+  verbosity = verbosity || 1;
+
+  if( result === null )
+  {
+    result = new _.Logger({ output : _global_.logger, verbosity });
+  }
+  else if( _.boolIs( result ) )
+  {
+    if( result )
+    result = new _.Logger({ output : _global_.logger, verbosity : verbosity });
+    else if( verbosity > 0 )
+    result = new _.Logger({ output : _global_.logger, verbosity });
+  }
+  else if( _.numberIs( result ) )
+  {
+    result += verbosity;
+    if( result > 0 )
+    result = new _.Logger({ output : _global_.logger, verbosity : result });
+    else
+    result = false;
+  }
+  else if( _.logger.is( result ) )
+  {
+    if( verbosity !== 0 )
+    result = new _.Logger({ output : result, verbosity : verbosity });
   }
   else _.assert( 0 );
 
@@ -180,6 +223,7 @@ let LoggerExtension =
   like,
   from, /* qqq : cover */
   relative, /* qqq : cover */
+  absolute, /* qqq : cover */
   verbosityFrom, /* qqq : cover */
   verbosityRelative, /* qqq : cover */
 }
