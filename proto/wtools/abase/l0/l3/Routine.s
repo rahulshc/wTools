@@ -1616,7 +1616,7 @@ function unite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert
   (
-    o.head === null || _.routine.is( o.head ) || _.routine.s.are( o.head )
+    o.head === null || _.numberIs( o.head ) || _.routine.is( o.head ) || _.routine.s.are( o.head )
     , 'Expects routine or routines {-o.head-}'
   );
   _.assert( _.routine.is( o.body ), 'Expects routine {-o.body-}' );
@@ -1631,7 +1631,7 @@ function unite_head( routine, args )
 function unite_body( o )
 {
 
-  if( !_.routine.is( o.head ) && o.head !== null )
+  if( _.longIs( o.head ) )
   {
     /* xxx : deprecate compose */
     /* qqq : for Dmytro : implement without compose */
@@ -1652,6 +1652,10 @@ function unite_body( o )
       let result = _head.apply( this, arguments );
       return result[ result.length-1 ];
     }
+  }
+  else if( _.number.is( o.head ) )
+  {
+    o.head = headWithNargs_functor( o.head, o.body );
   }
 
   if( o.head === null )
@@ -1721,6 +1725,18 @@ function unite_body( o )
   );
 
   return unitedRoutine;
+
+  function headWithNargs_functor( nargs, body )
+  {
+    _.assert( !!o.body.defaults );
+    return function headWithDefaults( routine, args )
+    {
+      _.assert( args.length <= nargs+1 );
+      _.assert( arguments.length === 2 );
+      let o = _.routine.options( routine, args[ nargs ] || Object.create( null ) );
+      return _.unrollFrom([ ... Array.prototype.slice.call( args, 0, nargs ), o ]);
+    }
+  }
 
   /* */
 
