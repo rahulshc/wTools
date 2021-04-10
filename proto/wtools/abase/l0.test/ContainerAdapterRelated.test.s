@@ -2,8 +2,6 @@
 
 'use strict';
 
-// return; // xxx
-
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );

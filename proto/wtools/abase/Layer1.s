@@ -12,10 +12,10 @@ if( typeof module !== 'undefined' )
   require( './l1/ContainerAdapter.s' );
   require( './l1/ContainerAdapterArray.s' );
   require( './l1/ContainerAdapterSet.s' );
-
   require( './l1/ModulesRegistry.s' );
   require( './l1/NameTools.s' );
   require( './l1/StrBasic.s' );
+  require( './l1/Trie.s' );
 
 }
 

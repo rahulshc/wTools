@@ -4082,6 +4082,19 @@ exportStringShallowDiagnostic.defaults =
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
+// //
+//
+// function exportStringSolo( src, o )
+// {
+//   let result = _.entity.exportStringShallowDiagnostic( ... arguments )
+//   return _.strReplace( result, '\n', ' ' );
+// }
+//
+// exportStringSolo.defaults =
+// {
+//   ... exportStringShallowDiagnostic.defaults,
+// }
+
 //
 
 // function exportStringShallowCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
@@ -4190,6 +4203,8 @@ let ExtensionEntity =
   exportStringShallowFine : exportStringShallowDiagnostic, /* xxx : remove */
   exportStringShallowCode,
   exportStringShallowDiagnostic,
+  // exportStringSolo,
+
 }
 
 /* xxx : duplicate exportString in namespace::diagnostic? */
