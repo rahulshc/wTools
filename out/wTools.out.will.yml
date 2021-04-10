@@ -416,8 +416,12 @@ module:
           - ../proto/wtools/abase/l1/ModulesRegistry.s
           - ../proto/wtools/abase/l1/NameTools.s
           - ../proto/wtools/abase/l1/StrBasic.s
+          - ../proto/wtools/abase/l1/Trie.s
           - ../proto/wtools/abase/l1.test
+          - ../proto/wtools/abase/l1.test/ContainerAdapter.test.s
+          - ../proto/wtools/abase/l1.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l1.test/Str.test.s
+          - ../proto/wtools/abase/l1.test/Trie.test.s
           - ../proto/wtools/amid
           - ../proto/wtools/atop
     submodule:
