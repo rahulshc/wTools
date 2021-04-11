@@ -10,7 +10,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l0/l0/Global.s' );
   require( './l0/l0/l3/Config.s' );
   require( './l0/l0/l3/Predefined.s' );
-  require( './l0/l0/l5/Setup.s' );
+  module[ 'exports' ] = require( './l0/l0/l5/Setup.s' );
 
   require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
@@ -175,16 +175,5 @@ if( typeof module !== 'undefined' )
   require( './l0/l8/Setup.s' );
 
 }
-
-const _global = _global_;
-const _ = _global_.wTools;
-const Self = _global_.wTools;
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
 
 })();

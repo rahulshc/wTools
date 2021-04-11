@@ -8,10 +8,10 @@
  * @module Tools/base/Trie
 */
 
-if( typeof module !== 'undefined' )
-{
-  const _ = require( 'Tools' );
-}
+// if( typeof module !== 'undefined' )
+// {
+//   const _ = require( 'Tools' );
+// }
 
 const _ = _global_.wTools;
 const Self = _.trie = _.trie || Object.create( null );
