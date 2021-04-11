@@ -4651,7 +4651,10 @@ function uniteBasic( test )
   test.shouldThrowErrorSync( () => _.routine.unite( headObject, null ) );
 
   test.case = 'wrong type of head';
-  test.shouldThrowErrorSync( () => _.routine.unite( 1, bodyObject ) );
+  test.shouldThrowErrorSync( () => _.routine.unite( 'a', bodyObject ) );
+
+  test.case = 'wrong type of body';
+  test.shouldThrowErrorSync( () => _.routine.unite( headObject, 1 ) );
 
   test.case = 'wrong type of tail routine';
   test.shouldThrowErrorSync( () => _.routine.unite( headObject, bodyObject, 'tail' ) );
@@ -4720,6 +4723,66 @@ function uniteInstancing( test )
     test.identical( env.method === 'uniteCloning', !_.prototype.has( r1.extra, extra1 ) );
 
     test.identical( r1(), 5 );
+
+  }
+
+}
+
+//
+
+function uniteWithNumberInsteadOfHead( test )
+{
+
+  act({ method : 'uniteCloning' });
+  act({ method : 'uniteInheriting' });
+  act({ method : 'uniteReplacing' });
+  act({ method : 'unite' });
+
+  /* */
+
+  function act( env )
+  {
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, 1 arg`;
+
+    function r1_body( arg, o )
+    {
+      test.identical( arguments.length, 2 );
+      return arg + o.a + o.b;
+    }
+
+    var defaults1 = r1_body.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    var r1 = _.routine[ env.method ]( 1, r1_body );
+    test.identical( r1( 10 ), 14 );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, 2 args`;
+
+    function r2_body( arg1, arg2, o )
+    {
+      test.identical( arguments.length, 3 );
+      debugger;
+      return arg1 + arg2 + o.a + o.b;
+    }
+
+    var defaults1 = r2_body.defaults =
+    {
+      a : 1,
+      b : 3,
+    }
+
+    var r2 = _.routine[ env.method ]( 2, r2_body );
+    test.identical( r2( 10, 20 ), 34 );
+
+    /* */
 
   }
 
@@ -7744,6 +7807,7 @@ const Proto =
     routineDefaults,
     uniteBasic,
     uniteInstancing,
+    uniteWithNumberInsteadOfHead,
 
     routineEr,
     routineErShouldSupplementNotDefinedFields,

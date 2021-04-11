@@ -64,14 +64,69 @@ function like( src )
 
 //
 
-function from( src )
+function fromStrictly( src )
 {
-  return _.logger.relative( src, 0 );
+  let result = src;
+
+  _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
+
+  if( result === null )
+  {
+    result = new _.Logger({ output : _global_.logger, verbosity : 1 });
+  }
+  else if( _.boolIs( result ) )
+  {
+    result = new _.Logger({ output : _global_.logger, verbosity : result ? 1 : 0 });
+  }
+  else if( _.numberIs( result ) )
+  {
+    result = new _.Logger({ output : _global_.logger, verbosity : result });
+  }
+  else if( _.logger.is( result ) )
+  {
+  }
+  else _.assert( 0 );
+
+  return result;
 }
 
 //
 
-function relative( src, delta )
+function maybe( src )
+{
+  let result = src;
+
+  _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
+
+  if( result === null )
+  {
+    result = new _.Logger({ output : _global_.logger, verbosity : 1 });
+  }
+  else if( _.boolIs( result ) )
+  {
+    if( result )
+    result = new _.Logger({ output : _global_.logger, verbosity : 1 });
+    else
+    result = false;
+  }
+  else if( _.numberIs( result ) )
+  {
+    if( result > 0 )
+    result = new _.Logger({ output : _global_.logger, verbosity : result });
+    else
+    result = false;
+  }
+  else if( _.logger.is( result ) )
+  {
+  }
+  else _.assert( 0 );
+
+  return result;
+}
+
+//
+
+function relativeMaybe( src, delta )
 {
   let result = src;
 
@@ -93,6 +148,8 @@ function relative( src, delta )
     result = new _.Logger({ output : _global_.logger, verbosity : 1 + delta });
     else if( delta > 0 )
     result = new _.Logger({ output : _global_.logger, verbosity : delta });
+    else
+    result = false;
   }
   else if( _.numberIs( result ) )
   {
@@ -114,7 +171,7 @@ function relative( src, delta )
 
 //
 
-function absolute( src, verbosity )
+function absoluteMaybe( src, verbosity )
 {
   let result = src;
 
@@ -136,6 +193,8 @@ function absolute( src, verbosity )
     result = new _.Logger({ output : _global_.logger, verbosity : verbosity });
     else if( verbosity > 0 )
     result = new _.Logger({ output : _global_.logger, verbosity });
+    else
+    result = false;
   }
   else if( _.numberIs( result ) )
   {
@@ -221,9 +280,10 @@ let LoggerExtension =
 {
   is,
   like,
-  from, /* qqq : cover */
-  relative, /* qqq : cover */
-  absolute, /* qqq : cover */
+  fromStrictly, /* qqq : cover */
+  maybe, /* qqq : cover */
+  relativeMaybe, /* qqq : cover */
+  absoluteMaybe, /* qqq : cover */
   verbosityFrom, /* qqq : cover */
   verbosityRelative, /* qqq : cover */
 }

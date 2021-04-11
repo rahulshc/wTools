@@ -25,15 +25,15 @@ function _isInstanceOrClass( _constructor, _this )
   return result;
 }
 
+// //
 //
-
-function _ownNoConstructor( ins )
-{
-  _.assert( !_.primitive.is( ins ) );
-  _.assert( arguments.length === 1 );
-  let result = !Object.hasOwnProperty.call( ins, 'constructor' );
-  return result;
-}
+// function _ownNoConstructor( ins )
+// {
+//   _.assert( !_.primitive.is( ins ) );
+//   _.assert( arguments.length === 1 );
+//   let result = !Object.hasOwnProperty.call( ins, 'constructor' );
+//   return result;
+// }
 
 //
 
@@ -49,7 +49,7 @@ function sureOwnNoConstructor( ins )
 {
   _.sure( !_.primitive.is( ins ) );
   let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _._ownNoConstructor( ins );
+  args[ 0 ] = !Object.hasOwnProperty.call( ins, 'constructor' );
   _.sure.apply( _, args );
 }
 
@@ -67,7 +67,7 @@ function assertOwnNoConstructor( ins )
 {
   _.assert( !_.primitive.is( ins ) );
   let args = Array.prototype.slice.call( arguments );
-  args[ 0 ] = _._ownNoConstructor( ins );
+  args[ 0 ] = !Object.hasOwnProperty.call( ins, 'constructor' );
   _.assert.apply( _, args );
   // _.assert( !_.primitive.is( ins ) );
   // let args = Array.prototype.slice.call( arguments );
@@ -102,7 +102,7 @@ let ToolsExtension =
   // checker
 
   _isInstanceOrClass,
-  _ownNoConstructor,
+  // _ownNoConstructor,
 
   // sure
 

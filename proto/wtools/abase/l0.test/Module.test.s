@@ -318,7 +318,7 @@ function modulingLogistic( test )
     'proto/node_modules/wTesting',
     'proto/wtools/atop/testing/entry/Main.s',
     'proto/wtools/atop/testing/include/Top.s',
-    'proto/wtools/abase/l0/l0/Global.s',
+    'proto/wtools/abase/l0/l0/l0/Global.s',
   ]
   // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
@@ -330,17 +330,17 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.lengthOf( module.files ), 100 );
-  test.identical( _.lengthOf( module.files ), 171 );
+  test.identical( _.lengthOf( module.files ), 173 );
   test.identical( _.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
+  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
+  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
   var module2 = _.module.withName( 'wTools' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtools' );
   test.true( module === module2 );
-  log( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) );
+  log( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) );
 
   test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
   test.ge( _.lengthOf( _.module.modulesMap ), 4 );
@@ -364,7 +364,7 @@ function modulingLogistic( test )
 
     ready.then( () =>
     {
-      test.case = `external program, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `external program, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( program1 );
 
@@ -400,7 +400,7 @@ filesOfTesting
   ${ __.path.join( _.module.resolve( 'wTesting' ), '.' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/entry/Main.s' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/include/Top.s' ) }
-  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/Global.s' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/l0/Global.s' ) }
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 4
 lengthOf( predeclaredWithEntryPathMap ) 3
@@ -498,7 +498,7 @@ function modulingNativeIncludeErrors( test )
 
     ready.then( () =>
     {
-      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainThrowing );
       a.program( throwing1 )
@@ -531,7 +531,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `throwing, catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, catching ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainThrowingCatching );
       a.program( throwing1 )
@@ -566,7 +566,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `syntax error ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `syntax error ${__.entity.exportStringSolo( env )}`;
 
       let syntax1 =
       `
@@ -606,7 +606,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `syntax error catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `syntax error catching ${__.entity.exportStringSolo( env )}`;
 
       let syntax1 =
       `
@@ -977,7 +977,7 @@ function modulingGlobalNamespaces( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : program1, locals : _.mapExtend( null, env ) });
       a.program({ routine : program2, locals : _.mapExtend( null, env ) });
@@ -1292,7 +1292,7 @@ function predeclareBasic( test )
 
     ready.then( () =>
     {
-      test.case = `predeclare before, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `predeclare before, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main );
 
@@ -1454,7 +1454,7 @@ function predeclareMain( test )
 
     ready.then( () =>
     {
-      test.case = `same entry path for both modules, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `same entry path for both modules, ${__.entity.exportStringSolo( env )}`;
       var programPath = a.program( mainMultipleDeclare );
       a.program( common );
       return a.forkNonThrowing
@@ -1484,7 +1484,7 @@ function predeclareMain( test )
 
     ready.then( () =>
     {
-      test.case = `before, single level, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, single level, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleBefore, locals : _.mapExtend( null, env ) });
       a.program({ routine : single1, locals : _.mapExtend( null, env ) });
@@ -1526,7 +1526,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepBefore, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep1a, locals : _.mapExtend( null, env ) });
@@ -1578,7 +1578,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, common sub file, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, common sub file, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBeforeCommonSubFile, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1618,7 +1618,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBeforeCommonSubFileDeep, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1673,7 +1673,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, branching1, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, branching1, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingBefore1, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -1723,7 +1723,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, branching2, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, branching2, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingBefore2, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -1780,7 +1780,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, single, top first, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, single, top first, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleAfterTopFirst, locals : _.mapExtend( null, env ) });
       a.program({ routine : singleAfter1, locals : _.mapExtend( null, env ) });
@@ -1818,7 +1818,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleAfterBottomFirst, locals : _.mapExtend( null, env ) });
       a.program({ routine : singleAfter1, locals : _.mapExtend( null, env ) });
@@ -1856,7 +1856,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, deep, b, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, deep, b, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepAfterB, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep11a, locals : _.mapExtend( null, env ) });
@@ -1901,7 +1901,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, deep, d, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, deep, d, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepAfterD, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep11a, locals : _.mapExtend( null, env ) });
@@ -1946,7 +1946,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, common sub file, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, common sub file, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainAfterCommonSubFile, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1993,7 +1993,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainAfterCommonSubFileDeep, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -2048,7 +2048,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, branching1, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, branching1, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingAfter1, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -2096,7 +2096,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, branching2, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, branching2, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingAfter2, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -3004,7 +3004,7 @@ function predeclareRelative( test )
 
     ready.then( () =>
     {
-      test.case = `full relative path, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `full relative path, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainWithFullPath );
       a.program
@@ -3035,7 +3035,7 @@ module1
 
     ready.then( () =>
     {
-      test.case = `require name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `require name, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainWithRequireName );
       a.program
@@ -3117,7 +3117,7 @@ function predeclareAbsolute( test )
 
     ready.then( () =>
     {
-      test.case = `assumption, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `assumption, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainAssuption );
       a.program
@@ -3148,7 +3148,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainProperCasedModule );
       a.program
@@ -3179,7 +3179,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `upper cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `upper cased module, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainUpperCasedModule );
       a.program
@@ -3210,7 +3210,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `lower cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `lower cased module, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainLowerCasedModule );
       a.program
@@ -3241,7 +3241,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `upper cased include, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `upper cased include, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainUpperCaseInclude );
       a.program
@@ -3272,7 +3272,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `relative, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `relative, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainRelative );
       a.program
@@ -3406,7 +3406,7 @@ function predeclareRedeclaring( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main1 );
       a.program( file1 );
@@ -3543,7 +3543,7 @@ function predeclareRedeclaringSharedFile( test )
 
     ready.then( () =>
     {
-      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
       a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
@@ -3601,7 +3601,7 @@ file2
 
     ready.then( () =>
     {
-      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
       a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
@@ -3799,7 +3799,7 @@ function moduleIsIncluded( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       let program = __.program.write
       ({
@@ -3894,7 +3894,7 @@ function moduleResolveFromAnotherGlobal( test )
 
     ready.then( () =>
     {
-      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main1 );
 
@@ -3987,7 +3987,7 @@ function programWriteOptionWithSubmodule( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       let program = __.program.write
       ({
@@ -4071,7 +4071,7 @@ function programInheritedModuleFilePaths( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( program1 );
       a.program( program2 );
