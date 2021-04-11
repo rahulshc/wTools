@@ -5,8 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
+  debugger;
   const _ = require( 'Tools' );
+  debugger;
   _.include( 'wTesting' );
+  debugger;
 }
 
 const _ = _global_.wTools;
