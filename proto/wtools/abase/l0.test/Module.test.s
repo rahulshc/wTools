@@ -330,7 +330,7 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.lengthOf( module.files ), 100 );
-  test.identical( _.lengthOf( module.files ), 171 );
+  test.identical( _.lengthOf( module.files ), 172 );
   test.identical( _.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
