@@ -7,11 +7,10 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( './l0/l0/Global.s' );
-  require( './l0/l1/Config.s' );
-  require( './l0/l1/Predefined.s' );
-
-  require( './l0/l2/Setup.s' );
+  require( './l0/l0/l0/Global.s' );
+  require( './l0/l0/l3/Config.s' );
+  require( './l0/l0/l3/Predefined.s' );
+  require( './l0/l0/l5/Setup.s' );
 
   require( './l0/l3/ArgumentsArray.s' );
   require( './l0/l3/Array.s' );
@@ -117,67 +116,63 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/Unroll.s' );
   require( './l0/l5/Vector.s' );
 
-  // require( './l0/l6/ContainerAdapter.s' );
-  require( './l0/l6/LongDescriptor.s' );
+  require( './l0/l6/l1/LongDescriptor.s' );
+  require( './l0/l6/l3/Compose.s' );
+  require( './l0/l6/l3/PropertyTransformers.s' );
+  require( './l0/l6/l3/LongContext.s' );
 
-  require( './l0/l7/Compose.s' );
-  // require( './l0/l7/ContainerAdapterArray.s' );
-  // require( './l0/l7/ContainerAdapterSet.s' );
-  require( './l0/l7/PropertyTransformers.s' );
-  require( './l0/l7/LongContext.s' );
+  require( './l0/l7/ArgumentsArray.s' );
+  require( './l0/l7/Array.s' );
+  require( './l0/l7/ArraySet.s' );
+  require( './l0/l7/Auxiliary.s' );
+  require( './l0/l7/BigInt.s' );
+  require( './l0/l7/Bool.s' );
+  require( './l0/l7/Buffer.s' );
+  require( './l0/l7/Constructible.s' );
+  require( './l0/l7/Container.s' );
+  require( './l0/l7/Ct.s' );
+  require( './l0/l7/Date.s' );
+  require( './l0/l7/Diagnostic.s' );
+  require( './l0/l7/Entity.s' );
+  require( './l0/l7/Err.s' );
+  require( './l0/l7/Escape.s' );
+  require( './l0/l7/Event.s' );
+  require( './l0/l7/Functional.s' );
+  require( './l0/l7/Fuzzy.s' );
+  require( './l0/l7/Global.s' );
+  require( './l0/l7/HashMap.s' );
+  require( './l0/l7/Interval.s' );
+  require( './l0/l7/Intervalc.s' );
+  require( './l0/l7/Intervall.s' );
+  require( './l0/l7/Intervalo.s' );
+  require( './l0/l7/Introspector.s' );
+  require( './l0/l7/Long.s' );
+  require( './l0/l7/Map.s' );
+  require( './l0/l7/Module.s' );
+  require( './l0/l7/Number.s' );
+  require( './l0/l7/Object.s' );
+  require( './l0/l7/Pair.s' );
+  require( './l0/l7/Countable.s' );
+  require( './l0/l7/Path.s' );
+  require( './l0/l7/Primitive.s' );
+  require( './l0/l7/Printer.s' );
+  require( './l0/l7/Process.s' );
+  require( './l0/l7/Property.s' );
+  require( './l0/l7/PropertyTransformer.s' );
+  require( './l0/l7/Prototype.s' );
+  require( './l0/l7/Regexp.s' );
+  require( './l0/l7/Routine.s' );
+  require( './l0/l7/Set.s' );
+  require( './l0/l7/Sorted.s' );
+  require( './l0/l7/Str.s' );
+  require( './l0/l7/Symbol.s' );
+  require( './l0/l7/Time.s' );
+  require( './l0/l7/Type.s' );
+  require( './l0/l7/Units.s' );
+  require( './l0/l7/Unroll.s' );
+  require( './l0/l7/Vector.s' );
 
-  require( './l0/l8/ArgumentsArray.s' );
-  require( './l0/l8/Array.s' );
-  require( './l0/l8/ArraySet.s' );
-  require( './l0/l8/Auxiliary.s' );
-  require( './l0/l8/BigInt.s' );
-  require( './l0/l8/Bool.s' );
-  require( './l0/l8/Buffer.s' );
-  require( './l0/l8/Constructible.s' );
-  require( './l0/l8/Container.s' );
-  require( './l0/l8/Ct.s' );
-  require( './l0/l8/Date.s' );
-  require( './l0/l8/Diagnostic.s' );
-  require( './l0/l8/Entity.s' );
-  require( './l0/l8/Err.s' );
-  require( './l0/l8/Escape.s' );
-  require( './l0/l8/Event.s' );
-  require( './l0/l8/Functional.s' );
-  require( './l0/l8/Fuzzy.s' );
-  require( './l0/l8/Global.s' );
-  require( './l0/l8/HashMap.s' );
-  require( './l0/l8/Interval.s' );
-  require( './l0/l8/Intervalc.s' );
-  require( './l0/l8/Intervall.s' );
-  require( './l0/l8/Intervalo.s' );
-  require( './l0/l8/Introspector.s' );
-  require( './l0/l8/Long.s' );
-  require( './l0/l8/Map.s' );
-  require( './l0/l8/Module.s' );
-  require( './l0/l8/Number.s' );
-  require( './l0/l8/Object.s' );
-  require( './l0/l8/Pair.s' );
-  require( './l0/l8/Countable.s' );
-  require( './l0/l8/Path.s' );
-  require( './l0/l8/Primitive.s' );
-  require( './l0/l8/Printer.s' );
-  require( './l0/l8/Process.s' );
-  require( './l0/l8/Property.s' );
-  require( './l0/l8/PropertyTransformer.s' );
-  require( './l0/l8/Prototype.s' );
-  require( './l0/l8/Regexp.s' );
-  require( './l0/l8/Routine.s' );
-  require( './l0/l8/Set.s' );
-  require( './l0/l8/Sorted.s' );
-  require( './l0/l8/Str.s' );
-  require( './l0/l8/Symbol.s' );
-  require( './l0/l8/Time.s' );
-  require( './l0/l8/Type.s' );
-  require( './l0/l8/Units.s' );
-  require( './l0/l8/Unroll.s' );
-  require( './l0/l8/Vector.s' );
-
-  require( './l0/l9/Setup.s' );
+  require( './l0/l8/Setup.s' );
 
 }
 

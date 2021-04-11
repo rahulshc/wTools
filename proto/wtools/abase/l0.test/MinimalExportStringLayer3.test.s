@@ -6,10 +6,10 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( '../l0/l0/Global.s' );
-  require( '../l0/l1/Config.s' );
-  require( '../l0/l1/Predefined.s' );
-  require( '../l0/l2/Setup.s' );
+  require( './l0/l0/l0/Global.s' );
+  require( './l0/l0/l3/Config.s' );
+  require( './l0/l0/l3/Predefined.s' );
+  require( './l0/l0/l5/Setup.s' );
 
   require( '../l0/l3/ArgumentsArray.s' );
   require( '../l0/l3/Array.s' );
@@ -42,19 +42,20 @@ if( typeof module !== 'undefined' )
   require( '../l0/l3/Unroll.s' );
   require( '../l0/l3/Vector.s' );
 
-  let toolsPath = '../../atop/testing/include/Top.s';
-  let toolsExternal = 0;
-  try
-  {
-    toolsPath = require.resolve( toolsPath );
-  }
-  catch( err )
-  {
-    toolsExternal = 1;
-    require( 'wTesting' );
-  }
-  if( !toolsExternal )
-  require( toolsPath );
+  require( 'wTesting' );
+  // let testingPath = '../../atop/testing/include/Top.s';
+  // let toolsExternal = 0;
+  // try
+  // {
+  //   testingPath = require.resolve( testingPath );
+  // }
+  // catch( err )
+  // {
+  //   toolsExternal = 1;
+  //   require( 'wTesting' );
+  // }
+  // if( !toolsExternal )
+  // require( testingPath );
 
 }
 

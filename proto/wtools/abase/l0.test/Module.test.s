@@ -318,7 +318,7 @@ function modulingLogistic( test )
     'proto/node_modules/wTesting',
     'proto/wtools/atop/testing/entry/Main.s',
     'proto/wtools/atop/testing/include/Top.s',
-    'proto/wtools/abase/l0/l0/Global.s',
+    'proto/wtools/abase/l0/l0/l0/Global.s',
   ]
   // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
@@ -334,13 +334,13 @@ function modulingLogistic( test )
   test.identical( _.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
+  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
+  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
   var module2 = _.module.withName( 'wTools' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtools' );
   test.true( module === module2 );
-  log( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) );
+  log( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) );
 
   test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
   test.ge( _.lengthOf( _.module.modulesMap ), 4 );
@@ -400,7 +400,7 @@ filesOfTesting
   ${ __.path.join( _.module.resolve( 'wTesting' ), '.' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/entry/Main.s' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/include/Top.s' ) }
-  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/Global.s' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/l0/Global.s' ) }
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 4
 lengthOf( predeclaredWithEntryPathMap ) 3

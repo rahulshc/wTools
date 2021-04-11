@@ -9,6 +9,7 @@ if( typeof module !== 'undefined' )
 
   require( './Layer0.s' );
 
+  require( './l1/Collection.s' );
   require( './l1/ContainerAdapter.s' );
   require( './l1/ContainerAdapterArray.s' );
   require( './l1/ContainerAdapterSet.s' );
