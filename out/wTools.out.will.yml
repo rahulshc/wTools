@@ -367,8 +367,6 @@ module:
           - ../proto/wtools/abase/l0.test/Class.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
-          - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
-          - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l0.test/Countable.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Date.test.s
