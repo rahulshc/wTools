@@ -2224,7 +2224,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Single1' ] = { entryPath : __dirname + '/singleAfter1' };
@@ -2271,7 +2286,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Single2' ] = { entryPath : __dirname + '/singleAfter2/' };
@@ -2423,7 +2453,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep1b' ] = { entryPath : __dirname + '/deep11b' };
@@ -2465,7 +2510,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep1d' ] = { entryPath : __dirname + '/deep11d' };
@@ -2590,7 +2650,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Common1' ] = { entryPath : __dirname + '/common1' };
@@ -2707,7 +2782,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep2' ] = { entryPath : __dirname + '/deep2a' };
@@ -2869,7 +2959,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Branching1' ] = { entryPath : __dirname + '/branching1a' };
@@ -2914,7 +3019,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Branching1' ] = { entryPath : __dirname + '/branching1a' };
