@@ -790,7 +790,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
       }
       else
       {
-        let [ left, right ] = handleheightCuttingCenter( src );
+        let [ left, right ] = handleHeightCuttingCenter( src );
         let result = [];
 
         result.push( ... left );
@@ -811,7 +811,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
   //
 
-  function handleheightCuttingCenter( src )
+  function handleHeightCuttingCenter( src )
   {
     let indexLeft, indexRight;
 
