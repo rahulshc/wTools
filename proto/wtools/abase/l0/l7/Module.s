@@ -1635,7 +1635,7 @@ function _moduleNamesToPaths( names )
 
 //
 
-const _toolsPath = _.path.nativize( _.path.canonize( __dirname + '/../../../../node_modules/Tools' ) );
+const _toolsPath = _.path.canonize( __dirname + '/../../../../node_modules/Tools' );
 function toolsPathGet()
 {
   return _toolsPath;
@@ -1643,7 +1643,7 @@ function toolsPathGet()
 
 //
 
-const _toolsDir = _.path.nativize( _.path.canonize( __dirname + '/../../../../wtools' ) );
+const _toolsDir = _.path.canonize( __dirname + '/../../../../wtools' );
 function toolsDirGet()
 {
   return _toolsDir;

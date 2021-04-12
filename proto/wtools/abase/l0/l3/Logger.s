@@ -181,37 +181,50 @@ function absoluteMaybe( src, verbosity )
   if( _.logger.like( verbosity ) )
   return verbosity;
 
-  verbosity = verbosity || 1;
+  if( verbosity !== null && verbosity !== undefined )
+  {
+    if( verbosity === 0 || verbosity === false )
+    {
+      if( _.logger.is( src ) )
+      {
+        src.verbosity = 0;
+        return src;
+      }
+      return false;
+    }
+    _.assert( _.numberIs( verbosity ) );
+  }
 
   if( result === null )
   {
-    result = new _.Logger({ output : _global_.logger, verbosity });
+    result = new _.Logger({ output : _global_.logger, verbosity : verbosityGet() });
   }
   else if( _.boolIs( result ) )
   {
-    if( result )
-    result = new _.Logger({ output : _global_.logger, verbosity : verbosity });
-    else if( verbosity > 0 )
-    result = new _.Logger({ output : _global_.logger, verbosity });
-    else
-    result = false;
+    result = new _.Logger({ output : _global_.logger, verbosity : verbosityGet() });
   }
   else if( _.numberIs( result ) )
   {
-    result += verbosity;
-    if( result > 0 )
-    result = new _.Logger({ output : _global_.logger, verbosity : result });
-    else
-    result = false;
+    result = new _.Logger({ output : _global_.logger, verbosity : verbosityGet() });
   }
   else if( _.logger.is( result ) )
   {
-    if( verbosity !== 0 )
-    result = new _.Logger({ output : result, verbosity : verbosity });
+    result.verbosity = verbosity;
   }
   else _.assert( 0 );
 
   return result;
+
+  function verbosityGet()
+  {
+    if( verbosity === undefined || verbosity === null || verbosity === true )
+    return 1;
+    if( verbosity === false )
+    return 0;
+    _.assert( _.numberIs( verbosity ) );
+    return verbosity;
+  }
+
 }
 
 //
