@@ -211,9 +211,8 @@ function predeclare_body( o )
     register( module2, o.entryPath, o.alias );
 
     // let files = _.module._filesWhichEnds( o.entryPath )
-    let file = _.module._fileWithResolvedPath( o.entryPath )
-    if( file )
-    _.module._filesUniversalAssociateModule( file, module2, true );
+    let files = _.module._filesWithResolvedPath( o.entryPath )
+    _.module._filesUniversalAssociateModule( files, module2, true );
 
     return module2;
   }
@@ -234,10 +233,10 @@ function predeclare_body( o )
   Object.setPrototypeOf( o, _.module.Module.prototype );
   Object.preventExtensions( o );
 
+  // debugger;
   // let files = _.module._filesWhichEnds( o.entryPath )
-  let file = _.module._fileWithResolvedPath( o.entryPath )
-  if( file )
-  _.module._filesUniversalAssociateModule( file, o, true );
+  let files = _.module._filesWithResolvedPath( o.entryPath )
+  _.module._filesUniversalAssociateModule( files, o, true );
 
   return o;
 
@@ -312,7 +311,7 @@ function fileIs( src )
   return false;
   if( !src.constructor )
   return false;
-  if( src.constructor.name === 'ModuleFile' );
+  if( src.constructor.name === 'ModuleFile' )
   return true;
   if( src instanceof ModuleFileNative );
   return true;
@@ -874,11 +873,11 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 
     _.assert( _.module.fileUniversalIs( file ) );
     _.assert( _.setIs( file.upFiles ) );
-    // _.assert( _.arrayIs( file.upFiles ) );
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     return;
 
+    debugger;
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && module2 !== module )
     return;
@@ -936,8 +935,18 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 
 function _fileWithResolvedPath( caninicalSourcePath )
 {
+  _.assert( _.strIs( caninicalSourcePath ) );
   var result = _.module.filesMap.get( caninicalSourcePath );
   return result;
+}
+
+//
+
+function _filesWithResolvedPath( caninicalSourcePathArray )
+{
+  if( _.strIs( caninicalSourcePathArray ) )
+  caninicalSourcePathArray = [ caninicalSourcePathArray ];
+  return caninicalSourcePathArray.map( ( sourcePath ) => _.module.filesMap.get( sourcePath ) );
 }
 
 //
@@ -2124,6 +2133,7 @@ var ModuleExtension =
   _filesUniversalAssociateModule,
 
   // _filesWhichEnds,
+  _filesWithResolvedPath,
   _fileWithResolvedPath,
   fileWithResolvedPath,
   fileWith,
