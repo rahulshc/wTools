@@ -1061,7 +1061,7 @@ function path_head( routine, args )
 
 function pathAmend_body( o )
 {
-  const ModuleFileNative = require( 'module' );
+  const ModuleFileNative = require( 'module' ); debugger;
 
   if( o.moduleFile )
   if( typeof _ !== 'undefined' )

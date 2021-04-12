@@ -314,9 +314,7 @@ function modulingLogistic( test )
   test.identical( moduleFile.sourcePath, testingPath );
   test.true( _.module.is( moduleFile.module ) );
 
-  debugger;
   var module = _.module.withPath( testingPath );
-  debugger;
   test.identical( _.lengthOf( module.files ), 4 );
   test.identical( _.lengthOf( module.alias ), 2 );
   var exp =
@@ -433,6 +431,7 @@ modulesMap wTools wTools wTesting wTesting
     console.log( 'lengthOf( modulesMap )', _.lengthOf( _.module.modulesMap ) );
     console.log( 'lengthOf( filesMap )', _.lengthOf( _.module.filesMap ) );
 
+    debugger;
     let __ = _.include( 'wTesting' );
 
     var testingPath = _.module.resolve( 'wTesting' );
@@ -520,7 +519,7 @@ function modulingNativeIncludeErrors( test )
 
       var exp =
 `    error1
-    Module file "${a.abs( './mainThrowing' )}" failed to include "./throwing1"`
+    Module file "${__.path.nativize( a.abs( './mainThrowing' ) )}" failed to include "./throwing1"`
       test.true( _.strHas( op.output, exp ) );
 
       var exp =
@@ -553,7 +552,7 @@ throwing1`
 
       var exp =
 `    error1
-    Module file "${a.abs( './mainThrowingCatching' )}" failed to include "./throwing1"`
+    Module file "${__.path.nativize( a.abs( './mainThrowingCatching' ) )}" failed to include "./throwing1"`
       test.true( _.strHas( op.output, exp ) );
 
       var exp =
@@ -601,7 +600,7 @@ throwing1`
 
  = Message of error#1
     missing ) after argument list
-    Module file "${a.abs( './mainSyntax' )}" failed to include "./syntax1"`
+    Module file "${__.path.nativize( a.abs( './mainSyntax' ) )}" failed to include "./syntax1"`
       test.true( _.strHas( op.output, exp ) );
 
       return op;
@@ -643,7 +642,7 @@ fileWith( syntax1 ) : undefined
 
  = Message of error#2
     missing ) after argument list
-    Module file "${a.abs( './mainSyntaxCatching' )}" failed to include "./syntax1"`
+    Module file "${__.path.nativize( a.abs( './mainSyntaxCatching' ) )}" failed to include "./syntax1"`
       test.true( _.strHas( op.output, exp ) );
 
       return op;
@@ -984,7 +983,9 @@ function modulingGlobalNamespaces( test )
     {
       test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
+      debugger;
       var programPath = a.program({ routine : programRoutine1, locals : env });
+      debugger;
       a.program({ routine : programRoutine2, locals : env });
       a.program({ routine : programRoutine2b, locals : env });
       a.program({ routine : program3, locals : env });
@@ -1077,6 +1078,7 @@ programRoutine1 : ./program6 : undefined
 
   function programRoutine1()
   {
+    debugger;
     console.log( 'programRoutine1' );
     const _ = require( toolsPath );
     require( './programRoutine2' );
@@ -1210,7 +1212,7 @@ function preload( test )
   let context = this;
   let a = test.assetFor( false );
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program( programRoutine1 );
+  let programRoutine1Path = _.path.nativize( a.program( programRoutine1 ) );
 
   /* */
 
@@ -1234,7 +1236,8 @@ function preload( test )
   {
     console.log( 'program.begin' );
     let _ = _global_.wTools;
-    console.log( _.path.normalize( _.module.toolsPathGet() ) )
+    debugger;
+    console.log( _.module.toolsPathGet() );
     console.log( 'program.end' );
   }
 }
@@ -1246,7 +1249,7 @@ function preloadIncludeModule( test )
   let context = this;
   let a = test.assetFor( false );
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program( programRoutine1 );
+  let programRoutine1Path = _.path.nativize( a.program( programRoutine1 ) );
 
   /* */
 
@@ -4155,7 +4158,10 @@ program3.paths
     for( let a = arguments.length-1 ; a >= 0 ; a-- )
     {
       let filePath = arguments[ a ];
-      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( __.path.traceToRoot( filePath ), 'node_modules' ) ).reverse() );
+      let trace = __.path.traceToRoot( filePath );
+      if( process.platform === 'win32' )
+      trace.splice( 0, 1 );
+      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( trace, 'node_modules' ) ).reverse() );
     }
     return '  ' + result.join( '\n  ' );
   }
@@ -4505,7 +4511,10 @@ programRoutine1.after.paths
     for( let a = arguments.length-1 ; a >= 0 ; a-- )
     {
       let filePath = arguments[ a ];
-      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( __.path.traceToRoot( filePath ), 'node_modules' ) ).reverse() );
+      let trace = __.path.traceToRoot( filePath );
+      if( process.platform === 'win32' )
+      trace.splice( 0, 1 );
+      _.arrayPrependArrayOnce( result, __.path.s.nativize( __.path.s.join( trace, 'node_modules' ) ).reverse() );
     }
     return '  ' + result.join( '\n  ' );
   }
