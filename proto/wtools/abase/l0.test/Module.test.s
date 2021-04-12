@@ -206,9 +206,11 @@ function resolveBasic( test )
 
   // var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
   // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/wTools' ) );
-  var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/Tools' ) );
+  // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../node_modules/Tools' ) );
+  var exp = _.path.normalize( __dirname + '../../../../node_modules/Tools' );
   var got = _.module.resolve( 'wTools' );
   test.identical( got, exp );
+  /* xxx : extend by other resolve calls */
 
 }
 
@@ -227,7 +229,8 @@ function toolsPathGetBasic( test )
 
   test.case = 'toolsPathGet';
   var got = _.module.toolsPathGet();
-  var exp = _.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
+  // var exp = _.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
+  var exp = __.path.join( __dirname, '../../../node_modules/Tools' );
   test.identical( got, exp );
   console.log( `toolsPathGet : ${got}` );
 
@@ -235,7 +238,8 @@ function toolsPathGetBasic( test )
 
   test.case = 'toolsDirGet';
   var got = _.module.toolsDirGet();
-  var exp = _.path.nativize( __.path.join( __dirname, '../..' ) );
+  // var exp = __.path.nativize( __.path.join( __dirname, '../..' ) );
+  var exp = __.path.join( __dirname, '../..' );
   test.identical( got, exp );
   console.log( `toolsDirGet : ${got}` );
 
@@ -243,7 +247,8 @@ function toolsPathGetBasic( test )
 
   test.case = 'resolve wTools';
   var got = _.module.resolve( 'wTools' );
-  var exp = _.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
+  // var exp = __.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) );
+  var exp = __.path.join( __dirname, '../../../node_modules/Tools' );
   test.identical( got, exp );
   console.log( `resolved : ${got}` );
 
@@ -267,7 +272,7 @@ function toolsPathGetProgram( test )
     test.identical( op.exitCode, 0 );
     var exp =
 `
-toolsPath : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
+toolsPath : ${__.path.nativize( __.path.join( __dirname, '../../../node_modules/Tools' ) )}
 module.resolve( wTools ) : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
 module.toolsPathGet : ${__.path.join( __dirname, '../../../node_modules/Tools' )}
 module.toolsirGet : ${__.path.join( __dirname, '../..' )}
@@ -309,8 +314,9 @@ function modulingLogistic( test )
   test.identical( moduleFile.sourcePath, testingPath );
   test.true( _.module.is( moduleFile.module ) );
 
+  debugger;
   var module = _.module.withPath( testingPath );
-  // test.identical( _.lengthOf( module.files ), 2 );
+  debugger;
   test.identical( _.lengthOf( module.files ), 4 );
   test.identical( _.lengthOf( module.alias ), 2 );
   var exp =
@@ -320,7 +326,6 @@ function modulingLogistic( test )
     'proto/wtools/atop/testing/include/Top.s',
     'proto/wtools/abase/l0/l0/l0/Global.s',
   ]
-  // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
   test.identical( __.path.s.relative( testingPath + '/../../..', files ), exp );
   var module2 = _.module.withName( 'wTesting' );
