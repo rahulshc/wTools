@@ -96,7 +96,7 @@ function maybe( src )
 {
   let result = src;
 
-  _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
+  _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.like( result ) );
 
   if( result === null )
   {
@@ -116,7 +116,7 @@ function maybe( src )
     else
     result = 0;
   }
-  else if( _.logger.is( result ) )
+  else if( _.logger.like( result ) )
   {
   }
   else _.assert( 0 );
