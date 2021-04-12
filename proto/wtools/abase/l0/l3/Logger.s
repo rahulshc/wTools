@@ -209,6 +209,7 @@ function absoluteMaybe( src, verbosity )
   }
   else if( _.logger.is( result ) )
   {
+    if( _.numberIs( verbosity ) )
     result.verbosity = verbosity;
   }
   else _.assert( 0 );
@@ -238,7 +239,7 @@ function verbosityFrom( src )
 
   if( _.boolIs( result ) )
   {
-    result = 1;
+    result = result ? 1 : 0;
   }
 
   return result;
