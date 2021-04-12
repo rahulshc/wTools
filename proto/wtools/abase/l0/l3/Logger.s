@@ -176,7 +176,7 @@ function absoluteMaybe( src, verbosity )
   let result = src;
 
   _.assert( result === null || _.boolIs( result ) || _.numberIs( result ) || _.logger.is( result ) );
-  _.assert( verbosity === undefined || _.numberDefined( verbosity ) || _.logger.like( verbosity ) );
+  _.assert( verbosity === undefined || verbosity === null || _.boolIs( verbosity ) || _.numberDefined( verbosity ) || _.logger.like( verbosity ) );
 
   if( _.logger.like( verbosity ) )
   return verbosity;
@@ -192,7 +192,7 @@ function absoluteMaybe( src, verbosity )
       }
       return false;
     }
-    _.assert( _.numberIs( verbosity ) );
+    _.assert( _.numberIs( verbosity ) || _.boolIs( verbosity ) );
   }
 
   if( result === null )
