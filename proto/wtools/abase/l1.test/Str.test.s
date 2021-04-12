@@ -2120,7 +2120,7 @@ function strShort_( test )
 
 //
 
-function strShort_Optiondelimeter( test )
+function strShort_OptionDelimeter( test )
 {
 
   test.case = 'infix is empty string';
@@ -13208,7 +13208,7 @@ const Proto =
     strShort_Special,
 
     strShort_, /* qqq : rewrite and enable */
-    strShort_Optiondelimeter,
+    strShort_OptionDelimeter,
     strShort_OptionsOnLength,
     strShort_OptionCutting,
     strShort_OptionHeightCutting,
