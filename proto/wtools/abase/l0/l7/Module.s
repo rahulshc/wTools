@@ -137,6 +137,9 @@ function predeclare_head( routine, args )
   if( !o.name )
   o.name = o.alias[ 0 ];
 
+  o.entryPath = _.arrayAs( o.entryPath );
+  // o.entryPath = o.entryPath.map( ( path ) => _.path.canonize( path ) );
+
   _.assert( _.arrayIs( o.alias ) );
   _.assert( _.strDefined( o.name ) );
   _.assert( _.mapIs( o ) );
@@ -151,7 +154,8 @@ function predeclare_body( o )
 {
 
   _.arrayPrependOnce( o.alias, o.name );
-  o.entryPath = _.arrayAs( o.entryPath );
+  // o.entryPath = _.arrayAs( o.entryPath );
+  _.assert( _.arrayIs( o.entryPath ) );
 
   o.entryPath.forEach( ( entryPath, i ) =>
   {
@@ -192,7 +196,6 @@ function predeclare_body( o )
       );
       _.module.predeclaredWithEntryPathMap.set( entryPath, o );
     }
-
   });
 
   let module2 = _.module.predeclaredWithNameMap.get( o.name );
@@ -207,7 +210,8 @@ function predeclare_body( o )
 
     register( module2, o.entryPath, o.alias );
 
-    let files = _.module._filesWhichEnds( o.entryPath )
+    // let files = _.module._filesWhichEnds( o.entryPath )
+    let files = _.module._filesWithResolvedPath( o.entryPath )
     _.module._filesUniversalAssociateModule( files, module2, true );
 
     return module2;
@@ -229,7 +233,9 @@ function predeclare_body( o )
   Object.setPrototypeOf( o, _.module.Module.prototype );
   Object.preventExtensions( o );
 
-  let files = _.module._filesWhichEnds( o.entryPath )
+  // debugger;
+  // let files = _.module._filesWhichEnds( o.entryPath )
+  let files = _.module._filesWithResolvedPath( o.entryPath )
   _.module._filesUniversalAssociateModule( files, o, true );
 
   return o;
@@ -305,7 +311,7 @@ function fileIs( src )
   return false;
   if( !src.constructor )
   return false;
-  if( src.constructor.name === 'ModuleFile' );
+  if( src.constructor.name === 'ModuleFile' )
   return true;
   if( src instanceof ModuleFileNative );
   return true;
@@ -639,7 +645,7 @@ function _fileUniversalAssociateFile( upFile, downFile )
 {
 
   /*
-  files could belong to different environments
+  files could belong to different environments!
   */
 
   _.assert( _.module.fileUniversalIs( upFile ) );
@@ -649,10 +655,6 @@ function _fileUniversalAssociateFile( upFile, downFile )
   upFile.downFiles.add( downFile );
 
   downFile.upFiles.add( upFile );
-  // let index = downFile.native.children.indexOf( upFile.native );
-  // _.assert( index >= 0 );
-  // _.assert( downFile.upFiles[ index ] === undefined || downFile.upFiles[ index ] === upFile );
-  // downFile.upFiles[ index ] = upFile;
 
 }
 
@@ -670,7 +672,7 @@ function _fileUniversalDisassociateFile( upFile, downFile )
 
   upFile.downFiles.delete( downFile );
   if( upFile.downFile === downFile )
-  upFile.downFile = [ ... upFile.downFiles ][ 0 ] || null;
+  upFile.downFile = [ ... upFile.downFiles ][ 0 ] || null; /* qqq : cover */
 
   downFile.upFiles.delete( upFile );
 
@@ -685,7 +687,6 @@ function _fileUniversalAssociateModule( file, module )
   if( Config.debug )
   {
     _.assert( arguments.length === 2 );
-    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     _.assert
     (
@@ -870,12 +871,10 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 
     _.assert( _.module.fileUniversalIs( file ) );
     _.assert( _.setIs( file.upFiles ) );
-    // _.assert( _.arrayIs( file.upFiles ) );
 
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     return;
 
-    // let module2 = _.module.predeclaredWithEntryPathMap.get( file.sourcePath );
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && module2 !== module )
     return;
@@ -913,27 +912,44 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 
 }
 
+// //
 //
-
-function _filesWhichEnds( filePaths )
-{
-  let result = new Set();
-
-  filePaths.forEach( ( filePath ) =>
-  {
-    let file = _.module.filesMap.get( filePath );
-    if( file )
-    result.add( file );
-  });
-
-  return result;
-}
+// function _filesWhichEnds( filePaths )
+// {
+//   let result = new Set();
+//
+//   filePaths.forEach( ( filePath ) =>
+//   {
+//     let file = _.module.filesMap.get( filePath );
+//     if( file )
+//     result.add( file );
+//   });
+//
+//   return result;
+// }
 
 //
 
 function _fileWithResolvedPath( caninicalSourcePath )
 {
+  _.assert( _.strIs( caninicalSourcePath ) );
   var result = _.module.filesMap.get( caninicalSourcePath );
+  return result;
+}
+
+//
+
+function _filesWithResolvedPath( caninicalSourcePathCountable )
+{
+  let result = new Set();
+  if( _.strIs( caninicalSourcePathCountable ) )
+  caninicalSourcePathCountable = [ caninicalSourcePathCountable ];
+  caninicalSourcePathCountable.forEach( ( sourcePath ) =>
+  {
+    let file = _.module.filesMap.get( sourcePath );
+    if( file )
+    result.add( file );
+  });
   return result;
 }
 
@@ -1582,10 +1598,14 @@ function _fileResolve( o )
     /* xxx : not optimal */
     try
     {
+      let r;
       if( _.path.isAbsolute( sourcePath ) )
-      return ModuleFileNative._resolveFilename( _.path.nativizeMinimal( sourcePath ), native, false, undefined );
+      r = ModuleFileNative._resolveFilename( _.path.nativizeMinimal( sourcePath ), native, false, undefined );
       else
-      return ModuleFileNative._resolveFilename( sourcePath, native, false, undefined );
+      r = ModuleFileNative._resolveFilename( sourcePath, native, false, undefined );
+      if( r )
+      r = _.path.normalize( r );
+      return r;
     }
     catch( err )
     {
@@ -2116,7 +2136,8 @@ var ModuleExtension =
   _fileUniversalDisassociateModules,
   _filesUniversalAssociateModule,
 
-  _filesWhichEnds,
+  // _filesWhichEnds,
+  _filesWithResolvedPath,
   _fileWithResolvedPath,
   fileWithResolvedPath,
   fileWith,
