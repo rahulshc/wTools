@@ -237,6 +237,7 @@ __.global = __.global || Object.create( null );
 __.module = __.module || Object.create( null );
 
 __.global._stack = __.global._stack || [];
+__.global.get = __.global.get || get;
 __.global.new = __.global.new || _new;
 __.global.open = __.global.open || open;
 __.global.close = __.global.close || close;

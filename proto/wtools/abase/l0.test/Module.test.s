@@ -1430,7 +1430,7 @@ main.after / lengthOf( filesMap ) 2
 
 //
 
-function predeclareMain( test )
+function predeclarePrime( test )
 {
   let context = this;
   let a = test.assetFor( false );
@@ -1444,6 +1444,14 @@ function predeclareMain( test )
   after({ includingWith : 'require', order : 'prt' }); /* predeclare, require, tools */
 
   return ready;
+
+  /* - */
+
+  function localsFrom( env )
+  {
+    _.assert( _.routineIs( _.global.get ) );
+    return _.mapExtend( null, env, { get : _.global.get } );
+  }
 
   /* - */
 
@@ -1486,9 +1494,9 @@ function predeclareMain( test )
     {
       test.case = `before, single level, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleBefore, locals : env });
-      a.program({ routine : single1, locals : env });
-      a.program({ routine : single2, locals : env });
+      var programPath = a.program({ routine : mainSingleBefore, locals : localsFrom( env ) });
+      a.program({ routine : single1, locals : localsFrom( env ) });
+      a.program({ routine : single2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1528,12 +1536,12 @@ orphans
     {
       test.case = `before, deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepBefore, locals : env });
-      a.program({ routine : deep1a, locals : env });
-      a.program({ routine : deep1b, locals : env });
-      a.program({ routine : deep1c, locals : env });
-      a.program({ routine : deep1d, locals : env });
-      a.program({ routine : deep1e, locals : env });
+      var programPath = a.program({ routine : mainDeepBefore, locals : localsFrom( env ) });
+      a.program({ routine : deep1a, locals : localsFrom( env ) });
+      a.program({ routine : deep1b, locals : localsFrom( env ) });
+      a.program({ routine : deep1c, locals : localsFrom( env ) });
+      a.program({ routine : deep1d, locals : localsFrom( env ) });
+      a.program({ routine : deep1e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1580,10 +1588,10 @@ orphans
     {
       test.case = `before, common sub file, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBeforeCommonSubFile, locals : env });
-      a.program({ routine : common, locals : env });
-      a.program({ routine : common1, locals : env });
-      a.program({ routine : common2, locals : env });
+      var programPath = a.program({ routine : mainBeforeCommonSubFile, locals : localsFrom( env ) });
+      a.program({ routine : common, locals : localsFrom( env ) });
+      a.program({ routine : common1, locals : localsFrom( env ) });
+      a.program({ routine : common2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1620,12 +1628,12 @@ orphans
     {
       test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBeforeCommonSubFileDeep, locals : env });
-      a.program({ routine : common, locals : env });
-      a.program({ routine : deep2a, locals : env });
-      a.program({ routine : deep2b, locals : env });
-      a.program({ routine : deep3a, locals : env });
-      a.program({ routine : deep3b, locals : env });
+      var programPath = a.program({ routine : mainBeforeCommonSubFileDeep, locals : localsFrom( env ) });
+      a.program({ routine : common, locals : localsFrom( env ) });
+      a.program({ routine : deep2a, locals : localsFrom( env ) });
+      a.program({ routine : deep2b, locals : localsFrom( env ) });
+      a.program({ routine : deep3a, locals : localsFrom( env ) });
+      a.program({ routine : deep3b, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1675,12 +1683,12 @@ orphans
     {
       test.case = `before, branching1, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingBefore1, locals : env });
-      a.program({ routine : branching1a, locals : env });
-      a.program({ routine : branching1b, locals : env });
-      a.program({ routine : branching2a, locals : env });
-      a.program({ routine : branching2b, locals : env });
-      a.program({ routine : branchingCommon, locals : env });
+      var programPath = a.program({ routine : mainBranchingBefore1, locals : localsFrom( env ) });
+      a.program({ routine : branching1a, locals : localsFrom( env ) });
+      a.program({ routine : branching1b, locals : localsFrom( env ) });
+      a.program({ routine : branching2a, locals : localsFrom( env ) });
+      a.program({ routine : branching2b, locals : localsFrom( env ) });
+      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1725,12 +1733,12 @@ orphans
     {
       test.case = `before, branching2, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingBefore2, locals : env });
-      a.program({ routine : branching1a, locals : env });
-      a.program({ routine : branching1b, locals : env });
-      a.program({ routine : branching2a, locals : env });
-      a.program({ routine : branching2b, locals : env });
-      a.program({ routine : branchingCommon, locals : env });
+      var programPath = a.program({ routine : mainBranchingBefore2, locals : localsFrom( env ) });
+      a.program({ routine : branching1a, locals : localsFrom( env ) });
+      a.program({ routine : branching1b, locals : localsFrom( env ) });
+      a.program({ routine : branching2a, locals : localsFrom( env ) });
+      a.program({ routine : branching2b, locals : localsFrom( env ) });
+      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1782,9 +1790,9 @@ orphans
     {
       test.case = `after, single, top first, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleAfterTopFirst, locals : env });
-      a.program({ routine : singleAfter1, locals : env });
-      a.program({ routine : singleAfter2, locals : env });
+      var programPath = a.program({ routine : mainSingleAfterTopFirst, locals : localsFrom( env ) });
+      a.program({ routine : singleAfter1, locals : localsFrom( env ) });
+      a.program({ routine : singleAfter2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1820,9 +1828,9 @@ orphans
     {
       test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleAfterBottomFirst, locals : env });
-      a.program({ routine : singleAfter1, locals : env });
-      a.program({ routine : singleAfter2, locals : env });
+      var programPath = a.program({ routine : mainSingleAfterBottomFirst, locals : localsFrom( env ) });
+      a.program({ routine : singleAfter1, locals : localsFrom( env ) });
+      a.program({ routine : singleAfter2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1858,12 +1866,12 @@ orphans
     {
       test.case = `after, deep, b, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepAfterB, locals : env });
-      a.program({ routine : deep11a, locals : env });
-      a.program({ routine : deep11b, locals : env });
-      a.program({ routine : deep11c, locals : env });
-      a.program({ routine : deep11d, locals : env });
-      a.program({ routine : deep11e, locals : env });
+      var programPath = a.program({ routine : mainDeepAfterB, locals : localsFrom( env ) });
+      a.program({ routine : deep11a, locals : localsFrom( env ) });
+      a.program({ routine : deep11b, locals : localsFrom( env ) });
+      a.program({ routine : deep11c, locals : localsFrom( env ) });
+      a.program({ routine : deep11d, locals : localsFrom( env ) });
+      a.program({ routine : deep11e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1903,12 +1911,12 @@ orphans
     {
       test.case = `after, deep, d, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepAfterD, locals : env });
-      a.program({ routine : deep11a, locals : env });
-      a.program({ routine : deep11b, locals : env });
-      a.program({ routine : deep11c, locals : env });
-      a.program({ routine : deep11d, locals : env });
-      a.program({ routine : deep11e, locals : env });
+      var programPath = a.program({ routine : mainDeepAfterD, locals : localsFrom( env ) });
+      a.program({ routine : deep11a, locals : localsFrom( env ) });
+      a.program({ routine : deep11b, locals : localsFrom( env ) });
+      a.program({ routine : deep11c, locals : localsFrom( env ) });
+      a.program({ routine : deep11d, locals : localsFrom( env ) });
+      a.program({ routine : deep11e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1948,10 +1956,10 @@ orphans
     {
       test.case = `after, common sub file, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainAfterCommonSubFile, locals : env });
-      a.program({ routine : common, locals : env });
-      a.program({ routine : common1, locals : env });
-      a.program({ routine : common2, locals : env });
+      var programPath = a.program({ routine : mainAfterCommonSubFile, locals : localsFrom( env ) });
+      a.program({ routine : common, locals : localsFrom( env ) });
+      a.program({ routine : common1, locals : localsFrom( env ) });
+      a.program({ routine : common2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1995,12 +2003,12 @@ orphans
     {
       test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainAfterCommonSubFileDeep, locals : env });
-      a.program({ routine : common, locals : env });
-      a.program({ routine : deep2a, locals : env });
-      a.program({ routine : deep2b, locals : env });
-      a.program({ routine : deep3a, locals : env });
-      a.program({ routine : deep3b, locals : env });
+      var programPath = a.program({ routine : mainAfterCommonSubFileDeep, locals : localsFrom( env ) });
+      a.program({ routine : common, locals : localsFrom( env ) });
+      a.program({ routine : deep2a, locals : localsFrom( env ) });
+      a.program({ routine : deep2b, locals : localsFrom( env ) });
+      a.program({ routine : deep3a, locals : localsFrom( env ) });
+      a.program({ routine : deep3b, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2050,12 +2058,12 @@ orphans
     {
       test.case = `after, branching1, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingAfter1, locals : env });
-      a.program({ routine : branching1a, locals : env });
-      a.program({ routine : branching1b, locals : env });
-      a.program({ routine : branching2a, locals : env });
-      a.program({ routine : branching2b, locals : env });
-      a.program({ routine : branchingCommon, locals : env });
+      var programPath = a.program({ routine : mainBranchingAfter1, locals : localsFrom( env ) });
+      a.program({ routine : branching1a, locals : localsFrom( env ) });
+      a.program({ routine : branching1b, locals : localsFrom( env ) });
+      a.program({ routine : branching2a, locals : localsFrom( env ) });
+      a.program({ routine : branching2b, locals : localsFrom( env ) });
+      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2098,12 +2106,12 @@ orphans
     {
       test.case = `after, branching2, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingAfter2, locals : env });
-      a.program({ routine : branching1a, locals : env });
-      a.program({ routine : branching1b, locals : env });
-      a.program({ routine : branching2a, locals : env });
-      a.program({ routine : branching2b, locals : env });
-      a.program({ routine : branchingCommon, locals : env });
+      var programPath = a.program({ routine : mainBranchingAfter2, locals : localsFrom( env ) });
+      a.program({ routine : branching1a, locals : localsFrom( env ) });
+      a.program({ routine : branching1b, locals : localsFrom( env ) });
+      a.program({ routine : branching2a, locals : localsFrom( env ) });
+      a.program({ routine : branching2b, locals : localsFrom( env ) });
+      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2991,7 +2999,7 @@ orphans
 
 }
 
-predeclareMain.timeOut = 60000;
+predeclarePrime.timeOut = 60000;
 
 //
 
@@ -4252,6 +4260,11 @@ programLocalsChanging.description =
 //
 
 /* xxx : duplicate test routine in module::wIntrospectorBasics */
+/* xxx : in module::wIntrospectorBasic evolve exporting of locas and cover it.
+  - make possible exporting of more complex structures
+  - make possible exporting into global
+*/
+
 function programOptionLocalsRoutines( test )
 {
   let context = this;
@@ -4273,7 +4286,7 @@ function programOptionLocalsRoutines( test )
       const tools = __;
       // const tools = _; /* xxx : use in introspector */
 
-      var locals = { a : 1 };
+      var locals = { a : 1, routine1 };
       var program1 = tools.program.write
       ({
         routine : programRoutine1,
@@ -4284,14 +4297,18 @@ function programOptionLocalsRoutines( test )
 
       return a.forkNonThrowing
       ({
-        execPath : [ program1.programPath, program2.programPath ],
+        execPath : program1.programPath,
         currentPath : program1.tempPath,
       });
     })
     .then( ( op ) =>
     {
       test.identical( op.exitCode, 0 );
-      var exp = `programRoutine1.local1.a : 1`;
+      var exp =
+`
+programRoutine1.a : 1
+routine1.a : 1
+`;
       test.equivalent( op.output, exp );
       return op;
     });
@@ -4303,6 +4320,7 @@ function programOptionLocalsRoutines( test )
   function programRoutine1()
   {
     console.log( `programRoutine1.a : ${a}` );
+    routine1();
   }
 
   /* - */
@@ -4639,8 +4657,9 @@ const Proto =
     preload,
     preloadIncludeModule,
 
+    /* xxx : rename predeclare -> declare */
     predeclareBasic,
-    predeclareMain,
+    predeclarePrime,
     predeclareRelative,
     predeclareAbsolute,
     predeclareRedeclaring,
