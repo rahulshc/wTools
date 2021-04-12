@@ -80,7 +80,6 @@ function is( src )
   return false;
   // if( !Reflect.has( src, 'constructor' ) )
   // return false;
-  // return src instanceof _.module.Module;
   return src[ ModuleSymbol ] === true;
 }
 
@@ -294,15 +293,6 @@ function _predeclaredWithEntryPath( entryPath )
   if( predeclaredModule )
   return predeclaredModule;
 }
-
-// //
-//
-// function _predeclaredWithEntryPathExact( entryPath )
-// {
-//   let predeclaredModule = _.module.predeclaredWithEntryPathMap.get( entryPath );
-//   if( predeclaredModule )
-//   return predeclaredModule;
-// }
 
 // --
 // file
@@ -1095,12 +1085,8 @@ function pathAmend_body( o )
     return;
 
     if( o.recursive >= 2 )
-    // while( _module.parent && _module.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     while( fileNativeParent( _module ) )
-    {
-      _module = fileNativeParent( _module );
-      // _module = _module.parent;
-    }
+    _module = fileNativeParent( _module );
 
     _children1( _module, paths, visited );
   }
@@ -1254,11 +1240,8 @@ function pathRemove_body( o )
     return;
 
     if( o.recursive >= 2 )
-    // while( _module.parent && _module.parent.id !== undefined ) /* rrr: replace with fileNativeParent */
     while( _.module.fileNativeParent( _module ) )
-    {
-      _module = _.module.fileNativeParent( _module );
-    }
+    _module = _.module.fileNativeParent( _module );
 
     _children1( _module, paths, visited );
   }
@@ -1444,7 +1427,7 @@ function resolve( moduleName )
 {
   let downPath = _.path.normalize( _.introspector.location({ level : 1 }).filePath );
   let basePath = _.path.dir( downPath );
-  /* qqq zzz : optimize for relase build for utility::starter */
+  /* qqq zzz : optimize for release build for utility::starter */
   let result = _.module._resolve
   ({
     basePath,
@@ -1743,28 +1726,12 @@ function includeFirst()
 
 //
 
-/* zzz : reimplement */
 function isIncluded( src )
 {
   if( _.module.modulesMap.has( src ) )
   return true;
   return false;
 }
-
-// function isIncluded( src )
-// {
-//   var descriptor = _.module.predeclaredWithNameMap.get( src );
-//
-//   if( !descriptor )
-//   return false;
-//
-//   if( !descriptor.isIncluded )
-//   {
-//     return false;
-//   }
-//
-//   return descriptor.isIncluded();
-// }
 
 // --
 // setup
@@ -2022,8 +1989,6 @@ function _Setup()
     while( _.module.fileNativeParent( rootFileNative ) )
     rootFileNative = _.module.fileNativeParent( rootFileNative );
     _.module.rootFileNative = rootFileNative;
-    // while( _.module.rootFileNative.parent && _.module.rootFileNative.parent.id !== undefined )
-    // _.module.rootFileNative = _.module.rootFileNative.parent;
   }
 
   if( !_.module.nativeFilesMap )
@@ -2033,7 +1998,7 @@ function _Setup()
   return;
   _.module._setupRequireDone = 1;
 
-  // /* qqq zzz : remove that if-return branch */
+  // /* qqq xxx : remove that if-return branch */
   // if( _global_.Config.interpreter === 'browser' )
   // return;
 
@@ -2109,7 +2074,7 @@ Object.defineProperty( ModuleFile.prototype, 'returned',
   enumerable : true,
   configurable : true,
   get : moduleFileReturnedGet,
-  // set : _returnedSet, /* zzz : uncomment later */
+  // set : _returnedSet, /* qqq : uncomment later and write test */
 });
 
 // --
@@ -2135,7 +2100,6 @@ var ModuleExtension =
   predeclare,
   predeclareAll,
   _predeclaredWithEntryPath,
-  // _predeclaredWithEntryPathExact,
 
   // file
 
@@ -2188,8 +2152,6 @@ var ModuleExtension =
   includeFirst,
 
   isIncluded,
-
-  // etc
 
   // setup
 
