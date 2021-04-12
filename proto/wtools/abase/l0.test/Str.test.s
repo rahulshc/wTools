@@ -24468,9 +24468,9 @@ function strShortHeightOptionDelimeter( test )
 //     let [ resultLeft, resultRigth, resultCenter ] = act2();
 //     var time2 = _.time.now();
 //     took += time2 - time1;
-//     test.identical( resultLeft, 'cc'+'cdd'+'dd' );
-//     test.identical( resultRigth, 'abb' );
-//     test.identical( resultCenter, 'add'+'dd' );
+//     test.identical( resultLeft.result, 'cc'+'cdd'+'dd' );
+//     test.identical( resultRigth.result, 'abb' );
+//     test.identical( resultCenter.result, 'add'+'dd' );
 //   }
 
 //   console.log( `String length = ${stringSize}, iterations = ${times}` );
@@ -24498,9 +24498,9 @@ function strShortHeightOptionDelimeter( test )
 //     let [ resultLeft, resultRigth, resultCenter ] = act2();
 //     var time2 = _.time.now();
 //     took += time2 - time1;
-//     test.identical( resultLeft, 'cc'+'cdd'+'dd' );
-//     test.identical( resultRigth, 'abb' );
-//     test.identical( resultCenter, 'add'+'dd' );
+//     test.identical( resultLeft.result, 'cc'+'cdd'+'dd' );
+//     test.identical( resultRigth.result, 'abb' );
+//     test.identical( resultCenter.result, 'add'+'dd' );
 //   }
 
 //   console.log( `String length = ${stringSize}, iterations = ${times}` );
@@ -24512,9 +24512,9 @@ function strShortHeightOptionDelimeter( test )
 
 //   function act() /* existing implementation with fixed 'center' cutting */
 //   {
-//     let result1 = _.strShort_2({ src : string, onLength, widthLimit : 2, cutting : 'left' });
-//     let result2 = _.strShort_2({ src : string, onLength, widthLimit : 2, cutting : 'right' });
-//     let result3 = _.strShort_2({ src : string, onLength, widthLimit : 2, cutting : 'center' });
+//     let result1 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'left' });
+//     let result2 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'right' });
+//     let result3 = _.strShort({ src : string, onLength, widthLimit : 2, cutting : 'center' });
 
 //     return [ result1, result2, result3 ];
 //   }
@@ -24676,6 +24676,7 @@ const Proto =
     strShortHeight,
     strShortHeightOptionCutting,
     strShortHeightOptionDelimeter,
+    // strShort_Performance,
 
   }
 

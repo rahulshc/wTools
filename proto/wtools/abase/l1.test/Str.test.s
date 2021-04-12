@@ -10981,8 +10981,6 @@ const Proto =
 
     strForRange,
 
-    // strShort_Performance,
-
     // transformer
 
     strCapitalize,
