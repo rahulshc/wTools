@@ -1,4 +1,4 @@
-( function _LongLike_test_s_() {
+( function _ContainerAdapterRelated_test_s_() {
 
 'use strict';
 
@@ -6,7 +6,7 @@ if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
   _.include( 'wTesting' );
-  _.include( 'wSelector' );
+  // _.include( 'wSelector' );
 }
 
 const _ = _global_.wTools;
@@ -235,7 +235,7 @@ const Proto =
 
   name : 'Tools.LongLike',
   silencing : 1,
-  enabled : 0,
+  enabled : 0, /* qqq : for Dmytro : ?? */
 
   tests :
   {

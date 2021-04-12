@@ -11,14 +11,11 @@ const _global = _global_;
 
 if( _global_.__GLOBAL_NAME__ === 'real' )
 {
-
-  // if( _global_.wBase )
   if( _global_.wTools && _global_.wTools.Module )
   {
     debugger;
     throw new Error( 'module::wTools was included several times' );
   }
-
 }
 
 // setup current global namespace
@@ -32,12 +29,12 @@ Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
 
 // name conflict
 
-if( _global_.__GLOBAL_NAME__ === 'real' )
-if( _global_._ )
-{
-  _global_.Underscore = _global_._;
-  delete _global_._;
-}
+// if( _global_.__GLOBAL_NAME__ === 'real' )
+// if( _global_._ )
+// {
+//   _global_.Underscore = _global_._;
+//   delete _global_._;
+// }
 
 // special tokens
 
@@ -86,8 +83,11 @@ _realGlobal_.HashMapWeak = WeakMap;
 // export
 // --
 
-_global[ 'wTools' ] = Self;
+// _global[ 'wTools' ] = Self;
 _global.wTools = Self;
 // _global.wBase = Self;
+
+// if( typeof module !== 'undefined' )
+// module[ 'exports' ] = Self;
 
 })();

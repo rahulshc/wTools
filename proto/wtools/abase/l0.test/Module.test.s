@@ -6,6 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
+  // _.include( 'wSelector' );
   _.include( 'wTesting' );
 }
 
@@ -71,7 +72,7 @@ function modulePredeclareBasic( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
   }
@@ -79,7 +80,7 @@ function modulePredeclareBasic( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( _ToolsPath_ );
+    const _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.predeclare
     ({
@@ -128,7 +129,7 @@ function modulePredeclareBasic2( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
   }
@@ -136,7 +137,7 @@ function modulePredeclareBasic2( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( _ToolsPath_ );
+    const _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.predeclare
     ({
@@ -183,7 +184,7 @@ function moduleExportsUndefined( test )
   function program1()
   {
     console.log( 'program1.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     var importedModule = require( './module.js' );
     console.log( 'importedModule:', importedModule)
     console.log( 'program1.end' );
@@ -317,7 +318,7 @@ function modulingLogistic( test )
     'proto/node_modules/wTesting',
     'proto/wtools/atop/testing/entry/Main.s',
     'proto/wtools/atop/testing/include/Top.s',
-    'proto/wtools/abase/l0/l0/Global.s',
+    'proto/wtools/abase/l0/l0/l0/Global.s',
   ]
   // var exp = [ 'testing/entry/Main.s', 'testing/include/Top.s' ] ;
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
@@ -329,17 +330,17 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.lengthOf( module.files ), 100 );
-  test.identical( _.lengthOf( module.files ), 171 );
+  test.identical( _.lengthOf( module.files ), 173 );
   test.identical( _.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
-  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
-  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) ) );
+  test.true( _.module.filesMap.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
+  test.true( module.files.has( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) ) );
   var module2 = _.module.withName( 'wTools' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtools' );
   test.true( module === module2 );
-  log( __.path.join( toolsDirPath, 'abase/l0/l0/Global.s' ) );
+  log( __.path.join( toolsDirPath, 'abase/l0/l0/l0/Global.s' ) );
 
   test.identical( _.lengthOf( _.module._modulesToPredeclare ), 0 );
   test.ge( _.lengthOf( _.module.modulesMap ), 4 );
@@ -363,7 +364,7 @@ function modulingLogistic( test )
 
     ready.then( () =>
     {
-      test.case = `external program, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `external program, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( program1 );
 
@@ -382,9 +383,9 @@ function modulingLogistic( test )
 `
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 2
-lengthOf( predeclaredWithEntryPathMap ) 1
+lengthOf( predeclaredWithEntryPathMap ) 2
 lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
-lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files )}
+lengthOf( filesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).files ) + 1}
 module.fileIs( moduleFile ) true
 module.fileUniversalIs( moduleFile ) true
 module.fileNativeIs( moduleFile ) false
@@ -399,7 +400,7 @@ filesOfTesting
   ${ __.path.join( _.module.resolve( 'wTesting' ), '.' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/entry/Main.s' ) }
   ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/atop/testing/include/Top.s' ) }
-  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/Global.s' ) }
+  ${ __.path.join( _.module.resolve( 'wTesting' ), '../../wtools/abase/l0/l0/l0/Global.s' ) }
 lengthOf( _modulesToPredeclare ) 0
 lengthOf( predeclaredWithNameMap ) 4
 lengthOf( predeclaredWithEntryPathMap ) 3
@@ -418,7 +419,7 @@ modulesMap wTools wTools wTesting wTesting
 
   function program1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     console.log( 'lengthOf( _modulesToPredeclare )', _.lengthOf( _.module._modulesToPredeclare ) );
@@ -497,7 +498,7 @@ function modulingNativeIncludeErrors( test )
 
     ready.then( () =>
     {
-      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainThrowing );
       a.program( throwing1 )
@@ -530,7 +531,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `throwing, catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, catching ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainThrowingCatching );
       a.program( throwing1 )
@@ -565,7 +566,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `syntax error ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `syntax error ${__.entity.exportStringSolo( env )}`;
 
       let syntax1 =
       `
@@ -605,7 +606,7 @@ throwing1`
 
     ready.then( () =>
     {
-      test.case = `syntax error catching ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `syntax error catching ${__.entity.exportStringSolo( env )}`;
 
       let syntax1 =
       `
@@ -652,7 +653,7 @@ fileWith( syntax1 ) : undefined
   function mainThrowing()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     require( './throwing1' );
   }
 
@@ -661,7 +662,7 @@ fileWith( syntax1 ) : undefined
   function mainThrowingCatching()
   {
     console.log( 'main.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     try
     {
       require( './throwing1' );
@@ -688,7 +689,7 @@ fileWith( syntax1 ) : undefined
   function mainSyntax()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     require( './syntax1' );
   }
 
@@ -697,7 +698,7 @@ fileWith( syntax1 ) : undefined
   function mainSyntaxCatching()
   {
     console.log( 'main.begin' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     try
     {
       require( './syntax1' );
@@ -860,7 +861,7 @@ program0.end
 
   function _program1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'program1.begin' );
 
     var moduleFile = _.module.fileWithResolvedPath( __dirname + '/_program0' );
@@ -976,7 +977,7 @@ function modulingGlobalNamespaces( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : program1, locals : _.mapExtend( null, env ) });
       a.program({ routine : program2, locals : _.mapExtend( null, env ) });
@@ -1291,7 +1292,7 @@ function predeclareBasic( test )
 
     ready.then( () =>
     {
-      test.case = `predeclare before, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `predeclare before, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main );
 
@@ -1317,14 +1318,14 @@ function predeclareBasic( test )
       var exp =
 `
 main.before / lengthOf( predeclaredWithNameMap ) 2
-main.before / lengthOf( predeclaredWithEntryPathMap ) 1
+main.before / lengthOf( predeclaredWithEntryPathMap ) 2
 main.before / lengthOf( modulesMap ) ${_.lengthOf( _.module.withName( 'wTools' ).alias )}
 main.before / filesMap but tools.files
   ${a.abs( 'main' ) }
 main.mid / predeclared.program1 : Module.constructible
 main.mid / predeclared.program2 : Module.constructible
 main.mid / lengthOf( predeclaredWithNameMap ) 4
-main.mid / lengthOf( predeclaredWithEntryPathMap ) 3
+main.mid / lengthOf( predeclaredWithEntryPathMap ) 4
 main.mid / lengthOf( modulesMap ) 2
 main.mid / lengthOf( filesMap ) 0
 main.mid / isIncluded( Program1 ) false
@@ -1342,7 +1343,7 @@ Program2
 orphans
   ${a.abs( 'main' )}
 main.after / lengthOf( predeclaredWithNameMap ) 4
-main.after / lengthOf( predeclaredWithEntryPathMap ) 3
+main.after / lengthOf( predeclaredWithEntryPathMap ) 4
 main.after / lengthOf( modulesMap ) 4
 main.after / lengthOf( filesMap ) 2
 `
@@ -1359,7 +1360,7 @@ main.after / lengthOf( filesMap ) 2
 
   function main()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     let wasFilesMap = _.lengthOf( _.module.filesMap );
 
@@ -1408,7 +1409,7 @@ main.after / lengthOf( filesMap ) 2
 
   function program1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program1 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program1 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
     require( '../program2' );
@@ -1418,7 +1419,7 @@ main.after / lengthOf( filesMap ) 2
 
   function program2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program2 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program2 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
   }
@@ -1453,7 +1454,7 @@ function predeclareMain( test )
 
     ready.then( () =>
     {
-      test.case = `same entry path for both modules, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `same entry path for both modules, ${__.entity.exportStringSolo( env )}`;
       var programPath = a.program( mainMultipleDeclare );
       a.program( common );
       return a.forkNonThrowing
@@ -1483,7 +1484,7 @@ function predeclareMain( test )
 
     ready.then( () =>
     {
-      test.case = `before, single level, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, single level, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleBefore, locals : _.mapExtend( null, env ) });
       a.program({ routine : single1, locals : _.mapExtend( null, env ) });
@@ -1525,7 +1526,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepBefore, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep1a, locals : _.mapExtend( null, env ) });
@@ -1577,7 +1578,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, common sub file, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, common sub file, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBeforeCommonSubFile, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1617,7 +1618,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBeforeCommonSubFileDeep, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1672,7 +1673,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, branching1, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, branching1, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingBefore1, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -1722,7 +1723,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `before, branching2, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `before, branching2, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingBefore2, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -1779,7 +1780,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, single, top first, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, single, top first, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleAfterTopFirst, locals : _.mapExtend( null, env ) });
       a.program({ routine : singleAfter1, locals : _.mapExtend( null, env ) });
@@ -1817,7 +1818,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainSingleAfterBottomFirst, locals : _.mapExtend( null, env ) });
       a.program({ routine : singleAfter1, locals : _.mapExtend( null, env ) });
@@ -1855,7 +1856,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, deep, b, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, deep, b, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepAfterB, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep11a, locals : _.mapExtend( null, env ) });
@@ -1900,7 +1901,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, deep, d, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, deep, d, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainDeepAfterD, locals : _.mapExtend( null, env ) });
       a.program({ routine : deep11a, locals : _.mapExtend( null, env ) });
@@ -1945,7 +1946,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, common sub file, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, common sub file, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainAfterCommonSubFile, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -1992,7 +1993,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainAfterCommonSubFileDeep, locals : _.mapExtend( null, env ) });
       a.program({ routine : common, locals : _.mapExtend( null, env ) });
@@ -2047,7 +2048,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, branching1, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, branching1, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingAfter1, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -2095,7 +2096,7 @@ orphans
 
     ready.then( () =>
     {
-      test.case = `after, branching2, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `after, branching2, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : mainBranchingAfter2, locals : _.mapExtend( null, env ) });
       a.program({ routine : branching1a, locals : _.mapExtend( null, env ) });
@@ -2147,7 +2148,7 @@ orphans
 
   function mainSingleBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Single1', __dirname + '/single1' );
@@ -2182,7 +2183,7 @@ orphans
 
   function single1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'single1 / isIncluded( Single1 )', _.module.isIncluded( 'Single1' ) );
     console.log( 'single1 / isIncluded( Single2 )', _.module.isIncluded( 'Single2' ) );
 
@@ -2197,7 +2198,7 @@ orphans
 
   function single2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'single2 / isIncluded( Single1 )', _.module.isIncluded( 'Single1' ) );
     console.log( 'single2 / isIncluded( Single2 )', _.module.isIncluded( 'Single2' ) );
   }
@@ -2223,7 +2224,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Single1' ] = { entryPath : __dirname + '/singleAfter1' };
@@ -2270,7 +2286,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Single2' ] = { entryPath : __dirname + '/singleAfter2/' };
@@ -2315,7 +2346,7 @@ orphans
 
   function mainDeepBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Deep1b', __dirname + '/deep1b' );
@@ -2342,7 +2373,7 @@ orphans
 
   function deep1a()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1a / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1a / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2357,7 +2388,7 @@ orphans
 
   function deep1b()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1b / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1b / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2369,7 +2400,7 @@ orphans
 
   function deep1c()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1c / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1c / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2384,7 +2415,7 @@ orphans
 
   function deep1d()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1d / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1d / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
 
@@ -2396,7 +2427,7 @@ orphans
 
   function deep1e()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'deep1e / isIncluded( Deep1b )', _.module.isIncluded( 'Deep1b' ) );
     console.log( 'deep1e / isIncluded( Deep1d )', _.module.isIncluded( 'Deep1d' ) );
   }
@@ -2422,7 +2453,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep1b' ] = { entryPath : __dirname + '/deep11b' };
@@ -2464,7 +2510,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep1d' ] = { entryPath : __dirname + '/deep11d' };
@@ -2528,7 +2589,7 @@ orphans
 
   function mainMultipleDeclare()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Common1', __dirname + '/common' );
@@ -2540,7 +2601,7 @@ orphans
 
   function mainBeforeCommonSubFile()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Common1', __dirname + '/common1' );
@@ -2589,7 +2650,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Common1' ] = { entryPath : __dirname + '/common1' };
@@ -2648,7 +2724,7 @@ orphans
 
   function mainBeforeCommonSubFileDeep()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Deep2', __dirname + '/deep2a' );
@@ -2706,7 +2782,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Deep2' ] = { entryPath : __dirname + '/deep2a' };
@@ -2779,7 +2870,7 @@ orphans
 
   function mainBranchingBefore1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Branching1', __dirname + '/branching1a' );
@@ -2814,7 +2905,7 @@ orphans
 
   function mainBranchingBefore2()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
 
     _.module.predeclare( 'Branching1', __dirname + '/branching1a' );
@@ -2868,7 +2959,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Branching1' ] = { entryPath : __dirname + '/branching1a' };
@@ -2913,7 +3019,22 @@ orphans
     }
     else if( order === 'prt' )
     {
-      _ = globalThis.wTools = globalThis.wTools || Object.create( null );
+
+      let g = undefined;
+      if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+      g = _global_;
+      else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+      g = globalThis;
+      else if( typeof Global !== 'undefined' && Global.Global === Global )
+      g = Global;
+      else if( typeof global !== 'undefined' && global.global === global )
+      g = global;
+      else if( typeof window !== 'undefined' && window.window === window )
+      g = window;
+      else if( typeof self   !== 'undefined' && self.self === self )
+      g = self;
+
+      _ = g.wTools = g.wTools || Object.create( null );
       _.module = _.module || Object.create( null );
       _.module._modulesToPredeclare = _.module._modulesToPredeclare || Object.create( null );
       _.module._modulesToPredeclare[ 'Branching1' ] = { entryPath : __dirname + '/branching1a' };
@@ -3003,7 +3124,7 @@ function predeclareRelative( test )
 
     ready.then( () =>
     {
-      test.case = `full relative path, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `full relative path, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainWithFullPath );
       a.program
@@ -3034,7 +3155,7 @@ module1
 
     ready.then( () =>
     {
-      test.case = `require name, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `require name, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainWithRequireName );
       a.program
@@ -3069,7 +3190,7 @@ module1
 
   function mainWithFullPath()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : __dirname + '/node_modules/module1' } );
@@ -3116,7 +3237,7 @@ function predeclareAbsolute( test )
 
     ready.then( () =>
     {
-      test.case = `assumption, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `assumption, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainAssuption );
       a.program
@@ -3147,7 +3268,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainProperCasedModule );
       a.program
@@ -3178,7 +3299,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `upper cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `upper cased module, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainUpperCasedModule );
       a.program
@@ -3209,7 +3330,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `lower cased module, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `lower cased module, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainLowerCasedModule );
       a.program
@@ -3240,7 +3361,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `upper cased include, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `upper cased include, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainUpperCaseInclude );
       a.program
@@ -3271,7 +3392,7 @@ file1
 
     ready.then( () =>
     {
-      test.case = `relative, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `relative, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( mainRelative );
       a.program
@@ -3314,7 +3435,7 @@ file1
 
   function mainProperCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3325,7 +3446,7 @@ file1
 
   function mainUpperCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3336,7 +3457,7 @@ file1
 
   function mainLowerCasedModule()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : 'file1' } );
@@ -3347,7 +3468,7 @@ file1
 
   function mainUpperCaseInclude()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.include( 'FILE1' );
@@ -3357,7 +3478,7 @@ file1
 
   function mainRelative()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main' );
     _.module.predeclare({ name : 'Mod1', entryPath : './dir1/file1' } );
@@ -3405,7 +3526,7 @@ function predeclareRedeclaring( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main1 );
       a.program( file1 );
@@ -3459,7 +3580,7 @@ file2
   function main1()
   {
     console.log( 'main' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     _.module.predeclare
     ({
@@ -3498,7 +3619,7 @@ file2
   function file2()
   {
     console.log( 'file2' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     require( './file1' );
 
@@ -3542,7 +3663,7 @@ function predeclareRedeclaringSharedFile( test )
 
     ready.then( () =>
     {
-      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
       a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 0 } ) });
@@ -3600,7 +3721,7 @@ file2
 
     ready.then( () =>
     {
-      test.case = `without redeclaring, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program({ routine : module1, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
       a.program({ routine : module2, locals : _.mapExtend( null, env, { withRedeclaring : 1 } ) });
@@ -3667,7 +3788,7 @@ file3
   function module1()
   {
     console.log( 'module1' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     _.module.predeclare
     ({
@@ -3744,7 +3865,7 @@ file3
   function file3()
   {
     console.log( 'file3' );
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     require( './file1' );
 
@@ -3798,7 +3919,7 @@ function moduleIsIncluded( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       let program = __.program.write
       ({
@@ -3836,7 +3957,7 @@ isIncluded( wlooker ) true
 
   function _programWithRequire()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'wLooker' );
@@ -3848,7 +3969,7 @@ isIncluded( wlooker ) true
 
   function _programWithIncludeLower()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'wlooker' );
@@ -3860,7 +3981,7 @@ isIncluded( wlooker ) true
 
   function _programWithIncludeUpper()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( 'isIncluded( wLooker )', _.module.isIncluded( 'wLooker' ) );
     console.log( 'isIncluded( wlooker )', _.module.isIncluded( 'wlooker' ) );
     _.include( 'WLOOKER' );
@@ -3893,7 +4014,7 @@ function moduleResolveFromAnotherGlobal( test )
 
     ready.then( () =>
     {
-      test.case = `throwing, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `throwing, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( main1 );
 
@@ -3927,7 +4048,7 @@ __.module.resolve( Main1 ) : ${ a.abs( 'main1' ) }
 
   function main1()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let __ = _.include( 'wTesting' );
 
     _.module.predeclare
@@ -3986,7 +4107,7 @@ function programWriteOptionWithSubmodule( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       let program = __.program.write
       ({
@@ -4019,7 +4140,7 @@ function programWriteOptionWithSubmodule( test )
 
   function mainRegisterBefore()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let ModuleFileNative = require( 'module' );
     console.log( 'main / before / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'main / before / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
@@ -4032,7 +4153,7 @@ function programWriteOptionWithSubmodule( test )
 
   function program1()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program1 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program1 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
     require( '../program2' );
@@ -4042,7 +4163,7 @@ function programWriteOptionWithSubmodule( test )
 
   function program2()
   {
-    let _ = wTools;
+    const _ = _global_.wTools;
     console.log( 'program2 / isIncluded( Program1 )', _.module.isIncluded( 'Program1' ) );
     console.log( 'program2 / isIncluded( Program2 )', _.module.isIncluded( 'Program2' ) );
   }
@@ -4070,7 +4191,7 @@ function programInheritedModuleFilePaths( test )
 
     ready.then( () =>
     {
-      test.case = `basic, ${__.entity.exportStringSolo( env, { level : 1 } )}`;
+      test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       var programPath = a.program( program1 );
       a.program( program2 );
@@ -4435,6 +4556,7 @@ const Proto =
 
   name : 'Tools.Module',
   silencing : 1,
+  routineTimeOut : 30000,
 
   onSuiteBegin,
   onSuiteEnd,
@@ -4482,6 +4604,11 @@ const Proto =
   }
 
 }
+
+/*
+xxx : test to include file which does not exist to reproduce problem of throwing assert:
+_.assert( native === moduleFile.native );
+*/
 
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )

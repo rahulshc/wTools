@@ -21,7 +21,7 @@ const _ObjectToString = Object.prototype.toString;
 const _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 const _longSlice = _.longSlice;
-let strType = _.entity.strType;
+const strType = _.entity.strType;
 
 // --
 // checker

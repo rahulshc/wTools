@@ -184,12 +184,14 @@ module:
           - ../proto/wtools/abase/Layer1.s
           - ../proto/wtools/abase/l0
           - ../proto/wtools/abase/l0/l0
-          - ../proto/wtools/abase/l0/l0/Global.s
+          - ../proto/wtools/abase/l0/l0/l0
+          - ../proto/wtools/abase/l0/l0/l0/Global.s
+          - ../proto/wtools/abase/l0/l0/l3
+          - ../proto/wtools/abase/l0/l0/l3/Config.s
+          - ../proto/wtools/abase/l0/l0/l3/Predefined.s
+          - ../proto/wtools/abase/l0/l0/l5
+          - ../proto/wtools/abase/l0/l0/l5/Setup.s
           - ../proto/wtools/abase/l0/l1
-          - ../proto/wtools/abase/l0/l1/Config.s
-          - ../proto/wtools/abase/l0/l1/Predefined.s
-          - ../proto/wtools/abase/l0/l2
-          - ../proto/wtools/abase/l0/l2/Setup.s
           - ../proto/wtools/abase/l0/l3
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
@@ -243,7 +245,6 @@ module:
           - ../proto/wtools/abase/l0/l3/Units.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
           - ../proto/wtools/abase/l0/l3/Vector.s
-          - ../proto/wtools/abase/l0/l4
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
@@ -296,64 +297,65 @@ module:
           - ../proto/wtools/abase/l0/l5/Unroll.s
           - ../proto/wtools/abase/l0/l5/Vector.s
           - ../proto/wtools/abase/l0/l6
-          - ../proto/wtools/abase/l0/l6/LongDescriptor.s
+          - ../proto/wtools/abase/l0/l6/l1
+          - ../proto/wtools/abase/l0/l6/l1/LongDescriptor.s
+          - ../proto/wtools/abase/l0/l6/l3
+          - ../proto/wtools/abase/l0/l6/l3/Compose.s
+          - ../proto/wtools/abase/l0/l6/l3/LongContext.s
+          - ../proto/wtools/abase/l0/l6/l3/PropertyTransformers.s
           - ../proto/wtools/abase/l0/l7
-          - ../proto/wtools/abase/l0/l7/Compose.s
-          - ../proto/wtools/abase/l0/l7/LongContext.s
-          - ../proto/wtools/abase/l0/l7/PropertyTransformers.s
+          - ../proto/wtools/abase/l0/l7/ArgumentsArray.s
+          - ../proto/wtools/abase/l0/l7/Array.s
+          - ../proto/wtools/abase/l0/l7/ArraySet.s
+          - ../proto/wtools/abase/l0/l7/Auxiliary.s
+          - ../proto/wtools/abase/l0/l7/BigInt.s
+          - ../proto/wtools/abase/l0/l7/Bool.s
+          - ../proto/wtools/abase/l0/l7/Buffer.s
+          - ../proto/wtools/abase/l0/l7/Constructible.s
+          - ../proto/wtools/abase/l0/l7/Container.s
+          - ../proto/wtools/abase/l0/l7/Countable.s
+          - ../proto/wtools/abase/l0/l7/Ct.s
+          - ../proto/wtools/abase/l0/l7/Date.s
+          - ../proto/wtools/abase/l0/l7/Diagnostic.s
+          - ../proto/wtools/abase/l0/l7/Entity.s
+          - ../proto/wtools/abase/l0/l7/Err.s
+          - ../proto/wtools/abase/l0/l7/Escape.s
+          - ../proto/wtools/abase/l0/l7/Event.s
+          - ../proto/wtools/abase/l0/l7/Functional.s
+          - ../proto/wtools/abase/l0/l7/Fuzzy.s
+          - ../proto/wtools/abase/l0/l7/Global.s
+          - ../proto/wtools/abase/l0/l7/HashMap.s
+          - ../proto/wtools/abase/l0/l7/Interval.s
+          - ../proto/wtools/abase/l0/l7/Intervalc.s
+          - ../proto/wtools/abase/l0/l7/Intervall.s
+          - ../proto/wtools/abase/l0/l7/Intervalo.s
+          - ../proto/wtools/abase/l0/l7/Introspector.s
+          - ../proto/wtools/abase/l0/l7/Long.s
+          - ../proto/wtools/abase/l0/l7/Map.s
+          - ../proto/wtools/abase/l0/l7/Module.s
+          - ../proto/wtools/abase/l0/l7/Number.s
+          - ../proto/wtools/abase/l0/l7/Object.s
+          - ../proto/wtools/abase/l0/l7/Pair.s
+          - ../proto/wtools/abase/l0/l7/Path.s
+          - ../proto/wtools/abase/l0/l7/Primitive.s
+          - ../proto/wtools/abase/l0/l7/Printer.s
+          - ../proto/wtools/abase/l0/l7/Process.s
+          - ../proto/wtools/abase/l0/l7/Property.s
+          - ../proto/wtools/abase/l0/l7/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l7/Prototype.s
+          - ../proto/wtools/abase/l0/l7/Regexp.s
+          - ../proto/wtools/abase/l0/l7/Routine.s
+          - ../proto/wtools/abase/l0/l7/Set.s
+          - ../proto/wtools/abase/l0/l7/Sorted.s
+          - ../proto/wtools/abase/l0/l7/Str.s
+          - ../proto/wtools/abase/l0/l7/Symbol.s
+          - ../proto/wtools/abase/l0/l7/Time.s
+          - ../proto/wtools/abase/l0/l7/Type.s
+          - ../proto/wtools/abase/l0/l7/Units.s
+          - ../proto/wtools/abase/l0/l7/Unroll.s
+          - ../proto/wtools/abase/l0/l7/Vector.s
           - ../proto/wtools/abase/l0/l8
-          - ../proto/wtools/abase/l0/l8/ArgumentsArray.s
-          - ../proto/wtools/abase/l0/l8/Array.s
-          - ../proto/wtools/abase/l0/l8/ArraySet.s
-          - ../proto/wtools/abase/l0/l8/Auxiliary.s
-          - ../proto/wtools/abase/l0/l8/BigInt.s
-          - ../proto/wtools/abase/l0/l8/Bool.s
-          - ../proto/wtools/abase/l0/l8/Buffer.s
-          - ../proto/wtools/abase/l0/l8/Constructible.s
-          - ../proto/wtools/abase/l0/l8/Container.s
-          - ../proto/wtools/abase/l0/l8/Countable.s
-          - ../proto/wtools/abase/l0/l8/Ct.s
-          - ../proto/wtools/abase/l0/l8/Date.s
-          - ../proto/wtools/abase/l0/l8/Diagnostic.s
-          - ../proto/wtools/abase/l0/l8/Entity.s
-          - ../proto/wtools/abase/l0/l8/Err.s
-          - ../proto/wtools/abase/l0/l8/Escape.s
-          - ../proto/wtools/abase/l0/l8/Event.s
-          - ../proto/wtools/abase/l0/l8/Functional.s
-          - ../proto/wtools/abase/l0/l8/Fuzzy.s
-          - ../proto/wtools/abase/l0/l8/Global.s
-          - ../proto/wtools/abase/l0/l8/HashMap.s
-          - ../proto/wtools/abase/l0/l8/Interval.s
-          - ../proto/wtools/abase/l0/l8/Intervalc.s
-          - ../proto/wtools/abase/l0/l8/Intervall.s
-          - ../proto/wtools/abase/l0/l8/Intervalo.s
-          - ../proto/wtools/abase/l0/l8/Introspector.s
-          - ../proto/wtools/abase/l0/l8/Long.s
-          - ../proto/wtools/abase/l0/l8/Map.s
-          - ../proto/wtools/abase/l0/l8/Module.s
-          - ../proto/wtools/abase/l0/l8/Number.s
-          - ../proto/wtools/abase/l0/l8/Object.s
-          - ../proto/wtools/abase/l0/l8/Pair.s
-          - ../proto/wtools/abase/l0/l8/Path.s
-          - ../proto/wtools/abase/l0/l8/Primitive.s
-          - ../proto/wtools/abase/l0/l8/Printer.s
-          - ../proto/wtools/abase/l0/l8/Process.s
-          - ../proto/wtools/abase/l0/l8/Property.s
-          - ../proto/wtools/abase/l0/l8/PropertyTransformer.s
-          - ../proto/wtools/abase/l0/l8/Prototype.s
-          - ../proto/wtools/abase/l0/l8/Regexp.s
-          - ../proto/wtools/abase/l0/l8/Routine.s
-          - ../proto/wtools/abase/l0/l8/Set.s
-          - ../proto/wtools/abase/l0/l8/Sorted.s
-          - ../proto/wtools/abase/l0/l8/Str.s
-          - ../proto/wtools/abase/l0/l8/Symbol.s
-          - ../proto/wtools/abase/l0/l8/Time.s
-          - ../proto/wtools/abase/l0/l8/Type.s
-          - ../proto/wtools/abase/l0/l8/Units.s
-          - ../proto/wtools/abase/l0/l8/Unroll.s
-          - ../proto/wtools/abase/l0/l8/Vector.s
-          - ../proto/wtools/abase/l0/l9
-          - ../proto/wtools/abase/l0/l9/Setup.s
+          - ../proto/wtools/abase/l0/l8/Setup.s
           - ../proto/wtools/abase/l0.test
           - ../proto/wtools/abase/l0.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0.test/Array.test.s
@@ -365,8 +367,6 @@ module:
           - ../proto/wtools/abase/l0.test/Class.test.s
           - ../proto/wtools/abase/l0.test/Constructible.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
-          - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
-          - ../proto/wtools/abase/l0.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l0.test/Countable.test.s
           - ../proto/wtools/abase/l0.test/Ct.test.s
           - ../proto/wtools/abase/l0.test/Date.test.s
@@ -410,14 +410,20 @@ module:
           - ../proto/wtools/abase/l0.test/Unroll.test.s
           - ../proto/wtools/abase/l0.test/Vector.test.s
           - ../proto/wtools/abase/l1
+          - ../proto/wtools/abase/l1/Collection.s
           - ../proto/wtools/abase/l1/ContainerAdapter.s
           - ../proto/wtools/abase/l1/ContainerAdapterArray.s
           - ../proto/wtools/abase/l1/ContainerAdapterSet.s
           - ../proto/wtools/abase/l1/ModulesRegistry.s
           - ../proto/wtools/abase/l1/NameTools.s
           - ../proto/wtools/abase/l1/StrBasic.s
+          - ../proto/wtools/abase/l1/Trie.s
           - ../proto/wtools/abase/l1.test
+          - ../proto/wtools/abase/l1.test/Collection.test.s
+          - ../proto/wtools/abase/l1.test/ContainerAdapter.test.s
+          - ../proto/wtools/abase/l1.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l1.test/Str.test.s
+          - ../proto/wtools/abase/l1.test/Trie.test.s
           - ../proto/wtools/amid
           - ../proto/wtools/atop
     submodule:

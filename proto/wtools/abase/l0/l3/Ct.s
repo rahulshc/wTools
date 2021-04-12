@@ -14,10 +14,6 @@ const Self = _.ct = _.ct || Object.create( null );
 // --
 
 // --
-// relation
-// --
-
-// --
 // declare
 // --
 

@@ -123,7 +123,11 @@ _sectionsJoin.defaults =
 
 function _messageForm( o )
 {
+
   o.message = o.message || '';
+
+  if( !_.strIs( o.originalMessage ) )
+  throw 'Expects string {- o.originalMessage -}';
 
   _.map.assertHasAll( o, _messageForm.defaults );
 
@@ -192,6 +196,7 @@ function sectionRemove( error, name )
   o2.sections = error.sections;
   o2.brief = error.brief;
   o2.message = '';
+  o2.originalMessage = error.originalMessage;
   _.error._messageForm( o2 );
 
   return error;
@@ -208,11 +213,11 @@ function sectionAdd( o )
     o.error = arguments[ 0 ];
   }
 
-  _.routine.options( sectionAdd, o );
+  _.routine.options( sectionAdd, o ); /* qqq : eliminate such routines here */
   if( o.head === null )
   o.head = o.name.substring( 0, 1 ).toUpperCase() + o.name.substring( 1 );
 
-  _.assert( _.strDefined( o.name ) );
+  _.assert( _.strDefined( o.name ) ); /* qqq : eliminate such routines here */
   _.assert( _.strDefined( o.head ) );
   _.assert( _.strDefined( o.body ) );
   _.assert( !!o.error );
@@ -228,6 +233,7 @@ function sectionAdd( o )
 
   o.brief = o.error.brief;
   o.message = '';
+  o.originalMessage = o.error.originalMessage;
   _.error._messageForm( o );
 
   return o.error;
