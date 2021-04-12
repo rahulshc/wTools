@@ -413,7 +413,7 @@ strShort_.defaults =
   src : null,
   widthLimit : 40,
   heightLimit : 0,
-  delimeter : null, /* xxx qqq : rename to 'widthdelimeter' */
+  delimeter : null, /* xxx qqq : rename to 'widthDelimeter' */
   heightDelimeter : null,
   onLength : null,
   cutting : 'center', /* xxx qqq : rename to 'widthCutting' */
