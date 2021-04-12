@@ -701,8 +701,6 @@ function _fileUniversalAssociateModule( file, module )
     return result;
   }
 
-  debugger;
-
   _.assert( _.module.fileUniversalIs( file ) );
   _.assert( _.module.is( module ) );
 
@@ -877,7 +875,6 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     if( file.moduleNativeFilesMap !== _.module.nativeFilesMap )
     return;
 
-    debugger;
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && module2 !== module )
     return;
@@ -942,11 +939,18 @@ function _fileWithResolvedPath( caninicalSourcePath )
 
 //
 
-function _filesWithResolvedPath( caninicalSourcePathArray )
+function _filesWithResolvedPath( caninicalSourcePathCountable )
 {
-  if( _.strIs( caninicalSourcePathArray ) )
-  caninicalSourcePathArray = [ caninicalSourcePathArray ];
-  return caninicalSourcePathArray.map( ( sourcePath ) => _.module.filesMap.get( sourcePath ) );
+  let result = new Set();
+  if( _.strIs( caninicalSourcePathCountable ) )
+  caninicalSourcePathCountable = [ caninicalSourcePathCountable ];
+  caninicalSourcePathCountable.forEach( ( sourcePath ) =>
+  {
+    let file = _.module.filesMap.get( sourcePath );
+    if( file )
+    result.add( file );
+  });
+  return result;
 }
 
 //
