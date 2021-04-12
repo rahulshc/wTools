@@ -107,14 +107,14 @@ function maybe( src )
     if( result )
     result = new _.Logger({ output : _global_.logger, verbosity : 1 });
     else
-    result = false;
+    result = 0;
   }
   else if( _.numberIs( result ) )
   {
     if( result > 0 )
     result = new _.Logger({ output : _global_.logger, verbosity : result });
     else
-    result = false;
+    result = 0;
   }
   else if( _.logger.is( result ) )
   {
@@ -149,7 +149,7 @@ function relativeMaybe( src, delta )
     else if( delta > 0 )
     result = new _.Logger({ output : _global_.logger, verbosity : delta });
     else
-    result = false;
+    result = 0;
   }
   else if( _.numberIs( result ) )
   {
@@ -157,7 +157,7 @@ function relativeMaybe( src, delta )
     if( result > 0 )
     result = new _.Logger({ output : _global_.logger, verbosity : result });
     else
-    result = false;
+    result = 0;
   }
   else if( _.logger.is( result ) )
   {
@@ -190,7 +190,7 @@ function absoluteMaybe( src, verbosity )
         src.verbosity = 0;
         return src;
       }
-      return false;
+      return 0;
     }
     _.assert( _.numberIs( verbosity ) || _.boolIs( verbosity ) );
   }

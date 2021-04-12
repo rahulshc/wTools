@@ -6,7 +6,8 @@
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
-  "contributors": [
+  "contributors":
+  [
     "Kostiantyn Wandalen <wanalen@01.school>",
     "Volodymyr M. <volodymyr.migdal@gmail.com>",
     "Ihor O. <iostashvxi@gmail.com>",

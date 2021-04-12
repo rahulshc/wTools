@@ -110,7 +110,7 @@ function maybe( test )
 
   test.case = 'false'
   var got = _.logger.maybe( false );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -123,7 +123,7 @@ function maybe( test )
 
   test.case = '0'
   var got = _.logger.maybe( 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -200,13 +200,13 @@ function relativeMaybe( test )
 
   test.case = 'src: false, delta:undefined'
   var got = _.logger.relativeMaybe( false );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
   test.case = 'src: false, delta:0'
   var got = _.logger.relativeMaybe( false, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -219,7 +219,7 @@ function relativeMaybe( test )
 
   test.case = 'src: false, delta:-1'
   var got = _.logger.relativeMaybe( false, -1 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -269,13 +269,13 @@ function relativeMaybe( test )
 
   test.case = 'src: zero, delta:undefined'
   var got = _.logger.relativeMaybe( 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
   test.case = 'src: zero, delta:0'
   var got = _.logger.relativeMaybe( 0, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -288,7 +288,7 @@ function relativeMaybe( test )
 
   test.case = 'src: zero, delta:-1'
   var got = _.logger.relativeMaybe( 0, -1 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -323,7 +323,7 @@ function relativeMaybe( test )
 
   test.case = 'src: one, delta:-1'
   var got = _.logger.relativeMaybe( 1, -1 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -413,7 +413,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: null, verbosity:0'
   var got = _.logger.absoluteMaybe( null, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -433,7 +433,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: null, verbosity:false'
   var got = _.logger.absoluteMaybe( null, false );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -469,7 +469,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: false, verbosity:0'
   var got = _.logger.absoluteMaybe( false, 0 );
-  test.identical( got, false )
+  test.identical( got, 0 )
 
   /* */
 
@@ -489,7 +489,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: false, verbosity:false'
   var got = _.logger.absoluteMaybe( false, false );
-  test.identical( got, false )
+  test.identical( got, 0 )
 
   /* */
 
@@ -524,7 +524,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: true, verbosity:0'
   var got = _.logger.absoluteMaybe( true, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -544,7 +544,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: true, verbosity:false'
   var got = _.logger.absoluteMaybe( true, false );
-  test.identical( got, false )
+  test.identical( got, 0 )
 
   /* */
 
@@ -579,7 +579,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: zero, verbosity:0'
   var got = _.logger.absoluteMaybe( 0, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -614,7 +614,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: one, verbosity:0'
   var got = _.logger.absoluteMaybe( 1, 0 );
-  test.identical( got, false );
+  test.identical( got, 0 );
 
   /* */
 
@@ -649,7 +649,7 @@ function absoluteMaybe( test )
 
   test.case = 'src: number, verbosity:false'
   var got = _.logger.absoluteMaybe( 1, false );
-  test.identical( got, false )
+  test.identical( got, 0 )
 
   /* */
 
