@@ -1841,6 +1841,206 @@ function mapsExtendAppendingOnlyArraysCountable( test )
 
 //
 
+function mapsExtendByDefinedCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, c : 3 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5 }, { c : 3 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, c : 3, a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, und : undefined }, { c : 3 }, { a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+}
+
+//
+
+function mapsExtendNullsCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, c : 3 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5 }, { c : 3 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, c : 3, a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    new countableConstructor({ elements : [ { d : 5, und : undefined, g : null }, { c : 3 }, { a : 2 } ], withIterator : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5, und : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+
+}
+
+//
+
 function mapMake( test )
 {
   test.case = 'without arguments';
@@ -19442,6 +19642,8 @@ const Proto =
     mapsExtendAppendingCountable,
     mapsExtendPrependingCountable,
     mapsExtendAppendingOnlyArraysCountable,
+    mapsExtendByDefinedCountable,
+    mapsExtendNullsCountable,
 
     //
 
