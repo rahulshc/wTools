@@ -487,32 +487,12 @@ function _make( o )
     o.brief = o.error.brief;
     o.brief = !!o.brief;
 
-    // if( o.isProcess === null || o.isProcess === undefined )
-    // o.isProcess = o.error.isProcess;
-    // o.isProcess = !!o.isProcess;
-
-    // if( o.debugging === null || o.debugging === undefined )
-    // o.debugging = o.error.debugging;
-    // o.debugging = !!o.debugging;
-
     if( o.reason === null || o.reason === undefined )
     o.reason = o.error.reason;
 
     o.sections = o.sections || Object.create( null );
     if( o.error.section )
     _.mapSupplement( o.sections, o.error.section );
-
-    // {
-    //   let sections = o.error.section || Object.create( null );
-    //   if( o.sections )
-    //   _.mapExtend( sections, o.sections );
-    //   o.sections = sections;
-    // }
-
-    // let sections = o.error.section || Object.create( null );
-    // if( o.sections )
-    // _.mapExtend( sections, o.sections );
-    // o.sections = sections;
 
     o.id = o.error.id;
     if( !o.id )
@@ -798,12 +778,6 @@ function _err( o )
   let errors = [];
   let combinedStack = '';
 
-  // if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  // if( _.error.breakpointOnAssertEnabled )
-  // debugger;
-  // if( _global_.debugger )
-  // debugger;
-
   /* algorithm */
 
   try
@@ -825,13 +799,10 @@ function _err( o )
       sections : o.sections,
       concealed : o.concealed,
       exposed : o.exposed,
-      // fields : o.fields,
 
       attended : o.attended,
       logged : o.logged,
       brief : o.brief,
-      // isProcess : o.isProcess,
-      // debugging : o.debugging,
       stackCondensing : o.stackCondensing,
 
       originalMessage : o.message,
@@ -1327,7 +1298,6 @@ _err.defaults =
 
   args : null,
   sections : null,
-  // fields : null,
   concealed : null,
   exposed : null,
   level : 1, /* to make catch stack work properly level should be 1 by default */
@@ -1347,8 +1317,6 @@ _err.defaults =
   attended : null,
   logged : null,
   brief : null,
-  // isProcess : null,
-  // debugging : null,
 
   /* Location */
 
