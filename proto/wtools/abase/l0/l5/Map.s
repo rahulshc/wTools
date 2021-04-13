@@ -2079,7 +2079,9 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
 
 function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 {
-  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
+  // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
+
+  _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
 
   let propertyFilter = arguments[ 0 ];
   let dstMap = arguments[ 1 ];
@@ -2089,19 +2091,41 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   if( dstMap === null )
   dstMap = arguments[ 1 ] = Object.create( null );
 
-  if( arguments.length === 3 )
-  {
-    butMap = arguments[ 2 ];
-    srcMap = arguments[ 1 ];
-  }
+  // if( arguments.length === 3 )
+  // {
+  //   butMap = arguments[ 2 ];
+  //   srcMap = arguments[ 1 ];
+  // }
 
-  return _._mapBut_
-  ({
+  /* */
+
+  let o =
+  {
     filter : propertyFilter,
     dstMap,
     srcMap,
     butMap,
-  });
+  };
+
+  o = _._mapBut_VerifyMapFields( o );
+  _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
+  _.assert( _.property.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+
+  let filterRoutine = _._mapBut_FilterFunctor( o );
+
+  for( let key in o.srcMap )
+  filterRoutine( key );
+
+  return o.dstMap;
+
+
+  // return _._mapBut_
+  // ({
+  //   filter : propertyFilter,
+  //   dstMap,
+  //   srcMap,
+  //   butMap,
+  // });
 
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   // _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
@@ -2314,40 +2338,108 @@ function mapBut_( dstMap, srcMap, butMap )
   if( dstMap === null )
   dstMap = arguments[ 0 ] = arguments[ 0 ] || Object.create( null );
 
-  if( arguments.length === 2 )
-  {
-    butMap = arguments[ 1 ];
-    srcMap = arguments[ 0 ];
-  }
-
-  let filter = _.property.filterFrom( filterBut );
-
-  return _._mapBut_
-  ({
-    filter,
-    dstMap,
-    srcMap,
-    butMap,
-  });
+  _.assert( arguments.length === 3, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
+  // if( arguments.length === 2 )
+  // {
+  //   butMap = arguments[ 1 ];
+  //   srcMap = arguments[ 0 ];
+  // }
 
   /* */
 
-  /* qqq : for Dmytro : bad : not optimal */
-  function filterBut( butMap, srcMap, key )
+  let o =
   {
-    if( _.aux.is( butMap ) )
-    {
-      if( !( key in butMap ) )
-      return key;
-    }
-    else if( _.primitive.is( butMap ) )
-    {
-      if( key !== butMap )
-      return key;
-    }
-  }
-  filterBut.identity = { propertyFilter : true, propertyTransformer : true };
+    dstMap,
+    srcMap,
+    butMap,
+  };
 
+  o = _._mapBut_VerifyMapFields( o );
+
+  let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
+  let butMapsIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let filterRoutines =
+  [
+    filterNotIdenticalWithAuxScreenMap,
+    filterIdenticalWithAuxScreenMap,
+    filterNotIdenticalWithVectorScreenMap,
+    filterIdenticalWithVectorScreenMap
+  ];
+  let key = mapsAreIdentical + butMapsIsVector;
+  let filterRoutine = filterRoutines[ key ];
+  let searchingRoutine;
+  if( butMapsIsVector )
+  searchingRoutine = _screenMapSearchingRoutineFunctor( o.butMap );
+
+  for( let key in o.srcMap )
+  filterRoutine( key );
+
+  return o.dstMap;
+
+  /* */
+
+  function filterNotIdenticalWithAuxScreenMap( key )
+  {
+    if( !( key in o.butMap ) )
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterIdenticalWithAuxScreenMap( key )
+  {
+    if( key in o.butMap )
+    delete o.dstMap[ key ];
+  }
+
+  /* */
+
+  function filterNotIdenticalWithVectorScreenMap( key )
+  {
+    let butKey = searchingRoutine( o.butMap, key );
+    if( butKey !== undefined )
+    return;
+
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterIdenticalWithVectorScreenMap( key )
+  {
+    let butKey = searchingRoutine( o.butMap, key );
+    if( butKey !== undefined )
+    delete o.dstMap[ key ];
+  }
+
+  // let filter = _.property.filterFrom( filterBut );
+  //
+  // return _._mapBut_
+  // ({
+  //   filter,
+  //   dstMap,
+  //   srcMap,
+  //   butMap,
+  // });
+  //
+  // /* */
+  //
+  // /* qqq : for Dmytro : bad : not optimal */
+  // function filterBut( butMap, srcMap, key )
+  // {
+  //   if( _.aux.is( butMap ) )
+  //   {
+  //     if( !( key in butMap ) )
+  //     return key;
+  //   }
+  //   else if( _.primitive.is( butMap ) )
+  //   {
+  //     if( key !== butMap )
+  //     return key;
+  //   }
+  // }
+  // filterBut.identity = { propertyFilter : true, propertyTransformer : true };
+  //
   // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   // _.assert( !_.primitive.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
   // _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
@@ -2429,6 +2521,105 @@ function mapBut_( dstMap, srcMap, butMap )
   // }
   //
   // return dstMap;
+}
+
+//
+
+function _mapBut_VerifyMapFields( o )
+{
+  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+  _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
+  _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
+  _.assert( !_.vector.is( o.dstMap ), 'Expects aux like {-o.dstMap-}' );
+  return o;
+}
+
+//
+
+function _mapBut_FilterFunctor( o )
+{
+  let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
+  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  if( _.arrayLike( o.butMap ) )
+  butMapIsVector += 2;
+  let filterRoutines =
+  [
+    filterNotIdentical,
+    filterIdentical,
+    filterNotIdenticalWithVectorButMap,
+    filterIdenticalWithVectorButMap,
+    filterNotIdenticalWithArrayButMap,
+    filterIdenticalWithArrayButMap,
+  ];
+
+  return filterRoutines[ mapsAreIdentical + butMapIsVector ];
+
+  /* */
+
+  function filterNotIdentical( key )
+  {
+    if( o.filter( o.butMap, o.srcMap, key ) )
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterIdentical( key )
+  {
+    if( !o.filter( o.butMap, o.srcMap, key ) )
+    delete o.dstMap[ key ];
+  }
+
+  /* */
+
+  function filterNotIdenticalWithArrayButMap( key )
+  {
+    for( let m = 0 ; m < o.butMap.length ; m++ )
+    if( _.primitive.is( o.butMap[ m ] ) || _.aux.is( o.butMap[ m ] ) )
+    {
+      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      return;
+    }
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterNotIdenticalWithVectorButMap( key )
+  {
+    for( let but of o.butMap )
+    if( _.primitive.is( but ) || _.aux.is( but ) )
+    {
+      if( !o.filter( but, o.srcMap, key ) )
+      return;
+    }
+    o.dstMap[ key ] = o.srcMap[ key ];
+  }
+
+  /* */
+
+  function filterIdenticalWithArrayButMap( key )
+  {
+    for( let m = 0 ; m < o.butMap.length ; m++ )
+    if( _.primitive.is( o.butMap[ m ] ) )
+    {
+      if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+      delete o.dstMap[ key ];
+    }
+  }
+
+  /* */
+
+  function filterIdenticalWithVectorButMap( key )
+  {
+    for( let but of o.butMap )
+    if( _.primitive.is( but ) )
+    {
+      if( !o.filter( but, o.srcMap, key ) )
+      delete o.dstMap[ key ];
+    }
+  }
 }
 
 //
@@ -2773,24 +2964,25 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
 
 
   if( arguments.length === 1 )
-  {
-    return _.mapsExtend( null, dstMap );
-  }
-  else if( arguments.length === 2 )
-  {
+  return _.mapsExtend( null, dstMap );
 
-    // return _.mapOnlyOld( srcMaps, screenMaps );
+  _.assert( arguments.length === 3, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
 
-    // aaa : for Dmytro : bad! /* Dmytro : this condition allow modify srcMaps if passed only 2 arguments */
-    if( dstMap === null )
-    return Object.create( null );
-    screenMaps = arguments[ 1 ];
-    srcMaps = arguments[ 0 ];
-  }
-  else if( arguments.length !== 3 )
-  {
-    _.assert( 0, 'Expects at least one argument and no more then three arguments' );
-  }
+  // else if( arguments.length === 2 )
+  // {
+  //
+  //   // return _.mapOnlyOld( srcMaps, screenMaps );
+  //
+  //   // aaa : for Dmytro : bad! /* Dmytro : this condition allow modify srcMaps if passed only 2 arguments */
+  //   if( dstMap === null )
+  //   return Object.create( null );
+  //   screenMaps = arguments[ 1 ];
+  //   srcMaps = arguments[ 0 ];
+  // }
+  // else if( arguments.length !== 3 )
+  // {
+  //   _.assert( 0, 'Expects at least one argument and no more then three arguments' );
+  // }
 
   let o = _._mapOnly_VerifyMapFields
   ({
@@ -2812,7 +3004,7 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   let filterRoutine = filterRoutines[ key ];
   let searchingRoutine;
   if( screenMapsIsVector )
-  searchingRoutine = _mapOnly_SearchingRoutineFunctor( o.screenMaps );
+  searchingRoutine = _screenMapSearchingRoutineFunctor( o.screenMaps );
 
   if( _.vector.is( o.srcMaps ) )
   {
@@ -2917,21 +3109,22 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 {
 
   if( arguments.length === 1 )
-  {
-    return _.mapsExtendConditional( _.property.mapper.srcOwn(), null, _.arrayAs( dstMap ) );
-  }
-  else if( arguments.length === 2 )
-  {
-    if( dstMap === null )
-    return Object.create( null );
+  return _.mapsExtendConditional( _.property.mapper.srcOwn(), null, _.arrayAs( dstMap ) );
 
-    screenMaps = arguments[ 1 ];
-    srcMaps = arguments[ 0 ];
-  }
-  else if( arguments.length !== 3 )
-  {
-    _.assert( 0, 'Expects at least one argument and no more then three arguments' );
-  }
+  _.assert( arguments.length === 3, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
+
+  // else if( arguments.length === 2 )
+  // {
+  //   if( dstMap === null )
+  //   return Object.create( null );
+  //
+  //   screenMaps = arguments[ 1 ];
+  //   srcMaps = arguments[ 0 ];
+  // }
+  // else if( arguments.length !== 3 )
+  // {
+  //   _.assert( 0, 'Expects at least one argument and no more then three arguments' );
+  // }
 
   let o = _._mapOnly_VerifyMapFields
   ({
@@ -2992,18 +3185,20 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
 {
 
-  if( arguments.length === 2 )
-  {
-    if( dstMap === null )
-    return Object.create( null );
+  _.assert( arguments.length === 3, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
 
-    screenMaps = arguments[ 1 ];
-    srcMaps = arguments[ 0 ];
-  }
-  else if( arguments.length !== 3 )
-  {
-    _.assert( 0, 'Expects two or three arguments' );
-  }
+  // if( arguments.length === 2 )
+  // {
+  //   if( dstMap === null )
+  //   return Object.create( null );
+  //
+  //   screenMaps = arguments[ 1 ];
+  //   srcMaps = arguments[ 0 ];
+  // }
+  // else if( arguments.length !== 3 )
+  // {
+  //   _.assert( 0, 'Expects two or three arguments' );
+  // }
 
   let o = _._mapOnly_VerifyMapFields
   ({
@@ -3315,7 +3510,7 @@ function _mapOnly_FilterFunctor( o )
   let key = mapsAreIdentical + screenMapsIsVector;
   let searchingRoutine;
   if( screenMapsIsVector )
-  searchingRoutine = _mapOnly_SearchingRoutineFunctor( o.screenMaps );
+  searchingRoutine = _screenMapSearchingRoutineFunctor( o.screenMaps );
 
   return filterRoutines[ key ];
 
@@ -3375,50 +3570,44 @@ function _mapOnly_FilterFunctor( o )
 
 /* */
 
-function _mapOnly_SearchingRoutineFunctor( screenMaps )
+function _screenMapSearchingRoutineFunctor( screenMaps )
 {
-  let screenMapsIsVector = _.vector.is( screenMaps ) ? 1 : 0;
+  let screenMapsIsArray = _.arrayLike( screenMaps ) ? 1 : 0;
   let searchingRoutines =
   [
-    _mapOnly_SearchKeyInArrayScreenMapWithPrimitives,
-    _mapOnly_SearchKeyInVectorScreenMapWithPrimitives,
-    _mapOnly_SearchKeyInArrayScreenMapWithMaps,
-    _mapOnly_SearchKeyInVectorScreenMapWithMaps,
+    searchKeyInVectorScreenMapWithPrimitives,
+    searchKeyInArrayScreenMapWithPrimitives,
+    searchKeyInVectorScreenMapWithMaps,
+    searchKeyInArrayScreenMapWithMaps,
   ];
 
   let element;
-  if( screenMapsIsVector )
-  for( let el of screenMaps )
-  {
-    element = el;
-    break;
-  }
-  else
+  if( screenMapsIsArray )
   {
     element = screenMaps[ 0 ];
   }
+  else
+  {
+    for( let el of screenMaps )
+    {
+      element = el;
+      break;
+    }
+  }
 
   let screenMapsElementIsAux = _.aux.is( element ) ? 2 : 0;
-  // if( Config.debug )
-  // {
-  //   let msg = `Expects ${ screenMapsElementIsAux ? 'maps' : 'primitives' }, because screenMaps starts from same element.`;
-  //   let elementCheck = screenMapsElementIsAux ? ( e ) => _.aux.is( e ) : ( e ) => _.primitive.is( e );
-  //   _.assert( _.all( screenMaps, elementCheck ), msg );
-  // } /* Dmytro : we have problem with routine _.all, routine cannot iterate iterable vectors */
-
-  return searchingRoutines[ screenMapsIsVector + screenMapsElementIsAux ];
+  return searchingRoutines[ screenMapsIsArray + screenMapsElementIsAux ];
 
   /* */
 
-  function _mapOnly_SearchKeyInArrayScreenMapWithPrimitives( screenMaps, key )
+  function searchKeyInArrayScreenMapWithPrimitives( screenMaps, key )
   {
     for( let m = 0 ; m < screenMaps.length ; m++ )
-    if( _.primitive.is( screenMaps[ m ] ) )
     if( screenMaps[ m ] === key )
     return key;
   }
 
-  function _mapOnly_SearchKeyInArrayScreenMapWithMaps( screenMaps, key )
+  function searchKeyInArrayScreenMapWithMaps( screenMaps, key )
   {
     for( let m = 0 ; m < screenMaps.length ; m++ )
     if( key in screenMaps[ m ] )
@@ -3427,14 +3616,14 @@ function _mapOnly_SearchingRoutineFunctor( screenMaps )
 
   /* */
 
-  function _mapOnly_SearchKeyInVectorScreenMapWithPrimitives( screenMaps, key )
+  function searchKeyInVectorScreenMapWithPrimitives( screenMaps, key )
   {
     for( let m of screenMaps )
     if( m === key )
     return key;
   }
 
-  function _mapOnly_SearchKeyInVectorScreenMapWithMaps( screenMaps, key )
+  function searchKeyInVectorScreenMapWithMaps( screenMaps, key )
   {
     for( let m of screenMaps )
     if( key in m )
@@ -5291,6 +5480,8 @@ let Extension =
   // mapBut, /* !!! : use instead of mapBut */ /* Dmytro : covered, coverage is more complex */
   mapBut_, /* qqq : make it accept null in the first argument */
   mapButOld,
+  _mapBut_VerifyMapFields,
+  _mapBut_FilterFunctor,
   _mapBut_,
   mapDelete,
   mapEmpty, /* xxx : remove */
@@ -5313,7 +5504,7 @@ let Extension =
   _mapOnly, /* xxx : qqq : comment out */
   _mapOnly_VerifyMapFields,
   _mapOnly_FilterFunctor,
-  _mapOnly_SearchingRoutineFunctor,
+  _screenMapSearchingRoutineFunctor,
   // _mapOnly_SearchKeyInVectorScreenMap,
   // _mapOnly_,
 
