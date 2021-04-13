@@ -5,25 +5,33 @@
 
 // global
 
-let _global = undefined;
-if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
-_global = _global_;
-else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
-_global = globalThis;
-else if( typeof Global !== 'undefined' && Global.Global === Global )
-_global = Global;
-else if( typeof global !== 'undefined' && global.global === global )
-_global = global;
-else if( typeof window !== 'undefined' && window.window === window )
-_global = window;
-else if( typeof self   !== 'undefined' && self.self === self )
-_global = self;
+let _global = get();
 if( !_global._globals_ )
 {
   _global._globals_ = Object.create( null );
-  _global._globals_.real = _global;
+  _global._globals_.real = _global._realGlobal_ || _global;
   _global._realGlobal_ = _global;
   _global._global_ = _global;
+}
+
+//
+
+function get()
+{
+  let _global = undefined;
+  if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+  _global = _global_;
+  else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+  _global = globalThis;
+  else if( typeof Global !== 'undefined' && Global.Global === Global )
+  _global = Global;
+  else if( typeof global !== 'undefined' && global.global === global )
+  _global = global;
+  else if( typeof window !== 'undefined' && window.window === window )
+  _global = window;
+  else if( typeof self   !== 'undefined' && self.self === self )
+  _global = self;
+  return _global;
 }
 
 //
@@ -155,11 +163,12 @@ function setup( global, name )
   if( typeof module !== 'undefined' )
   global.wTools.module.nativeFilesMap = global.wTools.module.nativeFilesMap || require( 'module' )._cache;
 
-  if( !global.wTools.module.rootFile )
+  if( !global.wTools.module.rootFileNative )
   {
-    global.wTools.module.rootFile = module;
-    while( global.wTools.module.rootFile.parent )
-    global.wTools.module.rootFile = global.wTools.module.rootFile.parent; /* xxx : use universal file? */
+    let rootFileNative = global.wTools.module.rootFileNative = module;
+    while( __.module.fileNativeParent( rootFileNative ) )
+    rootFileNative = __.module.fileNativeParent( rootFileNative );
+    global.wTools.module.rootFileNative = rootFileNative;
   }
 
   const ModuleFileNative = require( 'module' );
@@ -213,6 +222,14 @@ function fileNativeFrom( src )
 
 //
 
+function fileNativeParent( file )
+{
+  if( file.parent && file.parent.id !== undefined )
+  return file.parent;
+}
+
+//
+
 const ModuleFileSymbol = Symbol.for( 'ModuleFile' );
 const ModuleFileNative = typeof module !== 'undefined' ? require( 'module' ) : null;
 const __ = _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
@@ -220,6 +237,7 @@ __.global = __.global || Object.create( null );
 __.module = __.module || Object.create( null );
 
 __.global._stack = __.global._stack || [];
+__.global.get = __.global.get || get;
 __.global.new = __.global.new || _new;
 __.global.open = __.global.open || open;
 __.global.close = __.global.close || close;
@@ -232,6 +250,7 @@ __.module.fileResetEnvironment = __.module.fileResetEnvironment || fileResetEnvi
 __.module.fileNativeIs = __.module.fileNativeIs || fileNativeIs;
 __.module.fileUniversalIs = __.module.fileUniversalIs || fileUniversalIs;
 __.module.fileNativeFrom = __.module.fileNativeFrom || fileNativeFrom;
+__.module.fileNativeParent = __.module.fileNativeParent || fileNativeParent;
 
 if( _global_ === _realGlobal_ )
 __.global.setup( _realGlobal_, 'real' );

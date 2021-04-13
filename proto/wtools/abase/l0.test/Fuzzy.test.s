@@ -5,11 +5,11 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer2.s' );
+  const _ = require( 'Tools' );
   _.include( 'wTesting' );
 }
 
-let _ = wTools;
+const _ = _global_.wTools;
 
 //--
 // tests

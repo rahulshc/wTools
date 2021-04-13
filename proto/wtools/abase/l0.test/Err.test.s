@@ -3448,6 +3448,43 @@ function sectionAdd( test )
 
 //
 
+function sectionAddToBrief( test )
+{
+
+  /* */
+
+  test.case = 'basic';
+  var err = _.errBrief( 'Error1' );
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  test.identical( err.message, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+  var exp = `= Extra Section 1`;
+  test.identical( _.strCount( err.message, exp ), 0 );
+
+  var err2 = _.error.sectionAdd({ error : err, name : 'extraSection', body : 'this\nis extra\nsection' });
+  test.true( err === err2 )
+
+  var exp = 'Error1';
+  test.identical( err.originalMessage, exp );
+  test.identical( err.message, exp );
+  var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'extraSection' ]);
+  test.identical( new Set( _.mapKeys( err.sections ) ), exp );
+
+  test.true( !_.error.isAttended( err ) );
+  test.true( !_.error.isLogged( err ) );
+  test.true( _.error.isBrief( err ) );
+
+  console.log( err );
+
+  /* */
+
+}
+
+//
+
 function errorFunctorBasic( test )
 {
   let context = this;
@@ -3605,7 +3642,7 @@ function errorFunctorExternal( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     let SomeError = _.error.error_functor( 'SomeError', _onSomeError );
 
@@ -3693,7 +3730,7 @@ function sourceCode( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     _.include( 'wFiles' );
     throw Error( 'Uncaught error' );
   }
@@ -3895,7 +3932,7 @@ function eventUncaughtErrorBasic( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     let rethrowing = process.argv.includes( 'rethrowing:1' );
     let attending = process.argv.includes( 'attending:1' );
     let throwingSync = process.argv.includes( `throwing:sync` );
@@ -4000,7 +4037,7 @@ function eventUncaughtErrorOnce( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
 
     let once = process.argv.includes( 'how:once' );
     let off = process.argv.includes( 'how:off' );
@@ -4061,6 +4098,9 @@ function entryProcedureStack( test )
         test.identical( _.strCount( op.output, 'ncaught' ), 0 );
         test.identical( _.strCount( op.output, 'rror' ), 0 );
         test.identical( _.strCount( op.output, 'program' ), 1 );
+        if( typeof process !== 'undefined' && process.platform === 'win32' )
+        test.identical( _.strCount( op.output, '\\program:' ), 1 );
+        else
         test.identical( _.strCount( op.output, '/program:' ), 1 );
         test.identical( _.strCount( op.output, 'at ' ), 1 );
         return null;
@@ -4078,7 +4118,7 @@ function entryProcedureStack( test )
 
   function program()
   {
-    let _ = require( toolsPath );
+    const _ = require( toolsPath );
     console.log( _.setup._entryProcedureStack );
   }
 
@@ -4146,6 +4186,7 @@ const Proto =
     errBriefFromErr,
 
     sectionAdd,
+    sectionAddToBrief,
 
     errorFunctorBasic,
     errorFunctorExternal,
