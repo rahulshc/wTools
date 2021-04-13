@@ -6388,7 +6388,6 @@ function mapBut_WithTwoArguments( test )
   test.case = 'wrong type of butMap';
   test.shouldThrowErrorSync( () => _.mapBut_( [], '' ) );
   test.shouldThrowErrorSync( () => _.mapBut_( null, [], '' ) );
-
 }
 
 //
@@ -7170,7 +7169,6 @@ function mapBut_ButMapIsVector( test )
   test.identical( butMap, _.containerAdapter.make( new Set([ 'a', 'b' ]) ) );
 
   test.close( 'containerAdapter' );
-
 }
 
 //
@@ -13712,7 +13710,7 @@ function mapHasAll( test )
   var got = _.mapHasAll( a, { a : 1 } );
   test.true( got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -13893,7 +13891,7 @@ function mapHasAny( test )
   var got = _.mapHasAny( a, { a : 1, x : 1 } );
   test.true( got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -14080,7 +14078,7 @@ function mapHasNone( test )
   var got = _.mapHasNone( a, { a : 1 } );
   test.true( !got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -14256,7 +14254,7 @@ function mapOnlyOwnAll( test )
   var got = _.mapOnlyOwnAll( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -14382,6 +14380,7 @@ function mapOnlyOwnAll( test )
       _.mapOnlyOwnAll( { a : 1 }, a );
     });
   }
+
 }
 
 //
@@ -14449,7 +14448,7 @@ function mapOnlyOwnAny( test )
   var got = _.mapOnlyOwnAny( {}, { x : 1, toString : 1 } );
   test.true( !got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -14643,7 +14642,7 @@ function mapOnlyOwnNone( test )
   var got = _.mapOnlyOwnNone( {}, { x : 1, toString : 1 } );
   test.true( got );
 
-  /* countable */
+  /* vector */
 
   test.open( 'array' )
 
@@ -14769,6 +14768,7 @@ function mapOnlyOwnNone( test )
       _.mapOnlyOwnNone( { a : 1 }, a );
     });
   }
+
 }
 
 // --
