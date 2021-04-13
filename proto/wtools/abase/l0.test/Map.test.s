@@ -1247,7 +1247,6 @@ function mapsExtend( test )
   test.case = 'wrong type of srcMaps';
   test.shouldThrowErrorSync( () => _.mapsExtend( {}, 'wrong' ) );
   test.shouldThrowErrorSync( () => _.mapsExtend( {}, [ 'wrong' ] ) );
-
 }
 
 //
