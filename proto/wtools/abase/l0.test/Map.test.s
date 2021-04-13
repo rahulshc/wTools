@@ -1579,7 +1579,6 @@ function mapsExtendAppendingCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendAppending
   (
-    // _.property.mapper.dstNotHas(),
     dst,
     new countableConstructor({ elements : [ { d : 5, c : 3 } ], withIterator : 1 })
   );
@@ -1590,7 +1589,6 @@ function mapsExtendAppendingCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendAppending
   (
-    // _.property.mapper.dstNotHas(),
     dst,
     new countableConstructor({ elements : [ { d : 5 }, { c : 3 } ], withIterator : 1 })
   );
@@ -1601,22 +1599,20 @@ function mapsExtendAppendingCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendAppending
   (
-    // _.property.mapper.dstNotHas(),
     dst,
     new countableConstructor({ elements : [ { d : 5, c : 3, a : 2 } ], withIterator : 1 })
   );
-  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
   test.identical( got, expected );
 
   test.case = 'new fields in different objects';
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendAppending
   (
-    // _.property.mapper.dstNotHas(),
     dst,
     new countableConstructor({ elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], withIterator : 1 })
   );
-  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
   test.identical( got, expected );
 
   /* - */
