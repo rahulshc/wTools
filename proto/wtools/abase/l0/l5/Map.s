@@ -1434,9 +1434,15 @@ function mapsExtendRecursive( dstMap, srcMaps )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( this === Self );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 1 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
+    _._mapExtendRecursive( dstMap, srcMap );
+  }
+  else /* countable */
+  {
+    for( let srcMap of srcMaps )
     _._mapExtendRecursive( dstMap, srcMap );
   }
 
