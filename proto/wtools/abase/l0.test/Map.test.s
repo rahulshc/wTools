@@ -1626,40 +1626,6 @@ function mapSetWithKeys( test )
 
   /* - */
 
-  test.open( 'countable' );
-
-  test.case = 'screen - empty countable';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [], withIterator : 1 });
-  var got = _.mapSetWithKeys( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeys( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values, remove existing';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeys( dst, screen, undefined );
-  var expected = {};
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values, add properties with values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeys( dst, screen, 100 );
-  var expected = { a : 1, b : 100, c : 100 };
-  test.identical( got, expected );
-
-  test.close( 'countable' );
-
-  /* - */
-
   if( !Config.debug )
   return;
 
@@ -1676,51 +1642,9 @@ function mapSetWithKeys( test )
   test.case = 'dstMap is not object or null'
   test.shouldThrowErrorSync( () => _.mapSetWithKeys( [], 'a', 'a' ) );
 
+  test.case = 'src is not array of strings or string'
   test.shouldThrowErrorSync( () => _.mapSetWithKeys( { 'a' : 1 }, 1, 'a' ) );
   test.shouldThrowErrorSync( () => _.mapSetWithKeys( { 'a' : 1 }, { 'k' : 2 }, 'a' ) );
-
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
@@ -1986,68 +1910,6 @@ function mapSetWithKeyStrictly( test )
 
   /* - */
 
-  test.open( 'countable' );
-
-  test.case = 'screen - empty vector';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [], withIterator : 1 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - empty countable';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty vector without values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty vector without values, remove existing';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = {};
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values, remove existing';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1, length : 2 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
-  var expected = {};
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty vector without values, add properties with values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
-  var expected = { a : 1, b : 100, c : 100 };
-  test.identical( got, expected );
-
-  test.case = 'screen - non empty countable without values, add properties with values';
-  var dst = { a : 1 };
-  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
-  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
-  var expected = { a : 1, b : 100, c : 100 };
-  test.identical( got, expected );
-
-  test.close( 'countable' );
-
-  /* - */
-
   if( !Config.debug )
   return;
 
@@ -2071,49 +1933,6 @@ function mapSetWithKeyStrictly( test )
   test.case = 'dstMap has value not identical to val'
   test.shouldThrowErrorSync( () => _.mapSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
 
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
-  test.shouldThrowErrorSync( () => _.mapSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
 }
 
 //
@@ -20382,6 +20201,185 @@ function mapOnlyOwnOnlyCountable( test )
   }
 }
 
+//
+
+function mapSetWithKeyCountable( test )
+{
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeys( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+}
+
+//
+
+function mapSetWithKeyStrictlyCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [], withIterator : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'a', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = new countableConstructor({ elements : [ 'b', 'c' ], withIterator : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+}
 
 // --
 // define test suite
@@ -20600,6 +20598,8 @@ const Proto =
     mapHasOnlyCountable,
     // mapOnlyOwnOnlyCountable, /* not working with array ( and countable ) */
 
+    mapSetWithKeyCountable,
+    mapSetWithKeyStrictlyCountable,
 
   }
 
