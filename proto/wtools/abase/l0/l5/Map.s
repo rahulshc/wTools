@@ -2830,9 +2830,10 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
 
   function filterNotIdenticalWithVectorScreenMap( srcMap )
   {
+    let searchingRoutine = _mapOnly_SearchingRoutineFunctor( o.screenMaps );
     for( let key in srcMap )
     {
-      let screenKey = _._mapOnly_SearchKeyInVectorScreenMap( o.screenMaps, key );
+      let screenKey = searchingRoutine( o.screenMaps, key );
       if( screenKey !== undefined )
       o.dstMap[ screenKey ] = srcMap[ screenKey ];
     }
@@ -2842,9 +2843,10 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
 
   function filterIdenticalWithVectorScreenMap( srcMap )
   {
+    let searchingRoutine = _mapOnly_SearchingRoutineFunctor( o.screenMaps );
     for( let key in srcMap )
     {
-      let screenKey = _._mapOnly_SearchKeyInVectorScreenMap( o.screenMaps, key );
+      let screenKey = searchingRoutine( o.screenMaps, key );
       if( screenKey === undefined )
       delete srcMap[ key ];
     }
@@ -2875,7 +2877,6 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
       delete srcMap[ key ];
     }
   }
-
 
   // return _.mapOnlyOld( srcMaps, screenMaps );
   // aaa : for Dmytro : bad! /* Dmytro : improved, optimized */
@@ -3370,6 +3371,67 @@ function _mapOnly_FilterFunctor( o )
 
 /* */
 
+function _mapOnly_SearchingRoutineFunctor( screenMaps )
+{
+  let screenMapsIsVector = _.vector.is( screenMaps ) ? 1 : 0;
+  let searchingRoutines =
+  [
+    _mapOnly_SearchKeyInArrayScreenMapWithPrimitives,
+    _mapOnly_SearchKeyInVectorScreenMapWithPrimitives,
+    _mapOnly_SearchKeyInArrayScreenMapWithMaps,
+    _mapOnly_SearchKeyInVectorScreenMapWithMaps,
+  ];
+
+  let element;
+  if( screenMapsIsVector )
+  for( let el of screenMaps )
+  {
+    element = el;
+    break;
+  }
+  else
+  {
+    element = screenMaps[ 0 ];
+  }
+
+  let screenMapsElementIsAux = _.aux.is( element ) ? 2 : 0;
+  return searchingRoutines[ screenMapsIsVector + screenMapsElementIsAux ];
+
+  /* */
+
+  function _mapOnly_SearchKeyInArrayScreenMapWithPrimitives( screenMaps, key )
+  {
+    for( let m = 0 ; m < screenMaps.length ; m++ )
+    if( _.primitive.is( screenMaps[ m ] ) )
+    if( screenMaps[ m ] === key )
+    return key;
+  }
+
+  function _mapOnly_SearchKeyInArrayScreenMapWithMaps( screenMaps, key )
+  {
+    for( let m = 0 ; m < screenMaps.length ; m++ )
+    if( key in screenMaps[ m ] )
+    return key;
+  }
+
+  /* */
+
+  function _mapOnly_SearchKeyInVectorScreenMapWithPrimitives( screenMaps, key )
+  {
+    for( let m of screenMaps )
+    if( m === key )
+    return key;
+  }
+
+  function _mapOnly_SearchKeyInVectorScreenMapWithMaps( screenMaps, key )
+  {
+    for( let m of screenMaps )
+    if( key in m )
+    return key;
+  }
+}
+
+/* */
 
 function _mapOnly_SearchKeyInVectorScreenMap( screenMaps, key )
 {
@@ -5240,6 +5302,7 @@ let Extension =
   _mapOnly, /* xxx : qqq : comment out */
   _mapOnly_VerifyMapFields,
   _mapOnly_FilterFunctor,
+  _mapOnly_SearchingRoutineFunctor,
   _mapOnly_SearchKeyInVectorScreenMap,
   // _mapOnly_,
 
