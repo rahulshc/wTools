@@ -999,6 +999,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   _.assert( _.routine.is( filter ), 'Expects filter' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
@@ -1007,11 +1008,18 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
 
     for( let k in srcMap )
     {
-
       filter.call( this, dstMap, srcMap, k );
-
     }
+  }
+  else /* countable */
+  for( let srcMap of srcMaps )
+  {
+    _.assert( !_.primitive.is( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
+    for( let k in srcMap )
+    {
+      filter.call( this, dstMap, srcMap, k );
+    }
   }
 
   return dstMap;
