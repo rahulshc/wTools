@@ -1932,7 +1932,6 @@ function mapSetWithKeyStrictly( test )
 
   test.case = 'dstMap has value not identical to val'
   test.shouldThrowErrorSync( () => _.mapSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
-
 }
 
 //
@@ -2649,30 +2648,6 @@ function mapsFlatten( test )
 
   /* - */
 
-  test.open( 'countable' );
-
-  test.case = 'src - empty countable';
-  var src = new countableConstructor({ elements : [], withIterator : 1 });
-  var got = _.mapsFlatten( src );
-  var expected = {};
-  test.identical( got, expected );
-
-  test.case = 'src - non empty countable';
-  var src = new countableConstructor({ elements : [ { a : 1 } ], withIterator : 1 });
-  var got = _.mapsFlatten( src );
-  var expected = { a : 1 };
-  test.identical( got, expected );
-
-  test.case = 'src - non empty countable, several, nested';
-  var src = new countableConstructor({ elements : [ { a : 1, dir : { b : 2 } }, { c : 3 } ], withIterator : 1 });
-  var got = _.mapsFlatten({ src, delimeter : '.' });
-  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
-  test.identical( got, expected );
-
-  test.close( 'countable' );
-
-  /* - */
-
   if( !Config.debug )
   return;
 
@@ -2720,50 +2695,6 @@ function mapsFlatten( test )
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 'a' ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ 1 ] }) );
   test.shouldThrowErrorSync( () => _.mapsFlatten({ src : [ null ] }) );
-
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
-
 }
 
 //
@@ -20381,6 +20312,72 @@ function mapSetWithKeyStrictlyCountable( test )
   }
 }
 
+//
+
+function mapsFlattenCountable(params)
+{
+  test.case = 'src - empty countable';
+  var src = new countableConstructor({ elements : [], withIterator : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable';
+  var src = new countableConstructor({ elements : [ { a : 1 } ], withIterator : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable, several, nested';
+  var src = new countableConstructor({ elements : [ { a : 1, dir : { b : 2 } }, { c : 3 } ], withIterator : 1 });
+  var got = _.mapsFlatten({ src, delimeter : '.' });
+  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
+  test.identical( got, expected );
+
+  /* - */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
+  function countableConstructor( o )
+  {
+    return countableMake( this, o );
+  }
+
+  /* */
+
+  function countableMake( dst, o )
+  {
+    if( dst === null )
+    dst = Object.create( null );
+    _.mapExtend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
+  }
+}
+
 // --
 // define test suite
 // --
@@ -20600,6 +20597,8 @@ const Proto =
 
     mapSetWithKeyCountable,
     mapSetWithKeyStrictlyCountable,
+
+    mapsFlattenCountable,
 
   }
 
