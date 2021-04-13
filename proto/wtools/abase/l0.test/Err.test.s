@@ -4098,6 +4098,9 @@ function entryProcedureStack( test )
         test.identical( _.strCount( op.output, 'ncaught' ), 0 );
         test.identical( _.strCount( op.output, 'rror' ), 0 );
         test.identical( _.strCount( op.output, 'program' ), 1 );
+        if( typeof process !== 'undefined' && process.platform === 'win32' )
+        test.identical( _.strCount( op.output, '\\program:' ), 1 );
+        else
         test.identical( _.strCount( op.output, '/program:' ), 1 );
         test.identical( _.strCount( op.output, 'at ' ), 1 );
         return null;
