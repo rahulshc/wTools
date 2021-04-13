@@ -68,6 +68,7 @@ var Extension =
   isReal,
   isDerivative,
 
+  get : __.global.get,
   new : __.global.new,
   open : __.global.open,
   close : __.global.close,
