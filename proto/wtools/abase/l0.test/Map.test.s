@@ -6395,6 +6395,18 @@ function mapBut_WithTwoArguments( test )
 
 function mapBut_DstMapIsNull( test )
 {
+  // test.case = 'srcMap - map with empty string in key, butMap - map';
+  // var srcMap = { a : 1, '' : 1 };
+  // var butMap = { a : 1 };
+  // debugger;
+  // var got = _.mapBut_( null, srcMap, butMap );
+  // var expected = { '' : 1 };
+  // test.identical( got, expected );
+  // test.true( got !== srcMap );
+  // test.identical( butMap, {} );
+
+  /* */
+
   test.open( 'srcMap - map' );
 
   test.case = 'srcMap - empty map, butMap - empty map';
@@ -9437,10 +9449,10 @@ function mapOnly_WithTwoArguments( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got === srcMap );
-  test.identical( srcMap, { c : 33, a : 'abc', d : 'name' } );
+  test.identical( srcMap, { c : 33, a : 'abc' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -9704,7 +9716,7 @@ function mapOnly_DstMapIsNull( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -9820,7 +9832,7 @@ function mapOnly_DstMapIsNull( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -9997,7 +10009,7 @@ function mapOnly_DstMapIsMap( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10124,7 +10136,7 @@ function mapOnly_DstMapIsMap( test )
   var srcMap = [ { a : 'abc' }, { c : 33 }, { d : 'name' } ];
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnly_( dstMap, srcMap, screenMap );
-  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  var expected = { a : 'abc', b : 2, c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, [ { a : 'abc' }, { c : 33 }, { d : 'name' } ] );
@@ -10321,7 +10333,7 @@ function mapOnly_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.unrollMake([ 'a', 'c', { d : 7 } ]);
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10339,13 +10351,13 @@ function mapOnly_ScreenMapIsVector( test )
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
-  var screenMap = _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]);
+  var screenMap = _.unrollMake([ { a : 13 }, { a : 1, b : 2, c : 3 } ]);
   var got = _.mapOnly_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
-  test.identical( screenMap, _.unrollMake([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  test.identical( screenMap, _.unrollMake([ { a : 13 }, { a : 1, b : 2, c : 3 } ]) );
 
   test.close( 'unroll' );
 
@@ -10388,7 +10400,7 @@ function mapOnly_ScreenMapIsVector( test )
   var srcMap = { d : 'name', c : 33, a : 'abc' };
   var screenMap = _.containerAdapter.make( new Set([ 'a', 'c', { d : 7 } ]) );
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { a : 'abc', c : 33 };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -10406,13 +10418,13 @@ function mapOnly_ScreenMapIsVector( test )
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
-  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) );
+  var screenMap = _.containerAdapter.make( new Set([ { a : 13 }, { a : 1, b : 2, c : 3 } ]) );
   var got = _.mapOnly_( null, srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
-  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, [ 'a', 'b', 'c' ] ]) ) );
+  test.identical( screenMap, _.containerAdapter.make( new Set([ { a : 13 }, { a : 1, b : 2, c : 3 } ]) ) );
 
   test.close( 'containerAdapter' );
 }
