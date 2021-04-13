@@ -2621,169 +2621,169 @@ function _mapBut_FilterFunctor( o )
     }
   }
 }
-
 //
-
-function _mapBut_( o )
-{
-  _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
-  _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
-  _.assert( _.property.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
-  _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
-  _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
-  _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
-  _.assert( !_.vector.is( o.dstMap ), 'Expects aux like {-o.dstMap-}' );
-  // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
-
-  let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
-  let filterRoutines =
-  [
-    filterNotIdentical,
-    filterIdentical,
-    filterNotIdenticalWithVectorButMap,
-    filterIdenticalWithVectorButMap
-  ];
-  let key = mapsAreIdentical + butMapIsVector;
-
-  for( let s in o.srcMap )
-  filterRoutines[ key ]( s );
-
-  return o.dstMap;
-
-  /* */
-
-  function filterNotIdentical( key )
-  {
-    if( o.filter( o.butMap, o.srcMap, key ) )
-    o.dstMap[ key ] = o.srcMap[ key ];
-  }
-
-  /* */
-
-  function filterIdentical( key )
-  {
-    if( !o.filter( o.butMap, o.srcMap, key ) )
-    delete o.dstMap[ key ];
-  }
-
-  /* */
-
-  function filterNotIdenticalWithVectorButMap( key )
-  {
-    /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
-    if( _.arrayLike( o.butMap ) )
-    {
-      for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( _.primitive.is( o.butMap[ m ] ) || _.aux.is( o.butMap[ m ] ) )
-      {
-        if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
-        return;
-      }
-      // if( _.primitive.is( o.butMap[ m ] ) )
-      // {
-      //   if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
-      //   return;
-      // }
-      o.dstMap[ key ] = o.srcMap[ key ];
-    }
-    else
-    {
-      for( let but of o.butMap )
-      if( _.primitive.is( but ) || _.aux.is( but ) )
-      {
-        if( !o.filter( but, o.srcMap, key ) )
-        return;
-      }
-      // if( _.primitive.is( but ) )
-      // {
-      //   if( !o.filter( but, o.srcMap, key ) )
-      //   return;
-      // }
-      o.dstMap[ key ] = o.srcMap[ key ];
-    }
-  }
-
-  /* */
-
-  function filterIdenticalWithVectorButMap( key )
-  {
-    if( _.arrayLike( o.butMap ) )
-    {
-      for( let m = 0 ; m < o.butMap.length ; m++ )
-      if( _.primitive.is( o.butMap[ m ] ) )
-      {
-        if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
-        delete o.dstMap[ key ];
-      }
-    }
-    else
-    {
-      for( let but of o.butMap )
-      if( _.primitive.is( but ) )
-      {
-        if( !o.filter( but, o.srcMap, key ) )
-        delete o.dstMap[ key ];
-      }
-    }
-  }
-
-  // if( o.dstMap === o.srcMap )
-  // {
-  //
-  //   /* aaa : allow and cover vector */ /* Dmytro : allowed, covered */
-  //   if( _.vector.is( o.butMap ) )
-  //   {
-  //     for( let s in o.srcMap )
-  //     {
-  //       for( let m = 0 ; m < o.butMap.length ; m++ )
-  //       {
-  //         if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
-  //         delete o.dstMap[ s ];
-  //       }
-  //     }
-  //   }
-  //   else
-  //   {
-  //     for( let s in o.srcMap )
-  //     {
-  //       if( !o.filter( o.butMap, o.srcMap, s ) )
-  //       delete o.dstMap[ s ];
-  //     }
-  //   }
-  //
-  // }
-  // else
-  // {
-  //
-  //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  //   if( _.vector.is( o.butMap ) )
-  //   {
-  //      /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
-  //     for( let s in o.srcMap )
-  //     {
-  //       let m;
-  //       for( m = 0 ; m < o.butMap.length ; m++ )
-  //       if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
-  //       break;
-  //
-  //       if( m === o.butMap.length )
-  //       o.dstMap[ s ] = o.srcMap[ s ];
-  //     }
-  //   }
-  //   else
-  //   {
-  //     for( let s in o.srcMap )
-  //     {
-  //       if( o.filter( o.butMap, o.srcMap, s ) )
-  //       o.dstMap[ s ] = o.srcMap[ s ];
-  //     }
-  //   }
-  //
-  // }
-  //
-  // return o.dstMap;
-}
+// //
+//
+// function _mapBut_( o )
+// {
+//   _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
+//   _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
+//   _.assert( _.property.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+//   _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
+//   _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
+//   _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
+//   _.assert( !_.vector.is( o.dstMap ), 'Expects aux like {-o.dstMap-}' );
+//   // _.assert( !_.primitive.is( o.butMap ) || _.vector.is( o.butMap ) || _.routineIs( o.butMap ), 'Expects object like {-o.butMap-}' );
+//
+//   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
+//   let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+//   let filterRoutines =
+//   [
+//     filterNotIdentical,
+//     filterIdentical,
+//     filterNotIdenticalWithVectorButMap,
+//     filterIdenticalWithVectorButMap
+//   ];
+//   let key = mapsAreIdentical + butMapIsVector;
+//
+//   for( let s in o.srcMap )
+//   filterRoutines[ key ]( s );
+//
+//   return o.dstMap;
+//
+//   /* */
+//
+//   function filterNotIdentical( key )
+//   {
+//     if( o.filter( o.butMap, o.srcMap, key ) )
+//     o.dstMap[ key ] = o.srcMap[ key ];
+//   }
+//
+//   /* */
+//
+//   function filterIdentical( key )
+//   {
+//     if( !o.filter( o.butMap, o.srcMap, key ) )
+//     delete o.dstMap[ key ];
+//   }
+//
+//   /* */
+//
+//   function filterNotIdenticalWithVectorButMap( key )
+//   {
+//     /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
+//     if( _.arrayLike( o.butMap ) )
+//     {
+//       for( let m = 0 ; m < o.butMap.length ; m++ )
+//       if( _.primitive.is( o.butMap[ m ] ) || _.aux.is( o.butMap[ m ] ) )
+//       {
+//         if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+//         return;
+//       }
+//       // if( _.primitive.is( o.butMap[ m ] ) )
+//       // {
+//       //   if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+//       //   return;
+//       // }
+//       o.dstMap[ key ] = o.srcMap[ key ];
+//     }
+//     else
+//     {
+//       for( let but of o.butMap )
+//       if( _.primitive.is( but ) || _.aux.is( but ) )
+//       {
+//         if( !o.filter( but, o.srcMap, key ) )
+//         return;
+//       }
+//       // if( _.primitive.is( but ) )
+//       // {
+//       //   if( !o.filter( but, o.srcMap, key ) )
+//       //   return;
+//       // }
+//       o.dstMap[ key ] = o.srcMap[ key ];
+//     }
+//   }
+//
+//   /* */
+//
+//   function filterIdenticalWithVectorButMap( key )
+//   {
+//     if( _.arrayLike( o.butMap ) )
+//     {
+//       for( let m = 0 ; m < o.butMap.length ; m++ )
+//       if( _.primitive.is( o.butMap[ m ] ) )
+//       {
+//         if( !o.filter( o.butMap[ m ], o.srcMap, key ) )
+//         delete o.dstMap[ key ];
+//       }
+//     }
+//     else
+//     {
+//       for( let but of o.butMap )
+//       if( _.primitive.is( but ) )
+//       {
+//         if( !o.filter( but, o.srcMap, key ) )
+//         delete o.dstMap[ key ];
+//       }
+//     }
+//   }
+//
+//   // if( o.dstMap === o.srcMap )
+//   // {
+//   //
+//   //   /* aaa : allow and cover vector */ /* Dmytro : allowed, covered */
+//   //   if( _.vector.is( o.butMap ) )
+//   //   {
+//   //     for( let s in o.srcMap )
+//   //     {
+//   //       for( let m = 0 ; m < o.butMap.length ; m++ )
+//   //       {
+//   //         if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+//   //         delete o.dstMap[ s ];
+//   //       }
+//   //     }
+//   //   }
+//   //   else
+//   //   {
+//   //     for( let s in o.srcMap )
+//   //     {
+//   //       if( !o.filter( o.butMap, o.srcMap, s ) )
+//   //       delete o.dstMap[ s ];
+//   //     }
+//   //   }
+//   //
+//   // }
+//   // else
+//   // {
+//   //
+//   //   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
+//   //   if( _.vector.is( o.butMap ) )
+//   //   {
+//   //      /* aaa : for Dmytro : bad */ /* Dmytro : for butMap types implemented two cyles. Types of elements is checked in filters */
+//   //     for( let s in o.srcMap )
+//   //     {
+//   //       let m;
+//   //       for( m = 0 ; m < o.butMap.length ; m++ )
+//   //       if( !o.filter( o.butMap[ m ], o.srcMap, s ) )
+//   //       break;
+//   //
+//   //       if( m === o.butMap.length )
+//   //       o.dstMap[ s ] = o.srcMap[ s ];
+//   //     }
+//   //   }
+//   //   else
+//   //   {
+//   //     for( let s in o.srcMap )
+//   //     {
+//   //       if( o.filter( o.butMap, o.srcMap, s ) )
+//   //       o.dstMap[ s ] = o.srcMap[ s ];
+//   //     }
+//   //   }
+//   //
+//   // }
+//   //
+//   // return o.dstMap;
+// }
 
 //
 
@@ -5482,7 +5482,7 @@ let Extension =
   mapButOld,
   _mapBut_VerifyMapFields,
   _mapBut_FilterFunctor,
-  _mapBut_,
+  // _mapBut_,
   mapDelete,
   mapEmpty, /* xxx : remove */
   // mapButIgnoringUndefines, /* !!! : use instead of mapButIgnoringUndefines */ /* Dmytro : covered, coverage is more complex */
