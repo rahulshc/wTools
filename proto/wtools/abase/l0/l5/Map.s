@@ -1360,9 +1360,15 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
+    _mapExtendRecursiveConditional( filters, dstMap, srcMap );
+  }
+  else /* countable */
+  {
+    for( let srcMap of srcMaps )
     _mapExtendRecursiveConditional( filters, dstMap, srcMap );
   }
 
