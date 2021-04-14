@@ -130,8 +130,8 @@ function _handleUncaught2( o )
     }
     catch( err2 )
     {
-      debugger;
       console.error( err2 );
+      return err;
     }
   }
 
@@ -279,6 +279,8 @@ function _handleUncaughtAsync( err )
   if( _.error.isAttended( err ) )
   return err;
 
+  if( !err )
+  debugger;
   _.error.wary( err, 1 );
 
   if( _.error.isSuspended( err ) )
@@ -292,6 +294,9 @@ function _handleUncaughtAsync( err )
 
     if( _.error.isSuspended( err ) )
     return;
+
+    if( !err )
+    debugger;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
 

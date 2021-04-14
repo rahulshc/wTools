@@ -191,4 +191,7 @@ Object.assign( _.setup, SetupExtension );
 
 _.error._setup2();
 
+if( typeof module !== 'undefined' )
+module[ 'exports' ] = _;
+
 })();
