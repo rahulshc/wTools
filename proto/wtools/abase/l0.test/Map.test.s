@@ -19965,50 +19965,44 @@ function mapBut_ButMapCountable( test )
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
   var butMap = new countableConstructor({ elements : [], withIterator : 1 });;
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
   test.identical( srcMap, {} );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
   var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = {};
   test.identical( got, expected );
-  test.true( got === srcMap );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
   var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { aa : 1, bb : 2, cc : 3 };
   test.identical( got, expected );
-  test.true( got === srcMap );
 
   test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
   var srcMap = { aa : 1, bb : 2, cc : 3 };
   var butMap = new countableConstructor({ elements : [ 'aa', 0, 'bb', 1 ], withIterator : 1 });
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
-  test.true( got === srcMap );
 
   test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
   var srcMap = { a : 1, b : 2, cc : 3 };
   var butMap = new countableConstructor({ elements : [ 'a', 0, 'b', 1 ], withIterator : 1 });
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { cc : 3 };
   test.identical( got, expected );
-  test.true( got === srcMap );
 
   test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
   var srcMap = { a : 1, b : 2 };
   var butMap = new countableConstructor({ elements : [ { c : 0 }, { a : 0 } ], withIterator : 1 });
-  var got = _.mapBut_( srcMap, butMap );
+  var got = _.mapBut_( null, srcMap, butMap );
   var expected = { b : 2 };
-  test.true( got === srcMap );
 
   /* - */
 
@@ -20181,7 +20175,7 @@ function mapOnly_ScreenMapIsCountable( test )
 
   test.case = 'all keys in srcMap exists in screenMap - countable';
   var srcMap = { d : 'name', c : 33, a : 'abc' };
-  var screenMap = new countableConstructor({ elements : [ 'a', 'c', { d : 7 } ], withIterator : 1 });
+  var screenMap = new countableConstructor({ elements : [ 'a', 'c', 'd' ], withIterator : 1 });
   var got = _.mapOnly_( null, srcMap, screenMap );
   var expected = { d : 'name', c : 33, a : 'abc' };
   test.identical( got, expected );
@@ -20190,9 +20184,9 @@ function mapOnly_ScreenMapIsCountable( test )
 
   test.case = 'none keys in srcMap exists in screenMap - countable';
   var srcMap = { d : 'name', c : 33, a : 'abc' };
-  var screenMap = new countableConstructor({ elements : [ 'aa', '13', { bb : 77 } ], withIterator : 1 });
+  var screenMap = new countableConstructor({ elements : [ 'd', 'a', { bb : 77 } ], withIterator : 1 });
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = {};
+  var expected = { d : 'name', a : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
@@ -20201,7 +20195,7 @@ function mapOnly_ScreenMapIsCountable( test )
   var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = new countableConstructor({ elements : [ { a : 13 }, [ 'a', 'b', 'c' ] ], withIterator : 1 });
   var got = _.mapOnly_( null, srcMap, screenMap );
-  var expected = {};
+  var expected = { '0' : 'name', '1' : 33, '2' : 'abc' };
   test.identical( got, expected );
   test.true( got !== srcMap );
   test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );

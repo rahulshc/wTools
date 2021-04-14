@@ -2377,7 +2377,7 @@ function mapBut_( dstMap, srcMap, butMap )
   o = _._mapBut_VerifyMapFields( o );
 
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapsIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let butMapsIsCountable = _.countable.is( o.butMap ) ? 2 : 0;
   let filterRoutines =
   [
     filterNotIdenticalWithAuxScreenMap,
@@ -2385,10 +2385,10 @@ function mapBut_( dstMap, srcMap, butMap )
     filterNotIdenticalWithVectorScreenMap,
     filterIdenticalWithVectorScreenMap
   ];
-  let key = mapsAreIdentical + butMapsIsVector;
+  let key = mapsAreIdentical + butMapsIsCountable;
   let filterRoutine = filterRoutines[ key ];
   let searchingRoutine;
-  if( butMapsIsVector )
+  if( butMapsIsCountable )
   searchingRoutine = _screenMapSearchingRoutineFunctor( o.butMap );
 
   for( let key in o.srcMap )
@@ -3012,7 +3012,7 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   });
 
   let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
-  let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
+  let screenMapsIsCountable = _.countable.is( o.screenMaps ) ? 2 : 0;
   let filterRoutines =
   [
     filterNotIdenticalWithAuxScreenMap,
@@ -3020,13 +3020,13 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
     filterNotIdenticalWithVectorScreenMap,
     filterIdenticalWithVectorScreenMap
   ];
-  let key = mapsAreIdentical + screenMapsIsVector;
+  let key = mapsAreIdentical + screenMapsIsCountable;
   let filterRoutine = filterRoutines[ key ];
   let searchingRoutine;
-  if( screenMapsIsVector )
+  if( screenMapsIsCountable )
   searchingRoutine = _screenMapSearchingRoutineFunctor( o.screenMaps );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
