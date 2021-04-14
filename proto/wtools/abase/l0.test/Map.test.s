@@ -16,7 +16,6 @@ const _ = _global_.wTools;
 // map checker
 //--
 
-/* qqq : use test.true() instead of test.identical() */
 function typingBasic( test ) /* qqq : extend with construbile* checks */
 {
 
