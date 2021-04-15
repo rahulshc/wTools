@@ -18282,7 +18282,7 @@ function mapOnlyOwnOnlyCountable( test )
 
 //
 
-function mapSetWithKeyCountable( test )
+function mapSetWithKeysCountable( test )
 {
   test.case = 'screen - empty countable';
   var dst = { a : 1 };
@@ -18358,7 +18358,7 @@ function mapSetWithKeyCountable( test )
 
 //
 
-function mapSetWithKeyStrictlyCountable( test )
+function mapSetWithKeysStrictlyCountable( test )
 {
   test.case = 'screen - empty vector';
   var dst = { a : 1 };
@@ -20980,8 +20980,8 @@ const Proto =
     mapHasOnlyCountable,
     // mapOnlyOwnOnlyCountable, /* not working with array ( and countable ) */
 
-    mapSetWithKeyCountable,
-    mapSetWithKeyStrictlyCountable,
+    mapSetWithKeysCountable,
+    mapSetWithKeysStrictlyCountable,
 
     mapsFlattenCountable,
 
