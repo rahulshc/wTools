@@ -2101,7 +2101,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 {
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
 
-  _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
+  _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 4 arguments' );
 
   let propertyFilter = arguments[ 0 ];
   let dstMap = arguments[ 1 ];
@@ -2560,9 +2560,9 @@ function _mapBut_VerifyMapFields( o )
 function _mapBut_FilterFunctor( o )
 {
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let butMapIsCountable = _.countable.is( o.butMap ) ? 2 : 0;
   if( _.arrayLike( o.butMap ) )
-  butMapIsVector += 2;
+  butMapIsCountable += 2;
   let filterRoutines =
   [
     filterNotIdentical,
@@ -2573,7 +2573,7 @@ function _mapBut_FilterFunctor( o )
     filterIdenticalWithArrayButMap,
   ];
 
-  return filterRoutines[ mapsAreIdentical + butMapIsVector ];
+  return filterRoutines[ mapsAreIdentical + butMapIsCountable ];
 
   /* */
 
@@ -3158,7 +3158,7 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 
   let filterRoutine = _._mapOnly_FilterFunctor( o );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
@@ -3232,7 +3232,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
 
   let filterRoutine = _._mapOnly_FilterFunctor( o );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
