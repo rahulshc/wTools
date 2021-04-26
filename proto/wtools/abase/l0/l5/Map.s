@@ -1553,7 +1553,7 @@ function mapsComplementPreservingUndefines( dstMap, srcMaps )
 function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
   _.assert( arguments.length >= 3, 'Expects at least three arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
   let srcMaps = _.longSlice( arguments, 2 );
   return _.mapsExtendRecursiveConditional( filters, dstMap, srcMaps );
 }
@@ -1569,7 +1569,7 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
   if( _.routine.is( filters ) )
   filters = { onUpFilter : filters, onField : filters }
@@ -1649,7 +1649,7 @@ function mapExtendRecursive( dstMap, srcMap )
 {
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1666,7 +1666,7 @@ function mapsExtendRecursive( dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
   if( _.arrayIs( srcMaps ) )
   for( let a = 1 ; a < srcMaps.length ; a++ )
@@ -1719,7 +1719,7 @@ function _mapExtendRecursive( dstMap, srcMap )
 
 function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingAnything(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1729,7 +1729,7 @@ function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingAnything(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1739,7 +1739,7 @@ function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 
 function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingOnlyArrays(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1749,7 +1749,7 @@ function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingOnlyArrays(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1759,7 +1759,7 @@ function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 
 function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingOnce(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1769,7 +1769,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingOnce(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1779,7 +1779,7 @@ function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 
 function mapSupplementRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.dstNotHas(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1789,7 +1789,7 @@ function mapSupplementRecursive( dstMap, srcMap )
 
 function mapSupplementByMapsRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.dstNotHas(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1799,7 +1799,7 @@ function mapSupplementByMapsRecursive( dstMap, srcMaps )
 
 function mapSupplementOwnRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.dstOwn(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1809,7 +1809,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 
 function mapsSupplementOwnRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.dstOwn(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1819,7 +1819,7 @@ function mapsSupplementOwnRecursive( dstMap, srcMaps )
 
 function mapSupplementRemovingRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.removing(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1829,7 +1829,7 @@ function mapSupplementRemovingRecursive( dstMap, srcMap )
 
 function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.removing(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
