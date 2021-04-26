@@ -1,11 +1,14 @@
 
 /* minimal require */
 
-require( '../proto/wtools/abase/l0/l1/Predefined.s' );
-require( '../proto/wtools/abase/l0/l2/Setup.s' );
+require( '../proto/wtools/abase/l0/l0/l0/Global.s' );
+require( '../proto/wtools/abase/l0/l0/l3/Config.s' );
+require( '../proto/wtools/abase/l0/l0/l3/Predefined.s' );
+require( '../proto/wtools/abase/l0/l0/l5/Setup.s' );
 require( '../proto/wtools/abase/l0/l3/ArgumentsArray.s' );
 require( '../proto/wtools/abase/l0/l3/Array.s' );
 require( '../proto/wtools/abase/l0/l3/Auxiliary.s' );
+require( '../proto/wtools/abase/l0/l3/Diagnostic.s' );
 require( '../proto/wtools/abase/l0/l3/Err.s' );
 require( '../proto/wtools/abase/l0/l3/Object.s' );
 require( '../proto/wtools/abase/l0/l3/Primitive.s' );
