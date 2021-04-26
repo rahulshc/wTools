@@ -2992,7 +2992,6 @@ function longMakeUndefinedWithArgumentsArray( test )
 
   test.case = 'src = empty long, not ins';
   var src = _.argumentsArray.make( [] );
-  debugger;
   var got = _.long.makeUndefined( src );
   var expected = _./*longDescriptor*/defaultLong.make( [] );
   test.identical( got, expected );
@@ -3004,12 +3003,12 @@ function longMakeUndefinedWithArgumentsArray( test )
   test.identical( got, expected );
   test.true( got !== src );
 
-  test.case = 'src = empty long, ins = null';
-  var src = _.argumentsArray.make( [] );
-  var got = _.long.makeUndefined( src, null );
-  var expected = _./*longDescriptor*/defaultLong.make( 0 );
-  test.identical( got, expected );
-  test.true( got !== src );
+  // test.case = 'src = empty long, ins = null';
+  // var src = _.argumentsArray.make( [] );
+  // var got = _.long.makeUndefined( src, null );
+  // var expected = _./*longDescriptor*/defaultLong.make( 0 );
+  // test.identical( got, expected );
+  // test.true( got !== src );
 
   test.case = 'src = empty long, ins = number';
   var src = _.argumentsArray.make( [] );
@@ -3122,16 +3121,16 @@ function longMakeUndefinedWithBufferTyped( test )
     // var got = _.long.makeUndefined( 5, undefined );
     // var expected = _./*longDescriptor*/defaultLong.make( 5 );
     // test.identical( got, expected );
-
-    test.case = 'src = null, ins - number';
-    var got = _.long.makeUndefined( null, 5 );
-    var expected = _./*longDescriptor*/defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src = null, ins - long';
-    var got = _.long.makeUndefined( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-    var expected = _./*longDescriptor*/defaultLong.make( 5 );
-    test.identical( got, expected );
+    //
+    // test.case = 'src = null, ins - number';
+    // var got = _.long.makeUndefined( null, 5 );
+    // var expected = _./*longDescriptor*/defaultLong.make( 5 );
+    // test.identical( got, expected );
+    //
+    // test.case = 'src = null, ins - long';
+    // var got = _.long.makeUndefined( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    // var expected = _./*longDescriptor*/defaultLong.make( 5 );
+    // test.identical( got, expected );
 
     test.case = 'src = empty long, not ins';
     var src = new makeLong( [] );
@@ -3147,13 +3146,13 @@ function longMakeUndefinedWithBufferTyped( test )
     test.true( got !== src );
     test.true( src.constructor.name === got.constructor.name );
 
-    test.case = 'src = empty long, ins = null';
-    var src = new makeLong( [] );
-    var got = _.long.makeUndefined( src, null );
-    var expected = new makeLong( 0 );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( src.constructor.name === got.constructor.name );
+    // test.case = 'src = empty long, ins = null';
+    // var src = new makeLong( [] );
+    // var got = _.long.makeUndefined( src, null );
+    // var expected = new makeLong( 0 );
+    // test.identical( got, expected );
+    // test.true( got !== src );
+    // test.true( src.constructor.name === got.constructor.name );
 
     test.case = 'src = long, ins = number';
     var src = new makeLong( 10 );
