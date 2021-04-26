@@ -216,11 +216,11 @@ function _equivalentShallow( src1, src2 )
 function equivalentShallow( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !this.is( src1 ) )
+  if( !_.str.is( src1 ) )
   return false;
-  if( !this.is( src2 ) )
+  if( !_.str.is( src2 ) )
   return false;
-  return this._equivalentShallow( ... arguments );
+  return _.str._equivalentShallow( ... arguments );
 }
 
   // _identicalShallow,
