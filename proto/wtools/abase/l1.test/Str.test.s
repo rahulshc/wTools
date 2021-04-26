@@ -7058,21 +7058,21 @@ function strJoinPath( test )
   /* - */
 
   test.case = 'srcs is unroll';
-  var srcs = _.unrollFrom( [ 'he', '.llo.', ',', 'world', '!' ] );
+  var srcs = _.unroll.from( [ 'he', '.llo.', ',', 'world', '!' ] );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, 'he.llo.,.world.!' );
 
   test.case = 'srcs is unroll, unroll has nested unroll';
-  var srcs = _.unrollFrom( [ 'he', '.llo.', _.unrollMake( [ ',', 'world', '!' ] ) ] );
+  var srcs = _.unroll.from( [ 'he', '.llo.', _.unroll.make( [ ',', 'world', '!' ] ) ] );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, 'he.llo.,.world.!' );
 
   test.case = 'srcs is array, has nested unrolls';
-  var srcs = [ 'he', '.llo.', _.unrollMake( [ ',', 'world', '!' ] ) ];
+  var srcs = [ 'he', '.llo.', _.unroll.make( [ ',', 'world', '!' ] ) ];
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, [ 'he.llo.,', 'he.llo.world', 'he.llo.!' ] );
 
-  var srcs = [ _.unrollFrom( [ 'he', '.llo.' ] ), _.unrollMake( [ ',', 'world' ] ) ];
+  var srcs = [ _.unroll.from( [ 'he', '.llo.' ] ), _.unroll.make( [ ',', 'world' ] ) ];
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, [ 'he.,', '.llo.world' ] );
 
@@ -7090,12 +7090,12 @@ function strJoinPath( test )
 
   test.case = 'srcs is F32x';
   var arr = new F32x( [ 1, 2, 3, 4 ] );
-  var srcs = _.arrayFrom( arr );
+  var srcs = _.array.from( arr );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, '1.2.3.4' );
 
   var arr = new F32x( [ 1, 2, 3, 'str' ] );
-  var srcs = _.arrayFrom( arr );
+  var srcs = _.array.from( arr );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, '1.2.3.NaN' );
 
@@ -10910,7 +10910,7 @@ ghij
   ({
     src : srcStr,
     charsRangeLeft : cinterval,
-    nearestLines : undefined,
+    // nearestLines : undefined,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -10941,26 +10941,27 @@ ghij
 
   /* */
 
-  test.case = 'nearestLines : null';
-  var cinterval = [ 3, 5 ];
-
-  var expectedSplits =
-  [
-    '',
-    'bc',
-    'bc',
-  ];
-  var expectedSpans = [ 3, 3, 5, 3 ];  // Could be wrong?
-
-  var got = _.strLinesNearest
-  ({
-    src : srcStr,
-    charsRangeLeft : cinterval,
-    nearestLines : null,
-  });
-
-  test.identical( got.splits, expectedSplits );
-  test.identical( got.spans, expectedSpans );
+  // qqq : for Yevhen : bad
+  // test.case = 'nearestLines : null';
+  // var cinterval = [ 3, 5 ];
+  //
+  // var expectedSplits =
+  // [
+  //   '',
+  //   'bc',
+  //   'bc',
+  // ];
+  // var expectedSpans = [ 3, 3, 5, 3 ];  // Could be wrong?
+  //
+  // var got = _.strLinesNearest
+  // ({
+  //   src : srcStr,
+  //   charsRangeLeft : cinterval,
+  //   nearestLines : null,
+  // });
+  //
+  // test.identical( got.splits, expectedSplits );
+  // test.identical( got.spans, expectedSpans );
 
   /* */
 
