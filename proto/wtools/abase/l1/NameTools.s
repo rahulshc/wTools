@@ -17,30 +17,30 @@ var _arraySlice = _.longSlice;
 // name and symbol
 // --
 
-/**
- * Produce fielded name from string.
- * @param {string} nameString - object coded name or string.
- * @return {object} nameKeyValue - name in key/value format.
- * @method nameFielded
- * @namespace Tools
- */
-
-function nameFielded( nameString )
-{
-
-  if( _.object.is( nameString ) )
-  {
-    return nameString;
-  }
-  else if( _.strIs( nameString ) )
-  {
-    var name = {};
-    name[ nameString ] = nameString;
-    return name;
-  }
-  else _.assert( 0, 'nameFielded :', 'Expects string or ' );
-
-}
+// /**
+//  * Produce fielded name from string.
+//  * @param {string} nameString - object coded name or string.
+//  * @return {object} nameKeyValue - name in key/value format.
+//  * @method nameFielded
+//  * @namespace Tools
+//  */
+//
+// function nameFielded( nameString )
+// {
+//
+//   if( _.object.is( nameString ) )
+//   {
+//     return nameString;
+//   }
+//   else if( _.strIs( nameString ) )
+//   {
+//     var name = {};
+//     name[ nameString ] = nameString;
+//     return name;
+//   }
+//   else _.assert( 0, 'nameFielded :', 'Expects string or ' );
+//
+// }
 
 //
 
@@ -82,30 +82,30 @@ function nameUnfielded( nameObject )
   return name;
 }
 
+// //
 //
-
-/**
- * Returns name splitted in coded/coded fields. Drops raw part replacing it by coded.
- * @param {object} namesMap - fielded names.
- * @return {object} expected map.
- * @method namesCoded
- * @namespace Tools
- */
-
-function namesCoded( namesMap )
-{
-  var result = {}
-
-  if( _.assert )
-  _.assert( arguments.length === 1 );
-  if( _.assert )
-  _.assert( _.object.is( namesMap ) );
-
-  for( var n in namesMap )
-  result[ n ] = n;
-
-  return result;
-}
+// /**
+//  * Returns name splitted in coded/coded fields. Drops raw part replacing it by coded.
+//  * @param {object} namesMap - fielded names.
+//  * @return {object} expected map.
+//  * @method namesCoded
+//  * @namespace Tools
+//  */
+//
+// function namesCoded( namesMap )
+// {
+//   var result = {}
+//
+//   if( _.assert )
+//   _.assert( arguments.length === 1 );
+//   if( _.assert )
+//   _.assert( _.object.is( namesMap ) );
+//
+//   for( var n in namesMap )
+//   result[ n ] = n;
+//
+//   return result;
+// }
 
 // --
 // id
@@ -286,10 +286,9 @@ const Proto =
 
   // name and symbol
 
-  /* xxx : remove */
-  nameFielded, /* experimental */
-  nameUnfielded, /* experimental */
-  namesCoded, /* experimental */
+  // nameFielded, /* experimental */
+  nameUnfielded, /* xxx : move */
+  // namesCoded, /* experimental */
 
   // id
 
@@ -302,7 +301,7 @@ const Proto =
 
 }
 
-_.mapExtend( Self, Proto );
+_.props.extend( Self, Proto );
 
 // --
 // export
