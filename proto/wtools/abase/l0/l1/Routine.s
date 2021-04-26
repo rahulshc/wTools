@@ -1233,6 +1233,8 @@ function _routinesCompose_head( routine, args )
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
+  // if( o.elements === null )
+  // debugger;
   // o.elements = _.arrayAppendArrays( [], [ o.elements ] );
   o.elements = merge( o.elements );
   o.elements = o.elements.filter( ( e ) => e !== null );
@@ -1252,6 +1254,8 @@ function _routinesCompose_head( routine, args )
   function merge( arrays )
   {
     let result = [];
+    if( arrays === null )
+    return result;
     for( let i = 0 ; i < arrays.length ; i++ )
     {
       let array = arrays[ i ];
