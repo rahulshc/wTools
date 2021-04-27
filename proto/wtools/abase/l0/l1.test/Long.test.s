@@ -1441,10 +1441,10 @@ function longMakeEmptyWithArrayAndUnroll( test )
     var expected = _./*longDescriptor*/defaultLong.make( 0 );
     test.identical( got, expected );
 
-    test.case = 'src - null';
-    var got = _.long.makeEmpty( null );
-    var expected = _./*longDescriptor*/defaultLong.make( 0 );
-    test.identical( got, expected );
+    // test.case = 'src - null';
+    // var got = _.long.makeEmpty( null );
+    // var expected = _./*longDescriptor*/defaultLong.make( 0 );
+    // test.identical( got, expected );
 
     test.case = 'src - empty long';
     var src = makeLong( [] );
@@ -1495,22 +1495,22 @@ function longMakeEmptyWithArgumentsArray( test )
   var expected = _./*longDescriptor*/defaultLong.make( 0 );
   test.identical( got, expected );
 
-  test.case = 'src - null';
-  var got = _.long.makeEmpty( null );
-  var expected = _./*longDescriptor*/defaultLong.make( 0 );
-  test.identical( got, expected );
+  // test.case = 'src - null';
+  // var got = _.long.makeEmpty( null );
+  // var expected = _./*longDescriptor*/defaultLong.make( 0 );
+  // test.identical( got, expected );
 
   test.case = 'src - empty long';
   var src = _.argumentsArray.make( [] );
   var got = _.long.makeEmpty( src );
-  var expected = _./*longDescriptor*/defaultLong.make( 0 );
+  var expected = _.argumentsArray.make( 0 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long';
   var src = _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] );
   var got = _.long.makeEmpty( src );
-  var expected = _./*longDescriptor*/defaultLong.make( 0 );
+  var expected = _.argumentsArray.make( 0 );
   test.identical( got, expected );
   test.true( got !== src );
 }
@@ -1545,10 +1545,10 @@ function longMakeEmptyWithBufferTyped( test )
     var expected = _./*longDescriptor*/defaultLong.make( 0 );
     test.identical( got, expected );
 
-    test.case = 'src - null';
-    var got = _.long.makeEmpty( null );
-    var expected = _./*longDescriptor*/defaultLong.make( 0 );
-    test.identical( got, expected );
+    // test.case = 'src - null';
+    // var got = _.long.makeEmpty( null );
+    // var expected = _./*longDescriptor*/defaultLong.make( 0 );
+    // test.identical( got, expected );
 
     test.case = 'src - empty long';
     var src = new makeLong( [] );
@@ -6407,9 +6407,9 @@ const Proto =
     longMakeEmptyWithArrayAndUnroll,
     longMakeEmptyWithArgumentsArray,
     longMakeEmptyWithBufferTyped,
-    longMakeEmptyWithArrayAndUnrollLongDescriptor,
-    longMakeEmptyWithArgumentsArrayLongDescriptor,
-    longMakeEmptyWithBufferTypedLongDescriptor,
+    // longMakeEmptyWithArrayAndUnrollLongDescriptor,
+    // longMakeEmptyWithArgumentsArrayLongDescriptor,
+    // longMakeEmptyWithBufferTypedLongDescriptor,
 
     // _longMakeOfLengthWithArrayAndUnroll, /* Dmytro : should be removed, routines do not exist and not used */
     // _longMakeOfLengthWithArgumentsArray,
