@@ -623,7 +623,7 @@ function identicalShallow( test )
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.props.identicalShallow( {}, {}, 'redundant argument' );
+    _.props.identicalShallow( {}, {}, {}, 'redundant argument' );
   });
 
 }
