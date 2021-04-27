@@ -1494,15 +1494,16 @@ function exportStringShallowCode( test )
   var expected = '{- routine routine -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
-  test.case = 'timer';
-  var src = _.time._begin( Infinity );
-  var expected = '{- Map.pure with 9 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
-  _.time.cancel( src );
+  // qqq : xxx : uncomment
+  // test.case = 'timer';
+  // var src = _.time._begin( Infinity );
+  // var expected = '{- Map.pure with 9 elements -}';
+  // test.identical( _.entity.exportStringShallowCode( src ), expected );
+  // _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date( '2021-02-19T11:26:42.840Z' );
-  var expected = 'new Date( \'2021-02-19T11:26:42.840Z\' )';
+  var expected = '2021-02-19T11:26:42.840Z';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'null';
@@ -1517,17 +1518,17 @@ function exportStringShallowCode( test )
 
   test.case = 'Symbol null';
   var src = _.null;
-  var expected = 'Symbol.for( \'null\' )';
+  var expected = '{- Symbol null -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
-  var expected = 'Symbol.for( \'undefined\' )';
+  var expected = '{- Symbol undefined -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
-  var expected = 'Symbol.for( \'nothing\' )';
+  var expected = '{- Symbol nothing -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'primitive';
@@ -1537,7 +1538,7 @@ function exportStringShallowCode( test )
 
   test.case = 'Symbol';
   var src = Symbol( 'a' );
-  var expected = 'Symbol.for( \'a\' )';
+  var expected = '{- Symbol a -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
@@ -1548,17 +1549,6 @@ function exportStringShallowCode( test )
   test.case = 'stream';
   var src = require( 'stream' ).Readable();
   var expected = '{- Readable.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
-
-  // test.case = 'console';
-  // var src = console;
-  // var expected = '{- Console.constructible with 1 elements -}';
-  // test.identical( _.entity.exportStringShallowCode( src ), expected );
-
-  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
-  test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
-  var src = _global.logger;
-  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'printerLike';
