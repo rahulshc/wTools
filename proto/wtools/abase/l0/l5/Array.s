@@ -4766,16 +4766,16 @@ let ToolsExtension =
 
   arrayBut,
   arrayButInplace, /* !!! : use instead of arrayBut, arrayButInplace */
-  arrayBut_,
+  arrayBut_, /* qqq : for Dmytro : use in wTools */
   arrayShrink,
   arrayShrinkInplace, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
-  arrayShrink_,
+  arrayShrink_, /* qqq : for Dmytro : use in wTools */
   arrayGrow,
   arrayGrowInplace, /* !!! : use instead of arrayGrow, arrayGrowInplace */
-  arrayGrow_,
+  arrayGrow_, /* qqq : for Dmytro : use in wTools */
   arrayRelength,
   arrayRelengthInplace, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
-  arrayRelength_,
+  arrayRelength_, /* qqq : for Dmytro : use in wTools */
 
   // array prepend on l3
 
