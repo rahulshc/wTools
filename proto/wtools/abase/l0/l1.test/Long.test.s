@@ -619,14 +619,14 @@ function longMakeWithArgumentsArray( test )
   test.case = 'src = empty long, not ins';
   var src = _.argumentsArray.make( [] );
   var got = _.long.make( src );
-  var expected = _./*longDescriptor*/defaultLong.make( [] );
+  var expected = _.argumentsArray.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src = long, not ins';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.make( src );
-  var expected = _./*longDescriptor*/defaultLong.make( [ 1, 2, 3 ] );
+  var expected = _.argumentsArray.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.identical( got.length, 3 );
   test.true( got !== src );
@@ -634,10 +634,9 @@ function longMakeWithArgumentsArray( test )
   test.case = 'src = empty long, ins = number';
   var src = _.argumentsArray.make( [] );
   var got = _.long.make( src, 2 );
-  var expected = _./*longDescriptor*/defaultLong.make( 2 );
+  var expected = _.argumentsArray.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
-  test.true( _.arrayIs( got ) );
 
   /* qqq : should throw error : add test cases */
   // test.case = 'src = long, ins = null';
@@ -651,43 +650,33 @@ function longMakeWithArgumentsArray( test )
   test.case = 'ins = number, ins < src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.make( src, 2 );
-  var expected = _./*longDescriptor*/defaultLong.make( [ 1, 2 ] );
+  var expected = _.argumentsArray.make( [ 1, 2 ] );
   test.identical( got, expected );
   test.true( got !== src );
-  test.true( _.arrayIs( got ) );
 
   test.case = 'ins = number, ins > src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.make( src, 4 );
-  var expected = _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, undefined ] )
+  var expected = _.argumentsArray.make( [ 1, 2, 3, undefined ] );
   test.identical( got, expected );
   test.true( got !== src );
-  test.true( _.arrayIs( got ) );
 
   test.case = 'ins = long, ins.length > src.length';
   var src = _.argumentsArray.make( [ 0, 1 ] );
   var ins = [ 1, 2, 3 ];
   var got = _.long.make( src, ins );
-  var expected = _./*longDescriptor*/defaultLong.make( [ 1, 2, 3 ] );
+  var expected = _.argumentsArray.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.true( got !== ins );
   test.true( got !== src );
-  test.true( _.arrayIs( got ) );
 
   test.case = 'src = new long, ins = array'
   var src = _.argumentsArray.make( 2 );
   var ins = [ 1, 2, 3, 4, 5 ];
   var got = _.long.make( src, ins );
-  var expected = _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] );
+  var expected = _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.true( got !== src );
-  test.true( _.arrayIs( got ) );
-
-  // test.case = 'src = Array constructor, ins = null';
-  // var got = _.long.make( Array, null );
-  // var expected = [];
-  // test.identical( got, expected );
-  // test.true( _.arrayIs( got ) );
 
   test.case = 'src = Array constructor, ins = number';
   var got = _.long.make( Array, 3 );
@@ -845,9 +834,9 @@ function longMakeWithBufferTyped( test )
     test.true( got !== ins );
 
     test.case = 'src = long constructor, ins = number';
-    var src = makeLong( 5 );
+    var src = new makeLong( 5 );
     var got = _.long.make( src.constructor, 2 );
-    var expected = makeLong([ undefined, undefined ]);
+    var expected = new makeLong([ undefined, undefined ]);
     test.identical( got, expected );
     test.true( got !== ins );
 
@@ -1815,7 +1804,6 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
   function testRun( makeLong )
   {
     test.case = 'src = null, not ins';
-    debugger;
     var got = _._longMakeOfLength( null );
     var expected = [];
     test.identical( got, expected );
@@ -2915,7 +2903,6 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     /* aaa : make sure all similar test routines has good naming of variables */
     /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = BufferTyped constructor, ins = number';
-    debugger;
     var got = _.long.makeUndefined( U32x, 5 );
     var expected = new U32x( 5 );
     test.identical( got, expected );
