@@ -3771,6 +3771,7 @@ function longMakeZeroedWithArrayAndUnroll( test )
   function testRun( makeLong )
   {
     test.case = 'src = null, not ins';
+    debugger;
     var got = _.longMakeZeroed( null );
     var expected = _./*longDescriptor*/defaultLong.make( 0 );
     test.identical( got, expected );
@@ -4860,12 +4861,12 @@ function longMakeFillingWithArgumentsArray( test )
 
   test.case = `type - ArgumentsArray instance, value - map, length - number`;
   var got = _.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, 3 );
-  var expected = _./*longDescriptor*/defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+  var expected = _.argumentsArray.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
   test.identical( got, expected );
 
   test.case = `type - ArgumentsArray instance, value - map, length - ArgumentsArray`;
   var got = _.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, _.argumentsArray.make( 3 ) );
-  var expected = _./*longDescriptor*/defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+  var expected = _.argumentsArray.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
   test.identical( got, expected );
 
   test.case = `type - U8x, value - number, length - number`;
@@ -7161,9 +7162,9 @@ function longBut_WithArrayUnrollArgumentsArray( test )
 {
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
   ];
 
   /* - */
@@ -7184,14 +7185,14 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range = undefined, not ins';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( null, dst );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range = undefined, ins';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( null, dst, undefined, [ 1 ] );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -7200,21 +7201,21 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range = number, not src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( null, dst, 2 );
-    var expected = [ 1, 2, 4 ];
+    var expected = makeLong([ 1, 2, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range = negative number, not src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( null, dst, -1 );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range = number, src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( null, dst, 0, [ 0 ] );
-    var expected = [ 0, 2, 3, 4 ];
+    var expected = makeLong([ 0, 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -7222,7 +7223,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var src = [];
     var got = _.longBut_( null, dst, 0, src );
-    var expected = [ 2, 3, 4 ];
+    var expected = makeLong([ 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7231,7 +7232,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [];
     var got = _.longBut_( null, dst, [ 1, 2 ], src );
-    var expected = [ 1, 4, 5 ];
+    var expected = makeLong([ 1, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7239,7 +7240,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range, not src';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longBut_( null, dst, [ 1, 2 ] );
-    var expected = [ 1, 4, 5 ];
+    var expected = makeLong([ 1, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -7247,7 +7248,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ 1, 2 ], src );
-    var expected = [ 1, 11, 22, 33, 4, 5 ];
+    var expected = makeLong([ 1, 11, 22, 33, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7256,7 +7257,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ 1, 0 ], src );
-    var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 11, 22, 33, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7265,7 +7266,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ -10, 1 ], src );
-    var expected = [ 11, 22, 33, 3, 4, 5 ];
+    var expected = makeLong([ 11, 22, 33, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7274,7 +7275,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ 3, 9 ], src );
-    var expected = [ 1, 2, 3, 11, 22, 33 ];
+    var expected = makeLong([ 1, 2, 3, 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7283,7 +7284,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ -10, 10 ], src );
-    var expected = [ 11, 22, 33 ];
+    var expected = makeLong([ 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7292,7 +7293,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ -1, -2 ], src );
-    var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 11, 22, 33, 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7301,7 +7302,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( null, dst, [ 9, 0 ], src );
-    var expected = [ 1, 2, 3, 4, 5, 11, 22, 33 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( got !== dst );
     test.true( got !== src );
@@ -7315,14 +7316,14 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range = undefined, not ins';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.equivalent( got, expected );
     test.true( got === dst );
 
     test.case = 'range = undefined, ins';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst, undefined, [ 1 ] );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.equivalent( got, expected );
     test.true( got === dst );
 
@@ -7331,21 +7332,21 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range = number, not src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst, dst, 2 );
-    var expected = [ 1, 2, 4 ];
+    var expected = makeLong([ 1, 2, 4 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range = negative number, not src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst, dst, -1 );
-    var expected = [ 1, 2, 3, 4 ];
+    var expected = makeLong([ 1, 2, 3, 4 ]);
     test.equivalent( got, expected );
     test.true( got === dst );
 
     test.case = 'range = number, src';
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst, dst, 0, [ 0 ] );
-    var expected = [ 0, 2, 3, 4 ];
+    var expected = makeLong([ 0, 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -7353,7 +7354,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4 ] );
     var src = [];
     var got = _.longBut_( dst, dst, 0, src );
-    var expected = [ 2, 3, 4 ];
+    var expected = makeLong([ 2, 3, 4 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7362,7 +7363,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [];
     var got = _.longBut_( dst, dst, [ 1, 2 ], src );
-    var expected = [ 1, 4, 5 ];
+    var expected = makeLong([ 1, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7370,7 +7371,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     test.case = 'range, not src';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longBut_( dst, dst, [ 1, 2 ] );
-    var expected = [ 1, 4, 5 ];
+    var expected = makeLong([ 1, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -7378,7 +7379,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ 1, 2 ], src );
-    var expected = [ 1, 11, 22, 33, 4, 5 ];
+    var expected = makeLong([ 1, 11, 22, 33, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7387,7 +7388,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ 1, 0 ], src );
-    var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 11, 22, 33, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7396,7 +7397,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ -10, 1 ], src );
-    var expected = [ 11, 22, 33, 3, 4, 5 ];
+    var expected = makeLong([ 11, 22, 33, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7405,7 +7406,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_(dst, dst, [ 3, 10 ], src );
-    var expected = [ 1, 2, 3, 11, 22, 33 ];
+    var expected = makeLong([ 1, 2, 3, 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7414,7 +7415,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ -10, 10 ], src );
-    var expected = [ 11, 22, 33 ];
+    var expected = makeLong([ 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7423,7 +7424,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ -1, -2 ], src );
-    var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 11, 22, 33, 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
     test.true( got !== src );
@@ -7432,7 +7433,7 @@ function longBut_WithArrayUnrollArgumentsArray( test )
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var src = [ 11, 22, 33 ];
     var got = _.longBut_( dst, dst, [ 9, 0 ], src );
-    var expected = [ 1, 2, 3, 4, 5, 11, 22, 33 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 11, 22, 33 ]);
     test.identical( got, expected );
     test.true( got !== src );
 
@@ -8206,9 +8207,9 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
 {
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
   ];
 
   for( let i = 0; i < list.length; i++ )
@@ -8227,35 +8228,35 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, -1 );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, 0 );
-    var expected = [ 1 ];
+    var expected = makeLong([ 1 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, 2 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, 2 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8264,35 +8265,35 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ -1, -3 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ -1, -1 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ -1, 0 ] );
-    var expected = [ 1 ];
+    var expected = makeLong([ 1 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ -1, 2 ] );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ -1, 5 ] );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8301,28 +8302,28 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 1, 0 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 1, 1 ] );
-    var expected = [ 2 ];
+    var expected = makeLong([ 2 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 1, 2 ] );
-    var expected = [ 2, 3 ];
+    var expected = makeLong([ 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 1, 5 ] );
-    var expected = [ 2, 3, 4, 5 ];
+    var expected = makeLong([ 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8331,21 +8332,21 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 5, 4 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 5, 5 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( null, dst, [ 5, 7 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -8358,35 +8359,35 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'dst, range - number < 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, -1 );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range - number === 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, 0 );
-    var expected = [ 1 ];
+    var expected = makeLong([ 1 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range - number < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, 2 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range - number > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, 2 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -8395,35 +8396,35 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ -1, -3 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ -1, -1 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ -1, 0 ] );
-    var expected = [ 1 ];
+    var expected = makeLong([ 1 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ -1, 2 ] );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ -1, 5 ] );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
@@ -8432,28 +8433,28 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 1, 0 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 1, 1 ] );
-    var expected = [ 2 ];
+    var expected = makeLong([ 2 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 1, 2 ] );
-    var expected = [ 2, 3 ];
+    var expected = makeLong([ 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 1, 5 ] );
-    var expected = [ 2, 3, 4, 5 ];
+    var expected = makeLong([ 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -8462,21 +8463,21 @@ function longOnly_WithArrayUnrollArgumentsArray( test )
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 5, 4 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 5, 5 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnly_( dst, dst, [ 5, 7 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -9382,9 +9383,9 @@ function longGrow_WithArrayUnrollArgumentsArray( test )
 {
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
   ];
 
   for( let i = 0; i < list.length; i++ )
@@ -9403,77 +9404,77 @@ function longGrow_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 0, 6 ] );
-    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, undefined, undefined ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 0, 6 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 4, 9 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 0, 3 ] );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 0, 3 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ -1, 3 ] );
-    var expected = [ undefined, 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ undefined, 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'l < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 0, -1 ] );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ -1, 3 ], 0 );
-    var expected = [ 0, 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 0, 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f > 0, l < src.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ 1, 3 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f < 0, l > src.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( null, dst, [ -1, 5 ], 0 );
-    var expected = [ 0, 1, 2, 3, 4, 5, 0 ];
+    var expected = makeLong([ 0, 1, 2, 3, 4, 5, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -9486,77 +9487,77 @@ function longGrow_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 0, 6 ] );
-    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, undefined, undefined ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 0, 6 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 4, 9 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 0, 3 ] );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 0, 3 ], 0 );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ -1, 3 ] );
-    var expected = makeLong( [ undefined, 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ undefined, 1, 2, 3, 4, 5 ]);
     test.equivalent( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'l < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 0, -1 ] );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ -1, 3 ], 0 );
-    var expected = makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 0, 1, 2, 3, 4, 5 ]);
     test.equivalent( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'f > 0, l < src.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ 1, 3 ], 0 );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'f < 0, l > src.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, dst, [ -1, 5 ], 0 );
-    var expected = makeLong( [ 0, 1, 2, 3, 4, 5, 0 ] );
+    var expected = makeLong([ 0, 1, 2, 3, 4, 5, 0 ]);
     test.equivalent( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -10382,10 +10383,10 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 {
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make
-  ]
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
+  ];
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -10403,77 +10404,77 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst );
-    var expected = [ 1, 2, 3, 4, 5 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, 6 );
-    var expected = [ 1, 2, 3, 4, 5, undefined ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, undefined ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 6 ] );
-    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, undefined, undefined ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 6 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 4, 9 ], 0 );
-    var expected = [ 5, 0, 0, 0, 0, 0 ];
+    var expected = makeLong([ 5, 0, 0, 0, 0, 0 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 2 ] );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, 2 ], 0 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ -1, 2 ] );
-    var expected = [ undefined, 1, 2, 3 ];
+    var expected = makeLong([ undefined, 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'l < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, -1 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ -1, 2 ], 0 );
-    var expected = [ 0, 1, 2, 3 ];
+    var expected = makeLong([ 0, 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
     test.case = 'f > 0, l < src.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 1, 2 ], 0 );
-    var expected = [ 2, 3 ];
+    var expected = makeLong([ 2, 3 ]);
     test.identical( got, expected );
     test.true( got !== dst );
 
@@ -10486,77 +10487,77 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'only dst';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst );
-    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 0, 6 ] );
-    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, undefined, undefined ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 0, 6 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, [ 0, 6 ], 0 );
-    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    var expected = makeLong([ 1, 2, 3, 4, 5, 0, 0 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 4, 9 ], 0 );
-    var expected = [ 5, 0, 0, 0, 0, 0 ];
+    var expected = makeLong([ 5, 0, 0, 0, 0, 0 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 0, 2 ] );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 0, 2 ], 0 );
-    var expected = [ 1, 2, 3 ];
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ -1, 2 ] );
-    var expected = [ undefined, 1, 2, 3 ];
+    var expected = makeLong([ undefined, 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'l < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ 0, -1 ] );
-    var expected = [];
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( dst, dst, [ -1, 2 ], 0 );
-    var expected = [ 0, 1, 2, 3 ];
+    var expected = makeLong([ 0, 1, 2, 3 ]);
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -11076,9 +11077,9 @@ function longJoinFirstArrayLike( test )
   var src2 = 'str';
   var src3 = { a : 1 };
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11088,9 +11089,9 @@ function longJoinFirstArrayLike( test )
   var src2 = 'str';
   var src3 = { a : 1 };
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ [ 1 ], null, 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ [ 1 ], null, 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11100,9 +11101,9 @@ function longJoinFirstArrayLike( test )
   var src2 = _.argumentsArray.make( [] );
   var src3 = _.argumentsArray.make( [] );
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11112,9 +11113,9 @@ function longJoinFirstArrayLike( test )
   var src2 = _.unroll.make( [] );
   var src3 = new U8x().buffer;
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11124,9 +11125,9 @@ function longJoinFirstArrayLike( test )
   var src2 = _.argumentsArray.make( [ 1, 2 ] );
   var src3 = _.argumentsArray.make( [ 'str', { a : 1 } ] );
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ 1, 2, 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ 1, 2, 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11136,9 +11137,9 @@ function longJoinFirstArrayLike( test )
   var src2 = [ 1, 2 ];
   var src3 = [ 'str', { a : 1 } ];
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ [ 1 ], null, 1, 2, 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ [ 1 ], null, 1, 2, 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11148,9 +11149,9 @@ function longJoinFirstArrayLike( test )
   var src2 = new U8x( [ 1, 2 ] ).buffer;
   var src3 = _.unroll.make( [ 'str', { a : 1 } ] );
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ [ 1 ], null, 1, 2, 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ [ 1 ], null, 1, 2, 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11160,9 +11161,9 @@ function longJoinFirstArrayLike( test )
   var src2 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
   var src3 = [ 'str', { a : 1 } ];
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ [ 1 ], null, 1, 2, 'str', { a : 1 } ];
+  var exp = _.argumentsArray.make([ [ 1 ], null, 1, 2, 'str', { a : 1 } ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11172,9 +11173,9 @@ function longJoinFirstArrayLike( test )
   var src2 = new U8x( [ 1, 2 ] );
   var src3 = new I32x( [ -2, 3 ] );
   var got = _.longJoin( src1, src2, src3 );
-  var exp = [ [ 1 ], null, 1, 2, -2, 3 ];
+  var exp = _.argumentsArray.make([ [ 1 ], null, 1, 2, -2, 3 ]);
   test.identical( got, exp );
-  test.true( _.arrayIs( got ) );
+  test.true( _.argumentsArray.is( got ) );
   test.true( got !== src1 );
   test.true( got !== src2 );
   test.true( got !== src3 );
@@ -11186,9 +11187,9 @@ function longJoinFirstArrayLike( test )
     var src22 = BufferNode.from( [ 1, 2 ] );
     var src32 = BufferNode.alloc( 2 );
     var got2 = _.longJoin( src12, src22, src32 );
-    var exp2 = [ [ 1 ], null, 1, 2, 0, 0 ];
+    var exp2 = _.argumentsArray.from([ [ 1 ], null, 1, 2, 0, 0 ]);
     test.identical( got2, exp2 );
-    test.true( _.arrayIs( got2 ) );
+    test.true( _.argumentsArray.is( got2 ) );
     test.true( got2 !== src12 );
     test.true( got2 !== src22 );
     test.true( got2 !== src32 );
@@ -12365,59 +12366,59 @@ function longDuplicate( test )
 
 // !!!
 
-function longAreRepeatedProbe( test )
-{
-
-  _.diagnostic.eachLongType( ( make, descriptor ) =>
-  {
-    _.diagnostic.eachElementComparator( make, ( make, evaluate, description ) =>
-    {
-      if( _.arrayIs( evaluate ) )
-      return;
-      if( descriptor.isTyped && evaluate )
-      return;
-      test.open( descriptor.name + ', ' + description );
-      group( make, evaluate );
-      test.close( descriptor.name + ', ' + description );
-    });
-  });
-
-  function group( onMake, onEvaluate )
-  {
-
-    test.case = 'empty';
-    var l1 = onMake( [] );
-    var expected = { uniques : 0, condensed : 0, array : [] };
-    var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    test.identical( got, expected );
-
-    test.case = 'single';
-    var l1 = onMake( [ 0 ] );
-    var expected = { uniques : 1, condensed : 1, array : [ 0 ] };
-    var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    test.identical( got, expected );
-
-    test.case = 'two zeros';
-    var l1 = onMake( [ 0, 0 ] );
-    var expected = { uniques : 0, condensed : 1, array : [ 1, 1 ] };
-    var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    test.identical( got, expected );
-
-    test.case = 'none unique';
-    var l1 = onMake( [ 1, 2, 3, 1, 2, 3 ] );
-    var expected = { uniques : 0, condensed : 3, array : [ 1, 1, 1, 1, 1, 1 ] };
-    var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    test.identical( got, expected );
-
-    test.case = 'several uniques';
-    var l1 = onMake( [ 0, 1, 2, 3, 4, 1, 2, 3, 5 ] );
-    var expected = { uniques : 3, condensed : 6, array : [ 0, 1, 1, 1, 0, 1, 1, 1, 0 ] };
-    var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    test.identical( got, expected );
-
-  }
-
-}
+// function longAreRepeatedProbe( test )
+// {
+//
+//   _.diagnostic.eachLongType( ( make, descriptor ) =>
+//   {
+//     _.diagnostic.eachElementComparator( make, ( make, evaluate, description ) =>
+//     {
+//       if( _.arrayIs( evaluate ) )
+//       return;
+//       if( descriptor.isTyped && evaluate )
+//       return;
+//       test.open( descriptor.name + ', ' + description );
+//       group( make, evaluate );
+//       test.close( descriptor.name + ', ' + description );
+//     });
+//   });
+//
+//   function group( onMake, onEvaluate )
+//   {
+//
+//     test.case = 'empty';
+//     var l1 = onMake( [] );
+//     var expected = { uniques : 0, condensed : 0, array : [] };
+//     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+//     test.identical( got, expected );
+//
+//     test.case = 'single';
+//     var l1 = onMake( [ 0 ] );
+//     var expected = { uniques : 1, condensed : 1, array : [ 0 ] };
+//     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+//     test.identical( got, expected );
+//
+//     test.case = 'two zeros';
+//     var l1 = onMake( [ 0, 0 ] );
+//     var expected = { uniques : 0, condensed : 1, array : [ 1, 1 ] };
+//     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+//     test.identical( got, expected );
+//
+//     test.case = 'none unique';
+//     var l1 = onMake( [ 1, 2, 3, 1, 2, 3 ] );
+//     var expected = { uniques : 0, condensed : 3, array : [ 1, 1, 1, 1, 1, 1 ] };
+//     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+//     test.identical( got, expected );
+//
+//     test.case = 'several uniques';
+//     var l1 = onMake( [ 0, 1, 2, 3, 4, 1, 2, 3, 5 ] );
+//     var expected = { uniques : 3, condensed : 6, array : [ 0, 1, 1, 1, 0, 1, 1, 1, 0 ] };
+//     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+//     test.identical( got, expected );
+//
+//   }
+//
+// }
 
 //
 
@@ -13502,15 +13503,19 @@ function longMask( test )
 
 function longOnceWithoutCallback( test )
 {
+  function typedArrayGenerator_functor( constr )
+  {
+    return ( src ) => new constr( src );
+  }
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make,
-    I8x,
-    U16x,
-    F32x,
-    F64x
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
+    typedArrayGenerator_functor( I8x ),
+    typedArrayGenerator_functor( U16x ),
+    typedArrayGenerator_functor( F32x ),
+    typedArrayGenerator_functor( F64x ),
   ];
 
   for( let d = 0 ; d < list.length ; d++ )
@@ -13525,37 +13530,37 @@ function longOnceWithoutCallback( test )
   function testRun( makeLong )
   {
     test.case = 'dst = null';
-    var dst = new makeLong( null );
+    var dst = makeLong( null );
     var got = _.longOnce( dst );
-    var expected = new makeLong( null );
+    var expected = makeLong( null );
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'dst.length = 0';
-    var dst = new makeLong( [] );
+    var dst = makeLong( [] );
     var got = _.longOnce( dst );
-    var expected = new makeLong( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'dst.length = 1';
-    var dst = new makeLong( [ 1 ] );
+    var dst = makeLong( [ 1 ] );
     var got = _.longOnce( dst );
-    var expected = new makeLong( [ 1 ] );
+    var expected = makeLong( [ 1 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'dst.length > 1, no duplicates';
-    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longOnce( dst );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.true( got === dst );
 
     test.case = 'dst.length > 1, duplicates';
-    var dst = new makeLong( [ 1, 2, 2, 1, 5, 3, 4, 5, 5, 3 ] );
+    var dst = makeLong( [ 1, 2, 2, 1, 5, 3, 4, 5, 5, 3 ] );
     var got = _.longOnce( dst );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 2, 5, 3, 4 ] : new makeLong( [ 1, 2, 5, 3, 4 ] );
+    var expected = makeLong( [ 1, 2, 5, 3, 4 ] );
     test.identical( got, expected );
     test.true( !_.argumentsArray.is( dst ) && !_.bufferAnyIs( dst ) ? got === dst : got !== dst );
   }
@@ -13589,9 +13594,9 @@ function longOnceWithCallback( test )
 {
   var list =
   [
-    _.array.make,
-    _.unroll.make,
-    _.argumentsArray.make,
+    _.array.make.bind( _.array ),
+    _.unroll.make.bind( _.unroll ),
+    _.argumentsArray.make.bind( _.argumentsArray ),
   ];
 
   for( let i = 0 ; i < list.length ; i++ )
@@ -13608,8 +13613,7 @@ function longOnceWithCallback( test )
     test.case = 'dst has duplicates, evaluator';
     var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce( dst, ( e ) => e.v );
-    var expected =
-    _.argumentsArray.is( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected = makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -13631,8 +13635,7 @@ function longOnceWithCallback( test )
     }
     var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce( dst, equalizer );
-    var expected =
-    _.argumentsArray.is( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected = makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.true( _.argumentsArray.is( dst ) ? got !== dst : got === dst );
 
@@ -13718,7 +13721,7 @@ function longOnce_WithoutCallback( test )
     test.case = 'dst.length > 1, duplicates, src - undefined';
     var dst = makeLong( [ 1, 2, 2, 1, 5, 3, 4, 5, 5, 3 ] );
     var got = _.longOnce_( dst );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 2, 5, 3, 4 ] : makeLong( [ 1, 2, 5, 3, 4 ] );
+    var expected = makeLong( [ 1, 2, 5, 3, 4 ] );
     test.identical( got, expected );
     test.true( !_.argumentsArray.is( dst ) && !_.bufferAnyIs( dst ) ? got === dst : got !== dst );
 
@@ -13867,8 +13870,7 @@ function longOnce_WithCallback( test )
     test.case = 'dst has duplicates, src - undefined';
     var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce_( dst, onEvaluate );
-    var expected =
-    _.argumentsArray.is( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
 
@@ -14257,14 +14259,14 @@ function longFill( test )
     test.case = 'dst = empty container, value, range[ 1 ] > dst.length';
     var dst = makeLong( [] );
     var got = _.longFill( dst, 1, [ 0, 3 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 1, 1 ] : makeLong( [ 1, 1, 1 ] );
+    var expected = makeLong( [ 1, 1, 1 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst = empty container, value, range[ 0 ] < 0, range[ 1 ] > dst.length';
     var dst = makeLong( [] );
     var got = _.longFill( dst, 1, [ -2, 3 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 1, 1, 1, 1 ] : makeLong( [ 1, 1, 1, 1, 1 ] );
+    var expected = makeLong( [ 1, 1, 1, 1, 1 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14292,7 +14294,7 @@ function longFill( test )
     test.case = 'dst - not empty container, value, range - number';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, 4 );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14306,14 +14308,14 @@ function longFill( test )
     test.case = 'dst - not empty container, value, range[ 0 ] < 0';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, [ -2, 2 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range[ 1 ] > dst.length';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, [ 0, 4 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14391,14 +14393,14 @@ function longFill_( test )
     test.case = 'dst = empty container, value, range[ 1 ] > dst.length';
     var dst = makeLong( [] );
     var got = _.longFill_( dst, 1, [ 0, 2 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 1, 1 ] : makeLong( [ 1, 1, 1 ] );
+    var expected = makeLong( [ 1, 1, 1 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst = empty container, value, range[ 0 ] < 0, range[ 1 ] > dst.length';
     var dst = makeLong( [] );
     var got = _.longFill_( dst, 1, [ -2, 2 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 1, 1, 1, 1, 1 ] : makeLong( [ 1, 1, 1, 1, 1 ] );
+    var expected = makeLong( [ 1, 1, 1, 1, 1 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14426,7 +14428,7 @@ function longFill_( test )
     test.case = 'dst - not empty container, value, range - number';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill_( dst, 2, 4 );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14440,14 +14442,14 @@ function longFill_( test )
     test.case = 'dst - not empty container, value, range[ 0 ] < 0';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill_( dst, 2, [ -2, 1 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range[ 1 ] > dst.length';
     var dst = makeLong( [ 1, 1, 1 ] );
     var got = _.longFill_( dst, 2, [ 0, 3 ] );
-    var expected = _.argumentsArray.is( dst ) ? [ 2, 2, 2, 2 ] : makeLong( [ 2, 2, 2, 2 ] );
+    var expected = makeLong( [ 2, 2, 2, 2 ] );
     test.true( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
@@ -14620,7 +14622,7 @@ function longSortDstIsNull( test )
     test.identical( got, [] );
 
     test.case = 'not empty container';
-    if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
+    if( makeLong( 1 ).byteLength === 8 )
     {
       var dst1 = null;
       var src1 = makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
@@ -14693,7 +14695,7 @@ function longSortDstIsNotNull( test )
   function testRun( makeLong )
   {
     test.case = 'not empty container, onEvaluate - evaluator, negative numbers';
-    if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
+    if( makeLong( 1 ).byteLength === 8 )
     {
       var dst1 = makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
       var got1 = _.longSort( dst1, ( e ) => e );
@@ -17690,7 +17692,7 @@ const Proto =
 
     // long l0/l8
 
-    longAreRepeatedProbe,
+    // longAreRepeatedProbe,
     longAllAreRepeated,
     longAnyAreRepeated,
     longNoneAreRepeated,
