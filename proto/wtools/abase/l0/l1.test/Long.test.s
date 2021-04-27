@@ -1815,6 +1815,7 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
   function testRun( makeLong )
   {
     test.case = 'src = null, not ins';
+    debugger;
     var got = _._longMakeOfLength( null );
     var expected = [];
     test.identical( got, expected );
@@ -6410,9 +6411,9 @@ const Proto =
     longMakeEmptyWithArgumentsArrayLongDescriptor,
     longMakeEmptyWithBufferTypedLongDescriptor,
 
-    _longMakeOfLengthWithArrayAndUnroll,
-    _longMakeOfLengthWithArgumentsArray,
-    _longMakeOfLengthWithBufferTyped,
+    // _longMakeOfLengthWithArrayAndUnroll, /* Dmytro : should be removed, routines do not exist and not used */
+    // _longMakeOfLengthWithArgumentsArray,
+    // _longMakeOfLengthWithBufferTyped,
     // _longMakeOfLengthWithArrayAndUnrollLongDescriptor,
     // _longMakeOfLengthWithArgumentsArrayLongDescriptor,
     // _longMakeOfLengthWithBufferTypedLongDescriptor,
