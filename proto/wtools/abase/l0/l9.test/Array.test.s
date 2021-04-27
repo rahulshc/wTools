@@ -11329,7 +11329,7 @@ function arrayRemoveElement( test )
 
   test.case = 'evaluator ( equalizer ) has wrong length';
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, () => 1 ) );
-  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a, b, c ) => a === b && b === c ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a, b, c, d ) => a === b && b === c ) );
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, () => 1 ) );
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, ( a, b ) => a === b ) );
 }
