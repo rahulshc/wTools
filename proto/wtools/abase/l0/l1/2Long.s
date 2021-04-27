@@ -99,11 +99,16 @@ function _makeEmpty( src )
     return _.argumentsArray.make( 0 );
     else if( _.unroll.is( src ) )
     return _.unroll.make();
+    if( _.routineIs( src ) )
+    {
+      let result = new src( 0 );
+      _.assert( _.long.is( result ) );
+      return result;
+    }
     return new src.constructor();
   }
   else
   {
-    debugger;
     return this.tools./*longDescriptor*/defaultLong.make();
     // return [];
   }
@@ -117,7 +122,7 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( this.like( src ) );
+    _.assert( this.like( src ) || _.routineIs( src ) );
     return this._makeEmpty( src );
   }
   else
@@ -138,6 +143,12 @@ function _makeUndefined( src, length )
     return _.argumentsArray._makeUndefined( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeUndefined( src, length );
+    if( _.routineIs( src ) )
+    {
+      let result = new src( length );
+      _.assert( _.long.is( result ) );
+      return result;
+    }
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
@@ -201,11 +212,17 @@ function _make( src, length )
     return fill( _.unroll.make( length ), data );
     if( src === null )
     return fill( this.tools./*longDescriptor*/defaultLong.make( length ), data );
+
+    let result;
     if( _.routineIs( src ) )
-    return fill( new src( length ), data );
-    if( src.constructor === Array )
-    return fill( new src.constructor( length ), data );
-    _.assert( 0, 'Not clear how to make such long' );
+    result = fill( new src( length ), data )
+    else if( src.constructor )
+    result = fill( new src.constructor( length ), data );
+    _.assert( _.long.is( result ), 'Not clear how to make such long' );
+    return result;
+    // if( src.constructor === Array )
+    // return fill( new src.constructor( length ), data );
+    // _.assert( 0, 'Not clear how to make such long' );
   }
   else if( src !== undefined && src !== null )
   {

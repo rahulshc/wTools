@@ -78,11 +78,9 @@ function makeEmpty()
 function _makeUndefined( src, length )
 {
   if( length === undefined )
-  {
-    length = src;
-  }
+  length = src;
   if( this.like( length ) )
-  length = this.lengthOf( length );
+  length = length.length;
   return this._make( length );
 }
 

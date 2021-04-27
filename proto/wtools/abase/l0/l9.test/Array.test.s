@@ -25302,13 +25302,13 @@ const Proto =
     // producer
 
     // arrayMake,
-    arrayMakeNotDefaultDescriptor,
+    // arrayMakeNotDefaultDescriptor, /* Dmytro : long descriptor does not exists */
     // arrayMakeUndefined,
-    arrayMakeUndefinedNotDefaultDescriptor,
+    // arrayMakeUndefinedNotDefaultDescriptor, /* Dmytro : long descriptor does not exists */
     // arrayFrom,
-    arrayFromLongDescriptor,
+    // arrayFromLongDescriptor, /* Dmytro : long descriptor does not exists */
     arrayFromCoercing,
-    arrayFromCoercingLongDescriptor,
+    // arrayFromCoercingLongDescriptor, /* Dmytro : long descriptor does not exists */
 
     arrayAs,
 

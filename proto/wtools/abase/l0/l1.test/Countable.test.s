@@ -536,16 +536,16 @@ function typingExtended( test )
   test.true( !_.argumentsArray.like( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'escape';
-  var src = _.escape.make( 1 );
-  test.true( _.countable.like( src ) );
-  test.true( _.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.argumentsArray.like( src ) );
-  test.true( !_.arrayIs( src ) );
+  // test.case = 'escape';
+  // var src = _.escape.make( 1 );
+  // test.true( _.countable.like( src ) );
+  // test.true( _.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.argumentsArray.like( src ) );
+  // test.true( !_.arrayIs( src ) );
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
@@ -580,27 +580,27 @@ function typingExtended( test )
   test.true( !_.argumentsArray.like( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.argumentsArray.like( src ) );
-  test.true( !_.arrayIs( src ) );
-
-  test.case = 'propertyTransformer & mapper';
-  var src = _.props.mapper[ 'assigning' ];
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.argumentsArray.like( src ) );
-  test.true( !_.arrayIs( src ) );
+  // test.case = 'propertyTransformer & filter';
+  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // test.true( !_.countable.like( src ) );
+  // test.true( !_.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.argumentsArray.like( src ) );
+  // test.true( !_.arrayIs( src ) );
+  //
+  // test.case = 'propertyTransformer & mapper';
+  // var src = _.props.mapper[ 'assigning' ];
+  // test.true( !_.countable.like( src ) );
+  // test.true( !_.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.argumentsArray.like( src ) );
+  // test.true( !_.arrayIs( src ) );
 
   test.case = 'routine & routineLike';
   var src = routine;
@@ -613,28 +613,28 @@ function typingExtended( test )
   test.true( !_.argumentsArray.like( src ) );
   test.true( !_.arrayIs( src ) );
 
-  test.case = 'time';
-  var src = _.time.now();
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.argumentsArray.like( src ) );
-  test.true( !_.arrayIs( src ) );
-
-  test.case = 'timer';
-  var src = _.time._begin( Infinity );;
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
-  test.true( !_.vector.like( src ) );
-  test.true( !_.vector.is( src ) );
-  test.true( !_.longLike( src ) );
-  test.true( !_.longIs( src ) );
-  test.true( !_.argumentsArray.like( src ) );
-  test.true( !_.arrayIs( src ) );
-  _.time.cancel( src );
+  // test.case = 'time';
+  // var src = _.time.now();
+  // test.true( !_.countable.like( src ) );
+  // test.true( !_.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.argumentsArray.like( src ) );
+  // test.true( !_.arrayIs( src ) );
+  //
+  // test.case = 'timer';
+  // var src = _.time._begin( Infinity );;
+  // test.true( !_.countable.like( src ) );
+  // test.true( !_.countable.is( src ) );
+  // test.true( !_.vector.like( src ) );
+  // test.true( !_.vector.is( src ) );
+  // test.true( !_.longLike( src ) );
+  // test.true( !_.longIs( src ) );
+  // test.true( !_.argumentsArray.like( src ) );
+  // test.true( !_.arrayIs( src ) );
+  // _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date();
@@ -1194,7 +1194,6 @@ function countablesAreEquivalentShallow( test )
   var src1 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
-  debugger;
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 
   test.case = 'buffer typed and array';
