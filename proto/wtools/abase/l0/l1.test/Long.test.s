@@ -2776,6 +2776,11 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     /* aaa : bad names of routines. don't use nouns for routines */
     /* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default, removed unnacessary function and variables */
 
+    test.case = 'without arguments';
+    var got = _.long.makeUndefined();
+    var expected = [];
+    test.identical( got, expected );
+
     test.case = 'src = null, not ins';
     var got = _.long.makeUndefined( null );
     var expected = [];
@@ -2909,6 +2914,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     /* aaa : make sure all similar test routines has good naming of variables */
     /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = BufferTyped constructor, ins = number';
+    debugger;
     var got = _.long.makeUndefined( U32x, 5 );
     var expected = new U32x( 5 );
     test.identical( got, expected );
@@ -2927,9 +2933,6 @@ function longMakeUndefinedWithArrayAndUnroll( test )
 
   if( !Config.debug )
   return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.long.makeUndefined() );
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.long.makeUndefined( [ 1, 2, 3 ], 4, 'extra argument' ) );
@@ -2993,13 +2996,13 @@ function longMakeUndefinedWithArgumentsArray( test )
   test.case = 'src = empty long, not ins';
   var src = _.argumentsArray.make( [] );
   var got = _.long.makeUndefined( src );
-  var expected = _./*longDescriptor*/defaultLong.make( [] );
+  var expected = _.argumentsArray.make( [] );
   test.identical( got, expected );
 
   test.case = 'src = long, not ins';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.makeUndefined( src );
-  var expected = _./*longDescriptor*/defaultLong.make( 3 );
+  var expected = _.argumentsArray.make( 3 );
   test.identical( got, expected );
   test.true( got !== src );
 
@@ -3013,28 +3016,21 @@ function longMakeUndefinedWithArgumentsArray( test )
   test.case = 'src = empty long, ins = number';
   var src = _.argumentsArray.make( [] );
   var got = _.long.makeUndefined( src, 2 );
-  var expected = _./*longDescriptor*/defaultLong.make( 2 );
+  var expected = _.argumentsArray.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src = long, ins = number, ins < src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.makeUndefined( src, 2 );
-  var expected = _./*longDescriptor*/defaultLong.make( 2 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src = long with an element, ins = empty array';
-  var src = new F64x( 10 );
-  var got = _.long.makeUndefined( src, [] );
-  var expected = new F64x( 0 );
+  var expected = _.argumentsArray.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src = long, ins = number, ins > src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.long.makeUndefined( src, 4 );
-  var expected = _./*longDescriptor*/defaultLong.make( 4 );
+  var expected = _.argumentsArray.make( 4 );
   test.identical( got, expected );
   test.true( got !== src );
 
@@ -3042,7 +3038,7 @@ function longMakeUndefinedWithArgumentsArray( test )
   var src = _.argumentsArray.make( [ 0, 1 ] );
   var ins = [ 1, 2, 3 ];
   var got = _.long.makeUndefined( src, ins );
-  var expected = _./*longDescriptor*/defaultLong.make( 3 );
+  var expected = _.argumentsArray.make( 3 );
   test.identical( got, expected );
   test.true( got !== ins );
   test.true( got !== src );
@@ -3051,15 +3047,9 @@ function longMakeUndefinedWithArgumentsArray( test )
   var src = _.argumentsArray.make( 5 );
   var ins = [ 1, 2, 3, 4, 5 ];
   var got = _.long.makeUndefined( src, ins );
-  var expected = _./*longDescriptor*/defaultLong.make( 5 );
+  var expected = _.argumentsArray.make( 5 );
   test.identical( got, expected );
   test.true( got !== src );
-
-  // test.case = 'src = Array constructor, ins = null';
-  // var got = _.long.makeUndefined( Array, null );
-  // var expected = [];
-  // test.identical( got, expected );
-  // test.true( _.arrayIs( got ) );
 
   test.case = 'src = BufferTyped constructor, ins = number';
   var got = _.long.makeUndefined( U32x, 5 );
@@ -6409,9 +6399,9 @@ const Proto =
     longMakeWithArrayAndUnroll,
     longMakeWithArgumentsArray,
     longMakeWithBufferTyped,
-    longMakeWithArrayAndUnrollLongDescriptor,
-    longMakeWithArgumentsArrayLongDescriptor,
-    longMakeWithBufferTypedLongDescriptor,
+    // longMakeWithArrayAndUnrollLongDescriptor, /* Dmytro : longDescriptor does not exists anymore */
+    // longMakeWithArgumentsArrayLongDescriptor,
+    // longMakeWithBufferTypedLongDescriptor,
 
     longMakeEmptyWithArrayAndUnroll,
     longMakeEmptyWithArgumentsArray,
@@ -6423,16 +6413,16 @@ const Proto =
     _longMakeOfLengthWithArrayAndUnroll,
     _longMakeOfLengthWithArgumentsArray,
     _longMakeOfLengthWithBufferTyped,
-    _longMakeOfLengthWithArrayAndUnrollLongDescriptor,
-    _longMakeOfLengthWithArgumentsArrayLongDescriptor,
-    _longMakeOfLengthWithBufferTypedLongDescriptor,
+    // _longMakeOfLengthWithArrayAndUnrollLongDescriptor,
+    // _longMakeOfLengthWithArgumentsArrayLongDescriptor,
+    // _longMakeOfLengthWithBufferTypedLongDescriptor,
 
     longMakeUndefinedWithArrayAndUnroll,
     longMakeUndefinedWithArgumentsArray,
     longMakeUndefinedWithBufferTyped,
-    longMakeUndefinedWithArrayAndUnrollLongDescriptor,
-    longMakeUndefinedWithArgumentsArrayLongDescriptor,
-    longMakeUndefinedWithBufferTypedLongDescriptor,
+    // longMakeUndefinedWithArrayAndUnrollLongDescriptor,
+    // longMakeUndefinedWithArgumentsArrayLongDescriptor,
+    // longMakeUndefinedWithBufferTypedLongDescriptor,
 
     // longMakeZeroedWithArrayAndUnroll,
     // longMakeZeroedWithArgumentsArray,
