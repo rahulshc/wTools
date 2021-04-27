@@ -293,6 +293,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Primitive.s
           - ../proto/wtools/abase/l0/l3/Regexp.s
+          - ../proto/wtools/abase/l0/l3/Routine.s
           - ../proto/wtools/abase/l0/l3/Set.s
           - ../proto/wtools/abase/l0/l3/Str.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
