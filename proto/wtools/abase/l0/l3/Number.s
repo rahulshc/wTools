@@ -28,12 +28,12 @@ function identicalShallow( src1, src2, o )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( !this.is( src1 ) )
+  if( !_.number.is( src1 ) )
   return false;
-  if( !this.is( src2 ) )
+  if( !_.number.is( src2 ) )
   return false;
 
-  return this._identicalShallow( ... arguments );
+  return _.number._identicalShallow( ... arguments );
 }
 
 //
@@ -59,12 +59,12 @@ function identicalShallowStrictly( src1, src2, o )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( !this.is( src1 ) )
+  if( !_.number.is( src1 ) )
   return false;
-  if( !this.is( src2 ) )
+  if( !_.number.is( src2 ) )
   return false;
 
-  return this._identicalShallowStrictly( ... arguments );
+  return _.number._identicalShallowStrictly( ... arguments );
 }
 
 //
@@ -165,11 +165,11 @@ function _equivalentShallow( a, b, accuracy )
 function equivalentShallow( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !this.like( src1 ) )
+  if( !_.number.like( src1 ) )
   return false;
-  if( !this.like( src2 ) )
+  if( !_.number.like( src2 ) )
   return false;
-  return this._equivalentShallow( ... arguments );
+  return _.number._equivalentShallow( ... arguments );
 }
 
 // --
