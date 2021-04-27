@@ -246,7 +246,7 @@ function identicalShallow( test )
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.map.identicalShallow( {}, {}, 'redundant argument' );
+    _.map.identicalShallow( {}, {}, {}, 'redundant argument' );
   });
 
   test.case = 'no arguments';
@@ -286,13 +286,6 @@ function identicalShallow( test )
   {
     _.map.identicalShallow( {} );
   });
-
-  test.case = 'too many arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.map.identicalShallow( {}, {}, 'redundant argument' );
-  });
-
 }
 
 //

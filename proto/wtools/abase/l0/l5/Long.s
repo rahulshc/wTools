@@ -109,8 +109,12 @@ function _longMake_functor( onMake )
     if( _.argumentsArray.is( src ) )
     src = null;
 
+    let self = this;
     if( src === null )
-    src = this.tools./*longDescriptor*/defaultLong.make;
+    src = function( src )
+    {
+      return self.tools./*longDescriptor*/defaultLong.make( src );
+    };
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
@@ -933,7 +937,7 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.tools./*longDescriptor*/defaultLong.type && _.longIs( src ) )
+  if( src instanceof this.tools./*longDescriptor*/defaultLong.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object

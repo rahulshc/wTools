@@ -206,7 +206,7 @@ function identicalShallow( test )
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.object.identicalShallow( {}, {}, 'redundant argument' );
+    _.object.identicalShallow( {}, {}, {}, 'redundant argument' );
   });
 
 }
