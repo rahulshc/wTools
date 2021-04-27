@@ -28,6 +28,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Number.s' );
   require( './l3/Object.s' );
   require( './l3/Primitive.s' );
+  require( './l3/Regexp.s' );
   require( './l3/Set.s' );
   require( './l3/Str.s' );
   require( './l3/Unroll.s' );

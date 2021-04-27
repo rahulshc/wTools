@@ -204,51 +204,52 @@ function equivalentShallow( src1, src2, accuracy )
 }
 
 //
-
-function strsEquivalent( src1, src2 )
-{
-
-  _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
-  _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  let isLong1 = _.longIs( src1 );
-  let isLong2 = _.longIs( src2 );
-
-  if( isLong1 && isLong2 )
-  {
-    let result = [];
-    _.assert( src1.length === src2.length );
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
-    }
-    return result;
-  }
-  else if( !isLong1 && isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src2.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1, src2[ i ] );
-    }
-    return result;
-  }
-  else if( isLong1 && !isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2 );
-    }
-    return result;
-  }
-  else
-  {
-    return _.str.equivalent( src1, src2 );
-  }
-
-}
+// //
+//
+// function strsEquivalent( src1, src2 )
+// {
+//
+//   _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
+//   _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   let isLong1 = _.longIs( src1 );
+//   let isLong2 = _.longIs( src2 );
+//
+//   if( isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     _.assert( src1.length === src2.length );
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( !isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src2.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1, src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( isLong1 && !isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2 );
+//     }
+//     return result;
+//   }
+//   else
+//   {
+//     return _.str.equivalent( src1, src2 );
+//   }
+//
+// }
 
 // --
 // implementation
@@ -257,7 +258,7 @@ function strsEquivalent( src1, src2 )
 let ToolsExtension =
 {
 
-  strsEquivalent, /* xxx : review */
+  // strsEquivalent, /* xxx : review */
 
 }
 
