@@ -3002,7 +3002,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
 function strSplitInlinedStereo_( o )
 {
   /*
-    New delimiter.
+    New delimeter.
     was : 'this #background:red#is#background:default# text and is not'.
     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
     */
@@ -3031,7 +3031,7 @@ function strSplitInlinedStereo_( o )
   splitOptions.stripping = 0;
   splitOptions.preservingEmpty = 1;
 
-  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimeters */
   result = preprocessBeforeJoin( result );
 
   if( o.inliningDelimeters ) /* new */
@@ -3475,7 +3475,7 @@ strSplitInlinedStereo_.defaults =
 // function strSplitInlinedStereo_( o )
 // {
 //   /*
-//     New delimiter.
+//     New delimeter.
 //     was : 'this #background:red#is#background:default# text and is not'.
   //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
   // */
@@ -4023,7 +4023,7 @@ function _exportStringShallow( src, o )
     }
 
     if( o.widthLimit !== 0 )
-    result = _.strShort({ src : result, widthLimit : o.widthLimit });
+    result = _.strShort_({ src : result, widthLimit : o.widthLimit }).result;
 
   }
   catch( err )
@@ -4038,7 +4038,7 @@ function _exportStringShallow( src, o )
 _exportStringShallow.defaults =
 {
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -4058,7 +4058,7 @@ function exportStringShallowCode( src, o ) /* */
 exportStringShallowCode.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -4078,7 +4078,7 @@ function exportStringShallowDiagnostic( src, o ) /* */
 exportStringShallowDiagnostic.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
