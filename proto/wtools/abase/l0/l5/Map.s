@@ -587,7 +587,7 @@ function mapHasAll( src, screen )
     if( !( screen[ s ] in src ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( !( value in src ) )
@@ -649,7 +649,7 @@ function mapHasAny( src, screen )
     if( screen[ s ] in src )
     return true;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( value in src )
@@ -710,7 +710,7 @@ function mapHasNone( src, screen )
     if( screen[ s ] in src )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( value in src )
@@ -770,7 +770,7 @@ function mapOnlyOwnAll( src, screen )
     if( !Object.hasOwnProperty.call( src, screen[ s ] ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( !Object.hasOwnProperty.call( src, value ) )
@@ -830,7 +830,7 @@ function mapOnlyOwnAny( src, screen )
     if( Object.hasOwnProperty.call( src, screen[ s ] ) )
     return true;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( Object.hasOwnProperty.call( src, value ) )
@@ -891,7 +891,7 @@ function mapOnlyOwnNone( src, screen )
     if( Object.hasOwnProperty.call( src, screen[ s ] ) )
     return false;
   }
-  else if( _.vector.is( screen ) )
+  else if( _.countable.is( screen ) )
   {
     for( let value of screen )
     if( Object.hasOwnProperty.call( src, value ) )
@@ -918,7 +918,7 @@ function mapHasExactly( srcMap, screenMaps )
   result = result && _.mapHasOnly( srcMap, screenMaps );
   result = result && _.mapHasAll( srcMap, screenMaps );
 
-  return true;
+  return result;
 }
 
 //
@@ -932,7 +932,7 @@ function mapOnlyOwnExactly( srcMap, screenMaps )
   result = result && _.mapOnlyOwnOnly( srcMap, screenMaps );
   result = result && _.mapOnlyOwnAll( srcMap, screenMaps );
 
-  return true;
+  return result;
 }
 
 //
@@ -1111,11 +1111,11 @@ function mapsExtend( dstMap, srcMaps )
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as the first argument' );
 
   /* aaa : allow and cover vector */ /* Dmytro : allowed and covered. I think, an optimization for array like vectors has no sense. Otherwise, we need to add single branch with for cycle */
-  if( !_.vector.is( srcMaps ) )
-  dstMapExtend( srcMaps );
-  else
+  if( _.countable.is( srcMaps ) )
   for( let srcMap of srcMaps )
   dstMapExtend( srcMap );
+  else
+  dstMapExtend( srcMaps );
 
   return dstMap;
 
@@ -1233,6 +1233,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   _.assert( _.routine.is( filter ), 'Expects filter' );
   _.assert( !_.primitive.is( dstMap ), 'Expects non primitive as argument' );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
@@ -1241,11 +1242,18 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
 
     for( let k in srcMap )
     {
-
       filter.call( this, dstMap, srcMap, k );
-
     }
+  }
+  else /* countable */
+  for( let srcMap of srcMaps )
+  {
+    _.assert( !_.primitive.is( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.entity.strType( srcMap ) );
 
+    for( let k in srcMap )
+    {
+      filter.call( this, dstMap, srcMap, k );
+    }
   }
 
   return dstMap;
@@ -1545,7 +1553,7 @@ function mapsComplementPreservingUndefines( dstMap, srcMaps )
 function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
   _.assert( arguments.length >= 3, 'Expects at least three arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
   let srcMaps = _.longSlice( arguments, 2 );
   return _.mapsExtendRecursiveConditional( filters, dstMap, srcMaps );
 }
@@ -1561,7 +1569,7 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
   if( _.routine.is( filters ) )
   filters = { onUpFilter : filters, onField : filters }
@@ -1586,9 +1594,15 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
+    _mapExtendRecursiveConditional( filters, dstMap, srcMap );
+  }
+  else /* countable */
+  {
+    for( let srcMap of srcMaps )
     _mapExtendRecursiveConditional( filters, dstMap, srcMap );
   }
 
@@ -1635,7 +1649,7 @@ function mapExtendRecursive( dstMap, srcMap )
 {
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1652,11 +1666,17 @@ function mapsExtendRecursive( dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( this === Self );
+  // _.assert( this === Self );
 
+  if( _.arrayIs( srcMaps ) )
   for( let a = 1 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
+    _._mapExtendRecursive( dstMap, srcMap );
+  }
+  else /* countable */
+  {
+    for( let srcMap of srcMaps )
     _._mapExtendRecursive( dstMap, srcMap );
   }
 
@@ -1699,7 +1719,7 @@ function _mapExtendRecursive( dstMap, srcMap )
 
 function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingAnything(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1709,7 +1729,7 @@ function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingAnything(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1719,7 +1739,7 @@ function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 
 function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingOnlyArrays(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1729,7 +1749,7 @@ function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingOnlyArrays(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1739,7 +1759,7 @@ function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 
 function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.appendingOnce(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1749,7 +1769,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 
 function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.appendingOnce(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1759,7 +1779,7 @@ function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 
 function mapSupplementRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.dstNotHas(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1769,7 +1789,7 @@ function mapSupplementRecursive( dstMap, srcMap )
 
 function mapSupplementByMapsRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.dstNotHas(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1779,7 +1799,7 @@ function mapSupplementByMapsRecursive( dstMap, srcMaps )
 
 function mapSupplementOwnRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.dstOwn(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1789,7 +1809,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 
 function mapsSupplementOwnRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.dstOwn(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1799,7 +1819,7 @@ function mapsSupplementOwnRecursive( dstMap, srcMaps )
 
 function mapSupplementRemovingRecursive( dstMap, srcMap )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.props.mapper.removing(), onUpFilter : true };
   return _.mapExtendRecursiveConditional( filters, ... arguments );
@@ -1809,7 +1829,7 @@ function mapSupplementRemovingRecursive( dstMap, srcMap )
 
 function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 {
-  _.assert( this === Self );
+  // _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let filters = { onField : _.props.mapper.removing(), onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
@@ -1867,11 +1887,11 @@ function mapSetWithKeys( dstMap, key, val )
   dstMap = Object.create( null );
 
   _.assert( _.object.is( dstMap ) );
-  _.assert( _.strIs( key ) || _.vector.is( key ) );
+  _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
-  if( _.vector.is( key ) )
+  if( _.countable.is( key ) )
   {
     if( _.argumentsArray.like( key ) )
     for( let s = 0 ; s < key.length ; s++ )
@@ -1906,11 +1926,11 @@ function mapSetWithKeyStrictly( dstMap, key, val )
   dstMap = Object.create( null );
 
   _.assert( _.object.is( dstMap ) );
-  _.assert( _.strIs( key ) || _.vector.is( key ) );
+  _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented and covered */
-  if( _.vector.is( key ) )
+  if( _.countable.is( key ) )
   {
     if( _.argumentsArray.like( key ) )
     for( let s = 0 ; s < key.length ; s++ )
@@ -2048,13 +2068,13 @@ function mapInvertDroppingDuplicates( src, dst )
 function mapsFlatten( o )
 {
 
-  if( _.vector.is( o ) )
+  if( _.countable.is( o ) )
   o = { src : o };
 
   _.routine.options( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
-  _.assert( _.vector.is( o.src ) || _.aux.is( o.src ) ); /* xxx */
+  _.assert( _.countable.is( o.src ) || _.aux.is( o.src ) ); /* xxx */
 
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
@@ -2067,7 +2087,7 @@ function mapsFlatten( o )
   {
 
     /* aaa : allow and cover vector */ /* Dmytro : extended, covered */
-    if( _.vector.is( src ) )
+    if( _.countable.is( src ) )
     {
       if( _.argumentsArray.like( src ) )
       for( let s = 0 ; s < src.length ; s++ )
@@ -2268,7 +2288,7 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
   let result = Object.create( null );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( butMap ) )
+  if( _.countable.is( butMap ) )
   {
     let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
     let arrayLikeIs = _.argumentsArray.like( butMap ) ? 1 : 0;
@@ -2315,7 +2335,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 {
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
 
-  _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
+  _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 4 arguments' );
 
   let propertyFilter = arguments[ 0 ];
   let dstMap = arguments[ 1 ];
@@ -2461,7 +2481,7 @@ function mapButOld( srcMap, butMap )
   _.assert( !_.primitive.is( srcMap ), 'Expects map {-srcMap-}' );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( butMap ) )
+  if( _.countable.is( butMap ) )
   {
     let filterRoutines = [ filterWithVectorButMap, filterWithArrayLikeButMap ];
     let arrayLikeIs = _.argumentsArray.like( butMap ) ? 1 : 0;
@@ -2591,7 +2611,7 @@ function mapBut_( dstMap, srcMap, butMap )
   o = _._mapBut_VerifyMapFields( o );
 
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapsIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let butMapsIsCountable = _.countable.is( o.butMap ) ? 2 : 0;
   let filterRoutines =
   [
     filterNotIdenticalWithAuxScreenMap,
@@ -2599,10 +2619,10 @@ function mapBut_( dstMap, srcMap, butMap )
     filterNotIdenticalWithVectorScreenMap,
     filterIdenticalWithVectorScreenMap
   ];
-  let key = mapsAreIdentical + butMapsIsVector;
+  let key = mapsAreIdentical + butMapsIsCountable;
   let filterRoutine = filterRoutines[ key ];
   let searchingRoutine;
-  if( butMapsIsVector )
+  if( butMapsIsCountable )
   searchingRoutine = _screenMapSearchingRoutineFunctor( o.butMap );
 
   for( let key in o.srcMap )
@@ -2774,9 +2794,9 @@ function _mapBut_VerifyMapFields( o )
 function _mapBut_FilterFunctor( o )
 {
   let mapsAreIdentical = o.dstMap === o.srcMap ? 1 : 0;
-  let butMapIsVector = _.vector.is( o.butMap ) ? 2 : 0;
+  let butMapIsCountable = _.countable.is( o.butMap ) ? 2 : 0;
   if( _.argumentsArray.like( o.butMap ) )
-  butMapIsVector += 2;
+  butMapIsCountable += 2;
   let filterRoutines =
   [
     filterNotIdentical,
@@ -2787,7 +2807,7 @@ function _mapBut_FilterFunctor( o )
     filterIdenticalWithArrayButMap,
   ];
 
-  return filterRoutines[ mapsAreIdentical + butMapIsVector ];
+  return filterRoutines[ mapsAreIdentical + butMapIsCountable ];
 
   /* */
 
@@ -3226,7 +3246,7 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
   });
 
   let mapsAreIdentical = o.dstMap === o.srcMaps ? 1 : 0;
-  let screenMapsIsVector = _.vector.is( o.screenMaps ) ? 2 : 0;
+  let screenMapsIsCountable = _.countable.is( o.screenMaps ) ? 2 : 0;
   let filterRoutines =
   [
     filterNotIdenticalWithAuxScreenMap,
@@ -3234,13 +3254,13 @@ function mapOnly_( dstMap, srcMaps, screenMaps )
     filterNotIdenticalWithVectorScreenMap,
     filterIdenticalWithVectorScreenMap
   ];
-  let key = mapsAreIdentical + screenMapsIsVector;
+  let key = mapsAreIdentical + screenMapsIsCountable;
   let filterRoutine = filterRoutines[ key ];
   let searchingRoutine;
-  if( screenMapsIsVector )
+  if( screenMapsIsCountable )
   searchingRoutine = _screenMapSearchingRoutineFunctor( o.screenMaps );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
@@ -3372,7 +3392,7 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 
   let filterRoutine = _._mapOnly_FilterFunctor( o );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
@@ -3446,7 +3466,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
 
   let filterRoutine = _._mapOnly_FilterFunctor( o );
 
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   {
     for( let srcMap of o.srcMaps )
     {
@@ -3535,19 +3555,19 @@ function _mapOnly( o )
   _.map.assertHasOnly( o, _mapOnly.defaults );
 
   /* aaa : allow and cover vector */ /* Dmytro : implemented, covered */
-  if( _.vector.is( o.srcMaps ) )
+  if( _.countable.is( o.srcMaps ) )
   for( let srcMap of o.srcMaps )
   {
     _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
 
-    if( _.vector.is( o.screenMaps ) )
+    if( _.countable.is( o.screenMaps ) )
     filterSrcMapWithVectorScreenMap( srcMap );
     else
     filterSrcMap( srcMap );
   }
   else
   {
-    if( _.vector.is( o.screenMaps ) )
+    if( _.countable.is( o.screenMaps ) )
     filterSrcMapWithVectorScreenMap( o.srcMaps );
     else
     filterSrcMap( o.srcMaps );

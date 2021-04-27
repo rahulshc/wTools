@@ -86,7 +86,7 @@ function exportStringShallowDiagnostic( src )
   if( method )
   {
     result = method.call( src, { verbosity : 1 } );
-    result = _.strShort( result );
+    result = _.strShort_( result ).result;
   }
   else
   {
