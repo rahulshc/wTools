@@ -1486,17 +1486,7 @@ function exportStringShallowCode( test )
 
   test.case = 'path & str';
   var src = '/a/b/';
-  var expected = '\'/a/b/\'';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
-
-  test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
-  var expected = '{- routine dstAndSrcOwn -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
-
-  test.case = 'propertyTransformer & mapper';
-  var src = _.props.mapper[ 'assigning' ];
-  var expected = '{- routine assigning -}';
+  var expected = '/a/b/';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'routine & routineLike';
