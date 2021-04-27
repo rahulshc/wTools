@@ -11329,7 +11329,7 @@ function arrayRemoveElement( test )
 
   test.case = 'evaluator ( equalizer ) has wrong length';
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, () => 1 ) );
-  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a, b, c ) => a === b && b === c ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a, b, c, d ) => a - b + c === d ) );
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, () => 1 ) );
   test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, ( a, b ) => a === b ) );
 }
@@ -11988,7 +11988,7 @@ function arrayRemovedElement_( test )
 
   test.case = 'wrong length of evaluator1';
   test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, () => 'str' ) );
-  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( a, b, c ) => a === b - c ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( a, b, c, d ) => a - b + c === d ) );
 
   test.case = 'wrong type of evaluator2';
   test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( e ) => e, 'wrong' ) );
@@ -12360,7 +12360,7 @@ function arrayRemovedElementOnce_( test )
 
   test.case = 'wrong length of evaluator1';
   test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, () => 'str' ) );
-  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( a, b, c ) => a === b - c ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( a, b, c, d ) => a - b + c === d ) );
 
   test.case = 'wrong type of evaluator2';
   test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, 'wrong' ) );
