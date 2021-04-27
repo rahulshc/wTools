@@ -383,7 +383,6 @@ function countablesAreEquivalentShallow( test )
   var src1 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
-  debugger;
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 
   test.case = 'buffer typed and array';
@@ -939,7 +938,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.Countable.l1',
+  name : 'Tools.Countable.l0.l3',
   silencing : 1,
 
   tests :

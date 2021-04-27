@@ -1749,7 +1749,7 @@ function typingExtended( test )
 const Proto =
 {
 
-  name : 'Tools.Countable.l1',
+  name : 'Tools.Countable.l0.l1',
   silencing : 1,
 
   tests :
