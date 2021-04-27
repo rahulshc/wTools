@@ -99,6 +99,12 @@ function _makeEmpty( src )
     return _.argumentsArray.make( 0 );
     else if( _.unroll.is( src ) )
     return _.unroll.make();
+    if( _.routineIs( src ) )
+    {
+      let result = new src( 0 );
+      _.assert( _.long.is( result ) );
+      return result;
+    }
     return new src.constructor();
   }
   else
@@ -117,7 +123,7 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( this.like( src ) );
+    _.assert( this.like( src ) || _.routineIs( src ) );
     return this._makeEmpty( src );
   }
   else
