@@ -12368,6 +12368,7 @@ function arrayRemovedElementOnce_( test )
   test.case = 'wrong length of evaluator1';
   test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, () => 'str' ) );
   test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, ( a, b ) => a === b ) );
+
 }
 
 //
@@ -25288,7 +25289,7 @@ function arrayUpdate( test )
 const Proto =
 {
 
-  name : 'Tools.Array.l9',
+  name : 'Tools.Array.l0.l9',
   silencing : 1,
   enabled : 1,
 

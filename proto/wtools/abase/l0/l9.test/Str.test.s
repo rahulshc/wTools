@@ -24548,7 +24548,7 @@ function strShortHeightOptionDelimeter( test )
 const Proto =
 {
 
-  name : 'Tools.Str.l9',
+  name : 'Tools.Str.l0.l9',
   silencing : 1,
 
   tests :

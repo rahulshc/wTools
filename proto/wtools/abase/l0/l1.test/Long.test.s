@@ -6366,7 +6366,7 @@ function longRight( test )
 const Proto =
 {
 
-  name : 'Tools.Long.l1',
+  name : 'Tools.Long.l0.l1',
   silencing : 1,
   enabled : 1,
 

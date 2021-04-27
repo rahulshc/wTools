@@ -88,7 +88,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Object.l9',
+  name : 'Tools.Object.l0.l9',
   silencing : 1,
 
   tests :

@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.entity = _.entity || Object.create( null );
 
 _.assert( !!_.container.cloneShallow, 'Expects routine _.container.cloneShallow' );
 

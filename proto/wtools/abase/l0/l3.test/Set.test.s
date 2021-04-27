@@ -1,4 +1,4 @@
-( function _l0_l3_Array_test_s_()
+( function _l0_l3_Set_test_s_()
 {
 
 'use strict';
@@ -13,9 +13,9 @@ const _global = _global_;
 const _ = _global_.wTools;
 const __ = _globals_.testing.wTools;
 
-//--
-// container interface
-//--
+// --
+// tests
+// --
 
 function aptLeft( test )
 {
@@ -23,23 +23,23 @@ function aptLeft( test )
   /* */
 
   test.case = 'left';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptLeft( src, function( val )
+  var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
   });
-  var exp = [ 11, 0, 0, true ];
+  var exp = [ 11, 1, 0, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ],
   ]
   test.identical( ops, exp );
@@ -47,29 +47,29 @@ function aptLeft( test )
   /* */
 
   test.case = 'middle';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptLeft( src, function( val )
+  var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 2 )
     return val + 10;
   });
-  var exp = [ 12, 1, 1, true ];
+  var exp = [ 12, 2, 1, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -77,35 +77,35 @@ function aptLeft( test )
   /* */
 
   test.case = 'right';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptLeft( src, function( val )
+  var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 3 )
     return val + 10;
   });
-  var exp = [ 13, 2, 2, true ];
+  var exp = [ 13, 3, 2, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ],
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -113,35 +113,35 @@ function aptLeft( test )
   /* */
 
   test.case = 'no';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptLeft( src, function( val )
+  var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
-  var exp = [ 3, 2, 2, false ];
+  var exp = [ 3, 3, 2, false ];
   test.identical( got, exp );
   var exp =
   [
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ],
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -149,15 +149,15 @@ function aptLeft( test )
   /* */
 
   test.case = 'empty';
-  var src = [];
+  var src = new Set([]);
   var ops = [];
-  var got = _.array.aptLeft( src, function( val )
+  var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
-  var exp = [ undefined, -1, -1, false ];
+  var exp = [ undefined, undefined, -1, false ];
   test.identical( got, exp );
   var exp =
   [
@@ -167,23 +167,23 @@ function aptLeft( test )
   /* */
 
   test.case = 'without callback';
-  var src = [ 1, 2, 3 ];
-  var exp = [ 1, 0, 0, true ];
-  var got = _.array.aptLeft( src );
+  var src = new Set([ 1, 2, 3 ]);
+  var exp = [ 1, 1, 0, true ];
+  var got = _.set.aptLeft( src );
   test.identical( got, exp );
-  var exp = [ 1, 0, 0, true ];
-  var got = _.array.first( src );
+  var exp = [ 1, 1, 0, true ];
+  var got = _.set.first( src );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'without callback, empty';
-  var src = [];
-  var exp = [ undefined, -1, -1, false ];
-  var got = _.array.aptLeft( src );
+  var src = new Set([]);
+  var exp = [ undefined, undefined, -1, false ];
+  var got = _.set.aptLeft( src );
   test.identical( got, exp );
-  var exp = [ undefined, -1, -1, false ];
-  var got = _.array.first( src );
+  var exp = [ undefined, undefined, -1, false ];
+  var got = _.set.first( src );
   test.identical( got, exp );
 
   /* */
@@ -198,35 +198,35 @@ function aptRight( test )
   /* */
 
   test.case = 'left';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptRight( src, function( val )
+  var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
   });
-  var exp = [ 11, 0, 0, true ];
+  var exp = [ 11, 1, 0, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ],
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -234,29 +234,29 @@ function aptRight( test )
   /* */
 
   test.case = 'middle';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptRight( src, function( val )
+  var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 2 )
     return val + 10;
   });
-  var exp = [ 12, 1, 1, true ];
+  var exp = [ 12, 2, 1, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -264,23 +264,23 @@ function aptRight( test )
   /* */
 
   test.case = 'right';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptRight( src, function( val )
+  var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 3 )
     return val + 10;
   });
-  var exp = [ 13, 2, 2, true ];
+  var exp = [ 13, 3, 2, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ]
   ]
   test.identical( ops, exp );
@@ -288,35 +288,35 @@ function aptRight( test )
   /* */
 
   test.case = 'no';
-  var src = [ 1, 2, 3 ];
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
-  var got = _.array.aptRight( src, function( val )
+  var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
-  var exp = [ 1, 0, 0, false ];
+  var exp = [ 1, 1, 0, false ];
   test.identical( got, exp );
   var exp =
   [
     [
       3,
+      3,
       2,
-      2,
-      src
+      src,
     ],
     [
       2,
+      2,
       1,
-      1,
-      src
+      src,
     ],
     [
       1,
+      1,
       0,
-      0,
-      src
+      src,
     ],
   ]
   test.identical( ops, exp );
@@ -324,15 +324,15 @@ function aptRight( test )
   /* */
 
   test.case = 'empty';
-  var src = [];
+  var src = new Set([]);
   var ops = [];
-  var got = _.array.aptRight( src, function( val )
+  var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
-  var exp = [ undefined, -1, -1, false ];
+  var exp = [ undefined, undefined, -1, false ];
   test.identical( got, exp );
   var exp =
   [
@@ -342,23 +342,23 @@ function aptRight( test )
   /* */
 
   test.case = 'without callback';
-  var src = [ 1, 2, 3 ];
-  var exp = [ 3, 2, 2, true ];
-  var got = _.array.aptRight( src );
+  var src = new Set([ 1, 2, 3 ]);
+  var exp = [ 3, 3, 2, true ];
+  var got = _.set.aptRight( src );
   test.identical( got, exp );
-  var exp = [ 3, 2, 2, true ];
-  var got = _.array.last( src );
+  var exp = [ 3, 3, 2, true ];
+  var got = _.set.last( src );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'without callback, empty';
-  var src = [];
-  var exp = [ undefined, -1, -1, false ];
-  var got = _.array.aptRight( src );
+  var src = new Set([]);
+  var exp = [ undefined, undefined, -1, false ];
+  var got = _.set.aptRight( src );
   test.identical( got, exp );
-  var exp = [ undefined, -1, -1, false ];
-  var got = _.array.last( src );
+  var exp = [ undefined, undefined, -1, false ];
+  var got = _.set.last( src );
   test.identical( got, exp );
 
   /* */
@@ -366,15 +366,14 @@ function aptRight( test )
 }
 
 // --
-//
+// declaration
 // --
 
 const Proto =
 {
 
-  name : 'Tools.Array.l0.l3',
+  name : 'Tools.Set.l0.l3',
   silencing : 1,
-  enabled : 1,
 
   tests :
   {
@@ -386,7 +385,7 @@ const Proto =
 
 }
 
-/* qqq for Dmytro : this test suite fails with shoulding:0. check also other test suites */
+//
 
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )

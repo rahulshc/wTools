@@ -1129,7 +1129,7 @@ function objectLike( test ) /* qqq : rewrote the test */
 const Proto =
 {
 
-  name : 'Tools.Constructible',
+  name : 'Tools.Constructible.l0.l9',
   silencing : 1,
 
   tests :

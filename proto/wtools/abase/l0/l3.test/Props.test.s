@@ -1074,7 +1074,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.Props.l3',
+  name : 'Tools.Props.l0.l3',
   silencing : 1,
 
   tests :
