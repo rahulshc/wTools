@@ -5296,83 +5296,83 @@ function longFrom( test )
 {
   test.case = 'null';
   var src = null;
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'number';
   var src = 2;
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [ undefined, undefined ] );
   test.true( _.arrayIs( got ) );
 
   test.case = 'empty array';
   var src = [];
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
   test.true( got === src );
 
   test.case = 'filled array';
   var src = [ 1, '', 'abc', undefined, null, false, true, 0 ];
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
   test.true( _.arrayIs( got ) );
   test.true( got === src );
 
   test.case = 'empty unroll';
   var src = _.unroll.make( [] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [] );
   test.true( _.arrayIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   test.case = 'filled unroll';
   var src = _.unroll.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
   test.true( _.arrayIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   test.case = 'empty argumentsArray';
   var src = _.argumentsArray.make( [] );
-  var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.true( _.arrayIs( got ) );
-  test.true( got !== src );
+  var got = _.long.from( src );
+  test.identical( got, _.argumentsArray.make( [] ) );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got === src );
 
   test.case = 'filled argumentsArray';
   var src = _.argumentsArray.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  var got = _.longFrom( src );
-  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  test.true( _.arrayIs( got ) );
-  test.true( got !== src );
+  var got = _.long.from( src );
+  test.identical( got, _.argumentsArray.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] ) );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got === src );
 
   test.case = 'empty BufferTyped';
   var src = new U8x( [] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, new U8x( [] ) );
   test.true( _.bufferTypedIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   var src = new I16x( [] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, new I16x( [] ) );
   test.true( _.bufferTypedIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   test.case = 'filled BufferTyped';
   var src = new F32x( [ 1, 2, 3, 4, 0 ] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, new F32x([ 1, 2, 3, 4, 0 ]) );
   test.true( _.bufferTypedIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   var src = new F64x( [ 1, 2, 3, 4, 0 ] );
-  var got = _.longFrom( src );
+  var got = _.long.from( src );
   test.identical( got, new F64x([ 1, 2, 3, 4, 0 ]) );
   test.true( _.bufferTypedIs( got ) );
-  test.true( got !== src );
+  test.true( got === src );
 
   /* - */
 
@@ -5380,17 +5380,15 @@ function longFrom( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.longFrom() );
+  test.shouldThrowErrorSync( () => _.long.from() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.longFrom( 1, [] ) );
+  test.shouldThrowErrorSync( () => _.long.from( 1, [] ) );
 
   test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.longFrom( undefined ) );
-  test.shouldThrowErrorSync( () => _.longFrom( 'str' ) );
-  test.shouldThrowErrorSync( () => _.longFrom( { 1 : 2 } ) );
+  test.shouldThrowErrorSync( () => _.long.from( 'str' ) );
+  test.shouldThrowErrorSync( () => _.long.from( { 1 : 2 } ) );
 }
-
 //
 
 function longSlice( test )
@@ -5793,64 +5791,64 @@ longSlice.timeOut = 20000;
 
 //
 
-function identical( test )
-{
-  test.case = 'empty arrays';
-  var got = _.long.identical( [], [] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'arrays are equal';
-  var got = _.long.identical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'array-like arguments';
-  function src1()
-  {
-    return arguments;
-  };
-  function src2()
-  {
-    return arguments;
-  };
-  var got = _.long.identical( src1( 3, 7, 33 ), src2( 3, 7, 13 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'arrays are not equal';
-  var got = _.long.identical( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'arrays length are not equal';
-  var got = _.long.identical( [ 1, 2, 3 ], [ 1, 2 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.long.identical();
-  });
-
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.long.identical( [ 1, 2, 3 ] );
-  });
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.long.identical( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
-  });
-};
+// function identical( test )
+// {
+//   test.case = 'empty arrays';
+//   var got = _.long.identical( [], [] );
+//   var expected = true;
+//   test.identical( got, expected );
+//
+//   test.case = 'arrays are equal';
+//   var got = _.long.identical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+//   var expected = true;
+//   test.identical( got, expected );
+//
+//   test.case = 'array-like arguments';
+//   function src1()
+//   {
+//     return arguments;
+//   };
+//   function src2()
+//   {
+//     return arguments;
+//   };
+//   var got = _.long.identical( src1( 3, 7, 33 ), src2( 3, 7, 13 ) );
+//   var expected = false;
+//   test.identical( got, expected );
+//
+//   test.case = 'arrays are not equal';
+//   var got = _.long.identical( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
+//   var expected = false;
+//   test.identical( got, expected );
+//
+//   test.case = 'arrays length are not equal';
+//   var got = _.long.identical( [ 1, 2, 3 ], [ 1, 2 ] );
+//   var expected = false;
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.long.identical();
+//   });
+//
+//   test.case = 'not enough arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.long.identical( [ 1, 2, 3 ] );
+//   });
+//
+//   test.case = 'extra argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.long.identical( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
+//   });
+// };
 
 //
 
@@ -6428,7 +6426,7 @@ const Proto =
 
     //
 
-    // longFrom,
+    longFrom,
 
     // longSlice,
 

@@ -17,106 +17,6 @@ const __ = _globals_.testing.wTools;
 // long
 //--
 
-function longFrom( test )
-{
-  test.case = 'null';
-  var src = null;
-  var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.true( _.arrayIs( got ) );
-
-  test.case = 'number';
-  var src = 2;
-  var got = _.longFrom( src );
-  test.identical( got, [ undefined, undefined ] );
-  test.true( _.arrayIs( got ) );
-
-  test.case = 'empty array';
-  var src = [];
-  var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.true( _.arrayIs( got ) );
-  test.true( got === src );
-
-  test.case = 'filled array';
-  var src = [ 1, '', 'abc', undefined, null, false, true, 0 ];
-  var got = _.longFrom( src );
-  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  test.true( _.arrayIs( got ) );
-  test.true( got === src );
-
-  test.case = 'empty unroll';
-  var src = _.unroll.make( [] );
-  var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.true( _.arrayIs( got ) );
-  test.true( got === src );
-
-  test.case = 'filled unroll';
-  var src = _.unroll.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  var got = _.longFrom( src );
-  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  test.true( _.arrayIs( got ) );
-  test.true( got === src );
-
-  test.case = 'empty argumentsArray';
-  var src = _.argumentsArray.make( [] );
-  var got = _.longFrom( src );
-  test.identical( got, _.argumentsArray.make( [] ) );
-  test.true( _.argumentsArray.is( got ) );
-  test.true( got === src );
-
-  test.case = 'filled argumentsArray';
-  var src = _.argumentsArray.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
-  var got = _.longFrom( src );
-  test.identical( got, _.argumentsArray.make( [ 1, '', 'abc', undefined, null, false, true, 0 ] ) );
-  test.true( _.argumentsArray.is( got ) );
-  test.true( got === src );
-
-  test.case = 'empty BufferTyped';
-  var src = new U8x( [] );
-  var got = _.longFrom( src );
-  test.identical( got, new U8x( [] ) );
-  test.true( _.bufferTypedIs( got ) );
-  test.true( got === src );
-
-  var src = new I16x( [] );
-  var got = _.longFrom( src );
-  test.identical( got, new I16x( [] ) );
-  test.true( _.bufferTypedIs( got ) );
-  test.true( got === src );
-
-  test.case = 'filled BufferTyped';
-  var src = new F32x( [ 1, 2, 3, 4, 0 ] );
-  var got = _.longFrom( src );
-  test.identical( got, new F32x([ 1, 2, 3, 4, 0 ]) );
-  test.true( _.bufferTypedIs( got ) );
-  test.true( got === src );
-
-  var src = new F64x( [ 1, 2, 3, 4, 0 ] );
-  var got = _.longFrom( src );
-  test.identical( got, new F64x([ 1, 2, 3, 4, 0 ]) );
-  test.true( _.bufferTypedIs( got ) );
-  test.true( got === src );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.longFrom() );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.longFrom( 1, [] ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.longFrom( 'str' ) );
-  test.shouldThrowErrorSync( () => _.longFrom( { 1 : 2 } ) );
-}
-
-//
-
 function longSlice( test )
 {
 
@@ -530,8 +430,6 @@ const Proto =
   {
 
     // long, l0/l5
-
-    longFrom,
 
     longSlice,
 
