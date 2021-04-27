@@ -7868,7 +7868,7 @@ function elementWithImplicit( test )
 const Proto =
 {
 
-  name : 'Tools.Entity',
+  name : 'Tools.Entity.l0.l9',
   silencing : 1,
 
   tests :

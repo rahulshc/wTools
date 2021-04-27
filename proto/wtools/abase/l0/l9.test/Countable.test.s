@@ -1419,7 +1419,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 const Proto =
 {
 
-  name : 'Tools.Countable',
+  name : 'Tools.Countable.l0.l9',
   silencing : 1,
 
   tests :

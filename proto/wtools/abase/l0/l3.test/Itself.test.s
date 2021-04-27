@@ -354,7 +354,7 @@ function aptRightItself( test )
 const Proto =
 {
 
-  name : 'Tools.Itself.l3',
+  name : 'Tools.Itself.l0.l3',
   silencing : 1,
 
   tests :

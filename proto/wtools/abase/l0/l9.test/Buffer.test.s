@@ -19342,7 +19342,7 @@ function bufferIsolateRightOrAllWithStrings( test )
 const Proto =
 {
 
-  name : 'Tools.Buffer',
+  name : 'Tools.Buffer.l0.l9',
   silencing : 1,
   enabled : 1,
 

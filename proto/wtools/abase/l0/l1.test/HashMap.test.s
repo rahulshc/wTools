@@ -687,7 +687,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.HashMap.l1', /* xxx : make optional name. deduce if not defined */
+  name : 'Tools.HashMap.l0.l1', /* xxx : make optional name. deduce if not defined */
   silencing : 1,
 
   tests :

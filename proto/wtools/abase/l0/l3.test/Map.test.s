@@ -1084,7 +1084,7 @@ function filterBlackBox( test )
 const Proto =
 {
 
-  name : 'Tools.Map.l3',
+  name : 'Tools.Map.l0.l3',
   silencing : 1,
 
   tests :
