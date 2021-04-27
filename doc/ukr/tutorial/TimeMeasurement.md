@@ -82,10 +82,10 @@ function forEach( src, onEach )
 
 Можливе використання аббревіатур :
 
-- ВСМІ = Велика сутність( length : \<length> ), мала кількість ітерацій ( size : \<size> )
-- МСВІ = Мала сутність( length : \<length> ), велика кількість ітерацій ( size : \<size> )
+- BASI = Велика сутність( length : \<length> ), мала кількість ітерацій ( size : \<size> )
+- SABI = Мала сутність( length : \<length> ), велика кількість ітерацій ( size : \<size> )
 
-| Interpretor  | forLoop( ВСМІ ) | forEach(ВСМІ) | forLoop( МСВІ ) | forEach(МСВІ) |
+| Interpretor  | forLoop( BASI ) | forEach(BASI) | forLoop( SABI ) | forEach(SABI) |
 | ------------ | --------------- | ------------- | --------------- | ------------- |
 | Njs v10.16.0 | 9.940 s         | 17.410 s      | 0.134 s         | 0.728 s       |
 | Njs v11.3.0  | 10.182 s        | 17.403 s      | 0.137 s         | 0.758 s       |
