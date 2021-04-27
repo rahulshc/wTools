@@ -27,6 +27,22 @@ function like( src ) /* qqq : cover */
   return false;
 }
 
+//
+
+function _lengthOf( src )
+{
+  return src.length;
+}
+
+//
+
+function lengthOf( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( this.like( src ) );
+  return this._lengthOf( src );
+}
+
 // --
 // maker
 // --
@@ -78,9 +94,7 @@ function makeEmpty()
 function _makeUndefined( src, length )
 {
   if( length === undefined )
-  {
-    length = src;
-  }
+  length = src;
   if( this.like( length ) )
   length = this.lengthOf( length );
   return this._make( length );
@@ -172,6 +186,9 @@ var ArgumentsArrayExtension =
 
   is,
   like,
+
+  _lengthOf,
+  lengthOf,
 
   // maker
 

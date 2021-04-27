@@ -111,22 +111,6 @@ function exportStringShallowDiagnostic( src )
 // container interface
 // --
 
-function _lengthOf( src )
-{
-  return src.length;
-}
-
-//
-
-function lengthOf( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.like( src ) );
-  return this._lengthOf( src );
-}
-
-//
-
 function _hasKey( src, key )
 {
   if( key < 0 )
@@ -436,8 +420,8 @@ var ArgumentsArrayExtension =
 
   // container interface
 
-  _lengthOf,
-  lengthOf, /* qqq : cover */
+  // _lengthOf,
+  // lengthOf, /* qqq : cover */
 
   _hasKey,
   hasKey, /* qqq : cover */
