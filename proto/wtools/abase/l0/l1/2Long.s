@@ -109,7 +109,6 @@ function _makeEmpty( src )
   }
   else
   {
-    debugger;
     return this.tools./*longDescriptor*/defaultLong.make();
     // return [];
   }
@@ -213,11 +212,17 @@ function _make( src, length )
     return fill( _.unroll.make( length ), data );
     if( src === null )
     return fill( this.tools./*longDescriptor*/defaultLong.make( length ), data );
+
+    let result;
     if( _.routineIs( src ) )
-    return fill( new src( length ), data );
-    if( src.constructor === Array )
-    return fill( new src.constructor( length ), data );
-    _.assert( 0, 'Not clear how to make such long' );
+    result = fill( new src( length ), data )
+    else if( src.constructor )
+    result = fill( new src.constructor( length ), data );
+    _.assert( _.long.is( result ), 'Not clear how to make such long' );
+    return result;
+    // if( src.constructor === Array )
+    // return fill( new src.constructor( length ), data );
+    // _.assert( 0, 'Not clear how to make such long' );
   }
   else if( src !== undefined && src !== null )
   {
