@@ -296,6 +296,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Array.test.s
           - ../proto/wtools/abase/l0/l3.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l3.test/Blank.test.s
+          - ../proto/wtools/abase/l0/l3.test/Countable.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
           - ../proto/wtools/abase/l0/l3.test/Long.test.s
           - ../proto/wtools/abase/l0/l3.test/Map.test.s
