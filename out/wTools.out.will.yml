@@ -297,6 +297,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l3.test/Blank.test.s
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
+          - ../proto/wtools/abase/l0/l3.test/HashMap.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
           - ../proto/wtools/abase/l0/l3.test/Long.test.s
           - ../proto/wtools/abase/l0/l3.test/Map.test.s
@@ -304,6 +305,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Object.test.s
           - ../proto/wtools/abase/l0/l3.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l3.test/Props.test.s
+          - ../proto/wtools/abase/l0/l3.test/Set.test.s
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
