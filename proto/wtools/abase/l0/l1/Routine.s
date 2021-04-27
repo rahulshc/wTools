@@ -1634,7 +1634,17 @@ function _amend( o )
     _.assert( body.tail === undefined, 'Body should not have own tail' );
     _.assert( body.body === undefined, 'Body should not have own body' );
     {
-      let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      // let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      let srcs;
+      if( srcIsVector )
+      {
+        // debugger;
+        srcs = o.srcs.map( (src ) => propertiesBut( src ) );
+      }
+      else
+      {
+        srcs = [ propertiesBut( o.srcs ) ];
+      }
       srcs.unshift( body );
       body2 = _.routine._amend
       ({
