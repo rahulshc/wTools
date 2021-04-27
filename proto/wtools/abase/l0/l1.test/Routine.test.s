@@ -19,6 +19,7 @@ const __ = _globals_.testing.wTools;
 
 function is( test )
 {
+
   test.case = 'without argument';
   var got = _.routine.is();
   test.identical( got, false );
@@ -685,7 +686,7 @@ function constructorJoin( test )
     var result =
     {
       context : this,
-      args : _.longSlice( arguments )
+      args : Array.prototype.slice.call( arguments )
     }
     return result;
   }

@@ -2109,19 +2109,6 @@ uniteReplacing.head = unite_head;
 uniteReplacing.body = unite_body;
 uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
 
-//
-
-function exportStringShallowDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.routine.is( src ) );
-
-  if( src.name )
-  return `{- routine ${src.name} -}`;
-  else
-  return `{- routine.anonymous -}`;
-}
-
 // --
 // implementation
 // --
@@ -2209,15 +2196,6 @@ let RoutineExtension =
   uniteInheriting,
   uniteReplacing,
   /* qqq : cover routines uniteReplacing, uniteInheriting, uniteCloning */
-
-  // exporter
-
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
 
 }
 
