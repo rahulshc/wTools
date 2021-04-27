@@ -937,7 +937,7 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.tools./*longDescriptor*/defaultLong.type && _.longIs( src ) )
+  if( src instanceof this.tools./*longDescriptor*/defaultLong.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
