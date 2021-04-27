@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.printer = _.printer || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.printer = _.printer || Object.create( null );
 
 // --
 // printer
@@ -15,7 +15,7 @@ let Self = _.printer = _.printer || Object.create( null );
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -28,13 +28,6 @@ let Extension =
 }
 
 Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+Object.assign( _, ToolsExtension );
 
 })();

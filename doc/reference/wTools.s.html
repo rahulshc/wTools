@@ -164,7 +164,7 @@ var entityClone = function( src,options )
   //throw 'not stable';
 
   if( options !== undefined &amp;&amp; !_.object.is( options ) )
-  throw _.err( 'wTools.entityClone :','need options' );
+  throw _.error.err( 'wTools.entityClone :','need options' );
 
   var options = options || {};
 
@@ -177,7 +177,7 @@ var entityClone = function( src,options )
   if( options.depth &lt; 0 )
   {
     if( options.silent ) console.log( 'wTools.entityClone : overflow' );
-    else throw _.err( 'wTools.entityClone :','overflow' );
+    else throw _.error.err( 'wTools.entityClone :','overflow' );
   }
 
   _assert( !options.forWorker,'forWorker is deprecated' );
@@ -263,7 +263,7 @@ var _entityCloneAct = function( o )
   var o = o || {};
 
   if( !( o.levels > 0 ) )
-  throw _.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
+  throw _.error.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
 
   o.levels -= 1;
 
@@ -311,7 +311,7 @@ var _entityCloneAct = function( o )
   else
   {
     //debugger;
-    throw _.err( 'unexpected clone technique : ' + o.technique );
+    throw _.error.err( 'unexpected clone technique : ' + o.technique );
   }
 
   /* map */
@@ -398,7 +398,7 @@ var _entityCloneAct = function( o )
     /**/
 
     if( _.bufferRawIs( o.src ) )
-    throw _.err( 'not implemented' );
+    throw _.error.err( 'not implemented' );
 
     for( var s = 0 ; s &lt; o.src.length ; s++ )
     {
@@ -413,7 +413,7 @@ var _entityCloneAct = function( o )
     return result;
   }
 
-  throw _.err( 'unexpected type of src : ' + _.entity.strTypeOf( o.src ) );
+  throw _.error.err( 'unexpected type of src : ' + _.entity.strTypeOf( o.src ) );
 }
 
 //
@@ -685,14 +685,14 @@ var entityCopy = function( dst,src,onRecursive )
 
     if( dst instanceof src.constructor )
     {
-      throw _.err( 'not tested' );
+      throw _.error.err( 'not tested' );
       result = src.clone( dst );
     }
     else if( _.atomicIs( dst ) )
     {
       result = src.clone();
     }
-    else throw _.err( 'unexpected' );
+    else throw _.error.err( 'unexpected' );
 
   }
   else if( src &amp;&amp; _.routine.is( src.slice ) )
@@ -757,7 +757,7 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
 
   if( onRecursive )
   {
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
     result = entityCopy( dstContainer[ name ],srcValue,onRecursive );
   }
   else
@@ -1180,7 +1180,7 @@ var entityWithKeyRecursive = function( src,key,onEach )
   var i = 0;
 
   debugger;
-  throw _.err( 'deprecated' );
+  throw _.error.err( 'deprecated' );
 
   if( key in src )
   {
@@ -1398,7 +1398,7 @@ var __entitySelectAct = function __entitySelectAct( o )
     if( o.undefinedForNone )
     return undefined;
     else
-    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.entity.strTypeOf( container ) );
+    throw _.error.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.entity.strTypeOf( container ) );
   }
 
   var o = _.mapExtend( {},o );
@@ -1795,7 +1795,7 @@ var _entityMost = function( src,onElement,returnMax )
   else
   {
 
-    //throw _.err( 'not tested' );
+    //throw _.error.err( 'not tested' );
     for( var s in src )
     {
       result.index = 0;
@@ -1913,7 +1913,7 @@ var entityCoerceTo = function( src,ins )
     return _.bool.from( src );
 
   }
-  else throw _.err( 'unknown type to coerce to : ' + _.entity.strTypeOf( ins ) );
+  else throw _.error.err( 'unknown type to coerce to : ' + _.entity.strTypeOf( ins ) );
 
 }
 
@@ -2367,7 +2367,7 @@ var eachSample = function( o )
   /**/
 
   if( !_.arrayIs( o.elementArrays ) )
-  throw _.err( 'eachSample :','array only supported' );
+  throw _.error.err( 'eachSample :','array only supported' );
 
   if( !firstSample() )
   return result;
@@ -3024,7 +3024,7 @@ var includeAny = function()
     }
     catch( err )
     {
-      //_.errLog( err );
+      //_.error.log( err );
     }
 
   }
@@ -3776,7 +3776,7 @@ var numberRandomInt = function( range )
   range = range >= 0 ? [ 0,range ] : [ range,0 ];
   else if( _.arrayIs( range ) )
   range = range;
-  else throw _.err( 'numberRandomInt','unexpected argument' );
+  else throw _.error.err( 'numberRandomInt','unexpected argument' );
 
   var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
@@ -3794,7 +3794,7 @@ var numberRandomIntBut = function( range )
   range = [ 0,range ];
   else if( _.arrayIs( range ) )
   range = range;
-  else throw _.err( 'numberRandomInt','unexpected argument' );
+  else throw _.error.err( 'numberRandomInt','unexpected argument' );
 
   for( var attempt = 0 ; attempt &lt; attempts ; attempt++ )
   {
@@ -3818,7 +3818,7 @@ var numberRandomIntBut = function( range )
   }
 
   console.warn( 'numberRandomIntBut :','NaN' );
-  throw _.err( 'numberRandomIntBut :','NaN' );
+  throw _.error.err( 'numberRandomIntBut :','NaN' );
 
   result = NaN;
   return result;
@@ -3877,7 +3877,7 @@ var strPrimitiveTypeOf = function( src )
   var result = /\[(\w+) (\w+)\]/.exec( name );
 
   if( !result )
-  throw _.err( 'strTypeOf :','unknown type',name );
+  throw _.error.err( 'strTypeOf :','unknown type',name );
   return result[ 2 ];
 }
 
@@ -4124,7 +4124,7 @@ var regexpForGlob = function( glob )
     result += '[^\\\/]*';
     else if( matched.substr( 0,2 ) === '**' )
     result += '.*';
-    else throw _.err( 'unexpected' );
+    else throw _.error.err( 'unexpected' );
 
   });
 
@@ -4164,7 +4164,7 @@ var regexpMakeExpression = function( src )
   return new RegExp( _.regexpEscape( src ) );
 
   debugger;
-  throw _.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',src );
+  throw _.error.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',src );
 }
 
 //
@@ -4465,7 +4465,7 @@ var _routineBind = function _routineBind( options )
     if( context !== undefined &amp;&amp; args === undefined )
     {
       if( options.seal === true )
-      throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
+      throw _.error.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
       return _FunctionBind.call( routine, context );
     }
     else if( context !== undefined )
@@ -4491,7 +4491,7 @@ var _routineBind = function _routineBind( options )
       if( options.seal === true )
       return function sealedArguments()
       {
-        /*throw _.err( 'not tested' );*/
+        /*throw _.error.err( 'not tested' );*/
         return routine.apply( undefined, args );
       }
       else
@@ -4508,7 +4508,7 @@ var _routineBind = function _routineBind( options )
 
   //
 
-  throw _.err( 'not implemented' );
+  throw _.error.err( 'not implemented' );
 
 }
 
@@ -4943,7 +4943,7 @@ var timePeriodic = function( delay,onReady )
 
   if( arguments.length > 2 )
   {
-    throw _.err( 'Not tested' );
+    throw _.error.err( 'Not tested' );
     _assert( arguments.length &lt;= 4 );
     onReady = _.routine.join( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   }
@@ -4981,7 +4981,7 @@ var timePeriodic = function( delay,onReady )
     wConsequence.give( con );
     con.doThen( handlePeriodicCon );
   }
-  else throw _.err( 'unexpected type of onReady' );
+  else throw _.error.err( 'unexpected type of onReady' );
 
   id = setInterval( _onReady,delay );
 
@@ -5110,7 +5110,7 @@ var bufferResize = function bufferResize( src,size )
   var result = src;
 
   if( !( src instanceof ArrayBuffer ) )
-  throw _.err( '_.bufferResize :','"src" is not instance of "ArrayBuffer"' );
+  throw _.error.err( '_.bufferResize :','"src" is not instance of "ArrayBuffer"' );
 
   if( size > src.byteLength )
   {
@@ -5148,7 +5148,7 @@ var bufferBytesGet = function( src )
   {
     return new Uint8Array( _.utf8ToBuffer( src ) );
   }
-  else throw _.err( '_.bufferBytesGet :','wrong argument' );
+  else throw _.error.err( '_.bufferBytesGet :','wrong argument' );
 
 }
 
@@ -5202,7 +5202,7 @@ var bufferMove = function( dst,src )
     _.assert( _.arrayLike( src ) );
 
     if( dst.length !== src.length )
-    throw _.err( '_.bufferMove :','"dst" and "src" must have same length' );
+    throw _.error.err( '_.bufferMove :','"dst" and "src" must have same length' );
 
     if( dst.set )
     {
@@ -5245,7 +5245,7 @@ var bufferMove = function( dst,src )
     dst[ d ] = src[ s ];
 
   }
-  else throw _.err( 'unexpected' );
+  else throw _.error.err( 'unexpected' );
 
   return dst;
 }
@@ -5293,7 +5293,7 @@ var bufferToDom = function( xmlBuffer ) {
 
     var parser = new DOMParser();
     result = parser.parseFromBuffer( xmlBuffer,xmlBuffer.byteLength,'text/xml' );
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
 
   }
   else
@@ -5364,13 +5364,13 @@ var bufferFromArrayOfArray = function( array,options ){
 
   if( options.BufferType === undefined ) options.BufferType = Float32Array;
   if( options.sameLength === undefined ) options.sameLength = 1;
-  if( !options.sameLength ) throw _.err( '_.bufferFromArrayOfArray :','differemt length of arrays is not implemented' );
+  if( !options.sameLength ) throw _.error.err( '_.bufferFromArrayOfArray :','differemt length of arrays is not implemented' );
 
   if( !array.length ) return new options.BufferType();
 
   var atomsPerElement = _.number.is( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.number.is( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
+  if( !_.number.is( atomsPerElement ) ) throw _.error.err( '_.bufferFromArrayOfArray :','cant find out element length' );
 
   var length = array.length * atomsPerElement;
   var result = new options.BufferType( length );
@@ -5446,7 +5446,7 @@ var bufferFrom = function( o )
   else if ( _.arrayLike( o.src ) )
   {
     result = new o.bufferConstructor( o.src );
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
   }
   else
   {
@@ -5545,9 +5545,9 @@ var bufferRawFrom = function( buffer )
   {
     var fileReader = new FileReaderSync();
     result = fileReader.readAsArrayBuffer( buffer );
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
   }
-  else throw _.err( 'bufferRawFrom : unknown source' );
+  else throw _.error.err( 'bufferRawFrom : unknown source' );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -5609,7 +5609,7 @@ var buffersSerialize = function buffersSerialize( o )
 
   _.assert( store[ 'buffer' ].byteLength === size );
   if( store[ 'buffer' ].byteLength &lt; size )
-  throw _.err( 'buffersSerialize :','buffer does not have enough space' );
+  throw _.error.err( 'buffersSerialize :','buffer does not have enough space' );
 
   /* sort by atom size */
 
@@ -5720,7 +5720,7 @@ var buffersDeserialize = function( o )
     _.assert( _.number.is( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
 
     if( attribute.offset+size > commonBuffer.byteLength )
-    throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
+    throw _.error.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
 
     /* logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' ); */
 
@@ -5781,7 +5781,7 @@ var bufferToNodeBuffer = ( function( buffer )
       debugger;
       buffer = toBuffer( buffer );
     }
-    else throw _.err( 'unexpected' );
+    else throw _.error.err( 'unexpected' );
 
     return buffer;
   }
@@ -5827,13 +5827,13 @@ var arraySub = function( src,begin,end )
   _.assert( arguments.length &lt;= 3 );
 
   if( _.atomicIs( src ) )
-  throw _.err( 'arraySub','Unknown argument type' );
+  throw _.error.err( 'arraySub','Unknown argument type' );
 
   if( _.routine.is( src.subarray ) )
   return src.subarray( begin,end );
 
   if( !_.routine.is( src.slice ) )
-  throw _.err( 'arraySub','Unknown argument type' );
+  throw _.error.err( 'arraySub','Unknown argument type' );
 
   return src.slice( begin,end );
 }
@@ -5879,7 +5879,7 @@ var arrayNew = function( ins,length )
 
   if( _.arrayIs( ins ) || _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
   result = new ins.constructor( length );
-  else throw _.err( 'arrayNew :','unknown type of instance' );
+  else throw _.error.err( 'arrayNew :','unknown type of instance' );
 
   return result;
 }
@@ -5957,7 +5957,7 @@ var arrayOrNumber = function( dst,length )
   if( _.number.is( dst ) )
   dst = arrayFill({ times : length , value : dst });
   else if( dst.length !== length )
-  throw _.err( 'expects array of length',length,'but got',dst );
+  throw _.error.err( 'expects array of length',length,'but got',dst );
 
   return dst;
 }
@@ -6009,7 +6009,7 @@ var arrayShrink = function( srcArray,indicesArray )
   else
   for( var i = 0, l = indicesArray.length ; i &lt; l ; i += 1 )
   {
-    throw _.err( 'Not tested' );
+    throw _.error.err( 'Not tested' );
     for( var a = 0 ; a &lt; atomsPerElement ; a += 1 )
     result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
   }
@@ -6104,7 +6104,7 @@ var arrayFlatten = function()
       else if( src[ s ] !== undefined )
       result.push( src[ s ] );
       else if( src[ s ] === undefined )
-      throw _.err( 'array should have no undefined' );
+      throw _.error.err( 'array should have no undefined' );
     }
 
   }
@@ -6144,7 +6144,7 @@ var arrayFlattenToMapUnique = function()
       else if( _.object.is( src[ s ] ) )
       extend( result, src );
       else
-      throw _.err( 'array should have only maps' );
+      throw _.error.err( 'array should have only maps' );
     }
 
   }
@@ -6166,7 +6166,7 @@ var arrayCopy = function arrayCopy()
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayCopy','argument is not defined' );
+    throw _.error.err( 'arrayCopy','argument is not defined' );
 
     if( _.arrayLike( argument ) ) length += argument.length;
     else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
@@ -6259,7 +6259,7 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayAppendMerging','argument is not defined' );
+    throw _.error.err( 'arrayAppendMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) ) result.push.apply( result,argument );
     else result.push( argument );
@@ -6307,7 +6307,7 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayPrependMerging','argument is not defined' );
+    throw _.error.err( 'arrayPrependMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) ) result.unshift.apply( dst,argument );
     else result.unshift( argument );
@@ -6357,7 +6357,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayAppendOnceMerging','argument is not defined' );
+    throw _.error.err( 'arrayAppendOnceMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
@@ -6419,7 +6419,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayPrependOnceMerging','argument is not defined' );
+    throw _.error.err( 'arrayPrependOnceMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
@@ -6526,7 +6526,7 @@ var arrayFrom = function( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  throw _.err( 'arrayFrom : unknown source : ' + _.entity.strTypeOf( src ) ); //???
+  throw _.error.err( 'arrayFrom : unknown source : ' + _.entity.strTypeOf( src ) ); //???
 }
 
 //
@@ -6657,7 +6657,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
     }
 
   }
-  else throw _.err( 'unexpected' );
+  else throw _.error.err( 'unexpected' );
 
   return result;
 }
@@ -6729,7 +6729,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
     index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
-  else throw _.err( 'unexpected' );
+  else throw _.error.err( 'unexpected' );
 
   if( index >= 0 )
   dstArray.splice( index,1 );
@@ -7299,7 +7299,7 @@ var arrayUniqueIs = function arrayUniqueIs( o )
 
   if( o.onElement )
   {
-    throw _.err( 'not tested' );
+    throw _.error.err( 'not tested' );
     o.src = _.enityMap( o.src,function( e ){ return o.onElement( e ) } );
   }
 
@@ -7548,14 +7548,14 @@ var arrayMask = function arrayMask( srcArray, mask )
   _.assert( arguments.length === 2 );
 
   if( !_.arrayLike( srcArray ) )
-  throw _.err( 'arrayMask :','expects array-like as srcArray' );
+  throw _.error.err( 'arrayMask :','expects array-like as srcArray' );
   if( !_.arrayLike( mask )  )
-  throw _.err( 'arrayMask :','expects array-like as mask' );
+  throw _.error.err( 'arrayMask :','expects array-like as mask' );
 
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.entity.exportString({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
+  throw _.error.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.entity.exportString({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
 
   var preserve = 0;
   for( var m = 0 ; m &lt; mask.length ; m++ )
@@ -7607,7 +7607,7 @@ var arrayUnmask = function arrayUnmask( o )
 
   var length = o.src.length / atomsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.entity.exportString({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.error.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.entity.exportString({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
 
   var dstArray = new o.src.constructor( atomsPerElement*length );
 
@@ -7709,7 +7709,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   });
 
   //if( options.numberOfAtomsPerElement !== 1 )
-  //throw _.err( 'not tested' );
+  //throw _.error.err( 'not tested' );
 
   var length = srcArray.length * options.numberOfDuplicatesPerElement;
   var result = options.result || arrayNew( srcArray,length );
@@ -8532,10 +8532,10 @@ var arraySetIntersection = function( src )
 
       _.assert( _.arrayLike( arguments[ a ] ) );
 
-      throw _.err( 'Not tested' );
+      throw _.error.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
-        throw _.err( 'Not tested' );
+        throw _.error.err( 'Not tested' );
         break;
       }
     }
@@ -8567,10 +8567,10 @@ var arraySetContainAll = function( src )
     for( var i = 0 ; i &lt; src.length ; i++ )
     {
 
-      throw _.err( 'Not tested' );
+      throw _.error.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
-        throw _.err( 'Not tested' );
+        throw _.error.err( 'Not tested' );
         return false;
       }
 
@@ -8830,7 +8830,7 @@ var arraySortedClosest = function( arr,ins,comparator )
   if( c  === 0 ) return { value : arr[ index ], index : index };
   if( c &lt; 0 )
   {
-    throw _.err( 'redundant branch?' );
+    throw _.error.err( 'redundant branch?' );
     if( ( arr.length-1 ) === index )
     return { value : arr[ index ], index : index };
     else if( Math.abs( comparator( arr[ index + 1 ],ins ) ) &lt; Math.abs( c ) )
@@ -9037,7 +9037,7 @@ var arraySortedAddArray = function( dst,src,comparator )
 
   var result = 0;
 
-  //throw _.err( 'not tested' );
+  //throw _.error.err( 'not tested' );
 
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
 
@@ -9380,7 +9380,7 @@ var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
 {
 
   if( levels &lt;= 0 )
-  throw _.err( '_mapSatisfy : too deep structure' );
+  throw _.error.err( '_mapSatisfy : too deep structure' );
 
   if( _.routine.is( template ) )
   return template( src );
@@ -10730,11 +10730,11 @@ var and = function()
     filters.push( routine );
     else if( routine.functionKind === 'field-mapper' )
     mappers.push( routine );
-    else throw _.err( 'expects routine.functionKind' );
+    else throw _.error.err( 'expects routine.functionKind' );
   }
 
   if( mappers.length > 1 )
-  throw _.err( 'can combine only one mapper with any number of filters' );
+  throw _.error.err( 'can combine only one mapper with any number of filters' );
 
   var routine = function and( dstContainer,srcContainer,key )
   {
@@ -10791,7 +10791,7 @@ var makeMapper = function( routine )
   {
     return routine;
   }
-  else throw _.err( 'expects routine.functionKind' );
+  else throw _.error.err( 'expects routine.functionKind' );
 
 }
 

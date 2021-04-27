@@ -11,9 +11,9 @@
 
 //
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.path = _.path || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.path = _.path || Object.create( null );
 
 // --
 // meta
@@ -57,13 +57,13 @@ function CloneExtending( o )
 {
   _.assert( arguments.length === 1 );
   let result = Object.create( this )
-  _.mapExtend( result, Parameters, o );
+  _.props.extend( result, Parameters, o );
   result.Init();
   return result;
 }
 
 // --
-// checker
+// dichotomy
 // --
 
 function is( path )
@@ -543,7 +543,7 @@ function _nativizeWindows( filePath )
   let result = filePath;
 
   _.assert( _.routine.is( self.unescape ) );
-  result = self.unescape( result ); /* yyy */
+  result = self.unescape( result ); /* xxx : remove from here */
 
   result = self._nativizeMinimalWindows( result );
 
@@ -556,7 +556,6 @@ function _nativizeMinimalPosix( filePath )
 {
   let self = this;
   let result = filePath;
-  _.assert( _.strIs( filePath ), 'Expects string' );
   return result;
 }
 
@@ -568,7 +567,7 @@ function _nativizePosix( filePath )
   let result = filePath;
   _.assert( _.strIs( filePath ), 'Expects string' );
   _.assert( _.routine.is( self.unescape ) );
-  result = self.unescape( result ); /* yyy */
+  result = self.unescape( result ); /* xxx : remove from here */
   return result;
 }
 
@@ -905,8 +904,14 @@ function detrail( path )
 function dir_head( routine, args )
 {
   let o = args[ 0 ];
+
   if( _.strIs( o ) )
-  o = { filePath : args[ 0 ], depth : args[ 1 ] };
+  {
+    if( args.length === 2 )
+    o = { filePath : args[ 0 ], depth : args[ 1 ] };
+    else
+    o = { filePath : args[ 0 ] };
+  }
 
   _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 );
@@ -1041,11 +1046,76 @@ dir_body.defaults =
   depth : 1,
 }
 
-let dir = _.routine.unite( dir_head, dir_body );
+let dir = _.routine.uniteCloning( dir_head, dir_body );
 dir.defaults.first = 0;
 
-let dirFirst = _.routine.unite( dir_head, dir_body );
+let dirFirst = _.routine.uniteCloning( dir_head, dir_body );
 dirFirst.defaults.first = 1;
+
+_.assert( !dir.defaults.first );
+
+//
+
+/**
+ * Returns path name (file name).
+ * @example
+ * wTools.name( '/foo/bar/baz.asdf' ); // 'baz'
+ * @param {string|object} path|o Path string, or options
+ * @param {boolean} o.full if this parameter set to true method return name with extension.
+ * @returns {string}
+ * @throws {Error} If passed argument is not string
+ * @function name
+ * @namespace Tools.path
+ */
+
+function name_head( routine, args )
+{
+  let o = args[ 0 ];
+  if( _.strIs( o ) )
+  o = { path : o };
+
+  _.routine.options_( routine, o );
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( o.path ), 'Expects string {-o.path-}' );
+
+  return o;
+}
+
+function name_body( o )
+{
+
+  if( _.strIs( o ) )
+  o = { path : o };
+
+  _.routine.assertOptions( name, arguments );
+
+  o.path = this.canonize( o.path );
+
+  let i = o.path.lastIndexOf( '/' );
+  if( i !== -1 )
+  o.path = o.path.substr( i+1 );
+
+  if( !o.full )
+  {
+    let i = o.path.lastIndexOf( '.' );
+    if( i !== -1 ) o.path = o.path.substr( 0, i );
+  }
+
+  return o.path;
+}
+
+name_body.defaults =
+{
+  path : null,
+  full : 0,
+}
+
+let name = _.routine.uniteCloning( name_head, name_body );
+name.defaults.full = 0;
+
+let fullName = _.routine.uniteCloning( name_head, name_body );
+fullName.defaults.full = 1;
 
 // --
 // extension
@@ -1077,7 +1147,7 @@ let Extension =
   Init,
   CloneExtending,
 
-  // checker
+  // dichotomy
 
   is,
 
@@ -1132,6 +1202,8 @@ let Extension =
   detrail,
   dir,
   dirFirst,
+  name,
+  fullName,
 
   // fields
 
@@ -1144,16 +1216,9 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Parameters );
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Parameters );
+_.props.supplement( Self, Extension );
 
 Self.Init();
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

@@ -3,9 +3,8 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.argumentsArray = _global_.wTools.argumentsArray || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // implementation
@@ -15,20 +14,18 @@ let Self = _global_.wTools.argumentsArray = _global_.wTools.argumentsArray || Ob
 // extension
 // --
 
-var Extension =
+let ToolsExtension =
 {
-
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-Object.assign( Self, Extension );
+let ArgumentsArrayExtension =
+{
+}
 
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+Object.assign( _.argumentsArray, ArgumentsArrayExtension );
 
 })();

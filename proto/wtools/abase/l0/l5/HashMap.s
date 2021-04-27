@@ -3,14 +3,12 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // implementation
 // --
-
 
 function extend( dst, src )
 {
@@ -61,6 +59,31 @@ function extend( dst, src )
   return dst;
 }
 
+// //
+//
+// function fromMap( dstMap, srcMap )
+// {
+//   if( arguments.length === 1 )
+//   {
+//     srcMap = arguments[ 0 ];
+//     dstMap = null;
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( !_.primitive.is( srcMap ) );
+//   _.assert( dstMap === null || _.hashMapIs( dstMap ) );
+//
+//   if( dstMap === null )
+//   dstMap = new HashMap;
+//
+//   for( let k in srcMap )
+//   {
+//     dstMap.set( k, srcMap[ k ] );
+//   }
+//
+//   return dstMap;
+// }
+
 // --
 // extension
 // --
@@ -74,17 +97,13 @@ let ToolsExtension =
 
 let Extension =
 {
-  extend,
+
+  extend, /* qqq : cover */
+  // fromMap, /* qqq : cover */
+
 }
 
 Object.assign( _, ToolsExtension );
 Object.assign( _.hashMap, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

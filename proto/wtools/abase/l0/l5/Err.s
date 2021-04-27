@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.error;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.error;
 
 // --
 // implementation
@@ -13,8 +13,8 @@ let Self = _global_.wTools.error;
 
 function _handleUncaught2( o )
 {
-
-  let process0 = processNamespaceGet();
+  const __ = _global_.globals && _globals_.testing.wTools;
+  const process0 = processNamespaceGet();
 
   optionsRefine();
 
@@ -28,7 +28,7 @@ function _handleUncaught2( o )
 
   processUncaughtErrorEvent();
 
-  if( _.errIsAttended( o.err ) )
+  if( _.error.isAttended( o.err ) )
   return;
 
   debugger;
@@ -86,8 +86,8 @@ function _handleUncaught2( o )
   {
     try
     {
-      if( _._errLog )
-      _._errLog( o.err, o.logger );
+      if( _.error && _.error._log )
+      _.error._log( o.err, o.logger );
       else
       console.error( o.err );
     }
@@ -106,8 +106,12 @@ function _handleUncaught2( o )
     if( !o.err.originalMessage && _.object.like && _.object.like( o.err ) )
     try
     {
-      let serr = _.entity.exportString && _.property ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
-      o.logger.error( serr );
+      let props = Object.create( null );
+      for( let k in o.err )
+      props[ k ] = o.err[ k ];
+      // let serr = _.entity.exportString && _.props ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
+      o.logger.error( _.entity.exportString( props ) );
+      debugger;
     }
     catch( err2 )
     {
@@ -122,12 +126,12 @@ function _handleUncaught2( o )
   {
     try
     {
-      return _.errProcess( err );
+      return _.error.process( err );
     }
     catch( err2 )
     {
-      debugger;
       console.error( err2 );
+      return err;
     }
   }
 
@@ -144,11 +148,11 @@ function _handleUncaught2( o )
     (
       !result
       && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.process
-      && _globals_.testing.wTools.process.exitReason
+      && __
+      && __.process
+      && __.process.exitReason
     )
-    result = _globals_.testing.wTools.process;
+    result = __.process;
     if( !result )
     result = _.process;
     return result;
@@ -166,12 +170,11 @@ function _handleUncaught2( o )
     if
     (
       !result
-      && _realGlobal_._globals_.testing
-      && _globals_.testing.wTools
-      && _globals_.testing.wTools.Logger
-      && _globals_.testing.wTools.Logger.ConsoleBar
+      && __
+      && __.Logger
+      && __.Logger.ConsoleBar
     )
-    result = _globals_.testing.wTools.Logger;
+    result = __.Logger;
     return result;
   }
 
@@ -186,7 +189,7 @@ function _handleUncaught2( o )
       process0.eventGive({ event : 'uncaughtError', args : [ o ] });
       for( let g in _realGlobal_._globals_ )
       {
-        let _global = _realGlobal_._globals_[ g ];
+        const _global = _realGlobal_._globals_[ g ];
         if( _global.wTools && _global.wTools.process && _global.wTools.process.eventGive )
         if( _global.wTools.process !== process0 )
         _global.wTools.process.eventGive({ event : 'uncaughtError', args : [ o ] });
@@ -273,25 +276,27 @@ _handleUncaught2.defaults =
 function _handleUncaughtAsync( err )
 {
 
-  if( _.errIsAttended( err ) )
+  if( _.error.isAttended( err ) )
   return err;
 
-  _.errWary( err, 1 );
+  if( !err )
+  debugger;
+  _.error.wary( err, 1 );
 
-  if( _.errIsSuspended( err ) )
+  if( _.error.isSuspended( err ) )
   return err;
 
   let timer = _.time._finally( _.error.uncaughtDelayTime, function uncaught()
   {
 
-    if( _.errIsAttended( err ) )
+    if( _.error.isAttended( err ) )
     return;
 
-    if( _.errIsSuspended( err ) )
+    if( _.error.isSuspended( err ) )
     return;
 
-    // if( !_.time.timerInCancelBegun( timer ) && _.errIsSuspended( err ) ) /* yyy */
-    // return;
+    if( !err )
+    debugger;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
 
@@ -349,7 +354,6 @@ function _setupUncaughtErrorHandler9()
     });
 
     return [ { err, args } ];
-    // return [ err ];
   }
 
   /* */
@@ -357,7 +361,6 @@ function _setupUncaughtErrorHandler9()
   function _errHeadNode( args )
   {
     return [ { err : args[ 0 ], args } ];
-    // return [ args[ 0 ] ];
   }
 
   /* */
@@ -366,8 +369,12 @@ function _setupUncaughtErrorHandler9()
 
 //
 
+/* qqq : for Yevhen : implement performance test */
+/* xxx : optimize */
 function error_functor( name, onErrorMake )
 {
+
+  _.assert( _._err.defaults[ name ] === undefined );
 
   if( _.strIs( onErrorMake ) || _.arrayIs( onErrorMake ) )
   {
@@ -391,24 +398,40 @@ function error_functor( name, onErrorMake )
   {
     [ name ] : function()
     {
-      if( !( this instanceof ErrorConstructor ) )
+      if( ( this instanceof ErrorConstructor ) )
       {
-        let err1 = new ErrorConstructor();
-        let args1 = onErrorMake.apply( err1, arguments );
-        _.assert( _.arrayLike( args1 ) );
-        let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
-        let err2 = _._err({ args : args2, level : 2 });
 
+        let err1 = this;
+        let args1 = onErrorMake.apply( err1, arguments );
+        _.assert( _.argumentsArray.like( args1 ) );
+        let args2 = args1;
+        if( !_.longHas( args2, err1 ) )
+        args2 = [ err1, ... args1 ];
+        let err2 = _._err({ args : args2, level : 2, concealed : { [ name ] : true } });
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
         _.assert( err2 instanceof ErrorConstructor );
-
         return err2;
+
       }
       else
       {
-        _.assert( arguments.length === 0, 'Expects no arguments' );
-        return this;
+
+        if( arguments.length === 1 && arguments[ 0 ] && arguments[ 0 ] instanceof ErrorConstructor )
+        return arguments[ 0 ];
+
+        let err1;
+        for( let i = 0 ; i < arguments.length ; i++ )
+        if( arguments[ i ] && arguments[ i ] instanceof ErrorConstructor )
+        {
+          err1 = arguments[ i ];
+          break;
+        }
+
+        debugger;
+        if( err1 )
+        return ErrorConstructor.apply( err1, arguments );
+        return new ErrorConstructor( ... arguments );
       }
     }
   }
@@ -443,13 +466,6 @@ let Extension =
 
 //
 
-_.mapExtend( _.error, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.props.extend( _.error, Extension );
 
 })();

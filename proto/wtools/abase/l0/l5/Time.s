@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 
 // --
 // implementation
@@ -939,13 +939,6 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.props.supplement( Self, Extension );
 
 })();

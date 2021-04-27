@@ -3,9 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-_global_.wTools.global = _global_.wTools.global || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+_.global = _.global || Object.create( null );
+const __ = _realGlobal_.wTools;
+__.global = __.global || Object.create( null );
 
 // --
 // implementation
@@ -22,13 +24,7 @@ var Extension =
 
 //
 
-Object.assign( _.global, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.props.supplement( _.global, Extension );
+_.props.supplement( __.global, Extension );
 
 })();

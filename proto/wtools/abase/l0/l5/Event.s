@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.event = _.event || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.event = _.event || Object.create( null );
 
 // --
 // implementation
@@ -117,7 +117,7 @@ function nameValueFrom( name )
 
 function nameIs( name )
 {
-  return name instanceof Name;
+  return name instanceof _.event.Name;
 }
 
 //
@@ -145,7 +145,7 @@ function nameIs( name )
 
 function chainIs( src )
 {
-  return src instanceof Chain;
+  return src instanceof _.event.Chain;
 }
 
 //
@@ -222,7 +222,7 @@ function Chain()
     return new Chain( ... arguments );
   }
 
-  let result = _.arrayMake( arguments.length );
+  let result = _.array.make( arguments.length );
   _.assert( arguments.length >= 1, 'Expects events names' );
   for( let i = 0 ; i < arguments.length ; i++ )
   result[ i ] = _.event.Name( arguments[ i ] );
@@ -600,7 +600,7 @@ function off( ehandler, o )
   for( let c in o.callbackMap )
   {
     if( o.callbackMap[ c ] === null )
-    _.arrayEmpty( ehandler.events[ c ] );
+    _.array.empty( ehandler.events[ c ] );
     else
     _.arrayRemoveOnceStrictly( ehandler.events[ c ], o.callbackMap[ c ], callbackEqualize );
   }
@@ -780,13 +780,6 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.props.supplement( Self, Extension );
 
 })();
