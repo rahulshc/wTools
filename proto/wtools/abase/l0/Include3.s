@@ -16,8 +16,10 @@ if( typeof module !== 'undefined' )
   require( './l3/ArraySet.s' );
   require( './l3/Auxiliary.s' );
   require( './l3/Bool.s' );
+  require( './l3/Container.s' );
   require( './l3/Countable.s' );
   require( './l3/Diagnostic.s' );
+  require( './l3/Entity.s' );
   require( './l3/Escape.s' );
   require( './l3/HashMap.s' );
   require( './l3/Itself.s' );
@@ -27,6 +29,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Object.s' );
   require( './l3/Primitive.s' );
   require( './l3/Set.s' );
+  require( './l3/Str.s' );
   require( './l3/Unroll.s' );
   require( './l3/Vector.s' );
 

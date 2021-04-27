@@ -26,12 +26,19 @@ function is( src )
 
 //
 
-function lengthOf( container )
+function like( src )
 {
-  _.assert( arguments.length === 1 );
-  /* qqq : find optimal solution. write performance test */
-  return _.entity.lengthOf( container );
+  return _.container.is( src );
 }
+
+// //
+//
+// function lengthOf( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   /* qqq : find optimal solution. write performance test */
+//   return _.entity.lengthOf( container );
+// }
 
 // --
 // declare type
@@ -57,6 +64,23 @@ const Self = new Proxy( Container, Handler );
 Self.original = Container;
 
 // --
+// extend tools
+// --
+
+let ToolsExtension =
+{
+
+  containerIs : is.bind( _.container ),
+  containerLike : like.bind( _.container ),
+  // containerLengthOf : lengthOf,
+
+}
+
+//
+
+Object.assign( _, ToolsExtension );
+
+// --
 // extend container
 // --
 
@@ -64,7 +88,8 @@ let ContainerExtension =
 {
 
   is, /* qqq : cover please */
-  lengthOf,
+  like,
+  // lengthOf,
 
 }
 
@@ -73,21 +98,5 @@ let ContainerExtension =
 _.container = Self;
 
 Object.assign( Self, ContainerExtension );
-
-// --
-// extend tools
-// --
-
-let ToolsExtension =
-{
-
-  containerIs : is,
-  containerLengthOf : lengthOf,
-
-}
-
-//
-
-Object.assign( _, ToolsExtension );
 
 })();

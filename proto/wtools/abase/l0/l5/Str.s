@@ -4138,9 +4138,9 @@ let Extension =
   _strRightSingle_,
   strRight_,
 
-  strsEquivalentAll : _.vectorizeAll( _.str.equivalent, 2 ),
-  strsEquivalentAny : _.vectorizeAny( _.str.equivalent, 2 ),
-  strsEquivalentNone : _.vectorizeNone( _.str.equivalent, 2 ),
+  strsEquivalentAll : _.vectorizeAll( _.str.equivalent.bind( _.str ), 2 ),
+  strsEquivalentAny : _.vectorizeAny( _.str.equivalent.bind( _.str ), 2 ),
+  strsEquivalentNone : _.vectorizeNone( _.str.equivalent.bind( _.str ), 2 ),
 
   strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */ /* !!! : use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
   strInsideOf_,

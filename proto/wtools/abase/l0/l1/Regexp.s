@@ -68,7 +68,7 @@ function likeAll( src )
 function identicalShallow( src1, src2, o )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  
+
 
   if( !_.regexp.is( src1 ) || !_.regexp.is( src2 ) )
   return false;

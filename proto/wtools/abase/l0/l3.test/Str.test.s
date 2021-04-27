@@ -1,16 +1,12 @@
-( function _l0_l9_Str_test_s_()
+( function _l0_l3_Str_test_s_()
 {
 
 'use strict';
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( 'Tools' );
-
-  _.include( 'wTesting' );
-
-  // _.include( 'wStringer' );
-
+  require( '../Include3.s' );
+  require( 'wTesting' );
 }
 
 const _global = _global_;
@@ -20994,7 +20990,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
 const Proto =
 {
 
-  name : 'Tools.Str.l0.l9',
+  name : 'Tools.Str.l0.l3',
   silencing : 1,
 
   tests :
