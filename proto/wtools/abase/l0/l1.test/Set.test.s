@@ -399,7 +399,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.Set.l1',
+  name : 'Tools.Set.l0.l1',
   silencing : 1,
 
   tests :

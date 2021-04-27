@@ -352,7 +352,7 @@ function aptRightBlank( test )
 const Proto =
 {
 
-  name : 'Tools.Object.l3',
+  name : 'Tools.Object.l0.l3',
   silencing : 1,
 
   tests :
