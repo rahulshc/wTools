@@ -138,6 +138,12 @@ function _makeUndefined( src, length )
     return _.argumentsArray._makeUndefined( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeUndefined( src, length );
+    if( _.routineIs( src ) )
+    {
+      let result = new src( length );
+      _.assert( _.long.is( result ) );
+      return result;
+    }
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
