@@ -1011,882 +1011,882 @@ function strRight_( test )
   test.close( 'throwing' );
 }
 
+// //
 //
-
-function strEquivalent( test )
-{
-  test.open( 'true' );
-
-  test.case = 'strings';
-  var got = _.str.equivalent( 'abc', 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.str.equivalent( /\w+/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.str.equivalent( 'abc', /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.str.equivalent( /\w+/, /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'string with and without spaces ';
-  var got = _.str.equivalent( 'abc', ' abc ' );
-  test.identical( got, true );
-
-  test.case = 'string with and without newlines ';
-  var got = _.str.equivalent( 'abc', '\nabc\n' );
-  test.identical( got, true );
-
-  test.case = 'string with identical newlines';
-  var got = _.str.equivalent( '\na\nb\nc\n', '\na\nb\nc\n' );
-  test.identical( got, true );
-
-  test.case = 'strings with different newlines';
-  var got = _.str.equivalent( '\n\nabc\n', '\nabc\n\n' );
-  test.identical( got, true );
-
-  test.case = 'strings with different newlines, spaces and tabs';
-  var got = _.str.equivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t           ' );
-  test.identical( got, true );
-
-  test.case = 'strings with different newlines, spaces and tabs on each line';
-  var got = _.str.equivalent( '      \t\na   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
-  test.identical( got, true );
-
-  test.case = 'strings with different newlines, spaces and tabs on each line from both sides';
-  var got = _.str.equivalent( '      \t\n  \ta   \t\n\n  \n\t  b   \t   \n   \n  \n  \t  c  \t     ', '        \n  \t a  \n  \n  \t   \n \n  b  \t \n   \n \t c \t \n \n \t \t           ' );
-  test.identical( got, true );
-
-  test.close( 'true' );
-
-  /* - */
-
-  test.open( 'false' );
-
-  test.case = 'strings';
-  var got = _.str.equivalent( 'abd', 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.str.equivalent( /\s+/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.str.equivalent( /\w/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.str.equivalent( 'abc', /\s+/ );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.str.equivalent( 'abc', /\w/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.str.equivalent( /\w*/, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.str.equivalent( /\w+/g, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.str.equivalent( /\w+/g, /\w+/gi );
-  test.identical( got, false );
-
-  test.case = 'diff strings with different newlines';
-  var got = _.str.equivalent( '\n\nabc\nb', '\nabc\n\n' );
-  test.identical( got, false );
-
-  test.case = 'diff strings with different newlines, spaces and tabs';
-  var got = _.str.equivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t    c       ' );
-  test.identical( got, false );
-
-  test.case = 'diff strings with different newlines, spaces and tabs on each line';
-  var got = _.str.equivalent( '      \t\nab   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
-  test.identical( got, false );
-
-  test.close( 'false' );
-}
-
-//
-
-function strsEquivalent( test )
-{
-  test.open( 'scalar, true' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalent( 'abc', 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalent( /\w+/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalent( 'abc', /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalent( /\w+/, /\w+/ );
-  test.identical( got, true );
-
-  test.close( 'scalar, true' );
-
-  /* - */
-
-  test.open( 'scalar, false' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalent( 'abd', 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalent( /\s+/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalent( /\w/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalent( 'abc', /\s+/ );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalent( 'abc', /\w/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalent( /\w*/, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalent( /\w+/g, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalent( /\w+/g, /\w+/gi );
-  test.identical( got, false );
-
-  test.close( 'scalar, false' );
-
-  /* - */
-
-  test.open( 'vector, true' );
-
-  test.case = 'vector, vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ true, true, true, true ] );
-
-  test.case = 'vector, scalar';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ true, true, true, true ] );
-
-  test.case = 'scalar, vector';
-  var src1 = 'abc';
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ true, true, true, true ] );
-
-  test.close( 'vector, true' );
-
-  /* - */
-
-  test.open( 'vector, false' );
-
-  test.case = 'vector, vector';
-  var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/g ];
-  var src2 = [ 'abc', 'abc', 'abc', /\s+/, /\w/, /\w+/, /\w+/, /\w+/gi ];
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ false, false, false, false, false, false, false, false ] );
-
-  test.case = 'vector, scalar';
-  var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
-  var src2 = 'abc';
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ false, false, false, true, true, true, true, true ] );
-
-  test.case = 'scalar, vector';
-  var src1 = 'abc';
-  var src2 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalent( src1, src2 );
-  test.identical( got, [ false, false, false, true, true, true, true, true ] );
-
-  test.close( 'vector, false' );
-}
-
-//
-
-function strsEquivalentAll( test )
-{
-  test.open( 'scalar, true' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentAll( 'abc', 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAll( /\w+/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAll( 'abc', /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAll( /\w+/, /\w+/ );
-  test.identical( got, true );
-
-  test.close( 'scalar, true' );
-
-  /* - */
-
-  test.open( 'scalar, false' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentAll( 'abd', 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAll( /\s+/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAll( /\w/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAll( 'abc', /\s+/ );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAll( 'abc', /\w/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAll( /\w*/, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAll( /\w+/g, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAll( /\w+/g, /\w+/gi );
-  test.identical( got, false );
-
-  test.close( 'scalar, false' );
-
-  /* - */
-
-  test.open( 'vectors, true' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = /\w+/;
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc';
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+/;
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+/g, /\w+/gi ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/g, /\w+/g ];
-  var src2 = /\w+/g;
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/g;
-  var src2 = [ /\w+/g, /\w+/g ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
-  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
-  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.close( 'vectors, true' );
-
-  /* - */
-
-  test.open( 'vectors, false' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
-  var src2 = /\w+/;
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc d';
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+/g;
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+/g, /\w+/gi ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/g, /\w+/g ];
-  var src2 = /\w+/gi;
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc d';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/gi;
-  var src2 = [ /\w+/g, /\w+/g ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'bb', 'aa' ];
-  var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc', 'aa', 'bb' ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aa', 'bb' ];
-  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'abc', 'abc', /\w+/, /\w+/gi ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.close( 'vectors, false' );
-}
-
-//
-
-function strsEquivalentAny( test )
-{
-
-  /* - */
-
-  test.open( 'scalar, true' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentAny( 'abc', 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAny( /\w+/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAny( 'abc', /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAny( /\w+/, /\w+/ );
-  test.identical( got, true );
-
-  test.close( 'scalar, true' );
-
-  /* - */
-
-  test.open( 'scalar, false' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentAny( 'abd', 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAny( /\s+/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentAny( /\w/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAny( 'abc', /\s+/ );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentAny( 'abc', /\w/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAny( /\w*/, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAny( /\w+/g, /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentAny( /\w+/g, /\w+/gi );
-  test.identical( got, false );
-
-  test.close( 'scalar, false' );
-
-  /* - */
-
-  test.open( 'vectors, true' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'ab', /\w+/, 'ab', /\w+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
-  var src2 = /\w+/;
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc d';
-  var src2 = [ 'abc', /\w+/, 'abc d', /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+/;
-  var src2 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+\s\w/g, /\w+/gi ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/, /\w+/g ];
-  var src2 = /\w+/g;
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/g;
-  var src2 = [ /\w+/gi, /\w+/g ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'a', 'b' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'b' ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc d', 'aa d', 'bb d' ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aa d', 'bb' ];
-  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'ab', 'abc', /\w+/, /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, true );
-
-  test.close( 'vectors, true' );
-
-  /* - */
-
-  test.open( 'vectors, false' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
-  var src2 = /\w+\s/;
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc d';
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+\s/g;
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+/g, /\w+/gi ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/g, /\w+/g ];
-  var src2 = /\w+/gi;
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc d';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/gi;
-  var src2 = [ /\w+/g, /\w+/g ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'b', 'a' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
-  var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'ab', 'abc d', /\w+\s/, /\w+/gi ];
-  var got = _.strsEquivalentAny( src1, src2 );
-  test.identical( got, false );
-
-  test.close( 'vectors, false' );
-}
-
-//
-
-function strsEquivalentNone( test )
-{
-
-  /* - */
-
-  test.open( 'scalar, false' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentNone( 'abc', 'abc' );
-  test.identical( got, false );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentNone( /\w+/, 'abc' );
-  test.identical( got, false );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentNone( 'abc', /\w+/ );
-  test.identical( got, false );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentNone( /\w+/, /\w+/ );
-  test.identical( got, false );
-
-  test.close( 'scalar, false' );
-
-  /* - */
-
-  test.open( 'scalar, true' );
-
-  test.case = 'strings';
-  var got = _.strsEquivalentNone( 'abd', 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentNone( /\s+/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'regexp and string';
-  var got = _.strsEquivalentNone( /\w/, 'abc' );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentNone( 'abc', /\s+/ );
-  test.identical( got, true );
-
-  test.case = 'string and regexp';
-  var got = _.strsEquivalentNone( 'abc', /\w/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentNone( /\w*/, /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentNone( /\w+/g, /\w+/ );
-  test.identical( got, true );
-
-  test.case = 'regexp and regexp';
-  var got = _.strsEquivalentNone( /\w+/g, /\w+/gi );
-  test.identical( got, true );
-
-  test.close( 'scalar, true' );
-
-  /* - */
-
-  test.open( 'vectors, true' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
-  var src2 = /\w+\s/;
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc d';
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+\s/g;
-  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+/g, /\w+/gi ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/g, /\w+/g ];
-  var src2 = /\w+/gi;
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc d';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/gi;
-  var src2 = [ /\w+/g, /\w+/g ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'b', 'a' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
-  var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'ab', 'abc d', /\w+\s/, /\w+/gi ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, true );
-
-  test.close( 'vectors, true' );
-
-  /* - */
-
-  test.open( 'vectors, false' );
-
-  test.case = 'mixed vector, scalar - string';
-  var src1 = [ 'ab', /\w+/, 'ab', /\w+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, scalar - regexp';
-  var src1 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
-  var src2 = /\w+/;
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, mixed vector';
-  var src1 = 'abc d';
-  var src2 = [ 'abc', /\w+/, 'abc d', /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, mixed vector';
-  var src1 = /\w+/;
-  var src2 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - string';
-  var src1 = [ /\w+\s\w/g, /\w+/gi ];
-  var src2 = 'abc d';
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, scalar - regexp';
-  var src1 = [ /\w+/, /\w+/g ];
-  var src2 = /\w+/g;
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - string, vector of regexp';
-  var src1 = 'abc';
-  var src2 = [ /\w+/g, /\w+/gi ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar - regexp, vector of regexp';
-  var src1 = /\w+/g;
-  var src2 = [ /\w+/gi, /\w+/g ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of strings';
-  var src1 = [ 'abc', 'abc', 'aa'+'a', 'bb' ];
-  var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of regexp, vector of strings';
-  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var src2 = [ 'abc', 'abc d', 'aa'+'a d', 'bb d' ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector of strings, vector of regexp';
-  var src1 = [ 'abc d', 'abc d', 'aa'+'a d', 'bb' ];
-  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'mixed vector, mixed vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'ab', 'abc', /\w+/, /\w+/ ];
-  var got = _.strsEquivalentNone( src1, src2 );
-  test.identical( got, false );
-
-  test.close( 'vectors, false' );
-}
+// // function strEquivalent( test )
+// // {
+// //   test.open( 'true' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.str.equivalent( 'abc', 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.str.equivalent( /\w+/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.str.equivalent( 'abc', /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.str.equivalent( /\w+/, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string with and without spaces ';
+// //   var got = _.str.equivalent( 'abc', ' abc ' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string with and without newlines ';
+// //   var got = _.str.equivalent( 'abc', '\nabc\n' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string with identical newlines';
+// //   var got = _.str.equivalent( '\na\nb\nc\n', '\na\nb\nc\n' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'strings with different newlines';
+// //   var got = _.str.equivalent( '\n\nabc\n', '\nabc\n\n' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'strings with different newlines, spaces and tabs';
+// //   var got = _.str.equivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t           ' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'strings with different newlines, spaces and tabs on each line';
+// //   var got = _.str.equivalent( '      \t\na   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'strings with different newlines, spaces and tabs on each line from both sides';
+// //   var got = _.str.equivalent( '      \t\n  \ta   \t\n\n  \n\t  b   \t   \n   \n  \n  \t  c  \t     ', '        \n  \t a  \n  \n  \t   \n \n  b  \t \n   \n \t c \t \n \n \t \t           ' );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'false' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.str.equivalent( 'abd', 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.str.equivalent( /\s+/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.str.equivalent( /\w/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.str.equivalent( 'abc', /\s+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.str.equivalent( 'abc', /\w/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.str.equivalent( /\w*/, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.str.equivalent( /\w+/g, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.str.equivalent( /\w+/g, /\w+/gi );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'diff strings with different newlines';
+// //   var got = _.str.equivalent( '\n\nabc\nb', '\nabc\n\n' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'diff strings with different newlines, spaces and tabs';
+// //   var got = _.str.equivalent( '      \t\n\nabc\n    ', '        \nabc\n\n\t\t    c       ' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'diff strings with different newlines, spaces and tabs on each line';
+// //   var got = _.str.equivalent( '      \t\nab   \t\n\nb   \t   \n   \nc  \t     ', '        \na  \n  \n  \t   \nb  \t \n   \nc\t \n\n\t\t           ' );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'false' );
+// // }
+// //
+// // //
+// //
+// // function strsEquivalent( test )
+// // {
+// //   test.open( 'scalar, true' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalent( 'abc', 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalent( /\w+/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalent( 'abc', /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalent( /\w+/, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'scalar, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, false' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalent( 'abd', 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalent( /\s+/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalent( /\w/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalent( 'abc', /\s+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalent( 'abc', /\w/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalent( /\w*/, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalent( /\w+/g, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalent( /\w+/g, /\w+/gi );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'scalar, false' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vector, true' );
+// //
+// //   test.case = 'vector, vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ true, true, true, true ] );
+// //
+// //   test.case = 'vector, scalar';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ true, true, true, true ] );
+// //
+// //   test.case = 'scalar, vector';
+// //   var src1 = 'abc';
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ true, true, true, true ] );
+// //
+// //   test.close( 'vector, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vector, false' );
+// //
+// //   test.case = 'vector, vector';
+// //   var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/g ];
+// //   var src2 = [ 'abc', 'abc', 'abc', /\s+/, /\w/, /\w+/, /\w+/, /\w+/gi ];
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ false, false, false, false, false, false, false, false ] );
+// //
+// //   test.case = 'vector, scalar';
+// //   var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ false, false, false, true, true, true, true, true ] );
+// //
+// //   test.case = 'scalar, vector';
+// //   var src1 = 'abc';
+// //   var src2 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalent( src1, src2 );
+// //   test.identical( got, [ false, false, false, true, true, true, true, true ] );
+// //
+// //   test.close( 'vector, false' );
+// // }
+// //
+// // //
+// //
+// // function strsEquivalentAll( test )
+// // {
+// //   test.open( 'scalar, true' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentAll( 'abc', 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAll( /\w+/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAll( 'abc', /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAll( /\w+/, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'scalar, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, false' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentAll( 'abd', 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAll( /\s+/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAll( /\w/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAll( 'abc', /\s+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAll( 'abc', /\w/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAll( /\w*/, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAll( /\w+/g, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAll( /\w+/g, /\w+/gi );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'scalar, false' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, true' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = /\w+/;
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc';
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+/;
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+/g, /\w+/gi ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/g, /\w+/g ];
+// //   var src2 = /\w+/g;
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/g;
+// //   var src2 = [ /\w+/g, /\w+/g ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
+// //   var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc', 'abc', 'aa', 'bb' ];
+// //   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'vectors, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, false' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
+// //   var src2 = /\w+/;
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc d';
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+/g;
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+/g, /\w+/gi ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/g, /\w+/g ];
+// //   var src2 = /\w+/gi;
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc d';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/gi;
+// //   var src2 = [ /\w+/g, /\w+/g ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'bb', 'aa' ];
+// //   var src2 = [ 'abc', 'abc', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc d', 'abc', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc d', 'abc', 'aa', 'bb' ];
+// //   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'abc', 'abc', /\w+/, /\w+/gi ];
+// //   var got = _.strsEquivalentAll( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'vectors, false' );
+// // }
+// //
+// // //
+// //
+// // function strsEquivalentAny( test )
+// // {
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, true' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentAny( 'abc', 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAny( /\w+/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAny( 'abc', /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAny( /\w+/, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'scalar, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, false' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentAny( 'abd', 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAny( /\s+/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentAny( /\w/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAny( 'abc', /\s+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentAny( 'abc', /\w/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAny( /\w*/, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAny( /\w+/g, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentAny( /\w+/g, /\w+/gi );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'scalar, false' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, true' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'ab', /\w+/, 'ab', /\w+/ ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
+// //   var src2 = /\w+/;
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc d';
+// //   var src2 = [ 'abc', /\w+/, 'abc d', /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+/;
+// //   var src2 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+\s\w/g, /\w+/gi ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/, /\w+/g ];
+// //   var src2 = /\w+/g;
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/g;
+// //   var src2 = [ /\w+/gi, /\w+/g ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'a', 'b' ];
+// //   var src2 = [ 'ab', 'ab', 'aa', 'b' ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc', 'abc d', 'aa d', 'bb d' ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc d', 'abc d', 'aa d', 'bb' ];
+// //   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'ab', 'abc', /\w+/, /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'vectors, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, false' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
+// //   var src2 = /\w+\s/;
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc d';
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+\s/g;
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+/g, /\w+/gi ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/g, /\w+/g ];
+// //   var src2 = /\w+/gi;
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc d';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/gi;
+// //   var src2 = [ /\w+/g, /\w+/g ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'b', 'a' ];
+// //   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
+// //   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'ab', 'abc d', /\w+\s/, /\w+/gi ];
+// //   var got = _.strsEquivalentAny( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'vectors, false' );
+// // }
+// //
+// // //
+// //
+// // function strsEquivalentNone( test )
+// // {
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, false' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentNone( 'abc', 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentNone( /\w+/, 'abc' );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentNone( 'abc', /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentNone( /\w+/, /\w+/ );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'scalar, false' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'scalar, true' );
+// //
+// //   test.case = 'strings';
+// //   var got = _.strsEquivalentNone( 'abd', 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentNone( /\s+/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and string';
+// //   var got = _.strsEquivalentNone( /\w/, 'abc' );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentNone( 'abc', /\s+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'string and regexp';
+// //   var got = _.strsEquivalentNone( 'abc', /\w/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentNone( /\w*/, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentNone( /\w+/g, /\w+/ );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'regexp and regexp';
+// //   var got = _.strsEquivalentNone( /\w+/g, /\w+/gi );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'scalar, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, true' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
+// //   var src2 = /\w+\s/;
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc d';
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+\s/g;
+// //   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+/g, /\w+/gi ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/g, /\w+/g ];
+// //   var src2 = /\w+/gi;
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc d';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/gi;
+// //   var src2 = [ /\w+/g, /\w+/g ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'b', 'a' ];
+// //   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc d', 'abc d', 'aa d', 'bb d' ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc d', 'abc', 'aa', 'bb d' ];
+// //   var src2 = [ /\w+/, /\w+\s/gi, /\w+\s/g, /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'ab', 'abc d', /\w+\s/, /\w+/gi ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, true );
+// //
+// //   test.close( 'vectors, true' );
+// //
+// //   /* - */
+// //
+// //   test.open( 'vectors, false' );
+// //
+// //   test.case = 'mixed vector, scalar - string';
+// //   var src1 = [ 'ab', /\w+/, 'ab', /\w+/ ];
+// //   var src2 = 'abc';
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, scalar - regexp';
+// //   var src1 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
+// //   var src2 = /\w+/;
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, mixed vector';
+// //   var src1 = 'abc d';
+// //   var src2 = [ 'abc', /\w+/, 'abc d', /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, mixed vector';
+// //   var src1 = /\w+/;
+// //   var src2 = [ 'abc d', /\w+/g, 'abc d', /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - string';
+// //   var src1 = [ /\w+\s\w/g, /\w+/gi ];
+// //   var src2 = 'abc d';
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, scalar - regexp';
+// //   var src1 = [ /\w+/, /\w+/g ];
+// //   var src2 = /\w+/g;
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - string, vector of regexp';
+// //   var src1 = 'abc';
+// //   var src2 = [ /\w+/g, /\w+/gi ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'scalar - regexp, vector of regexp';
+// //   var src1 = /\w+/g;
+// //   var src2 = [ /\w+/gi, /\w+/g ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of strings';
+// //   var src1 = [ 'abc', 'abc', 'aa'+'a', 'bb' ];
+// //   var src2 = [ 'ab', 'ab', 'aa', 'bb' ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of regexp, vector of strings';
+// //   var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var src2 = [ 'abc', 'abc d', 'aa'+'a d', 'bb d' ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'vector of strings, vector of regexp';
+// //   var src1 = [ 'abc d', 'abc d', 'aa'+'a d', 'bb' ];
+// //   var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.case = 'mixed vector, mixed vector';
+// //   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+// //   var src2 = [ 'ab', 'abc', /\w+/, /\w+/ ];
+// //   var got = _.strsEquivalentNone( src1, src2 );
+// //   test.identical( got, false );
+// //
+// //   test.close( 'vectors, false' );
+// // }
 
 // --
 // converter
@@ -2690,238 +2690,238 @@ function exportStringShallowCode( test )
 
 //
 
-function strPrimitive( test ) /* qqq for Yevhen : extend */
-{
-
-  test.case = 'undefined';
-  var src = undefined;
-  var expected = undefined;
-  var got = _.entity.strPrimitive( src );
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var src = null;
-  var expected = undefined;
-  var got = _.entity.strPrimitive( src );
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var src = 13;
-  var expected = '13';
-  var got = _.entity.strPrimitive( src );
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var src = false;
-  var expected = 'false';
-  var got = _.entity.strPrimitive( src );
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var src = 'abc';
-  var expected = 'abc';
-  var got = _.entity.strPrimitive( src );
-  test.identical( got, expected );
-
-}
-
+// function strPrimitive( test ) /* qqq for Yevhen : extend */
+// {
 //
-
-/* qqq for Yevhen : extend */
-function strTypeWithTraitsBasic( test )
-{
-
-  test.case = 'undefined';
-  var src = undefined;
-  var expected = 'Undefined';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var src = null;
-  var expected = 'Null';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number int';
-  var src = 13;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number NaN';
-  var src = 13;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number Infinity';
-  var src = Infinity;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var src = false;
-  var expected = 'Boolean';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var src = 'abc';
-  var expected = 'String';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'array';
-  var src = [ 1, 2, 3 ];
-  var expected = 'Array';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'ArgumentsArray';
-  var src = _.argumentsArray.make([ 1, 2, 3 ]);
-  var expected = 'ArgumentsArray';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'routine';
-  var src = () => {};
-  var expected = 'Routine';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'symbol';
-  var src = Symbol( 'id' );
-  var expected = 'Symbol';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'map';
-  var src = new Map();
-  var expected = 'HashMap';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'set';
-  var src = new Set();
-  var expected = 'Set';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'polluted map';
-  var src = { a : 1, b : 2, c : 3 };
-  var expected = 'Map.polluted';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.a = 1;
-  var expected = 'Map.pure';
-  var got = _.entity.strTypeWithTraits( src );
-  test.identical( got, expected );
-
-}
-
+//   test.case = 'undefined';
+//   var src = undefined;
+//   var expected = undefined;
+//   var got = _.entity.strPrimitive( src );
+//   test.identical( got, expected );
 //
-
-/* qqq for Yevhen : extend */
-function strTypeWithoutTraitsBasic( test )
-{
-
-  test.case = 'undefined';
-  var src = undefined;
-  var expected = 'Undefined';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var src = null;
-  var expected = 'Null';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number int';
-  var src = 13;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number NaN';
-  var src = 13;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'number Infinity';
-  var src = Infinity;
-  var expected = 'Number';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var src = false;
-  var expected = 'Boolean';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var src = 'abc';
-  var expected = 'String';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'array';
-  var src = [ 1, 2, 3 ];
-  var expected = 'Array';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'ArgumentsArray';
-  var src = _.argumentsArray.make([ 1, 2, 3 ]);
-  var expected = 'ArgumentsArray';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'routine';
-  var src = () => {};
-  var expected = 'Routine';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'symbol';
-  var src = Symbol( 'id' );
-  var expected = 'Symbol';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'map';
-  var src = new Map();
-  var expected = 'HashMap';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'set';
-  var src = new Set();
-  var expected = 'Set';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'polluted map';
-  var src = { a : 1, b : 2, c : 3 };
-  var expected = 'Map';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.a = 1;
-  var expected = 'Map';
-  var got = _.entity.strTypeWithoutTraits( src );
-  test.identical( got, expected );
-
-}
+//   test.case = 'null';
+//   var src = null;
+//   var expected = undefined;
+//   var got = _.entity.strPrimitive( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number';
+//   var src = 13;
+//   var expected = '13';
+//   var got = _.entity.strPrimitive( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'boolean';
+//   var src = false;
+//   var expected = 'false';
+//   var got = _.entity.strPrimitive( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'string';
+//   var src = 'abc';
+//   var expected = 'abc';
+//   var got = _.entity.strPrimitive( src );
+//   test.identical( got, expected );
+//
+// }
+//
+// //
+//
+// /* qqq for Yevhen : extend */
+// function strTypeWithTraitsBasic( test )
+// {
+//
+//   test.case = 'undefined';
+//   var src = undefined;
+//   var expected = 'Undefined';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'null';
+//   var src = null;
+//   var expected = 'Null';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number int';
+//   var src = 13;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number NaN';
+//   var src = 13;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number Infinity';
+//   var src = Infinity;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'boolean';
+//   var src = false;
+//   var expected = 'Boolean';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'string';
+//   var src = 'abc';
+//   var expected = 'String';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'array';
+//   var src = [ 1, 2, 3 ];
+//   var expected = 'Array';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'ArgumentsArray';
+//   var src = _.argumentsArray.make([ 1, 2, 3 ]);
+//   var expected = 'ArgumentsArray';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'routine';
+//   var src = () => {};
+//   var expected = 'Routine';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'symbol';
+//   var src = Symbol( 'id' );
+//   var expected = 'Symbol';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'map';
+//   var src = new Map();
+//   var expected = 'HashMap';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'set';
+//   var src = new Set();
+//   var expected = 'Set';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'polluted map';
+//   var src = { a : 1, b : 2, c : 3 };
+//   var expected = 'Map.polluted';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'pure map';
+//   var src = Object.create( null );
+//   src.a = 1;
+//   var expected = 'Map.pure';
+//   var got = _.entity.strTypeWithTraits( src );
+//   test.identical( got, expected );
+//
+// }
+//
+// //
+//
+// /* qqq for Yevhen : extend */
+// function strTypeWithoutTraitsBasic( test )
+// {
+//
+//   test.case = 'undefined';
+//   var src = undefined;
+//   var expected = 'Undefined';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'null';
+//   var src = null;
+//   var expected = 'Null';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number int';
+//   var src = 13;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number NaN';
+//   var src = 13;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'number Infinity';
+//   var src = Infinity;
+//   var expected = 'Number';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'boolean';
+//   var src = false;
+//   var expected = 'Boolean';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'string';
+//   var src = 'abc';
+//   var expected = 'String';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'array';
+//   var src = [ 1, 2, 3 ];
+//   var expected = 'Array';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'ArgumentsArray';
+//   var src = _.argumentsArray.make([ 1, 2, 3 ]);
+//   var expected = 'ArgumentsArray';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'routine';
+//   var src = () => {};
+//   var expected = 'Routine';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'symbol';
+//   var src = Symbol( 'id' );
+//   var expected = 'Symbol';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'map';
+//   var src = new Map();
+//   var expected = 'HashMap';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'set';
+//   var src = new Set();
+//   var expected = 'Set';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'polluted map';
+//   var src = { a : 1, b : 2, c : 3 };
+//   var expected = 'Map';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+//   test.case = 'pure map';
+//   var src = Object.create( null );
+//   src.a = 1;
+//   var expected = 'Map';
+//   var got = _.entity.strTypeWithoutTraits( src );
+//   test.identical( got, expected );
+//
+// }
 
 //
 
@@ -21007,19 +21007,20 @@ const Proto =
     // strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */ /* !!! */
     strRight_,
 
-    strEquivalent,
-    strsEquivalent,
-    strsEquivalentAll,
-    strsEquivalentAny,
-    strsEquivalentNone,
+    // strEquivalent,
+    // strsEquivalent,
+    // strsEquivalentAll,
+    // strsEquivalentAny,
+    // strsEquivalentNone,
 
     // converter
 
     exportStringShallowDiagnostic,
     exportStringShallowCode,
-    strPrimitive,
-    strTypeWithTraitsBasic,
-    strTypeWithoutTraitsBasic,
+    // strPrimitive,
+    // strTypeWithTraitsBasic,
+    // strTypeWithoutTraitsBasic,
+
     strTypeWithTraitsGeneratedObject,
     strTypeWithoutTraitsGeneratedObject,
 
