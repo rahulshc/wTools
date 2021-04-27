@@ -267,6 +267,7 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Object.test.s
           - ../proto/wtools/abase/l0/l1.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l1.test/Props.test.s
+          - ../proto/wtools/abase/l0/l1.test/Regexp.test.s
           - ../proto/wtools/abase/l0/l1.test/Routine.test.s
           - ../proto/wtools/abase/l0/l1.test/Set.test.s
           - ../proto/wtools/abase/l0/l1.test/Str.test.s
@@ -279,8 +280,10 @@ module:
           - ../proto/wtools/abase/l0/l3/ArraySet.s
           - ../proto/wtools/abase/l0/l3/Auxiliary.s
           - ../proto/wtools/abase/l0/l3/Bool.s
+          - ../proto/wtools/abase/l0/l3/Container.s
           - ../proto/wtools/abase/l0/l3/Countable.s
           - ../proto/wtools/abase/l0/l3/Diagnostic.s
+          - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Itself.s
@@ -289,14 +292,18 @@ module:
           - ../proto/wtools/abase/l0/l3/Number.s
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Primitive.s
+          - ../proto/wtools/abase/l0/l3/Regexp.s
           - ../proto/wtools/abase/l0/l3/Set.s
+          - ../proto/wtools/abase/l0/l3/Str.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
           - ../proto/wtools/abase/l0/l3/Vector.s
           - ../proto/wtools/abase/l0/l3.test
           - ../proto/wtools/abase/l0/l3.test/Array.test.s
           - ../proto/wtools/abase/l0/l3.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l3.test/Blank.test.s
+          - ../proto/wtools/abase/l0/l3.test/Container.test.s
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
+          - ../proto/wtools/abase/l0/l3.test/Entity.test.s
           - ../proto/wtools/abase/l0/l3.test/HashMap.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
           - ../proto/wtools/abase/l0/l3.test/Long.test.s
@@ -305,7 +312,9 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Object.test.s
           - ../proto/wtools/abase/l0/l3.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l3.test/Props.test.s
+          - ../proto/wtools/abase/l0/l3.test/Regexp.test.s
           - ../proto/wtools/abase/l0/l3.test/Set.test.s
+          - ../proto/wtools/abase/l0/l3.test/Str.test.s
           - ../proto/wtools/abase/l0/l5
           - ../proto/wtools/abase/l0/l5/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l5/Array.s
