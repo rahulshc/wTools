@@ -2217,7 +2217,7 @@ function exportStringShallowDiagnostic( test )
 const Proto =
 {
 
-  name : 'Tools.l1.Regexp',
+  name : 'Tools.l1.Regexp.l0.l9',
   silencing : 1,
 
   tests :

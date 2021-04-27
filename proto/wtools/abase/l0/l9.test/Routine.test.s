@@ -7788,7 +7788,7 @@ function exportStringShallowDiagnostic( test )
 const Proto =
 {
 
-  name : 'Tools.Routine.l9',
+  name : 'Tools.Routine.l0.l9',
   silencing : 1,
 
   tests :

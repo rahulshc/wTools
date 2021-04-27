@@ -1159,7 +1159,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Object.l1',
+  name : 'Tools.Object.l0.l1',
   silencing : 1,
 
   tests :

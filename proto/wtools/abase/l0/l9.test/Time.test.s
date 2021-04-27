@@ -4728,7 +4728,7 @@ function from( test )
 const Proto =
 {
 
-  name : 'Tools.Time',
+  name : 'Tools.Time.l0.l9',
   silencing : 1,
 
   context :

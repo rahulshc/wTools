@@ -1441,7 +1441,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Map.l1',
+  name : 'Tools.Map.l0.l1',
   silencing : 1,
 
   tests :

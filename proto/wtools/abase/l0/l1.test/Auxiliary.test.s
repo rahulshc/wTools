@@ -884,7 +884,7 @@ function pairs( test )
   // var got = _.aux.pairs( arrObj );
   // var expected = [ [ 'k', 1 ] ];
   // test.identical( got, expected );
-  // 
+  //
   // test.case = 'src - Date object';
   // var got = _.aux.pairs( new Date );
   // var expected = [];
@@ -1125,7 +1125,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Auxiliary.l1',
+  name : 'Tools.Auxiliary.l0.l1',
   silencing : 1,
 
   tests :
