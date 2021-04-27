@@ -109,8 +109,12 @@ function _longMake_functor( onMake )
     if( _.argumentsArray.is( src ) )
     src = null;
 
+    let self = this;
     if( src === null )
-    src = this.tools./*longDescriptor*/defaultLong.make;
+    src = function( src )
+    {
+      return self.tools./*longDescriptor*/defaultLong.make( src );
+    };
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
