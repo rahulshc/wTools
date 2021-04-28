@@ -4021,7 +4021,7 @@ function _exportStringShallow( src, o )
     {
       result = String( src );
     }
-
+    debugger
     result = _.strShort_({ src : result, widthLimit : o.widthLimit, heightLimit : o.heightLimit }).result;
 
   }
@@ -4050,7 +4050,7 @@ function exportStringShallowCode( src, o ) /* */
 
   o = _.routine.options_( exportStringShallowCode, o || null );
   o.format = o.format || exportStringShallowCode.defaults.format;
-
+  debugger
   return _.entity._exportStringShallow( src, o );
 }
 
@@ -4071,6 +4071,7 @@ function exportStringShallowDiagnostic( src, o ) /* */
   o = _.routine.options_( exportStringShallowDiagnostic, o || null );
   o.format = o.format || exportStringShallowDiagnostic.defaults.format;
 
+  debugger
   return _.entity._exportStringShallow( src, o );
 }
 

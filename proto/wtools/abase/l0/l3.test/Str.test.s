@@ -3363,6 +3363,8 @@ const Proto =
 
     exportStringShallowDiagnostic,
     exportStringShallowCode,
+    exportStringShallowDiagnosticOptionHeightLimit,
+    exportStringShallowCodeOptionHeightLimit,
     strPrimitive,
     strTypeWithTraitsBasic,
     strTypeWithoutTraitsBasic,
