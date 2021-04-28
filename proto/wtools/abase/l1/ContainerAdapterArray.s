@@ -163,13 +163,13 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
-    _.assert( e === undefined || _.entity.equalize( poped, e, onEvaluate1, onEvaluate2 ) );
+    _.assert( e === undefined || _.entity.equal( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entity.equalize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
+    _.assert( _.entity.equal( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
 
     var poped = this.original.pop();
     return poped;
@@ -205,11 +205,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShort( e ) );
+    _.assert( index !== -1, () => 'Container has not element ' + _.entity.exportStringShallow( e ) );
     container.splice( index, 1 );
     if( _.number.is( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShort( e ) + ' is several times in dstArray' );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )
@@ -773,7 +773,7 @@ const Self = _.containerAdapter;
 
 //
 
-var Fields =
+var Extension =
 {
 
   Array : ContainerAdapterArray,
@@ -782,14 +782,7 @@ var Fields =
 
 //
 
-var Routines =
-{
-}
-
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _.containerAdapter, Extension );
 _.assert( _.containerAdapter === Self );
 
 // --

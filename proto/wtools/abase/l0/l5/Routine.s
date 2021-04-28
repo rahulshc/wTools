@@ -5,8 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
-let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
 
 // --
 // implementation
@@ -16,13 +14,13 @@ let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create
 // extension
 // --
 
-let Extension =
+let RoutineExtension =
 {
 
 }
 
 //
 
-Object.assign( Routine, Extension );
+Object.assign( _.routine, RoutineExtension );
 
 })();

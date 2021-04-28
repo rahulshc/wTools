@@ -86,7 +86,7 @@ function _handleUncaught2( o )
   {
     try
     {
-      if( _.error._log )
+      if( _.error && _.error._log )
       _.error._log( o.err, o.logger );
       else
       console.error( o.err );
@@ -106,8 +106,12 @@ function _handleUncaught2( o )
     if( !o.err.originalMessage && _.object.like && _.object.like( o.err ) )
     try
     {
-      let serr = _.entity.exportString && _.property ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
-      o.logger.error( serr );
+      let props = Object.create( null );
+      for( let k in o.err )
+      props[ k ] = o.err[ k ];
+      // let serr = _.entity.exportString && _.props ? _.entity.exportString.fields( o.err, { errorAsMap : 1 } ) : o.err;
+      o.logger.error( _.entity.exportString( props ) );
+      debugger;
     }
     catch( err2 )
     {
@@ -126,8 +130,8 @@ function _handleUncaught2( o )
     }
     catch( err2 )
     {
-      debugger;
       console.error( err2 );
+      return err;
     }
   }
 
@@ -275,6 +279,8 @@ function _handleUncaughtAsync( err )
   if( _.error.isAttended( err ) )
   return err;
 
+  if( !err )
+  debugger;
   _.error.wary( err, 1 );
 
   if( _.error.isSuspended( err ) )
@@ -288,6 +294,9 @@ function _handleUncaughtAsync( err )
 
     if( _.error.isSuspended( err ) )
     return;
+
+    if( !err )
+    debugger;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });
 
@@ -394,11 +403,11 @@ function error_functor( name, onErrorMake )
 
         let err1 = this;
         let args1 = onErrorMake.apply( err1, arguments );
-        _.assert( _.arrayLike( args1 ) );
+        _.assert( _.argumentsArray.like( args1 ) );
         let args2 = args1;
         if( !_.longHas( args2, err1 ) )
         args2 = [ err1, ... args1 ];
-        let err2 = _._err({ args : args2, level : 2, fields : { [ name ] : true } });
+        let err2 = _._err({ args : args2, level : 2, concealed : { [ name ] : true } });
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
         _.assert( err2 instanceof ErrorConstructor );
@@ -456,6 +465,6 @@ let Extension =
 
 //
 
-_.mapExtend( _.error, Extension );
+_.props.extend( _.error, Extension );
 
 })();
