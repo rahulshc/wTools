@@ -56,6 +56,12 @@ function exportStringShallowDiagnosticOptionHeightLimit( test )
   var expected = 'a\nb\n';
   test.identical( got, expected );
 
+  test.case = 'heightLimit=1';
+  var src = 'a\nb\nc';
+  var o = { heightLimit : 1 }
+  var got = _.entity.exportStringShallowDiagnostic( src, o );
+  var expected = 'a';
+  test.identical( got, expected );
 
   test.case = 'src with linebreaks > heightLimit';
   var src = 'a\nb\nc';
@@ -127,7 +133,12 @@ function exportStringShallowCodeOptionHeightLimit( test )
   var expected = `'a\nb\n'`;
   test.identical( got, expected );
 
-  /* middle */
+  test.case = 'heightLimit=1';
+  var src = 'a\nb\nc';
+  var o = { heightLimit : 1 }
+  var got = _.entity.exportStringShallowCode( src, o );
+  var expected = `'a`;
+  test.identical( got, expected );
 
   test.case = 'src with linebreaks > heightLimit';
   var src = 'a\nb\nc';
