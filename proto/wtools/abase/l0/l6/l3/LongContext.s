@@ -92,7 +92,7 @@
 // _.assert( _.LongDescriptors );
 // _.assert( _.longDescriptor );
 //
-// _.assert( _./*longDescriptor*/defaultLong.name === 'Array' );
+// _.assert( _.defaultLong.name === 'Array' );
 // _.assert( _.long.tools === _ );
 //
 // })();

@@ -271,6 +271,7 @@ function _make( src )
 function make( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( arguments.length === 0 || src === null || _.number.is( src ) || _.countable.is( src ) );
   return _.unroll._make( src );
 }
 
@@ -352,7 +353,7 @@ function _from( src )
 {
   if( _.unrollIs( src ) )
   return src;
-  return _.unroll._make( src );
+  return _.unroll._make( ... arguments );
 }
 
 //
@@ -360,7 +361,8 @@ function _from( src )
 function from( src )
 {
   _.assert( arguments.length === 1 );
-  return _.unroll._from( src );
+  _.assert( src === null || _.number.is( src ) || _.countable.is( src ) );
+  return _.unroll._from( ... arguments );
 }
 
 //

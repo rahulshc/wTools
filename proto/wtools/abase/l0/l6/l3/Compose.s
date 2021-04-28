@@ -17,7 +17,6 @@ function originaChainer( /* args, result, op, k */ )
   let result = arguments[ 1 ];
   let op = arguments[ 2 ];
   let k = arguments[ 3 ];
-
   _.assert( result !== false );
   return args;
 }

@@ -252,10 +252,10 @@ function _bufferMake_functor( onMake )
     /* */
 
     if( _.argumentsArray.is( src ) )
-    src = this.tools./*longDescriptor*/defaultLong.make;
+    src = this.tools.defaultLong.make;
 
     if( src === null )
-    src = this.tools./*longDescriptor*/defaultLong.make;
+    src = this.tools.defaultLong.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
