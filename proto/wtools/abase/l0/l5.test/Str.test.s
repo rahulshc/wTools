@@ -61,7 +61,7 @@ function exportStringShallowDiagnosticOptionHeightLimit( test )
   var src = 'a\nb\nc';
   var o = { heightLimit : 2 }
   var got = _.entity.exportStringShallowDiagnostic( src, o );
-  var expected = 'a\nb';
+  var expected = 'a\nc';
   test.identical( got, expected );
 
   test.case = 'src with linebreaks > heightLimit, even src and limit';
@@ -166,7 +166,7 @@ function exportStringShallowCodeOptionHeightLimit( test )
 const Proto =
 {
 
-  name : 'Tools.Str.l0.l3',
+  name : 'Tools.Str.l0.l5',
   silencing : 1,
 
   tests :
