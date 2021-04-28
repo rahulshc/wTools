@@ -369,8 +369,6 @@ module:
           - ../proto/wtools/abase/l0/l5/Units.s
           - ../proto/wtools/abase/l0/l5/Unroll.s
           - ../proto/wtools/abase/l0/l5/Vector.s
-          - ../proto/wtools/abase/l0/l5.test
-          - ../proto/wtools/abase/l0/l5.test/Long.test.s
           - ../proto/wtools/abase/l0/l6
           - ../proto/wtools/abase/l0/l6/l1
           - ../proto/wtools/abase/l0/l6/l1/LongDescriptor.s
