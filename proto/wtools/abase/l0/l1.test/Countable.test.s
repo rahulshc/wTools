@@ -349,7 +349,7 @@ function typingExtended( test )
   test.true( _.arrayIs( src ) );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, new : 1, length : 2 });
   test.true( _.countable.like( src ) );
   test.true( _.countable.is( src ) );
   test.true( _.vector.like( src ) );
@@ -360,7 +360,7 @@ function typingExtended( test )
   test.true( !_.arrayIs( src ) );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, new : 1 });
   test.true( _.countable.like( src ) );
   test.true( _.countable.is( src ) );
   test.true( !_.vector.like( src ) );
