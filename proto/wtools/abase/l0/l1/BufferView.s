@@ -1,49 +1,44 @@
-( function _l1_BufferTyped_s_()
+( function _l1_BufferView_s_()
 {
 
 'use strict';
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.bufferTyped = _.bufferTyped || Object.create( null );
+_.bufferView = _.bufferView || Object.create( null );
 
 // --
 // implementation
 // --
 
-function typedIs( src )
+function viewIs( src )
 {
   let type = Object.prototype.toString.call( src );
-  if( !/\wArray/.test( type ) )
-  return false;
-  if( type === '[object SharedArrayBuffer]' )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
+  let result = type === '[object DataView]';
+  return result;
 }
 
 // --
 // declaration
 // --
 
-let BufferTypedExtension =
+let BufferViewExtension =
 {
 
   //
 
-  NamespaceName : 'bufferTyped',
-  NamespaceQname : 'wTools/bufferTyped',
-  TypeName : 'BufferTyped',
-  SecondTypeName : 'ArrayTyped',
+  NamespaceName : 'bufferView',
+  NamespaceQname : 'wTools/bufferView',
+  TypeName : 'BufferView',
+  SecondTypeName : 'ArrayView',
   InstanceConstructor : null,
   tools : _,
 
   // dichotomy
 
-  typedIs,
-  is : typedIs,
-  like : typedIs,
+  viewIs,
+  is : viewIs,
+  like : viewIs,
 
   // maker
 
@@ -62,7 +57,7 @@ let BufferTypedExtension =
 
 }
 
-Object.assign( _.bufferTyped, BufferTypedExtension );
+Object.assign( _.bufferView, BufferViewExtension );
 
 //
 
@@ -71,7 +66,7 @@ let BufferExtension =
 
   // dichotomy
 
-  typedIs : typedIs.bind( _.buffer ),
+  viewIs : viewIs.bind( _.buffer ),
 
 }
 
@@ -84,7 +79,7 @@ let ToolsExtension =
 
   // dichotomy
 
-  bufferTypedIs : typedIs.bind( _.buffer ),
+  bufferViewIs : viewIs.bind( _.buffer ),
 
 }
 

@@ -1,49 +1,47 @@
-( function _l1_BufferTyped_s_()
+( function _l1_BufferRaw_s_()
 {
 
 'use strict';
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.bufferTyped = _.bufferTyped || Object.create( null );
+_.bufferRaw = _.bufferRaw || Object.create( null );
 
 // --
 // implementation
 // --
 
-function typedIs( src )
+function rawIs( src )
 {
   let type = Object.prototype.toString.call( src );
-  if( !/\wArray/.test( type ) )
-  return false;
-  if( type === '[object SharedArrayBuffer]' )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
+  // let result = type === '[object ArrayBuffer]';
+  // return result;
+  if( type === '[object ArrayBuffer]' || type === '[object SharedArrayBuffer]' )
   return true;
+  return false;
 }
 
 // --
 // declaration
 // --
 
-let BufferTypedExtension =
+let BufferRawExtension =
 {
 
   //
 
-  NamespaceName : 'bufferTyped',
-  NamespaceQname : 'wTools/bufferTyped',
-  TypeName : 'BufferTyped',
-  SecondTypeName : 'ArrayTyped',
+  NamespaceName : 'bufferRaw',
+  NamespaceQname : 'wTools/bufferRaw',
+  TypeName : 'BufferRaw',
+  SecondTypeName : 'ArrayRaw',
   InstanceConstructor : null,
   tools : _,
 
   // dichotomy
 
-  typedIs,
-  is : typedIs,
-  like : typedIs,
+  rawIs,
+  is : rawIs,
+  like : rawIs,
 
   // maker
 
@@ -62,7 +60,7 @@ let BufferTypedExtension =
 
 }
 
-Object.assign( _.bufferTyped, BufferTypedExtension );
+Object.assign( _.bufferRaw, BufferRawExtension );
 
 //
 
@@ -71,7 +69,7 @@ let BufferExtension =
 
   // dichotomy
 
-  typedIs : typedIs.bind( _.buffer ),
+  rawIs : rawIs.bind( _.buffer ),
 
 }
 
@@ -84,7 +82,7 @@ let ToolsExtension =
 
   // dichotomy
 
-  bufferTypedIs : typedIs.bind( _.buffer ),
+  bufferRawIs : rawIs.bind( _.buffer ),
 
 }
 
