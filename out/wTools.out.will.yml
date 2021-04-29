@@ -191,7 +191,6 @@ module:
           - ../proto/wtools/abase/l0/l0/l3/Predefined.s
           - ../proto/wtools/abase/l0/l0/l5
           - ../proto/wtools/abase/l0/l0/l5/Setup.s
-          - ../proto/wtools/abase/l0/l1
           - ../proto/wtools/abase/l0/l3
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
@@ -424,8 +423,6 @@ module:
           - ../proto/wtools/abase/l1.test/ContainerAdapterRelated.test.s
           - ../proto/wtools/abase/l1.test/Str.test.s
           - ../proto/wtools/abase/l1.test/Trie.test.s
-          - ../proto/wtools/amid
-          - ../proto/wtools/atop
     submodule:
       wTesting:
         path: 'npm:///wTesting'
