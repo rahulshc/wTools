@@ -11,7 +11,6 @@ const Self = _.entity = _.entity || Object.create( null );
 // dichotomy
 // --
 
-/* xxx : adjust */
 function is( src )
 {
   return true;
@@ -172,80 +171,36 @@ function strTypeWithoutTraits( src )
 
 }
 
-//
+// --
+// meta
+// --
 
-/* xxx : move out if-chain */
-function exportStringShallowDiagnostic( src, o )
+function namespaceForContainer( src ) /* qqq for junior : cover please */
 {
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
-
-  let result = '';
-
+  _.assert( arguments.length === 1 );
+  if( src === undefined )
+  return _.blank;
   if( _.primitive.is( src ) )
-  {
-    result = _.primitive.exportStringShallowDiagnostic( src );
-  }
-  else if( _.date.is( src ) )
-  {
-    result = _.date.exportStringShallowDiagnostic( src );
-  }
-  else if( _.regexpIs( src ) )
-  {
-    result = _.regexp.exportStringShallowDiagnostic( src );
-  }
-  else if( _.set.like( src ) )
-  {
-    result = _.set.exportStringShallowDiagnostic( src );
-  }
-  else if( _.hashMap.like( src ) )
-  {
-    result = _.hashMap.exportStringShallowDiagnostic( src );
-  }
-  else if( _.vector.like( src ) )
-  {
-    result = _.vector.exportStringShallowDiagnostic( src );
-  }
-  else if( _.routine.is( src ) )
-  {
-    result = _.routine.exportStringShallowDiagnostic( src );
-  }
-  else if( _.aux.like( src ) )
-  {
-    result = _.aux.exportStringShallowDiagnostic( src );
-  }
-  else if( _.object.like( src ) )
-  {
-    result = _.object.exportStringShallowDiagnostic( src );
-  }
-  else
-  {
-    result = String( src );
-    result = _.strShort_( result ).result;
-  }
+  return _.itself;
+  if( _.hashMap.like( src ) )
+  return _.hashMap;
+  if( _.set.like( src ) )
+  return _.set;
+  if( _.longIs( src ) )
+  return _.long;
+  if( _.buffer.like( src ) )
+  return _.buffer;
+  if( _.countableIs( src ) )
+  return _.countable;
+  if( _.mapIs( src ) )
+  return _.map;
+  if( _.auxIs( src ) )
+  return _.aux;
+  if( _.object.isBasic( src ) )
+  return _.props;
 
-  return result;
+  return _.itself;
 }
-
-// --
-// tools extension
-// --
-
-let ToolsExtension =
-{
-
-  entityIs : is.bind( _.entity ),
-  entityLike : like.bind( _.entity ),
-
-  strType : strTypeWithTraits,
-
-  // lengthOf,
-  // entity.lengthOf : lengthOf,
-
-}
-
-//
-
-Object.assign( _, ToolsExtension );
 
 // --
 // entity extension
@@ -307,11 +262,17 @@ let StandardTypeSet = new Set
 
 ]);
 
+//
+
 let EntityExtension =
 {
 
   // fields
 
+  NamespaceName : 'wTools.entity',
+  TypeName : 'Entity',
+  SecondTypeName : 'Entity',
+  InstanceConstructor : null,
   tools : _,
   TranslatedTypeMap,
   StandardTypeSet,
@@ -321,6 +282,24 @@ let EntityExtension =
   is,
   like,
 
+  // // maker
+  //
+  // cloneShallow, /* qqq : cover */
+  // make, /* qqq : cover */
+  // makeEmpty, /* qqq : cover */
+  // makeUndefined, /* qqq : cover */
+
+  // maker
+
+  // _cloneShallow : _.container._cloneShallow, /* qqq : implement */
+  cloneShallow : _.container.cloneShallow, /* qqq : cover */
+  // _make : _.container._make, /* qqq : implement */
+  make : _.container.make, /* qqq : cover */
+  // _makeEmpty : _.container._makeEmpty, /* qqq : implement */
+  makeEmpty : _.container.makeEmpty, /* qqq : cover */
+  // _makeUndefined : _.container._makeUndefined, /* qqq : implement */
+  makeUndefined : _.container.makeUndefined, /* qqq : cover */
+
   // exporter
 
   strPrimitive,
@@ -328,24 +307,35 @@ let EntityExtension =
   strType : strTypeWithTraits,
   strTypeWithTraits,
   strTypeWithoutTraits,
-  // strParseType,
-  // _strParseType,
 
-  // exporter
+  // meta
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
-
-  // lengthOf,
+  namespaceForContainer,
+  namespaceForEntity : _.container.namespaceForEntity,
+  _functor_functor : _.container._functor_functor,
 
 }
 
 //
 
 Object.assign( _.entity, EntityExtension );
+
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+  entityIs : is.bind( _.entity ),
+  entityLike : like.bind( _.entity ),
+
+  strType : strTypeWithTraits,
+
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 
 })();

@@ -5,96 +5,38 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
+const _functor_functor = _.container._functor_functor;
 
 // --
-// meta
+// exporter
 // --
 
-function namespaceFor( container ) /* qqq for Yevhen : cover please */
+function _exportStringShallowDiagnostic( src, o )
 {
-  _.assert( arguments.length === 1 );
-  if( _.primitive.is( container ) )
-  return _.blank;
-  else if( _.hashMap.like( container ) )
-  return _.hashMap;
-  else if( _.set.like( container ) )
-  return _.set;
-  else if( _.longIs( container ) )
-  return _.long;
-  else if( _.countableIs( container ) )
-  return _.countable;
-  else if( _.mapIs( container ) )
-  return _.map;
-  else if( _.auxIs( container ) )
-  return _.aux;
-  // else if( _.object.like( container ) )
-  // return _.object;
+  let result;
+  let namespace = this.namespaceForEntity( src );
+
+  if( namespace )
+  result = namespace.exportStringShallowDiagnostic( src );
   else
-  return _.blank;
+  result = _.strShort_( String( src ) ).result;
+
+  return result;
 }
 
 //
 
-function _functor_functor( methodName )
+function exportStringShallowDiagnostic( src, o )
 {
-  _.assert( _.strDefined( methodName ) );
-  return function _functor( container )
-  {
-    _.assert( arguments.length === 1 );
-    _.assert( _.routine.is( this.namespaceFor ), `No routine::namespaceFor in the namesapce` );
-    let namespace = this.namespaceFor( container );
-    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
-    return namespace[ methodName ].bind( namespace, container );
-  }
+  let result;
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+  _.assert( this.like( src ) );
+  return this._exportStringShallowDiagnostic( ... arguments );
 }
 
 // --
-// container interface
+// editor
 // --
-
-function cloneShallow( container ) /* qqq for Yevhen : cover please */
-{
-  _.assert( arguments.length === 1 );
-  return cloneShallow.functor.call( this, container )();
-}
-
-cloneShallow.functor = _functor_functor( 'cloneShallow' );
-// cloneShallow.functor = _functor_functor( 'cloneShallow' );
-
-//
-
-function make( container, ... args ) /* qqq for Yevhen : cover please */
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  return make.functor.call( this, container )( ... args );
-}
-
-make.functor = _functor_functor( 'make' );
-// make.functor = _functor_functor( 'make' );
-
-//
-
-function makeEmpty( container ) /* qqq for Yevhen : cover please */
-{
-  _.assert( arguments.length === 1 );
-  return makeEmpty.functor.call( this, container )();
-}
-
-makeEmpty.functor = _functor_functor( 'makeEmpty' );
-// makeEmpty.functor = _functor_functor( 'makeEmpty' );
-
-//
-
-function makeUndefined( container, ... args ) /* qqq for Yevhen : cover please */
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  return makeUndefined.functor.call( this, container )( ... args );
-}
-
-makeUndefined.functor = _functor_functor( 'makeUndefined' );
-// makeUndefined.functor = _functor_functor( 'makeUndefined' );
-
-//
 
 /**
  * The routine empty() clears provided container {-dstContainer-}.
@@ -149,65 +91,19 @@ makeUndefined.functor = _functor_functor( 'makeUndefined' );
  * @namespace Tools
  */
 
-function empty( container ) /* qqq for Yevhen : cover please */
+function empty( container ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
   return empty.functor.call( this, container )();
 }
 
 empty.functor = _functor_functor( 'empty' );
-// empty.functor = _functor_functor( 'empty' );
 
-// //
+// --
 //
-// function make()
-// {
-//   _.assert( arguments.length === 1 );
-//   return _.entity.cloneShallow( ... arguments );
-// }
+// --
 
-// function empty( dstContainer )
-// {
-//   if( _.longLike( dstContainer ) )
-//   _.longEmpty( dstContainer );
-//   else if( _.set.like( dstContainer ) )
-//   dstContainer.clear();
-//   else if( _.hashMap.like( dstContainer ) )
-//   dstContainer.clear();
-//   else if( _.aux.is( dstContainer ) )
-//   _.mapEmpty( dstContainer );
-//   else
-//   _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
-//   return dstContainer;
-// }
-
-//
-
-// function lengthOf( src )
-// {
-//   if( src === undefined )
-//   return 0;
-//   if( src === null )
-//   return 1;
-//
-//   // if( _.routine.is( src[ Symbol.iterator ] ) )
-//   // return [ ... src ].length;
-//
-//   if( _.vectorLike( src ) )
-//   return src.length;
-//   if( _.set.like( src ) )
-//   return src.size;
-//   if( _.hashMap.like( src ) )
-//   return src.size;
-//   if( _.countableIs( src ) )
-//   return [ ... src ].length;
-//   if( _.aux.is( src ) )
-//   return _.props.keys( src ).length;
-//
-//   return 1;
-// }
-
-function lengthOf( container ) /* qqq for Yevhen : cover please */
+function lengthOf( container ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
   return lengthOf.functor.call( this, container )();
@@ -255,17 +151,7 @@ lengthOf.functor = _functor_functor( 'lengthOf' );
  * @namespace Tools
  */
 
-// function elementWithCardinal_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementWithCardinal ) );
-//   return namespace._elementWithCardinal.bind( namespace, container );
-// }
-
-//
-
-function elementWithCardinal( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
+function elementWithCardinal( container, key ) /* qqq for junior : cover please | aaa : Done. */
 {
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
@@ -275,7 +161,6 @@ function elementWithCardinal( container, key ) /* qqq for Yevhen : cover please 
 }
 
 elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
-// elementWithCardinal.functor = elementWithCardinal_functor;
 
 //
 
@@ -316,16 +201,6 @@ elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
  * @namespace Tools
  */
 
-// function elementWithKey_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementWithKey ) );
-//   return namespace._elementWithKey.bind( namespace, container );
-// }
-
-//
-
 function elementWithKey( container, key )
 {
   _.assert( arguments.length === 2 );
@@ -333,17 +208,6 @@ function elementWithKey( container, key )
 }
 
 elementWithKey.functor = _functor_functor( 'elementWithKey' );
-// elementWithKey.functor = elementWithKey_functor;
-
-//
-
-// function elementWithImplicit_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementWithImplicit ) );
-//   return namespace._elementWithImplicit.bind( namespace, container );
-// }
 
 //
 
@@ -354,21 +218,10 @@ function elementWithImplicit( container, key )
 }
 
 elementWithImplicit.functor = _functor_functor( 'elementWithImplicit' );
-// elementWithImplicit.functor = elementWithImplicit_functor;
 
 //
 
-// function elementWithCardinalSet_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementWithCardinalSet ) );
-//   return namespace._elementWithCardinalSet.bind( namespace, container );
-// }
-
-//
-
-function elementWithCardinalSet( container, key, val ) /* qqq for Yevhen : cover please | aaa : Done. */
+function elementWithCardinalSet( container, key, val ) /* qqq for junior : cover please | aaa : Done. */
 {
   _.assert( arguments.length === 3 );
   _.assert( _.numberIs( key ) );
@@ -376,17 +229,6 @@ function elementWithCardinalSet( container, key, val ) /* qqq for Yevhen : cover
 }
 
 elementWithCardinalSet.functor = _functor_functor( 'elementWithCardinalSet' );
-// elementWithCardinalSet.functor = elementWithCardinalSet_functor;
-
-//
-
-// function elementSet_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace._elementSet.bind( namespace, container );
-// }
 
 //
 
@@ -398,19 +240,6 @@ function elementSet( container, key, val )
 }
 
 elementSet.functor = _functor_functor( 'elementSet' );
-// elementSet.functor = elementSet_functor;
-
-// --
-// iterator
-// --
-
-// function eachLeft_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.eachLeft.bind( namespace, container );
-// }
 
 //
 
@@ -421,17 +250,6 @@ function eachLeft( container, onEach )
 }
 
 eachLeft.functor = _functor_functor( 'eachLeft' );
-// eachLeft.functor = eachLeft_functor;
-
-//
-
-// function eachRight_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.eachRight.bind( namespace, container );
-// }
 
 //
 
@@ -442,17 +260,6 @@ function eachRight( container, onEach )
 }
 
 eachRight.functor = _functor_functor( 'eachRight' );
-// eachRight.functor = eachRight_functor;
-
-//
-
-// function whileLeft_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.whileLeft.bind( namespace, container );
-// }
 
 //
 
@@ -463,17 +270,6 @@ function whileLeft( container, onEach )
 }
 
 whileLeft.functor = _functor_functor( 'whileLeft' );
-// whileLeft.functor = whileLeft_functor;
-
-//
-
-// function whileRight_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.whileRight.bind( namespace, container );
-// }
 
 //
 
@@ -484,17 +280,6 @@ function whileRight( container, onEach )
 }
 
 whileRight.functor = _functor_functor( 'whileRight' );
-// whileRight.functor = whileRight_functor;
-
-//
-
-// function aptLeft_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.aptLeft.bind( namespace, container );
-// }
 
 //
 
@@ -505,7 +290,6 @@ function aptLeft( container, onEach )
 }
 
 aptLeft.functor = _functor_functor( 'aptLeft' );
-// aptLeft.functor = aptLeft_functor;
 
 //
 
@@ -517,16 +301,6 @@ function first( container )
 
 //
 
-// function aptRight_functor( container )
-// {
-//   _.assert( arguments.length === 1 );
-//   let namespace = this.namespaceFor( container );
-//   _.assert( _.routine.is( namespace._elementSet ) );
-//   return namespace.aptRight.bind( namespace, container );
-// }
-
-//
-
 function aptRight( container, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -534,7 +308,6 @@ function aptRight( container, onEach )
 }
 
 aptRight.functor = _functor_functor( 'aptRight' );
-// aptRight.functor = aptRight_functor;
 
 //
 
@@ -548,31 +321,27 @@ function last( container )
 // extension
 // --
 
-let ToolsExtension =
-{
-}
-
-Object.assign( _, ToolsExtension );
-
-//
-
 let ContainerExtension =
 {
 
-  // meta
+  // exporter
 
-  namespaceFor,
-  _functor_functor,
+  _exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  _exportStringShallowCode : _exportStringShallowDiagnostic,
+  exportStringShallowCode : exportStringShallowDiagnostic,
+  exportStringShallow : exportStringShallowDiagnostic,
+  exportString : exportStringShallowDiagnostic,
 
-  // container interface
+  // editor
 
-  cloneShallow, /* qqq : cover */
-  make, /* qqq : cover */
-  makeEmpty, /* qqq : cover */
-  makeUndefined, /* qqq : cover */
   empty, /* qqq : cover */
 
-  lengthOf,
+  // inspector
+
+  lengthOf, /* qqq : cover */
+
+  // elementor
 
   elementWithCardinal, /* qqq : cover */
   elementWithKey, /* qqq : cover */
@@ -596,5 +365,15 @@ let ContainerExtension =
 }
 
 _.props.supplement( _.container, ContainerExtension );
+
+//
+
+let ToolsExtension =
+{
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

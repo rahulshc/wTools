@@ -113,7 +113,6 @@ function _makeEmpty( src )
   else
   {
     return this.tools.defaultLong.make();
-    // return [];
   }
 }
 
@@ -319,9 +318,6 @@ function _make( src, length )
     result = fill( new src.constructor( length ), data );
     _.assert( _.long.is( result ), 'Not clear how to make such long' );
     return result;
-    // if( src.constructor === Array )
-    // return fill( new src.constructor( length ), data );
-    // _.assert( 0, 'Not clear how to make such long' );
   }
   else if( src !== undefined && src !== null )
   {
@@ -778,15 +774,34 @@ function rightDefined( arr )
 function _namespaceRegister( namespace )
 {
 
-  _.assert( !!namespace.NamespaceName );
-  _.assert( _[ namespace.NamespaceName ] === namespace );
-  _.assert( _.long.namespaces[ namespace.NamespaceName ] === undefined );
+  if( Config.debug )
+  verify();
+
   _.long.namespaces[ namespace.NamespaceName ] = namespace;
 
   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
   namespace.IsLong = true;
 
   namespace.AsDefault = _.long._asDefaultGenerate( namespace );
+
+  function verify()
+  {
+    _.assert( !!namespace.NamespaceName );
+    _.assert( _.long.namespaces[ namespace.Name ] === undefined );
+    _.assert( _[ namespace.NamespaceName ] === namespace );
+    _.assert( _select( _global_, namespace.NamespaceQname ) === namespace );
+  }
+
+  function _select( src, selector )
+  {
+    selector = selector.split( '/' );
+    while( selector.length && !!src )
+    {
+      src = src[ selector[ 0 ] ];
+      selector.splice( 0, 1 )
+    }
+    return src;
+  }
 
 }
 
@@ -868,6 +883,7 @@ let LongExtension =
   //
 
   NamespaceName : 'long',
+  NamespaceQname : 'wTools/long',
   TypeName : 'Long',
   SecondTypeName : 'Long',
   InstanceConstructor : null,

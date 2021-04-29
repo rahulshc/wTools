@@ -948,7 +948,7 @@ function longFromCoercing( src )
   if( _.longIs( src ) )
   return this.tools.defaultLong.from( src );
 
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return this.longFromCoercing( _.props.pairs( src ) );
 
   /* aaa : cover */

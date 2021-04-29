@@ -1950,7 +1950,7 @@ function strSplitsQuotedRejoin_head( routine, args )
   _.routine.options( routine, o );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1, 'Expects one or two arguments' );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
 
   if( o.quoting )
   {
@@ -2102,7 +2102,7 @@ function strSplitsDropDelimeters_head( routine, args )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
 
   return o;
 }
@@ -2163,7 +2163,7 @@ function strSplitsStrip_head( routine, args )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
 
   return o;
@@ -2217,7 +2217,7 @@ function strSplitsDropEmpty_head( routine, args )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
 
   return o;
 }
@@ -2274,7 +2274,7 @@ function strSplitFast_head( routine, args )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'Expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
 
   return o;
 }
@@ -2513,7 +2513,7 @@ let strSplitFast = _.routine.unite( strSplitFast_head, strSplitFast_body );
 
 _.assert( strSplitFast.head === strSplitFast_head );
 _.assert( strSplitFast.body === strSplitFast_body );
-_.assert( _.object.is( strSplitFast.defaults ) );
+_.assert( _.object.isBasic( strSplitFast.defaults ) );
 
 //
 
@@ -2679,7 +2679,7 @@ let strSplit = _.routine.unite( head, strSplit_body );
 _.assert( strSplit.head !== strSplitFast.head );
 _.assert( _.routine.is( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
-_.assert( _.object.is( strSplit.defaults ) );
+_.assert( _.object.isBasic( strSplit.defaults ) );
 _.assert( !!strSplit.defaults.preservingEmpty );
 
 //
@@ -2889,7 +2889,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
 //
 //   _.assert( this === _ );
 //   _.assert( _.strIs( o.src ) );
-//   _.assert( _.object.is( o ) );
+//   _.assert( _.object.isBasic( o ) );
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.routine.options( strSplitInlinedStereo, o );
 //
@@ -3014,7 +3014,7 @@ function strSplitInlinedStereo_( o )
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.object.is( o ) );
+  _.assert( _.object.isBasic( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
 
@@ -3215,7 +3215,7 @@ function strSplitInlinedStereo_( o )
 
   // _.assert( this === _ );
   // _.assert( _.strIs( o.src ) );
-  // _.assert( _.object.is( o ) );
+  // _.assert( _.object.isBasic( o ) );
   // _.assert( arguments.length === 1, 'Expects single argument' );
   // _.routine.options( strSplitInlinedStereo_, o );
 
@@ -3485,7 +3485,7 @@ strSplitInlinedStereo_.defaults =
 
   //   _.assert( this === _ );
   //   _.assert( _.strIs( o.src ) );
-  //   _.assert( _.object.is( o ) );
+  //   _.assert( _.object.isBasic( o ) );
   //   _.assert( arguments.length === 1, 'Expects single argument' );
   //   _.routine.options( strSplitInlinedStereo_, o );
 

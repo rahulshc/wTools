@@ -155,7 +155,7 @@ function assign2( dst, src, onRecursive )
     dst.set( src );
 
   }
-  else if( _.object.is( src ) )
+  else if( _.object.isBasic( src ) )
   {
 
     if( onRecursive )

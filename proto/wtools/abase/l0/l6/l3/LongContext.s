@@ -85,7 +85,7 @@
 // _.longDescriptorProducer.applyTo( _, 'Array' );
 //
 // _.assert( !_.Array );
-// _.assert( _.object.is( _.withLong ) );
+// _.assert( _.object.isBasic( _.withLong ) );
 // _.assert( !_.defaultLong );
 //
 // _.assert( _.longDescriptorProducer );

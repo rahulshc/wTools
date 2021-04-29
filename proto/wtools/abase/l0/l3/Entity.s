@@ -5,6 +5,8 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
+const _functor_functor = _.container._functor_functor;
+
 _.entity = _.entity || Object.create( null );
 
 _.assert( !!_.container.cloneShallow, 'Expects routine _.container.cloneShallow' );
@@ -218,261 +220,6 @@ function equivalentShallow( src1, src2, options )
   }
 }
 
-// //
-//
-// function makeEmpty( src )
-// {
-//   _.assert( arguments.length === 1 );
-//
-//   if( !src || _.primitive.is( src ) )
-//   {
-//     return src;
-//   }
-//   else if( _.arrayIs( src ) )
-//   {
-//     return new Array();
-//   }
-//   else if( _.longIs( src ) )
-//   {
-//     // return this.tools.long.makeEmpty( src );
-//     let toolsNamespace = this.Tools ? this.Tools : this;
-//     return toolsNamespace.long.makeEmpty( src );
-//   }
-//   else if( _.set.is( src ) )
-//   {
-//     return new src.constructor();
-//   }
-//   else if( _.hashMap.is( src ) )
-//   {
-//     return new src.constructor();
-//   }
-//   else if( _.aux.is( src ) )
-//   {
-//     return Object.create( null );
-//   }
-//   // else if( src === _.null )
-//   // {
-//   //   return null;
-//   // }
-//   // else if( src === _.undefined )
-//   // {
-//   //   return undefined;
-//   // }
-//   // else if( !src || _.primitive.is( src ) )
-//   // {
-//   //   return src;
-//   // }
-//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-//   {
-//     return new src.constructor();
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
-//
-// }
-//
-// //
-//
-// function makeUndefined( src, length )
-// {
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   if( !src || _.primitive.is( src ) )
-//   {
-//     return src;
-//   }
-//   else if( _.arrayIs( src ) )
-//   {
-//     return new Array( length !== undefined ? length : src.length );
-//   }
-//   else if( _.longIs( src ) )
-//   {
-//     // return this.tools.long.makeUndefined( src, length );
-//     let toolsNamespace = this.Tools ? this.Tools : this;
-//     return toolsNamespace.long.makeUndefined( src, length );
-//   }
-//   else if( _.set.is( src ) )
-//   {
-//     return new src.constructor();
-//   }
-//   else if( _.hashMap.is( src ) )
-//   {
-//     return new src.constructor();
-//   }
-//   else if( _.aux.is( src ) )
-//   {
-//     return Object.create( null );
-//   }
-//   // else if( src === _.null )
-//   // {
-//   //   return null;
-//   // }
-//   // else if( src === _.undefined )
-//   // {
-//   //   return undefined;
-//   // }
-//   // else if( !src || _.primitive.is( src ) )
-//   // {
-//   //   return src;
-//   // }
-//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-//   {
-//     return new src.constructor();
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
-// }
-//
-// // //
-// //
-// // function makeNonConstructing( src )
-// // {
-// //   _.assert( arguments.length === 1, 'Expects single argument' );
-// //
-// //   if( _.arrayIs( src ) )
-// //   {
-// //     return Array.from( src );
-// //   }
-// //   else if( _.longLike( src ) )
-// //   {
-// //     return this.tools.long.make( src );
-// //   }
-// //   else if( _.hashMap.like( src ) || _.set.like( src ) )
-// //   {
-// //     return new src.constructor( src );
-// //   }
-// //   else if( _.aux.is( src ) )
-// //   {
-// //     return _.mapCloneShallow( src )
-// //   }
-// //   else if( src === _.null )
-// //   {
-// //     return null;
-// //   }
-// //   else if( src === _.undefined )
-// //   {
-// //     return undefined;
-// //   }
-// //   else if( !src || _.primitive.is( src ) )
-// //   {
-// //     return src;
-// //   }
-// //   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
-// //
-// // }
-//
-// //
-//
-// function cloneShallow( src )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( !src || _.primitive.is( src ) )
-//   {
-//     return src;
-//   }
-//   else if( _.arrayIs( src ) )
-//   {
-//     return Array.from( src );
-//   }
-//   else if( _.longLike( src ) )
-//   {
-//     let toolsNamespace = this.Tools ? this.Tools : this;
-//     return toolsNamespace.long.make( src );
-//   }
-//   else if( _.hashMap.like( src ) || _.set.like( src ) )
-//   {
-//     return new src.constructor( src );
-//   }
-//   else if( _.aux.is( src ) )
-//   {
-//     return _.mapCloneShallow( src )
-//   }
-//   // else if( src === _.null )
-//   // {
-//   //   return null;
-//   // }
-//   // else if( src === _.undefined )
-//   // {
-//   //   return undefined;
-//   // }
-//   // else if( !src || _.primitive.is( src ) )
-//   // {
-//   //   return src;
-//   // }
-//   else if( _.routine.is( src[ _.class.cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
-//   {
-//     return src[ _.class.cloneShallowSymbol ]();
-//   }
-//   else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
-//   {
-//     return src.cloneShallow();
-//   }
-//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-//   {
-//     return new src.constructor( src );
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
-//
-// }
-//
-// //
-//
-// function cloneDeep( src )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( !src || _.primitive.is( src ) )
-//   {
-//     return src;
-//   }
-//   else if( _.replicate )
-//   {
-//     return _.replicate( src );
-//   }
-//   else if( _.routine.is( src[ _.class.cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
-//   {
-//     return src[ _.class.cloneDeepSymbol ]();
-//   }
-//   else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
-//   {
-//     return src.cloneDeep();
-//   }
-//   else if( _.arrayIs( src ) )
-//   {
-//     return Array.from( src );
-//   }
-//   else if( _.longLike( src ) )
-//   {
-//     let toolsNamespace = this.Tools ? this.Tools : this;
-//     return toolsNamespace.long.make( src );
-//   }
-//   else if( _.hashMap.like( src ) || _.set.like( src ) )
-//   {
-//     return new src.constructor( src );
-//   }
-//   else if( _.aux.is( src ) )
-//   {
-//     return _.aux.cloneShallow( src );
-//   }
-//   // else if( src === _.null )
-//   // {
-//   //   return null;
-//   // }
-//   // else if( src === _.undefined )
-//   // {
-//   //   return undefined;
-//   // }
-//   // else if( !src || _.primitive.is( src ) )
-//   // {
-//   //   return src;
-//   // }
-//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-//   {
-//     return new src.constructor( src );
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneDeep()\`` );
-//
-// }
-
 //
 
 /**
@@ -553,7 +300,116 @@ function equal( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 
 }
 
+// --
+// maker
+// --
+
+// function cloneShallow( container ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 );
+//   return cloneShallow.functor.call( this, container )();
+// }
 //
+// cloneShallow.functor = _functor_functor( 'cloneShallow' );
+//
+// //
+//
+// function make( container, ... args ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   return make.functor.call( this, container )( ... args );
+// }
+//
+// make.functor = _functor_functor( 'make' );
+//
+// //
+//
+// function makeEmpty( container ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 );
+//   return makeEmpty.functor.call( this, container )();
+// }
+//
+// makeEmpty.functor = _functor_functor( 'makeEmpty' );
+//
+// //
+//
+// function makeUndefined( container, ... args ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   return makeUndefined.functor.call( this, container )( ... args );
+// }
+//
+// makeUndefined.functor = _functor_functor( 'makeUndefined' );
+//
+// // --
+// // editor
+// // --
+//
+// /**
+//  * The routine empty() clears provided container {-dstContainer-}.
+//  *
+//  * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+//  *
+//  * @example
+//  * let dst = [];
+//  * let got = _.container.empty( dst );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === dst );
+//  * log true
+//  *
+//  * @example
+//  * let dst = [ 1, 'str', { a : 2 } ];
+//  * let got = _.container.empty( dst );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === dst );
+//  * // log true
+//  *
+//  * @example
+//  * let dst = _.unroll.make( [ 1, 'str', { a : 2 } ] );
+//  * let got = _.container.empty( dst );
+//  * console.log( got );
+//  * // log []
+//  * console.log( got === dst );
+//  * // log true
+//  *
+//  * @example
+//  * let dst = new Set( [ 1, 'str', { a : 2 } ] );
+//  * let got = _.container.empty( dst );
+//  * console.log( got );
+//  * // log Set {}
+//  * console.log( got === dst );
+//  * // log true
+//  *
+//  * @example
+//  * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
+//  * let got = _.container.empty( dst );
+//  * console.log( got );
+//  * // log Map {}
+//  * console.log( got === dst );
+//  * // log true
+//  *
+//  * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
+//  * @function empty
+//  * @throws { Error } If arguments.length is less than one.
+//  * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
+//  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
+//  * @namespace Tools
+//  */
+//
+// function empty( container ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 );
+//   return empty.functor.call( this, container )();
+// }
+//
+// empty.functor = _functor_functor( 'empty' );
+
+// --
+// inspector
+// --
 
 /**
  * Returns "length" of entity( src ). Representation of "length" depends on type of( src ):
@@ -583,163 +439,16 @@ function equal( /* src1, src2, onEvaluate1, onEvaluate2 */ )
  *
  * @returns {number} Returns "length" of entity.
  * @function lengthOf
- * @namespace Tools
+ * @namespace Tools/entity
 */
 
-function lengthOf( src ) /* qqq for Yevhen : cover please */
+function lengthOf( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
   return lengthOf.functor.call( this, src )();
 }
 
-lengthOf.functor = _functor_functor( 'lengthOf' );
-
-// function lengthOf( src )
-// {
-//   if( src === undefined )
-//   return 0;
-//   if( src === null )
-//   return 1;
-//
-//   // if( _.routine.is( src[ Symbol.iterator ] ) )
-//   // return [ ... src ].length;
-//
-//   if( _.vectorLike( src ) )
-//   return src.length;
-//   if( _.set.like( src ) )
-//   return src.size;
-//   if( _.hashMap.like( src ) )
-//   return src.size;
-//   if( _.countableIs( src ) )
-//   return [ ... src ].length;
-//   if( _.aux.is( src ) )
-//   return _.props.keys( src ).length;
-//
-//   return 1;
-// }
-
-//
-
-/**
- * Returns "length" of entity( src ). Representation of "length" depends on type of( src ):
- *  - For object returns number of it own enumerable properties;
- *  - For array or array-like object returns value of length property;
- *  - For undefined returns 0;
- *  - In other cases returns 1.
- *
- * @param { * } src - Source entity.
- *
- * @example
- * _.entity.lengthOf( [ 1, 2, 3 ] );
- * // returns 3
- *
- * @example
- * _.entity.lengthOf( 'string' );
- * // returns 1
- *
- * @example
- * _.entity.lengthOf( { a : 1, b : 2 } );
- * // returns 2
- *
- * @example
- * let src = undefined;
- * _.entity.lengthOf( src );
- * // returns 0
- *
- * @returns {number} Returns "length" of entity.
- * @function lengthOf
- * @namespace Tools
-*/
-
-function lengthOf( src )
-{
-  if( src === undefined )
-  return 0;
-  if( src === null )
-  return 1;
-
-  // if( _.routine.is( src[ Symbol.iterator ] ) )
-  // return [ ... src ].length;
-
-  if( _.vectorLike( src ) )
-  return src.length;
-  if( _.set.like( src ) )
-  return src.size;
-  if( _.hashMap.like( src ) )
-  return src.size;
-  if( _.countableIs( src ) )
-  return [ ... src ].length;
-  if( _.aux.is( src ) )
-  return _.props.keys( src ).length;
-
-  return 1;
-}
-
-// --
-// meta
-// --
-
-function namespaceFor( container ) /* qqq for Yevhen : cover please */
-{
-  _.assert( arguments.length === 1 );
-  if( _.primitive.is( container ) )
-  return _.itself;
-  else if( _.hashMap.like( container ) )
-  return _.hashMap;
-  else if( _.set.like( container ) )
-  return _.set;
-  else if( _.longIs( container ) )
-  return _.long;
-  else if( _.countableIs( container ) )
-  return _.countable;
-  else if( _.mapIs( container ) )
-  return _.map;
-  else if( _.auxIs( container ) )
-  return _.aux;
-  else
-  return _.props;
-}
-
-//
-
-function _functor_functor( methodName )
-{
-  _.assert( _.strDefined( methodName ) );
-  return function _functor( container )
-  {
-    _.assert( arguments.length === 1 );
-    _.assert( _.routine.is( this.namespaceFor ), `No routine::namespaceFor in the namesapce` );
-    let namespace = this.namespaceFor( container );
-    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
-    return namespace[ methodName ].bind( namespace, container );
-  }
-}
-
-// --
-// tools extension
-// --
-
-let ToolsExtension =
-{
-
-  // entityIdenticalShallow : identicalShallow,
-  //
-  // makeEmpty,
-  // entityMakeEmpty : makeEmpty,
-  // makeUndefined,
-  // entityMakeUndefined : makeUndefined,
-  //
-  // make : cloneShallow,
-  // entityMake : cloneShallow, /* xxx : remove the alias */
-  // cloneShallow, /* xxx */
-  //
-  // cloneDeep,
-
-}
-
-//
-
-_.props.supplement( _, ToolsExtension );
+lengthOf.functor = _functor_functor( 'lengthOf', 'namespaceForContainer' );
 
 // --
 // entity extension
@@ -753,20 +462,24 @@ let EntityExtension =
 
   equal, /* xxx : deprecate? */
 
-  // meta
+  // exporter
 
-  namespaceFor,
-  _functor_functor,
+  _exportStringShallowDiagnostic : _.container._exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic : _.container.exportStringShallowDiagnostic,
+  _exportStringShallowCode : _.container._exportStringShallowCode,
+  exportStringShallowCode : _.container.exportStringShallowCode,
+  exportStringShallow : _.container.exportStringShallow,
+  exportString : _.container.exportString,
 
-  // container interface
+  // editor
 
-  cloneShallow : _.container.cloneShallow, /* qqq : cover */
-  make : _.container.make, /* qqq : cover */
-  makeEmpty : _.container.makeEmpty, /* qqq : cover */
-  makeUndefined : _.container.makeUndefined, /* qqq : cover */
   empty : _.container.empty, /* qqq : cover */
 
-  lengthOf, /* qqq : cover */
+  // inspector
+
+  lengthOf : _.container.lengthOf, /* qqq : cover */
+
+  // elementor
 
   elementWithCardinal : _.container.elementWithCardinal, /* qqq : cover */
   elementWithKey : _.container.elementWithKey, /* qqq : cover */
@@ -792,5 +505,18 @@ let EntityExtension =
 //
 
 _.props.supplement( _.entity, EntityExtension );
+
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+}
+
+//
+
+_.props.supplement( _, ToolsExtension );
 
 })();

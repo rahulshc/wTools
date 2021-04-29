@@ -1,4 +1,4 @@
-( function _l1_BufferTyped_s_()
+( function _l1_BuffersTyped_s_()
 {
 
 'use strict';
@@ -192,6 +192,7 @@ function _functor( fo )
     //
 
     NamespaceName : fo.name,
+    NamespaceQname : `wTools/${fo.name}`,
     TypeName : fo.typeName,
     SecondTypeName : fo.secondTypeName,
     InstanceConstructor : fo.instanceConstructor,
@@ -236,5 +237,9 @@ _functor({ name : 'ix', typeName : 'Ix', secondTypeName : 'Int32', instanceConst
 _functor({ name : 'f64x', typeName : 'F64x', secondTypeName : 'Float64', instanceConstructor : F64x });
 _functor({ name : 'f32x', typeName : 'F32x', secondTypeName : 'Float32', instanceConstructor : F32x });
 _functor({ name : 'fx', typeName : 'Fx', secondTypeName : 'Float32', instanceConstructor : Fx });
+
+_.assert( !_.defaultBufferTyped );
+_.assert( !!_.fx );
+_.defaultBufferTyped = _.fx;
 
 })();

@@ -162,7 +162,7 @@ function erMake( routine, erhead )
   _.assert( _.routine.is( erhead ) );
   _.assert( _.routine.is( head ) );
   _.assert( _.routine.is( body ) );
-  _.assert( _.object.is( defaults ) );
+  _.assert( _.object.isBasic( defaults ) );
 
   return erMake;
 

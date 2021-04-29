@@ -7,6 +7,8 @@ const _global = _global_;
 const _ = _global_.wTools;
 _.routine = _.routine || Object.create( null );
 _.routine.s = _.routines = _.routine.s || _.routines || Object.create( null );
+_.routine.chainer = _.routine.chainer || Object.create( null );
+_.routine.tail = _.routine.tail || Object.create( null );
 
 // --
 // routine
@@ -614,7 +616,7 @@ function optionsWithoutUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   if( options === null || options === undefined )
@@ -684,7 +686,7 @@ function assertOptionsWithoutUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   let name = routine.name || '';
@@ -757,7 +759,7 @@ function optionsWithUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   if( options === null )
@@ -805,7 +807,7 @@ function assertOptionsWithUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   let name = routine.name || '';
@@ -887,8 +889,8 @@ _verifyDefaults.meta.locals =
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
 //   _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
-//   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-//   _.assert( _.object.is( options ), 'Expects object' );
+//   _.assert( _.object.isBasic( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.object.isBasic( options ), 'Expects object' );
 //   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 //
 //   if( Config.debug )
@@ -1210,8 +1212,8 @@ _verifyDefaults.meta.locals =
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
 //   _.assert( _.routine.is( routine ), 'Expects routine' );
-//   _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-//   _.assert( _.object.is( options ), 'Expects object' );
+//   _.assert( _.object.isBasic( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.object.isBasic( options ), 'Expects object' );
 //   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
 //
 //   _.map.assertHasOnly( options, defaults );
@@ -1430,7 +1432,7 @@ function _amend( o )
   //   for( let s in dst )
   //   {
   //     let property = dst[ s ];
-  //     if( _.objectIs( property ) )
+  //     if( _.object.isBasic( property ) )
   //     {
   //       property = _.props.extend( null, property );
   //       dst[ s ] = property;
@@ -1447,7 +1449,7 @@ function _amend( o )
   //   for( let s in dst )
   //   {
   //     let property = dst[ s ];
-  //     if( _.objectIs( property ) )
+  //     if( _.object.isBasic( property ) )
   //     {
   //       property = Object.create( property );
   //       dst[ s ] = property;
@@ -1471,9 +1473,9 @@ function _amend( o )
       if( d && !d.writable )
       continue;
       extended = true;
-      if( _.object.is( property ) )
+      if( _.object.isBasic( property ) )
       {
-        _.assert( !_.props.own( dst, s ) || _.objectIs( dst[ s ] ) );
+        _.assert( !_.props.own( dst, s ) || _.object.isBasic( dst[ s ] ) );
 
         if( dst[ s ] )
         _.props.extend( dst[ s ], property );
@@ -1509,7 +1511,7 @@ function _amend( o )
       if( d && !d.writable )
       continue;
       extended = true;
-      if( _.object.is( property ) )
+      if( _.object.isBasic( property ) )
       {
         property = Object.create( property );
         if( dst[ s ] )
@@ -1793,6 +1795,17 @@ function unite_body( o )
   {
     /* xxx : deprecate compose */
     /* qqq : for Dmytro : implement without compose */
+    // let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
+    // {
+    //   let args = arguments[ 0 ];
+    //   let result = arguments[ 1 ];
+    //   let op = arguments[ 2 ];
+    //   let k = arguments[ 3 ];
+    //   _.assert( arguments.length === 4 );
+    //   _.assert( !_.unrollIs( result ) );
+    //   _.assert( _.object.isBasic( result ) );
+    //   return _.unrollAppend([ unitedRoutine, [ result ] ]);
+    // });
     let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
@@ -1801,8 +1814,8 @@ function unite_body( o )
       let k = arguments[ 3 ];
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
-      _.assert( _.object.is( result ) );
-      return _.unrollAppend([ unitedRoutine, [ result ] ]);
+      _.assert( _.object.isBasic( result ) );
+      return _.unroll.from([ unitedRoutine, [ result ] ]);
     });
     _.assert( _.routine.is( _head ) );
     o.head = function head()
@@ -2042,31 +2055,195 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
 
 //
 
+function _compose_old_head( routine, args )
+{
+  let o = args[ 0 ];
+
+  if( !_.mapIs( o ) )
+  o = { bodies : args[ 0 ] }
+  if( args[ 1 ] !== undefined )
+  o.chainer = args[ 1 ];
+
+  // if( o.bodies === null )
+  // debugger;
+  // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
+  // o.bodies = merge( o.bodies );
+  o.bodies = __arrayFlatten( o.bodies );
+  o.bodies = o.bodies.filter( ( e ) => e !== null );
+
+  _.routine.options( routine, o );
+  _.assert( _.routine.s.are( o.bodies ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( args.length === 1 || !_.object.isBasic( args[ 0 ] ) );
+  _.assert( _.arrayIs( o.bodies ) || _.routine.is( o.bodies ) );
+  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
+  _.assert( o.tail === null || _.routine.is( o.tail ) );
+
+  return o;
+
+  // function merge( arrays )
+  // {
+  //   let result = [];
+  //   if( arrays === null )
+  //   return result;
+  //   for( let i = 0 ; i < arrays.length ; i++ )
+  //   {
+  //     let array = arrays[ i ];
+  //     if( _.array.is( array ) || _.argumentsArray.is( array ) )
+  //     result.push( ... array );
+  //     else
+  //     result.push( array );
+  //   }
+  //   return result;
+  // }
+}
+
+_compose_old_head.locals =
+{
+  __arrayFlatten,
+}
+
+//
+
+function _compose_old_body( o )
+{
+
+  if( o.chainer === null )
+  o.chainer = _.routine.chainer.default;
+
+  // if( o.chainer === null )
+  // o.chainer = _.routine.chainer.original;
+  // o.bodies = __arrayFlatten( o.bodies );
+
+  let bodies = [];
+  for( let s = 0 ; s < o.bodies.length ; s++ )
+  {
+    let src = o.bodies[ s ];
+    _.assert( _.routine.is( src ) );
+    if( src.composed )
+    {
+      if( src.composed.chainer === o.chainer && src.composed.tail === o.tail )
+      {
+        bodies.push( ... src.composed.bodies );
+      }
+      else
+      {
+        bodies.push( ... src );
+      }
+    }
+    else
+    {
+      bodies.push( src );
+    }
+  }
+
+  o.bodies = bodies;
+
+  let tail = o.tail;
+  let chainer = o.chainer;
+  let act;
+
+  _.assert( _.routine.is( chainer ) );
+  _.assert( tail === null || _.routine.is( tail ) );
+
+  /* */
+
+  if( bodies.length === 0 )
+  act = function empty()
+  {
+    return [];
+  }
+  else act = function composition()
+  {
+    let result = [];
+    let args = _.unroll.from( arguments );
+    for( let k = 0 ; k < bodies.length ; k++ )
+    {
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      let routine = bodies[ k ];
+      let r = routine.apply( this, args );
+      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
+      _.assert( !_.argumentsArray.is( r ) );
+      if( r !== undefined )
+      // result.push( r );
+      _.unrollAppend( result, r );
+      args = chainer( args, r, o, k );
+      _.assert( args !== undefined && args !== false );
+      if( args === _.dont )
+      break;
+      args = _.unroll.from( args );
+    }
+    return result;
+  }
+
+  o.act = act;
+  act.composed = o;
+
+  if( tail )
+  {
+    _.routine.extend( compositionSupervise, act );
+    return compositionSupervise;
+  }
+
+  return act;
+
+  function compositionSupervise()
+  {
+    // let result = tail( this, arguments, act, o );
+    let result = tail.call( this, arguments, o );
+    return result;
+  }
+}
+
+_compose_old_body.defaults =
+{
+  bodies : null,
+  chainer : null,
+  tail : null,
+}
+
+//
+
+function compose_old()
+{
+  let o = _.routine.s.compose_old.head( compose_old, arguments );
+  let result = _.routine.s.compose_old.body( o );
+  return result;
+}
+
+compose_old.head = _compose_old_head;
+compose_old.body = _compose_old_body;
+compose_old.defaults = Object.assign( Object.create( null ), compose_old.body.defaults );
+
+//
+
 function _compose_head( routine, args )
 {
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { elements : args[ 0 ] }
+  o = { bodies : args[ 0 ] }
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
-  // if( o.elements === null )
+  // if( o.bodies === null )
   // debugger;
-  // o.elements = _.arrayAppendArrays( [], [ o.elements ] );
-  // o.elements = merge( o.elements );
-  o.elements = __arrayFlatten( o.elements );
-  o.elements = o.elements.filter( ( e ) => e !== null );
+  // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
+  // o.bodies = merge( o.bodies );
+  o.bodies = __arrayFlatten( o.bodies );
+  o.bodies = o.bodies.filter( ( e ) => e !== null );
 
   _.routine.options( routine, o );
-  _.assert( _.routine.s.are( o.elements ) );
+  _.assert( _.routine.s.are( o.bodies ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.elements ) || _.routine.is( o.elements ) );
+  _.assert( args.length === 1 || !_.object.isBasic( args[ 0 ] ) );
+  _.assert( _.arrayIs( o.bodies ) || _.routine.is( o.bodies ) );
   _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
   _.assert( o.chainer === null || _.routine.is( o.chainer ) );
-  _.assert( o.supervisor === null || _.routine.is( o.supervisor ) );
+  _.assert( o.tail === null || _.routine.is( o.tail ) );
 
   return o;
 
@@ -2097,176 +2274,11 @@ _compose_head.locals =
 function _compose_body( o )
 {
 
-  if( o.chainer === null )
-  o.chainer = _.compose.chainer.original;
-
-  // o.elements = __arrayFlatten( o.elements );
-
-  let elements = [];
-  for( let s = 0 ; s < o.elements.length ; s++ )
-  {
-    let src = o.elements[ s ];
-    _.assert( _.routine.is( src ) );
-    if( src.composed )
-    {
-      if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
-      {
-        elements.push( ... src.composed.elements );
-      }
-      else
-      {
-        elements.push( ... src );
-      }
-    }
-    else
-    {
-      elements.push( src );
-    }
-  }
-
-  o.elements = elements;
-
-  let supervisor = o.supervisor;
-  let chainer = o.chainer;
-  let act;
-
-  _.assert( _.routine.is( chainer ) );
-  _.assert( supervisor === null || _.routine.is( supervisor ) );
-
-  /* */
-
-  if( elements.length === 0 )
-  act = function empty()
-  {
-    return [];
-  }
-  else act = function composition()
-  {
-    let result = [];
-    let args = _.unroll.from( arguments );
-    for( let k = 0 ; k < elements.length ; k++ )
-    {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
-      let routine = elements[ k ];
-      let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArray.is( r ) );
-      if( r !== undefined )
-      _.unrollAppend( result, r );
-      args = chainer( args, r, o, k );
-      _.assert( args !== undefined && args !== false );
-      if( args === _.dont )
-      break;
-      args = _.unroll.from( args );
-    }
-    return result;
-  }
-
-  o.act = act;
-  act.composed = o;
-
-  if( supervisor )
-  {
-    _.routine.extend( compositionSupervise, act );
-    return compositionSupervise;
-  }
-
-  return act;
-
-  function compositionSupervise()
-  {
-    let result = supervisor( this, arguments, act, o );
-    return result;
-  }
-}
-
-_compose_body.defaults =
-{
-  elements : null,
-  chainer : null,
-  supervisor : null,
-}
-
-_compose_body.meta = Object.create( null );
-// _compose_body.locals =
-// {
-//   __arrayFlatten,
-// }
-
-//
-
-function compose()
-{
-  let o = _.routine.s.compose.head( compose, arguments );
-  let result = _.routine.s.compose.body( o );
-  return result;
-}
-
-compose.head = _compose_head;
-compose.body = _compose_body;
-compose.defaults = Object.assign( Object.create( null ), compose.body.defaults );
-
-//
-
-function _compose2_head( routine, args )
-{
-  let o = args[ 0 ];
-
-  if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
-  if( args[ 1 ] !== undefined )
-  o.chainer = args[ 1 ];
-
-  // if( o.bodies === null )
-  // debugger;
-  // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
-  // o.bodies = merge( o.bodies );
-  o.bodies = __arrayFlatten( o.bodies );
-  o.bodies = o.bodies.filter( ( e ) => e !== null );
-
-  _.routine.options( routine, o );
-  _.assert( _.routine.s.are( o.bodies ) );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.bodies ) || _.routine.is( o.bodies ) );
-  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
-  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
-  _.assert( o.supervisor === null || _.routine.is( o.supervisor ) );
-
-  return o;
-
-  // function merge( arrays )
-  // {
-  //   let result = [];
-  //   if( arrays === null )
-  //   return result;
-  //   for( let i = 0 ; i < arrays.length ; i++ )
-  //   {
-  //     let array = arrays[ i ];
-  //     if( _.array.is( array ) || _.argumentsArray.is( array ) )
-  //     result.push( ... array );
-  //     else
-  //     result.push( array );
-  //   }
-  //   return result;
-  // }
-}
-
-_compose2_head.locals =
-{
-  __arrayFlatten,
-}
-
-//
-
-function _compose2_body( o )
-{
-
-  if( o.chainer === null )
-  o.chainer = defaultChainer;
-
+  // if( o.chainer === null )
+  // o.chainer = defaultChainer;
   // o.bodies = __arrayFlatten( o.bodies );
+  if( o.chainer === null )
+  o.chainer = _.routine.chainer.default;
 
   let bodies = [];
   for( let s = 0 ; s < o.bodies.length ; s++ )
@@ -2317,6 +2329,8 @@ function _compose2_body( o )
 
   return o.act;
 
+  /* */
+
   function compositionEmpty()
   {
     return [];
@@ -2331,6 +2345,7 @@ function _compose2_body( o )
     let r = routine.apply( this, args );
     _.assert( !_.argumentsArray.is( r ) );
     if( r !== undefined )
+    // result.push( r )
     _.unrollAppend( result, r );
     return result;
   }
@@ -2346,6 +2361,7 @@ function _compose2_body( o )
       let r = routine.apply( this, args );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
+      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       if( args === _.dont )
@@ -2355,16 +2371,16 @@ function _compose2_body( o )
     return result;
   }
 
-  function defaultChainer( /* args, result, op, k */ )
-  {
-    let args = arguments[ 0 ];
-    let result = arguments[ 1 ];
-    let op = arguments[ 2 ];
-    let k = arguments[ 3 ];
-    if( result === _.dont )
-    return result;
-    return args;
-  }
+  // function defaultChainer( /* args, result, op, k */ )
+  // {
+  //   let args = arguments[ 0 ];
+  //   let result = arguments[ 1 ];
+  //   let op = arguments[ 2 ];
+  //   let k = arguments[ 3 ];
+  //   if( result === _.dont )
+  //   return result;
+  //   return args;
+  // }
 
   function routineWithTail()
   {
@@ -2373,7 +2389,7 @@ function _compose2_body( o )
   }
 }
 
-_compose2_body.defaults =
+_compose_body.defaults =
 {
   chainer : null,
   bodies : null,
@@ -2382,51 +2398,56 @@ _compose2_body.defaults =
 
 //
 
-function compose2()
+function compose()
 {
-  let o = _.routine.s.compose2.head( compose2, arguments );
-  let result = _.routine.s.compose2.body( o );
+  let o = _.routine.s.compose.head( compose, arguments );
+  let result = _.routine.s.compose.body( o );
   return result;
 }
 
-compose2.head = _compose2_head;
-compose2.body = _compose2_body;
-compose2.defaults = _compose2_body.defaults;
+compose.head = _compose_head;
+compose.body = _compose_body;
+compose.defaults = _compose_body.defaults;
 
 // --
-// implementation
+// chainers
 // --
 
-let ToolsExtension =
+function defaultChainer( /* args, result, op, k */ )
 {
-
-  routineIs : is,
-  _routineIs : _is,
-  routineLike : like,
-  _routineLike : _like,
-  routineIsTrivial : isTrivial,
-  routineIsSync : isSync,
-  routineIsAsync : isAsync,
-  routinesAre : are,
-  routineWithName : withName,
-
-  _routineJoin : _join,
-  constructorJoin,
-  routineJoin : join,
-  routineSeal : seal,
-
-  routinesCompose : compose, /* xxx : deprecate */
-  routineExtend : extendCloning,
-  routineDefaults : defaults,
-
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+  if( result === _.dont )
+  return result;
+  return args;
 }
 
-Object.assign( _, ToolsExtension );
+// --
+// declaration
+// --
+
+let ChainerExtension =
+{
+  default : defaultChainer,
+}
+
+Object.assign( _.routine.chainer, ChainerExtension );
 
 //
 
 let RoutineExtension =
 {
+
+  // fields
+
+  NamespaceName : 'routine',
+  NamespaceQname : 'wTools/routine',
+  TypeName : 'Routine',
+  SecondTypeName : 'Function',
+  InstanceConstructor : null,
+  tools : _,
 
   // dichotomy
 
@@ -2491,11 +2512,42 @@ let RoutinesExtension =
 {
 
   are,
+  compose_old,
   compose,
-  compose2,
 
 }
 
 Object.assign( _.routine.s, RoutinesExtension );
+
+//
+
+let ToolsExtension =
+{
+
+  routineIs : is.bind( _.routine ),
+  _routineIs : _is.bind( _.routine ),
+  routineLike : like.bind( _.routine ),
+  _routineLike : _like.bind( _.routine ),
+  routineIsTrivial : isTrivial.bind( _.routine ),
+  routineIsSync : isSync.bind( _.routine ),
+  routineIsAsync : isAsync.bind( _.routine ),
+  routinesAre : are.bind( _.routine ),
+  routineWithName : withName.bind( _.routine ),
+
+  _routineJoin : _join.bind( _.routine ),
+  constructorJoin : constructorJoin.bind( _.routine ),
+  routineJoin : join.bind( _.routine ),
+  routineSeal : seal.bind( _.routine ),
+
+  routineExtend : extendCloning.bind( _.routine ),
+  routineDefaults : defaults.bind( _.routine ),
+
+  routinesCompose : compose.bind( _.routines ), /* xxx : review */
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

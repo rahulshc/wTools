@@ -4000,6 +4000,8 @@ function composeBasic( test )
   test.shouldThrowErrorSync( () => _.routine.s.composeAll() );
   test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){}, function(){} ) );
 
+  /* - */
+
   function routineUnrolling()
   {
     counter += 10;
@@ -4013,14 +4015,14 @@ function composeBasic( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    // return _.arrayAppend_( result, counter );
-    let result = _.arrayAppendArrays( null, arguments );
-    return _.arrayAppend( result, counter );
+    let result = __.arrayAppendArrays( null, arguments );
+    return __.arrayAppend( result, counter );
   }
 
   function r2()
   {
     counter += 100;
+    debugger;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += 2*arguments[ a ];
     return counter;
@@ -4037,6 +4039,9 @@ function composeBasic( test )
     let result = arguments[ 1 ];
     let o = arguments[ 2 ];
     let k = arguments[ 3 ];
+    debugger;
+    if( result !== _.dont )
+    return _.unroll.as( result );
     return result;
   }
 

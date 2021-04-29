@@ -16,6 +16,7 @@ if( typeof module !== 'undefined' )
   require( './l3/ArraySet.s' );
   require( './l3/Auxiliary.s' );
   require( './l3/Bool.s' );
+  require( './l3/Buffer.s' );
   require( './l3/Container.s' );
   require( './l3/Countable.s' );
   require( './l3/Diagnostic.s' );
@@ -32,6 +33,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Routine.s' );
   require( './l3/Set.s' );
   require( './l3/Str.s' );
+  require( './l3/Time.s' );
   require( './l3/Unroll.s' );
   require( './l3/Vector.s' );
 

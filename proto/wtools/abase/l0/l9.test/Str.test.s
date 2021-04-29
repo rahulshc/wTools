@@ -1958,22 +1958,22 @@ function exportStringShallowDiagnostic( test )
   test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
   test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
   test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
   test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
 
@@ -2381,22 +2381,22 @@ function exportStringShallowCode( test )
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
   test.identical( _.entity.exportStringShallowCode( src ), expected );
 
