@@ -19758,7 +19758,6 @@ function strSplitInlinedStereo_OptionPreservingEmpty( test )
   var expected = [ '', [ 'inline1' ], 'ordinary', [ '' ], '' ];
   test.identical( got, expected );
 
-  test.close( 'quoting - 1' );
 }
 
 //

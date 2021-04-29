@@ -230,6 +230,7 @@ function _strip( srcStr )
     preservingEmpty : 0,
     stripping : 0,
     preservingInlined : 0,
+    inliningDelimeters : 1,
   });
 
   return splitted.join( '' );
