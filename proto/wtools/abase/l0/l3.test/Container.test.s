@@ -17,59 +17,59 @@ const __ = _globals_.testing.wTools;
 // exporter
 // --
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = '{- ArgumentsArray with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'array';
   var src = [ 2, 3, 4 ];
   var expected = '{- Array with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
   var expected = '{- Map.polluted with 6 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 });
   var expected = '{- Map.polluted with 6 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = _global_;
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.container.exportStringShallowDiagnostic( src ), expected ) );
+  test.true( _.strHas( _.container.exportStringDiagnosticShallow( src ), expected ) );
 
   test.case = 'Global & GlobalDerived';
   var src = Object.create( _global_ );
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.container.exportStringShallowDiagnostic( src ), expected ) );
+  test.true( _.strHas( _.container.exportStringDiagnosticShallow( src ), expected ) );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var expected = '{- Aux.polluted.prototyped with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted with `exportString` method';
   var src = { a : 1 };
@@ -80,85 +80,85 @@ function exportStringShallowDiagnostic( test )
   }
   Object.setPrototypeOf( src, proto )
   var expected = '{- Aux.polluted.prototyped with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with `exportString` method';
   var src = Object.create( null );
   src.exportString = () => 'Custom string transformation'
   var expected = '{- Map.pure with 1 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src = Object.create( null );
   src.a = 1;
   src.b = 2;
   var expected = '{- Map.pure with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src = { a : 1, b : 2, c : 3 };
   var expected = '{- Map.polluted with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'HashMap';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'HashMap with 2 elems';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var expected = '{- BufferNode with 3 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferTyped';
   var src = new I8x( 20 );
   var expected = '{- I8x with 20 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = new U8x( 20 );
   var expected = '{- U8x with 20 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var expected = '{- Escape 1 -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
   var expected = '{- F32x with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'pair';
   var src = _.pair.make();
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.container.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   /* - */
 
@@ -1973,7 +1973,7 @@ const Proto =
 
     // exporter
 
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
 
     // container interface
 

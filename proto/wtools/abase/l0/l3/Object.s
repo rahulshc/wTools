@@ -74,7 +74,7 @@ function equivalentShallow( src1, src2 )
 // exporter
 // --
 
-function _exportStringShallowDiagnostic( src )
+function _exportStringDiagnosticShallow( src )
 {
   let result = '';
   let method = _.class.methodExportStringOf( src );
@@ -87,7 +87,7 @@ function _exportStringShallowDiagnostic( src )
   else
   {
     if( _.countable.is( src ) )
-    result = _.countable.exportStringShallowDiagnostic( src );
+    result = _.countable.exportStringDiagnosticShallow( src );
     else
     result = `{- ${_.entity.strType( src )} -}`;
   }
@@ -97,11 +97,11 @@ function _exportStringShallowDiagnostic( src )
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.like( src ) );
-  return this._exportStringShallowDiagnostic( ... arguments );
+  return this._exportStringDiagnosticShallow( ... arguments );
 }
 
 // --
@@ -130,14 +130,14 @@ let ObjectExtension =
 
   // exporter
 
-  _exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  _exportStringShallowCode : _exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringDiagnosticShallow,
 
   // container interface
 

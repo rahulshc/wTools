@@ -46,7 +46,7 @@ function identicalShallow( src1, src2, o )
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src, o )
+function exportStringDiagnosticShallow( src, o )
 {
   _.assert( this.like( src ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -753,12 +753,12 @@ let Extension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringDiagnosticShallow,
 
   // properties
 

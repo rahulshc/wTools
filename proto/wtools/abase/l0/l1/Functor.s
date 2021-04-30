@@ -139,7 +139,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routine.is( this[ routine ] ), () => 'Context ' + _.entity.exportStringShallow( this ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( this[ routine ] ), () => 'Context ' + _.entity.exportStringDiagnosticShallow( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -149,7 +149,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routine.is( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShallow( c ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringDiagnosticShallow( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }

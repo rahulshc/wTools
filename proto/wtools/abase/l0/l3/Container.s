@@ -11,13 +11,13 @@ const _functor_functor = _.container._functor_functor;
 // exporter
 // --
 
-function _exportStringShallowDiagnostic( src, o )
+function _exportStringDiagnosticShallow( src, o )
 {
   let result;
   let namespace = this.namespaceForEntity( src );
 
   if( namespace )
-  result = namespace.exportStringShallowDiagnostic( src );
+  result = namespace.exportStringDiagnosticShallow( src );
   else
   result = _.strShort_( String( src ) ).result;
 
@@ -26,12 +26,12 @@ function _exportStringShallowDiagnostic( src, o )
 
 //
 
-function exportStringShallowDiagnostic( src, o )
+function exportStringDiagnosticShallow( src, o )
 {
   let result;
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
   _.assert( this.like( src ) );
-  return this._exportStringShallowDiagnostic( ... arguments );
+  return this._exportStringDiagnosticShallow( ... arguments );
 }
 
 // --
@@ -326,12 +326,11 @@ let ContainerExtension =
 
   // exporter
 
-  _exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  _exportStringShallowCode : _exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportString : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  exportString : exportStringDiagnosticShallow,
 
   // editor
 

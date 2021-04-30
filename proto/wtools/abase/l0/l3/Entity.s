@@ -464,11 +464,10 @@ let EntityExtension =
 
   // exporter
 
-  _exportStringShallowDiagnostic : _.container._exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic : _.container.exportStringShallowDiagnostic,
-  _exportStringShallowCode : _.container._exportStringShallowCode,
-  exportStringShallowCode : _.container.exportStringShallowCode,
-  exportStringShallow : _.container.exportStringShallow,
+  _exportStringDiagnosticShallow : _.container._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.container.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.container._exportStringCodeShallow,
+  exportStringCodeShallow : _.container.exportStringCodeShallow,
   exportString : _.container.exportString,
 
   // editor
