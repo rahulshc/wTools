@@ -459,7 +459,8 @@ function eachSample_( o )
     if( _.aux.is( o.sample ) )
     o.result.push( _.props.extend( null, o.sample ) );
     else
-    o.result.push( o.sample.slice() );
+    // o.result.push( _.longSlice( o.sample ) ); /* Dmytro : routine _.longSlice is the common interface for slicing of longs */
+    o.result.push( _.longSlice( o.sample ) );
 
     return 1;
   }
@@ -486,7 +487,8 @@ function eachSample_( o )
       if( _.aux.is( o.sample ) )
       o.result.push( _.props.extend( null, o.sample ) );
       else
-      o.result.push( o.sample.slice() );
+      // o.result.push( o.sample.slice() );
+      o.result.push( _.longSlice( o.sample ) );
 
       return 1;
     }
@@ -520,7 +522,6 @@ function eachSample_( o )
 
 eachSample_.defaults =
 {
-
   leftToRight : 1,
   onEach : null,
 
@@ -528,8 +529,7 @@ eachSample_.defaults =
   sample : null,
 
   result : null, /* was 1 */
-
-}
+};
 
 //
 
