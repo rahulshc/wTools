@@ -122,6 +122,7 @@ function dichotomy( test )
   var src = new Constr();
   var got = _.primitive.is( src );
   test.identical( got, false );
+
 }
 
 // --
@@ -139,7 +140,7 @@ const Proto =
 
     dichotomy,
 
-  }
+  },
 
 }
 
