@@ -945,20 +945,6 @@ function fromBufferTypedInstance( test )
 
   function testRun( descriptor, getExpectedLong )
   {
-    test.case = 'without arguments';
-    var got = descriptor.from();
-    var expected = new getExpectedLong( [] );
-    test.identical( got, expected );
-    test.true( descriptor.is( got ) );
-
-    test.case = 'src = undefined';
-    var src = undefined;
-    var got = descriptor.from( src );
-    var expected = new getExpectedLong( [] );
-    test.equivalent( got, expected );
-    test.true( descriptor.is( got ) );
-    test.true( src !== got );
-
     test.case = 'src = null';
     var src = null;
     var got = descriptor.from( src );
@@ -1015,7 +1001,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'U8x' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'U8x' ? src === got : src !== got );
 
     test.case = 'src = U16x, src.length = 1';
     var src = new U16x( 1 );
@@ -1023,7 +1009,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 0 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'U16x' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'U16x' ? src === got : src !== got );
 
     test.case = 'src = U32x, src.length > 1';
     var src = new U32x( [ 1, 2, 3 ] );
@@ -1031,7 +1017,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'U32x' || descriptor.name === 'Ux' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'U32x' || descriptor.TypeName === 'Ux' ? src === got : src !== got );
 
     /* */
 
@@ -1041,7 +1027,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'I8x' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'I8x' ? src === got : src !== got );
 
     test.case = 'src = I16x, src.length = 1';
     var src = new I16x( 1 );
@@ -1049,7 +1035,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 0 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'I16x' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'I16x' ? src === got : src !== got );
 
     test.case = 'src = I32x, src.length > 1';
     var src = new I32x( [ 1, 2, 3 ] );
@@ -1057,7 +1043,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'I32x' || descriptor.name === 'Ix' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'I32x' || descriptor.TypeName === 'Ix' ? src === got : src !== got );
 
     /* */
 
@@ -1067,7 +1053,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'F32x' || descriptor.name === 'Fx' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'F32x' || descriptor.TypeName === 'Fx' ? src === got : src !== got );
 
     test.case = 'src = F64x, src.length = 1';
     var src = new F64x( 1 );
@@ -1075,7 +1061,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 0 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'F64x' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'F64x' ? src === got : src !== got );
 
     test.case = 'src = Fx, src.length > 1';
     var src = new Fx( [ 1, 2, 3 ] );
@@ -1083,7 +1069,7 @@ function fromBufferTypedInstance( test )
     var expected = new getExpectedLong( [ 1, 2, 3 ] );
     test.equivalent( got, expected );
     test.true( descriptor.is( got ) );
-    test.true( descriptor.name === 'F32x' || descriptor.name === 'Fx' ? src === got : src !== got );
+    test.true( descriptor.TypeName === 'F32x' || descriptor.TypeName === 'Fx' ? src === got : src !== got );
 
     /* */
 
