@@ -1956,7 +1956,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var expected = '{- countableConstructor.countable with 2 elements -}';
+  var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
@@ -4193,11 +4193,8 @@ function strConcat( test )
     'b',
     'variant:: : #83\n  path::local'
   ];
-  debugger;
   var got = _.strConcat( srcs );
-  debugger;
   test.identical( got, 'b variant:: : #83\n  path::local' );
-  debugger;
 
   test.case = 'strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];
