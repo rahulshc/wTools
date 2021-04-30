@@ -6,11 +6,8 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
-
   _.include( 'wTesting' );
-
   // _.include( 'wStringer' );
-
 }
 
 const _global = _global_;
@@ -1892,7 +1889,7 @@ function strRight_( test )
 // converter
 // --
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   /* xxx qqq : for Yevhen : countable, non-vector cases? */
@@ -1900,97 +1897,97 @@ function exportStringShallowDiagnostic( test )
   test.case = 'number';
   var src = 1;
   var expected = '1';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'bool & boolLike & fuzzy';
   var src = true;
   var expected = 'true';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src = 0;
   var expected = '0';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = '{- Symbol maybe -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'bigint';
   var src = 10n;
   var expected = '10n';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'str & regexpLike';
   var src = 'str';
   var expected = 'str';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = /hello/g;
   var expected = '/hello/g';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = '{- ArgumentsArray with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'unroll';
   var src = _.unroll.make([ 2, 3, 4 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'array';
   var src = [ 2, 3, 4 ];
   var expected = '{- Array with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'long & longLike';
   var src = _.long.make([ 1, 2 ]);
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = global;
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.entity.exportStringShallowDiagnostic( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringDiagnosticShallow( src ), expected ) );
 
   test.case = 'Global & GlobalDerived';
   var src = Object.create( global );
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.entity.exportStringShallowDiagnostic( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringDiagnosticShallow( src ), expected ) );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Object -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike with `exportString` method';
   var src =
@@ -1999,13 +1996,13 @@ function exportStringShallowDiagnostic( test )
     exportString : () => 'Custom string transformation'
   };
   var expected = 'Custom string transformation';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var expected = '{- Aux.polluted.prototyped with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted with `exportString` method';
   var src = { a : 1 };
@@ -2016,207 +2013,207 @@ function exportStringShallowDiagnostic( test )
   }
   Object.setPrototypeOf( src, proto )
   var expected = '{- Aux.polluted.prototyped with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with `exportString` method';
   var src = Object.create( null );
   src.exportString = () => 'Custom string transformation'
   var expected = '{- Map.pure with 1 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src = Object.create( null );
   src.a = 1;
   src.b = 2;
   var expected = '{- Map.pure with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src = { a : 1, b : 2, c : 3 };
   var expected = '{- Map.polluted with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'HashMap';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'HashMap with 2 elems';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var expected = '{- BufferNode with 3 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferRaw';
   var src = new BufferRaw( 'str' );
   var expected = '{- BufferRaw -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferRawShared';
   var src = new BufferRawShared( 'str' );
   var expected = '{- BufferRawShared -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferTyped';
   var src = new I8x( 20 );
   var expected = '{- I8x with 20 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferView';
   var src = new BufferView( new BufferRaw( 20 ) );
   var expected = '{- DataView.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = new U8x( 20 );
   var expected = '{- U8x with 20 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'err';
   var src = _.err( 'error' );
   var expected = '{- Error.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var expected = '{- Escape 1 -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
   var expected = '{- F32x with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'pair';
   var src = _.pair.make();
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = '/a/b/';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'propertyTransformer & filter';
   var src = _.props.filter[ 'dstAndSrcOwn' ];
   var expected = '{- routine dstAndSrcOwn -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'propertyTransformer & mapper';
   var src = _.props.mapper[ 'assigning' ];
   var expected = '{- routine assigning -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'routine & routineLike';
   var src = routine;
   var expected = '{- routine routine -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'timer';
   var src = _.time._begin( Infinity );
   var expected = '{- Map.pure with 9 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
   _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date( '2021-02-19T11:26:42.840Z' );
   var expected = '2021-02-19T11:26:42.840Z';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'null';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = '{- Symbol null -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = '{- Symbol undefined -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = '{- Symbol nothing -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'primitive';
   var src = 5;
   var expected = '5';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Symbol';
   var src = Symbol( 'a' );
   var expected = '{- Symbol a -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var expected = '{- Promise.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'stream';
   var src = require( 'stream' ).Readable();
   var expected = '{- Readable.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   // test.case = 'console';
   // var src = console;
   // var expected = '{- Console.constructible with 1 elements -}';
-  // test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  // test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
   test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'printerLike';
   var src = new __.Logger();
   var expected = '{- wLoggerTop.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'printerLike with output to console';
   var src = new __.Logger({ output : console });
   var expected = '{- wLoggerTop.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'process';
   var src = process;
   var expected = '{- process.constructible -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   /* */
 
@@ -2225,90 +2222,90 @@ function exportStringShallowDiagnostic( test )
   test.case = 'string, widthLimit 0';
   var src = '0123456'
   var expected = '0123456';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 0 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 0 } ), expected );
 
   test.case = 'string, widthLimit 1';
   var src = '0123456'
   var expected = '0';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 1 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 1 } ), expected );
 
   test.case = 'string, widthLimit 5';
   var src = '0123456'
   var expected = '01256';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 5 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 5 } ), expected );
 
   test.case = 'string, widthLimit > str.length';
   var src = '0123456'
   var expected = '0123456';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 10 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 10 } ), expected );
 
   /* */
 
   test.case = 'map, widthLimit 0';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 0 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 0 } ), expected );
 
   test.case = 'map, widthLimit 1';
   var src = Object.create( null );
   var expected = '{';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 1 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 1 } ), expected );
 
   test.case = 'map, widthLimit 10';
   var src = Object.create( null );
   var expected = '{- Mats -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 10 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 10 } ), expected );
 
   test.case = 'map, widthLimit > str.length';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShallowDiagnostic( src, { widthLimit : 100 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 100 } ), expected );
 
 
   test.close( 'option::widthLimit' );
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   function routine () {}
 
@@ -2317,103 +2314,103 @@ function exportStringShallowDiagnostic( test )
 //
 
 
-function exportStringShallowCode( test )
+function exportStringCodeShallow( test )
 {
 
   test.case = 'number';
   var src = 1;
   var expected = '1';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'bool & boolLike & fuzzy';
   var src = true;
   var expected = 'true';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src = 0;
   var expected = '0';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'fuzzy';
   var src = _.maybe;
   var expected = 'Symbol.for( \'maybe\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'bigint';
   var src = 10n;
   var expected = '10n';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'str & regexpLike';
   var src = 'str';
   var expected = '\'str\'';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = /hello/g;
   var expected = '/hello/g';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var expected = '{- ArgumentsArray with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'unroll';
   var src = _.unroll.make([ 2, 3, 4 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'array';
   var src = [ 2, 3, 4 ];
   var expected = '{- Array with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'long & longLike';
   var src = _.long.make([ 1, 2 ]);
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = global;
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.entity.exportStringShallowCode( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringCodeShallow( src ), expected ) );
 
   test.case = 'Global & GlobalDerived';
   var src = Object.create( global );
   var expected = '{- Aux.polluted.prototyped with ';
-  test.true( _.strHas( _.entity.exportStringShallowCode( src ), expected ) );
+  test.true( _.strHas( _.entity.exportStringCodeShallow( src ), expected ) );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Object -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike with `exportString` method';
   var src =
@@ -2422,13 +2419,13 @@ function exportStringShallowCode( test )
     exportString : () => 'Custom string transformation'
   };
   var expected = 'Custom string transformation';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var expected = '{- Aux.polluted.prototyped with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted with `exportString` method';
   var src = { a : 1 };
@@ -2439,250 +2436,250 @@ function exportStringShallowCode( test )
   }
   Object.setPrototypeOf( src, proto )
   var expected = '{- Aux.polluted.prototyped with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var expected = '{- Map.pure with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with `exportString` method';
   var src = Object.create( null );
   src.exportString = () => 'Custom string transformation'
   var expected = '{- Map.pure with 1 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src = Object.create( null );
   src.a = 1;
   src.b = 2;
   var expected = '{- Map.pure with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var expected = '{- Map.polluted with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src = { a : 1, b : 2, c : 3 };
   var expected = '{- Map.polluted with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'HashMap';
   var src = new HashMap();
   var expected = '{- HashMap with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'HashMap with 2 elems';
   var src = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var expected = '{- HashMap with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var expected = '{- BufferNode with 3 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferRaw';
   var src = new BufferRaw( 'str' );
   var expected = '{- BufferRaw -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferRawShared';
   var src = new BufferRawShared( 'str' );
   var expected = '{- BufferRawShared -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferTyped';
   var src = new I8x( 20 );
   var expected = '{- I8x with 20 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferView';
   var src = new BufferView( new BufferRaw( 20 ) );
   var expected = '{- DataView.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = new U8x( 20 );
   var expected = '{- U8x with 20 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'err';
   var src = _.err( 'error' );
   var expected = '{- Error.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var expected = '{- Escape 1 -}'; /* xxx2 : qqq : bad */
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = new F32x( 2 );
   var expected = '{- F32x with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'pair';
   var src = _.pair.make();
   var expected = '{- Array with 2 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = '\'/a/b/\'';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'propertyTransformer & filter';
   var src = _.props.filter[ 'dstAndSrcOwn' ];
   var expected = '{- routine dstAndSrcOwn -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'propertyTransformer & mapper';
   var src = _.props.mapper[ 'assigning' ];
   var expected = '{- routine assigning -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'routine & routineLike';
   var src = routine;
   var expected = '{- routine routine -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'timer';
   var src = _.time._begin( Infinity );
   var expected = '{- Map.pure with 9 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
   _.time.cancel( src );
 
   test.case = 'date & objectLike';
   var src = new Date( '2021-02-19T11:26:42.840Z' );
   var expected = 'new Date( \'2021-02-19T11:26:42.840Z\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'null';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Symbol null';
   var src = _.null;
   var expected = 'Symbol.for( \'null\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
   var expected = 'Symbol.for( \'undefined\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
   var expected = 'Symbol.for( \'nothing\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'primitive';
   var src = 5;
   var expected = '5';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Symbol';
   var src = Symbol( 'a' );
   var expected = 'Symbol.for( \'a\' )';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var expected = '{- Promise.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'stream';
   var src = require( 'stream' ).Readable();
   var expected = '{- Readable.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   // test.case = 'console';
   // var src = console;
   // var expected = '{- Console.constructible with 1 elements -}';
-  // test.identical( _.entity.exportStringShallowCode( src ), expected );
+  // test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
   test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'printerLike';
   var src = new __.Logger();
   var expected = '{- wLoggerTop.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'printerLike with output to console';
   var src = new __.Logger({ output : console });
   var expected = '{- wLoggerTop.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'process';
   var src = process;
   var expected = '{- process.constructible -}';
-  test.identical( _.entity.exportStringShallowCode( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   function routine () {}
 
@@ -3075,17 +3072,17 @@ function strParseType( test )
   test.case = 'number';
   var src = '1';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'bool & boolLike & fuzzy';
   var src = 'true';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src = '0';
   var expected = {}
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'fuzzy';
   var src = '{- Symbol maybe -}';
@@ -3095,22 +3092,22 @@ function strParseType( test )
     name : 'maybe',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'bigint';
   var src = '10n';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'str & regexpLike';
   var src = 'str';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = '/hello/g';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = '{- ArgumentsArray with 0 elements -}';
@@ -3120,7 +3117,7 @@ function strParseType( test )
     traits : [],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = '{- ArgumentsArray with 3 elements -}';
@@ -3130,7 +3127,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'unroll';
   var src = '{- Array.unroll with 3 elements -}';
@@ -3140,7 +3137,7 @@ function strParseType( test )
     traits : [ 'unroll' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'array';
   var src = '{- Array with 3 elements -}';
@@ -3150,7 +3147,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'long & longLike';
   var src = '{- Array with 2 elements -}';
@@ -3160,7 +3157,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = '{- countableConstructor.countable with 2 elements -}';
@@ -3170,7 +3167,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = '{- countableConstructor.countable.constructible with 2 elements -}';
@@ -3180,7 +3177,7 @@ function strParseType( test )
     traits : [ 'countable', 'constructible' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = '{- Object.countable with 0 elements -}';
@@ -3190,7 +3187,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = '{- Object.countable with 3 elements -}';
@@ -3200,7 +3197,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = '{- Aux.polluted.prototyped with 20 elements -}';
@@ -3210,7 +3207,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Global & GlobalDerived';
   var src = '{- Aux.polluted.prototyped with 21 elements -}';
@@ -3220,7 +3217,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 21
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = '{- Object -}';
@@ -3229,7 +3226,7 @@ function strParseType( test )
     type : 'Object',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = '{- Aux.polluted.prototyped with 2 elements -}';
@@ -3239,7 +3236,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = '{- Map.pure with 0 elements -}';
@@ -3249,7 +3246,7 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src = '{- Map.pure with 2 elements -}';
@@ -3259,7 +3256,7 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = '{- Map.polluted with 0 elements -}';
@@ -3269,7 +3266,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src = '{- Map.polluted with 3 elements -}';
@@ -3279,7 +3276,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'HashMap';
   var src = '{- HashMap with 0 elements -}';
@@ -3289,7 +3286,7 @@ function strParseType( test )
     traits : [],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'HashMap with 2 elems';
   var src = '{- HashMap with 2 elements -}';
@@ -3299,7 +3296,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = '{- Set with 0 elements -}';
@@ -3309,7 +3306,7 @@ function strParseType( test )
     traits : [],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = '{- Set with 3 elements -}';
@@ -3319,7 +3316,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferNode';
   var src = '{- BufferNode with 3 elements -}';
@@ -3329,7 +3326,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferRaw';
   var src = '{- BufferRaw -}';
@@ -3338,7 +3335,7 @@ function strParseType( test )
     type : 'BufferRaw',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferRawShared';
   var src = '{- BufferRawShared -}';
@@ -3347,7 +3344,7 @@ function strParseType( test )
     type : 'BufferRawShared',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferTyped';
   var src = '{- I8x with 20 elements -}';
@@ -3357,7 +3354,7 @@ function strParseType( test )
     traits : [],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferView';
   var src = '{- DataView.constructible -}';
@@ -3366,7 +3363,7 @@ function strParseType( test )
     type : 'DataView',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = '{- U8x with 20 elements -}';
@@ -3376,7 +3373,7 @@ function strParseType( test )
     traits : [],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'err';
   var src = '{- Error.constructible -}';
@@ -3385,12 +3382,12 @@ function strParseType( test )
     type : 'Error',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'escape';
   var src = 'Escape( 1 )';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = '{- F32x with 2 elements -}';
@@ -3400,7 +3397,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'pair';
   var src = '{- Array with 2 elements -}';
@@ -3410,12 +3407,12 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'propertyTransformer & filter';
   var src = '{- routine dstAndSrcOwn -}';
@@ -3425,7 +3422,7 @@ function strParseType( test )
     name : 'dstAndSrcOwn',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'propertyTransformer & mapper';
   var src = '{- routine assigning -}';
@@ -3435,7 +3432,7 @@ function strParseType( test )
     name : 'assigning',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'routine & routineLike';
   var src = '{- routine routine -}';
@@ -3445,7 +3442,7 @@ function strParseType( test )
     name : 'routine',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'timer';
   var src = '{- Map.pure with 9 elements -}';
@@ -3455,22 +3452,22 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 9
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'date & objectLike';
   var src = '2021-02-19T11:26:42.840Z';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'null';
   var src = 'null';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'undefined';
   var src = 'undefined';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol null';
   var src = '{- Symbol null -}';
@@ -3480,7 +3477,7 @@ function strParseType( test )
     name : 'null',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = '{- Symbol undefined -}';
@@ -3490,7 +3487,7 @@ function strParseType( test )
     name : 'undefined',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = '{- Symbol nothing -}';
@@ -3500,12 +3497,12 @@ function strParseType( test )
     traits : [],
     name : 'nothing',
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'primitive';
   var src = '5';
   var expected = {}
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol';
   var src = '{- Symbol a -}';
@@ -3515,7 +3512,7 @@ function strParseType( test )
     name : 'a',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = '{- Promise.constructible -}';
@@ -3524,7 +3521,7 @@ function strParseType( test )
     type : 'Promise',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'stream';
   var src = '{- Readable.constructible -}';
@@ -3533,7 +3530,7 @@ function strParseType( test )
     type : 'Readable',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'printerLike';
   var src = '{- Map.polluted with 9 elements -}';
@@ -3543,7 +3540,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 9
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'process';
   var src = '{- process.constructible -}';
@@ -3552,7 +3549,7 @@ function strParseType( test )
     type : 'process',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.close( 'without name' );
 
@@ -3569,7 +3566,7 @@ function strParseType( test )
     name : 'name',
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src = '{- ArgumentsArray name with 3 elements -}';
@@ -3580,7 +3577,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'unroll';
   var src = '{- Array.unroll name with 3 elements -}';
@@ -3591,7 +3588,7 @@ function strParseType( test )
     traits : [ 'unroll' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'array';
   var src = '{- Array name with 3 elements -}';
@@ -3602,7 +3599,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'long & longLike';
   var src = '{- Array name with 2 elements -}';
@@ -3613,7 +3610,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = '{- countableConstructor.countable name with 2 elements -}';
@@ -3624,7 +3621,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = '{- countableConstructor.countable.constructible name with 2 elements -}';
@@ -3635,7 +3632,7 @@ function strParseType( test )
     traits : [ 'countable', 'constructible' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
   var src = '{- Object.countable name with 0 elements -}';
@@ -3646,7 +3643,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = '{- Object.countable name with 3 elements -}';
@@ -3657,7 +3654,7 @@ function strParseType( test )
     traits : [ 'countable' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Global & GlobalReal';
   var src = '{- Aux.polluted.prototyped name with 20 elements -}';
@@ -3668,7 +3665,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Global & GlobalDerived';
   var src = '{- Aux.polluted.prototyped name with 21 elements -}';
@@ -3679,7 +3676,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 21
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = '{- Object name -}';
@@ -3689,7 +3686,7 @@ function strParseType( test )
     name : 'name',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = '{- Aux.polluted.prototyped name with 2 elements -}';
@@ -3700,7 +3697,7 @@ function strParseType( test )
     traits : [ 'polluted', 'prototyped' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = '{- Map.pure name with 0 elements -}';
@@ -3711,7 +3708,7 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure name with 2 elems';
   var src = '{- Map.pure name with 2 elements -}';
@@ -3722,7 +3719,7 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = '{- Map.polluted name with 0 elements -}';
@@ -3733,7 +3730,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped name with 3 elems';
   var src = '{- Map.polluted name with 3 elements -}';
@@ -3744,7 +3741,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'HashMap';
   var src = '{- HashMap name with 0 elements -}';
@@ -3755,7 +3752,7 @@ function strParseType( test )
     traits : [],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'HashMap name with 2 elems';
   var src = '{- HashMap name with 2 elements -}';
@@ -3766,7 +3763,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Set & SetLike';
   var src = '{- Set name with 0 elements -}';
@@ -3777,7 +3774,7 @@ function strParseType( test )
     traits : [],
     length : 0
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Set with 3 elems';
   var src = '{- Set name with 3 elements -}';
@@ -3788,7 +3785,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferNode';
   var src = '{- BufferNode name with 3 elements -}';
@@ -3799,7 +3796,7 @@ function strParseType( test )
     traits : [],
     length : 3
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferRaw';
   var src = '{- BufferRaw name -}';
@@ -3809,7 +3806,7 @@ function strParseType( test )
     name : 'name',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferRawShared';
   var src = '{- BufferRawShared name -}';
@@ -3819,7 +3816,7 @@ function strParseType( test )
     name : 'name',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferTyped';
   var src = '{- I8x name with 20 elements -}';
@@ -3830,7 +3827,7 @@ function strParseType( test )
     traits : [],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferView';
   var src = '{- DataView.constructible name -}';
@@ -3840,7 +3837,7 @@ function strParseType( test )
     name : 'name',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'BufferBytes & BufferTyped';
   var src = '{- U8x name with 20 elements -}';
@@ -3851,7 +3848,7 @@ function strParseType( test )
     traits : [],
     length : 20
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'err';
   var src = '{- Error.constructible name -}';
@@ -3861,7 +3858,7 @@ function strParseType( test )
     name : 'name',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'interval & BufferTyped';
   var src = '{- F32x name with 2 elements -}';
@@ -3872,7 +3869,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'pair';
   var src = '{- Array name with 2 elements -}';
@@ -3883,12 +3880,12 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = {};
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'propertyTransformer & filter';
   var src = '{- routine dstAndSrcOwn -}';
@@ -3898,7 +3895,7 @@ function strParseType( test )
     name : 'dstAndSrcOwn',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'propertyTransformer & mapper';
   var src = '{- routine assigning -}';
@@ -3908,7 +3905,7 @@ function strParseType( test )
     name : 'assigning',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'routine & routineLike';
   var src = '{- routine routine -}';
@@ -3918,7 +3915,7 @@ function strParseType( test )
     name : 'routine',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'timer';
   var src = '{- Map.pure name with 9 elements -}';
@@ -3929,7 +3926,7 @@ function strParseType( test )
     traits : [ 'pure' ],
     length : 9
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol null';
   var src = '{- Symbol null -}';
@@ -3939,7 +3936,7 @@ function strParseType( test )
     name : 'null',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol undefined';
   var src = '{- Symbol undefined -}';
@@ -3949,7 +3946,7 @@ function strParseType( test )
     name : 'undefined',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol Nothing';
   var src = '{- Symbol nothing -}';
@@ -3959,7 +3956,7 @@ function strParseType( test )
     traits : [],
     name : 'nothing',
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'Symbol';
   var src = '{- Symbol a -}';
@@ -3969,7 +3966,7 @@ function strParseType( test )
     name : 'a',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = '{- Promise.constructible name -}';
@@ -3979,7 +3976,7 @@ function strParseType( test )
     name : 'name',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'stream';
   var src = '{- Readable.constructible name -}';
@@ -3989,7 +3986,7 @@ function strParseType( test )
     name : 'name',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'printerLike';
   var src = '{- Map.polluted name with 9 elements -}';
@@ -4000,7 +3997,7 @@ function strParseType( test )
     traits : [ 'polluted' ],
     length : 9
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'process';
   var src = '{- process.constructible name -}';
@@ -4010,7 +4007,7 @@ function strParseType( test )
     name : 'name',
     traits : [ 'constructible' ],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.close( 'with name' );
 
@@ -4023,7 +4020,7 @@ function strParseType( test )
     type : 'with',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with and name=name';
   var src = '{- with name -}';
@@ -4033,7 +4030,7 @@ function strParseType( test )
     name : 'name',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with and name=with';
   var src = '{- with with -}';
@@ -4043,7 +4040,7 @@ function strParseType( test )
     name : 'with',
     traits : [],
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with, name=with, 2 elems';
   var src = '{- with with with 2 elements -}';
@@ -4054,7 +4051,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with and name, 2 elems';
   var src = '{- with name with 2 elements -}';
@@ -4065,7 +4062,7 @@ function strParseType( test )
     traits : [],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with, traits and name, 2 elems';
   var src = '{- with.trait name with 2 elements -}';
@@ -4076,7 +4073,7 @@ function strParseType( test )
     traits : [ 'trait' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with, trait=with and name, 2 elems';
   var src = '{- with.with name with 2 elements -}';
@@ -4087,7 +4084,7 @@ function strParseType( test )
     traits : [ 'with' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
   test.case = 'type=with, trait=with, name=with, 2 elems';
   var src = '{- with.with with with 2 elements -}';
@@ -4098,7 +4095,7 @@ function strParseType( test )
     traits : [ 'with' ],
     length : 2
   };
-  test.identical( _.entity.strParseType( src ), expected );
+  test.identical( _.entity.str.strParseType( src ), expected );
 
 }
 
@@ -4114,9 +4111,7 @@ function strConcat( test )
 
   test.case = 'srcs - empty string';
   var srcs = '';
-  debugger;
   var got = _.strConcat( srcs );
-  debugger;
   test.identical( got, '' );
 
   test.case = 'srcs - not empty string';
@@ -4198,8 +4193,11 @@ function strConcat( test )
     'b',
     'variant:: : #83\n  path::local'
   ];
+  debugger;
   var got = _.strConcat( srcs );
+  debugger;
   test.identical( got, 'b variant:: : #83\n  path::local' );
+  debugger;
 
   test.case = 'strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];
@@ -21388,8 +21386,8 @@ const Proto =
 
     // converter
 
-    exportStringShallowDiagnostic,
-    exportStringShallowCode,
+    exportStringDiagnosticShallow,
+    exportStringCodeShallow,
     // strPrimitive,
     // strTypeWithTraitsBasic,
     // strTypeWithoutTraitsBasic,

@@ -37,6 +37,17 @@ function is( src )
 
 //
 
+function like( src )
+{
+  if( _.str.is( src ) )
+  return true;
+  if( _.regexp.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -275,7 +286,7 @@ function strHas( src, ins )
 // --
 
 // /* xxx : move to entity */
-// function exportStringShallowDiagnostic( src, o )
+// function exportStringDiagnosticShallow( src, o )
 // {
 //   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
 //
@@ -283,39 +294,39 @@ function strHas( src, ins )
 //
 //   if( _.primitive.is( src ) )
 //   {
-//     result = _.primitive.exportStringShallowDiagnostic( src );
+//     result = _.primitive.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.date.is( src ) )
 //   {
-//     result = _.date.exportStringShallowDiagnostic( src );
+//     result = _.date.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.regexpIs( src ) )
 //   {
-//     result = _.regexp.exportStringShallowDiagnostic( src );
+//     result = _.regexp.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.set.like( src ) )
 //   {
-//     result = _.set.exportStringShallowDiagnostic( src );
+//     result = _.set.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.hashMap.like( src ) )
 //   {
-//     result = _.hashMap.exportStringShallowDiagnostic( src );
+//     result = _.hashMap.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.vector.like( src ) )
 //   {
-//     result = _.vector.exportStringShallowDiagnostic( src );
+//     result = _.vector.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.routine.is( src ) )
 //   {
-//     result = _.routine.exportStringShallowDiagnostic( src );
+//     result = _.routine.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.aux.like( src ) )
 //   {
-//     result = _.aux.exportStringShallowDiagnostic( src );
+//     result = _.aux.exportStringDiagnosticShallow( src );
 //   }
 //   else if( _.object.like( src ) )
 //   {
-//     result = _.object.exportStringShallowDiagnostic( src );
+//     result = _.object.exportStringDiagnosticShallow( src );
 //   }
 //   else
 //   {
@@ -1168,7 +1179,7 @@ _strShortHeight.defaults =
 //
 //   src = src.slice( 3, -3 );
 //
-//   return _.entity._strParseType( src );
+//   return _.entity.str._parseType( src );
 //
 // }
 //
@@ -1321,6 +1332,8 @@ function strConcat( srcs, o )
   };
 
   o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+  // o.optionsForToStr.format = o.optionsForToStr.format || 'string.code';
+  o.optionsForToStr.format = o.optionsForToStr.format || 'string.diagnostic';
 
   if( _.routine.is( srcs ) )
   srcs = srcs();
@@ -1962,12 +1975,12 @@ let ExtensionEntity =
 
   // // exporter
   //
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
+  // exportString : exportStringDiagnosticShallow,
+  // // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow,
+  // exportStringCodeShallow : exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // // exportStringCode : exportStringDiagnosticShallow,
   //
   // strPrimitive,
   // strTypeSecondary,
@@ -1994,6 +2007,7 @@ let StrExtension =
   // dichotomy
 
   is,
+  like,
 
   // equaler
 
@@ -2006,12 +2020,12 @@ let StrExtension =
 
   // exporter
 
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
+  // exportString : exportStringDiagnosticShallow,
+  // // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow,
+  // exportStringCodeShallow : exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // // exportStringCode : exportStringDiagnosticShallow,
 
 }
 

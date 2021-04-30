@@ -213,11 +213,11 @@ let LongExtension =
   // exporter
 
   exportString : _.array.exportString,
-  exportStringShallow : _.array.exportStringShallow,
-  exportStringShallowDiagnostic : _.array.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.array.exportStringShallowCode,
-  exportStringDiagnostic : _.array.exportStringDiagnostic,
-  exportStringCode : _.array.exportStringCode,
+  // exportStringDiagnosticShallow : _.array.exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.array.exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.array.exportStringCodeShallow,
+  // // exportStringDiagnostic : _.array.exportStringDiagnostic,
+  // exportStringCode : _.array.exportStringCode,
 
   // container interface
 

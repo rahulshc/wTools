@@ -311,24 +311,24 @@ function identicalShallow( src1, src2, o )
 // exporter
 // --
 
-function exportStringShallowCode( src )
+function exportStringCodeShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( this.like( src ) );
   if( _.long.is( src ) )
-  return _.long.exportStringShallowCode( src );
-  return _.object._exportStringShallowCode( src );
+  return _.long.exportStringCodeShallow( src );
+  return _.object._exportStringCodeShallow( src );
 }
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( this.like( src ) );
   if( _.long.is( src ) )
-  return _.long.exportStringShallowDiagnostic( src );
-  return _.object._exportStringShallowDiagnostic( src );
+  return _.long.exportStringDiagnosticShallow( src );
+  return _.object._exportStringDiagnosticShallow( src );
 }
 
 // --
@@ -569,12 +569,12 @@ let BufferExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringDiagnosticShallow,
 
   // inspector
 
