@@ -4898,8 +4898,137 @@ function longMakeZeroedWithBufferTypedLongDescriptor( test )
 
 longMakeZeroedWithBufferTypedLongDescriptor.timeOut = 20000;
 
-// //
 //
+
+function makeFilling( test )
+{
+  var bufferMake_functor = ( buffer ) =>
+  {
+    return { [ buffer.name ]( src ){ return new buffer( src ) } }[ buffer.name ];
+  }
+  var array = ( src ) => _.array.make( src );
+  var unroll = ( src ) => _.unroll.make( src );
+  var argumentsArray = ( src ) => _.argumentsArray.make( src );
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+    bufferMake_functor( I8x ),
+    bufferMake_functor( U16x ),
+    bufferMake_functor( U16x ),
+    bufferMake_functor( U32x ),
+  ];
+
+  /* tests */
+
+  for( let t = 0; t < list.length; t++ )
+  {
+    test.open( list[ t ].name );
+    testRun( list[ t ] );
+    test.close( list[ t ].name );
+  }
+
+  /* test subroutine */
+
+  function testRun( makeLong )
+  {
+    test.case = 'value - null, length - number';
+    var got = _.long.makeFilling( null, 5 );
+    var expected = _.defaultLong.make([ null, null, null, null, null ]);
+    test.identical( got, expected );
+
+    test.case = `value - zero, length - ${ makeLong.name }`;
+    var got = _.long.makeFilling( 0, makeLong( 5 ) );
+    var expected = makeLong([ 0, 0, 0, 0, 0 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - string, length - number';
+    var got = _.long.makeFilling( null, 'str', 5 );
+    var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - string, length - BufferTyped';
+    var got = _.long.makeFilling( null, 'str', new U8x( 5 ) );
+    var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
+    var src = makeLong( 0 );
+    var type = _.argumentsArray.is( src ) ? src : src.constructor;
+    var got = _.long.makeFilling( type, [ 1 ], 3 );
+    var expected = makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - empty ${ makeLong.name }`;
+    var src = makeLong( 0 );
+    var type = _.argumentsArray.is( src ) ? src : src.constructor;
+    var got = _.long.makeFilling( type, [ 1 ], makeLong( 0 ) );
+    var expected = makeLong( [] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - number`;
+    var got = _.long.makeFilling( makeLong( 0 ), { a : 1 }, 3 );
+    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - ${ makeLong.name }`;
+    var got = _.long.makeFilling( makeLong( 0 ), { a : 1 }, makeLong( 3 ) );
+    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - U8x, value - number, length - number`;
+    var got = _.long.makeFilling( U8x, 10, 3 );
+    var expected = new U8x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - I16x, value - number, length - ${ makeLong.name }`;
+    var got = _.long.makeFilling( I16x, 10, makeLong( 3 ) );
+    var expected = new I16x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - F32x instance, value - number, length - number`;
+    var got = _.long.makeFilling( new F32x( 10 ), 10, 3 );
+    var expected = new F32x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - F32x instance, value - number, length - ${ makeLong.name }`;
+    var got = _.long.makeFilling( new F32x( 10 ), 10, makeLong( 3 ) );
+    var expected = new F32x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.long.makeFilling() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.long.makeFilling( null ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
+
+  test.case = 'wrong type of type argument';
+  test.shouldThrowErrorSync( () => _.long.makeFilling( {}, 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.long.makeFilling( undefined, 2, 2 ) );
+
+  test.case = 'wrong type of value';
+  test.shouldThrowErrorSync( () => _.long.makeFilling( undefined, 1 ) );
+  test.shouldThrowErrorSync( () => _.long.makeFilling( [], undefined, 1 ) );
+
+  test.case = 'wrong type of length';
+  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 2, undefined ) );
+}
+
+//
+
 // function longMakeFillingWithArrayAndUnroll( test )
 // {
 //   var array = ( src ) => _.array.make( src );
@@ -6870,10 +6999,11 @@ const Proto =
     // longMakeZeroedWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : enable */
     // longMakeZeroedWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : enable */
 
-    // longMakeFillingBasic, /* qqq2 : for Dmytro : enable */
-    // longMakeFillingWithArrayAndUnroll, /* qqq2 : for Dmytro : enable */
-    // longMakeFillingWithArgumentsArray, /* qqq2 : for Dmytro : enable */
-    // longMakeFillingWithBufferTyped, /* qqq2 : for Dmytro : enable */
+    makeFilling, /* aaa2 : for Dmytro : enable */ /* Dmytro : wrote, this routine aggregates tests fro routines `longMakeFillingWithArrayAndUnroll` `longMakeFillingWithArgumentsArray`, `longMakeFillingWithBufferTyped` */
+    // longMakeFillingWithArrayAndUnroll, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFilling */
+    // longMakeFillingWithArgumentsArray, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFilling */
+    // longMakeFillingWithBufferTyped, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFilling */
+
     // longMakeFillingWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : enable */
     // longMakeFillingWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : enable */
     // longMakeFillingWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : enable */
