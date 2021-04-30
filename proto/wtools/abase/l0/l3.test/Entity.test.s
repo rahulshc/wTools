@@ -5845,46 +5845,46 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   /* */
 
@@ -5949,46 +5949,46 @@ function elementWithKeyArgImplicit( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   /* */
 
@@ -6377,46 +6377,46 @@ function elementWithKey( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   /* */
 
@@ -6527,46 +6527,46 @@ function elementWithImplicitArgImplicit( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   /* */
 
@@ -7016,46 +7016,46 @@ function elementWithImplicit( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
   /* */
 

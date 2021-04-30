@@ -22,7 +22,7 @@ function exportStringShallowDiagnostic( test )
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
-  var exp = '{- Object -}';
+  var exp = '{- Map.polluted -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
@@ -47,25 +47,25 @@ function exportStringShallowDiagnostic( test )
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var exp = '{- countableConstructor.countable -}';
+  var exp = '{- countableConstructorPolluted.countable -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
-  var exp = '{- countableConstructor.countable.constructible -}';
+  var exp = '{- countableConstructorPolluted.countable.constructible -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
-  var exp = '{- Object.countable -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1, new : 0 } );
+  var exp = '{- Map.polluted -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var exp = '{- Object.countable -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
+  var exp = '{- Map.polluted -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
@@ -83,46 +83,47 @@ function exportStringShallowDiagnostic( test )
 
   /* - */
 
-  function _iterate()
-  {
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.withIterator )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
