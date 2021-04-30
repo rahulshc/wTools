@@ -5597,7 +5597,6 @@ function from( test )
   test.shouldThrowErrorSync( () => _.long.from( { 1 : 2 } ) );
 }
 
-
 //
 
 function fromWithLongDescriptor( test )
@@ -5609,7 +5608,7 @@ function fromWithLongDescriptor( test )
     let name = namespace.TypeName;
     let long = _.withLong[ name ];
 
-    /* qqq2 : for Dmytro : remove this if, please. or cover ArgumentsArray in separate routine */
+    /* aaa2 : for Dmytro : remove this if, please. or cover ArgumentsArray in separate routine */ /* Dmytro : added test routine `fromWithArgumentsArrayLongDescriptor`, it require too few if statements in both test routines */
     if( name === 'ArgumentsArray' )
     continue;
 
@@ -5737,6 +5736,107 @@ function fromWithLongDescriptor( test )
       test.shouldThrowErrorSync( () => long.defaultLong.from( { 1 : 2 } ) );
     }
   }
+}
+
+//
+
+function fromWithArgumentsArrayLongDescriptor( test )
+{
+  let long = _.withLong.ArgumentsArray;
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( 0 );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+
+  test.case = 'number';
+  var src = 2;
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( 2 );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  test.case = 'filled array';
+  var src = [ 1, 2, 3, 4, 0 ];
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make([ 1, 2, 3, 4, 0 ]);
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  test.case = 'empty unroll';
+  var src = _.unroll.make( [] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  test.case = 'filled unroll';
+  var src = _.unroll.make( [ 1, 2, 3, 4, 0 ] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  test.case = 'empty argumentsArray';
+  var src = _.argumentsArray.make( [] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got === src );
+
+  test.case = 'filled argumentsArray';
+  var src = _.argumentsArray.make( [ 1, 2, 3, 4, 0 ] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got === src );
+
+  test.case = 'empty BufferTyped';
+  var src = new U8x( [] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  var src = new I16x( [] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  test.case = 'filled BufferTyped';
+  var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
+
+  var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+  var got = long.defaultLong.from( src );
+  var exp = long.defaultLong.make( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( got !== src );
 }
 
 //
@@ -6782,6 +6882,7 @@ const Proto =
 
     from,
     fromWithLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : enabled */
+    fromWithArgumentsArrayLongDescriptor,
 
     // longSlice,
 
