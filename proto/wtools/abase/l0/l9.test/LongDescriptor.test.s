@@ -81,7 +81,7 @@ function isArrayUnrollArgumentsArray( test )
 
     test.case = 'BufferTyped';
     var got = descriptor.is( new U8x( 5 ) );
-    var expected  = descriptor.SecondTypeName === 'U8x';
+    var expected  = descriptor.TypeName === 'U8x';
     test.identical( got, expected );
 
     test.case = 'function';
@@ -93,33 +93,32 @@ function isArrayUnrollArgumentsArray( test )
 
     test.case = 'an empty array';
     var got = descriptor.is( [] );
-    var expected = descriptor.SecondTypeName === 'Array';
+    var expected = descriptor.TypeName === 'Array';
     test.identical( got, expected );
 
     test.case = 'an array';
     var got = descriptor.is( [ 1, 2, 3 ] );
-    var expected  = descriptor.SecondTypeName === 'Array';
+    var expected  = descriptor.TypeName === 'Array';
     test.identical( got, expected );
 
     test.case = 'empty ArgumentsArray';
     var got = descriptor.is( _.argumentsArray.make( [] ) );
-    debugger;
-    var expected = descriptor.SecondTypeName === 'Arguments';
+    var expected = descriptor.TypeName === 'ArgumentsArray';
     test.identical( got, expected );
 
     test.case = 'ArgumentsArray';
     var got = descriptor.is( _.argumentsArray.make( [ true ] ) );
-    var expected = descriptor.SecondTypeName === 'Arguments';
+    var expected = descriptor.TypeName === 'ArgumentsArray';
     test.identical( got, expected );
 
     test.case = 'empty unroll';
     var got = descriptor.is( _.unroll.make( [] ) );
-    var expected = !( descriptor.SecondTypeName === 'Arguments' );
+    var expected = !( descriptor.TypeName === 'ArgumentsArray' );
     test.identical( got, expected );
 
     test.case = 'unroll';
     var got = descriptor.is( _.unroll.make( [ true ] ) );
-    var expected = !( descriptor.SecondTypeName === 'Arguments' );
+    var expected = !( descriptor.TypeName === 'ArgumentsArray' );
     test.identical( got, expected );
   }
 }
@@ -209,69 +208,58 @@ function isBufferTypedInstance( test )
 
     test.case = 'U8x';
     var got = descriptor.is( new U8x( 5 ) );
-    var expected  = descriptor.name === 'U8x';
+    var expected  = descriptor.TypeName === 'U8x';
     test.identical( got, expected );
 
     test.case = 'U16x';
     var got = descriptor.is( new U16x( 5 ) );
-    var expected  = descriptor.name === 'U16x';
+    var expected  = descriptor.TypeName === 'U16x';
     test.identical( got, expected );
 
     test.case = 'U32x';
     var got = descriptor.is( new U32x( 5 ) );
-    var expected  = descriptor.name === 'U32x' || descriptor.name === 'Ux';
+    var expected  = descriptor.TypeName === 'U32x' || descriptor.TypeName === 'Ux';
     test.identical( got, expected );
 
     test.case = 'Ux';
     var got = descriptor.is( new Ux( 5 ) );
-    var expected  = descriptor.name === 'U32x' || descriptor.name === 'Ux';
+    var expected  = descriptor.TypeName === 'U32x' || descriptor.TypeName === 'Ux';
     test.identical( got, expected );
 
     test.case = 'I8x';
     var got = descriptor.is( new I8x( 5 ) );
-    var expected  = descriptor.name === 'I8x';
+    var expected  = descriptor.TypeName === 'I8x';
     test.identical( got, expected );
 
     test.case = 'I16x';
     var got = descriptor.is( new I16x( 5 ) );
-    var expected  = descriptor.name === 'I16x';
+    var expected  = descriptor.TypeName === 'I16x';
     test.identical( got, expected );
 
     test.case = 'I32x';
     var got = descriptor.is( new I32x( 5 ) );
-    var expected  = descriptor.name === 'I32x' || descriptor.name === 'Ix';
+    var expected  = descriptor.TypeName === 'I32x' || descriptor.TypeName === 'Ix';
     test.identical( got, expected );
 
     test.case = 'Ix';
     var got = descriptor.is( new Ix( 5 ) );
-    var expected  = descriptor.name === 'I32x' || descriptor.name === 'Ix';
+    var expected  = descriptor.TypeName === 'I32x' || descriptor.TypeName === 'Ix';
     test.identical( got, expected );
 
     test.case = 'F32x';
     var got = descriptor.is( new F32x( 5 ) );
-    var expected  = descriptor.name === 'F32x' || descriptor.name === 'Fx';
+    var expected  = descriptor.TypeName === 'F32x' || descriptor.TypeName === 'Fx';
     test.identical( got, expected );
 
     test.case = 'F64x';
     var got = descriptor.is( new F64x( 5 ) );
-    var expected  = descriptor.name === 'F64x';
+    var expected  = descriptor.TypeName === 'F64x';
     test.identical( got, expected );
 
     test.case = 'Fx';
     var got = descriptor.is( new Fx( 5 ) );
-    var expected  = descriptor.name === 'F32x' || descriptor.name === 'Fx';
+    var expected  = descriptor.TypeName === 'F32x' || descriptor.TypeName === 'Fx';
     test.identical( got, expected );
-
-    /* - */
-
-    if( Config.debug )
-    {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.is() );
-
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => descriptor.is( [], 'extra' ) );
-    }
   }
 }
 
