@@ -459,7 +459,8 @@ function eachSample_( o )
     if( _.aux.is( o.sample ) )
     o.result.push( _.props.extend( null, o.sample ) );
     else
-    o.result.push( o.sample.slice() );
+    // o.result.push( _.longSlice( o.sample ) ); /* Dmytro : routine _.longSlice is the common interface for slicing of longs */
+    o.result.push( _.longSlice( o.sample ) );
 
     return 1;
   }
@@ -486,7 +487,8 @@ function eachSample_( o )
       if( _.aux.is( o.sample ) )
       o.result.push( _.props.extend( null, o.sample ) );
       else
-      o.result.push( o.sample.slice() );
+      // o.result.push( o.sample.slice() );
+      o.result.push( _.longSlice( o.sample ) );
 
       return 1;
     }
@@ -520,7 +522,6 @@ function eachSample_( o )
 
 eachSample_.defaults =
 {
-
   leftToRight : 1,
   onEach : null,
 
@@ -528,8 +529,7 @@ eachSample_.defaults =
   sample : null,
 
   result : null, /* was 1 */
-
-}
+};
 
 //
 
@@ -952,7 +952,12 @@ function _entityFilterDeep( o )
 
   if( _.longIs( o.src ) )
   {
+    if( _.argumentsArray.is( o.src ) ) /* Dmytro : seems as hack, this primitive realization use type check. The more type independent realization creates resulted container of full length and routine longBut_ */ /* qqq xxx : Dmytro : please, discuss it */
+    result = [];
+    else
     result = _.long.make( o.src, 0 );
+
+    // result = _.long.make( o.src, o.src.length ); /* Dmytro : second variant */
     let s, d;
     for( s = 0, d = 0 ; s < o.src.length ; s++ )
     // for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
@@ -962,6 +967,7 @@ function _entityFilterDeep( o )
       if( _.unrollIs( r ) )
       {
         _.arrayAppendArray( result, r );
+        // _.longBut_( result, d, r ); /* Dmytro : second variant */
         d += r.length;
       }
       else if( r !== undefined )
@@ -977,7 +983,8 @@ function _entityFilterDeep( o )
 
     }
     if( d < o.src.length )
-    result = _.array.slice( result, 0, d );
+    result = _.longSlice( result, 0, d );
+    // result = _.array.slice( result, 0, d );
   }
   else
   {
@@ -1249,7 +1256,7 @@ let entityIndex = _entityIndex_functor({ extendRoutine : null });
  * @namespace Tools
  */
 
-let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.supplement });
+let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.supplement.bind( _.props ) });
 
 //
 
@@ -1310,7 +1317,7 @@ let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.su
  * @namespace Tools
  */
 
-let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.props.extend });
+let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.props.extend.bind( _.props ) });
 
 //
 
@@ -1656,7 +1663,7 @@ let entityRemap = _entityRemap_functor({ extendRoutine : null });
  */
 
 
-let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.supplement });
+let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.supplement.bind( _.props ) });
 
 //
 
@@ -1718,7 +1725,7 @@ let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.su
  * @namespace Tools
  */
 
-let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.props.extend });
+let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.props.extend.bind( _.props ) });
 
 //
 
