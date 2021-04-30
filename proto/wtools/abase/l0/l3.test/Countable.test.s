@@ -521,7 +521,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 1, elements : [], withIterator : 1 });
-  var expected = '{- Object.countable with 0 elements -}';
+  var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
   var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
