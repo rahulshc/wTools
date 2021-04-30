@@ -37,6 +37,17 @@ function is( src )
 
 //
 
+function like( src )
+{
+  if( _.str.is( src ) )
+  return true;
+  if( _.regexp.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -1321,6 +1332,8 @@ function strConcat( srcs, o )
   };
 
   o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+  // o.optionsForToStr.format = o.optionsForToStr.format || 'string.code';
+  o.optionsForToStr.format = o.optionsForToStr.format || 'string.diagnostic';
 
   if( _.routine.is( srcs ) )
   srcs = srcs();
@@ -1994,6 +2007,7 @@ let StrExtension =
   // dichotomy
 
   is,
+  like,
 
   // equaler
 

@@ -6,11 +6,8 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
-
   _.include( 'wTesting' );
-
   // _.include( 'wStringer' );
-
 }
 
 const _global = _global_;
@@ -4114,9 +4111,7 @@ function strConcat( test )
 
   test.case = 'srcs - empty string';
   var srcs = '';
-  debugger;
   var got = _.strConcat( srcs );
-  debugger;
   test.identical( got, '' );
 
   test.case = 'srcs - not empty string';
@@ -4198,8 +4193,11 @@ function strConcat( test )
     'b',
     'variant:: : #83\n  path::local'
   ];
+  debugger;
   var got = _.strConcat( srcs );
+  debugger;
   test.identical( got, 'b variant:: : #83\n  path::local' );
+  debugger;
 
   test.case = 'strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];

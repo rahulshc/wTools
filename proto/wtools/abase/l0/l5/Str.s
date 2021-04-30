@@ -3964,12 +3964,13 @@ function exportStringDiagnosticShallow( src, opts )
 
 //
 
+/* xxx2 : move to entity */
 /* xxx : qqq : for Yevhen : take into account throwing cases */
 /* qqq : for Yevhen : optimize. ask how to */
 function _exportStringShallow( src, o )
 {
 
-  _.routine.assertOptions( _exportStringShallow, o );
+  // _.routine.assertOptions( _exportStringShallow, o );
   _.assert( arguments.length === 2 );
   _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
   _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
@@ -4038,7 +4039,7 @@ _exportStringShallow.defaults =
 {
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+  heightLimit : 0, /* qqq for Yevhen : implement and cover */
 }
 
 //
@@ -4058,7 +4059,7 @@ exportStringCodeShallow.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+  heightLimit : 0, /* qqq for Yevhen : implement and cover */
 }
 
 //
@@ -4068,7 +4069,8 @@ function exportStringDiagnosticShallow( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routine.options_( exportStringDiagnosticShallow, o || null );
+  // o = _.routine.options_( exportStringDiagnosticShallow, o || null );
+  o = _.aux.supplement( o || null, exportStringDiagnosticShallow.defaults );
   o.format = o.format || exportStringDiagnosticShallow.defaults.format;
 
   return _.entity._exportStringShallow( src, o );
@@ -4078,7 +4080,7 @@ exportStringDiagnosticShallow.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+  heightLimit : 0, /* qqq for Yevhen : implement and cover */
 }
 
 // //
@@ -4288,11 +4290,13 @@ let ExtensionEntity =
 
   exportStringSimple, /* xxx : deprecate? */
   exportStringDiagnosticShallow,
+
   _exportStringShallow,
   exportString : exportStringDiagnosticShallow,
-  exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
   exportStringCodeShallow,
   exportStringDiagnosticShallow,
+
+  // exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
   // exportStringSolo,
 
   // parser
