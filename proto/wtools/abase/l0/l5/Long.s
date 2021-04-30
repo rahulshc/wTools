@@ -937,7 +937,8 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.tools.defaultLong.InstanceConstructor && _.longIs( src ) )
+  if( this.defaultLong.InstanceConstructor )
+  if( src instanceof this.defaultLong.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
@@ -946,7 +947,7 @@ function longFromCoercing( src )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
-  return this.tools.defaultLong.from( src );
+  return this.defaultLong.from( src );
 
   if( _.object.isBasic( src ) )
   return this.longFromCoercing( _.props.pairs( src ) );
