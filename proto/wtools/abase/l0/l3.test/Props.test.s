@@ -438,39 +438,39 @@ function dichotomy( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'pure empty map';
   var src = Object.create( null );
   var exp = '{- Map.pure with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'pure map';
   var src = Object.create( null );
   var exp = '{- Map.pure with 1 elements -}';
   src.x = 1;
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'empty polluted map';
   var src = {};
   var exp = '{- Map.polluted with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
   var exp = '{- Map.polluted with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
   var exp = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map deep';
@@ -478,7 +478,7 @@ function exportStringShallowDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var exp = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map deep with props';
@@ -489,14 +489,14 @@ function exportStringShallowDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var exp = '{- Aux.pure.prototyped with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
   var exp = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map deep';
@@ -504,7 +504,7 @@ function exportStringShallowDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var exp = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map deep with props';
@@ -515,25 +515,25 @@ function exportStringShallowDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var exp = '{- Aux.polluted.prototyped with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'number with options map';
   var exp = '{- Number with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( 13, {} );
+  var got = _.props.exportStringDiagnosticShallow( 13, {} );
   test.identical( got, exp );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow() );
 
   test.case = 'bad second argument'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic( {}, 'a' ) );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow( {}, 'a' ) );
 
   test.case = 'extra argument'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic( [], {}, 'a' ) );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow( [], {}, 'a' ) );
 
 }
 
@@ -1081,7 +1081,7 @@ const Proto =
   {
 
     dichotomy,
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
     identicalShallow,
 
     onlyImplicit,

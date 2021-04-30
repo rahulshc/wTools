@@ -3954,11 +3954,11 @@ function exportStringSimple()
 
 //
 
-function exportStringShallow( src, opts )
+function exportStringDiagnosticShallow( src, opts )
 {
   let result = '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.entity.exportStringShallowDiagnostic( src );
+  result = _.entity.exportStringDiagnosticShallow( src );
   return result;
 }
 
@@ -3977,7 +3977,7 @@ function _exportStringShallow( src, o )
   _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
 
   let result = '';
-  let method = o.format === 'string.diagnostic' ? 'exportStringShallowDiagnostic' : 'exportStringShallowCode'
+  let method = o.format === 'string.diagnostic' ? 'exportStringDiagnosticShallow' : 'exportStringCodeShallow'
 
   try
   {
@@ -4044,17 +4044,17 @@ _exportStringShallow.defaults =
 //
 
 /* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShallowCode( src, o ) /* */
+function exportStringCodeShallow( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routine.options_( exportStringShallowCode, o || null );
-  o.format = o.format || exportStringShallowCode.defaults.format;
+  o = _.routine.options_( exportStringCodeShallow, o || null );
+  o.format = o.format || exportStringCodeShallow.defaults.format;
 
   return _.entity._exportStringShallow( src, o );
 }
 
-exportStringShallowCode.defaults =
+exportStringCodeShallow.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
@@ -4064,17 +4064,17 @@ exportStringShallowCode.defaults =
 //
 
 /* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShallowDiagnostic( src, o ) /* */
+function exportStringDiagnosticShallow( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routine.options_( exportStringShallowDiagnostic, o || null );
-  o.format = o.format || exportStringShallowDiagnostic.defaults.format;
+  o = _.routine.options_( exportStringDiagnosticShallow, o || null );
+  o.format = o.format || exportStringDiagnosticShallow.defaults.format;
 
   return _.entity._exportStringShallow( src, o );
 }
 
-exportStringShallowDiagnostic.defaults =
+exportStringDiagnosticShallow.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
   widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
@@ -4085,32 +4085,123 @@ exportStringShallowDiagnostic.defaults =
 //
 // function exportStringSolo( src, o )
 // {
-//   let result = _.entity.exportStringShallowDiagnostic( ... arguments )
+//   let result = _.entity.exportStringDiagnosticShallow( ... arguments )
 //   return _.strReplace( result, '\n', ' ' );
 // }
 //
 // exportStringSolo.defaults =
 // {
-//   ... exportStringShallowDiagnostic.defaults,
+//   ... exportStringDiagnosticShallow.defaults,
 // }
 
 //
 
-// function exportStringShallowCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
+// function exportStringCodeShallow( src, /* o */ ) /* shortering or modifying string can make js code not valid */
 // {
 //   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 //
 //   // if( o )
 //   // {
 //   //   o.src = src;
-//   //   return _.entity._exportStringShallowCode( o );
+//   //   return _.entity._exportStringCodeShallow( o );
 //   // }
 //   // else
 //   // {
-//   return _.entity._exportStringShallowCode({ src });
+//   return _.entity._exportStringCodeShallow({ src });
 //   // }
 // }
 
+// --
+// parser
+// --
+
+function parseType( src )
+{
+  /*
+    - 'string'
+    - '5'
+    - '5n'
+    - 'null'
+    - 'undefined'
+    - 'Escape( 1 )'
+    - '{- Symbol undefined -}'
+    - '{- routine name -}'
+    - '{- routine.anonymous -}'
+    - '{- Map -}'
+    - '{- Map name -}'
+    - '{- Map with 9 elements -}'
+    - '{- Map.polluted with 9 elements -}'
+    - '{- Map name with 9 elements -}'
+  */
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ), 'Expects string' );
+
+  if( !( /^{- .+ -}$/g.test( src ) ) )
+  return Object.create( null );
+
+  src = src.slice( 3, -3 );
+
+  return _.entity.str._parseType( src );
+
+}
+
+//
+
+function _parseType( src )
+{
+  /*
+
+  {- with with 2 elements -} 4
+  {- with name with 2 elements -} 5
+  {- with.with with with 2 elements -} 5
+
+  */
+  _.assert( _.strIs( src ), 'Expects string' );
+
+  let o =
+  {
+    type : '',
+    traits : [],
+  }
+
+  let splitted = src.split( ' ' );
+  let type = splitted[ 0 ];
+  let length;
+
+  if( splitted.length === 2 ) /* with name & no length */
+  {
+    o.name = splitted[ 1 ];
+  }
+  else if( splitted.length === 4 ) /* without name & with length */
+  {
+    length = +splitted[ 2 ];
+  }
+  else if( splitted.length === 5 ) /* with name & with length */
+  {
+    o.name = splitted[ 1 ];
+    length = +splitted[ 3 ];
+  }
+
+  length = isNaN( length ) ? null : length;
+
+  if( type.indexOf( '.' ) === -1 )
+  {
+    o.type = type;
+  }
+  else
+  {
+    let [ t, ... traits ] = type.split( '.' );
+    o.type = t;
+    o.traits = traits;
+  }
+
+  if( length !== null )
+  o.length = length;
+
+  return o;
+
+}
 
 // --
 // extension
@@ -4196,13 +4287,19 @@ let ExtensionEntity =
 {
 
   exportStringSimple, /* xxx : deprecate? */
-  exportStringShallow,
+  exportStringDiagnosticShallow,
   _exportStringShallow,
-  exportString : exportStringShallow,
-  exportStringShallowFine : exportStringShallowDiagnostic, /* xxx : remove */
-  exportStringShallowCode,
-  exportStringShallowDiagnostic,
+  exportString : exportStringDiagnosticShallow,
+  exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
+  exportStringCodeShallow,
+  exportStringDiagnosticShallow,
   // exportStringSolo,
+
+  // parser
+
+  parseType, /* xxx : move */
+  _parseType,
+
 
 }
 

@@ -318,11 +318,11 @@ let ItselfExtension =
   // exporter
 
   exportString : _.blank.exportString,
-  exportStringShallow : _.blank.exportStringShallow,
-  exportStringShallowDiagnostic : _.blank.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.blank.exportStringShallowCode,
-  exportStringDiagnostic : _.blank.exportStringDiagnostic,
-  exportStringCode : _.blank.exportStringCode,
+  // exportStringDiagnosticShallow : _.blank.exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.blank.exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.blank.exportStringCodeShallow,
+  // // exportStringDiagnostic : _.blank.exportStringDiagnostic,
+  // exportStringCode : _.blank.exportStringCode,
 
   // container interface
 

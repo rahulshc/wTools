@@ -70,11 +70,11 @@ var AuxiliaryExtension =
   // exporter
 
   exportString : _.props.exportString,
-  exportStringShallow : _.props.exportStringShallow,
-  exportStringShallowDiagnostic : _.props.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.props.exportStringShallowCode,
-  exportStringDiagnostic : _.props.exportStringDiagnostic,
-  exportStringCode : _.props.exportStringCode,
+  // exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
+  // // exportStringDiagnostic : _.props.exportStringDiagnostic,
+  // exportStringCode : _.props.exportStringCode,
 
   // container interface
 

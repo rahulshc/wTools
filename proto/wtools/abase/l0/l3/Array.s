@@ -200,7 +200,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -297,7 +297,7 @@ function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -395,7 +395,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
 
   return dstArray;
 }
@@ -1267,7 +1267,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -1319,7 +1319,7 @@ function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ 
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -2008,11 +2008,11 @@ let ArrayExtension =
   // exporter
 
   exportString : _.argumentsArray.exportString,
-  exportStringShallow : _.argumentsArray.exportStringShallow,
-  exportStringShallowDiagnostic : _.argumentsArray.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.argumentsArray.exportStringShallowCode,
-  exportStringDiagnostic : _.argumentsArray.exportStringDiagnostic,
-  exportStringCode : _.argumentsArray.exportStringCode,
+  // exportStringDiagnosticShallow : _.argumentsArray.exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.argumentsArray.exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.argumentsArray.exportStringCodeShallow,
+  // // exportStringDiagnostic : _.argumentsArray.exportStringDiagnostic,
+  // exportStringCode : _.argumentsArray.exportStringCode,
 
   // container interface
 

@@ -126,13 +126,13 @@ function equivalentShallow( src1, src2 )
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.countable.like( src ) );
 
   if( _.vector.is( src ) )
-  return _.vector.exportStringShallowDiagnostic( src );
+  return _.vector.exportStringDiagnosticShallow( src );
   return `{- ${_.entity.strType( src )} with ${_.countable.lengthOf( src )} elements -}`;
 }
 
@@ -458,12 +458,12 @@ var CountableExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  // // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringDiagnosticShallow,
 
   // container interface
 

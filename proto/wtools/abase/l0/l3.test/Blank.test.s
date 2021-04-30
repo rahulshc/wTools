@@ -17,69 +17,69 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
   var exp = '{- Map.polluted -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var exp = '{- Aux.polluted.prototyped -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var exp = '{- Map.pure -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var exp = '{- Map.polluted -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var exp = '{- countableConstructorPolluted.countable -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var exp = '{- countableConstructorPolluted.countable.constructible -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1, new : 0 } );
   var exp = '{- Map.polluted -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
   var exp = '{- Map.polluted -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.blank.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.blank.exportStringDiagnosticShallow() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.blank.exportStringShallowDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.blank.exportStringDiagnosticShallow( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( {} ) );
 
   /* - */
 
@@ -361,7 +361,7 @@ const Proto =
   tests :
   {
 
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
     identicalShallow,
 
     aptLeftBlank,

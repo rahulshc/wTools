@@ -80,16 +80,16 @@ function equivalentShallow( src1, src2, accuracy )
 //
 // --
 
-function exportStringShallowCode( src )
+function exportStringCodeShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowCode( src );
+  return _.symbol.exportStringCodeShallow( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowCode( src );
+  return _.bigInt.exportStringCodeShallow( src );
 
   if( _.strIs( src ) )
   return `'${src}'`;
@@ -99,16 +99,16 @@ function exportStringShallowCode( src )
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowDiagnostic( src );
+  return _.symbol.exportStringDiagnosticShallow( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowDiagnostic( src );
+  return _.bigInt.exportStringDiagnosticShallow( src );
 
   return String( src );
 }
@@ -161,12 +161,12 @@ let PrimitiveExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowCode,
-  exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowCode,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringCodeShallow,
+  exportStringDiagnosticShallow,
+  // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringCodeShallow,
 
 }
 
