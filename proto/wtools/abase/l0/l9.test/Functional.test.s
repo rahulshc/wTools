@@ -22417,9 +22417,6 @@ function remapExtending( test )
 
 function remapSupplementing( test )
 {
-
-  /* */
-
   test.open( 'no onEach' );
 
   test.case = 'src - map';
@@ -22675,10 +22672,7 @@ function remapSupplementing( test )
   test.identical( got, exp );
 
   test.close( 'onEach - selector' );
-
-  /* */
-
-} /* end of function remapSupplementing */
+}
 
 //
 

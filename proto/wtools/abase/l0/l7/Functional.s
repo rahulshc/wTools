@@ -1656,7 +1656,7 @@ let entityRemap = _entityRemap_functor({ extendRoutine : null });
  */
 
 
-let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.supplement });
+let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.supplement.bind( _.props ) });
 
 //
 
@@ -1718,7 +1718,7 @@ let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.su
  * @namespace Tools
  */
 
-let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.props.extend });
+let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.props.extend.bind( _.props ) });
 
 //
 
