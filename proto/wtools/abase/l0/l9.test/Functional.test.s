@@ -18403,6 +18403,23 @@ function entityFilterDeep( test )
   var got = testFn1( 9, -16, 25, 36, -49 );
   test.identical( got, [ 3, 5, 6 ] );
 
+  test.case = 'src is array with single element, filter make unrolls';
+  var onEach = ( e, i, s ) => _.unroll.make( [ e ] );
+  var src = [ 1 ];
+  debugger;
+  var got = _.entityFilterDeep( src, onEach );
+  test.identical( got, [ 1 ] );
+  test.false( _.unrollIs( got ) );
+  test.true( _.arrayIs( got ) );
+
+  test.case = 'src is array with single element, filter make unrolls';
+  var onEach = ( e, i, s ) => _.unroll.make( [ e ] );
+  var src = [ 1, 2 ];
+  var got = _.entityFilterDeep( src, onEach );
+  test.identical( got, [ 1, 2 ] );
+  test.false( _.unrollIs( got ) );
+  test.true( _.arrayIs( got ) );
+
   test.case = 'src is array, filter make unrolls';
   var onEach = ( e, i, s ) => _.unroll.make( [ e ] );
   var src = [ 1, [ 2, 3 ], [ 'str', null, undefined ] ];

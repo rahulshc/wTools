@@ -952,7 +952,12 @@ function _entityFilterDeep( o )
 
   if( _.longIs( o.src ) )
   {
+    if( _.argumentsArray.is( o.src ) ) /* Dmytro : seems as hack, this primitive realization use type check. The more type independent realization creates resulted container of full length and routine longBut_ */ /* qqq xxx : Dmytro : please, discuss it */
+    result = [];
+    else
     result = _.long.make( o.src, 0 );
+
+    // result = _.long.make( o.src, o.src.length ); /* Dmytro : second variant */
     let s, d;
     for( s = 0, d = 0 ; s < o.src.length ; s++ )
     // for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
@@ -962,6 +967,7 @@ function _entityFilterDeep( o )
       if( _.unrollIs( r ) )
       {
         _.arrayAppendArray( result, r );
+        // _.longBut_( result, d, r ); /* Dmytro : second variant */
         d += r.length;
       }
       else if( r !== undefined )
@@ -977,7 +983,8 @@ function _entityFilterDeep( o )
 
     }
     if( d < o.src.length )
-    result = _.array.slice( result, 0, d );
+    result = _.longSlice( result, 0, d );
+    // result = _.array.slice( result, 0, d );
   }
   else
   {
