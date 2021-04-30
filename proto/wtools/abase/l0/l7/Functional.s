@@ -1249,7 +1249,7 @@ let entityIndex = _entityIndex_functor({ extendRoutine : null });
  * @namespace Tools
  */
 
-let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.supplement });
+let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.supplement.bind( _.props ) });
 
 //
 
@@ -1310,7 +1310,7 @@ let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.su
  * @namespace Tools
  */
 
-let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.props.extend });
+let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.props.extend.bind( _.props ) });
 
 //
 
