@@ -68,7 +68,7 @@ function sureIn( src, ointerval )
   // debugger;
   let args =
   [
-    _.cinterval.has( cinterval, src )
+    _.ointerval.has( ointerval, src )
     ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
     , Array.prototype.slice.call( arguments, 2 )
   ];
