@@ -58,13 +58,13 @@ function exportStringDiagnosticShallow( test )
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1, new : 0 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1, new : 0 } );
   var exp = '{- Map.polluted -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
   var exp = '{- Map.polluted -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );

@@ -2126,7 +2126,7 @@ function _compose_old_body( o )
     {
       if( src.composed.chainer === o.chainer && src.composed.tail === o.tail )
       {
-        bodies.push( ... src.composed.bodies );
+        bodies.push( ... src.composed.elements );
       }
       else
       {
@@ -2289,7 +2289,7 @@ function _compose_body( o )
     {
       if( body.composed.chainer === o.chainer && body.composed.tail === o.tail )
       {
-        bodies.push( ... body.composed.bodies );
+        bodies.push( ... body.composed.elements );
       }
       else
       {

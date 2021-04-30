@@ -1042,7 +1042,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample_({ sets });
+  let samples = _.permutation.eachSample({ sets });
 
   for( let env of samples )
   eachCase( env );

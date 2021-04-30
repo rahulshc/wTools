@@ -120,7 +120,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   /* */
 //
 //   test.case = `countable made`;
-//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '10' ], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '10' ], withIterator : 1 } );
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( !_.vector.like( src ) );
@@ -886,8 +886,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -904,8 +904,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -980,8 +980,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -998,8 +998,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -1085,8 +1085,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -1103,8 +1103,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -1180,8 +1180,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -1198,8 +1198,8 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -1235,7 +1235,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 //
 //   test.case = 'countable made and array';
-//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '10' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '10' ], withIterator : 1 } );
 //   var src2 = [ '1', '10' ];
 //   test.identical( _.countable.identicalShallow( src1, src2 ), false );
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
@@ -1345,13 +1345,13 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, expected );
 //
 //   test.case = `object countable - empty, non-vector`;
-//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1 } );
 //   var expected = '{- Object.countable with 0 elements -}';
 //   var got = _.countable.exportStringDiagnosticShallow( src );
 //   test.identical( got, expected );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var expected = '{- Object.countable with 3 elements -}';
 //   var got = _.countable.exportStringDiagnosticShallow( src );
 //   test.identical( got, expected );

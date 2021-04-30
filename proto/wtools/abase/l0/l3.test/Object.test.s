@@ -58,13 +58,13 @@ function exportStringDiagnosticShallow( test )
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );

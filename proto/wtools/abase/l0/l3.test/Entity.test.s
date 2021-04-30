@@ -454,22 +454,22 @@ function exportStringCodeShallow( test )
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var expected = '{- countableConstructor.countable with 2 elements -}';
+  var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
-  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
+  var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
-  var expected = '{- Object.countable with 0 elements -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1 } );
+  var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var expected = '{- Object.countable with 3 elements -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -484,7 +484,7 @@ function exportStringCodeShallow( test )
 
   test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
-  var expected = '{- Object -}';
+  var expected = '{- Map.polluted with 0 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike with `exportString` method';
@@ -493,7 +493,7 @@ function exportStringCodeShallow( test )
     [ Symbol.iterator ] : 1,
     exportString : () => 'Custom string transformation'
   };
-  var expected = 'Custom string transformation';
+  var expected = '{- Map.polluted with 1 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
@@ -988,7 +988,7 @@ function strTypeWithTraitsGeneratedObject( test )
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample_({ sets });
+  let samples = __.permutation.eachSample({ sets });
 
   for( let env of samples )
   eachCase( env );
@@ -1065,7 +1065,7 @@ function strTypeWithoutTraitsGeneratedObject( test )
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample_({ sets });
+  let samples = __.permutation.eachSample({ sets });
 
   for( let env of samples )
   eachCase( env );
@@ -7254,7 +7254,7 @@ function elementWithImplicitArgImplicit( test )
   test.case = 'constructor countable';
   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var got = _.entity.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ countableConstructor, Symbol.for( 'constructor' ), true ];
+  var expected = [ src.constructor, Symbol.for( 'constructor' ), true ];
   test.identical( got, expected );
 
   /* - */
