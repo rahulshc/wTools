@@ -11596,10 +11596,6 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
 function longFromRangeWithStepNotDefaultLongDescriptor( test )
 {
   let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
   for( let k in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ k ];
@@ -14007,7 +14003,7 @@ const Proto =
     longRandom,
     longFromRange,
     longFromRangeWithStepDefaultLongDescriptor,
-    // longFromRangeWithStepNotDefaultLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
+    longFromRangeWithStepNotDefaultLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed */
 
     longToMap, /* Dmytro : routine longToMap commented in Long.s */ /* Yevhen : uncommented, routine is used in module::wChangeTransactor */
     // longToStr, // Dmytro : routine longToStr commented in Long.s
