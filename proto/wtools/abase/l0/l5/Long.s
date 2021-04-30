@@ -937,6 +937,7 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
+  if( this.defaultLong.InstanceConstructor )
   if( src instanceof this.defaultLong.InstanceConstructor && _.longIs( src ) )
   return src;
 
