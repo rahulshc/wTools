@@ -16082,7 +16082,7 @@ function entityMapDstNull_( test )
   test.case = 'argumentsArray';
   var src = _.argumentsArray.make( [ 1, 2, 3, 4, 'str' ] );
   var got = _.entityMap_( null, src, ( e ) => e );
-  test.identical( got, [ 1, 2, 3, 4, 'str' ] );
+  test.identical( got, _.argumentsArray.make([ 1, 2, 3, 4, 'str' ]) );
   test.true( got !== src );
 
   test.case = 'BufferTyped';
@@ -16168,7 +16168,7 @@ function entityMapDstNull_( test )
   test.case = 'argumentsArray';
   var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( null, src, ( e, k ) => k );
-  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, _.argumentsArray.make([ 0, 1, 2, 3, 4 ]) );
   test.true( got !== src );
 
   test.case = 'BufferTyped';
@@ -16254,7 +16254,7 @@ function entityMapDstNull_( test )
   test.case = 'argumentsArray';
   var src = _.argumentsArray.make( [ 0, 1, 2, 3, 4 ] );
   var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
-  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, _.argumentsArray.make([ 0, 1, 2, 3, 4 ]) );
   test.true( got !== src );
 
   test.case = 'BufferTyped';
@@ -18406,7 +18406,6 @@ function entityFilterDeep( test )
   test.case = 'src is array with single element, filter make unrolls';
   var onEach = ( e, i, s ) => _.unroll.make( [ e ] );
   var src = [ 1 ];
-  debugger;
   var got = _.entityFilterDeep( src, onEach );
   test.identical( got, [ 1 ] );
   test.false( _.unrollIs( got ) );
