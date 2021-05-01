@@ -256,23 +256,38 @@ function makeUndefined( src, length )
  * @namespace Tools/unroll
  */
 
-function _make( src )
+function _make( src, length )
 {
-  let result;
-  result = _.array._make( ... arguments );
+  let result = _.array._make( ... arguments );
   result[ unrollSymbol ] = true;
-  if( src !== null && src !== undefined && !_.unroll.is( src ) )
+  if
+  (
+    ( src !== null && src !== undefined && !_.unroll.is( src ) )
+    || ( src !== null && src !== undefined && !_.unroll.is( src ) )
+  )
   result = _.unroll.normalize( result );
   return result;
+
+  // let result;
+  // result = _.array._make( ... arguments );
+  // result[ unrollSymbol ] = true;
+  // if( src !== null && src !== undefined && !_.unroll.is( src ) )
+  // result = _.unroll.normalize( result );
+  // return result;
 }
 
 //
 
-function make( src )
+function make( src, length )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( arguments.length === 0 || src === null || _.number.is( src ) || _.countable.is( src ) );
-  return _.unroll._make( src );
+  _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
+  _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
+  _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
+  _.assert( arguments.length <= 2 );
+  return this._make( ... arguments );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // _.assert( arguments.length === 0 || src === null || _.number.is( src ) || _.countable.is( src ) );
+  // return _.unroll._make( src );
 }
 
 //
