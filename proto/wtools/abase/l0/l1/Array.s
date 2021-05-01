@@ -153,9 +153,19 @@ function _make( src, length )
   return new Array( length );
   if( _.numberIs( src ) )
   return new Array( src );
-  if( src )
-  return [ ... src ];
+  if( _.countable.is( length ) )
+  return new Array( ... length );
+  if( _.countable.is( src ) )
+  return new Array( ... src );
   return [];
+
+  // if( _.numberIs( length ) )
+  // return new Array( length );
+  // if( _.numberIs( src ) )
+  // return new Array( src );
+  // if( src )
+  // return [ ... src ];
+  // return [];
 }
 
 //
@@ -164,7 +174,8 @@ function make( src, length )
 {
   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-  _.assert( arguments.length < 2 || _.number.is( length ) );
+  // _.assert( arguments.length < 2 || _.number.is( length ) );
+  _.assert( arguments.length < 2 || _.number.is( length ) || _.long.is( length ) );
   _.assert( arguments.length <= 2 );
   return this._make( ... arguments );
 }
