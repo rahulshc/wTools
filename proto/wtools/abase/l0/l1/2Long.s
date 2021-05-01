@@ -323,13 +323,13 @@ function makeFilling( type, value, length )
 
   if( arguments.length === 2 )
   {
-    _.assert( _.number.is( value ) || _.long.is( value ) );
-  _.assert( type !== undefined );
+    _.assert( _.number.is( value ) || _.countable.is( value ) );
+    _.assert( type !== undefined );
   }
   else
   {
     _.assert( value !== undefined );
-    _.assert( _.number.is( length ) || _.long.is( length ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
     _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
   }
 

@@ -119,6 +119,60 @@ function makeUndefined( src, length )
 
 //
 
+function _makeFilling( type, value, length )
+{
+  if( arguments.length === 2 )
+  {
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+    if( _.longIs( length ) )
+    {
+      if( _.argumentsArray.is( length ) )
+      type = length;
+      else if( _.number.is( length ) )
+      type = null;
+      else
+      type = length;
+    }
+    else
+    {
+      type = null;
+    }
+  }
+
+  if( _.longIs( length ) )
+  length = length.length;
+
+  let result = this._make( type, length );
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = value;
+
+  return result;
+}
+
+//
+
+function makeFilling( type, value, length )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    _.assert( _.number.is( value ) || _.countable.is( value ) );
+    _.assert( type !== undefined );
+  }
+  else
+  {
+    _.assert( value !== undefined );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
+    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
+  }
+
+  return this._makeFilling( ... arguments );
+}
+
+//
+
 function _cloneShallow( src )
 {
   return this._makeAct( ... src );
@@ -197,6 +251,8 @@ var ArgumentsArrayExtension =
   makeEmpty, /* qqq : for Yevhen : cover */
   _makeUndefined,
   makeUndefined, /* qqq : for Yevhen : cover */
+  _makeFilling,
+  makeFilling,
   _cloneShallow,
   cloneShallow, /* qqq : for Yevhen : cover */
   from, /* qqq : for Yevhen : cover */
