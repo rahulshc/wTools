@@ -354,6 +354,60 @@ function makeCommon( test )
 
 //
 
+function makeSrcIsNullWithLongNamespaces( test )
+{
+  for( let name in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ name ];
+
+    test.open( `${ namespace.TypeName }` );
+    run( namespace );
+    test.close( `${ namespace.TypeName }` );
+  }
+
+  function run( long )
+  {
+    test.case = 'only src - null';
+    var got = long.make( null );
+    test.identical( got, long.make( [] ) );
+
+    test.case = 'src - null, length - number';
+    var got = long.make( null, 0 );
+    test.identical( got, long.make( [] ) );
+
+    test.case = 'src - null, length - number';
+    var got = long.make( null, 2 );
+    var value = _.buffer.is( got ) ? 0 : undefined
+    test.identical( got, long.make([ value, value ]) );
+
+    test.case = 'src - null, length - long empty array';
+    var got = long.make( null, [] );
+    test.identical( got, long.make( [] ) );
+
+    test.case = 'src - null, length - filled array';
+    var got = long.make( null, [ 3, 4 ] );
+    test.identical( got, long.make([ 3, 4 ]) );
+
+    test.case = 'src - null, length - empty array';
+    var got = long.make( null, new F32x() );
+    test.identical( got, long.make([]) );
+
+    test.case = 'src - null, length - filled typed array';
+    var got = long.make( null, new U8x([ 3, 4 ]) );
+    test.identical( got, long.make([ 3, 4 ]) );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'src - number, length - number';
+      test.shouldThrowErrorSync( () => long.make( 1, 1 ) );
+    }
+  }
+}
+
+//
+
 function longMakeWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.array.make( src );
@@ -6960,6 +7014,8 @@ const Proto =
     // long, l0/l5
 
     makeCommon,
+
+    makeSrcIsNullWithLongNamespaces,
 
     longMakeWithArrayAndUnroll,
     longMakeWithArgumentsArray,
