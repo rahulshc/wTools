@@ -112,13 +112,18 @@ function _functor( fo )
 
   function _make( src, length )
   {
-    if( _.numberIs( length ) )
+    if( _.numberIs( length ) || _.countable.is( length ) )
     return new this.InstanceConstructor( length );
-    if( _.numberIs( src ) )
-    return new this.InstanceConstructor( src );
-    if( src )
+    if( _.numberIs( src ) || _.countable.is( src ) )
     return new this.InstanceConstructor( src );
     return new this.InstanceConstructor( 0 );
+    // if( _.numberIs( length ) )
+    // return new this.InstanceConstructor( length );
+    // if( _.numberIs( src ) )
+    // return new this.InstanceConstructor( src );
+    // if( src )
+    // return new this.InstanceConstructor( src );
+    // return new this.InstanceConstructor( 0 );
   }
 
   //
@@ -127,7 +132,8 @@ function _functor( fo )
   {
     _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
     _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-    _.assert( arguments.length < 2 || _.number.is( length ) );
+    // _.assert( arguments.length < 2 || _.number.is( length ) );
+    _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
     _.assert( arguments.length <= 2 );
     return this._make( ... arguments );
   }
