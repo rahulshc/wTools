@@ -38,23 +38,39 @@ function _makeAct()
 
 //
 
-function _make( src )
+function _make( src, length )
 {
-  if( src === undefined || src === null )
-  src = 0;
-  if( _.number.is( src ) )
+  if( _.numberIs( length ) )
+  return _.argumentsArray._makeAct.apply( _, Array( length ) );
+  if( _.numberIs( src ) )
   return _.argumentsArray._makeAct.apply( _, Array( src ) );
-  else
-  return _.argumentsArray._makeAct.apply( _, src );
+  if( _.long.is( length ) )
+  return _.argumentsArray._makeAct.apply( _, [ ... length ] );
+  if( _.long.is( src ) )
+  return _.argumentsArray._makeAct.apply( _, [ ... src ] );
+
+  return _.argumentsArray._makeAct.apply( _, [] );
+
+  // if( src === undefined || src === null )
+  // src = 0;
+  // if( _.number.is( src ) )
+  // return _.argumentsArray._makeAct.apply( _, Array( src ) );
+  // else
+  // return _.argumentsArray._makeAct.apply( _, src );
 }
 
 //
 
-function make( src )
+function make( src, length )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( src === undefined || src === null || _.number.is( src ) || _.longLike( src ) );
-  return this._make( src );
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
+  _.assert( src === null || _.countable.is( src ) || _.numberIs( src ) );
+  _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
+  _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
+  return this._make( ... arguments );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // _.assert( src === undefined || src === null || _.number.is( src ) || _.longLike( src ) );
+  // return this._make( src );
 }
 
 //
