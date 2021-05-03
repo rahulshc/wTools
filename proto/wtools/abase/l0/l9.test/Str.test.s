@@ -13557,77 +13557,6 @@ function strSplitsQuotedRejoin( test )
 
 //
 
-function strSplitsQuotedRejoinOptionInliningQuoting( test )
-{
-  test.case = 'inliningQuoting : 0';
-  var delimeter = [ '<', '>' ];
-  var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
-  _.strSplitsQuotedRejoin
-  ({
-    splits,
-    delimeter,
-    quoting : 1,
-    quotingPrefixes : [ '<' ],
-    quotingPostfixes : [ '>' ],
-    preservingQuoting : 1,
-    inliningQuoting : 0,
-  });
-  var expected = [ `<r1>`, `<r2>` ];
-  test.identical( splits, expected );
-
-  // test.case = 'inliningQuoting : 1';
-  // var delimeter = [ '<', '>' ];
-  // var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
-  // _.strSplitsQuotedRejoin
-  // ({
-  //   splits,
-  //   delimeter,
-  //   quoting : 1,
-  //   quotingPrefixes : [ '<' ],
-  //   quotingPostfixes : [ '>' ],
-  //   preservingQuoting : 1,
-  //   inliningQuoting : 1,
-  // });
-  // var expected = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
-  // test.identical( splits, expected );
-
-  /* */
-
-  test.case = 'inliningQuoting : 0, with not quoted';
-  var delimeter = [ '<', '>' ];
-  var splits = [ 'someText', `<`, `r1`, `>`, 'someText', `<`, `r2`, `>`, 'someText' ];
-  _.strSplitsQuotedRejoin
-  ({
-    splits,
-    delimeter,
-    quoting : 1,
-    quotingPrefixes : [ '<' ],
-    quotingPostfixes : [ '>' ],
-    preservingQuoting : 1,
-    inliningQuoting : 0,
-  });
-  var expected = [ 'someText', `<r1>`, 'someText', `<r2>`, 'someText' ];
-  test.identical( splits, expected );
-
-  // test.case = 'inliningQuoting : 1, with not quoted';
-  // var delimeter = [ '<', '>' ];
-  // var splits = [ 'someText', `<`, `r1`, `>`, 'someText', `<`, `r2`, `>`, 'someText' ];
-  // _.strSplitsQuotedRejoin
-  // ({
-  //   splits,
-  //   delimeter,
-  //   quoting : 1,
-  //   quotingPrefixes : [ '<' ],
-  //   quotingPostfixes : [ '>' ],
-  //   preservingQuoting : 1,
-  //   inliningQuoting : 1,
-  // });
-  // var expected = [ 'someText', `<`, `r1`, `>`, 'someText', `<`, `r2`, `>`, 'someText' ];
-  // test.identical( splits, expected );
-}
-
-//
-
 function strSplitsQuotedRejoinOptionOnQuoting( test )
 {
 
@@ -21440,7 +21369,6 @@ const Proto =
     strSplitsDropEmpty,
     strSplitsUngroupedJoin,
     strSplitsQuotedRejoin,
-    strSplitsQuotedRejoinOptionInliningQuoting, /* review, infinite loop with inliningQuoting : 1, when first element is prefix */
     strSplitsQuotedRejoinOptionOnQuoting,
 
     // splitter
