@@ -312,6 +312,31 @@ function makeCommon( test )
       if( env.method === 'make' )
       test.identical( got, [ 2 ] );
     }
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      if( env.method === 'makeEmpty' )
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 1 ) );
+      else
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 1, 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( undefined ) );
+      if( env.method === 'makeEmpty' )
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( null ) );
+
+      if( env.method !== 'makeEmpty' )
+      {
+        test.case = 'wrong type of src';
+        test.shouldThrowErrorSync( () => _tools.long[ env.method ]( 3, 3 ) );
+
+        test.case = 'wrong type of length';
+        test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 'wrong' ) );
+      }
+    }
   }
 
   /* */
