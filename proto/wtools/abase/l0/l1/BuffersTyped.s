@@ -41,23 +41,30 @@ function _functor( fo )
 
   function _makeEmpty( src )
   {
-    return [];
+    return new this.InstanceConstructor( 0 );
   }
 
   //
 
   function makeEmpty( src )
   {
-    _.assert( arguments.length === 0 || arguments.length === 1 );
     if( arguments.length === 1 )
-    {
-      _.assert( this.like( src ) );
-      return [];
-    }
+    _.assert( this.like( src ) );
     else
-    {
-      return [];
-    }
+    _.assert( arguments.length === 0 );
+
+    return this._makeEmpty( ... arguments );
+
+    // _.assert( arguments.length === 0 || arguments.length === 1 );
+    // if( arguments.length === 1 )
+    // {
+    //   _.assert( this.like( src ) );
+    //   return [];
+    // }
+    // else
+    // {
+    //   return [];
+    // }
   }
 
   //
@@ -166,11 +173,33 @@ function _functor( fo )
 
   function _make( src, length )
   {
-    if( _.numberIs( length ) || _.countable.is( length ) )
-    return new this.InstanceConstructor( length );
-    if( _.numberIs( src ) || _.countable.is( src ) )
-    return new this.InstanceConstructor( src );
+    if( arguments.length === 2 )
+    {
+      let data = length;
+      if( _.number.is( length ) )
+      data = src;
+      if( _.countable.is( length ) )
+      length = length.length;
+      return fill( new this.InstanceConstructor( length ), data );
+    }
+    else if( arguments.length === 1 )
+    {
+      return new this.InstanceConstructor( src );
+    }
     return new this.InstanceConstructor( 0 );
+
+  /* */
+
+  function fill( dst, data )
+  {
+    if( data === null || data === undefined )
+    return dst;
+    let l = Math.min( length, data.length );
+    for( let i = 0 ; i < l ; i++ )
+    dst[ i ] = data[ i ];
+    return dst;
+  }
+
     // if( _.numberIs( length ) )
     // return new this.InstanceConstructor( length );
     // if( _.numberIs( src ) )
