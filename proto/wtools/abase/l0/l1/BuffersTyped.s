@@ -296,6 +296,7 @@ function _functor( fo )
     makeEmpty, /* qqq : for Yevhen : cover */
     _makeUndefined,
     makeUndefined, /* qqq : for Yevhen : cover */
+    makeZeroed : makeUndefined,
     _makeFilling,
     makeFilling,
     _make,
