@@ -194,9 +194,7 @@ function strConcat( test )
 
   test.case = 'srcs - unroll';
   var srcs = [ 1, 2, 'str', 3, _.unroll.from([ 2 ]) ];
-  debugger;
   var got = _.strConcat( srcs );
-  debugger;
   if( _.entity.exportStringFine )
   test.identical( got, '1 2 str 3 [ 2 ]' );
   else
