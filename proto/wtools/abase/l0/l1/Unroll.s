@@ -212,6 +212,49 @@ function makeUndefined( src, length )
 
 //
 
+function _makeZeroed( src, length )
+{
+  if( arguments.length === 0 )
+  return _.unroll._make();
+
+  if( _.longIs( length ) )
+  {
+    length = length.length;
+  }
+  if( length === undefined || length === null )
+  {
+    if( src === null )
+    {
+      length = 0;
+    }
+    else if( _.longLike( src ) )
+    {
+      length = src.length;
+    }
+    else if( _.number.is( src ) )
+    {
+      length = src;
+      src = null;
+    }
+    else _.assert( 0 );
+  }
+
+  _.assert( _.number.isFinite( length ) );
+  _.assert( _.longIs( src ) || src === null );
+
+  return _.unroll._make( length ).fill( 0 );
+}
+
+//
+
+function makeZeroed( src, length )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  return _.unroll._makeZeroed( ... arguments );
+}
+
+//
+
 function _makeFilling( type, value, length )
 {
   if( arguments.length === 2 )
@@ -881,6 +924,8 @@ let UnrollExtension =
   makeEmpty, /* qqq : for Yevhen : cover */
   _makeUndefined,
   makeUndefined, /* qqq : for Yevhen : cover */
+  _makeZeroed,
+  makeZeroed, /* qqq : for Yevhen : cover */
   _makeFilling,
   makeFilling,
   _make,
