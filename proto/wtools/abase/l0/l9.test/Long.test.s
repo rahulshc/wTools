@@ -2022,9 +2022,6 @@ function longFromCoercing( test )
 function longFromCoercingLongDescriptor( test )
 {
   let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
   for( let k in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ k ];
@@ -2233,44 +2230,44 @@ function longFromCoercingArgumentsArrayLongDescriptor( test )
   test.case = 'string without number literals';
   var src = 'a b c';
   var got = long.longFromCoercing( src );
-  var exp = [ NaN, NaN, NaN ];
+  var exp = _.argumentsArray.make([ NaN, NaN, NaN ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'string with number literals';
   var src = '0 12 345 5678';
   var got = long.longFromCoercing( src );
-  var exp = [ 0, 12, 345, 5678 ];
+  var exp = _.argumentsArray.make([ 0, 12, 345, 5678 ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'string with number literals, has not number literals';
   var src = '0 12, 345 a5678';
   var got = long.longFromCoercing( src );
-  var exp = [ 0, 12, 345, NaN ];
+  var exp = _.argumentsArray.make([ 0, 12, 345, NaN ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'empty map';
   var src = {};
   var got = long.longFromCoercing( src );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'filled map';
   var src = { a : 1, b : 2, 3 : 'd' };
   var got = long.longFromCoercing( src );
-  var exp = [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ];
+  var exp = _.argumentsArray.make([ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'empty pure map';
   var src = Object.create( null );
   var got = long.longFromCoercing( src );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'filled map';
   var src = Object.create( null );
@@ -2278,64 +2275,64 @@ function longFromCoercingArgumentsArrayLongDescriptor( test )
   src.b = 2;
   src[ 3 ] = 'd';
   var got = long.longFromCoercing( src );
-  var exp = [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ];
+  var exp = _.argumentsArray.make([ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'empty object from constructor';
   function Constr1(){ return this };
   var src = new Constr1();
   var got = long.longFromCoercing( src );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'object with properties, from constructor';
   function Constr2(){ this.a = 2; this.b = 3; return this };
   var src = new Constr2();
   var got = long.longFromCoercing( src );
-  var exp = [ [ 'a', 2 ], [ 'b', 3 ] ];
+  var exp = _.argumentsArray.make([ [ 'a', 2 ], [ 'b', 3 ] ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
 
   test.case = 'empty array';
   var src = [];
   var got = long.longFromCoercing( src );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   test.case = 'filled array';
   var src = [ 1, 2, 3, 4, 0 ];
   var got = long.longFromCoercing( src );
-  var exp = [ 1, 2, 3, 4, 0 ];
+  var exp = _.argumentsArray.make([ 1, 2, 3, 4, 0 ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   test.case = 'empty unroll';
   var src = _.unroll.make( [] );
   var got = long.longFromCoercing( src );
-  var exp = [];
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   test.case = 'filled unroll';
   var src = _.unroll.make( [ 1, 2, 3, 4, 0 ] );
   var got = long.longFromCoercing( src );
-  var exp = [ 1, 2, 3, 4, 0 ];
+  var exp = _.argumentsArray.make([ 1, 2, 3, 4, 0 ]);
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   test.case = 'empty argumentsArray';
   var src = _.argumentsArray.make( [] );
   var got = long.longFromCoercing( src );
   var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
   test.true( src === got );
 
   test.case = 'filled argumentsArray';
@@ -2343,38 +2340,38 @@ function longFromCoercingArgumentsArrayLongDescriptor( test )
   var got = long.longFromCoercing( src );
   var exp = _.argumentsArray.make( [ 1, 2, 3, 4, 0 ] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
+  test.true( _.argumentsArray.is( got ) );
   test.true( src === got );
 
   test.case = 'empty BufferTyped';
   var src = new U8x( [] );
   var got = long.longFromCoercing( src );
-  var exp = new U8x( [] );
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   var src = new I16x( [] );
   var got = long.longFromCoercing( src );
-  var exp = new I16x( [] );
+  var exp = _.argumentsArray.make( [] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   test.case = 'filled BufferTyped';
   var src = new F32x( [ 1, 2, 3, 4, 0 ] );
   var got = long.longFromCoercing( src );
-  var exp = new F32x( [ 1, 2, 3, 4, 0 ] );
+  var exp = _.argumentsArray.make( [ 1, 2, 3, 4, 0 ] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   var src = new F64x( [ 1, 2, 3, 4, 0 ] );
   var got = long.longFromCoercing( src );
-  var exp = new F64x( [ 1, 2, 3, 4, 0 ] );
+  var exp = _.argumentsArray.make( [ 1, 2, 3, 4, 0 ] );
   test.identical( got, exp );
-  test.true( got instanceof long.defaultLong.InstanceConstructor );
-  test.true( src === got );
+  test.true( _.argumentsArray.is( got ) );
+  test.true( src !== got );
 
   /* - */
 
@@ -11599,10 +11596,6 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
 function longFromRangeWithStepNotDefaultLongDescriptor( test )
 {
   let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
   for( let k in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ k ];
@@ -12830,7 +12823,7 @@ function longHasDepth( test )
   test.identical( got, false );
 
   test.case = 'check Map';
-  var got = _.longHasDepth( new Map( [] ) );
+  var got = _.longHasDepth( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
@@ -13928,8 +13921,8 @@ const Proto =
     // longFrom,
     // longFromLongDescriptor,
     longFromCoercing,
-    // longFromCoercingLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
-    // longFromCoercingArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
+    longFromCoercingLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed */
+    longFromCoercingArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed */
 
     //
 
@@ -14010,7 +14003,7 @@ const Proto =
     longRandom,
     longFromRange,
     longFromRangeWithStepDefaultLongDescriptor,
-    // longFromRangeWithStepNotDefaultLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
+    longFromRangeWithStepNotDefaultLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed */
 
     longToMap, /* Dmytro : routine longToMap commented in Long.s */ /* Yevhen : uncommented, routine is used in module::wChangeTransactor */
     // longToStr, // Dmytro : routine longToStr commented in Long.s

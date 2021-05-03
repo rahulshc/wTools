@@ -6,7 +6,7 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( !!_.array._elementWithKey, 'Expects routine array._elementWithKey' );
+_.assert( !!_.long._elementWithKey, 'Expects routine array._elementWithKey' );
 
 // --
 // declaration
@@ -39,79 +39,78 @@ let UnrollExtension =
 
   // equaler
 
-  _identicalShallow : _.array._identicalShallow,
-  identicalShallow : _.array.identicalShallow,
-  identical : _.array.identical,
-  _equivalentShallow : _.array._equivalentShallow,
-  equivalentShallow : _.array.equivalentShallow,
-  equivalent : _.array.equivalent,
+  _identicalShallow : _.long._identicalShallow,
+  identicalShallow : _.long.identicalShallow,
+  identical : _.long.identical,
+  _equivalentShallow : _.long._equivalentShallow,
+  equivalentShallow : _.long.equivalentShallow,
+  equivalent : _.long.equivalent,
 
   // exporter
 
-  exportString : _.array.exportString,
-  // exportStringDiagnosticShallow : _.array.exportStringDiagnosticShallow,
-  exportStringDiagnosticShallow : _.array.exportStringDiagnosticShallow,
-  exportStringCodeShallow : _.array.exportStringCodeShallow,
-  // exportStringDiagnostic : _.array.exportStringDiagnostic,
-  // exportStringCode : _.array.exportStringCode,
+  exportString : _.long.exportString,
+  exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.long.exportStringCodeShallow,
 
   // container interface
 
-  _lengthOf : _.array._lengthOf,
-  lengthOf : _.array.lengthOf, /* qqq : cover */
+  _lengthOf : _.long._lengthOf,
+  lengthOf : _.long.lengthOf, /* qqq : cover */
 
-  _hasKey : _.array._hasKey,
-  hasKey : _.array._hasKey, /* qqq : cover */
-  _hasCardinal : _.array._hasKey,
-  hasCardinal : _.array._hasKey, /* qqq : cover */
-  _keyWithCardinal : _.array._hasKey,
-  keyWithCardinal : _.array._hasKey, /* qqq : cover */
+  _hasKey : _.long._hasKey,
+  hasKey : _.long._hasKey, /* qqq : cover */
+  _hasCardinal : _.long._hasKey,
+  hasCardinal : _.long._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.long._hasKey,
+  keyWithCardinal : _.long._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.long._cardinalWithKey,
+  cardinalWithKey : _.long.cardinalWithKey, /* qqq : cover */
 
-  _elementGet : _.array._elementWithKey,
-  elementGet : _.array.elementWithKey, /* qqq : cover */
-  _elementWithKey : _.array._elementWithKey,
-  elementWithKey : _.array.elementWithKey, /* qqq : cover */
-  _elementWithImplicit : _.array._elementWithImplicit,
-  elementWithImplicit : _.array.elementWithImplicit,  /* qqq : cover */
-  _elementWithCardinal : _.array._elementWithCardinal,
-  elementWithCardinal : _.array.elementWithCardinal,  /* qqq : cover */
+  _elementGet : _.long._elementWithKey,
+  elementGet : _.long.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.long._elementWithKey,
+  elementWithKey : _.long.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.long._elementWithImplicit,
+  elementWithImplicit : _.long.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.long._elementWithCardinal,
+  elementWithCardinal : _.long.elementWithCardinal,  /* qqq : cover */
 
-  _elementSet : _.array._elementSet,
-  elementSet : _.array.elementSet, /* qqq : cover */
-  _elementWithKeySet : _.array._elementWithKeySet,
-  elementWithKeySet : _.array.elementWithKeySet, /* qqq : cover */
-  _elementWithCardinalSet : _.array._elementWithCardinalSet,
-  elementWithCardinalSet : _.array.elementWithCardinalSet,  /* qqq : cover */
+  _elementSet : _.long._elementSet,
+  elementSet : _.long.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.long._elementWithKeySet,
+  elementWithKeySet : _.long.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.long._elementWithCardinalSet,
+  elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementDel : _.array._elementDel,
-  elementDel : _.array.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.array._elementWithKeyDel,
-  elementWithKeyDel : _.array.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.array._elementWithCardinalDel,
-  elementWithCardinalDel : _.array.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.array._empty,
-  empty : _.array.empty, /* qqq : for Yevhen : cover */
+  _elementDel : _.long._elementDel,
+  elementDel : _.long.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.long._elementWithKeyDel,
+  elementWithKeyDel : _.long.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.long._elementWithCardinalDel,
+  elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.long._empty,
+  empty : _.long.empty, /* qqq : for Yevhen : cover */
 
-  _each : _.argumentsArray._each,
-  each : _.argumentsArray.each, /* qqq : cover */
-  _eachLeft : _.argumentsArray._eachLeft,
-  eachLeft : _.argumentsArray.eachLeft, /* qqq : cover */
-  _eachRight : _.argumentsArray._eachRight,
-  eachRight : _.argumentsArray.eachRight, /* qqq : cover */
+  _each : _.long._each,
+  each : _.long.each, /* qqq : cover */
+  _eachLeft : _.long._eachLeft,
+  eachLeft : _.long.eachLeft, /* qqq : cover */
+  _eachRight : _.long._eachRight,
+  eachRight : _.long.eachRight, /* qqq : cover */
 
-  _while : _.argumentsArray._while,
-  while : _.argumentsArray.while, /* qqq : cover */
-  _whileLeft : _.argumentsArray._whileLeft,
-  whileLeft : _.argumentsArray.whileLeft, /* qqq : cover */
-  _whileRight : _.argumentsArray._whileRight,
-  whileRight : _.argumentsArray.whileRight, /* qqq : cover */
+  _while : _.long._while,
+  while : _.long.while, /* qqq : cover */
+  _whileLeft : _.long._whileLeft,
+  whileLeft : _.long.whileLeft, /* qqq : cover */
+  _whileRight : _.long._whileRight,
+  whileRight : _.long.whileRight, /* qqq : cover */
 
-  _aptLeft : _.argumentsArray._aptLeft,
-  aptLeft : _.argumentsArray.aptLeft, /* qqq : cover */
-  first : _.argumentsArray.first,
-  _aptRight : _.argumentsArray._aptRight, /* qqq : cover */
-  aptRight : _.argumentsArray.aptRight,
-  last : _.argumentsArray.last, /* qqq : cover */
+  _aptLeft : _.long._aptLeft,
+  aptLeft : _.long.aptLeft, /* qqq : cover */
+  first : _.long.first,
+  _aptRight : _.long._aptRight, /* qqq : cover */
+  aptRight : _.long.aptRight,
+  last : _.long.last, /* qqq : cover */
 
 }
 

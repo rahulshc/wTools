@@ -82,7 +82,7 @@ function dichotomy( test )
   test.identical( got, true );
 
   test.case = 'check blank Map';
-  var got = _.blank.is( new Map( [] ) );
+  var got = _.blank.is( new HashMap( [] ) );
   test.identical( got, true );
 
   test.case = 'check blank BufferRaw';

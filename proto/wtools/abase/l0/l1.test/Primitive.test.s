@@ -82,7 +82,7 @@ function dichotomy( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.primitive.is( new Map( [] ) );
+  var got = _.primitive.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -122,6 +122,7 @@ function dichotomy( test )
   var src = new Constr();
   var got = _.primitive.is( src );
   test.identical( got, false );
+
 }
 
 // --
@@ -139,7 +140,7 @@ const Proto =
 
     dichotomy,
 
-  }
+  },
 
 }
 

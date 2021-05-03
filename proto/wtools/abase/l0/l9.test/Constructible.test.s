@@ -137,14 +137,14 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.isBasic( src ) );
-  test.true( !_.aux.like( src ) );
-  test.true( !_.aux.is( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( _.aux.like( src ) );
+  test.true( _.aux.is( src ) );
+  test.true( _.mapIs( src ) );
   test.true( !_.mapIsPure( src ) );
   test.true( !_.aux.isPure( src ) );
   test.true( !_.aux.isPrototyped( src ) );
-  test.true( !_.aux.isPolluted( src ) );
-  test.true( !_.mapIsPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
+  test.true( _.mapIsPolluted( src ) );
 
   test.case = 'Pure map with iterator';
   var src = Object.create( null );
@@ -153,11 +153,11 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.isBasic( src ) );
-  test.true( !_.aux.like( src ) );
-  test.true( !_.aux.is( src ) );
-  test.true( !_.mapIs( src ) );
-  test.true( !_.mapIsPure( src ) );
-  test.true( !_.aux.isPure( src ) );
+  test.true( _.aux.like( src ) );
+  test.true( _.aux.is( src ) );
+  test.true( _.mapIs( src ) );
+  test.true( _.mapIsPure( src ) );
+  test.true( _.aux.isPure( src ) );
   test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.aux.isPolluted( src ) );
   test.true( !_.mapIsPolluted( src ) );
@@ -396,7 +396,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
@@ -411,7 +411,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
@@ -461,14 +461,14 @@ function typingExtended( test )
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
   test.true( _.object.isBasic( src ) );
-  test.true( !_.aux.like( src ) );
-  test.true( !_.aux.is( src ) );
-  test.true( !_.mapIs( src ) );
+  test.true( _.aux.like( src ) );
+  test.true( _.aux.is( src ) );
+  test.true( _.mapIs( src ) );
   test.true( !_.aux.isPure( src ) );
   test.true( !_.aux.isPrototyped( src ) );
   test.true( !_.mapIsPure( src ) );
-  test.true( !_.aux.isPolluted( src ) );
-  test.true( !_.mapIsPolluted( src ) );
+  test.true( _.aux.isPolluted( src ) );
+  test.true( _.mapIsPolluted( src ) );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
@@ -1020,7 +1020,7 @@ function typingExtended( test )
   //   if( dst === null )
   //   dst = Object.create( null );
   //   _.props.extend( dst, o );
-  //   if( o.withIterator )
+  //   if( o.countable )
   //   dst[ Symbol.iterator ] = _iterate;
   //   return dst;
   // }
@@ -1036,13 +1036,13 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
   let sets =
   {
-    withIterator : [ 0, 1 ],
+    countable : [ 0, 1 ],
     pure : [ 0, 1 ],
     withOwnConstructor : [ 0, 1 ],
     withConstructor : [ 0, 1 ],
     new : [ 0, 1 ],
   };
-  let samples = _.eachSample_({ sets });
+  let samples = _.permutation.eachSample({ sets });
 
   for( let env of samples )
   eachCase( env );
@@ -1060,12 +1060,12 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
       test.identical( _.object.isBasic( src ), true );
       test.identical( _.object.like( src ), true );
-      test.identical( _.mapIs( src ), !env.withIterator );
-      test.identical( _.aux.is( src ), !env.withIterator );
+      test.identical( _.mapIs( src ), !env.countable || !env.new );
+      test.identical( _.aux.is( src ), !env.countable || !env.new );
       test.identical( _.aux.isPrototyped( src ), false );
-      test.identical( _.mapIsPure( src ), !!env.pure && !env.withIterator );
-      test.identical( _.mapIsPolluted( src ), !env.pure && !env.withIterator );
-      test.identical( _.aux.isPolluted( src ), !env.pure && !env.withIterator );
+      test.identical( _.mapIsPure( src ), !!env.pure && !env.new );
+      test.identical( _.mapIsPolluted( src ), !env.pure && !env.new );
+      test.identical( _.aux.isPolluted( src ), !env.pure && !env.new );
 
     }
 
@@ -1081,11 +1081,11 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       test.identical( _.object.isBasic( src ), true );
       test.identical( _.object.like( src ), true );
       test.identical( _.mapIs( src ), false );
-      test.identical( _.aux.is( src ), !env.withIterator && !env.withConstructor );
-      test.identical( _.aux.isPrototyped( src ), !env.withIterator && !env.withConstructor );
+      test.identical( _.aux.is( src ), !env.withConstructor );
+      test.identical( _.aux.isPrototyped( src ), !env.withConstructor );
       test.identical( _.mapIsPure( src ), false );
       test.identical( _.mapIsPolluted( src ), false );
-      test.identical( _.aux.isPolluted( src ), !env.pure && !env.withIterator && !env.withConstructor );
+      test.identical( _.aux.isPolluted( src ), !env.pure && !env.withConstructor );
 
     }
 
@@ -1113,7 +1113,7 @@ function objectLike( test ) /* qqq : rewrote the test */
   test.identical( _.object.like( new DataView( new ArrayBuffer( 10 ) ) ), true );
   test.identical( _.object.like( new Array( 10 ) ), false );
   test.identical( _.object.like( [ 1, 2, 3 ] ), false );
-  test.identical( _.object.like( new Map ), false );
+  test.identical( _.object.like( new HashMap ), false );
 
   test.description = 'this entities are object-like';
 

@@ -11,6 +11,7 @@ _.countable = _.countable || Object.create( null );
 // dichotomy
 // --
 
+/* qqq : for Junior : cover please */
 function is( src )
 {
 
@@ -20,7 +21,7 @@ function is( src )
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.class.methodIteratorOf( src ) )
+  if( _.routineIs( _.class.methodIteratorOf( src ) ) ) /* qqq : for Junior : cover please */
   if( !_.mapIs( src ) )
   return true;
 
@@ -229,14 +230,14 @@ var CountableExtension =
   // maker
   //
   // _makeEmpty,
-  // makeEmpty, /* qqq : for Yevhen : cover */
+  // makeEmpty, /* qqq : for junior : cover */
   // _makeUndefined,
-  // makeUndefined, /* qqq : for Yevhen : cover */
+  // makeUndefined, /* qqq : for junior : cover */
   // _make,
-  // make, /* qqq : for Yevhen : cover */
+  // make, /* qqq : for junior : cover */
   // _cloneShallow,
-  // cloneShallow, /* qqq : for Yevhen : cover */
-  // from, /* qqq : for Yevhen : cover */
+  // cloneShallow, /* qqq : for junior : cover */
+  // from, /* qqq : for junior : cover */
 
 }
 

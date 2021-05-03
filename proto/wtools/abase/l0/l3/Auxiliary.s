@@ -27,22 +27,6 @@ function _identicalShallow( src1, src2 )
   return true;
 }
 
-//
-
-function identicalShallow( src1, src2, o )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-
-  return this._identicalShallow( src1, src2 );
-}
-
 // --
 // extension
 // --
@@ -61,20 +45,19 @@ var AuxiliaryExtension =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
   _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
 
   // exporter
 
-  exportString : _.props.exportString,
-  // exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringDiagnosticShallow : _.props._exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.props._exportStringCodeShallow,
   exportStringCodeShallow : _.props.exportStringCodeShallow,
-  // // exportStringDiagnostic : _.props.exportStringDiagnostic,
-  // exportStringCode : _.props.exportStringCode,
+  exportString : _.props.exportString,
 
   // container interface
 
@@ -87,6 +70,8 @@ var AuxiliaryExtension =
   hasCardinal : _.props._hasKey, /* qqq : cover */
   _keyWithCardinal : _.props._hasKey,
   keyWithCardinal : _.props._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.props._cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
 
   _elementGet : _.props._elementWithKey,
   elementGet : _.props.elementWithKey, /* qqq : cover */

@@ -65,16 +65,19 @@ function is( src ) /* xxx : qqq : for junior : optimize */
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.vector.is( src ) )
-  return false;
+  // if( _.vector.is( src ) )
+  // return false;
 
-  if( _.routine.isTrivial( src ) )
+  if( _.long.is( src ) )
   return false;
 
   if( _.set.is( src ) )
   return false;
 
   if( _.hashMap.is( src ) )
+  return false;
+
+  if( _.routine.isTrivial( src ) )
   return false;
 
   return true;

@@ -263,6 +263,7 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Array.test.s
           - ../proto/wtools/abase/l0/l1.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l1.test/Blank.test.s
+          - ../proto/wtools/abase/l0/l1.test/Bool.test.s
           - ../proto/wtools/abase/l0/l1.test/Buffer.test.s
           - ../proto/wtools/abase/l0/l1.test/Container.test.s
           - ../proto/wtools/abase/l0/l1.test/Countable.test.s
@@ -285,6 +286,7 @@ module:
           - ../proto/wtools/abase/l0/l3/1Wrap.s
           - ../proto/wtools/abase/l0/l3/2Props.s
           - ../proto/wtools/abase/l0/l3/3Blank.s
+          - ../proto/wtools/abase/l0/l3/3Long.s
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
           - ../proto/wtools/abase/l0/l3/ArraySet.s
@@ -298,7 +300,6 @@ module:
           - ../proto/wtools/abase/l0/l3/Escape.s
           - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Itself.s
-          - ../proto/wtools/abase/l0/l3/Long.s
           - ../proto/wtools/abase/l0/l3/Map.s
           - ../proto/wtools/abase/l0/l3/Number.s
           - ../proto/wtools/abase/l0/l3/Object.s
@@ -314,6 +315,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Array.test.s
           - ../proto/wtools/abase/l0/l3.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l3.test/Blank.test.s
+          - ../proto/wtools/abase/l0/l3.test/Bool.test.s
           - ../proto/wtools/abase/l0/l3.test/Buffer.test.s
           - ../proto/wtools/abase/l0/l3.test/Container.test.s
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
@@ -368,6 +370,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Object.s
           - ../proto/wtools/abase/l0/l5/Pair.s
           - ../proto/wtools/abase/l0/l5/Path.s
+          - ../proto/wtools/abase/l0/l5/Permutation.s
           - ../proto/wtools/abase/l0/l5/Primitive.s
           - ../proto/wtools/abase/l0/l5/Printer.s
           - ../proto/wtools/abase/l0/l5/Process.s
@@ -431,8 +434,8 @@ module:
           - ../proto/wtools/abase/l0/l7/Primitive.s
           - ../proto/wtools/abase/l0/l7/Printer.s
           - ../proto/wtools/abase/l0/l7/Process.s
-          - ../proto/wtools/abase/l0/l7/Property.s
           - ../proto/wtools/abase/l0/l7/PropertyTransformer.s
+          - ../proto/wtools/abase/l0/l7/Props.s
           - ../proto/wtools/abase/l0/l7/Prototype.s
           - ../proto/wtools/abase/l0/l7/Regexp.s
           - ../proto/wtools/abase/l0/l7/Routine.s
@@ -484,6 +487,7 @@ module:
           - ../proto/wtools/abase/l0/l9.test/Object.test.s
           - ../proto/wtools/abase/l0/l9.test/Pair.test.s
           - ../proto/wtools/abase/l0/l9.test/Path.test.s
+          - ../proto/wtools/abase/l0/l9.test/Permutation.test.s
           - ../proto/wtools/abase/l0/l9.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l9.test/Printer.test.s
           - ../proto/wtools/abase/l0/l9.test/Process.test.s

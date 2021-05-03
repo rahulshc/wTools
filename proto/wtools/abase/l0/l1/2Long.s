@@ -50,18 +50,35 @@ _.withLong = _.long.toolsNamespacesByType;
 /* xxx : optimize! */
 /* qqq : for junior : optimize. ask how to */
 /* qqq : check coverage */
+
 function is( src )
 {
 
   if( _.primitive.is( src ) )
   return false;
+  if( !_.class.methodIteratorOf( src ) )
+  return false;
+
   if( _.argumentsArray.like( src ) )
   return true;
-  if( _.bufferTypedIs( src ) )
+  if( _.bufferTyped.is( src ) )
   return true;
 
   return false;
 }
+
+// function is( src )
+// {
+//
+//   if( _.primitive.is( src ) )
+//   return false;
+//   if( _.argumentsArray.like( src ) )
+//   return true;
+//   if( _.bufferTypedIs( src ) )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -124,7 +141,8 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( this.like( src ) || _.routineIs( src ) );
+    _.assert( _.vector.is( src ) || _.routineIs( src ) );
+    // _.assert( this.like( src ) || _.routineIs( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
     return this._makeEmpty( src );
   }
   else
@@ -279,6 +297,60 @@ function makeZeroed( src, length )
     _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
   }
   return this._makeZeroed( ... arguments );
+}
+
+//
+
+function _makeFilling( type, value, length )
+{
+  if( arguments.length === 2 )
+  {
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+    if( _.longIs( length ) )
+    {
+      if( _.argumentsArray.is( length ) )
+      type = length;
+      else if( _.number.is( length ) )
+      type = null;
+      else
+      type = length;
+    }
+    else
+    {
+      type = null;
+    }
+  }
+
+  if( _.longIs( length ) )
+  length = length.length;
+
+  let result = this.make( type, length );
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = value;
+
+  return result;
+}
+
+//
+
+function makeFilling( type, value, length )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    _.assert( _.number.is( value ) || _.long.is( value ) );
+  _.assert( type !== undefined );
+  }
+  else
+  {
+    _.assert( value !== undefined );
+    _.assert( _.number.is( length ) || _.long.is( length ) );
+    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
+  }
+
+  return this._makeFilling( ... arguments );
 }
 
 //
@@ -905,6 +977,8 @@ let LongExtension =
   makeUndefined, /* qqq : for junior : cover */
   _makeZeroed,
   makeZeroed, /* qqq : for junior : cover */
+  _makeFilling,
+  makeFilling,
   _make,
   make, /* qqq : for junior : cover */
   _cloneShallow,

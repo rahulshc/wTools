@@ -137,7 +137,7 @@ function methodIteratorOf( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var src = new Map([ [ 1, 2 ] ]);
+  var src = new HashMap([ [ 1, 2 ] ]);
   var got = _.class.methodIteratorOf( src );
   var expected = src[ _.class.iteratorSymbol ];
   test.identical( got, expected );
@@ -286,7 +286,7 @@ function methodEqualOf( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.class.methodEqualOf( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.class.methodEqualOf( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 

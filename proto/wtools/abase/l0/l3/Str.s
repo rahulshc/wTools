@@ -245,7 +245,7 @@ Object.assign( _, ToolsExtension );
 
 //
 
-let ExtensionEntity =
+let EntityExtension =
 {
 
   // strParseType, /* xxx : move */
@@ -253,7 +253,7 @@ let ExtensionEntity =
 
 }
 
-Object.assign( _.entity, ExtensionEntity );
+Object.assign( _.entity, EntityExtension );
 
 //
 
