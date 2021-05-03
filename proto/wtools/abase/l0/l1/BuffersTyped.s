@@ -87,10 +87,8 @@ function _functor( fo )
       else
       return new this.InstanceConstructor( length );
     }
-    else
-    {
-      return [];
-    }
+
+    return new this.InstanceConstructor( 0 );
   }
 
   //
