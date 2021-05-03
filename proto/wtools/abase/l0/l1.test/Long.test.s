@@ -359,9 +359,6 @@ function makeCommonWithLongDescriptor( test )
     let namespace = _.long.namespaces[ k ];
     let type = namespace.TypeName;
 
-    if( type === 'ArgumentsArray' )
-    continue;
-
     test.open( `long - ${ type }` );
     methodEach({ tools : 'default', type });
     methodEach({ tools : 'Array', type });
@@ -397,6 +394,7 @@ function makeCommonWithLongDescriptor( test )
     {
       test.case = `${__.entity.exportStringSolo( env )}, no args`;
       var got = _tools.long[ env.method ]();
+      if( !_.argumentsArray.is( got ) )
       test.true( got instanceof _global_[ _tools.defaultLong.TypeName ] );
       test.identical( got.length, 0 );
     }
@@ -407,6 +405,7 @@ function makeCommonWithLongDescriptor( test )
     {
       test.case = `${__.entity.exportStringSolo( env )}, length`;
       var got = _tools.long[ env.method ]( 3 );
+      if( !_.argumentsArray.is( got ) )
       test.true( got instanceof _global_[ _tools.defaultLong.TypeName ] );
       test.true( got.length === 3 );
     }
@@ -606,9 +605,6 @@ function makeLongFilledCommonWithLongDescriptor( test )
     let namespace = _.long.namespaces[ k ];
     let type = namespace.TypeName;
 
-    if( type === 'ArgumentsArray' )
-    continue;
-
     test.open( `long - ${ type }` );
     methodEach({ tools : 'default', type });
     methodEach({ tools : 'Array', type });
@@ -641,11 +637,13 @@ function makeLongFilledCommonWithLongDescriptor( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, no args`;
     var got = _tools.long[ env.method ]();
+    if( !_.argumentsArray.is( got ) )
     test.true( got instanceof _tools.defaultLong.InstanceConstructor );
     test.identical( got.length, 0 );
 
     test.case = `${__.entity.exportStringSolo( env )}, length`;
     var got = _tools.long[ env.method ]( 3 );
+    if( !_.argumentsArray.is( got ) )
     test.true( got instanceof _tools.defaultLong.InstanceConstructor );
     var _value = _.bufferTypedIs( got ) ? 0 : undefined;
     if( env.method === 'makeZeroed' )
