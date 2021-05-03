@@ -181,7 +181,7 @@ function _elementWithCardinalSet( src, cardinal, val )
 
 function _elementWithKeyDel( src, key )
 {
-  _.assert( 0, `${this.NamespaceName} does not have method elementWithCardinalDel` );
+  _.assert( 0, `Cant delete element of ${this.NamespaceName}` );
   return false;
 }
 
@@ -198,7 +198,7 @@ function _elementWithKeyDel( src, key )
 
 function _elementWithCardinalDel( src, cardinal )
 {
-  _.assert( 0, `${this.NamespaceName} does not have method elementWithCardinalDel` );
+  _.assert( 0, `Cant delete element of ${this.NamespaceName}` );
   return false;
 }
 
@@ -215,6 +215,7 @@ function _elementWithCardinalDel( src, cardinal )
 
 function _empty( dst )
 {
+  _.assert( 0, `Cant empty ${this.NamespaceName}` );
   return dst;
 }
 

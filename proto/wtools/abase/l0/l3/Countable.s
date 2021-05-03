@@ -186,8 +186,8 @@ function _cardinalWithKey( src, key )
 
 function _elementWithKey( src, key )
 {
-  // if( _.number.is( key ) )
-  // {
+  if( _.number.is( key ) )
+  {
     if( key < 0 )
     return [ undefined, key, false ];
     const src2 = [ ... src ];
@@ -195,14 +195,14 @@ function _elementWithKey( src, key )
     return [ undefined, key, false ];
     else
     return [ src2[ key ], key, true ];
-  // }
-  // else
-  // {
-  //   if( _.props.has( src, key ) )
-  //   return [ src[ key ], key, true ];
-  //   else
-  //   return [ undefined, key, false ];
-  // }
+  }
+  else
+  {
+    // if( _.props.has( src, key ) )
+    // return [ src[ key ], key, true ];
+    // else
+    return [ undefined, key, false ];
+  }
 }
 
 // //
