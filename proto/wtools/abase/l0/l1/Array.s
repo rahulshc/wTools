@@ -203,15 +203,35 @@ function makeFilling( type, value, length )
 
 function _make( src, length )
 {
-  if( _.number.is( length ) )
-  return new Array( length );
-  if( _.countable.is( length ) )
-  return [ ... length ];
-  if( _.number.is( src ) )
-  return new Array( src );
-  if( _.countable.is( src ) )
-  return [ ... src ];
+  if( arguments.length === 2 )
+  {
+    let data = length;
+    if( _.number.is( length ) )
+    data = src;
+    if( _.countable.is( length ) )
+    length = length.length;
+    return fill( new Array( length ), data );
+  }
+  else if( arguments.length === 1 )
+  {
+    if( _.number.is( src ) )
+    return new Array( src );
+    if( _.countable.is( src ) )
+    return [ ... src ];
+  }
   return [];
+
+  /* */
+
+  function fill( dst, data )
+  {
+    if( data === null || data === undefined )
+    return dst;
+    let l = Math.min( length, data.length );
+    for( let i = 0 ; i < l ; i++ )
+    dst[ i ] = data[ i ];
+    return dst;
+  }
 
   // if( _.numberIs( length ) )
   // return new Array( length );
