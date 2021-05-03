@@ -20,6 +20,10 @@ const __ = _globals_.testing.wTools;
 function exportStringDiagnosticShallow( test )
 {
 
+  test.case = 'unroll';
+  var src = _.unroll.make([ 2, 3, 4 ]);
+  test.identical( _.container.exportStringDiagnosticShallow( src ), 'xxx' );
+
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();
   var expected = '{- ArgumentsArray with 0 elements -}';
