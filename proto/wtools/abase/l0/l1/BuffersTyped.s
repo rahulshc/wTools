@@ -100,17 +100,30 @@ function _functor( fo )
     {
       _.assert( src === null || _.long.is( src ) );
       _.assert( _.number.is( length ) || _.long.is( length ) );
-      return this._makeUndefined( src, length );
     }
     else if( arguments.length === 1 )
     {
       _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-      return this._makeUndefined( src );
     }
-    else
-    {
-      return [];
-    }
+
+    return this._makeUndefined( ... arguments );
+
+    // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+    // if( arguments.length === 2 )
+    // {
+    //   _.assert( src === null || _.long.is( src ) );
+    //   _.assert( _.number.is( length ) || _.long.is( length ) );
+    //   return this._makeUndefined( src, length );
+    // }
+    // else if( arguments.length === 1 )
+    // {
+    //   _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+    //   return this._makeUndefined( src );
+    // }
+    // else
+    // {
+    //   return [];
+    // }
   }
 
   //
