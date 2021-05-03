@@ -48,7 +48,7 @@ function _make( src, length )
     if( _.countable.is( length ) )
     length = length.length;
 
-    const dst = _.number.is( length ) ? Array( length ) : [ ... length ];
+    const dst = _.argumentsArray._makeAct.apply( _, _.number.is( length ) ? Array( length ) : [ ... length ] );
     return fill( dst, data );
   }
   else if( arguments.length === 1 )
