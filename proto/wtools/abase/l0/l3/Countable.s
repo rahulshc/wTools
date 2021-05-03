@@ -13,8 +13,8 @@ const _ = _global_.wTools;
 function _identicalShallow( src1, src2 )
 {
 
-  // if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
-  // return false;
+  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
+  return false;
   if( !_.countable.is( src1 ) )
   return false;
   if( !_.countable.is( src2 ) )
@@ -48,7 +48,6 @@ function _identicalShallow( src1, src2 )
 
 function _equivalentShallow( src1, src2 )
 {
-
   let result = true;
 
   if( _.longIs( src1 ) && _.longIs( src2 ) )
@@ -452,7 +451,7 @@ var CountableExtension =
   _identicalShallow,
   identicalShallow : _.props.identicalShallow,
   identical : _.props.identical,
-  _equivalentShallow : _identicalShallow,
+  _equivalentShallow,
   equivalentShallow : _.props.equivalentShallow,
   equivalent : _.props.equivalent,
 
