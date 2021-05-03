@@ -147,6 +147,46 @@ function makeUndefined( src, length )
 
 //
 
+function _makeZeroed( src, length )
+{
+  if( arguments.length === 2 )
+  {
+    if( _.long.is( length ) )
+    length = length.length;
+    return new Array( length ).fill( 0 );
+  }
+  else if( arguments.length === 1 )
+  {
+    length = src;
+    if( _.long.is( length ) )
+    length = length.length;
+    if( length === null )
+    length = 0;
+
+    return new Array( length ).fill( 0 );
+  }
+  return [];
+}
+
+//
+
+function makeZeroed( src, length )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || _.long.is( src ) );
+    _.assert( _.number.is( length ) || _.long.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+  }
+  return this._makeZeroed( ... arguments );
+}
+
+//
+
 function _makeFilling( type, value, length )
 {
   if( arguments.length === 2 )
@@ -338,6 +378,8 @@ let ArrayExtension =
   makeEmpty, /* qqq : for Yevhen : cover */
   _makeUndefined,
   makeUndefined, /* qqq : for Yevhen : cover */
+  _makeZeroed,
+  makeZeroed, /* qqq : for Yevhen : cover */
   _makeFilling,
   makeFilling,
   _make,
