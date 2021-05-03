@@ -35,6 +35,58 @@ function exportStringDiagnosticShallow( src, o )
 }
 
 // --
+//
+// --
+
+function lengthOf( container ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 1 );
+  return lengthOf.functor.call( this, container )();
+}
+
+lengthOf.functor = _functor_functor( 'lengthOf' );
+
+//
+
+function hasKey( container, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return hasKey.functor.call( this, container )( ... args );
+}
+
+hasKey.functor = _functor_functor( 'hasKey' );
+
+//
+
+function hasCardinal( container, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return hasCardinal.functor.call( this, container )( ... args );
+}
+
+hasCardinal.functor = _functor_functor( 'hasCardinal' );
+
+//
+
+function keyWithCardinal( container, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return keyWithCardinal.functor.call( this, container )( ... args );
+}
+
+keyWithCardinal.functor = _functor_functor( 'keyWithCardinal' );
+
+//
+
+function cardinalWithKey( container, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return cardinalWithKey.functor.call( this, container )( ... args );
+}
+
+cardinalWithKey.functor = _functor_functor( 'cardinalWithKey' );
+
+// --
 // editor
 // --
 
@@ -76,7 +128,7 @@ function exportStringDiagnosticShallow( src, o )
  * // log true
  *
  * @example
- * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
+ * let dst = new HashMap( [ [ 1, 'str' ], [ 'a', null ] ] );
  * let got = _.container.empty( dst );
  * console.log( got );
  * // log Map {}
@@ -98,18 +150,6 @@ function empty( container ) /* qqq for junior : cover please */
 }
 
 empty.functor = _functor_functor( 'empty' );
-
-// --
-//
-// --
-
-function lengthOf( container ) /* qqq for junior : cover please */
-{
-  _.assert( arguments.length === 1 );
-  return lengthOf.functor.call( this, container )();
-}
-
-lengthOf.functor = _functor_functor( 'lengthOf' );
 
 //
 
@@ -221,7 +261,7 @@ elementWithImplicit.functor = _functor_functor( 'elementWithImplicit' );
 
 //
 
-function elementWithCardinalSet( container, key, val ) /* qqq for junior : cover please | aaa : Done. */
+function elementWithCardinalSet( container, key, val )
 {
   _.assert( arguments.length === 3 );
   _.assert( _.numberIs( key ) );
@@ -332,13 +372,17 @@ let ContainerExtension =
   exportStringCodeShallow : exportStringDiagnosticShallow,
   exportString : exportStringDiagnosticShallow,
 
-  // editor
-
-  empty, /* qqq : cover */
-
   // inspector
 
   lengthOf, /* qqq : cover */
+  hasKey, /* qqq : cover */
+  hasCardinal, /* qqq : cover */
+  keyWithCardinal, /* qqq : cover */
+  cardinalWithKey, /* qqq : cover */
+
+  // editor
+
+  empty, /* qqq : cover */
 
   // elementor
 

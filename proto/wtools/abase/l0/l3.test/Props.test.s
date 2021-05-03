@@ -74,14 +74,14 @@ function dichotomy( test )
   src[ Symbol.iterator ] = function(){};
   test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
-  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.aux.isPolluted( src ), false );
-  test.identical( _.map.isEmpty( src ), false );
-  test.identical( _.aux.isEmpty( src ), false );
+  test.identical( _.map.isEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.map.isPopulated( src ), false );
   test.identical( _.aux.isPopulated( src ), false );
 
@@ -136,14 +136,14 @@ function dichotomy( test )
   src[ Symbol.iterator ] = function(){};
   test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.aux.isPolluted( src ), false );
-  test.identical( _.map.isEmpty( src ), false );
-  test.identical( _.aux.isEmpty( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
+  test.identical( _.map.isEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.map.isPopulated( src ), false );
   test.identical( _.aux.isPopulated( src ), false );
 

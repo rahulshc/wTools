@@ -49,7 +49,7 @@ if( typeof module !== 'undefined' )
   require( './l7/Primitive.s' );
   require( './l7/Printer.s' );
   require( './l7/Process.s' );
-  require( './l7/Property.s' );
+  require( './l7/Props.s' );
   require( './l7/PropertyTransformer.s' );
   require( './l7/Prototype.s' );
   require( './l7/Regexp.s' );

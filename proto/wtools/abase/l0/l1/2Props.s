@@ -42,8 +42,6 @@ function _makeEmpty( src )
   if( _.object.isBasic( src ) )
   return _.object._makeEmpty( src );
 
-  _.assert( 0 );
-
   _.assert( 0, `Not clear how to make ${ _.strType( src ) }` );
 }
 
@@ -52,7 +50,7 @@ function _makeEmpty( src )
 function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
-  return this._make( src );
+  return this._makeEmpty( ... arguments );
 }
 
 //
@@ -76,7 +74,7 @@ function _makeUndefined( src, length )
 function makeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return this._makeUndefined( src );
+  return this._makeUndefined( ... arguments );
 }
 
 //
@@ -100,11 +98,11 @@ function _make( src )
 
 //
 
-function make( src )
+function make( src, length )
 {
   _.assert( this.like( src ) );
-  _.assert( arguments.length === 1 );
-  return this._make( src );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return this._make( ... arguments );
 }
 
 //
@@ -802,7 +800,7 @@ function vals( srcMap, o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( vals, o || null );
   // _.assert( !_.primitive.is( srcMap ) );
-  // _.assert( this === _.object ); xxx
+  // _.assert( this === _.object );
 
   o.srcMap = srcMap;
 
@@ -1704,7 +1702,6 @@ function own( src, key )
   // return false;
   // if( src === undefined )
   // return false;
-  /* xxx */
   if( _.primitive.is( src ) )
   return false;
   return Object.hasOwnProperty.call( src, key );
@@ -1812,37 +1809,8 @@ function descriptorOwnOf( object, name )
 }
 
 // --
-// extension
+// props extension
 // --
-
-let ToolsExtension =
-{
-
-  // dichotomy
-
-  propsIs : is.bind( _.props ),
-  propsLike : like.bind( _.props ),
-
-  // maker
-
-  propsMakeEmpty : makeEmpty.bind( _.props ),
-  propsMakeUndefined : makeUndefined.bind( _.props ),
-  propsMake : make.bind( _.props ),
-  propsCloneShallow : cloneShallow.bind( _.props ),
-  propsFrom : from.bind( _.props ),
-
-  // amender
-
-  propsExtend : extend.bind( _.props ),
-  propsSupplement : supplement.bind( _.props ),
-
-}
-
-//
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let PropsExtension =
 {
@@ -1940,5 +1908,36 @@ let PropsExtension =
 //
 
 Object.assign( _.props, PropsExtension );
+
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+  // dichotomy
+
+  propsIs : is.bind( _.props ),
+  propsLike : like.bind( _.props ),
+
+  // maker
+
+  propsMakeEmpty : makeEmpty.bind( _.props ),
+  propsMakeUndefined : makeUndefined.bind( _.props ),
+  propsMake : make.bind( _.props ),
+  propsCloneShallow : cloneShallow.bind( _.props ),
+  propsFrom : from.bind( _.props ),
+
+  // amender
+
+  propsExtend : extend.bind( _.props ),
+  propsSupplement : supplement.bind( _.props ),
+
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 
 })();

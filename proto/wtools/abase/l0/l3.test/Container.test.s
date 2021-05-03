@@ -36,22 +36,22 @@ function exportStringDiagnosticShallow( test )
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [], countable : 1, new : 0 });
   var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
   var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
@@ -218,11 +218,11 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 2 );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   test.identical( _.container.lengthOf( src ), 2 );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   test.identical( _.container.lengthOf( src ), 2 );
 
   // test.case = 'Global & GlobalReal';
@@ -326,11 +326,11 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 0 );
 
   test.case = 'countable object';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   test.identical( _.container.lengthOf( src ), 3 );
 
   test.case = 'non-countable object';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 0 });
   test.identical( _.container.lengthOf( src ), 0 );
 
   test.case = 'null';
@@ -496,7 +496,7 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
   test.identical( got5, [ undefined, 4, false ] );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithCardinal( src, 0 );
   test.identical( got, [ '1', 0, true ] );
   var got2 = _.container.elementWithCardinal( src, 1 );
@@ -507,7 +507,7 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
   test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithCardinal( src, 0 );
   test.identical( got, [ '1', 0, true ] );
   var got2 = _.container.elementWithCardinal( src, 1 );
@@ -783,7 +783,7 @@ function elementWithKeyArgImplicit( test )
   test.identical( got, expected );
 
   test.case = 'countable';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithKey( src, _.props.implicit.prototype );
   var expected = [ undefined, _.props.implicit.prototype, false ];
   test.identical( got, expected );
@@ -925,14 +925,14 @@ function elementWithKey( test )
   test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithKey( src, 'elements' );
   test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'vector & vectorLike wit 3 elems';
-  var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, countable : 1, length : 2 });
   var got = _.container.elementWithKey( src, 'element1' );
   test.identical( got, [ '1', 'element1', true ] );
   var got2 = _.container.elementWithKey( src, 'element2' );
@@ -941,14 +941,14 @@ function elementWithKey( test )
   test.identical( got3, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithKey( src, 'elements' );
   test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable, empty key';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   src[ '' ] = 'empty';
   var got = _.container.elementWithKey( src, '' );
   test.identical( got, [ 'empty', '', true ] );
@@ -1280,7 +1280,7 @@ function elementWithImplicitArgImplicit( test )
   test.identical( got, expected );
 
   test.case = 'prototype countable';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
   var expected = [ Object.getPrototypeOf( src ), Symbol.for( 'prototype' ), true ];
   test.identical( got, expected );
@@ -1324,7 +1324,7 @@ function elementWithImplicitArgImplicit( test )
   test.identical( got, expected );
 
   test.case = 'constructor countable';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
   var expected = [ src.constructor, Symbol.for( 'constructor' ), true ];
   test.identical( got, expected );
@@ -1508,14 +1508,14 @@ function elementWithImplicit( test )
   test.identical( got4, [ undefined, 3, false ] );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'elements' );
   test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'vector & vectorLike wit 3 elems';
-  var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'element1' );
   test.identical( got, [ '1', 'element1', true ] );
   var got2 = _.container.elementWithImplicit( src, 'element2' );
@@ -1524,14 +1524,14 @@ function elementWithImplicit( test )
   test.identical( got3, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, 'elements' );
   test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable, empty key';
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   src[ '' ] = 'empty';
   var got = _.container.elementWithImplicit( src, '' );
   test.identical( got, [ 'empty', '', true ] );
@@ -1887,16 +1887,16 @@ function empty( test )
   /* */
 
   test.case = 'empty Map';
-  var dst = new Map();
+  var dst = new HashMap();
   var got = _.container.empty( dst );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
 
   test.case = 'filled Map';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', '' ], [ false, false ], [ {}, {} ], [ [], [] ] ] );
+  var dst = new HashMap( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', '' ], [ false, false ], [ {}, {} ], [ [], [] ] ] );
   var got = _.container.empty( dst );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
 

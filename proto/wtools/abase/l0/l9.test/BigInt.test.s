@@ -80,7 +80,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.bigInt.is( new Map( [] ) );
+  var got = _.bigInt.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';

@@ -70,7 +70,7 @@ function isArrayUnrollArgumentsArray( test )
     test.identical( got, expected );
 
     test.case = 'HashMap';
-    var got = descriptor.is( new Map() );
+    var got = descriptor.is( new HashMap() );
     var expected  = false;
     test.identical( got, expected );
 
@@ -190,7 +190,7 @@ function isBufferTypedInstance( test )
     test.identical( got, expected );
 
     test.case = 'HashMap';
-    var got = descriptor.is( new Map() );
+    var got = descriptor.is( new HashMap() );
     var expected  = false;
     test.identical( got, expected );
 

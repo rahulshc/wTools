@@ -50,18 +50,35 @@ _.withLong = _.long.toolsNamespacesByType;
 /* xxx : optimize! */
 /* qqq : for junior : optimize. ask how to */
 /* qqq : check coverage */
+
 function is( src )
 {
 
   if( _.primitive.is( src ) )
   return false;
+  if( !_.class.methodIteratorOf( src ) )
+  return false;
+
   if( _.argumentsArray.like( src ) )
   return true;
-  if( _.bufferTypedIs( src ) )
+  if( _.bufferTyped.is( src ) )
   return true;
 
   return false;
 }
+
+// function is( src )
+// {
+//
+//   if( _.primitive.is( src ) )
+//   return false;
+//   if( _.argumentsArray.like( src ) )
+//   return true;
+//   if( _.bufferTypedIs( src ) )
+//   return true;
+//
+//   return false;
+// }
 
 //
 

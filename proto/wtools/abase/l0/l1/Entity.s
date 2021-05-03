@@ -178,6 +178,8 @@ function strTypeWithoutTraits( src )
 function namespaceForContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
+
+  _.debugger;
   if( src === undefined )
   return _.blank;
   if( _.primitive.is( src ) )
@@ -190,16 +192,14 @@ function namespaceForContainer( src ) /* qqq for junior : cover please */
   return _.long;
   if( _.buffer.like( src ) )
   return _.buffer;
-  if( _.countableIs( src ) )
-  return _.countable;
   if( _.mapIs( src ) )
   return _.map;
   if( _.auxIs( src ) )
   return _.aux;
-  if( _.object.isBasic( src ) )
-  return _.props;
+  if( _.object.is( src ) )
+  return _.object;
 
-  return _.itself;
+  return _.props;
 }
 
 // --

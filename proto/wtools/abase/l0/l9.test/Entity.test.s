@@ -83,22 +83,22 @@ function exportStringDiagnosticShallow( test )
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], countable : 1 } );
   var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   var expected = '{- countableConstructorPolluted.countable.constructible with 3 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
@@ -467,22 +467,22 @@ function exportStringCodeShallow( test )
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [], countable : 1 } );
   var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   var expected = '{- Map.polluted with 6 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
@@ -871,101 +871,101 @@ function assignFieldFromContainer( test )
 
 //
 
-function uncountableSize( test )
+function uncountableSizeOf( test )
 {
   test.case = 'undefined';
-  var got = _.uncountableSize( undefined );
+  var got = _.entity.uncountableSizeOf( undefined );
   test.identical( got, 8 );
 
   test.case = 'null';
-  var got = _.uncountableSize( null );
+  var got = _.entity.uncountableSizeOf( null );
   test.identical( got, 8 );
 
   test.case = 'false';
-  var got = _.uncountableSize( false );
+  var got = _.entity.uncountableSizeOf( false );
   test.identical( got,  8);
 
   test.case = 'true';
-  var got = _.uncountableSize( true );
+  var got = _.entity.uncountableSizeOf( true );
   test.identical( got, 8 );
 
   test.case = 'zero';
-  var got = _.uncountableSize( 0 );
+  var got = _.entity.uncountableSizeOf( 0 );
   test.identical( got, 8 );
 
   test.case = 'number';
-  var got = _.uncountableSize( 34 );
+  var got = _.entity.uncountableSizeOf( 34 );
   test.identical( got, 8 );
 
   test.case = 'NaN';
-  var got = _.uncountableSize( NaN );
+  var got = _.entity.uncountableSizeOf( NaN );
   test.identical( got, 8 );
 
   test.case = 'Infinity';
-  var got = _.uncountableSize( Infinity );
+  var got = _.entity.uncountableSizeOf( Infinity );
   test.identical( got, 8 );
 
   test.case = 'empty string';
-  var got = _.uncountableSize( '' );
+  var got = _.entity.uncountableSizeOf( '' );
   test.identical( got, 0 );
 
   test.case = 'string';
-  var got = _.uncountableSize( 'str' );
+  var got = _.entity.uncountableSizeOf( 'str' );
   test.identical( got, 3 );
 
   test.case = 'symbol';
-  var got = _.uncountableSize( Symbol.for( 'x' ) );
+  var got = _.entity.uncountableSizeOf( Symbol.for( 'x' ) );
   test.identical( got, 8 );
 
   test.case = 'empty array';
-  var got = _.uncountableSize( [] );
+  var got = _.entity.uncountableSizeOf( [] );
   test.identical( got, NaN );
 
   test.case = 'array';
-  var got = _.uncountableSize( [ [ 23, 17 ], undefined, 34 ] );
+  var got = _.entity.uncountableSizeOf( [ [ 23, 17 ], undefined, 34 ] );
   test.identical( got, NaN );
 
   test.case = 'argumentsArray';
-  var got = _.uncountableSize( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
+  var got = _.entity.uncountableSizeOf( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
   test.identical( got, NaN );
 
   test.case = 'unroll';
-  var got = _.uncountableSize( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = _.entity.uncountableSizeOf( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
   test.identical( got, NaN );
 
   test.case = 'BufferTyped';
-  var got = _.uncountableSize( new U8x( [ 1, 2, 3, 4 ] ) );
+  var got = _.entity.uncountableSizeOf( new U8x( [ 1, 2, 3, 4 ] ) );
   test.identical( got, 4 );
 
   test.case = 'BufferRaw';
-  var got = _.uncountableSize( new BufferRaw( 10 ) );
+  var got = _.entity.uncountableSizeOf( new BufferRaw( 10 ) );
   test.identical( got, 10 );
 
   test.case = 'BufferView';
-  var got = _.uncountableSize( new BufferView( new BufferRaw( 10 ) ) );
+  var got = _.entity.uncountableSizeOf( new BufferView( new BufferRaw( 10 ) ) );
   test.identical( got, 10 );
 
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got1 = _.uncountableSize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+    var got1 = _.entity.uncountableSizeOf( BufferNode.from( [ 1, 2, 3, 4 ] ) );
     test.identical( got1, 4 );
   }
 
   test.case = 'Set';
-  var got = _.uncountableSize( new Set( [ 1, 2, undefined, 4 ] ) );
+  var got = _.entity.uncountableSizeOf( new Set( [ 1, 2, undefined, 4 ] ) );
   test.identical( got, NaN );
 
   test.case = 'map';
-  var got = _.uncountableSize( { a : 1, b : 2, c : { d : 3 } } );
+  var got = _.entity.uncountableSizeOf( { a : 1, b : 2, c : { d : 3 } } );
   test.identical( got, NaN );
 
   test.case = 'HashMap';
-  var got = _.uncountableSize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+  var got = _.entity.uncountableSizeOf( new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
   test.identical( got, NaN );
 
   test.case = 'function';
-  var got = _.uncountableSize( function(){} );
+  var got = _.entity.uncountableSizeOf( function(){} );
   test.identical( got, 8 );
 
   test.case = 'instance of class';
@@ -975,7 +975,7 @@ function uncountableSize( test )
     this.b = 's';
     this[ 100 ] = 'sms';
   };
-  var got = _.uncountableSize( new Constr1() );
+  var got = _.entity.uncountableSizeOf( new Constr1() );
   test.identical( got, 8 );
 
   test.case = 'object, some properties are non enumerable';
@@ -990,14 +990,14 @@ function uncountableSize( test )
     }
   };
   Object.defineProperties( src, o );
-  var got = _.uncountableSize( src );
+  var got = _.entity.uncountableSizeOf( src );
   test.identical( got, NaN );
 
   if( !Config.debug )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.uncountableSize() );
+  test.shouldThrowErrorSync( () => _.entity.uncountableSizeOf() );
 }
 
 //
@@ -1007,47 +1007,47 @@ function uncountableSize( test )
 function entitySize( test )
 {
   test.case = 'undefined';
-  var got = _.entitySize( undefined );
+  var got = _.entity.sizeOf( undefined );
   test.identical( got, 8 );
 
   test.case = 'null';
-  var got = _.entitySize( null );
+  var got = _.entity.sizeOf( null );
   test.identical( got, 8 );
 
   test.case = 'false';
-  var got = _.entitySize( false );
+  var got = _.entity.sizeOf( false );
   test.identical( got,  8);
 
   test.case = 'true';
-  var got = _.entitySize( true );
+  var got = _.entity.sizeOf( true );
   test.identical( got, 8 );
 
   test.case = 'zero';
-  var got = _.entitySize( 0 );
+  var got = _.entity.sizeOf( 0 );
   test.identical( got, 8 );
 
   test.case = 'number';
-  var got = _.entitySize( 34 );
+  var got = _.entity.sizeOf( 34 );
   test.identical( got, 8 );
 
   test.case = 'NaN';
-  var got = _.entitySize( NaN );
+  var got = _.entity.sizeOf( NaN );
   test.identical( got, 8 );
 
   test.case = 'Infinity';
-  var got = _.entitySize( Infinity );
+  var got = _.entity.sizeOf( Infinity );
   test.identical( got, 8 );
 
   test.case = 'empty string';
-  var got = _.entitySize( '' );
+  var got = _.entity.sizeOf( '' );
   test.identical( got, 0 );
 
   test.case = 'string';
-  var got = _.entitySize( 'str' );
+  var got = _.entity.sizeOf( 'str' );
   test.identical( got, 3 );
 
   test.case = 'symbol';
-  var got = _.entitySize( Symbol.for( 'x' ) );
+  var got = _.entity.sizeOf( Symbol.for( 'x' ) );
   test.identical( got, 8 );
 
   /* zzz : temp fix */ /* Dmytro : the second part of test routine in module Looker */
@@ -1055,61 +1055,61 @@ function entitySize( test )
   if( !_.look ) /* prevents fails if Looker is included */
   {
     test.case = 'empty array';
-    var got = _.entitySize( [] );
+    var got = _.entity.sizeOf( [] );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'array';
-    var got = _.entitySize( [ 3, undefined, 34 ] );
+    var got = _.entity.sizeOf( [ 3, undefined, 34 ] );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'argumentsArray';
-    var got = _.entitySize( _.argumentsArray.make( [ 1, null, 4 ] ) );
+    var got = _.entity.sizeOf( _.argumentsArray.make( [ 1, null, 4 ] ) );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'unroll';
-    var got = _.entitySize( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
+    var got = _.entity.sizeOf( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'BufferTyped';
-    var got = _.entitySize( new U8x( [ 1, 2, 3, 4 ] ) );
+    var got = _.entity.sizeOf( new U8x( [ 1, 2, 3, 4 ] ) );
     test.identical( got, 4 );
 
     test.case = 'BufferRaw';
-    var got = _.entitySize( new BufferRaw( 10 ) );
+    var got = _.entity.sizeOf( new BufferRaw( 10 ) );
     test.identical( got, 10 );
 
     test.case = 'BufferView';
-    var got = _.entitySize( new BufferView( new BufferRaw( 10 ) ) );
+    var got = _.entity.sizeOf( new BufferView( new BufferRaw( 10 ) ) );
     test.identical( got, 10 );
 
     if( Config.interpreter === 'njs' )
     {
       test.case = 'BufferNode';
-      var got1 = _.entitySize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+      var got1 = _.entity.sizeOf( BufferNode.from( [ 1, 2, 3, 4 ] ) );
       test.identical( got1, 4 );
     }
 
     test.case = 'Set';
-    var got = _.entitySize( new Set( [ 1, 2, undefined, 4 ] ) );
+    var got = _.entity.sizeOf( new Set( [ 1, 2, undefined, 4 ] ) );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'map';
-    var got = _.entitySize( { a : 1, b : 2, c : 'str' } );
+    var got = _.entity.sizeOf( { a : 1, b : 2, c : 'str' } );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'HashMap';
-    var got = _.entitySize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+    var got = _.entity.sizeOf( new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
     var exp = NaN;
     test.identical( got, exp );
 
     test.case = 'function';
-    var got = _.entitySize( function(){} );
+    var got = _.entity.sizeOf( function(){} );
     test.identical( got, 8 );
 
     test.case = 'instance of class';
@@ -1119,7 +1119,7 @@ function entitySize( test )
       this.b = 's';
       this[ 100 ] = 'sms';
     };
-    var got = _.entitySize( new Constr1() );
+    var got = _.entity.sizeOf( new Constr1() );
     test.identical( got, 8 );
 
     test.case = 'object, some properties are non enumerable';
@@ -1134,7 +1134,7 @@ function entitySize( test )
       }
     };
     Object.defineProperties( src, o );
-    var got = _.entitySize( src );
+    var got = _.entity.sizeOf( src );
     var exp = NaN;
     test.identical( got, exp );
   }
@@ -1145,11 +1145,11 @@ function entitySize( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.entitySize() );
+  test.shouldThrowErrorSync( () => _.entity.sizeOf() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.entitySize( 1, 2 ) );
-  test.shouldThrowErrorSync( () => _.entitySize( 1, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.entity.sizeOf( 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.entity.sizeOf( 1, 'extra' ) );
 }
 
 // --
@@ -1171,7 +1171,7 @@ const Proto =
     assign,
     assignFieldFromContainer,
 
-    uncountableSize,
+    uncountableSizeOf,
     entitySize,
 
   }

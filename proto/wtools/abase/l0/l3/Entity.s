@@ -384,7 +384,7 @@ function equal( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 //  * // log true
 //  *
 //  * @example
-//  * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
+//  * let dst = new HashMap( [ [ 1, 'str' ], [ 'a', null ] ] );
 //  * let got = _.container.empty( dst );
 //  * console.log( got );
 //  * // log Map {}

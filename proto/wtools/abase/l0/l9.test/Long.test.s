@@ -12823,7 +12823,7 @@ function longHasDepth( test )
   test.identical( got, false );
 
   test.case = 'check Map';
-  var got = _.longHasDepth( new Map( [] ) );
+  var got = _.longHasDepth( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
