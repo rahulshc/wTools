@@ -29,12 +29,6 @@ function make( test )
   test.equivalent( got, expected );
   test.true( _.argumentsArray.is( got ) );
 
-  test.case = 'src - undefined';
-  var got = _.argumentsArray.make( undefined );
-  var expected = [];
-  test.equivalent( got, expected );
-  test.true( _.argumentsArray.is( got ) );
-
   test.case = 'src - number, zero';
   var got = _.argumentsArray.make( 0 );
   var expected = new Array( 0 );
@@ -160,7 +154,6 @@ function make( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.argumentsArray.make( 1, 3 ) );
-  test.shouldThrowErrorSync( () => _.argumentsArray.make( [], 3 ) );
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.argumentsArray.make( {} ) );
@@ -173,12 +166,6 @@ function from( test )
 {
   test.case = 'src - null';
   var got = _.argumentsArray.from( null );
-  var expected = [];
-  test.equivalent( got, expected );
-  test.true( _.argumentsArray.is( got ) );
-
-  test.case = 'src - undefined';
-  var got = _.argumentsArray.from( undefined );
   var expected = [];
   test.equivalent( got, expected );
   test.true( _.argumentsArray.is( got ) );
