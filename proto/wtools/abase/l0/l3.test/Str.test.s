@@ -194,11 +194,14 @@ function strConcat( test )
 
   test.case = 'srcs - unroll';
   var srcs = [ 1, 2, 'str', 3, _.unroll.from([ 2 ]) ];
+  debugger;
   var got = _.strConcat( srcs );
+  debugger;
   if( _.entity.exportStringFine )
   test.identical( got, '1 2 str 3 [ 2 ]' );
   else
   test.identical( got, '1 2 str 3 {- Array.unroll with 1 elements -}' );
+  debugger;
 
   test.close( 'type of src is not the String' );
 
