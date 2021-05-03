@@ -208,29 +208,28 @@ function makeCommon( test )
 
   function methodEach( env )
   {
-
     env.method = 'makeEmpty';
     act( env );
-    env.method = 'makeUndefined';
-    act( env );
+    // env.method = 'makeUndefined';
+    // act( env );
     env.method = 'make';
     act( env );
     env.method = 'cloneShallow';
     act( env );
-
   }
 
-  /* - */
+  /* */
 
   function act( env )
   {
+    const _tools = tools( env );
 
     /* */
 
     if( env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, no args`;
-      var got = tools( env ).long[ env.method ]();
+      var got = _tools.long[ env.method ]();
       test.true( got instanceof _global_[ env.type ] );
       test.identical( got.length, 0 );
     }
@@ -240,7 +239,7 @@ function makeCommon( test )
     if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, length`;
-      var got = tools( env ).long[ env.method ]( 3 );
+      var got = _tools.long[ env.method ]( 3 );
       test.true( got instanceof _global_[ env.type ] );
       test.true( got.length === 3 );
     }
@@ -248,14 +247,14 @@ function makeCommon( test )
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
-    var got = tools( env ).long[ env.method ]( [] );
+    var got = _tools.long[ env.method ]( [] );
     test.true( got instanceof Array );
     test.identical( got.length, 0 );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
-    var got = tools( env ).long[ env.method ]( [ 2 ] );
+    var got = _tools.long[ env.method ]( [ 2 ] );
     test.true( got instanceof Array );
     if( env.method === 'makeEmpty' )
     test.identical( got.length, 0 );
@@ -267,7 +266,7 @@ function makeCommon( test )
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
-    var got = tools( env ).long[ env.method ]( [ 2, 3 ] );
+    var got = _tools.long[ env.method ]( [ 2, 3 ] );
     test.true( got instanceof Array );
     if( env.method === 'makeEmpty' )
     test.identical( got.length, 0 );
@@ -281,61 +280,38 @@ function makeCommon( test )
     if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
-      var got = tools( env ).long[ env.method ]( [], 2 );
+      var got = _tools.long[ env.method ]( [], 2 );
       test.true( got instanceof Array );
       test.identical( got.length, 2 );
-    }
 
-    /* */
-
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
-    {
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
-      var got = tools( env ).long[ env.method ]( [ 3, 4 ], 3 );
+      var got = _tools.long[ env.method ]( [ 3, 4 ], 3 );
       test.true( got instanceof Array );
       test.identical( got.length, 3 );
       if( env.method === 'make' )
       test.identical( got, [ 3, 4, undefined ] );
-    }
 
-    /* */
-
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
-    {
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
-      var got = tools( env ).long[ env.method ]( [ 3, 4 ], 1 );
+      var got = _tools.long[ env.method ]( [ 3, 4 ], 1 );
       test.true( got instanceof Array );
       test.identical( got.length, 1 );
       if( env.method === 'make' )
       test.identical( got, [ 3 ] );
-    }
 
-    /* */
-
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
-    {
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
-      var got = tools( env ).long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
+      var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
       test.true( got instanceof Array );
       test.identical( got.length, 3 );
       if( env.method === 'make' )
       test.identical( got, [ 2, 3, 4 ] );
-    }
 
-    /* */
-
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
-    {
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
-      var got = tools( env ).long[ env.method ]( [ 3, 4 ], [ 2 ] );
+      var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2 ] );
       test.true( got instanceof Array );
       test.identical( got.length, 1 );
       if( env.method === 'make' )
       test.identical( got, [ 2 ] );
     }
-
-    /* */
-
   }
 
   /* */
@@ -344,12 +320,97 @@ function makeCommon( test )
   {
     if( env.tools === 'default' )
     return _;
-    // return _[ env.tools ].asDefault.long;
     return _.withLong[ env.tools ];
   }
+}
+
+//
+
+function makeLongFilledCommon( test )
+{
+  methodEach({ tools : 'default', type : 'Array' });
+  methodEach({ tools : 'Array', type : 'Array' });
+  methodEach({ tools : 'F32x', type : 'F32x' });
 
   /* - */
 
+  function methodEach( env )
+  {
+    env.method = 'makeUndefined';
+    act( env );
+    env.method = 'makeZeroed';
+    act( env );
+  }
+
+  /* */
+
+  function act( env )
+  {
+    const _tools = tools( env );
+    const value = env.method === 'makeUndefined' ? undefined : 0;
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, no args`;
+    var got = _tools.long[ env.method ]();
+    test.true( got instanceof _global_[ env.type ] );
+    test.identical( got.length, 0 );
+
+    test.case = `${__.entity.exportStringSolo( env )}, length`;
+    var got = _tools.long[ env.method ]( 3 );
+    test.true( got instanceof _global_[ env.type ] );
+    var _value = _.bufferTypedIs( got ) ? 0 : value;
+    test.identical( got, _tools.defaultLong.make([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty array`;
+    var got = _tools.long[ env.method ]( [] );
+    test.true( got instanceof Array );
+    test.identical( got.length, 0 );
+
+    test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
+    var got = _tools.long[ env.method ]( [ 2 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
+    var got = _tools.long[ env.method ]( [ 2, 3 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value, value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
+    var got = _tools.long[ env.method ]( [], 2 );
+    test.true( got instanceof Array );
+    test.identical( got, [ value, value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
+    var got = _tools.long[ env.method ]( [ 3, 4 ], 3 );
+    test.true( got instanceof Array );
+    test.identical( got, [ value, value, value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
+    var got = _tools.long[ env.method ]( [ 3, 4 ], 1 );
+    test.true( got instanceof Array );
+    test.identical( got, [ value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
+    var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value, value, value ] );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
+    var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value ] );
+  }
+
+  /* */
+
+  function tools( env )
+  {
+    if( env.tools === 'default' )
+    return _;
+    return _.withLong[ env.tools ];
+  }
 }
 
 //
@@ -7107,6 +7168,7 @@ const Proto =
     // long, l0/l5
 
     makeCommon,
+    makeLongFilledCommon,
 
     makeSrcIsNullWithLongNamespaces,
 
