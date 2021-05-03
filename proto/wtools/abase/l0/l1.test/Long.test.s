@@ -598,6 +598,114 @@ function makeLongFilledCommon( test )
 
 //
 
+function makeLongFilledCommonWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    methodEach({ tools : 'default', type });
+    methodEach({ tools : 'Array', type });
+    methodEach({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function methodEach( env )
+  {
+    env.method = 'makeUndefined';
+    act( env );
+    env.method = 'makeZeroed';
+    act( env );
+  }
+
+  /* */
+
+  function act( env )
+  {
+    const _tools = tools( env );
+    let value = env.method === 'makeUndefined' ? undefined : 0;
+    if( _.bufferTypedIs( _tools.defaultLong.make( 0 ) ) )
+    value = 0;
+
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, no args`;
+    var got = _tools.defaultLong[ env.method ]();
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got.length, 0 );
+
+    test.case = `${__.entity.exportStringSolo( env )}, length`;
+    var got = _tools.defaultLong[ env.method ]( 3 );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    var _value = _.bufferTypedIs( got ) ? 0 : value;
+    test.identical( got, _tools.defaultLong.make([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty array`;
+    var got = _tools.defaultLong[ env.method ]( [] );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got.length, 0 );
+
+    test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
+    var got = _tools.defaultLong[ env.method ]( [ 2 ] );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
+    var got = _tools.defaultLong[ env.method ]( [ 2, 3 ] );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value, value ] ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
+    var got = _tools.defaultLong[ env.method ]( [], 2 );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value, value ] ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
+    var got = _tools.defaultLong[ env.method ]( [ 3, 4 ], 3 );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value, value, value ] ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
+    var got = _tools.defaultLong[ env.method ]( [ 3, 4 ], 1 );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value ] ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
+    var got = _tools.defaultLong[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value, value, value ] ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
+    var got = _tools.defaultLong[ env.method ]( [ 3, 4 ], [ 2 ] );
+    test.true( got instanceof _tools.defaultLong.InstanceConstructor );
+    test.identical( got, _tools.defaultLong.make([ value ] ) );
+  }
+
+  /* */
+
+  function tools( env )
+  {
+    if( env.tools === 'default' )
+    return _;
+    return _.withLong[ env.tools ];
+  }
+}
+
+//
+
 function makeSrcIsNullWithLongNamespaces( test )
 {
   for( let name in _.long.namespaces )
@@ -7352,6 +7460,7 @@ const Proto =
     makeCommon,
     makeCommonWithLongDescriptor,
     makeLongFilledCommon,
+    makeLongFilledCommonWithLongDescriptor,
 
     makeSrcIsNullWithLongNamespaces,
 
