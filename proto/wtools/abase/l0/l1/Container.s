@@ -90,6 +90,7 @@ makeUndefined.functor = _functor_functor( 'makeUndefined' );
 function namespaceForContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
+
   if( _.primitive.is( src ) )
   return _.blank;
   if( _.hashMap.like( src ) )

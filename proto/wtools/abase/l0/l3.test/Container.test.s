@@ -47,12 +47,12 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 6 elements -}';
+  var expected = '{- Map.polluted with 8 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 6 elements -}';
+  var expected = '{- Map.polluted with 8 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -705,27 +705,27 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
 
   /* */
 
@@ -790,27 +790,27 @@ function elementWithKeyArgImplicit( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
 
   /* */
 
@@ -927,23 +927,27 @@ function elementWithKey( test )
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithKey( src, 'elements' );
-  test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  test.identical( got, [ undefined, 'elements', false ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'vector & vectorLike wit 3 elems';
   var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, countable : 1, length : 2 });
   var got = _.container.elementWithKey( src, 'element1' );
-  test.identical( got, [ '1', 'element1', true ] );
+  // test.identical( got, [ '1', 'element1', true ] );
+  test.identical( got, [ undefined, 'element1', false ] );
   var got2 = _.container.elementWithKey( src, 'element2' );
-  test.identical( got2, [ 1, 'element2', true ] );
+  // test.identical( got2, [ 1, 'element2', true ] );
+  test.identical( got2, [ undefined, 'element2', false ] );
   var got3 = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got3, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithKey( src, 'elements' );
-  test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  test.identical( got, [ undefined, 'elements', false ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -951,7 +955,8 @@ function elementWithKey( test )
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   src[ '' ] = 'empty';
   var got = _.container.elementWithKey( src, '' );
-  test.identical( got, [ 'empty', '', true ] );
+  test.identical( got, [ undefined, '', false ] );
+  // test.identical( got, [ 'empty', '', true ] );
   var got = _.container.elementWithKey( src, 0 );
   test.identical( got, [ '1', 0, true ] );
 
@@ -1065,7 +1070,8 @@ function elementWithKey( test )
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var got = _.container.elementWithKey( src, '0' );
-  test.identical( got, [ 115, '0', true ] );
+  // test.identical( got, [ 115, '0', true ] );
+  test.identical( got, [ undefined, '0', false ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1115,7 +1121,8 @@ function elementWithKey( test )
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var got = _.container.elementWithKey( src, 'val' );
-  test.identical( got, [ 1, 'val', true ] );
+  // test.identical( got, [ 1, 'val', true ] );
+  test.identical( got, [ undefined, 'val', false ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1200,27 +1207,27 @@ function elementWithKey( test )
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
 
   /* */
 
@@ -1246,43 +1253,43 @@ function elementWithImplicitArgImplicit( test )
   test.case = 'prototype object';
   var src = new Obj1({});
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.getPrototypeOf( src ), Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.getPrototypeOf( src ), _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype map.polluted';
   var src = {};
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.prototype, Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.prototype, _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype map.pure';
   var src = Object.create( null );
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ null, Symbol.for( 'prototype' ), true ];
+  var expected = [ null, _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype buffer';
   var src = new F32x([ 1, 2, 3 ]);
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.getPrototypeOf( src ), Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.getPrototypeOf( src ), _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype array';
   var src = [ 1, 2, 3 ];
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.getPrototypeOf( src ), Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.getPrototypeOf( src ), _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype arguments array';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.prototype, Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.prototype, _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   test.case = 'prototype countable';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  var expected = [ Object.getPrototypeOf( src ), Symbol.for( 'prototype' ), true ];
+  var expected = [ Object.getPrototypeOf( src ), _.props.implicit.prototype, true ];
   test.identical( got, expected );
 
   /* - */
@@ -1290,69 +1297,69 @@ function elementWithImplicitArgImplicit( test )
   test.case = 'constructor object';
   var src = new Obj1({});
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ Object.getPrototypeOf( src ).constructor, Symbol.for( 'constructor' ), true ];
+  var expected = [ Object.getPrototypeOf( src ).constructor, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor map.polluted';
   var src = {};
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ Object, Symbol.for( 'constructor' ), true ];
+  var expected = [ Object, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor map.pure';
   var src = Object.create( null );
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ null, Symbol.for( 'constructor' ), true ];
+  var expected = [ null, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor buffer';
   var src = new F32x([ 1, 2, 3 ]);
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ Object.getPrototypeOf( src ).constructor, Symbol.for( 'constructor' ), true ];
+  var expected = [ Object.getPrototypeOf( src ).constructor, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor array';
   var src = [ 1, 2, 3 ];
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ Object.getPrototypeOf( src ).constructor, Symbol.for( 'constructor' ), true ];
+  var expected = [ Object.getPrototypeOf( src ).constructor, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor arguments array';
   var src = _.argumentsArray.make([ 1, 2, 3 ]);
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ Object, Symbol.for( 'constructor' ), true ];
+  var expected = [ Object, _.props.implicit.constructor, true ];
   test.identical( got, expected );
 
   test.case = 'constructor countable';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  var expected = [ src.constructor, Symbol.for( 'constructor' ), true ];
+  var expected = [ src.constructor, _.props.implicit.constructor, true ];
   test.identical( got, expected );
   test.true( _.routineIs( expected.constructor ) );
 
   /* - */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
 
   /* */
 
@@ -1382,9 +1389,9 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, 1 );
   test.identical( got, [ undefined, 1, false ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  test.identical( got, [ Number.prototype, Symbol.for( 'prototype' ), true ] );
+  test.identical( got, [ Number.prototype, _.props.implicit.prototype, true ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  test.identical( got, [ Number, Symbol.for( 'constructor' ), true ] );
+  test.identical( got, [ Number, _.props.implicit.constructor, true ] );
 
   /* */
 
@@ -1395,9 +1402,9 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, 1 );
   test.identical( got, [ undefined, 1, false ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  test.identical( got, [ undefined, Symbol.for( 'prototype' ), false ] );
+  test.identical( got, [ undefined, _.props.implicit.prototype, false ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  test.identical( got, [ undefined, Symbol.for( 'constructor' ), false ] );
+  test.identical( got, [ undefined, _.props.implicit.constructor, false ] );
 
   /* */
 
@@ -1408,9 +1415,9 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, 1 );
   test.identical( got, [ undefined, 1, false ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.prototype );
-  test.identical( got, [ undefined, Symbol.for( 'prototype' ), false ] );
+  test.identical( got, [ undefined, _.props.implicit.prototype, false ] );
   var got = _.container.elementWithImplicit( src, _.props.implicit.constructor );
-  test.identical( got, [ undefined, Symbol.for( 'constructor' ), false ] );
+  test.identical( got, [ undefined, _.props.implicit.constructor, false ] );
 
   /* */
 
@@ -1510,23 +1517,28 @@ function elementWithImplicit( test )
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'elements' );
-  test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  // test.identical( got, [ undefined, 'elements', true ] );
+  test.identical( got, [ undefined, 'elements', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'vector & vectorLike wit 3 elems';
   var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'element1' );
-  test.identical( got, [ '1', 'element1', true ] );
+  // test.identical( got, [ '1', 'element1', true ] );
+  test.identical( got, [ undefined, 'element1', false ] );
   var got2 = _.container.elementWithImplicit( src, 'element2' );
-  test.identical( got2, [ 1, 'element2', true ] );
+  test.identical( got2, [ undefined, 'element2', false ] );
+  // test.identical( got2, [ 1, 'element2', true ] );
   var got3 = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got3, [ undefined, 'non-exists', false ] );
 
   test.case = 'countable & countableLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, 'elements' );
-  test.identical( got, [ [ '1', '10' ], 'elements', true ] );
+  test.identical( got, [ undefined, 'elements', false ] );
+  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1534,7 +1546,8 @@ function elementWithImplicit( test )
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   src[ '' ] = 'empty';
   var got = _.container.elementWithImplicit( src, '' );
-  test.identical( got, [ 'empty', '', true ] );
+  // test.identical( got, [ 'empty', '', true ] );
+  test.identical( got, [ undefined, '', false ] );
   var got = _.container.elementWithImplicit( src, 0 );
   test.identical( got, [ '1', 0, true ] );
 
@@ -1672,7 +1685,8 @@ function elementWithImplicit( test )
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var got = _.container.elementWithImplicit( src, '0' );
-  test.identical( got, [ 115, '0', true ] );
+  // test.identical( got, [ 115, '0', true ] );
+  test.identical( got, [ undefined, '0', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1716,7 +1730,7 @@ function elementWithImplicit( test )
   test.case = 'escape';
   var src = _.escape.make( 1 );
   var got = _.container.elementWithImplicit( src, 'val' );
-  test.identical( got, [ 1, 'val', true ] );
+  test.identical( got, [ undefined, 'val', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1798,27 +1812,27 @@ function elementWithImplicit( test )
 
   /* qqq2 : for Yevhen : use _.diangostic.objectMake() in ALL tests instead of this */
 
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
 
   /* */
 
