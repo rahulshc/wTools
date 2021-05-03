@@ -40,16 +40,37 @@ function _makeAct()
 
 function _make( src, length )
 {
-  if( _.numberIs( length ) )
-  return _.argumentsArray._makeAct.apply( _, Array( length ) );
-  if( _.numberIs( src ) )
-  return _.argumentsArray._makeAct.apply( _, Array( src ) );
-  if( _.long.is( length ) )
-  return _.argumentsArray._makeAct.apply( _, [ ... length ] );
-  if( _.long.is( src ) )
-  return _.argumentsArray._makeAct.apply( _, [ ... src ] );
+  if( arguments.length === 2 )
+  {
+    let data = length;
+    if( _.number.is( length ) )
+    data = src;
+    if( _.countable.is( length ) )
+    length = length.length;
 
+    const dst = _.number.is( length ) ? Array( length ) : [ ... length ];
+    return fill( dst, data );
+  }
+  else if( arguments.length === 1 )
+  {
+    if( _.numberIs( src ) )
+    return _.argumentsArray._makeAct.apply( _, Array( src ) );
+    if( _.long.is( src ) )
+    return _.argumentsArray._makeAct.apply( _, [ ... src ] );
+  }
   return _.argumentsArray._makeAct.apply( _, [] );
+
+  /* */
+
+  function fill( dst, data )
+  {
+    if( data === null || data === undefined )
+    return dst;
+    let l = Math.min( length, data.length );
+    for( let i = 0 ; i < l ; i++ )
+    dst[ i ] = data[ i ];
+    return dst;
+  }
 
   // if( src === undefined || src === null )
   // src = 0;
