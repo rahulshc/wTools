@@ -426,6 +426,21 @@ function makeLongFilledCommon( test )
     var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2 ] );
     test.true( got instanceof Array );
     test.identical( got, [ value ] );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 1, 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( undefined ) );
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( 3, 3 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 'wrong' ) );
+    }
   }
 
   /* */
