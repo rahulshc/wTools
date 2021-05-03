@@ -207,7 +207,8 @@ function _makeUndefined( src, length )
 /* qqq2 : for junior : cover please */
 function makeUndefined( src, length )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
     _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
@@ -277,7 +278,6 @@ function _makeZeroed( src, length )
     dst[ i ] = 0;
     return dst;
   }
-
 }
 
 //
@@ -286,7 +286,8 @@ function _makeZeroed( src, length )
 /* qqq : for junior : extend with test cases with countable in 2nd arg */
 function makeZeroed( src, length )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
     _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
@@ -340,13 +341,13 @@ function makeFilling( type, value, length )
 
   if( arguments.length === 2 )
   {
-    _.assert( _.number.is( value ) || _.long.is( value ) );
-  _.assert( type !== undefined );
+    _.assert( _.number.is( value ) || _.countable.is( value ) );
+    _.assert( type !== undefined );
   }
   else
   {
     _.assert( value !== undefined );
-    _.assert( _.number.is( length ) || _.long.is( length ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
     _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
   }
 
