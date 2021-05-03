@@ -9,6 +9,15 @@ const _ = _global_.wTools;
 _.assert( !!_.long._elementWithKey, 'Expects routine array._elementWithKey' );
 
 // --
+// exporter
+// --
+
+function _exportStringDiagnosticShallow( src )
+{
+  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
+}
+
+// --
 // declaration
 // --
 
@@ -48,9 +57,11 @@ let UnrollExtension =
 
   // exporter
 
-  exportString : _.long.exportString,
+  _exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
   exportStringCodeShallow : _.long.exportStringCodeShallow,
+  exportString : _.long.exportString,
 
   // container interface
 

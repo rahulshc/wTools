@@ -2007,9 +2007,11 @@ let ArrayExtension =
 
   // exporter
 
-  exportString : _.long.exportString,
+  _exportStringDiagnosticShallow : _.long._exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.long._exportStringCodeShallow,
   exportStringCodeShallow : _.long.exportStringCodeShallow,
+  exportString : _.long.exportString,
 
   // container interface
 

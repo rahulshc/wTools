@@ -22,7 +22,8 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'unroll';
   var src = _.unroll.make([ 2, 3, 4 ]);
-  test.identical( _.container.exportStringDiagnosticShallow( src ), 'xxx' );
+  var expected = '{- Array.unroll with 3 elements -}';
+  test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src = _.argumentsArray.make();

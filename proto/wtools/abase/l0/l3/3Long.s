@@ -172,6 +172,8 @@ function _identicalShallow( src1, src2 )
 
 function _exportStringDiagnosticShallow( src )
 {
+  if( _.unroll.is( src ) )
+  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
   return `{- ${_.entity.strType( src )} with ${this._lengthOf( src )} elements -}`;
 }
 
