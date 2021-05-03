@@ -9,7 +9,9 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
+const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 //--
 // tests

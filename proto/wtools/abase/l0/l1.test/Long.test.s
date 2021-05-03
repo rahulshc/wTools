@@ -838,7 +838,7 @@ function longMakeWithArrayAndUnroll( test )
     test.identical( got, expected );
 
     test.case = 'countable';
-    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = _.long.make( null, src );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
@@ -1383,7 +1383,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     test.identical( got, expected );
 
     test.case = 'countable';
-    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = long.long.make( null, src );
     var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
@@ -3307,7 +3307,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.identical( got, expected );
 
     test.case = 'countable';
-    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = _.long.makeUndefined( null, src );
     var expected = [ undefined, undefined, undefined ];
     test.identical( got, expected );
@@ -4157,7 +4157,7 @@ function longMakeZeroedBasic( test )
   test.identical( got, expected );
 
   test.case = 'countable';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var got = _.long.makeZeroed( null, src );
   var expected = [ 0, 0, 0 ];
   test.identical( got, expected );
@@ -4242,7 +4242,7 @@ function longMakeZeroedWithArrayAndUnroll( test )
     /* qqq2 : for Dmytro : add more such test cases */
     /* qqq2 : for Dmytro : add such cases to ALL similar test routines */
     test.case = 'countable';
-    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = _.long.makeZeroed( null, src );
     var expected = [ 0, 0, 0 ];
     test.identical( got, expected );

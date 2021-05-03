@@ -76,7 +76,7 @@ function make( test )
   test.true( got !== src );
 
   // test.case = 'src - empty Map';
-  // var src = new Map([]);
+  // var src = new HashMap([]);
   // var got = _.object.make( src );
   // var expected = {};
   // test.identical( got, expected );
@@ -84,7 +84,7 @@ function make( test )
   // test.true( got !== src );
   //
   // test.case = 'src - pure map';
-  // var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  // var src = new HashMap( [ [ 'a', 1 ], [ 2, 2 ] ] );
   // var got = _.object.make( src );
   // var expected = {};
   // test.identical( got, expected );
@@ -207,11 +207,11 @@ function dichotomy( test )
   test.true( !_.object.isBasic( src ) );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   test.true( _.object.isBasic( src ) );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
   test.true( _.object.isBasic( src ) );
 
   test.case = 'Global & GlobalReal';
@@ -381,7 +381,7 @@ function dichotomy( test )
   //   if( dst === null )
   //   dst = Object.create( null );
   //   _.object.extend( dst, o );
-  //   if( o.withIterator )
+  //   if( o.countable )
   //   dst[ Symbol.iterator ] = _iterate;
   //   return dst;
   // }

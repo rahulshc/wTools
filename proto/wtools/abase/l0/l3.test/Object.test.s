@@ -22,7 +22,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
-  var expected = '{- Object -}';
+  var expected = '{- Map.polluted -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
@@ -46,26 +46,26 @@ function exportStringDiagnosticShallow( test )
   test.identical( got, expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var expected = '{- countableConstructor.countable with 2 elements -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
-  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], withIterator : 1 } );
-  var expected = '{- Object.countable with 0 elements -}';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 } );
+  var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
-  test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var expected = '{- Object.countable with 3 elements -}';
+  test.case = `strange map`;
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var expected = '{- Map.polluted -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
@@ -119,7 +119,7 @@ function exportStringDiagnosticShallow( test )
   //   if( dst === null )
   //   dst = Object.create( null );
   //   _.props.extend( dst, o );
-  //   if( o.withIterator )
+  //   if( o.countable )
   //   dst[ Symbol.iterator ] = _iterate;
   //   return dst;
   // }

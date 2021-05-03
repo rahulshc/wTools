@@ -659,7 +659,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     for( let [ key, value ] of src )
     {
@@ -673,7 +673,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     for( let [ key, value ] of dst )
     if( !value )
@@ -1087,7 +1087,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1101,7 +1101,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( !value )
@@ -1511,7 +1511,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1525,7 +1525,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( value )
@@ -1962,7 +1962,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1976,7 +1976,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( value )
@@ -2457,7 +2457,7 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -2473,7 +2473,7 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     let unnecessaries = [ null, 0, undefined, false, '' ];
     for( let k of unnecessaries )

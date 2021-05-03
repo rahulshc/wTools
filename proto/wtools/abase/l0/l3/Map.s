@@ -30,22 +30,6 @@ function _identicalShallow( src1, src2 )
 
 //
 
-function identicalShallow( src1, src2, o )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-
-  return this._identicalShallow( src1, src2 );
-}
-
-//
-
 /**
  * The containShallow() returns true, if the first object {-srcMap-}
  * has the same values as the second object(ins).
@@ -126,8 +110,6 @@ function containShallow( src, ins )
 //  * @namespace Tools
 //  */
 //
-// /* xxx qqq : for Yevhen : duplicate in _.props.identical() | aaa : Done */
-// /* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
 // function mapsAreIdentical( src1, src2 )
 // {
 //
@@ -168,34 +150,35 @@ let ExtensionMap =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
   _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
+
   containShallow,
   contain : containShallow,
 
   // exporter
 
-  exportString : _.props.exportString,
-  // exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringDiagnosticShallow : _.props._exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.props._exportStringCodeShallow,
   exportStringCodeShallow : _.props.exportStringCodeShallow,
-  // // exportStringDiagnostic : _.props.exportStringDiagnostic,
-  // exportStringCode : _.props.exportStringCode,
+  exportString : _.props.exportString,
 
   // container interface
 
   _lengthOf : _.props._lengthOf,
   lengthOf : _.props.lengthOf, /* qqq : cover */
-
   _hasKey : _.props._hasKey,
   hasKey : _.props._hasKey, /* qqq : cover */
   _hasCardinal : _.props._hasKey,
   hasCardinal : _.props._hasKey, /* qqq : cover */
   _keyWithCardinal : _.props._hasKey,
   keyWithCardinal : _.props._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.props._cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
 
   _elementGet : _.props._elementWithKey,
   elementGet : _.props.elementWithKey, /* qqq : cover */

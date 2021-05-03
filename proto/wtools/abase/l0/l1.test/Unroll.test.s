@@ -243,7 +243,7 @@ function make( test )
 
   /* qqq : for junior : add similar test case for all *.make* and *.from* routines of all namespaces */
   test.case = 'from countable';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var got = _.unroll.make( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -1464,7 +1464,7 @@ function from( test )
   test.true( src !== got );
 
   test.case = 'from countable';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var got = _.unroll.from( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -1990,15 +1990,15 @@ function unrollsFromLongDescriptor( test )
 //   test.true( _.mapIs( got ) );
 //
 //   test.case = 'src - empty HashMap';
-//   var src = new Map();
+//   var src = new HashMap();
 //   var got = _.unroll.fromMaybe( src );
-//   test.identical( got, new Map() );
+//   test.identical( got, new HashMap() );
 //   test.true( _.hashMap.is( got ) );
 //
 //   test.case = 'src - filled HashMap';
-//   var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+//   var src = new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] );
 //   var got = _.unroll.fromMaybe( src );
-//   test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+//   test.identical( got, new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
 //   test.true( _.hashMap.is( got ) );
 //
 //   test.case = 'src - empty Set';
@@ -2189,15 +2189,15 @@ function unrollsFromLongDescriptor( test )
 //     test.true( _.mapIs( got ) );
 //
 //     test.case = 'src - empty HashMap';
-//     var src = new Map();
+//     var src = new HashMap();
 //     var got = long.unroll.fromMaybe( src );
-//     test.identical( got, new Map() );
+//     test.identical( got, new HashMap() );
 //     test.true( _.hashMap.is( got ) );
 //
 //     test.case = 'src - filled HashMap';
-//     var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+//     var src = new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] );
 //     var got = long.unroll.fromMaybe( src );
-//     test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+//     test.identical( got, new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
 //     test.true( _.hashMap.is( got ) );
 //
 //     test.case = 'src - empty Set';

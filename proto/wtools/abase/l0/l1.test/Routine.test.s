@@ -69,7 +69,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routine.is( new Map( [] ) );
+  var got = _.routine.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
@@ -194,7 +194,7 @@ function like( test )
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routine.like( new Map( [] ) );
+  var got = _.routine.like( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';

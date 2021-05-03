@@ -26,21 +26,21 @@ function constructorIsVectorAdapter( src )
   return '_vectorBuffer' in src.prototype;
 }
 
-// --
-// exporter
-// --
-
-function exportStringDiagnosticShallow( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.vector.is( src ) );
-
-  if( _.unrollIs( src ) )
-  return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-  else
-  return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
-
-}
+// // --
+// // exporter
+// // --
+//
+// function exportStringDiagnosticShallow( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects exactly one argument' );
+//   _.assert( _.vector.is( src ) );
+//
+//   if( _.unrollIs( src ) )
+//   return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
+//   else
+//   return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
+//
+// }
 
 // --
 // extension
@@ -66,23 +66,39 @@ var VectorExtension =
   adapterIs,
   constructorIsVectorAdapter,
 
+  // // equaler
+  //
+  // _identicalShallow : _.array._identicalShallow,
+  // identicalShallow : _.array.identicalShallow,
+  // identical : _.array.identical,
+  // _equivalentShallow : _.array._equivalentShallow,
+  // equivalentShallow : _.array.equivalentShallow,
+  // equivalent : _.array.equivalent,
+  //
+  // // exporter
+  //
+  // exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow,
+  // exportStringCodeShallow : exportStringDiagnosticShallow,
+
   // equaler
 
-  _identicalShallow : _.array._identicalShallow,
-  identicalShallow : _.array.identicalShallow,
-  identical : _.array.identical,
-  _equivalentShallow : _.array._equivalentShallow,
-  equivalentShallow : _.array.equivalentShallow,
-  equivalent : _.array.equivalent,
+  /* qqq : implement more optimal own version of this routines */
+  _identicalShallow : _.countable.identicalShallow,
+  identicalShallow : _.countable.identicalShallow,
+  identical : _.countable.identical,
+  _equivalentShallow : _.countable.identicalShallow,
+  equivalentShallow : _.countable.equivalentShallow,
+  equivalent : _.countable.equivalent,
 
   // exporter
 
-  exportString : exportStringDiagnosticShallow,
-  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
-  exportStringDiagnosticShallow,
-  exportStringCodeShallow : exportStringDiagnosticShallow,
-  // exportStringDiagnostic : exportStringDiagnosticShallow,
-  // exportStringCode : exportStringDiagnosticShallow,
+  /* qqq : implement more optimal own version of this routines */
+  _exportStringDiagnosticShallow : _.countable._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.countable.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.countable._exportStringCodeShallow,
+  exportStringCodeShallow : _.countable.exportStringCodeShallow,
+  exportString : _.countable.exportString,
 
     // container interface
 
@@ -95,6 +111,8 @@ var VectorExtension =
   hasCardinal : _.countable._hasKey, /* qqq : cover */
   _keyWithCardinal : _.countable._hasKey,
   keyWithCardinal : _.countable._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.countable._cardinalWithKey,
+  cardinalWithKey : _.countable.cardinalWithKey, /* qqq : cover */
 
   _elementGet : _.countable._elementWithKey,
   elementGet : _.countable.elementWithKey, /* qqq : cover */
