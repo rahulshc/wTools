@@ -314,7 +314,7 @@ function _functor( fo )
     _makeFilling,
     makeFilling,
     _make,
-    make : _.argumentsArray.make.make, /* qqq : for Yevhen : cover */
+    make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
     // make, /* qqq : for Yevhen : cover */
     _cloneShallow,
     cloneShallow, /* qqq : for junior : cover */

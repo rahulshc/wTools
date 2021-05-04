@@ -95,7 +95,15 @@ function _make_functor( onMake )
     // if( _.longIs( length ) || _.bufferNodeIs( length ) )
     if( _.countable.is( length ) || _.bufferNodeIs( length ) )
     {
-      length = length.length;
+      if( length.length )
+      {
+        length = length.length;
+      }
+      else
+      {
+        ins = [ ... length ];
+        length = ins.length;
+      }
     }
     else if( _.bufferRawIs( length ) || _.bufferViewIs( length ) )
     {
@@ -697,6 +705,14 @@ let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
 
 //
 
+function makeZeroed( src, ins )
+{
+  let result = makeUndefined.apply( this, arguments );
+  return result.fill( 0 );
+}
+
+//
+
 function bufferFromArrayOfArray( array, options )
 {
 
@@ -980,6 +996,7 @@ let BufferExtension =
   makeEmpty,
   // _makeUndefined, /* qqq : implement */
   makeUndefined,
+  makeZeroed,
 
   // qqq : implement
   // _makeZeroed,
@@ -1014,6 +1031,7 @@ let ToolsExtension =
   bufferMake : make.bind( _.buffer ),
   bufferMakeEmpty : makeEmpty.bind( _.buffer ),
   bufferMakeUndefined : makeUndefined.bind( _.buffer ),
+  bufferMakeZeroed : makeZeroed.bind( _.buffer ),
 
   bufferFromArrayOfArray,
   bufferRawFromTyped,

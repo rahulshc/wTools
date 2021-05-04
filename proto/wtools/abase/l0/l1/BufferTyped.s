@@ -53,8 +53,8 @@ let BufferTypedExtension =
   makeEmpty : _.buffer.makeEmpty,
   _makeUndefined : _.buffer._makeUndefined, /* qqq : implement */
   makeUndefined : _.buffer.makeUndefined,
-  // _makeZeroed : _.buffer._makeZeroed,
-  // makeZeroed : _.buffer.makeZeroed, /* qqq : for junior : cover */
+  _makeZeroed : _.buffer._makeZeroed,
+  makeZeroed : _.buffer.makeZeroed, /* qqq : for junior : cover */
   // _cloneShallow : _.buffer._cloneShallow,
   // cloneShallow : _.buffer.cloneShallow, /* qqq : for junior : cover */
   // from : _.buffer.from, /* qqq : for junior : cover */
