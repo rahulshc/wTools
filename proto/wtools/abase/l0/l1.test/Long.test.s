@@ -373,6 +373,9 @@ function makeCommonWithLongDescriptor( test )
     let namespace = _.long.namespaces[ k ];
     let type = namespace.TypeName;
 
+    if( type === 'ArgumentsArray' )
+    continue;
+
     test.open( `long - ${ type }` );
     methodEach({ tools : 'default', type });
     methodEach({ tools : 'Array', type });
@@ -400,16 +403,17 @@ function makeCommonWithLongDescriptor( test )
 
   function act( env )
   {
-    const _tools = tools( env );
+    const long = namespaceGet( env );
+    const Constructor = defaultConstructorGet( env );
+    const ConstructorForNamespace = env.tools === 'bufferTyped' ? Constructor : Array;
 
     /* */
 
     if( env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, no args`;
-      var got = _tools.long[ env.method ]();
-      if( !_.argumentsArray.is( got ) )
-      test.true( got instanceof _global_[ _tools.defaultLong.TypeName ] );
+      var got = long[ env.method ]();
+      test.true( got instanceof Constructor );
       test.identical( got.length, 0 );
     }
 
@@ -418,90 +422,125 @@ function makeCommonWithLongDescriptor( test )
     if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, length`;
-      var got = _tools.long[ env.method ]( 3 );
-      if( !_.argumentsArray.is( got ) )
-      test.true( got instanceof _global_[ _tools.defaultLong.TypeName ] );
+      var got = long[ env.method ]( 3 );
+      test.true( got instanceof Constructor );
       test.true( got.length === 3 );
     }
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, empty long`;
-    var got = _tools.long[ env.method ]( _tools.long.make( [] ) );
-    test.true( got instanceof Array);
+    test.case = `${__.entity.exportStringSolo( env )}, empty array`;
+    var got = long[ env.method ]( [] );
+    test.true( got instanceof ConstructorForNamespace );
     test.identical( got.length, 0 );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
-    var got = _tools.long[ env.method ]( _tools.long.make( [ 2 ] ) );
-    test.true( got instanceof Array );
+    var got = long[ env.method ]( [ 2 ] );
+    test.true( got instanceof ConstructorForNamespace );
     if( env.method === 'makeEmpty' )
     test.identical( got.length, 0 );
     else
     test.identical( got.length, 1 );
     if( env.method === 'make' || env.method === 'cloneShallow' )
-    test.identical( got, _tools.long.make([ 2 ]) );
+    test.identical( got, ConstructorForNamespace.from([ 2 ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
-    var got = _tools.long[ env.method ]( _tools.long.make( [ 2, 3 ] ) );
-    test.true( got instanceof Array );
+    var got = long[ env.method ]( [ 2, 3 ] );
+    test.true( got instanceof ConstructorForNamespace );
     if( env.method === 'makeEmpty' )
     test.identical( got.length, 0 );
     else
     test.identical( got.length, 2 );
     if( env.method === 'make' || env.method === 'cloneShallow' )
-    test.identical( got, _tools.long.make([ 2, 3 ]) );
+    test.identical( got, ConstructorForNamespace.from([ 2, 3 ]) );
 
     /* */
 
     if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
-      var got = _tools.long[ env.method ]( [], 2 );
-      test.true( got instanceof Array );
+      var got = long[ env.method ]( [], 2 );
+      test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 2 );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
-      var got = _tools.long[ env.method ]( [ 3, 4 ], 3 );
-      test.true( got instanceof Array );
+      var got = long[ env.method ]( [ 3, 4 ], 3 );
+      test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 3 );
-      var value = _.bufferTypedIs( got ) ? 0 : undefined;
+      var value = env.tools === 'bufferTyped' ? 0 : undefined;
       if( env.method === 'make' )
-      test.identical( got, _tools.long.make([ 3, 4, value ]) );
+      test.identical( got, ConstructorForNamespace.from([ 3, 4, value ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
-      var got = _tools.long[ env.method ]( [ 3, 4 ], 1 );
-      test.true( got instanceof Array );
+      var got = long[ env.method ]( [ 3, 4 ], 1 );
+      test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 1 );
       if( env.method === 'make' )
-      test.identical( got, _tools.long.make([ 3 ]) );
+      test.identical( got, ConstructorForNamespace.from([ 3 ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
-      var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
-      test.true( got instanceof Array );
+      var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
+      test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 3 );
       if( env.method === 'make' )
-      test.identical( got, _tools.long.make([ 2, 3, 4 ]) );
+      test.identical( got, ConstructorForNamespace.from([ 2, 3, 4 ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
-      var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2 ] );
-      test.true( got instanceof Array );
+      var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
+      test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 1 );
       if( env.method === 'make' )
-      test.identical( got, _tools.long.make([ 2 ]) );
+      test.identical( got, ConstructorForNamespace.from([ 2 ]) );
     }
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      if( env.method === 'makeEmpty' )
+      test.shouldThrowErrorSync( () => long[ env.method ]( [], 1 ) );
+      else
+      test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
+      if( env.method === 'makeEmpty' )
+      test.shouldThrowErrorSync( () => long[ env.method ]( null ) );
+
+      if( env.method !== 'makeEmpty' )
+      {
+        test.case = 'wrong type of src';
+        test.shouldThrowErrorSync( () => long[ env.method ]( 3, 3 ) );
+
+        test.case = 'wrong type of length';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
+      }
+    }
+  }
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.long;
+    if( env.tools === 'bufferTyped' )
+    return _.bufferTyped;
+    return _.withLong[ env.type ].long;
   }
 
   /* */
 
-  function tools( env )
+  function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _;
-    return _.withLong[ env.tools ];
+    return _.defaultLong.InstanceConstructor;
+    if( env.tools === 'bufferTyped' )
+    return _.defaultBufferTyped.InstanceConstructor;
+    return _.withLong[ env.type ].defaultLong.InstanceConstructor;
   }
 }
 
