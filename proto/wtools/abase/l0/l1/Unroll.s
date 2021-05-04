@@ -377,17 +377,17 @@ function _make( src, length )
 
 //
 
-function make( src, length )
-{
-  _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
-  _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-  _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
-  _.assert( arguments.length <= 2 );
-  return this._make( ... arguments );
-  // _.assert( arguments.length === 0 || arguments.length === 1 );
-  // _.assert( arguments.length === 0 || src === null || _.number.is( src ) || _.countable.is( src ) );
-  // return _.unroll._make( src );
-}
+// function make( src, length )
+// {
+//   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
+//   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
+//   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
+//   _.assert( arguments.length <= 2 );
+//   return this._make( ... arguments );
+//   // _.assert( arguments.length === 0 || arguments.length === 1 );
+//   // _.assert( arguments.length === 0 || src === null || _.number.is( src ) || _.countable.is( src ) );
+//   // return _.unroll._make( src );
+// }
 
 //
 
@@ -879,7 +879,8 @@ let ToolsExtension =
 
   unrollMakeEmpty : makeEmpty.bind( _.unroll ),
   unrollMakeUndefined : makeUndefined.bind( _.unroll ),
-  unrollMake : make.bind( _.unroll ),
+  unrollMake : _.argumentsArray.make.bind( _.unroll ),
+  // unrollMake : make.bind( _.unroll ),
   unrollCloneShallow : cloneShallow.bind( _.unroll ),
   unrollFrom : from.bind( _.unroll ),
 
@@ -929,7 +930,8 @@ let UnrollExtension =
   _makeFilling,
   makeFilling,
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
+  // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
   cloneShallow, /* qqq : for Yevhen : cover */
   _from,

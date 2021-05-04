@@ -409,6 +409,8 @@ function _make( src, length )
 
   return this.tools.defaultLong.make();
 
+  /* */
+
   function fill( dst, data )
   {
     if( data === null || data === undefined )

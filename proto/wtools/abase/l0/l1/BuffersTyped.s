@@ -222,15 +222,15 @@ function _functor( fo )
 
   //
 
-  function make( src, length )
-  {
-    _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
-    _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-    // _.assert( arguments.length < 2 || _.number.is( length ) );
-    _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
-    _.assert( arguments.length <= 2 );
-    return this._make( ... arguments );
-  }
+  // function make( src, length )
+  // {
+  //   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
+  //   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
+  //   // _.assert( arguments.length < 2 || _.number.is( length ) );
+  //   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
+  //   _.assert( arguments.length <= 2 );
+  //   return this._make( ... arguments );
+  // }
 
   //
 
@@ -276,7 +276,8 @@ function _functor( fo )
 
     [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
     [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
-    [ fo.name + 'Make' ] : make.bind( _[ fo.name ] ),
+    [ fo.name + 'Make' ] : _.argumentsArray.make.bind( _[ fo.name ] ),
+    // [ fo.name + 'Make' ] : make.bind( _[ fo.name ] ),
     [ fo.name + 'CloneShallow' ] : cloneShallow.bind( _[ fo.name ] ),
     [ fo.name + 'From' ] : from.bind( _[ fo.name ] ),
 
@@ -313,7 +314,8 @@ function _functor( fo )
     _makeFilling,
     makeFilling,
     _make,
-    make, /* qqq : for Yevhen : cover */
+    make : _.argumentsArray.make.make, /* qqq : for Yevhen : cover */
+    // make, /* qqq : for Yevhen : cover */
     _cloneShallow,
     cloneShallow, /* qqq : for Yevhen : cover */
     from, /* qqq : for Yevhen : cover */
