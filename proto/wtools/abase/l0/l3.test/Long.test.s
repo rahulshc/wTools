@@ -94,16 +94,14 @@ function filterMapCommonPass( test )
 
   function namespaceEach( env )
   {
-    env.namespace = 'props';
+    env.namespace = 'long';
     caseEach( env );
-    env.namespace = 'map';
-    caseEach( env );
-    env.namespace = 'aux';
-    caseEach( env );
-    env.namespace = 'object';
-    caseEach( env );
-    env.namespace = 'container';
-    caseEach( env );
+    // env.namespace = 'array';
+    // caseEach( env );
+    // env.namespace = 'arrayArguments';
+    // caseEach( env );
+    // env.namespace = 'unroll';
+    // caseEach( env );
   }
 
   /* - */
@@ -140,13 +138,13 @@ function filterMapCommonPass( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
-    var exp = { a : 11, b : 12, c : 13 }
+    var exp = [ 11, 12, 13 ]
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
     test.identical( src, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
-    var exp = order([ 'a', 'b', 'c' ]);
+    var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#1' ), exp );
     var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#2' ), exp );
@@ -160,11 +158,11 @@ function filterMapCommonPass( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : 12, c : 13 }
+    var exp = [ 11, 12, 13 ]
     test.identical( got, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
-    var exp = order([ 'a', 'b', 'c' ]);
+    var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#1' ), exp );
     var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#2' ), exp );
@@ -178,11 +176,11 @@ function filterMapCommonPass( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : 12, c : 13 }
+    var exp = [ 11, 12, 13 ]
     test.identical( got, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
-    var exp = order([ 'a', 'b', 'c' ]);
+    var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#1' ), exp );
     var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#2' ), exp );
@@ -241,15 +239,13 @@ function filterCommonDropping( test )
 
   function namespaceEach( env )
   {
-    env.namespace = 'props';
+    env.namespace = 'long';
     caseEach( env );
-    env.namespace = 'map';
+    env.namespace = 'array';
     caseEach( env );
-    env.namespace = 'aux';
+    env.namespace = 'arrayArguments';
     caseEach( env );
-    env.namespace = 'object';
-    caseEach( env );
-    env.namespace = 'container';
+    env.namespace = 'unroll';
     caseEach( env );
   }
 
@@ -337,15 +333,13 @@ function mapCommonReturningUndefined( test )
 
   function namespaceEach( env )
   {
-    env.namespace = 'props';
+    env.namespace = 'long';
     caseEach( env );
-    env.namespace = 'map';
+    env.namespace = 'array';
     caseEach( env );
-    env.namespace = 'aux';
+    env.namespace = 'arrayArguments';
     caseEach( env );
-    env.namespace = 'object';
-    caseEach( env );
-    env.namespace = 'container';
+    env.namespace = 'unroll';
     caseEach( env );
   }
 
@@ -441,15 +435,13 @@ function filterMapCommonEscaping( test )
 
   function namespaceEach( env )
   {
-    env.namespace = 'props';
+    env.namespace = 'long';
     caseEach( env );
-    env.namespace = 'map';
+    env.namespace = 'array';
     caseEach( env );
-    env.namespace = 'aux';
+    env.namespace = 'arrayArguments';
     caseEach( env );
-    env.namespace = 'object';
-    caseEach( env );
-    env.namespace = 'container';
+    env.namespace = 'unroll';
     caseEach( env );
   }
 
