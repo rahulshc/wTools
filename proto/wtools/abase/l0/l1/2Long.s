@@ -308,23 +308,17 @@ function _makeFilling( type, value, length )
   {
     value = arguments[ 0 ];
     length = arguments[ 1 ];
+
     if( _.longIs( length ) )
-    {
-      if( _.argumentsArray.is( length ) )
-      type = length;
-      else if( _.number.is( length ) )
-      type = null;
-      else
-      type = length;
-    }
+    type = length;
     else
-    {
-      type = null;
-    }
+    type = null;
   }
 
-  if( _.longIs( length ) )
+  if( _.long.is( length ) )
   length = length.length;
+  else if( _.countable.is( length ) )
+  length = [ ... length ].length;
 
   let result = this.make( type, length );
   for( let i = 0 ; i < length ; i++ )

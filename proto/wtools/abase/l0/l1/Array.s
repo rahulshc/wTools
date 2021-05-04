@@ -180,27 +180,6 @@ function _makeFilling( type, value, length )
 
 //
 
-function makeFilling( type, value, length )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 2 )
-  {
-    _.assert( _.number.is( value ) || _.countable.is( value ) );
-    _.assert( type !== undefined );
-  }
-  else
-  {
-    _.assert( value !== undefined );
-    _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
-  }
-
-  return this._makeFilling( ... arguments );
-}
-
-//
-
 function _make( src, length )
 {
   if( arguments.length === 2 )
@@ -343,7 +322,7 @@ let ArrayExtension =
   _makeZeroed : _.argumentsArray._makeZeroed,
   makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
-  makeFilling,
+  makeFilling : _.long.makeFilling,
   _make,
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */

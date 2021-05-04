@@ -81,6 +81,32 @@ function _makeUndefined( src, length )
   return this._make( length );
 }
 
+//
+
+function _makeFilling( type, value, length )
+{
+  if( arguments.length === 2 )
+  {
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+    if( this.like( length ) )
+    type = length;
+    else
+    type = null;
+  }
+
+  if( _.long.is( length ) )
+  length = length.length;
+  else if( _.countable.is( length ) )
+  length = [ ... length ].length;
+
+  let result = this._make( type, length );
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = value;
+
+  return result;
+}
+
 // --
 // declaration
 // --
@@ -115,6 +141,8 @@ let BufferTypedExtension =
   makeUndefined : _.argumentsArray.makeUndefined,
   _makeZeroed : _makeUndefined,
   makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
+  _makeFilling,
+  makeFilling : _.long.makeFilling, /* qqq : for junior : cover */
 
   // _cloneShallow : _.buffer._cloneShallow,
   // cloneShallow : _.buffer.cloneShallow, /* qqq : for junior : cover */

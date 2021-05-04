@@ -217,27 +217,6 @@ function _makeFilling( type, value, length )
 
 //
 
-function makeFilling( type, value, length )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 2 )
-  {
-    _.assert( _.number.is( value ) || _.countable.is( value ) );
-    _.assert( type !== undefined );
-  }
-  else
-  {
-    _.assert( value !== undefined );
-    _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
-  }
-
-  return this._makeFilling( ... arguments );
-}
-
-//
-
 function _cloneShallow( src )
 {
   return this._makeAct( ... src );
@@ -320,7 +299,7 @@ var ArgumentsArrayExtension =
   _makeZeroed,
   makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
-  makeFilling,
+  makeFilling : _.long.makeFilling,
   _cloneShallow,
   cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
