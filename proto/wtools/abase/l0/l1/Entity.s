@@ -83,7 +83,7 @@ function strTypeSecondary( src )
  * @namespace Tools
  */
 
-/* qqq for Yevhen : jsdoc */
+/* qqq for junior : jsdoc */
 /* xxx : optimize later */
 /* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
@@ -136,7 +136,7 @@ function strTypeWithTraits( src )
 
 //
 
-/* qqq for Yevhen : jsdoc */
+/* qqq for junior : jsdoc */
 function strTypeWithoutTraits( src )
 {
 

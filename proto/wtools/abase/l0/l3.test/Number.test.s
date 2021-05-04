@@ -198,7 +198,7 @@ function equivalentBasic( test )
 {
 
   test.case = 'empty strings';
-  var got = _.number.equivalent( '', '' ); /* qqq for Yevhen : _.nubmer.areEquivalent should also work */
+  var got = _.number.equivalent( '', '' ); /* qqq for junior : _.nubmer.areEquivalent should also work */
   test.identical( got, false );
 
   test.case = 'equal string numbers';
@@ -267,7 +267,7 @@ function equivalentBasic( test )
   var got = _.number.equivalent( NaN, NaN );
   test.identical( got, true );
 
-  /* qqq for Yevhen : extend */
+  /* qqq for junior : extend */
 
   test.case = 'number 3 and big int 3';
   var got = _.number.equivalent( 3, 3n );
@@ -297,9 +297,9 @@ function equivalentBasic( test )
 
 //
 
-/* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` */
+/* qqq for junior : use `/ * * /` as delimeter between cases or nothing, not `//` */
 
-function equivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
+function equivalentOptionAccuracy( test ) /* qqq for junior : bad name, not option, it's argument! */
 {
   test.open( 'positive numbers' )
 
@@ -447,7 +447,7 @@ function equivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not opti
 
   test.open( 'big int' )
 
-  /* qqq for Yevhen : extend */
+  /* qqq for junior : extend */
 
   // test.case = 'number 3.01 and big int 3';
   // var got = _.number.equivalent( 3.1, 3n, 0.10001 );

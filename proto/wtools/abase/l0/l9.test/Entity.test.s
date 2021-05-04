@@ -107,7 +107,7 @@ function exportStringDiagnosticShallow( test )
   var expected = '{- Aux.polluted.prototyped with ';
   test.true( _.strHas( _.entity.exportStringDiagnosticShallow( src ), expected ) );
 
-  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for junior : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Map.polluted with 0 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
@@ -486,7 +486,7 @@ function exportStringCodeShallow( test )
   var expected = '{- Aux.polluted.prototyped with ';
   test.true( _.strHas( _.entity.exportStringCodeShallow( src ), expected ) );
 
-  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for junior : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Map.polluted with 0 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );

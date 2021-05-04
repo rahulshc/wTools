@@ -17,7 +17,7 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-function typingBasic( test ) /* qqq for Yevhen : extend */
+function typingBasic( test ) /* qqq for junior : extend */
 {
 
   test.case = 'str';
@@ -1093,7 +1093,7 @@ function typingExtended( test )
 
 //
 
-function typingObject( test ) /* qqq for Yevhen : extend */
+function typingObject( test ) /* qqq for junior : extend */
 {
 
   let sets =

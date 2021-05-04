@@ -377,10 +377,10 @@ function lengthOf( test )
   // test.case = 'console';
   // var src = console;
   // test.identical( _.container.lengthOf( src ), 24 );
-
-  test.case = 'printerLike';
-  var src = _global.logger;
-  test.identical( _.container.lengthOf( src ), 0 );
+  // 
+  // test.case = 'printerLike';
+  // var src = _global.logger;
+  // test.identical( _.container.lengthOf( src ), 0 );
 
   test.case = 'process';
   var src = process;

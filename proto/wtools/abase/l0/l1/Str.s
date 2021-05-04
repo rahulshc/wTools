@@ -1502,7 +1502,7 @@ let ToolsExtension =
   // converter
 
   strstrShort_ : strShort_, /* xxx : remove */
-  strShort_, /* qqq for Yevhen : cover | aaa : Done. */
+  strShort_, /* qqq for junior : cover | aaa : Done. */
   strShortWidth,
   _strShortWidth,
   strShortHeight,

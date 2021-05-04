@@ -6,9 +6,9 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
-/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
-/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
 
 // --
 // map selector

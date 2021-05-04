@@ -75,7 +75,7 @@ function _equivalentShallow( a, b, accuracy )
   if( accuracy !== undefined )
   _.assert( _.number.is( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
 
-  /* qqq for Yevhen : bad! */
+  /* qqq for junior : bad! */
 
   if( _.number.is( a ) && _.number.is( b ) )
   {
@@ -89,7 +89,7 @@ function _equivalentShallow( a, b, accuracy )
   if( !_.number.is( b ) && !_.bigInt.is( b ) )
   return false;
 
-  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+  /* qqq for junior : cache results of *Is calls at the beginning of the routine */
 
   // else
   // {
