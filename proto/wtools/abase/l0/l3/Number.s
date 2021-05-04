@@ -226,7 +226,7 @@ function _equivalentShallow2( a, b, accuracy )
   */
 
   if( accuracy === undefined )
-  accuracy = this.accuracy;
+  accuracy = _.accuracy;
 
   if( bigIntIsA && bigIntIsB ) /* a : BIF/BOF, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB  3 */
   {
