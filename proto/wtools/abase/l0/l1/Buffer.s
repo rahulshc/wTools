@@ -471,15 +471,14 @@ function _makeEmpty( src )
     if( _.routineIs( src ) )
     {
       let result = new src( 0 );
-      _.assert( _.long.is( result ) );
+      _.assert( this.like( result ) );
       return result;
     }
+    if( this.like( src ) )
     return new src.constructor();
   }
-  else
-  {
-    return this.tools.defaultBufferTyped.make();
-  }
+
+  return this.tools.defaultBufferTyped.make();
 }
 
 //
@@ -490,13 +489,10 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( this.like( src ) || _.routineIs( src ) );
-    return this._makeEmpty( src );
+    _.assert( _.countable.is( src ) || _.routineIs( src ) );
+    // _.assert( this.like( src ) || _.routineIs( src ) );
   }
-  else
-  {
-    return this._makeEmpty();
-  }
+  return this._makeEmpty( ... arguments );
 }
 
 //
