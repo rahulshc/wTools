@@ -26,22 +26,6 @@ function constructorIsVectorAdapter( src )
   return '_vectorBuffer' in src.prototype;
 }
 
-// // --
-// // exporter
-// // --
-//
-// function exportStringDiagnosticShallow( src )
-// {
-//   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-//   _.assert( _.vector.is( src ) );
-//
-//   if( _.unrollIs( src ) )
-//   return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-//   else
-//   return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
-//
-// }
-
 // --
 // extension
 // --
@@ -65,21 +49,6 @@ var VectorExtension =
 
   adapterIs,
   constructorIsVectorAdapter,
-
-  // // equaler
-  //
-  // _identicalShallow : _.array._identicalShallow,
-  // identicalShallow : _.array.identicalShallow,
-  // identical : _.array.identical,
-  // _equivalentShallow : _.array._equivalentShallow,
-  // equivalentShallow : _.array.equivalentShallow,
-  // equivalent : _.array.equivalent,
-  //
-  // // exporter
-  //
-  // exportString : exportStringDiagnosticShallow,
-  // exportStringDiagnosticShallow,
-  // exportStringCodeShallow : exportStringDiagnosticShallow,
 
   // equaler
 
@@ -159,6 +128,24 @@ var VectorExtension =
   _aptRight : _.countable._aptRight, /* qqq : cover */
   aptRight : _.countable.aptRight,
   last : _.countable.last, /* qqq : cover */
+
+  _filter : _.countable._filter,
+  filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
+  filterWithoutEscape : _.countable.filterWithoutEscape,
+  filterWithEscapeLeft : _.countable.filterWithEscapeLeft,
+  filterWithEscapeRight : _.countable.filterWithEscapeRight,
+  filterWithEscape : _.countable.filterWithEscape,
+  filter : _.countable.filter,
+
+  _map : _.countable._map,
+  mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
+  mapWithoutEscape : _.countable.mapWithoutEscape,
+  mapWithEscapeLeft : _.countable.mapWithEscapeLeft,
+  mapWithEscapeRight : _.countable.mapWithEscapeRight,
+  mapWithEscape : _.countable.mapWithEscape,
+  map : _.countable.map,
 
 }
 

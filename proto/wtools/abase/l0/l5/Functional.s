@@ -3229,7 +3229,7 @@ function _filter_functor( condition, levels )
  *   return v * v;
  * };
  *
- * _.map_( null, numbers, sqrt );
+ * _.container.map_( null, numbers, sqrt );
  * // returns [ 9, 16, 36 ]
  * // numbers is still [ 3, 4, 6 ]
  *
@@ -3248,7 +3248,7 @@ function _filter_functor( condition, levels )
  *   return v < sumOthers;
  * }
  *
- * _.map_( null, numbers, checkSidesOfTriangle );
+ * _.container.map_( null, numbers, checkSidesOfTriangle );
  * // returns [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
@@ -3263,7 +3263,7 @@ function _filter_functor( condition, levels )
 
 //
 
-function entityMap_( dst, src, onEach )
+function map_( dst, src, onEach )
 {
   if( arguments.length === 2 )
   {
@@ -3369,7 +3369,7 @@ function entityMap_( dst, src, onEach )
 
 //
 
-function entityFilter_( dst, src, onEach )
+function filter_( dst, src, onEach )
 {
 
   if( arguments.length === 2 )
@@ -3884,8 +3884,8 @@ let ContainerExtension =
 
   _filter_functor,
 
-  map_ : entityMap_,
-  filter_ : entityFilter_, /* qqq : for junior : bad */
+  map_,
+  filter_, /* qqq : for junior : bad */
   first : entityFirst,
   last : entityLast,
 
@@ -3953,16 +3953,16 @@ let ToolsExtension =
 
   // entityMap,
   // map : entityMap,/* !!! : use instead of entityMap */
-  entityMap_,
-  map_ : entityMap_,
+  // container.map_,
+  // map_,
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
-  entityFilter_,
-  filter_ : entityFilter_, /* qqq : for junior : bad */
-  entityFirst,
-  first : entityFirst,
-  entityLast,
-  last : entityLast,
+  // container.filter_,
+  filter_,
+  // entityFirst,
+  // first : entityFirst,
+  // entityLast,
+  // last : entityLast,
 
   //
 

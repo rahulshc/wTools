@@ -512,65 +512,23 @@ let SetExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  // // container interface
-  //
-  // _lengthOf,
-  // lengthOf, /* qqq : cover */
-  //
-  // _hasKey,
-  // hasKey, /* qqq : cover */
-  // _hasCardinal,
-  // hasCardinal, /* qqq : cover */
-  // _keyWithCardinal,
-  // keyWithCardinal, /* qqq : cover */
-  // _cardinalWithKey,
-  // cardinalWithKey, /* qqq : cover */
-  //
-  // _elementGet : _elementWithKey,
-  // elementGet : elementWithKey, /* qqq : cover */
-  // _elementWithKey,
-  // elementWithKey, /* qqq : cover */
-  // _elementWithImplicit,
-  // elementWithImplicit,  /* qqq : cover */
-  // _elementWithCardinal,
-  // elementWithCardinal,  /* qqq : cover */
-  //
-  // _elementSet : _elementWithKeySet,
-  // elementSet : elementWithKeySet, /* qqq : cover */
-  // _elementWithKeySet,
-  // elementWithKeySet, /* qqq : cover */
-  // _elementWithCardinalSet,
-  // elementWithCardinalSet,  /* qqq : cover */
-  //
-  // _elementDel : _elementWithKeyDel,
-  // elementDel : elementWithKeyDel, /* qqq : cover */
-  // _elementWithKeyDel,
-  // elementWithKeyDel, /* qqq : cover */
-  // _elementWithCardinalDel,
-  // elementWithCardinalDel,  /* qqq : cover */
-  // _empty,
-  // empty, /* qqq : for junior : cover */
-  //
-  // _each : _eachLeft,
-  // each : eachLeft, /* qqq : cover */
-  // _eachLeft,
-  // eachLeft, /* qqq : cover */
-  // _eachRight,
-  // eachRight, /* qqq : cover */
-  //
-  // _while : _whileLeft,
-  // while : whileLeft, /* qqq : cover */
-  // _whileLeft,
-  // whileLeft, /* qqq : cover */
-  // _whileRight,
-  // whileRight, /* qqq : cover */
-  //
-  // _aptLeft : _.props._aptLeft,
-  // aptLeft : _.props.aptLeft, /* qqq : cover */
-  // first : _.props.first,
-  // _aptRight : _.props._aptRight, /* qqq : cover */
-  // aptRight : _.props.aptRight,
-  // last : _.props.last, /* qqq : cover */
+  _filter : _.props._filter,
+  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  filterWithoutEscape : _.props.filterWithoutEscape,
+  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  filterWithEscapeRight : _.props.filterWithEscapeRight,
+  filterWithEscape : _.props.filterWithEscape,
+  filter : _.props.filter,
+
+  _map : _.props._map,
+  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  mapWithoutEscape : _.props.mapWithoutEscape,
+  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  mapWithEscapeRight : _.props.mapWithEscapeRight,
+  mapWithEscape : _.props.mapWithEscape,
+  map : _.props.map,
 
 }
 

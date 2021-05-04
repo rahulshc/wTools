@@ -123,6 +123,24 @@ let UnrollExtension =
   aptRight : _.long.aptRight,
   last : _.long.last, /* qqq : cover */
 
+  _filter : _.long._filter,
+  filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
+  filterWithoutEscape : _.long.filterWithoutEscape,
+  filterWithEscapeLeft : _.long.filterWithEscapeLeft,
+  filterWithEscapeRight : _.long.filterWithEscapeRight,
+  filterWithEscape : _.long.filterWithEscape,
+  filter : _.long.filter,
+
+  _map : _.long._map,
+  mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
+  mapWithoutEscape : _.long.mapWithoutEscape,
+  mapWithEscapeLeft : _.long.mapWithEscapeLeft,
+  mapWithEscapeRight : _.long.mapWithEscapeRight,
+  mapWithEscape : _.long.mapWithEscape,
+  map : _.long.map,
+
 }
 
 //

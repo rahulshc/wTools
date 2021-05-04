@@ -1067,6 +1067,64 @@ function aptRight( test )
 
 }
 
+//
+
+function filterMapCommonBasic( test )
+{
+  let ops = [];
+
+  act({ method : 'filter' });
+
+  /* - */
+
+  function act( env )
+  {
+    const _tools = tools( env );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass`;
+    clean();
+    var src = { a : 1, b : 2, c : 3 };
+    var dst = { d : 4 }
+    var got = _.props[ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = { d : 4, a : 11, b : 12, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 };
+    test.identical( src, exp );
+    var exp = [ 1, 2, 3 ];
+    test.identical( __.select( got, '*/#0' ), exp );
+    var exp = [ 'a', 'b', 'c' ];
+    test.identical( __.select( got, '*/#1' ), exp );
+    var exp = [ 0, 1, 2 ];
+    test.identical( __.select( got, '*/#2' ), exp );
+    var exp = [ src, src, src ];
+    test.identical( __.select( got, '*/#4' ), exp );
+
+    /* */
+
+  }
+
+  /* - */
+
+  function clean()
+  {
+    ops = [];
+  }
+
+  /* - */
+
+  function f1( e, k, c, src )
+  {
+    ops.push( Array.prototype.slice.call( arguments ) );
+    return e + 10;
+  }
+
+  /* - */
+
+}
+
 // --
 // define test suite
 // --
@@ -1088,6 +1146,8 @@ const Proto =
 
     aptLeft,
     aptRight,
+
+    // filterMapCommonBasic,
 
   }
 
