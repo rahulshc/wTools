@@ -139,19 +139,48 @@ function namespaceForEntity( src )
 
 //
 
-function _functor_functor( methodName, typer )
+function _functor_functor( methodName, typer, which )
 {
   _.assert( !!( methodName ) );
+  // if( _.numberIs( typer ) )
+  // {
+  //   _.assert( which === undefined );
+  //   which = arguments[ 1 ];
+  //   typer = arguments[ 0 ];
+  // }
   if( !typer )
   typer = 'namespaceForContainer';
-  return function _functor( container )
+  if( !which )
+  which = 0;
+  if( which === 0 )
+  return _functor0;
+  if( which === 1 )
+  return _functor1;
+  _.assert( 0 );
+
+  function _functor0( container )
   {
     _.assert( arguments.length === 1 );
-    _.assert( _.routine.is( this[ typer ] ),() =>  `No routine::${typer} in the namesapce::${this.NamespaceName}` );
-    let namespace = this[ typer ]( container );
+    _.assert( _.routine.is( this[ typer ] ),() => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
+    const namespace = this[ typer ]( container );
     _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
     return namespace[ methodName ].bind( namespace, container );
   }
+
+  function _functor1( container )
+  {
+    _.assert( arguments.length === 1 );
+    _.assert( _.routine.is( this[ typer ] ),() => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
+    const namespace = this[ typer ]( container );
+    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
+    const routine0 = namespace[ methodName ];
+    return routine1.bind( namespace );
+    function routine1( arg1, ... args )
+    {
+      return routine0.call( this, arg1, container, ... args );
+    }
+  }
+
 }
 
 // --
