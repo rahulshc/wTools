@@ -857,6 +857,8 @@ function _namespaceRegister( namespace )
 
   namespace.AsDefault = _.long._asDefaultGenerate( namespace );
 
+  return namespace.AsDefault;
+
   function verify()
   {
     _.assert( !!namespace.NamespaceName );
@@ -898,9 +900,9 @@ function _asDefaultGenerate( namespace )
   /* xxx : introduce map _.namespaces */
   for( let name in _.long.namespaces )
   {
-    let namespace = _.long.namespaces[ name ];
-    result[ name ] = Object.create( namespace );
-    result[ name ].tools = result;
+    let namespace2 = _.long.namespaces[ name ];
+    result[ namespace2.TypeName ] = Object.create( namespace );
+    result[ namespace2.TypeName ].tools = result;
   }
 
   result.long = Object.create( _.long );
