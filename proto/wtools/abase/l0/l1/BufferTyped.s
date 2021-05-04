@@ -60,6 +60,27 @@ function _make( src, length )
   }
 }
 
+//
+
+function _makeUndefined( src, length )
+{
+  if( arguments.length === 0 )
+  return this.make( 0 );
+
+  if( length === undefined )
+  length = src;
+  if( length && !_.number.is( length ) )
+  {
+    if( length.length )
+    length = length.length;
+    else
+    length = [ ... length ].length;
+  }
+  if( this.like( src ) )
+  return new src.constructor( length );
+  return this._make( length );
+}
+
 // --
 // declaration
 // --
@@ -90,10 +111,10 @@ let BufferTypedExtension =
   make : _.long.make,
   _makeEmpty : _.buffer._makeEmpty,
   makeEmpty : _.buffer.makeEmpty,
-  _makeUndefined : _.buffer._makeUndefined, /* qqq : implement */
-  makeUndefined : _.buffer.makeUndefined,
-  _makeZeroed : _.buffer._makeZeroed,
-  makeZeroed : _.buffer.makeZeroed, /* qqq : for junior : cover */
+  _makeUndefined, /* qqq : implement */
+  makeUndefined : _.argumentsArray.makeUndefined,
+  _makeZeroed : _makeUndefined,
+  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
 
   // _cloneShallow : _.buffer._cloneShallow,
   // cloneShallow : _.buffer.cloneShallow, /* qqq : for junior : cover */
