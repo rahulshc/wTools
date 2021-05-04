@@ -3263,7 +3263,7 @@ function _filter_functor( condition, levels )
 
 //
 
-function entityMap_( dst, src, onEach )
+function map_( dst, src, onEach )
 {
   if( arguments.length === 2 )
   {
@@ -3369,7 +3369,7 @@ function entityMap_( dst, src, onEach )
 
 //
 
-function entityFilter_( dst, src, onEach )
+function filter_( dst, src, onEach )
 {
 
   if( arguments.length === 2 )
@@ -3884,8 +3884,8 @@ let ContainerExtension =
 
   _filter_functor,
 
-  map_ : entityMap_,
-  filter_ : entityFilter_, /* qqq : for junior : bad */
+  map_,
+  filter_, /* qqq : for junior : bad */
   first : entityFirst,
   last : entityLast,
 
@@ -3953,12 +3953,12 @@ let ToolsExtension =
 
   // entityMap,
   // map : entityMap,/* !!! : use instead of entityMap */
-  entityMap_,
-  map_ : entityMap_,
+  // container.map_,
+  // map_,
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
-  entityFilter_,
-  filter_ : entityFilter_, /* qqq : for junior : bad */
+  // container.filter_,
+  filter_,
   // entityFirst,
   // first : entityFirst,
   // entityLast,
