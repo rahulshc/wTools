@@ -807,7 +807,7 @@ optionsWithUndefined.meta.locals =
 
 //
 
-function optionsTollerant( routine, options )
+function optionsWithUndefinedTollerant( routine, options )
 {
   if( _.argumentsArray.like( options ) )
   {
@@ -848,8 +848,8 @@ function optionsTollerant( routine, options )
   return options;
 }
 
-optionsTollerant.meta = Object.create( null );
-optionsTollerant.meta.locals =
+optionsWithUndefinedTollerant.meta = Object.create( null );
+optionsWithUndefinedTollerant.meta.locals =
 {
   __keysQuote,
   __mapSupplementWithUndefinedTollerant,
@@ -2540,11 +2540,12 @@ let RoutineExtension =
   optionsWithoutUndefined,
   assertOptionsWithoutUndefined,
   optionsWithUndefined,
+  optionsWithUndefinedTollerant,
   assertOptionsWithUndefined,
   options : optionsWithUndefined,
   assertOptions : assertOptionsWithUndefined,
   options_ : optionsWithUndefined,
-  optionsTollerant,
+  optionsTollerant : optionsWithUndefinedTollerant,
   assertOptions_ : assertOptionsWithUndefined,
   _verifyDefaults,
 
