@@ -1815,7 +1815,7 @@ function elementWithImplicit( test )
 
   /* - */
 
-  /* qqq2 : for Yevhen : use _.diangostic.objectMake() in ALL tests instead of this */
+  /* qqq2 : for junior : use _.diangostic.objectMake() in ALL tests instead of this */
 
   // function _iterate()
   // {

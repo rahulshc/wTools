@@ -37,7 +37,7 @@ Object.assign( _, ToolsExtension );
 
 //
 
-/* qqq : for Yevhen : make replacements */
+/* qqq : for junior : make replacements */
 
 let UnrollExtension =
 {
@@ -100,7 +100,7 @@ let UnrollExtension =
   _elementWithCardinalDel : _.long._elementWithCardinalDel,
   elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
   _empty : _.long._empty,
-  empty : _.long.empty, /* qqq : for Yevhen : cover */
+  empty : _.long.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */

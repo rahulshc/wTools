@@ -167,7 +167,7 @@ function strHas( src, ins )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
@@ -198,7 +198,7 @@ function strHas( src, ins )
 // //
 // //   if( strIs1 && strIs2 )
 // //   {
-// //     /* qqq : for Yevhen : bad | aaa : Fixed. */
+// //     /* qqq : for junior : bad | aaa : Fixed. */
 // //     if( src1 === src2 )
 // //     return true;
 // //
@@ -1495,7 +1495,7 @@ let ToolsExtension =
   // strType : strTypeWithTraits,
   strHas,
 
-  // strEquivalent, /* qqq : for Yevhen : bad */
+  // strEquivalent, /* qqq : for junior : bad */
   // areEquivalentShallow : strEquivalent, xxx
   // strsEquivalent,
 

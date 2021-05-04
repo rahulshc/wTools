@@ -281,8 +281,8 @@ function mapButNulls( srcMap )
 //  * @namespace Tools
 //  */
 //
-// /* xxx qqq : for Yevhen : duplicate in _.props.identical() | aaa : Done */
-// /* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
+// /* xxx qqq : for junior : duplicate in _.props.identical() | aaa : Done */
+// /* xxx qqq : for junior : move to _.aux.identical() | aaa : Done */
 // function mapsAreIdentical( src1, src2 )
 // {
 //
@@ -635,8 +635,8 @@ function mapHasAll( src, screen )
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : teach to accept vector | aaa : Done. */
-/* xxx qqq : for Yevhen : duplicate in _.props.hasAny() | aaa : Done */
+/* xxx qqq : for junior : teach to accept vector | aaa : Done. */
+/* xxx qqq : for junior : duplicate in _.props.hasAny() | aaa : Done */
 function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -696,8 +696,8 @@ function mapHasAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done */
-/* xxx qqq : for Yevhen : duplicate in _.props.hasNone() | aaa : Done */
+/* qqq : for junior : teach to accept vector | aaa : Done */
+/* xxx qqq : for junior : duplicate in _.props.hasNone() | aaa : Done */
 function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -757,7 +757,7 @@ function mapHasNone( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
+/* qqq : for junior : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -817,7 +817,7 @@ function mapOnlyOwnAll( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
+/* qqq : for junior : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -877,7 +877,7 @@ function mapOnlyOwnAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done.*/
+/* qqq : for junior : teach to accept vector | aaa : Done.*/
 /* xxx : move? */
 function mapOnlyOwnNone( src, screen )
 {
@@ -1988,7 +1988,7 @@ function _mapInvert( o )
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( !_.primitive.is( o.src ) );
   _.assert( !_.primitive.is( o.dst ) );
-  /* qqq : for Yevhen : bad : lack of important assert */
+  /* qqq : for junior : bad : lack of important assert */
 
   let del;
   if( o.duplicate === 'delete' )
@@ -5787,7 +5787,7 @@ let Extension =
 //
 // --
 
-/* qqq : for Yevhen : duplicate all routines */
+/* qqq : for junior : duplicate all routines */
 
 let ExtensionMap =
 {

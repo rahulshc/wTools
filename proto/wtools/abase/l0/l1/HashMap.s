@@ -243,15 +243,15 @@ let Extension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
-  fromProps, /* qqq : for Yevhen : cover */
-  from, /* qqq : for Yevhen : cover */
+  cloneShallow, /* qqq : for junior : cover */
+  fromProps, /* qqq : for junior : cover */
+  from, /* qqq : for junior : cover */
 
 }
 

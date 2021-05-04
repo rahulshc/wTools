@@ -3150,7 +3150,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 // function long.identicalShallow( src1, src2 )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   // qqq : for Yevhen : !
+//   // qqq : for junior : !
 //   // _.assert( _.longLike( src1 ) );
 //   // _.assert( _.longLike( src2 ) );
 //

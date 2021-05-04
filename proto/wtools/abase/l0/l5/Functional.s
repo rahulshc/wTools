@@ -3885,7 +3885,7 @@ let ContainerExtension =
   _filter_functor,
 
   map_ : entityMap_,
-  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
+  filter_ : entityFilter_, /* qqq : for junior : bad */
   first : entityFirst,
   last : entityLast,
 
@@ -3958,7 +3958,7 @@ let ToolsExtension =
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
   entityFilter_,
-  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
+  filter_ : entityFilter_, /* qqq : for junior : bad */
   entityFirst,
   first : entityFirst,
   entityLast,

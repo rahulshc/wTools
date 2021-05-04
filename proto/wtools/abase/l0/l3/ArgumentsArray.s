@@ -450,7 +450,7 @@ var ArgumentsArrayExtension =
   _elementWithCardinalDel,
   elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty : _.long.empty, /* qqq : for Yevhen : cover */
+  empty : _.long.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */
@@ -502,7 +502,7 @@ var ArgumentsArrayExtension =
   // // editor
   //
   // _empty,
-  // empty, /* qqq : for Yevhen : cover */
+  // empty, /* qqq : for junior : cover */
   //
   // // elementor
   //

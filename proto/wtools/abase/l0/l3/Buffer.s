@@ -590,7 +590,7 @@ let BufferExtension =
   // editor
 
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty, /* qqq : for junior : cover */
 
   // elementor
 
