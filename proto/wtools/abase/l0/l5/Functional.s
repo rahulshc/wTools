@@ -3229,7 +3229,7 @@ function _filter_functor( condition, levels )
  *   return v * v;
  * };
  *
- * _.map_( null, numbers, sqrt );
+ * _.container.map_( null, numbers, sqrt );
  * // returns [ 9, 16, 36 ]
  * // numbers is still [ 3, 4, 6 ]
  *
@@ -3248,7 +3248,7 @@ function _filter_functor( condition, levels )
  *   return v < sumOthers;
  * }
  *
- * _.map_( null, numbers, checkSidesOfTriangle );
+ * _.container.map_( null, numbers, checkSidesOfTriangle );
  * // returns [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.

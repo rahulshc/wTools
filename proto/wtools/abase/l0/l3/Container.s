@@ -357,6 +357,26 @@ function last( container )
   return _.container.aptRight( container );
 }
 
+//
+
+function filter( dst, src, onEach )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return filter.functor.call( this, container )( onEach );
+}
+
+filter.functor = _functor_functor( 'filter' );
+
+//
+
+function map( dst, src, onEach )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return map.functor.call( this, container )( onEach );
+}
+
+map.functor = _functor_functor( 'map' );
+
 // --
 // extension
 // --
@@ -392,6 +412,8 @@ let ContainerExtension =
   elementWithCardinalSet, /* qqq : cover */
   elementSet, /* qqq : cover */
 
+  // iterator
+
   each : eachLeft, /* qqq : cover */
   eachLeft, /* qqq : cover */
   eachRight, /* qqq : cover */
@@ -404,6 +426,9 @@ let ContainerExtension =
   first, /* qqq : cover */
   aptRight, /* qqq : cover */
   last, /* qqq : cover */
+
+  map,
+  filter,
 
 }
 

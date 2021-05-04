@@ -194,7 +194,6 @@ let ContainerExtension =
 
   is, /* qqq : cover please */
   like,
-  // lengthOf,
 
   // maker
 
@@ -226,7 +225,6 @@ let ToolsExtension =
 
   containerIs : is.bind( _.container ),
   containerLike : like.bind( _.container ),
-  // containerLengthOf : lengthOf,
 
 }
 
