@@ -279,7 +279,7 @@ function _functor( fo )
     // maker
 
     [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
-    [ fo.name + 'MakeUndefined' ] : _.long.makeUndefined.bind( _[ fo.name ] ),
+    [ fo.name + 'MakeUndefined' ] : _.argumentsArray.makeUndefined.bind( _[ fo.name ] ),
     // [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
     [ fo.name + 'Make' ] : _.argumentsArray.make.bind( _[ fo.name ] ),
     // [ fo.name + 'Make' ] : make.bind( _[ fo.name ] ),
@@ -314,9 +314,9 @@ function _functor( fo )
     _makeEmpty,
     makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
-    makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
+    makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
     _makeZeroed : _makeUndefined,
-    makeZeroed : _.long.makeUndefined,
+    makeZeroed : _.argumentsArray.makeUndefined,
     // makeZeroed : makeUndefined,
     _makeFilling,
     makeFilling,

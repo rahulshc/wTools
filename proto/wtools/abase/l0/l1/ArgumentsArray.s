@@ -116,12 +116,32 @@ function _makeUndefined( src, length )
 {
   if( length === undefined )
   length = src;
-  if( this.like( length ) )
-  length = length.length;
+  if( length && !_.number.is( length ) )
+  {
+    if( length.length )
+    length = length.length;
+    else
+    length = [ ... length ].length;
+  }
   return this._make( length );
 }
 
 //
+
+function makeUndefined( src, length )
+{
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+  }
+  return this._makeUndefined( ... arguments );
+}
 
 // function makeUndefined( src, length )
 // {
@@ -143,6 +163,23 @@ function _makeUndefined( src, length )
 function _makeZeroed( src, length )
 {
   return this._makeFilling.call( this, 0, ... arguments );
+}
+
+//
+
+function makeZeroed( src, length )
+{
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+  }
+  return this._makeZeroed( ... arguments );
 }
 
 //
@@ -279,9 +316,9 @@ var ArgumentsArrayExtension =
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _makeZeroed,
-  makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
+  makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling,
   _cloneShallow,

@@ -835,7 +835,7 @@ let ToolsExtension =
   // maker
 
   unrollMakeEmpty : makeEmpty.bind( _.unroll ),
-  unrollMakeUndefined : _.long.makeUndefined.bind( _.unroll ),
+  unrollMakeUndefined : _.argumentsArray.makeUndefined.bind( _.unroll ),
   // unrollMakeUndefined : makeUndefined.bind( _.unroll ),
   unrollMake : _.argumentsArray.make.bind( _.unroll ),
   // unrollMake : make.bind( _.unroll ),
@@ -882,9 +882,9 @@ let UnrollExtension =
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.argumentsArray._makeUndefined,
-  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
+  makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
-  makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
+  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling,
   _make,

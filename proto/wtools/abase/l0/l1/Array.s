@@ -299,7 +299,7 @@ let ToolsExtension =
   // maker
 
   arrayMakeEmpty : makeEmpty.bind( _.array ),
-  arrayMakeUndefined : _.long.makeUndefined.bind( _.array ),
+  arrayMakeUndefined : _.argumentsArray.makeUndefined.bind( _.array ),
   // arrayMakeUndefined : makeUndefined.bind( _.array ),
   arrayMake : _.argumentsArray.make.bind( _.array ),
   // arrayMake : make.bind( _.array ),
@@ -339,9 +339,9 @@ let ArrayExtension =
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.argumentsArray._makeUndefined,
-  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
+  makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
-  makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
+  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling,
   _make,
