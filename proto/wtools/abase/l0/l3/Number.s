@@ -179,8 +179,6 @@ function _equivalentShallow2( a, b, accuracy )
   let numberIsA = _.number.is( a );
   let numberIsB = _.number.is( b );
 
-  /* qqq for Yevhen : bad! */
-
   if( !numberIsA && !bigIntIsA )
   return false;
 
@@ -192,8 +190,6 @@ function _equivalentShallow2( a, b, accuracy )
     if( Object.is( a, b ) )
     return true;
   }
-
-  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
   /*
   Cases :
