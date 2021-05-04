@@ -163,7 +163,7 @@ function _equivalentShallow( a, b, accuracy )
 
 //
 
-function numbersAreEquivalent2( a, b, accuracy )
+function _equivalentShallow2( a, b, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
@@ -343,6 +343,18 @@ function equivalentShallow( src1, src2, accuracy )
   return this._equivalentShallow( ... arguments );
 }
 
+//
+
+function equivalentShallow2( src1, src2, accuracy )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+  return this._equivalentShallow2( ... arguments );
+}
+
 // --
 // extension
 // --
@@ -371,7 +383,9 @@ let NumberExtension =
   // identicalNotStrictly,
 
   _equivalentShallow,
+  _equivalentShallow2,
   equivalentShallow,
+  equivalentShallow2,
   equivalent : equivalentShallow,
 
   // areEquivalentShallow : areEquivalent,
