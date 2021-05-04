@@ -122,6 +122,23 @@ __mapSupplementWithUndefined.meta.locals =
 
 //
 
+function __mapSupplementWithUndefinedTollerant( dstMap, srcMap )
+{
+  for( let k in srcMap )
+  {
+    if( Object.hasOwnProperty.call( dstMap, k ) )
+    continue;
+    dstMap[ k ] = srcMap[ k ];
+  }
+}
+
+__mapSupplementWithUndefinedTollerant.meta = Object.create( null );
+__mapSupplementWithUndefinedTollerant.meta.locals =
+{
+}
+
+//
+
 function __arrayFlatten( src )
 {
   let result = [];
@@ -787,6 +804,57 @@ optionsWithUndefined.meta.locals =
   __keysQuote,
   __mapSupplementWithUndefined,
 }
+
+//
+
+function optionsTollerant( routine, options )
+{
+  if( _.argumentsArray.like( options ) )
+  {
+    _.assert
+    (
+      options.length === 0 || options.length === 1,
+      `Expects single options map, but got ${options.length} arguments`
+    );
+    if( options.length === 0 )
+    options = Object.create( null )
+    else
+    options = options[ 0 ];
+  }
+
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+    _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
+  }
+
+  if( options === null )
+  options = Object.create( null );
+  let name = routine.name || '';
+  let defaults = routine.defaults;
+  _.assert( _.aux.is( defaults ), `Expects map of defaults, but got ${_.strType( defaults )}` );
+
+  /* */
+
+  if( Config.debug )
+  {
+    let extraKeys = __mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine "${ name }" does not expect options: ${ __keysQuote( extraKeys ) }` );
+  }
+
+  __mapSupplementWithUndefinedTollerant( options, defaults );
+
+  return options;
+}
+
+optionsTollerant.meta = Object.create( null );
+optionsTollerant.meta.locals =
+{
+  __keysQuote,
+  __mapSupplementWithUndefinedTollerant,
+}
+
 
 //
 
@@ -1550,7 +1618,7 @@ function _amend( o )
     _.assert( body.tail === undefined, 'Body should not have own tail' );
     _.assert( body.body === undefined, 'Body should not have own body' );
     {
-      // let srcs = srcIsVector ? _.entity.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      // let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
       let srcs;
       if( srcIsVector )
       {
@@ -2476,6 +2544,7 @@ let RoutineExtension =
   options : optionsWithUndefined,
   assertOptions : assertOptionsWithUndefined,
   options_ : optionsWithUndefined,
+  optionsTollerant,
   assertOptions_ : assertOptionsWithUndefined,
   _verifyDefaults,
 
