@@ -573,14 +573,14 @@ function aptLeft( src, onEach )
   return this._aptLeft( src, onEach );
 }
 
+// //
 //
-
-function first( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.is( src ) );
-  return this._aptLeft( src );
-}
+// function first( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( this.is( src ) );
+//   return this._aptLeft( src );
+// }
 
 //
 
@@ -624,14 +624,14 @@ function aptRight( src, onEach )
   return this._aptRight( src, onEach );
 }
 
+// //
 //
-
-function last( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.is( src ) );
-  return this._aptRight( src );
-}
+// function last( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( this.is( src ) );
+//   return this._aptRight( src );
+// }
 
 //
 
@@ -772,7 +772,7 @@ function mapWithEscapeRight( dst, src, onEach )
 {
   _.assert( arguments.length === 3 );
   _.assert( this.is( src ) );
-  return this._map( src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
+  return this._map( dst, src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
 }
 
 // --
@@ -863,7 +863,7 @@ let Extension =
   _elementWithCardinalDel,
   elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty, /* qqq : for junior : cover */
 
   // iterator
 
@@ -883,10 +883,10 @@ let Extension =
 
   _aptLeft,
   aptLeft, /* qqq : cover */
-  first,
+  first : aptLeft,
   _aptRight, /* qqq : cover */
   aptRight,
-  last, /* qqq : cover */
+  last : aptRight, /* qqq : cover */
 
   _filter,
   filterWithoutEscapeLeft,

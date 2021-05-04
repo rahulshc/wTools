@@ -134,6 +134,11 @@ function _make_functor( onMake )
       {
         _.assert( 0, 'Unknown length of buffer' );
       }
+      else if( arguments.length === 0 )
+      {
+        length = 0;
+        src = null;
+      }
       else _.assert( 0 );
     }
     else if( !_.number.is( length ) )
@@ -169,12 +174,15 @@ function _make_functor( onMake )
     /* */
 
     if( _.argumentsArray.is( src ) )
-    src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
+    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
 
     if( src === null )
-    src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
+    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
 
-    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( 0 <= arguments.length && arguments.length <= 2 );
+    // _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
     _.assert( _.routine.is( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.entity.strType( src ) );
 

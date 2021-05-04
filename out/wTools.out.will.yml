@@ -265,6 +265,7 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Blank.test.s
           - ../proto/wtools/abase/l0/l1.test/Bool.test.s
           - ../proto/wtools/abase/l0/l1.test/Buffer.test.s
+          - ../proto/wtools/abase/l0/l1.test/BufferTyped.test.s
           - ../proto/wtools/abase/l0/l1.test/Container.test.s
           - ../proto/wtools/abase/l0/l1.test/Countable.test.s
           - ../proto/wtools/abase/l0/l1.test/Entity.test.s
@@ -301,6 +302,7 @@ module:
           - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Itself.s
           - ../proto/wtools/abase/l0/l3/Map.s
+          - ../proto/wtools/abase/l0/l3/Module.s
           - ../proto/wtools/abase/l0/l3/Number.s
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Primitive.s

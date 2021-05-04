@@ -19312,7 +19312,7 @@ const Proto =
     strSplitInlinedStereo_OptionPrefixPostfix,
     strSplitInlinedStereo_OptionStripping,
     strSplitInlinedStereo_OptionPreservingEmpty,
-    // strSplitInlinedStereo_OptionPreservingDelimeters, /* qqq : for Yevhen : bad : fix */
+    // strSplitInlinedStereo_OptionPreservingDelimeters, /* qqq : for junior : bad : fix */
     strSplitInlinedStereo_OptionQuoting,
     strSplitInlinedStereo_OptionOnInlined,
     strSplitInlinedStereo_OptionOnOrdinary,

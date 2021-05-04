@@ -591,7 +591,7 @@ makeBugWithArray.description =
 // container
 // --
 
-/* qqq : for Yevhen : rewrite tests, please */
+/* qqq : for junior : rewrite tests, please */
 function keys( test )
 {
 
@@ -1458,17 +1458,17 @@ const Proto =
 
     // container
 
-    keys, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnKeys, /* qqq : for Yevhen : rewrite tests, please */
-    allKeys, /* qqq : for Yevhen : rewrite tests, please */
+    keys, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnKeys, /* qqq : for junior : rewrite tests, please */
+    allKeys, /* qqq : for junior : rewrite tests, please */
 
-    vals, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnVals, /* qqq : for Yevhen : rewrite tests, please */
-    allVals, /* qqq : for Yevhen : rewrite tests, please */
+    vals, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnVals, /* qqq : for junior : rewrite tests, please */
+    allVals, /* qqq : for junior : rewrite tests, please */
 
-    pairs, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnPairs, /* qqq : for Yevhen : rewrite tests, please */
-    allPairs, /* qqq : for Yevhen : rewrite tests, please */
+    pairs, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnPairs, /* qqq : for junior : rewrite tests, please */
+    allPairs, /* qqq : for junior : rewrite tests, please */
 
   }
 

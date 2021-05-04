@@ -173,7 +173,7 @@ function methodIteratorOf( test )
 
 //
 
-/* qqq : for Yevhen : extend the routine, please */
+/* qqq : for junior : extend the routine, please */
 function methodEqualOf( test )
 {
   test.case = 'without argument';

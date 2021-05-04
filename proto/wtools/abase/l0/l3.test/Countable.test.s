@@ -388,25 +388,33 @@ function countablesAreEquivalentShallow( test )
   var src1 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'buffer typed and array';
   var src1 = new F32x([ 1, 2, 3 ])
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'vectorLike and array';
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'countable and array';
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'countable made and array';
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
@@ -418,64 +426,27 @@ function countablesAreEquivalentShallow( test )
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = `argumentsArray and array`;
   var src1 = _.argumentsArray.make([ '1', '10' ]);
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = `argumentsArray and array`;
   var src1 = _.argumentsArray.make([ '1', '10' ]);
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.close( 'not identical, equivalent' );
-
-  /* - */
-
-  // function _iterate()
-  // {
-  //
-  //   let iterator = Object.create( null );
-  //   iterator.next = next;
-  //   iterator.index = 0;
-  //   iterator.instance = this;
-  //   return iterator;
-  //
-  //   function next()
-  //   {
-  //     let result = Object.create( null );
-  //     result.done = this.index === this.instance.elements.length;
-  //     if( result.done )
-  //     return result;
-  //     result.value = this.instance.elements[ this.index ];
-  //     this.index += 1;
-  //     return result;
-  //   }
-  //
-  // }
-  //
-  // /* */
-  //
-  // function countableConstructor( o )
-  // {
-  //   return countableMake( this, o );
-  // }
-  //
-  // /* */
-  //
-  // function countableMake( dst, o )
-  // {
-  //   if( dst === null )
-  //   dst = Object.create( null );
-  //   _.props.extend( dst, o );
-  //   if( o.countable )
-  //   dst[ Symbol.iterator ] = _iterate;
-  //   return dst;
-  // }
 
 }
 

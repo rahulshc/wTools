@@ -9,6 +9,15 @@ const _ = _global_.wTools;
 _.assert( !!_.long._elementWithKey, 'Expects routine array._elementWithKey' );
 
 // --
+// exporter
+// --
+
+function _exportStringDiagnosticShallow( src )
+{
+  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
+}
+
+// --
 // declaration
 // --
 
@@ -28,7 +37,7 @@ Object.assign( _, ToolsExtension );
 
 //
 
-/* qqq : for Yevhen : make replacements */
+/* qqq : for junior : make replacements */
 
 let UnrollExtension =
 {
@@ -48,9 +57,11 @@ let UnrollExtension =
 
   // exporter
 
-  exportString : _.long.exportString,
+  _exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
   exportStringCodeShallow : _.long.exportStringCodeShallow,
+  exportString : _.long.exportString,
 
   // container interface
 
@@ -89,7 +100,7 @@ let UnrollExtension =
   _elementWithCardinalDel : _.long._elementWithCardinalDel,
   elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
   _empty : _.long._empty,
-  empty : _.long.empty, /* qqq : for Yevhen : cover */
+  empty : _.long.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */
@@ -111,6 +122,24 @@ let UnrollExtension =
   _aptRight : _.long._aptRight, /* qqq : cover */
   aptRight : _.long.aptRight,
   last : _.long.last, /* qqq : cover */
+
+  _filter : _.long._filter,
+  filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
+  filterWithoutEscape : _.long.filterWithoutEscape,
+  filterWithEscapeLeft : _.long.filterWithEscapeLeft,
+  filterWithEscapeRight : _.long.filterWithEscapeRight,
+  filterWithEscape : _.long.filterWithEscape,
+  filter : _.long.filter,
+
+  _map : _.long._map,
+  mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
+  mapWithoutEscape : _.long.mapWithoutEscape,
+  mapWithEscapeLeft : _.long.mapWithEscapeLeft,
+  mapWithEscapeRight : _.long.mapWithEscapeRight,
+  mapWithEscape : _.long.mapWithEscape,
+  map : _.long.map,
 
 }
 

@@ -80,7 +80,7 @@ function identicalShallow( src1, src2, accuracy )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
@@ -111,7 +111,7 @@ function identicalShallow( src1, src2, accuracy )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //

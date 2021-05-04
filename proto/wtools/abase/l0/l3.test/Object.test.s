@@ -46,25 +46,25 @@ function exportStringDiagnosticShallow( test )
   test.identical( got, expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 } );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [], countable : 1 } );
   var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `strange map`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   var expected = '{- Map.polluted -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
@@ -80,49 +80,6 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'wrong type';
   test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( {} ) );
-
-  /* - */
-
-  // function _iterate()
-  // {
-  //
-  //   let iterator = Object.create( null );
-  //   iterator.next = next;
-  //   iterator.index = 0;
-  //   iterator.instance = this;
-  //   return iterator;
-  //
-  //   function next()
-  //   {
-  //     let result = Object.create( null );
-  //     result.done = this.index === this.instance.elements.length;
-  //     if( result.done )
-  //     return result;
-  //     result.value = this.instance.elements[ this.index ];
-  //     this.index += 1;
-  //     return result;
-  //   }
-  //
-  // }
-  //
-  // /* */
-  //
-  // function countableConstructor( o )
-  // {
-  //   return countableMake( this, o );
-  // }
-  //
-  // /* */
-  //
-  // function countableMake( dst, o )
-  // {
-  //   if( dst === null )
-  //   dst = Object.create( null );
-  //   _.props.extend( dst, o );
-  //   if( o.countable )
-  //   dst[ Symbol.iterator ] = _iterate;
-  //   return dst;
-  // }
 
 }
 
@@ -214,24 +171,36 @@ function identicalShallow( test )
 
 //
 
-function aptLeftBlank( test )
+function aptLeftBlankNonCountable( test )
 {
 
   /* */
 
   test.case = 'left';
-  var src = _.diagnostic.objectMake({ a : 1, b : 2, c : 3 });
+  var src = _.diagnostic.objectMake({ countable : 0, a : 1, b : 2, c : 3 });
   var ops = [];
   var got = _.object.aptLeft( src, function( val )
   {
-    ops.push( _.longSlice( arguments ) );
+    ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
   });
-  var exp = [ undefined, undefined, -1, false ];
+  var exp = [ 11, 'a', 1, true ];
   test.identical( got, exp );
   var exp =
   [
+    [
+      0,
+      'countable',
+      0,
+      src,
+    ],
+    [
+      1,
+      'a',
+      1,
+      src,
+    ],
   ]
   test.identical( ops, exp );
 
@@ -242,7 +211,7 @@ function aptLeftBlank( test )
   var ops = [];
   var got = _.object.aptLeft( src, function( val )
   {
-    ops.push( _.longSlice( arguments ) );
+    ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
@@ -256,18 +225,18 @@ function aptLeftBlank( test )
   /* */
 
   test.case = 'without callback';
-  var src = _.diagnostic.objectMake({ a : 1, b : 2, c : 3 });
-  var exp = [ undefined, undefined, -1, false ];
+  var src = _.diagnostic.objectMake({ countable : 0, a : 1, b : 2, c : 3 });
+  var exp = [ 0, 'countable', 0, true ];
   var got = _.object.aptLeft( src );
   test.identical( got, exp );
-  var exp = [ undefined, undefined, -1, false ];
+  var exp = [ 0, 'countable', 0, true ];
   var got = _.object.first( src );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'without callback, empty';
-  var src = _.diagnostic.objectMake({});
+  var src = {};
   var exp = [ undefined, undefined, -1, false ];
   var got = _.object.aptLeft( src );
   test.identical( got, exp );
@@ -281,24 +250,36 @@ function aptLeftBlank( test )
 
 //
 
-function aptRightBlank( test )
+function aptRightBlankNonCountable( test )
 {
 
   /* */
 
   test.case = 'left';
-  var src = _.diagnostic.objectMake({ a : 1, b : 2, c : 3 });
+  var src = _.diagnostic.objectMake({ countable : 0, a : 1, b : 2, c : 3 });
   var ops = [];
   var got = _.object.aptRight( src, function( val )
   {
-    ops.push( _.longSlice( arguments ) );
+    ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
   });
-  var exp = [ undefined, undefined, -1, false ];
+  var exp = [ 11, 'withConstructor', 9, true ];
   test.identical( got, exp );
   var exp =
   [
+    [
+      null,
+      'elements',
+      10,
+      src,
+    ],
+    [
+      1,
+      'withConstructor',
+      9,
+      src,
+    ],
   ]
   test.identical( ops, exp );
 
@@ -309,7 +290,7 @@ function aptRightBlank( test )
   var ops = [];
   var got = _.object.aptRight( src, function( val )
   {
-    ops.push( _.longSlice( arguments ) );
+    ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
   });
@@ -323,11 +304,11 @@ function aptRightBlank( test )
   /* */
 
   test.case = 'without callback';
-  var src = _.diagnostic.objectMake({ a : 1, b : 2, c : 3 });
-  var exp = [ undefined, undefined, -1, false ];
+  var src = _.diagnostic.objectMake({ countable : 0, a : 1, b : 2, c : 3 });
+  var exp = [ null, 'elements', 10, true ];
   var got = _.object.aptRight( src );
   test.identical( got, exp );
-  var exp = [ undefined, undefined, -1, false ];
+  var exp = [ null, 'elements', 10, true ];
   var got = _.object.last( src );
   test.identical( got, exp );
 
@@ -362,8 +343,8 @@ const Proto =
     exportStringDiagnosticShallow,
     identicalShallow,
 
-    aptLeftBlank,
-    aptRightBlank,
+    aptLeftBlankNonCountable,
+    aptRightBlankNonCountable,
 
   }
 
