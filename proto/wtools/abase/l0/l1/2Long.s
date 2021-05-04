@@ -455,11 +455,11 @@ function _cloneShallow( src )
 
 //
 
-function cloneShallow( srcArray )
+function cloneShallow( src )
 {
-  _.assert( this.like( srcArray ) );
+  _.assert( this.like( src ) );
   _.assert( arguments.length === 1 );
-  return this._cloneShallow( srcArray );
+  return this._cloneShallow( src );
 }
 
 //

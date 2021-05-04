@@ -709,6 +709,29 @@ function makeZeroed( src, ins )
 
 //
 
+function _cloneShallow( src )
+{
+  if( _.buffer.rawIs( src ) )
+  return bufferRawCopy( src );
+  if( _.buffer.viewIs( src ) )
+  return new BufferView( bufferRawCopy( src ) );
+  if( _.buffer.typedIs( src ) )
+  return src.slice( 0 );
+  if( _.buffer.nodeIs( src ) )
+  return src.copy();
+
+  /* */
+
+  function bufferRawCopy( src )
+  {
+    var dst = new BufferRaw( src.byteLength );
+    new U8x( dst ).set( new U8x( src ) );
+    return dst;
+  }
+}
+
+//
+
 function bufferFromArrayOfArray( array, options )
 {
 
@@ -997,8 +1020,8 @@ let BufferExtension =
   // qqq : implement
   // _makeZeroed,
   // makeZeroed, /* qqq : for junior : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for junior : cover */
+  _cloneShallow,
+  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
   // from, /* qqq : for junior : cover */
 
 }

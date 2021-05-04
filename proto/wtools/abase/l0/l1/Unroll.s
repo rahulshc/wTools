@@ -338,11 +338,11 @@ function _cloneShallow( src )
 
 //
 
-function cloneShallow( src )
-{
-  _.assert( arguments.length === 1 );
-  return _.unroll._cloneShallow( src );
-}
+// function cloneShallow( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   return _.unroll._cloneShallow( src );
+// }
 
 //
 
@@ -870,7 +870,7 @@ let UnrollExtension =
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for junior : cover */
+  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
   _from,
   from,
   _as,

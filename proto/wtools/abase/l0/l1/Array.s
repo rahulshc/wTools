@@ -242,12 +242,12 @@ function _cloneShallow( srcArray )
 
 //
 
-function cloneShallow( srcArray )
-{
-  _.assert( this.like( srcArray ) );
-  _.assert( arguments.length === 1 );
-  return this._cloneShallow( srcArray );
-}
+// function cloneShallow( srcArray )
+// {
+//   _.assert( this.like( srcArray ) );
+//   _.assert( arguments.length === 1 );
+//   return this._cloneShallow( srcArray );
+// }
 
 //
 
@@ -327,7 +327,7 @@ let ArrayExtension =
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for junior : cover */
+  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
 
 }
