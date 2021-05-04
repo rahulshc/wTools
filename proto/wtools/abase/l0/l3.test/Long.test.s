@@ -126,7 +126,7 @@ function filterMapCommonPass( test )
     test.identical( src, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
-    var exp = order([ 'a', 'b', 'c' ]);
+    var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#1' ), exp );
     var exp = order([ 0, 1, 2 ]);
     test.identical( __.select( ops, '*/#2' ), exp );
