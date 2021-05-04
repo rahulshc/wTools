@@ -71,60 +71,64 @@ function _functor( fo )
 
   function _makeUndefined( src, length )
   {
-    if( arguments.length === 2 )
-    {
-      if( _.long.is( length ) )
-      length = length.length;
-      return new this.InstanceConstructor( length );
-    }
-    else if( arguments.length === 1 )
-    {
-      length = src;
-      if( _.long.is( length ) )
-      length = length.length;
-      if( length === null )
-      return new this.InstanceConstructor();
-      else
-      return new this.InstanceConstructor( length );
-    }
+    // if( arguments.length === 2 )
+    // {
+    //   if( _.long.is( length ) )
+    //   length = length.length;
+    //   return new this.InstanceConstructor( length );
+    // }
+    // else if( arguments.length === 1 )
+    // {
+    //   length = src;
+    //   if( _.long.is( length ) )
+    //   length = length.length;
+    //   if( length === null )
+    //   return new this.InstanceConstructor();
+    //   else
+    //   return new this.InstanceConstructor( length );
+    // }
 
-    return new this.InstanceConstructor( 0 );
+    if( length === undefined )
+    length = src;
+    if( this.like( length ) )
+    length = length.length;
+    return new this.InstanceConstructor( length );
   }
 
   //
 
-  function makeUndefined( src, length )
-  {
-    _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-    if( arguments.length === 2 )
-    {
-      _.assert( src === null || _.long.is( src ) );
-      _.assert( _.number.is( length ) || _.long.is( length ) );
-    }
-    else if( arguments.length === 1 )
-    {
-      _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-    }
-
-    return this._makeUndefined( ... arguments );
-
-    // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-    // if( arguments.length === 2 )
-    // {
-    //   _.assert( src === null || _.long.is( src ) );
-    //   _.assert( _.number.is( length ) || _.long.is( length ) );
-    //   return this._makeUndefined( src, length );
-    // }
-    // else if( arguments.length === 1 )
-    // {
-    //   _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-    //   return this._makeUndefined( src );
-    // }
-    // else
-    // {
-    //   return [];
-    // }
-  }
+  // function makeUndefined( src, length )
+  // {
+  //   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  //   if( arguments.length === 2 )
+  //   {
+  //     _.assert( src === null || _.long.is( src ) );
+  //     _.assert( _.number.is( length ) || _.long.is( length ) );
+  //   }
+  //   else if( arguments.length === 1 )
+  //   {
+  //     _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+  //   }
+  //
+  //   return this._makeUndefined( ... arguments );
+  //
+  //   // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  //   // if( arguments.length === 2 )
+  //   // {
+  //   //   _.assert( src === null || _.long.is( src ) );
+  //   //   _.assert( _.number.is( length ) || _.long.is( length ) );
+  //   //   return this._makeUndefined( src, length );
+  //   // }
+  //   // else if( arguments.length === 1 )
+  //   // {
+  //   //   _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+  //   //   return this._makeUndefined( src );
+  //   // }
+  //   // else
+  //   // {
+  //   //   return [];
+  //   // }
+  // }
 
   //
 
@@ -275,7 +279,8 @@ function _functor( fo )
     // maker
 
     [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
-    [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
+    [ fo.name + 'MakeUndefined' ] : _.long.makeUndefined.bind( _[ fo.name ] ),
+    // [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
     [ fo.name + 'Make' ] : _.argumentsArray.make.bind( _[ fo.name ] ),
     // [ fo.name + 'Make' ] : make.bind( _[ fo.name ] ),
     [ fo.name + 'CloneShallow' ] : cloneShallow.bind( _[ fo.name ] ),
@@ -309,9 +314,10 @@ function _functor( fo )
     _makeEmpty,
     makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
-    makeUndefined, /* qqq : for junior : cover */
+    makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
     _makeZeroed : _makeUndefined,
-    makeZeroed : makeUndefined,
+    makeZeroed : _.long.makeUndefined,
+    // makeZeroed : makeUndefined,
     _makeFilling,
     makeFilling,
     _make,

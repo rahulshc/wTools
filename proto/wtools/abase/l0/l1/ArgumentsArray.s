@@ -123,20 +123,20 @@ function _makeUndefined( src, length )
 
 //
 
-function makeUndefined( src, length )
-{
-  if( length === undefined )
-  {
-    length = src;
-  }
-  else
-  {
-    _.assert( this.like( src ) );
-  }
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.number.is( length ) || this.like( length ) );
-  return this.make( length );
-}
+// function makeUndefined( src, length )
+// {
+//   if( length === undefined )
+//   {
+//     length = src;
+//   }
+//   else
+//   {
+//     _.assert( this.like( src ) );
+//   }
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.number.is( length ) || this.like( length ) );
+//   return this.make( length );
+// }
 
 //
 
@@ -240,7 +240,8 @@ var ToolsExtension =
   // maker
 
   argumentsArrayMakeEmpty : makeEmpty.bind( _.argumentsArray ),
-  argumentsArrayMakeUndefined : makeUndefined.bind( _.argumentsArray ),
+  argumentsArrayMakeUndefined : _.long.makeUndefined.bind( _.argumentsArray ),
+  // argumentsArrayMakeUndefined : makeUndefined.bind( _.argumentsArray ),
   argumentsArrayMake : make.bind( _.argumentsArray ),
   argumentsArrayCloneShallow : cloneShallow.bind( _.argumentsArray ),
   argumentsArrayFrom : from.bind( _.argumentsArray ),
@@ -278,7 +279,7 @@ var ArgumentsArrayExtension =
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for junior : cover */
+  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed,
   makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,

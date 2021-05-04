@@ -99,51 +99,51 @@ function makeEmpty( src )
 
 //
 
-function _makeUndefined( src, length )
-{
-  if( arguments.length === 2 )
-  {
-    if( _.long.is( length ) )
-    length = length.length;
-    return new Array( length );
-  }
-  else if( arguments.length === 1 )
-  {
-    length = src;
-    if( _.long.is( length ) )
-    length = length.length;
-    if( length === null )
-    return new Array();
-    else
-    return new Array( length );
-  }
-  else
-  {
-    return [];
-  }
-}
-
+// function _makeUndefined( src, length )
+// {
+//   if( arguments.length === 2 )
+//   {
+//     if( _.long.is( length ) )
+//     length = length.length;
+//     return new Array( length );
+//   }
+//   else if( arguments.length === 1 )
+//   {
+//     length = src;
+//     if( _.long.is( length ) )
+//     length = length.length;
+//     if( length === null )
+//     return new Array();
+//     else
+//     return new Array( length );
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
 //
-
-function makeUndefined( src, length )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  {
-    _.assert( src === null || _.long.is( src ) );
-    _.assert( _.number.is( length ) || _.long.is( length ) );
-    return this._makeUndefined( src, length );
-  }
-  else if( arguments.length === 1 )
-  {
-    _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-    return this._makeUndefined( src );
-  }
-  else
-  {
-    return [];
-  }
-}
+// //
+//
+// function makeUndefined( src, length )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+//   if( arguments.length === 2 )
+//   {
+//     _.assert( src === null || _.long.is( src ) );
+//     _.assert( _.number.is( length ) || _.long.is( length ) );
+//     return this._makeUndefined( src, length );
+//   }
+//   else if( arguments.length === 1 )
+//   {
+//     _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+//     return this._makeUndefined( src );
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
 
 //
 
@@ -299,7 +299,8 @@ let ToolsExtension =
   // maker
 
   arrayMakeEmpty : makeEmpty.bind( _.array ),
-  arrayMakeUndefined : makeUndefined.bind( _.array ),
+  arrayMakeUndefined : _.long.makeUndefined.bind( _.array ),
+  // arrayMakeUndefined : makeUndefined.bind( _.array ),
   arrayMake : _.argumentsArray.make.bind( _.array ),
   // arrayMake : make.bind( _.array ),
   arrayCloneShallow : cloneShallow.bind( _.array ),
@@ -337,8 +338,8 @@ let ArrayExtension =
 
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined,
-  makeUndefined, /* qqq : for junior : cover */
+  _makeUndefined : _.argumentsArray._makeUndefined,
+  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
   makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,

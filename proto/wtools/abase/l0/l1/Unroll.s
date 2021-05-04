@@ -167,48 +167,48 @@ function makeEmpty( src )
  * @namespace Tools/unroll
  */
 
-function _makeUndefined( src, length )
-{
-  if( arguments.length === 0 )
-  return _.unroll._make();
-
-  if( _.longIs( length ) )
-  {
-    length = length.length;
-  }
-  if( length === undefined || length === null )
-  {
-    if( src === null )
-    {
-      length = 0;
-    }
-    else if( _.longLike( src ) )
-    {
-      length = src.length;
-    }
-    else if( _.number.is( src ) )
-    {
-      length = src;
-      src = null;
-    }
-    else _.assert( 0 );
-  }
-
-  _.assert( _.number.isFinite( length ) );
-  _.assert( _.longIs( src ) || src === null );
-
-  return _.unroll._make( length );
-}
-
+// function _makeUndefined( src, length )
+// {
+//   if( arguments.length === 0 )
+//   return _.unroll._make();
 //
-
-function makeUndefined( src, length )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  // _.assert( _.number.isFinite( length ) );
-  // _.assert( _.longIs( src ) || src === null );
-  return _.unroll._makeUndefined( ... arguments );
-}
+//   if( _.longIs( length ) )
+//   {
+//     length = length.length;
+//   }
+//   if( length === undefined || length === null )
+//   {
+//     if( src === null )
+//     {
+//       length = 0;
+//     }
+//     else if( _.longLike( src ) )
+//     {
+//       length = src.length;
+//     }
+//     else if( _.number.is( src ) )
+//     {
+//       length = src;
+//       src = null;
+//     }
+//     else _.assert( 0 );
+//   }
+//
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.longIs( src ) || src === null );
+//
+//   return _.unroll._make( length );
+// }
+//
+// //
+//
+// function makeUndefined( src, length )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+//   // _.assert( _.number.isFinite( length ) );
+//   // _.assert( _.longIs( src ) || src === null );
+//   return _.unroll._makeUndefined( ... arguments );
+// }
 
 //
 
@@ -835,7 +835,8 @@ let ToolsExtension =
   // maker
 
   unrollMakeEmpty : makeEmpty.bind( _.unroll ),
-  unrollMakeUndefined : makeUndefined.bind( _.unroll ),
+  unrollMakeUndefined : _.long.makeUndefined.bind( _.unroll ),
+  // unrollMakeUndefined : makeUndefined.bind( _.unroll ),
   unrollMake : _.argumentsArray.make.bind( _.unroll ),
   // unrollMake : make.bind( _.unroll ),
   unrollCloneShallow : cloneShallow.bind( _.unroll ),
@@ -880,8 +881,8 @@ let UnrollExtension =
 
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined,
-  makeUndefined, /* qqq : for junior : cover */
+  _makeUndefined : _.argumentsArray._makeUndefined,
+  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
   makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
