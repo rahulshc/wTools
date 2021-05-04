@@ -3959,10 +3959,10 @@ let ToolsExtension =
   // filter : entityFilter, /* !!! : use instead of entityFilter */
   entityFilter_,
   filter_ : entityFilter_, /* qqq : for junior : bad */
-  entityFirst,
-  first : entityFirst,
-  entityLast,
-  last : entityLast,
+  // entityFirst,
+  // first : entityFirst,
+  // entityLast,
+  // last : entityLast,
 
   //
 
