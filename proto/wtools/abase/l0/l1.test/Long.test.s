@@ -498,6 +498,7 @@ function makeLongFilledCommon( test )
   methodEach({ tools : 'default', type : 'Array' });
   methodEach({ tools : 'Array', type : 'Array' });
   methodEach({ tools : 'F32x', type : 'F32x' });
+  methodEach({ tools : 'bufferTyped', type : 'Array' });
 
   /* - */
 
@@ -513,85 +514,120 @@ function makeLongFilledCommon( test )
 
   function act( env )
   {
-    const _tools = tools( env );
+    const long = namespaceGet( env );
+    const Constructor = defaultConstructorGet( env );
     const value = env.method === 'makeUndefined' ? undefined : 0;
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, no args`;
-    var got = _tools.long[ env.method ]();
-    test.true( got instanceof _global_[ env.type ] );
+    var got = long[ env.method ]();
+    test.true( got instanceof Constructor );
     test.identical( got.length, 0 );
 
     test.case = `${__.entity.exportStringSolo( env )}, length`;
-    var got = _tools.long[ env.method ]( 3 );
-    test.true( got instanceof _global_[ env.type ] );
+    var got = long[ env.method ]( 3 );
+    test.true( got instanceof Constructor );
     var _value = _.bufferTypedIs( got ) ? 0 : value;
-    test.identical( got, _tools.defaultLong.make([ _value, _value, _value ]) );
+    if( env.tools === 'bufferTyped' )
+    test.identical( got, long.tools.defaultBufferTyped.make([ _value, _value, _value ]) );
+    else
+    test.identical( got, long.tools.defaultLong.make([ _value, _value, _value ]) );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
-    var got = _tools.long[ env.method ]( [] );
+    var got = long[ env.method ]( [] );
     test.true( got instanceof Array );
     test.identical( got.length, 0 );
 
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
-    var got = _tools.long[ env.method ]( [ 2 ] );
+    var got = long[ env.method ]( [ 2 ] );
     test.true( got instanceof Array );
     test.identical( got, [ value ] );
 
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
-    var got = _tools.long[ env.method ]( [ 2, 3 ] );
+    var got = long[ env.method ]( [ 2, 3 ] );
     test.true( got instanceof Array );
     test.identical( got, [ value, value ] );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
-    var got = _tools.long[ env.method ]( [], 2 );
+    var got = long[ env.method ]( [], 2 );
     test.true( got instanceof Array );
     test.identical( got, [ value, value ] );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
-    var got = _tools.long[ env.method ]( [ 3, 4 ], 3 );
+    var got = long[ env.method ]( [ 3, 4 ], 3 );
     test.true( got instanceof Array );
     test.identical( got, [ value, value, value ] );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
-    var got = _tools.long[ env.method ]( [ 3, 4 ], 1 );
-    test.true( got instanceof Array );
-    test.identical( got, [ value ] );
-
-    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
-    var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
-    test.true( got instanceof Array );
-    test.identical( got, [ value, value, value ] );
-
-    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
-    var got = _tools.long[ env.method ]( [ 3, 4 ], [ 2 ] );
+    var got = long[ env.method ]( [ 3, 4 ], 1 );
     test.true( got instanceof Array );
     test.identical( got, [ value ] );
 
     /* */
 
-    if( Config.debug )
-    {
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 1, 1 ) );
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
+    var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value, value, value ] );
 
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( undefined ) );
-      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( 3, 3 ) );
+    test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
+    var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
+    test.true( got instanceof Array );
+    test.identical( got, [ value ] );
 
-      test.case = 'wrong type of length';
-      test.shouldThrowErrorSync( () => _tools.long[ env.method ]( [], 'wrong' ) );
-    }
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, null and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( null, length );
+    test.true( got instanceof Constructor );
+    var _value = _.bufferTypedIs( got ) ? 0 : value;
+    if( env.tools === 'bufferTyped' )
+    test.identical( got, long.tools.defaultBufferTyped.make([ _value, _value, _value ]) );
+    else
+    test.identical( got, long.tools.defaultLong.make([ _value, _value, _value ]) );
+
+    /* */
+
+    // if( Config.debug )
+    // {
+    //   test.case = 'extra arguments';
+    //   test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
+    //
+    //   test.case = 'wrong type of src';
+    //   test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
+    //   test.shouldThrowErrorSync( () => long[ env.method ]( 3, 3 ) );
+    //
+    //   test.case = 'wrong type of length';
+    //   test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
+    // }
   }
 
   /* */
 
-  function tools( env )
+  function namespaceGet( env )
   {
     if( env.tools === 'default' )
-    return _;
-    return _.withLong[ env.tools ];
+    return _.long;
+    if( env.tools === 'bufferTyped' )
+    return _.bufferTyped;
+    return _.withLong[ env.tools ].long;
+  }
+
+  /* */
+
+  function defaultConstructorGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.defaultLong.InstanceConstructor;
+    if( env.tools === 'bufferTyped' )
+    return _.defaultBufferTyped.InstanceConstructor;
+    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
   }
 }
 
