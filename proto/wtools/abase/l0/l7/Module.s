@@ -1979,7 +1979,7 @@ function _trackingEnable()
     if( moduleFile.status !== -1 )
     {
       moduleFile.status = 2;
-      _.assert( Object.is( moduleFile.returned, native.exports ) );
+      // _.assert( Object.is( moduleFile.returned, native.exports ) );
     }
 
     return result;

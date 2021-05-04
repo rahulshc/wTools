@@ -26,6 +26,7 @@ if( typeof module !== 'undefined' )
   require( './l3/HashMap.s' );
   require( './l3/Itself.s' );
   require( './l3/Map.s' );
+  require( './l3/Module.s' );
   require( './l3/Number.s' );
   require( './l3/Object.s' );
   require( './l3/Primitive.s' );

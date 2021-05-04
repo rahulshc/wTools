@@ -83,23 +83,18 @@ function exportStringDiagnosticShallow( test )
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [], countable : 1 } );
-  var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-
-  test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var expected = '{- countableConstructorPolluted.countable.constructible with 3 elements -}';
+  var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
+  var expected = '{- Map.polluted with 8 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -467,23 +462,18 @@ function exportStringCodeShallow( test )
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 6 elements -}';
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
-
-  test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var expected = '{- Map.polluted with 6 elements -}';
+  var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
+  var expected = '{- Map.polluted with 8 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -871,102 +861,130 @@ function assignFieldFromContainer( test )
 
 //
 
-function uncountableSizeOf( test )
+function sizeOfUncountable( test )
 {
+
   test.case = 'undefined';
-  var got = _.entity.uncountableSizeOf( undefined );
-  test.identical( got, 8 );
+  var src = undefined;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'null';
-  var got = _.entity.uncountableSizeOf( null );
-  test.identical( got, 8 );
+  var src = null;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'false';
-  var got = _.entity.uncountableSizeOf( false );
-  test.identical( got,  8);
+  var src = false;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'true';
-  var got = _.entity.uncountableSizeOf( true );
-  test.identical( got, 8 );
+  var src = true;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'zero';
-  var got = _.entity.uncountableSizeOf( 0 );
-  test.identical( got, 8 );
+  var src = 0;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'number';
-  var got = _.entity.uncountableSizeOf( 34 );
-  test.identical( got, 8 );
+  var src = 34;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'NaN';
-  var got = _.entity.uncountableSizeOf( NaN );
-  test.identical( got, 8 );
+  var src = NaN;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'Infinity';
-  var got = _.entity.uncountableSizeOf( Infinity );
-  test.identical( got, 8 );
+  var src = Infinity;
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'empty string';
-  var got = _.entity.uncountableSizeOf( '' );
-  test.identical( got, 0 );
+  var src = '';
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 0 );
 
   test.case = 'string';
-  var got = _.entity.uncountableSizeOf( 'str' );
-  test.identical( got, 3 );
+  var src = 'str';
+  test.identical( _.entity.sizeOfUncountable( src ), 11 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 11 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 7 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 3 );
 
   test.case = 'symbol';
-  var got = _.entity.uncountableSizeOf( Symbol.for( 'x' ) );
-  test.identical( got, 8 );
-
-  test.case = 'empty array';
-  var got = _.entity.uncountableSizeOf( [] );
-  test.identical( got, NaN );
-
-  test.case = 'array';
-  var got = _.entity.uncountableSizeOf( [ [ 23, 17 ], undefined, 34 ] );
-  test.identical( got, NaN );
-
-  test.case = 'argumentsArray';
-  var got = _.entity.uncountableSizeOf( _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] ) );
-  test.identical( got, NaN );
-
-  test.case = 'unroll';
-  var got = _.entity.uncountableSizeOf( _.argumentsArray.make( [ 1, 2, [ 3, 4 ] ] ) );
-  test.identical( got, NaN );
+  var src = Symbol.for( 'x' );
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 8 );
 
   test.case = 'BufferTyped';
-  var got = _.entity.uncountableSizeOf( new U8x( [ 1, 2, 3, 4 ] ) );
-  test.identical( got, 4 );
+  var src = new U8x( [ 1, 2, 3, 4 ] );
+  test.identical( _.entity.sizeOfUncountable( src ), 12 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 12 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 4 );
 
   test.case = 'BufferRaw';
-  var got = _.entity.uncountableSizeOf( new BufferRaw( 10 ) );
-  test.identical( got, 10 );
+  var src = new BufferRaw( 10 );
+  test.identical( _.entity.sizeOfUncountable( src ), 18 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 18 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 14 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 10 );
 
   test.case = 'BufferView';
-  var got = _.entity.uncountableSizeOf( new BufferView( new BufferRaw( 10 ) ) );
-  test.identical( got, 10 );
+  var src = new BufferView( new BufferRaw( 10 ) );
+  test.identical( _.entity.sizeOfUncountable( src ), 18 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 18 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 14 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 10 );
 
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got1 = _.entity.uncountableSizeOf( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-    test.identical( got1, 4 );
+    var src = BufferNode.from( [ 1, 2, 3, 4 ] );
+    test.identical( _.entity.sizeOfUncountable( src ), 12 );
+    test.identical( _.entity.sizeOfUncountable( src, 8 ), 12 );
+    test.identical( _.entity.sizeOfUncountable( src, 4 ), 8 );
+    test.identical( _.entity.sizeOfUncountable( src, 0 ), 4 );
   }
 
-  test.case = 'Set';
-  var got = _.entity.uncountableSizeOf( new Set( [ 1, 2, undefined, 4 ] ) );
-  test.identical( got, NaN );
-
-  test.case = 'map';
-  var got = _.entity.uncountableSizeOf( { a : 1, b : 2, c : { d : 3 } } );
-  test.identical( got, NaN );
-
-  test.case = 'HashMap';
-  var got = _.entity.uncountableSizeOf( new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
-  test.identical( got, NaN );
-
   test.case = 'function';
-  var got = _.entity.uncountableSizeOf( function(){} );
-  test.identical( got, 8 );
+  var src = function(){};
+  test.identical( _.entity.sizeOfUncountable( src ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 8 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 4 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 0 );
+
+  test.case = 'regexp';
+  var src = /abcde/g;
+  test.identical( _.entity.sizeOfUncountable( src ), 14 );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), 14 );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), 10 );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), 6 );
 
   test.case = 'instance of class';
   function Constr1()
@@ -975,8 +993,60 @@ function uncountableSizeOf( test )
     this.b = 's';
     this[ 100 ] = 'sms';
   };
-  var got = _.entity.uncountableSizeOf( new Constr1() );
-  test.identical( got, 8 );
+  var src = new Constr1();
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'Set';
+  var src = new Set( [ 1, 2, undefined, 4 ] );
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : { d : 3 } };
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'HashMap';
+  var src = new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] );
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'empty array';
+  var src = [];
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'array';
+  var src = [ [ 23, 17 ], undefined, 34 ];
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] );
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
+
+  test.case = 'unroll';
+  var src = _.unroll.make( [ 1, 2, [ 3, 4 ] ] );
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
 
   test.case = 'object, some properties are non enumerable';
   var src = Object.create( null );
@@ -990,14 +1060,19 @@ function uncountableSizeOf( test )
     }
   };
   Object.defineProperties( src, o );
-  var got = _.entity.uncountableSizeOf( src );
-  test.identical( got, NaN );
+  test.identical( _.entity.sizeOfUncountable( src ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 8 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 4 ), NaN );
+  test.identical( _.entity.sizeOfUncountable( src, 0 ), NaN );
 
   if( !Config.debug )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.entity.uncountableSizeOf() );
+  test.shouldThrowErrorSync( () => _.entity.sizeOfUncountable() );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entity.sizeOfUncountable( 1, 2, 3 ) );
+
 }
 
 //
@@ -1006,150 +1081,215 @@ function uncountableSizeOf( test )
 
 function entitySize( test )
 {
+
   test.case = 'undefined';
-  var got = _.entity.sizeOf( undefined );
-  test.identical( got, 8 );
+  var src = undefined;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'null';
-  var got = _.entity.sizeOf( null );
-  test.identical( got, 8 );
+  var src = null;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'false';
-  var got = _.entity.sizeOf( false );
-  test.identical( got,  8);
+  var src = false;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'true';
-  var got = _.entity.sizeOf( true );
-  test.identical( got, 8 );
+  var src = true;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'zero';
-  var got = _.entity.sizeOf( 0 );
-  test.identical( got, 8 );
+  var src = 0;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'number';
-  var got = _.entity.sizeOf( 34 );
-  test.identical( got, 8 );
+  var src = 34;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'NaN';
-  var got = _.entity.sizeOf( NaN );
-  test.identical( got, 8 );
+  var src = NaN;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'Infinity';
-  var got = _.entity.sizeOf( Infinity );
-  test.identical( got, 8 );
+  var src = Infinity;
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
   test.case = 'empty string';
-  var got = _.entity.sizeOf( '' );
-  test.identical( got, 0 );
+  var src = '';
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 0 );
 
   test.case = 'string';
-  var got = _.entity.sizeOf( 'str' );
-  test.identical( got, 3 );
+  var src = 'str';
+  test.identical( _.entity.sizeOf( src ), 11 );
+  test.identical( _.entity.sizeOf( src, 8 ), 11 );
+  test.identical( _.entity.sizeOf( src, 4 ), 7 );
+  test.identical( _.entity.sizeOf( src, 0 ), 3 );
 
   test.case = 'symbol';
-  var got = _.entity.sizeOf( Symbol.for( 'x' ) );
-  test.identical( got, 8 );
+  var src = Symbol.for( 'x' );
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 8 );
 
-  /* zzz : temp fix */ /* Dmytro : the second part of test routine in module Looker */
+  test.case = 'BufferTyped';
+  var src = new U8x( [ 1, 2, 3, 4 ] );
+  test.identical( _.entity.sizeOf( src ), 12 );
+  test.identical( _.entity.sizeOf( src, 8 ), 12 );
+  test.identical( _.entity.sizeOf( src, 4 ), 8 );
+  test.identical( _.entity.sizeOf( src, 0 ), 4 );
 
-  if( !_.look ) /* prevents fails if Looker is included */
+  test.case = 'BufferRaw';
+  var src = new BufferRaw( 10 );
+  test.identical( _.entity.sizeOf( src ), 18 );
+  test.identical( _.entity.sizeOf( src, 8 ), 18 );
+  test.identical( _.entity.sizeOf( src, 4 ), 14 );
+  test.identical( _.entity.sizeOf( src, 0 ), 10 );
+
+  test.case = 'BufferView';
+  var src = new BufferView( new BufferRaw( 10 ) );
+  test.identical( _.entity.sizeOf( src ), 18 );
+  test.identical( _.entity.sizeOf( src, 8 ), 18 );
+  test.identical( _.entity.sizeOf( src, 4 ), 14 );
+  test.identical( _.entity.sizeOf( src, 0 ), 10 );
+
+  if( Config.interpreter === 'njs' )
   {
-    test.case = 'empty array';
-    var got = _.entity.sizeOf( [] );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'array';
-    var got = _.entity.sizeOf( [ 3, undefined, 34 ] );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'argumentsArray';
-    var got = _.entity.sizeOf( _.argumentsArray.make( [ 1, null, 4 ] ) );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'unroll';
-    var got = _.entity.sizeOf( _.argumentsArray.make( [ 1, 2, 'str' ] ) );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'BufferTyped';
-    var got = _.entity.sizeOf( new U8x( [ 1, 2, 3, 4 ] ) );
-    test.identical( got, 4 );
-
-    test.case = 'BufferRaw';
-    var got = _.entity.sizeOf( new BufferRaw( 10 ) );
-    test.identical( got, 10 );
-
-    test.case = 'BufferView';
-    var got = _.entity.sizeOf( new BufferView( new BufferRaw( 10 ) ) );
-    test.identical( got, 10 );
-
-    if( Config.interpreter === 'njs' )
-    {
-      test.case = 'BufferNode';
-      var got1 = _.entity.sizeOf( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-      test.identical( got1, 4 );
-    }
-
-    test.case = 'Set';
-    var got = _.entity.sizeOf( new Set( [ 1, 2, undefined, 4 ] ) );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'map';
-    var got = _.entity.sizeOf( { a : 1, b : 2, c : 'str' } );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'HashMap';
-    var got = _.entity.sizeOf( new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
-    var exp = NaN;
-    test.identical( got, exp );
-
-    test.case = 'function';
-    var got = _.entity.sizeOf( function(){} );
-    test.identical( got, 8 );
-
-    test.case = 'instance of class';
-    function Constr1()
-    {
-      this.a = 34;
-      this.b = 's';
-      this[ 100 ] = 'sms';
-    };
-    var got = _.entity.sizeOf( new Constr1() );
-    test.identical( got, 8 );
-
-    test.case = 'object, some properties are non enumerable';
-    var src = Object.create( null );
-    var o =
-    {
-      'property3' :
-      {
-        enumerable : true,
-        value : 'World',
-        writable : true
-      }
-    };
-    Object.defineProperties( src, o );
-    var got = _.entity.sizeOf( src );
-    var exp = NaN;
-    test.identical( got, exp );
+    test.case = 'BufferNode';
+    var src = BufferNode.from( [ 1, 2, 3, 4 ] );
+    test.identical( _.entity.sizeOf( src ), 12 );
+    test.identical( _.entity.sizeOf( src, 8 ), 12 );
+    test.identical( _.entity.sizeOf( src, 4 ), 8 );
+    test.identical( _.entity.sizeOf( src, 0 ), 4 );
   }
 
-  /* - */
+  test.case = 'function';
+  var src = function(){};
+  test.identical( _.entity.sizeOf( src ), 8 );
+  test.identical( _.entity.sizeOf( src, 8 ), 8 );
+  test.identical( _.entity.sizeOf( src, 4 ), 4 );
+  test.identical( _.entity.sizeOf( src, 0 ), 0 );
+
+  test.case = 'regexp';
+  var src = /abcde/g;
+  test.identical( _.entity.sizeOf( src ), 14 );
+  test.identical( _.entity.sizeOf( src, 8 ), 14 );
+  test.identical( _.entity.sizeOf( src, 4 ), 10 );
+  test.identical( _.entity.sizeOf( src, 0 ), 6 );
+
+  test.case = 'instance of class';
+  function Constr1()
+  {
+    this.a = 34;
+    this.b = 's';
+    this[ 100 ] = 'sms';
+  };
+  var src = new Constr1();
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'Set';
+  var src = new Set( [ 1, 2, undefined, 4 ] );
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : { d : 3 } };
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'HashMap';
+  var src = new HashMap( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] );
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'empty array';
+  var src = [];
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'array';
+  var src = [ [ 23, 17 ], undefined, 34 ];
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArray.make( [ 1, [ 2, 3 ], 4 ] );
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'unroll';
+  var src = _.unroll.make( [ 1, 2, [ 3, 4 ] ] );
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
+
+  test.case = 'object, some properties are non enumerable';
+  var src = Object.create( null );
+  var o =
+  {
+    'property3' :
+    {
+      enumerable : true,
+      value : 'World',
+      writable : true
+    }
+  };
+  Object.defineProperties( src, o );
+  test.identical( _.entity.sizeOf( src ), NaN );
+  test.identical( _.entity.sizeOf( src, 8 ), NaN );
+  test.identical( _.entity.sizeOf( src, 4 ), NaN );
+  test.identical( _.entity.sizeOf( src, 0 ), NaN );
 
   if( !Config.debug )
   return;
 
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.entity.sizeOf() );
-
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.entity.sizeOf( 1, 2 ) );
-  test.shouldThrowErrorSync( () => _.entity.sizeOf( 1, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.entity.sizeOf( 1, 2, 3 ) );
 }
 
 // --
@@ -1171,7 +1311,7 @@ const Proto =
     assign,
     assignFieldFromContainer,
 
-    uncountableSizeOf,
+    sizeOfUncountable,
     entitySize,
 
   }

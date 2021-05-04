@@ -22,23 +22,23 @@ const Self = _global_.wTools;
  * @returns {number} Returns "size" of entity.
  *
  * @example
- * _.entity.uncountableSizeOf( 'string' );
+ * _.entity.sizeOfUncountable( 'string' );
  * // returns 6
  *
  * @example
- * _.entity.uncountableSizeOf( new BufferRaw( 8 ) );
+ * _.entity.sizeOfUncountable( new BufferRaw( 8 ) );
  * // returns 8
  *
  * @example
- * _.entity.uncountableSizeOf( 123 );
+ * _.entity.sizeOfUncountable( 123 );
  * // returns null
  *
- * @function uncountableSizeOf
+ * @function sizeOfUncountable
  * @namespace Tools
 */
 
 /* qqq : cover argument sizeOfContainer */
-function uncountableSizeOf( src, sizeOfContainer )
+function sizeOfUncountable( src, sizeOfContainer )
 {
   if( arguments.length === 1 )
   sizeOfContainer = 8;
@@ -56,11 +56,14 @@ function uncountableSizeOf( src, sizeOfContainer )
   if( _.primitive.is( src ) )
   return sizeOfContainer || 8;
 
+  if( _.routine.is( src ) )
+  return sizeOfContainer;
+
   if( _.number.is( src.byteLength ) )
   return src.byteLength + sizeOfContainer;
 
   if( _.regexpIs( src ) )
-  return _.entity.uncountableSizeOf( src.source ) + src.flags.length + sizeOfContainer;
+  return _.entity.sizeOfUncountable( src.source, 0 ) + src.flags.length + sizeOfContainer;
 
   // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine countableIs has different behavior */
   // return sizeOfContainer;
@@ -119,8 +122,8 @@ function sizeOf( src, sizeOfContainer )
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   // if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
-  if( _.primitive.is( src ) || _.bufferAnyIs( src ) )
-  return _.entity.uncountableSizeOf( src, sizeOfContainer );
+  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || _.routineIs( src ) || _.regexpIs( src ) )
+  return _.entity.sizeOfUncountable( src, sizeOfContainer );
 
   /*
   full implementation of routine _.entity.sizeOf() in the module::LookerExtra
@@ -136,7 +139,7 @@ function sizeOf( src, sizeOfContainer )
 let EntityExtension =
 {
 
-  uncountableSizeOf,
+  sizeOfUncountable,
   sizeOf,
 
 }
@@ -150,7 +153,7 @@ Object.assign( _.entity, EntityExtension );
 let ToolsExtension =
 {
 
-  // uncountableSizeOf,
+  // sizeOfUncountable,
   // entitySize,
   // sizeOf : entitySize,
 

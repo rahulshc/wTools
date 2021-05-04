@@ -179,7 +179,6 @@ function namespaceForContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
 
-  _.debugger;
   if( src === undefined )
   return _.blank;
   if( _.primitive.is( src ) )
