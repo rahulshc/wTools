@@ -436,22 +436,22 @@ var AuxiliaryExtension =
 
   // properties
 
-  _keys : _.props._keys, /* qqq : for junior : cover */
+  _keys : _.props._keys,
   keys : _.props.keys, /* qqq : for junior : cover */
   onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for junior : cover */
-  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
   allKeys : _.props.allKeys, /* qqq : for junior : cover */
 
-  _vals : _.props._vals, /* qqq : for junior : cover */
+  _vals : _.props._vals,
   vals : _.props.vals, /* qqq : for junior : cover */
   onlyOwnVals : _.props.onlyOwnVals, /* qqq : for junior : cover */
-  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
   allVals : _.props.allVals, /* qqq : for junior : cover */
 
-  _pairs : _.props._pairs, /* qqq : for junior : cover */
+  _pairs : _.props._pairs,
   pairs : _.props.pairs, /* qqq : for junior : cover */
   onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for junior : cover */
-  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
   allPairs : _.props.allPairs, /* qqq : for junior : cover */
 
   // amender

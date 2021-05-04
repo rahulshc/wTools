@@ -295,7 +295,7 @@ function extendVersatile( dstMap, srcMap )
  * @function extend
  * @throws { Error } Will throw an error if ( arguments.length < 2 ),
  * if the (dstMap) is not an Object.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function extend( dstMap, srcMap )
@@ -433,7 +433,7 @@ function supplementVersatile( dstMap, srcMap )
  *
  * @returns { objectLike } Returns an object with unique [ key, value ].
  * @function supplement
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function supplement( dstMap, srcMap )
@@ -602,7 +602,7 @@ _keys.defaults =
  * @function keys
  * @throws { Exception } Throw an exception if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function keys( srcMap, o )
@@ -653,7 +653,7 @@ keys.defaults =
  * @function onlyOwnKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
 */
 
 function onlyOwnKeys( srcMap, o )
@@ -682,6 +682,29 @@ onlyOwnKeys.defaults =
 
 //
 
+function onlyEnumerableKeys( srcMap, o )
+{
+  let result;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerableKeys, o || null );
+  _.assert( this.like( srcMap ) );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  result = this._keys( o );
+
+  return result;
+}
+
+onlyEnumerableKeys.defaults =
+{
+  onlyOwn : 0,
+}
+
+//
+
 /**
  * The props.allKeys() returns all properties of provided object as array,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
@@ -699,20 +722,16 @@ onlyOwnKeys.defaults =
  * corresponding to the all properties found on the object.
  * @function allKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
 */
 
 function allKeys( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allKeys, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
-  // o.onlyOwn = 0;
-  // o.onlyEnumerable = 0;
 
   let result = this._keys( o );
 
@@ -737,7 +756,6 @@ function _vals( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( o.selectFilter === null );
-  // _.assert( this === _.object );
 
   let result = this._keys( o );
 
@@ -790,7 +808,7 @@ _vals.defaults =
  * @function vals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function vals( srcMap, o )
@@ -798,9 +816,6 @@ function vals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( vals, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
-  // _.assert( this === _.object );
-
   o.srcMap = srcMap;
 
   let result = this._vals( o );
@@ -846,7 +861,7 @@ vals.defaults =
  * @function onlyOwnVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function onlyOwnVals( srcMap, o )
@@ -854,21 +869,39 @@ function onlyOwnVals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( onlyOwnVals, o || null );
-  // _.assert( this.like( o.srcMap ) );
-  // _.assert( this === _.object );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
 
   let result = this._vals( o );
 
-  debugger;
   return result;
 }
 
 onlyOwnVals.defaults =
 {
   onlyEnumerable : 1,
+}
+
+//
+
+function onlyEnumerableVals( srcMap, o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerableVals, o || null );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  let result = this._vals( o );
+
+  return result;
+}
+
+onlyEnumerableVals.defaults =
+{
+  onlyOwn : 0,
 }
 
 //
@@ -892,7 +925,7 @@ onlyOwnVals.defaults =
  * corresponding to the onlyEnumerable property values found directly upon object.
  * @function allVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function allVals( srcMap, o )
@@ -900,8 +933,6 @@ function allVals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allVals, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
-  // _.assert( this === _.object );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -926,7 +957,6 @@ function _pairs( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( this.like( o.srcMap ) );
-  // _.assert( this === _.object );
 
   let selectFilter = o.selectFilter;
 
@@ -982,13 +1012,12 @@ _pairs.defaults =
  * @function pairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function pairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( pairs, o || null );
 
@@ -1039,13 +1068,12 @@ pairs.defaults =
  * @function onlyOwnPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function onlyOwnPairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( onlyOwnPairs, o || null );
 
@@ -1061,6 +1089,28 @@ function onlyOwnPairs( srcMap, o )
 onlyOwnPairs.defaults =
 {
   onlyEnumerable : 1,
+}
+
+//
+
+function onlyEnumerablePairs( srcMap, o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerablePairs, o || null );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  let result = this._pairs( o );
+
+  debugger;
+  return result;
+}
+
+onlyEnumerablePairs.defaults =
+{
+  onlyOwn : 0,
 }
 
 //
@@ -1089,13 +1139,12 @@ onlyOwnPairs.defaults =
  * @returns { array } A list of [ key, value ] pairs.
  * @function allPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function allPairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allPairs, o || null );
 
@@ -1105,7 +1154,6 @@ function allPairs( srcMap, o )
 
   let result = this._pairs( o );
 
-  debugger;
   return result;
 }
 
@@ -1860,22 +1908,22 @@ let PropsExtension =
 
   // properties
 
-  _keys, /* qqq : for junior : cover */
+  _keys,
   keys, /* qqq : for junior : cover */
   onlyOwnKeys, /* qqq : for junior : cover */
-  // onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
   allKeys, /* qqq : for junior : cover */
 
-  _vals, /* qqq : for junior : cover */
+  _vals,
   vals, /* qqq : for junior : cover */
   onlyOwnVals, /* qqq : for junior : cover */
-  // onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
   allVals, /* qqq : for junior : cover */
 
-  _pairs, /* qqq : for junior : cover */
+  _pairs,
   pairs, /* qqq : for junior : cover */
   onlyOwnPairs, /* qqq : for junior : cover */
-  // onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
   allPairs, /* qqq : for junior : cover */
 
   _ofAct,

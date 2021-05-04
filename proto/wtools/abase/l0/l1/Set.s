@@ -162,6 +162,53 @@ function from( src )
 // }
 
 // --
+// properties
+// --
+
+function _keys( src )
+{
+  return [ ... src.keys() ];
+}
+
+//
+
+function keys( src )
+{
+  _.assert( this.like( src ) );
+  return this._keys( src );
+}
+
+//
+
+function _vals( src )
+{
+  return [ ... src.values() ];
+}
+
+//
+
+function vals( src )
+{
+  _.assert( this.like( src ) );
+  return this._vals( src );
+}
+
+//
+
+function _pairs( src )
+{
+  return [ ... src.entries() ];
+}
+
+//
+
+function pairs( src )
+{
+  _.assert( this.like( src ) );
+  return this._pairs( src );
+}
+
+// --
 // extension
 // --
 
@@ -220,6 +267,15 @@ let SetExtension =
   _cloneShallow,
   cloneShallow, /* qqq : for junior : cover */
   from,
+
+  // properties
+
+  _keys,
+  keys, /* qqq : for junior : cover */
+  _vals,
+  vals, /* qqq : for junior : cover */
+  _pairs,
+  pairs, /* qqq : for junior : cover */
 
 }
 

@@ -822,17 +822,17 @@ let ExtensionMap =
 
   // properties
 
-  _keys, /* qqq : for junior : cover */
+  _keys,
   keys, /* qqq : for junior : cover */
   // onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
   allKeys, /* qqq : for junior : cover */
 
-  _vals, /* qqq : for junior : cover */
+  _vals,
   vals, /* qqq : for junior : cover */
   // onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
   allVals, /* qqq : for junior : cover */
 
-  _pairs, /* qqq : for junior : cover */
+  _pairs,
   pairs, /* qqq : for junior : cover */
   // onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
   allPairs, /* qqq : for junior : cover */
