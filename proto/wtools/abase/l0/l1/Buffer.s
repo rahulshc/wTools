@@ -489,7 +489,7 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( _.countable.is( src ) || _.routineIs( src ) );
+    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
     // _.assert( this.like( src ) || _.routineIs( src ) );
   }
   return this._makeEmpty( ... arguments );
