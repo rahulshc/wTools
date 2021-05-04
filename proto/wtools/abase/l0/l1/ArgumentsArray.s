@@ -259,7 +259,8 @@ var ToolsExtension =
   argumentsArrayMakeUndefined : _.long.makeUndefined.bind( _.argumentsArray ),
   // argumentsArrayMakeUndefined : makeUndefined.bind( _.argumentsArray ),
   argumentsArrayMake : make.bind( _.argumentsArray ),
-  argumentsArrayCloneShallow : cloneShallow.bind( _.argumentsArray ),
+  argumentsArrayCloneShallow : _.long.cloneShallow.bind( _.argumentsArray ),
+  // argumentsArrayCloneShallow : cloneShallow.bind( _.argumentsArray ),
   argumentsArrayFrom : from.bind( _.argumentsArray ),
 
 }

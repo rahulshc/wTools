@@ -282,7 +282,8 @@ let ToolsExtension =
   // arrayMakeUndefined : makeUndefined.bind( _.array ),
   arrayMake : _.argumentsArray.make.bind( _.array ),
   // arrayMake : make.bind( _.array ),
-  arrayCloneShallow : cloneShallow.bind( _.array ),
+  arrayCloneShallow : _.long.cloneShallow.bind( _.array ),
+  // arrayCloneShallow : cloneShallow.bind( _.array ),
   arrayFrom : from.bind( _.array ),
 
 }
