@@ -209,7 +209,7 @@ var toStrFine_gen = function()
   {
 
     if( options !== undefined &amp;&amp; !_.object.is( options ) )
-    throw _.err( '_.entity.exportStringFine :','options must be object' );
+    throw _.error.err( '_.entity.exportStringFine :','options must be object' );
 
     var options = options || {};
 
@@ -287,7 +287,7 @@ var _toStrFine = function _toStrFine( src,options )
       simple = r.indexOf( '\n' ) === -1;
       result += r;
     }
-    else throw _.err( 'unexpected' );
+    else throw _.error.err( 'unexpected' );
   }
   else if( _.rowIs( src ) )
   {
@@ -341,7 +341,7 @@ var _toStrFine = function _toStrFine( src,options )
   }
   else if( !isAtomic &amp;&amp; _.routine.is( src.toString ) )
   {
-    /*throw _.err( 'not tested' );*/
+    /*throw _.error.err( 'not tested' );*/
     result += src.toString();
   }
   else
@@ -1021,7 +1021,7 @@ var strSplitChunks = function( o )
     if( end === -1 )
     {
       result.lines = src.split( '\n' ).length;
-      result.error = _.err( 'Openning prefix',o.prefix,'of chunk #' + result.chunks.length,'at'+line,'line does not have closing tag :',o.postfix );
+      result.error = _.error.err( 'Openning prefix',o.prefix,'of chunk #' + result.chunks.length,'at'+line,'line does not have closing tag :',o.postfix );
       return result;
     }
 
@@ -1415,7 +1415,7 @@ var strStripEmptyLines = function( srcStr )
 var strIron = function()
 {
 
-  throw _.err( 'not tested' );
+  throw _.error.err( 'not tested' );
 
   var result = '';
 
@@ -1425,7 +1425,7 @@ var strIron = function()
     var argument = arguments[ a ];
 
     if( !_.strIs( argument ) &amp;&amp; !_.object.is( argument ) &amp;&amp; !_.arrayIs( argument ) )
-    throw _.err( '_.strIron :','argument could be string, array or object' );
+    throw _.error.err( '_.strIron :','argument could be string, array or object' );
 
     if( _.strIs( argument ) )
     {
@@ -1858,7 +1858,7 @@ var strHtmlEscape = function( str )
 var strToConfig = function( src,options ){
 
   var result = {};
-  if( !_.strIs( src ) ) throw _.err( '_.strToConfig :','require string' );
+  if( !_.strIs( src ) ) throw _.error.err( '_.strToConfig :','require string' );
 
   var options = options || {};
   if( options.delimeter === undefined ) options.delimeter = ' :';
@@ -1974,7 +1974,7 @@ var strLinesNumber = function( srcStr )
  *
  * @example
  * //returns 2
- * _.strCount( "aaaabab","ab" );
+ * _.strCount( "aabab","ab" );
  *
  * @method strCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
@@ -2082,7 +2082,7 @@ var strMetricFormat = function( number,options )
   var options = options || {};
 
   if( _.strIs( number ) ) number = parseFloat( number );
-  if( !_.number.is( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
+  if( !_.number.is( number ) ) throw _.error.err( 'strMetricFormat :','"number" should be Number' );
 
   if( options.divisor === undefined ) options.divisor = 3;
   if( options.thousand === undefined ) options.thousand = 1000;

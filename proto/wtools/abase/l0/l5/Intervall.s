@@ -3,11 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
-// checker
+// dichotomy
 // --
 
 function isEmpty( linterval )
@@ -64,8 +64,15 @@ function sureIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
-  _.assert.apply( _, args );
+  // let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // debugger;
+  let args =
+  [
+    _.linterval.has( linterval, src )
+    ,() => 'Out of linterval' + _.rangeToStr( linterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
+  _.sure.apply( _, args );
   return true;
 }
 
@@ -76,7 +83,14 @@ function assertIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // debugger;
+  let args =
+  [
+    _.linterval.has( linterval, src )
+    ,() => 'Out of linterval' + _.rangeToStr( linterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
   _.assert.apply( _, args );
   return true;
 }
@@ -229,17 +243,17 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Lrange, Handler );
+const Self = new Proxy( Lrange, Handler );
 Self.original = Lrange;
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
 {
 
-  // checker
+  // dichotomy
 
   is : _.intervalIs,
   isValid : _.intervalIsValid,
@@ -269,15 +283,9 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 _.assert( _.linterval !== undefined );
-_.mapSupplement( Self, _.linterval );
+_.props.supplement( Self, _.linterval );
 _.linterval = Self;
 
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 })();

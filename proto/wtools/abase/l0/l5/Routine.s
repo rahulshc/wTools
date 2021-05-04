@@ -3,50 +3,24 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
-let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
 // implementation
 // --
 
-function exportStringShortDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.routine.is( src ) );
-
-  if( src.name )
-  return `{- routine ${src.name} -}`;
-  else
-  return `{- routine.anonymous -}`;
-}
-
-
 // --
 // extension
 // --
 
-let Extension =
+let RoutineExtension =
 {
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+
 }
 
 //
 
-Object.assign( Routine, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+Object.assign( _.routine, RoutineExtension );
 
 })();

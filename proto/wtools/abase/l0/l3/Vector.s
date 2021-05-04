@@ -3,58 +3,21 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-_global_.wTools.vector = _global_.wTools.vector || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+
+_.assert( !!_.countable._elementWithKey, 'Expects routine countable._elementWithKey' );
 
 // --
-// implementation
+// dichotomy
 // --
-
-function is( src )
-{
-
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.primitive.is( src ) )
-  return false;
-
-  if( _.entity.methodIteratorOf( src ) )
-  if( _.number.is( src.length ) ) /* yyy */
-  if( !_.mapIs( src ) )
-  return true;
-
-  return false;
-  // return _.longIs( src );
-  // if( _.vectorAdapterIs( src ) )
-  // return true;
-  // if( _.longIs( src ) )
-  // return true;
-  // return false;
-}
-
-//
-
-function like( src )
-{
-  return _.vector.is( src );
-  // // return _.vectorIs( src );
-  // if( _.arrayIs( src ) )
-  // return true;
-  // if( _.primitive.is( src ) )
-  // return false;
-  //
-  // if( _.entity.methodIteratorOf( src ) )
-  // if( !_.mapIs( src ) )
-  // return true;
-  //
-  // return false;
-}
 
 function adapterIs( src )
 {
   return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
 }
+
+//
 
 function constructorIsVectorAdapter( src )
 {
@@ -63,41 +26,131 @@ function constructorIsVectorAdapter( src )
   return '_vectorBuffer' in src.prototype;
 }
 
-
 // --
 // extension
 // --
 
-var Extension =
-{
-  is,
-  like,
-  adapterIs,
-  constructorIsVectorAdapter,
-}
-
-//
-
-var ExtensionTools =
+var ToolsExtension =
 {
   vectorAdapterIs : adapterIs,
   vadIs : adapterIs,
-  vectorIs : is, /* qqq : cover here and in the module::MathVector */
-  vectorLike : like, /* qqq : cover here and in the module::MathVector */
   constructorIsVectorAdapter,
   constructorIsVad : constructorIsVectorAdapter,
 }
 
+Object.assign( _, ToolsExtension );
+
 //
 
-Object.assign( _.vector, Extension );
-Object.assign( _, ExtensionTools );
+var VectorExtension =
+{
 
-// --
-// export
-// --
+  // dichotomy
 
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+  adapterIs,
+  constructorIsVectorAdapter,
+
+  // equaler
+
+  /* qqq : implement more optimal own version of this routines */
+  _identicalShallow : _.countable.identicalShallow,
+  identicalShallow : _.countable.identicalShallow,
+  identical : _.countable.identical,
+  _equivalentShallow : _.countable.identicalShallow,
+  equivalentShallow : _.countable.equivalentShallow,
+  equivalent : _.countable.equivalent,
+
+  // exporter
+
+  /* qqq : implement more optimal own version of this routines */
+  _exportStringDiagnosticShallow : _.countable._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.countable.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.countable._exportStringCodeShallow,
+  exportStringCodeShallow : _.countable.exportStringCodeShallow,
+  exportString : _.countable.exportString,
+
+    // container interface
+
+  _lengthOf : _.countable._lengthOf,
+  lengthOf : _.countable.lengthOf, /* qqq : cover */
+
+  _hasKey : _.countable._hasKey,
+  hasKey : _.countable._hasKey, /* qqq : cover */
+  _hasCardinal : _.countable._hasKey,
+  hasCardinal : _.countable._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.countable._hasKey,
+  keyWithCardinal : _.countable._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.countable._cardinalWithKey,
+  cardinalWithKey : _.countable.cardinalWithKey, /* qqq : cover */
+
+  _elementGet : _.countable._elementWithKey,
+  elementGet : _.countable.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.countable._elementWithKey,
+  elementWithKey : _.countable.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.countable._elementWithImplicit,
+  elementWithImplicit : _.countable.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.countable._elementWithCardinal,
+  elementWithCardinal : _.countable.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.countable._elementSet,
+  elementSet : _.countable.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.countable._elementWithKeySet,
+  elementWithKeySet : _.countable.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.countable._elementWithCardinalSet,
+  elementWithCardinalSet : _.countable.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementDel : _.countable._elementDel,
+  elementDel : _.countable.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.countable._elementWithKeyDel,
+  elementWithKeyDel : _.countable.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.countable._elementWithCardinalDel,
+  elementWithCardinalDel : _.countable.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.blank._empty,
+  empty : _.blank.empty,  /* qqq : cover */
+
+  _each : _.countable._each,
+  each : _.countable.each, /* qqq : cover */
+  _eachLeft : _.countable._eachLeft,
+  eachLeft : _.countable.eachLeft, /* qqq : cover */
+  _eachRight : _.countable._eachRight,
+  eachRight : _.countable.eachRight, /* qqq : cover */
+
+  _while : _.countable._while,
+  while : _.countable.while, /* qqq : cover */
+  _whileLeft : _.countable._whileLeft,
+  whileLeft : _.countable.whileLeft, /* qqq : cover */
+  _whileRight : _.countable._whileRight,
+  whileRight : _.countable.whileRight, /* qqq : cover */
+
+  _aptLeft : _.countable._aptLeft,
+  aptLeft : _.countable.aptLeft, /* qqq : cover */
+  first : _.countable.first,
+  _aptRight : _.countable._aptRight, /* qqq : cover */
+  aptRight : _.countable.aptRight,
+  last : _.countable.last, /* qqq : cover */
+
+  _filter : _.countable._filter,
+  filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
+  filterWithoutEscape : _.countable.filterWithoutEscape,
+  filterWithEscapeLeft : _.countable.filterWithEscapeLeft,
+  filterWithEscapeRight : _.countable.filterWithEscapeRight,
+  filterWithEscape : _.countable.filterWithEscape,
+  filter : _.countable.filter,
+
+  _map : _.countable._map,
+  mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
+  mapWithoutEscape : _.countable.mapWithoutEscape,
+  mapWithEscapeLeft : _.countable.mapWithEscapeLeft,
+  mapWithEscapeRight : _.countable.mapWithEscapeRight,
+  mapWithEscape : _.countable.mapWithEscape,
+  map : _.countable.map,
+
+}
+
+Object.assign( _.vector, VectorExtension );
+
+//
 
 })();

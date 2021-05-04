@@ -3,11 +3,11 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
-// checker
+// dichotomy
 // --
 
 function isEmpty( cinterval )
@@ -146,8 +146,19 @@ function sureIn( src, cinterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.cinterval.has( cinterval, src ), () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 ) ]);
-  _.assert.apply( _, args );
+  // let args = _.unroll.from
+  // ([
+  //   _.cinterval.has( cinterval, src ),
+  //   () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 )
+  // ]);
+  // debugger
+  let args =
+  [
+    _.cinterval.has( cinterval, src )
+    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
+  _.sure.apply( _, args );
   return true;
 }
 
@@ -158,7 +169,17 @@ function assertIn( src, cinterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.cinterval.has( cinterval, src ), () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 ) ]);
+  let args =
+  [
+    _.cinterval.has( cinterval, src )
+    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
+  // let args = _.unroll.from
+  // ([
+  //   _.cinterval.has( cinterval, src ),
+  //   () => 'Out of cinterval' + _.rangeToStr( cinterval ), _.unrollSelect( arguments, 2 )
+  // ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -406,17 +427,17 @@ let Handler =
   }
 };
 
-let Self = new Proxy( Crange, Handler );
+const Self = new Proxy( Crange, Handler );
 Self.original = Crange;
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
 {
 
-  // checker
+  // dichotomy
 
   is : _.intervalIs,
   isValid : _.intervalIsValid,
@@ -451,16 +472,9 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
-// _.assert( _.cinterval === undefined );
+_.props.supplement( Self, Extension );
 _.assert( _.cinterval !== undefined );
-_.mapSupplement( Self, _.cinterval );
+_.props.supplement( Self, _.cinterval );
 _.cinterval = Self;
 
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 })();

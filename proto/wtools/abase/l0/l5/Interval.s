@@ -3,16 +3,16 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools;
 
 // --
 // range
 // --
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
@@ -22,12 +22,5 @@ let Extension =
 //
 
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

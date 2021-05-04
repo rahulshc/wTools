@@ -3,414 +3,202 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.entity = _.entity || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
 
 // --
-//
+// exporter
 // --
 
-function identicalShallow( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects 2 arguments' );
-
-  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
-  return false;
-
-  if( src1 === src2 )
-  return true;
-
-  if( _.hashMap.like( src1 ) )
-  {
-    /*
-      - hashmap
-    */
-    return _.hashMap.identicalShallow( src1, src2 )
-  }
-  else if( _.set.like( src1 ) )
-  {
-    /*
-      - set
-    */
-    return _.set.identicalShallow( src1, src2 );
-  }
-  else if( _.bufferAnyIs( src1 ) )
-  {
-    /*
-      - BufferNode
-      - BufferRaw
-      - BufferRawShared
-      - BufferTyped
-      - BufferView
-      - BufferBytes
-    */
-    return _.buffersIdenticalShallow( src1, src2 );
-  }
-  else if( _.countable.is( src1 ) )
-  {
-    /*
-      - countable
-      - vector
-      - long
-      - array
-    */
-    return _.countable.identicalShallow( src1, src2 );
-  }
-  else if( _.object.like( src1 ) )
-  {
-    /*
-      - objectLike
-      - object
-
-      - Map
-      - Auxiliary
-      - MapPure
-      - MapPolluted
-      - AuxiliaryPolluted
-      - MapPrototyped
-      - AuxiliaryPrototyped
-    */
-    if( _.date.is( src1 ) )
-    {
-      return _.date.identicalShallow( src1, src2 );
-    }
-    else if( _.regexp.is( src1 ) )
-    {
-      return _.regexp.identicalShallow( src1, src2 );
-    }
-    else if( _.aux.is( src1 ) )
-    {
-      return _.aux.identicalShallow( src1, src2 );
-    }
-
-    /* non-identical objects */
-    return false;
-  }
-  else if( _.primitiveIs( src1 ) )
-  {
-    /*
-      - Symbol
-      - Number
-      - BigInt
-      - Boolean
-      - String
-    */
-
-    return _.primitive.identicalShallow( src1, src2 );
-  }
-  else
-  {
-    return false;
-  }
-}
-
+// /**
+//  * Return in one string value of all arguments.
+//  *
+//  * @example
+//  * let args = _.entity.exportStringDiagnosticShallow/*exportStringSimple*/( 'test2' );
+//  *
+//  * @return {string}
+//  * If no arguments return empty string
+//  * @function exportStringSimple
+//  * @namespace Tools
+//  */
 //
-
-function equivalentShallow( src1, src2, options )
-{
-  /*
-    - boolLikeTrue and boolLikeTrue - ( true, 1 )
-    - boolLikeFalse and boolLikeFalse - ( false, 0 )
-    - | number1 - number2 | <= accuracy
-    - strings that differ only in whitespaces at the start and/or at the end
-    - regexp with same source and different flags
-  */
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( options === undefined || _.objectLike( options ), 'Expects map of options as third argument' );
-
-  let accuracy;
-
-  if( options )
-  accuracy = options.accuracy || undefined;
-
-  if( _.primitiveIs( src1 ) & _.primitiveIs( src2 ) ) /* check before type comparison ( 10n & 10 and 1 & true are equivalent ) */
-  {
-    /*
-      - Symbol
-      - Number
-      - BigInt
-      - Boolean
-      - String
-    */
-    return _.primitive.equivalentShallow( src1, src2, accuracy );
-  }
-
-  if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
-  return false;
-
-  if( src1 === src2 )
-  return true;
-
-  if( _.hashMap.like( src1 ) )
-  {
-    /*
-      - hashmap
-    */
-    return _.hashMap.equivalentShallow( src1, src2 )
-  }
-  else if( _.set.like( src1 ) )
-  {
-    /*
-      - set
-    */
-    return _.set.equivalentShallow( src1, src2 );
-  }
-  else if( _.bufferAnyIs( src1 ) )
-  {
-    /*
-      - BufferNode
-      - BufferRaw
-      - BufferRawShared
-      - BufferTyped
-      - BufferView
-      - BufferBytes
-    */
-    return _.buffersEquivalentShallow( src1, src2 );
-  }
-  else if( _.countable.is( src1 ) )
-  {
-    /*
-      - countable
-      - vector
-      - long
-      - array
-    */
-    return _.countable.equivalentShallow( src1, src2 );
-  }
-  else if( _.object.like( src1 ) )
-  {
-    /*
-      - objectLike
-      - object
-
-      - Map
-      - Auxiliary
-      - MapPure
-      - MapPolluted
-      - AuxiliaryPolluted
-      - MapPrototyped
-      - AuxiliaryPrototyped
-    */
-    if( _.date.is( src1 ) )
-    {
-      return _.date.equivalentShallow( src1, src2 );
-    }
-    else if( _.regexp.is( src1 ) )
-    {
-      return _.regexp.equivalentShallow( src1, src2 );
-    }
-    else if( _.aux.is( src1 ) )
-    {
-      return _.aux.equivalentShallow( src1, src2 );
-    }
-
-    /* non-identical objects */
-    return false;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-//
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return new Array();
-  }
-  else if( _.longIs( src ) )
-  {
-    // return this.tools.longMakeEmpty( src );
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMakeEmpty( src );
-  }
-  else if( _.set.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.hashMap.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.aux.is( src ) )
-  {
-    return Object.create( null );
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor();
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
-
-}
-
-//
-
-function makeUndefined( src, length )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return new Array( length !== undefined ? length : src.length );
-  }
-  else if( _.longIs( src ) )
-  {
-    // return this.tools.longMakeUndefined( src, length );
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMakeUndefined( src, length );
-  }
-  else if( _.set.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.hashMap.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.aux.is( src ) )
-  {
-    return Object.create( null );
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor();
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
-}
-
-// //
-//
-// function makeNonConstructing( src )
+// function exportStringSimple()
 // {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   let result = '';
+//   let line;
 //
-//   if( _.arrayIs( src ) )
-//   {
-//     return Array.from( src );
-//   }
-//   else if( _.longLike( src ) )
-//   {
-//     return this.tools.longMake( src );
-//   }
-//   else if( _.hashMap.like( src ) || _.set.like( src ) )
-//   {
-//     return new src.constructor( src );
-//   }
-//   else if( _.aux.is( src ) )
-//   {
-//     return _.mapShallowClone( src )
-//   }
-//   else if( src === _.null )
-//   {
-//     return null;
-//   }
-//   else if( src === _.undefined )
-//   {
-//     return undefined;
-//   }
-//   else if( !src || _.primitive.is( src ) )
-//   {
-//     return src;
-//   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
+//   if( !arguments.length )
+//   return result;
 //
+//   _.assert( arguments.length === 1 );
+//
+//   for( let a = 0 ; a < arguments.length ; a++ )
+//   {
+//     let src = arguments[ a ];
+//
+//     if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
+//     {
+//       line = src.toStr();
+//     }
+//     else try
+//     {
+//       line = String( src );
+//     }
+//     catch( err )
+//     {
+//       line = _.entity.strType( src );
+//     }
+//
+//     result += line;
+//     if( a < arguments.length-1 )
+//     result += ' ';
+//
+//   }
+//
+//   return result;
 // }
 
 //
 
-function cloneShallow( src )
+function exportStringDiagnosticShallow( src, opts )
 {
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return Array.from( src );
-  }
-  else if( _.longLike( src ) )
-  {
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMake( src );
-  }
-  else if( _.hashMap.like( src ) || _.set.like( src ) )
-  {
-    return new src.constructor( src );
-  }
-  else if( _.aux.is( src ) )
-  {
-    return _.mapShallowClone( src )
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src[ shallowCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
-  {
-    return src[ shallowCloneSymbol ]();
-  }
-  else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
-  {
-    return src.cloneShallow();
-  }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor( src );
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
-
+  let result = '';
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  result = _.entity.exportStringDiagnosticShallow( src );
+  return result;
 }
 
 //
+
+/* xxx : qqq : for junior : take into account throwing cases */
+/* qqq : for junior : optimize. ask how to */
+function _exportStringShallow( src, o )
+{
+
+  // _.routine.assertOptions( _exportStringShallow, o );
+  _.assert( arguments.length === 2 );
+  _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
+  _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
+  _.assert( o.src === undefined )
+  _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
+
+  let result = '';
+  let method = o.format === 'string.diagnostic' ? 'exportStringDiagnosticShallow' : 'exportStringCodeShallow';
+
+  try
+  {
+
+    let namespace = this.namespaceForEntity( src );
+    if( namespace === null )
+    {
+      _.assert( 0, 'not tested' );
+      namespace = _.blank;
+    }
+
+    result = namespace[ method ]( src );
+
+    // if( _.primitive.is( src ) )
+    // {
+    //   result = _.primitive[ method ]( src );
+    // }
+    // else if( _.set.like( src ) )
+    // {
+    //   result = _.set[ method ]( src );
+    // }
+    // else if( _.hashMap.like( src ) )
+    // {
+    //   result = _.hashMap[ method ]( src );
+    // }
+    // else if( _.vector.like( src ) )
+    // {
+    //   result = _.vector[ method ]( src );
+    // }
+    // else if( _.date.is( src ) )
+    // {
+    //   result = _.date[ method ]( src );
+    // }
+    // else if( _.regexpIs( src ) )
+    // {
+    //   result = _.regexp[ method ]( src );
+    // }
+    // else if( _.routine.is( src ) )
+    // {
+    //   result = _.routine[ method ]( src );
+    // }
+    // else if( _.aux.like( src ) )
+    // {
+    //   result = _.aux[ method ]( src );
+    // }
+    // else if( _.object.like( src ) )
+    // {
+    //   result = _.object[ method ]( src );
+    // }
+    // else
+    // {
+    //   result = String( src );
+    // }
+
+    result = _.strShort_({ src : result, widthLimit : o.widthLimit, heightLimit : o.heightLimit }).result;
+
+  }
+  catch( err )
+  {
+    debugger;
+    throw err;
+  }
+
+  return result;
+}
+
+_exportStringShallow.defaults =
+{
+  format : null,
+  widthLimit : 0,
+  heightLimit : 0,
+}
+
+//
+
+function exportStringCodeShallow( src, o ) /* */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  o = _.routine.options_( exportStringCodeShallow, o || null );
+  o.format = o.format || exportStringCodeShallow.defaults.format;
+
+  return _.entity._exportStringShallow( src, o );
+}
+
+exportStringCodeShallow.defaults =
+{
+  format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for junior : implement and cover */
+  widthLimit : 0, /* qqq for junior : implement and cover, use strShort_ */
+  heightLimit : 0, /* qqq for junior : implement and cover */
+}
+
+//
+
+function exportStringDiagnosticShallow( src, o ) /* */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  // o = _.routine.options_( exportStringDiagnosticShallow, o || null );
+  o = _.aux.supplement( o || null, exportStringDiagnosticShallow.defaults );
+  o.format = o.format || exportStringDiagnosticShallow.defaults.format;
+
+  return _.entity._exportStringShallow( src, o );
+}
+
+exportStringDiagnosticShallow.defaults =
+{
+  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for junior : implement and cover */
+  widthLimit : 0, /* qqq for junior : implement and cover, use strShort_ */
+  heightLimit : 0, /* qqq for junior : implement and cover */
+}
+
+// --
+//
+// --
 
 function cloneDeep( src )
 {
@@ -424,9 +212,9 @@ function cloneDeep( src )
   {
     return _.replicate( src );
   }
-  else if( _.routine.is( src[ deepCloneSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol shallowCloneSymbol */
+  else if( _.routine.is( src[ _.class.cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {
-    return src[ deepCloneSymbol ]();
+    return src[ _.class.cloneDeepSymbol ]();
   }
   else if( _.routine.is( src.cloneDeep ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
   {
@@ -438,8 +226,8 @@ function cloneDeep( src )
   }
   else if( _.longLike( src ) )
   {
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMake( src );
+    let toolsNamespace = this.Tools ? this.Tools : this;
+    return toolsNamespace.long.make( src );
   }
   else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
@@ -447,105 +235,13 @@ function cloneDeep( src )
   }
   else if( _.aux.is( src ) )
   {
-    return _.mapShallowClone( src );
+    return _.aux.cloneShallow( src );
   }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
   {
     return new src.constructor( src );
   }
   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneDeep()\`` );
-
-}
-
-//
-
-/**
- * The routine equalize() checks equality of two entities {-src1-} and {-src2-}.
- * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to
- * entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
- * If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
- *
- * @param { * } src1 - First entity to compare.
- * @param { * } src2 - Second entity to compare.
- * @param { Function } onEvaluate - It's a callback. If the routine has two parameters,
- * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
- * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-src2-} to search.
- *
- * @example
- * _.entity.equalize( 1, 1 );
- * // returns true
- *
- * @example
- * _.entity.equalize( 1, 'str' );
- * // returns false
- *
- * @example
- * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
- * // returns false
- *
- * @example
- * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
- * // returns true
- *
- * @example
- * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
- * // returns false
- *
- * @example
- * _.entity.equalize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
- * // returns true
- *
- * @returns { Boolean } - Returns boolean value of equality of two entities.
- * @function equalize
- * @throws { Error } If arguments.length is less then two or more then four.
- * @throws { Error } If {-onEvaluate1-} is not a routine.
- * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
- * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate2-} is not a routine.
- * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @namespace Tools.entity
- */
-
-function equalize( /* src1, src2, onEvaluate1, onEvaluate2 */ )
-{
-  let src1 = arguments[ 0 ];
-  let src2 = arguments[ 1 ];
-  let onEvaluate1 = arguments[ 2 ];
-  let onEvaluate2 = arguments[ 3 ];
-
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
-
-  if( !onEvaluate1 )
-  {
-    _.assert( !onEvaluate2 );
-    return Object.is( src1, src2 );
-  }
-  else if( onEvaluate1.length === 2 ) /* equalizer */
-  {
-    _.assert( !onEvaluate2 );
-    return onEvaluate1( src1, src2 );
-  }
-  else /* evaluator */
-  {
-    if( !onEvaluate2 )
-    onEvaluate2 = onEvaluate1;
-    _.assert( onEvaluate1.length === 1 );
-    _.assert( onEvaluate2.length === 1 );
-    return onEvaluate1( src1 ) === onEvaluate2( src2 );
-  }
 
 }
 
@@ -637,7 +333,7 @@ function assign2( dst, src, onRecursive )
     dst.set( src );
 
   }
-  else if( _.object.is( src ) )
+  else if( _.object.isBasic( src ) )
   {
 
     if( onRecursive )
@@ -711,7 +407,6 @@ function assign2FieldFromContainer( /* dstContainer, srcContainer, name, onRecur
   let srcContainer = arguments[ 1 ];
   let name = arguments[ 2 ];
   let onRecursive = arguments[ 3 ];
-
   let result;
 
   _.assert( _.strIs( name ) || _.symbol.is( name ) );
@@ -793,48 +488,36 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 
 let ToolsExtension =
 {
-  entityIdenticalShallow : identicalShallow,
-
-  makeEmpty,
-  entityMakeEmpty : makeEmpty,
-  makeUndefined,
-  entityMakeUndefined : makeUndefined,
-
-  make : cloneShallow,
-  entityMake : cloneShallow, /* xxx : remove the alias */
-  cloneShallow, /* xxx */
-  cloneDeep,
 
 }
 
 //
 
-_.mapSupplement( _, ToolsExtension );
+Object.assign( _, ToolsExtension );
 
 // --
 // entity extension
 // --
 
-const iteratorSymbol = _.entity.iteratorSymbol;
-const typeNameGetterSymbol = _.entity.typeNameGetterSymbol;
-const toPrimitiveSymbol = _.entity.toPrimitiveSymbol;
-const toStrNjsSymbol = _.entity.toStrNjsSymbol;
-const equalAreSymbol = _.entity.equalAreSymbol;
-const shallowCloneSymbol = _.entity.shallowCloneSymbol;
-const deepCloneSymbol = _.entity.deepCloneSymbol;
-
 let EntityExtension =
 {
-  identicalShallow,
-  equivalentShallow,
 
-  makeEmpty,
-  makeUndefined,
-  cloneShallow,
+  // exporter
+
+  // exportStringSimple, /* xxx : deprecate? */
+  exportStringDiagnosticShallow,
+
+  _exportStringShallow,
+  exportString : exportStringDiagnosticShallow,
+  exportStringCodeShallow,
+  exportStringDiagnosticShallow,
+
+  // exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
+  // exportStringSolo,
+
+  // etc
+
   cloneDeep,
-  make : cloneShallow, /* xxx */
-
-  equalize,
 
   assign2, /* xxx : refactor */
   assign2FieldFromContainer, /* dubious */
@@ -844,13 +527,6 @@ let EntityExtension =
 
 //
 
-_.mapSupplement( _.entity, EntityExtension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+Object.assign( _.entity, EntityExtension );
 
 })();

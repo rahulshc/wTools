@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.process = _.process || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.process = _.process || Object.create( null );
 
 // --
 // implementation
@@ -20,13 +20,6 @@ let Extension =
 
 }
 
-_.mapSupplement( _.process, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+_.props.supplement( _.process, Extension );
 
 })();

@@ -3,9 +3,9 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.bigInt = _.bigInt || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _.bigInt = _.bigInt || Object.create( null );
 _.bigInt.s = _.bigInt.s || Object.create( null );
 
 // --
@@ -13,7 +13,7 @@ _.bigInt.s = _.bigInt.s || Object.create( null );
 // --
 
 
-function bigIntFrom( src )
+function from( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   if( _.strIs( src ) )
@@ -46,23 +46,13 @@ function bigIntsFrom( src )
   else _.assert( 0, 'Cant convert' );
 }
 
-//
-
-function exportStringShortCode( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.bigInt.is( src ) );
-
-  return `${String( src )}n`;
-}
-
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
-  bigIntFrom,
+  bigIntFrom : from,
   bigIntsFrom,
 }
 
@@ -70,14 +60,7 @@ let ExtensionTools =
 
 let Extension =
 {
-  from : bigIntFrom,
-
-  exportString : exportStringShortCode,
-  exportStringShort : exportStringShortCode,
-  exportStringShortCode,
-  exportStringShortDiagnostic : exportStringShortCode,
-  exportStringDiagnostic : exportStringShortCode,
-  exportStringCode : exportStringShortCode
+  from,
 }
 
 //
@@ -89,13 +72,6 @@ let ExtensionS =
 
 Object.assign( Self, Extension );
 Object.assign( _.bigInt.s, ExtensionS );
-Object.assign( _, ExtensionTools );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
+Object.assign( _, ToolsExtension );
 
 })();

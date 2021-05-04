@@ -3,12 +3,12 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 /**
@@ -39,27 +39,6 @@ function toStr( date )
   return result;
 }
 
-//
-
-function exportStringShortDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.date.is( src ) );
-
-  return src.toISOString();
-}
-
-//
-
-function exportStringShortCode( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.date.is( src ) );
-
-  return `new Date( '${src.toISOString()}' )`;
-}
-
-
 // --
 // extension
 // --
@@ -74,24 +53,11 @@ let ToolsExtension =
 let Extension =
 {
   toStr,
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortCode,
-  exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortCode
 }
 
 //
 
 Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

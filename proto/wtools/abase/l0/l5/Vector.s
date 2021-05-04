@@ -3,24 +3,57 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
+const _global = _global_;
+const _ = _global_.wTools;
 _global_.wTools.vector = _global_.wTools.vector || Object.create( null );
 
 // --
 // implementation
 // --
 
-function exportStringShortDiagnostic( src )
+/**
+ * The hasLength() routine determines whether the passed value has the property (length).
+ *
+ * If {-srcMap-} is equal to the (undefined) or (null) false is returned.
+ * If {-srcMap-} has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * _.hasLength( [ 1, 2 ] );
+ * // returns true
+ *
+ * @example
+ * _.hasLength( 'Hello there!' );
+ * // returns true
+ *
+ * @example
+ * let isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )( 'Hello there!' );
+ * // returns true
+ *
+ * @example
+ * _.hasLength( 10 );
+ * // returns false
+ *
+ * @example
+ * _.hasLength( {} );
+ * // returns false
+ *
+ * @returns { boolean } Returns true if {-srcMap-} has the property (length).
+ * @function hasLength
+ * @namespace Tools
+ */
+
+function hasLength( src )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.vector.is( src ) );
-
-  if( _.unrollIs( src ) )
-  return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-  else
-  return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
-
+  if( src === undefined || src === null )
+  return false;
+  if( _.number.is( src.length ) )
+  return true;
+  return false;
 }
 
 // --
@@ -29,23 +62,13 @@ function exportStringShortDiagnostic( src )
 
 var Extension =
 {
-  exportString : exportStringShortDiagnostic,
-  exportStringShort : exportStringShortDiagnostic,
-  exportStringShortDiagnostic,
-  exportStringShortCode : exportStringShortDiagnostic,
-  exportStringDiagnostic : exportStringShortDiagnostic,
-  exportStringCode : exportStringShortDiagnostic,
+
+  hasLength,
+
 }
 
 //
 
 Object.assign( _.vector, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

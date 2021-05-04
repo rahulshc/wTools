@@ -3,22 +3,78 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
+const _global = _global_;
+const _ = _global_.wTools;
+const Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
 
 // --
 // diagnostic
 // --
 
 // --
-// extension
+// try
+// --
+
+function tryCatch( routine )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.routine.is( routine ) )
+  try
+  {
+    return routine();
+  }
+  catch( err )
+  {
+    throw _._err({ args : [ err ] });
+  }
+}
+
+//
+
+function tryCatchBrief( routine )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.routine.is( routine ) )
+
+  try
+  {
+    return routine();
+  }
+  catch( err )
+  {
+    throw _._err({ args : [ err ], brief : 1 });
+  }
+}
+
+// //
+//
+// function tryCatchDebug( routine )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.routine.is( routine ) )
+//   try
+//   {
+//     return routine();
+//   }
+//   catch( err )
+//   {
+//     throw _._err({ args : [ err ], debugging : 1 });
+//   }
+// }
+
+// --
+// declare
 // --
 
 let ToolsExtension =
 {
 
+  tryCatch,
+  tryCatchBrief,
+
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
@@ -29,14 +85,6 @@ let Extension =
 
 //
 
-Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = _;
 
 })();

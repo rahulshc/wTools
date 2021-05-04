@@ -18,7 +18,7 @@ The first mechanism is straightforward, `try block` catches a synchronous error,
 ``` js
 try
 {
-  throw _.err( 'Error!' );
+  throw _.error.err( 'Error!' );
 }
 catch( err )
 {
@@ -37,13 +37,13 @@ consequence
 .then( function decrement( arg )
 {
   if( arg <= 0 )
-  throw _.err( 'negative!' );
+  throw _.error.err( 'negative!' );
   return arg-1;
 })
 .then( function divide( arg )
 {
   if( arg % 2 === 1 )
-  throw _.err( 'odd!' );
+  throw _.error.err( 'odd!' );
   return arg*2;
 })
 .catch( ( err ) =>
@@ -118,16 +118,16 @@ Unattended error is one that didn't get proper handling yet. An uncaught error i
 try
 {
   /* Throw error. It has state unattended on creation. */
-  throw _.err( 'Error1' );
+  throw _.error.err( 'Error1' );
 }
 catch( err )
 {
   /* Turns error to attended. */
-  _.errAttend( err );
+  _.error.attend( err );
 }
 ```
 
-Routine `_.errAttend` turns error to attend one. Another way to turn it into attended is just logging it: `console.log( err )`
+Routine `_.error.attend` turns error to attend one. Another way to turn it into attended is just logging it: `console.log( err )`
 
 Don't confuse unattended errors and uncaught errors.
 
@@ -140,7 +140,7 @@ Some developers do swallowing of errors, ignoring them.
 ``` js
 try
 {
-  throw _.err( 'Error1' );
+  throw _.error.err( 'Error1' );
 }
 catch( err )
 {

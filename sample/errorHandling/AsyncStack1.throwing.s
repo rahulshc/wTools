@@ -9,8 +9,8 @@ function program()
 
   _.time.out( 100, function timeOut1()
   {
-    console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath ); debugger;
-    throw _.err( 'timeOut1' );
+    console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
+    throw _.error.err( 'timeOut1' );
   } );
 
   console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
