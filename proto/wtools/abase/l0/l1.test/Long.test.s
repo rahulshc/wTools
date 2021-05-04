@@ -7456,21 +7456,21 @@ const Proto =
     // _longMakeOfLengthWithArgumentsArrayLongDescriptor,
     // _longMakeOfLengthWithBufferTypedLongDescriptor,
 
-    // longMakeUndefinedWithArrayAndUnroll,
-    // longMakeUndefinedWithArgumentsArray,
-    // longMakeUndefinedWithBufferTyped,
-    // longMakeUndefinedWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
-    // longMakeUndefinedWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
-    // longMakeUndefinedWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
+    // longMakeUndefinedWithArrayAndUnroll, /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeUndefinedWithArgumentsArray, /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeUndefinedWithBufferTyped, /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeUndefinedWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeUndefinedWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeUndefinedWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
 
     /* xxx : qqq2 : for Dmytro : try to move this routines on l1 */
-    // longMakeZeroedBasic, /* qqq2 : for Dmytro : extend */
-    // longMakeZeroedWithArrayAndUnroll,
-    // longMakeZeroedWithArgumentsArray,
-    // longMakeZeroedWithBufferTyped, /* qqq2 : for Dmytro : enable */
-    // longMakeZeroedWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : enable */
-    // longMakeZeroedWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : enable */
-    // longMakeZeroedWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : enable */
+    // longMakeZeroedBasic, /* aaa2 : for Dmytro : extend */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithArrayAndUnroll, /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithArgumentsArray, /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithBufferTyped, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
+    // longMakeZeroedWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
 
     makeFillingBasic, /* aaa2 : for Dmytro : enable */ /* Dmytro : wrote, this routine aggregates tests fro routines `longMakeFillingWithArrayAndUnroll` `longMakeFillingWithArgumentsArray`, `longMakeFillingWithBufferTyped` */
     makeFillingWithLongDescriptor,

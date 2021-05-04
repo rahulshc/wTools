@@ -310,6 +310,7 @@ function _functor( fo )
     makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
     makeUndefined, /* qqq : for junior : cover */
+    _makeZeroed : _makeUndefined,
     makeZeroed : makeUndefined,
     _makeFilling,
     makeFilling,

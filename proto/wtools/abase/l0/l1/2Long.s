@@ -235,9 +235,9 @@ function _makeZeroed( src, length )
       length = [ ... length ].length;
     }
     if( _.argumentsArray.is( src ) )
-    return fill( _.argumentsArray._makeUndefined( src, length ) );
+    return _.argumentsArray._makeZeroed( src, length );
     if( _.unroll.is( src ) )
-    return fill( _.unroll._makeUndefined( src, length ) );
+    return _.unroll._makeZeroed( src, length );
     if( _.routineIs( src ) )
     {
       let result = fill( new src( length ) );
@@ -245,7 +245,7 @@ function _makeZeroed( src, length )
       return result;
     }
     if( src === null )
-    return fill( this.tools.defaultLong.make( length ) );
+    return this.tools.defaultLong.makeZeroed( length );
     return fill( new src.constructor( length ) );
   }
   else if( arguments.length === 1 )
@@ -254,22 +254,22 @@ function _makeZeroed( src, length )
     if( this.like( src ) )
     {
       if( _.argumentsArray.is( src ) )
-      return fill( _.argumentsArray._makeUndefined( src ) );
+      return _.argumentsArray._makeZeroed( src );
       if( _.unroll.is( src ) )
-      return fill( _.unroll._makeUndefined( src ) );
+      return _.unroll._makeZeroed( src );
       constructor = src.constructor;
       length = src.length;
     }
     else
     {
-      return fill( this.tools.defaultLong.make( src ) );
+      return this.tools.defaultLong.makeZeroed( src );
     }
     return fill( new constructor( length ) );
   }
-  else
-  {
-    return fill( this.tools.defaultLong.make() );
-  }
+
+  return this.tools.defaultLong.make();
+
+  /* */
 
   function fill( dst )
   {

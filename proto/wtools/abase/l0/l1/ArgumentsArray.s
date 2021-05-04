@@ -140,6 +140,13 @@ function makeUndefined( src, length )
 
 //
 
+function _makeZeroed( src, length )
+{
+  return this._makeFilling.call( this, 0, ... arguments );
+}
+
+//
+
 function _makeFilling( type, value, length )
 {
   if( arguments.length === 2 )
@@ -272,6 +279,8 @@ var ArgumentsArrayExtension =
   makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
   makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed,
+  makeZeroed : _.long.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling,
   _cloneShallow,
