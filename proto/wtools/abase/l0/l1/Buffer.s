@@ -92,9 +92,10 @@ function _make_functor( onMake )
 
     let length = ins;
 
-    if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    // if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    if( _.countable.is( length ) || _.bufferNodeIs( length ) )
     {
-      length = length.length
+      length = length.length;
     }
     else if( _.bufferRawIs( length ) || _.bufferViewIs( length ) )
     {
