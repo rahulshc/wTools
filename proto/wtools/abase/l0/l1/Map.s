@@ -315,7 +315,7 @@ function _keys( o )
         proto = Object.getPrototypeOf( proto );
       }
       while( proto );
-      /* qqq : for Yevhen : map cant have prototype. rewrite */
+      /* qqq : for junior : map cant have prototype. rewrite */
     }
 
   }
@@ -329,7 +329,7 @@ function _keys( o )
 
     if( !selectFilter )
     {
-      /* qqq : for Yevhen : rewrite without arrayAppend and without duplicating array */
+      /* qqq : for junior : rewrite without arrayAppend and without duplicating array */
       arrayAppendArrayOnce( result, keys );
     }
     else for( let k = 0 ; k < keys.length ; k++ )
@@ -337,7 +337,7 @@ function _keys( o )
       let e = selectFilter( srcMap, keys[ k ] );
       if( e !== undefined )
       arrayAppendOnce( result, e );
-      /* qqq : for Yevhen : rewrite without arrayAppend and without duplicating array */
+      /* qqq : for junior : rewrite without arrayAppend and without duplicating array */
     }
 
   }
@@ -753,7 +753,7 @@ allPairs.defaults =
 // extension
 // --
 
-/* qqq : for Yevhen : duplicate routines */
+/* qqq : for junior : duplicate routines */
 
 let ToolsExtension =
 {
@@ -811,31 +811,31 @@ let ExtensionMap =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
 
   // properties
 
-  _keys, /* qqq : for Yevhen : cover */
-  keys, /* qqq : for Yevhen : cover */
-  // onlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
-  allKeys, /* qqq : for Yevhen : cover */
+  _keys,
+  keys, /* qqq : for junior : cover */
+  // onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  allKeys, /* qqq : for junior : cover */
 
-  _vals, /* qqq : for Yevhen : cover */
-  vals, /* qqq : for Yevhen : cover */
-  // onlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
-  allVals, /* qqq : for Yevhen : cover */
+  _vals,
+  vals, /* qqq : for junior : cover */
+  // onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  allVals, /* qqq : for junior : cover */
 
-  _pairs, /* qqq : for Yevhen : cover */
-  pairs, /* qqq : for Yevhen : cover */
-  // onlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
-  allPairs, /* qqq : for Yevhen : cover */
+  _pairs,
+  pairs, /* qqq : for junior : cover */
+  // onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  allPairs, /* qqq : for junior : cover */
 
   // amender
 

@@ -135,6 +135,7 @@ function _cardinalWithKey( src, key )
 {
   if( !src.has( key ) )
   return -1;
+  debugger;
   let keys = this.keys( src );
   return keys.indexOf( key );
 }
@@ -536,7 +537,7 @@ let Extension =
   // _elementWithCardinalDel,
   // elementWithCardinalDel,  /* qqq : cover */
   // _empty,
-  // empty, /* qqq : for Yevhen : cover */
+  // empty, /* qqq : for junior : cover */
   //
   // _each : _eachLeft,
   // each : eachLeft, /* qqq : cover */

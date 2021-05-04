@@ -1170,7 +1170,7 @@ const Proto =
 
     // properties
 
-    /* qqq : for Yevhen : adjust and extend test for object. tests originally from map */
+    /* qqq : for junior : adjust and extend test for object. tests originally from map */
     keys,
     onlyOwnKeys,
     allKeys,

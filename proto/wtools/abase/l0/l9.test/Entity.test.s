@@ -20,7 +20,7 @@ const __ = _globals_.testing.wTools;
 function exportStringDiagnosticShallow( test )
 {
 
-  /* xxx qqq : for Yevhen : countable, non-vector cases? */
+  /* xxx qqq : for junior : countable, non-vector cases? */
 
   test.case = 'number';
   var src = 1;
@@ -107,7 +107,7 @@ function exportStringDiagnosticShallow( test )
   var expected = '{- Aux.polluted.prototyped with ';
   test.true( _.strHas( _.entity.exportStringDiagnosticShallow( src ), expected ) );
 
-  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for junior : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Map.polluted with 0 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
@@ -317,8 +317,8 @@ function exportStringDiagnosticShallow( test )
   // var expected = '{- Console.constructible with 1 elements -}';
   // test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
-  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
-  test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
+  /* qqq : for junior : introduce namespace::printer | aaa : Done. */
+  test.case = 'Map polluted'; /* qqq : bad : for junior : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
@@ -486,7 +486,7 @@ function exportStringCodeShallow( test )
   var expected = '{- Aux.polluted.prototyped with ';
   test.true( _.strHas( _.entity.exportStringCodeShallow( src ), expected ) );
 
-  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for Yevhen : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
+  test.case = 'Object & ObjectLike & Container & ContainerLike'; /* qqq for junior : bad : this is aux! lack of Object & Countable cases | aaa : Added. */
   var src = { [ Symbol.iterator ] : 1 };
   var expected = '{- Map.polluted with 0 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
@@ -696,8 +696,8 @@ function exportStringCodeShallow( test )
   // var expected = '{- Console.constructible with 1 elements -}';
   // test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
-  /* qqq : for Yevhen : introduce namespace::printer | aaa : Done. */
-  test.case = 'Map polluted'; /* qqq : bad : for Yevhen : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
+  /* qqq : for junior : introduce namespace::printer | aaa : Done. */
+  test.case = 'Map polluted'; /* qqq : bad : for junior : this is not printer! this is placeholder for printer. add cases with printers | aaa : Added. */
   var src = _global.logger;
   var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );

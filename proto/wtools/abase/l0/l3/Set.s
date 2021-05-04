@@ -549,7 +549,7 @@ let SetExtension =
   // _elementWithCardinalDel,
   // elementWithCardinalDel,  /* qqq : cover */
   // _empty,
-  // empty, /* qqq : for Yevhen : cover */
+  // empty, /* qqq : for junior : cover */
   //
   // _each : _eachLeft,
   // each : eachLeft, /* qqq : cover */

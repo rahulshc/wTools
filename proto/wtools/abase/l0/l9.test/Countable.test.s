@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( file Countable.tests.s ) */
+function typing( test ) /* qqq for junior : extend for like. first discuss ( file Countable.tests.s ) */
 {
 
   /* */
@@ -36,7 +36,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 
 }
 
-// function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( file Countable.tests.s ) */
+// function typing( test ) /* qqq for junior : extend for like. first discuss ( file Countable.tests.s ) */
 // {
 //
 //   /* */

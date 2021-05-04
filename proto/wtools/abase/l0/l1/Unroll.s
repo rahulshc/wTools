@@ -898,7 +898,7 @@ Object.assign( _, ToolsExtension );
 
 //
 
-/* qqq : for Yevhen : make replacements */
+/* qqq : for junior : make replacements */
 
 let UnrollExtension =
 {
@@ -922,18 +922,18 @@ let UnrollExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _makeZeroed,
-  makeZeroed, /* qqq : for Yevhen : cover */
+  makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling,
   _make,
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
+  cloneShallow, /* qqq : for junior : cover */
   _from,
   from,
   _as,

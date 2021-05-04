@@ -17,7 +17,7 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-/* qqq : for Yevhen : extend with like and other dichotomies */
+/* qqq : for junior : extend with like and other dichotomies */
 function dichotomy( test )
 {
 

@@ -307,9 +307,9 @@ function _functor( fo )
     // maker
 
     _makeEmpty,
-    makeEmpty, /* qqq : for Yevhen : cover */
+    makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
-    makeUndefined, /* qqq : for Yevhen : cover */
+    makeUndefined, /* qqq : for junior : cover */
     makeZeroed : makeUndefined,
     _makeFilling,
     makeFilling,
@@ -317,8 +317,8 @@ function _functor( fo )
     make : _.argumentsArray.make.make, /* qqq : for Yevhen : cover */
     // make, /* qqq : for Yevhen : cover */
     _cloneShallow,
-    cloneShallow, /* qqq : for Yevhen : cover */
-    from, /* qqq : for Yevhen : cover */
+    cloneShallow, /* qqq : for junior : cover */
+    from, /* qqq : for junior : cover */
 
   }
 

@@ -377,10 +377,10 @@ function lengthOf( test )
   // test.case = 'console';
   // var src = console;
   // test.identical( _.container.lengthOf( src ), 24 );
-
-  test.case = 'printerLike';
-  var src = _global.logger;
-  test.identical( _.container.lengthOf( src ), 0 );
+  // 
+  // test.case = 'printerLike';
+  // var src = _global.logger;
+  // test.identical( _.container.lengthOf( src ), 0 );
 
   test.case = 'process';
   var src = process;
@@ -1815,7 +1815,7 @@ function elementWithImplicit( test )
 
   /* - */
 
-  /* qqq2 : for Yevhen : use _.diangostic.objectMake() in ALL tests instead of this */
+  /* qqq2 : for junior : use _.diangostic.objectMake() in ALL tests instead of this */
 
   // function _iterate()
   // {

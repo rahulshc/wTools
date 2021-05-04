@@ -133,7 +133,7 @@ function containShallow( src, ins )
 // extension
 // --
 
-/* qqq : for Yevhen : duplicate routines */
+/* qqq : for junior : duplicate routines */
 
 let ToolsExtension =
 {
@@ -203,7 +203,7 @@ let ExtensionMap =
   _elementWithCardinalDel : _.props._elementWithCardinalDel,
   elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
   _empty : _.props._empty,
-  empty : _.props.empty, /* qqq : for Yevhen : cover */
+  empty : _.props.empty, /* qqq : for junior : cover */
 
   _each : _.props._each,
   each : _.props.each, /* qqq : cover */

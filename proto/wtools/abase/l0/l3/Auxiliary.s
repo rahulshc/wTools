@@ -89,7 +89,7 @@ var AuxiliaryExtension =
   _elementWithCardinalSet : _.props._elementWithCardinalSet,
   elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
   _empty : _.props._empty,
-  empty : _.props.empty, /* qqq : for Yevhen : cover */
+  empty : _.props.empty, /* qqq : for junior : cover */
 
   _elementDel : _.props._elementDel,
   elementDel : _.props.elementDel, /* qqq : cover */

@@ -185,7 +185,7 @@ function like( test )
   test.identical( _.countable.is( src ), true );
   test.identical( _.countable.like( src ), true );
 
-  /* qqq for Yevhen : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
+  /* qqq for junior : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
 
   /* - */
 

@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-function checks( test ) /* qqq for Yevhen : extend */
+function checks( test ) /* qqq for junior : extend */
 {
 
   /* */

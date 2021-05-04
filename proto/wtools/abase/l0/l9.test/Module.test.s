@@ -7,6 +7,7 @@ if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
   // _.include( 'wSelector' );
+  // require( 'wTesting' );
   _.include( 'wTesting' );
 }
 
@@ -317,16 +318,16 @@ function modulingLogistic( test )
   var module = _.module.withPath( testingPath );
   test.identical( _.entity.lengthOf( module.files ), 4 );
   test.identical( _.entity.lengthOf( module.alias ), 2 );
-  var exp =
-  [
+  var exp = new Set
+  ([
     'proto/node_modules/wTesting',
     'proto/wtools/atop/testing/entry/Main.s',
     'proto/wtools/atop/testing/include/Top.s',
     'proto/wtools/abase/l0/l0/l0/Global.s',
-  ]
+  ]);
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
   _.assert( files[ 0 ] !== undefined );
-  test.identical( __.path.s.relative( testingPath + '/../../..', files ), exp );
+  test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp );
   var module2 = _.module.withName( 'wTesting' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtesting' );

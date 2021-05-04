@@ -2050,7 +2050,7 @@ let ArrayExtension =
   _elementWithCardinalDel,
   elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */
