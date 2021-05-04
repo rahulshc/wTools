@@ -255,21 +255,7 @@ function _equivalentShallow2( a, b, accuracy )
         }
         else /* a : BOF, b : FOB, accuracy : BIF/BOF */
         {
-          /*
-          `a` ( bigint outside float ) : -2^53-1 > a > 2^53-1
-          `b` ( float outside bigint ) : 2^53-0.(9) <= b >= -2^53-0.(9)
-
-          Example :
-          a : BigInt( 2^53-1 ) + 1n  |
-          b : 2^53-1.5               | => true
-          accuarcy : 1.5             |
-
-          */
-
-          /* max loss of precision 0.5(1) */
           b = BigInt( Math.round( b ) );
-
-          /* without loss of precision - NOT IMPLEMENTED */
         }
       }
     }
@@ -297,10 +283,8 @@ function _equivalentShallow2( a, b, accuracy )
         }
         else /* a : FOB, b : BOF, accuracy : BIF/BOF */
         {
-          /* max loss of precision 0.5(1) */
           a = BigInt( Math.round( a ) );
         }
-        /* without loss of precision - NOT IMPLEMENTED */
       }
     }
   }
