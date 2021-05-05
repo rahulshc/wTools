@@ -157,9 +157,9 @@ function _makeUndefined( src, length )
 {
   if( arguments.length === 2 )
   {
-    if( !_.numberIs( length ) )
+    if( !_.number.is( length ) )
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       length = length.length;
       else
       length = [ ... length ].length;
@@ -212,11 +212,11 @@ function makeUndefined( src, length )
   if( arguments.length === 2 )
   {
     _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.routineIs( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
@@ -227,9 +227,9 @@ function _makeZeroed( src, length )
 {
   if( arguments.length === 2 )
   {
-    if( !_.numberIs( length ) )
+    if( !_.number.is( length ) )
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       length = length.length;
       else
       length = [ ... length ].length;
@@ -291,11 +291,11 @@ function makeZeroed( src, length )
   if( arguments.length === 2 )
   {
     _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.routineIs( src ) );
   }
   return this._makeZeroed( ... arguments );
 }
@@ -316,7 +316,8 @@ function _makeFilling( type, value, length )
   }
 
   if( !_.number.is( length ) )
-  if( _.long.is( length ) )
+  // if( _.long.is( length ) )
+  if(  length.length ) )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;
@@ -353,17 +354,16 @@ function makeFilling( type, value, length )
 
 function _make( src, length )
 {
-
   if( arguments.length === 2 )
   {
     let data = length;
-    if( _.numberIs( length ) )
+    if( _.number.is( length ) )
     {
       data = src;
     }
     else
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       {
         length = length.length;
       }
@@ -393,7 +393,7 @@ function _make( src, length )
     return _.argumentsArray.make( src );
     if( _.unroll.is( src ) )
     return _.unroll.make( src );
-    if( _.numberIs( src ) )
+    if( _.number.is( src ) )
     return this.tools.defaultLong.make( src );
     if( _.routineIs( src ) )
     return new src();
@@ -415,7 +415,6 @@ function _make( src, length )
     dst[ i ] = data[ i ];
     return dst;
   }
-
 }
 
 //
@@ -428,11 +427,11 @@ function make( src, length )
   if( arguments.length === 2 )
   {
     _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.routineIs( src ) );
   }
   return this._make( ... arguments );
 }
@@ -446,7 +445,7 @@ function _cloneShallow( src )
   return _.argumentsArray.make( src );
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
-  // if( _.numberIs( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
+  // if( _.number.is( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
   // return this.tools.defaultLong.make( src );
   if( src.constructor === Array )
   return [ ... src ];
