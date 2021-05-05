@@ -107,6 +107,17 @@ function filterMapCommonPass( test )
     env.isFixedLength = false;
     caseEach( env );
 
+    /* */
+
+    env.namespace = 'countable';
+    env.isFixedLength = false;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isFixedLength = false;
+    env.makable = false;
+    caseEach( env );
+
     /* fixed */
 
     env.namespace = 'argumentsArray';
@@ -157,6 +168,7 @@ function filterMapCommonPass( test )
   {
     test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
+    if( env.makable !== false )
     test.identical( _.countable.isFixedLength( _[ env.namespace ].make( 0 ) ), env.isFixedLength );
 
     /* */

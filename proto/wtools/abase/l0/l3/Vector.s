@@ -129,7 +129,7 @@ var VectorExtension =
   aptRight : _.countable.aptRight,
   last : _.countable.last, /* qqq : cover */
 
-  _filterAct0 : _.props._filterAct0,
+  _filterAct0 : _.countable._filterAct0,
   _filterAct1 : _.countable._filterAct1,
   filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
@@ -139,7 +139,7 @@ var VectorExtension =
   filterWithEscape : _.countable.filterWithEscape,
   filter : _.countable.filter,
 
-  _mapAct0 : _.props._mapAct0,
+  _mapAct0 : _.countable._mapAct0,
   _mapAct1 : _.countable._mapAct1,
   mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
