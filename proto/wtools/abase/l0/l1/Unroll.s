@@ -212,36 +212,23 @@ function makeEmpty( src )
 
 //
 
-function _makeFilling( type, value, length )
-{
-  if( arguments.length === 2 )
-  {
-    value = arguments[ 0 ];
-    length = arguments[ 1 ];
-    if( _.longIs( length ) )
-    {
-      if( _.argumentsArray.is( length ) )
-      type = length;
-      else if( _.number.is( length ) )
-      type = null;
-      else
-      type = length;
-    }
-    else
-    {
-      type = null;
-    }
-  }
-
-  if( _.longIs( length ) )
-  length = length.length;
-
-  let result = this._make( type, length );
-  for( let i = 0 ; i < length ; i++ )
-  result[ i ] = value;
-
-  return result;
-}
+// function _makeFilling( type, value, length )
+// {
+//   if( arguments.length === 2 )
+//   {
+//     value = arguments[ 0 ];
+//     length = arguments[ 1 ];
+//   }
+//
+//   if( _.longIs( length ) )
+//   length = length.length;
+//
+//   let result = this._make( type, length );
+//   for( let i = 0 ; i < length ; i++ )
+//   result[ i ] = value;
+//
+//   return result;
+// }
 
 //
 
@@ -866,8 +853,8 @@ let UnrollExtension =
   makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
   makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
-  _makeFilling,
-  makeFilling : _.long.makeFilling,
+  _makeFilling : _.argumentsArray._makeFilling,
+  makeFilling : _.argumentsArray.makeFilling,
   _make,
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */

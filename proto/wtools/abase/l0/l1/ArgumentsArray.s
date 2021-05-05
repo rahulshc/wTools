@@ -190,29 +190,39 @@ function _makeFilling( type, value, length )
   {
     value = arguments[ 0 ];
     length = arguments[ 1 ];
-    if( _.longIs( length ) )
-    {
-      if( _.argumentsArray.is( length ) )
-      type = length;
-      else if( _.number.is( length ) )
-      type = null;
-      else
-      type = length;
-    }
-    else
-    {
-      type = null;
-    }
   }
 
-  if( _.longIs( length ) )
+  if( _.long.is( length ) )
   length = length.length;
+  else if( _.countable.is( length ) )
+  length = [ ... length ].length;
 
-  let result = this._make( type, length );
+  let result = this._make( length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = value;
 
   return result;
+}
+
+//
+
+function makeFilling( type, value, length )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    _.assert( _.number.is( value ) || _.countable.is( value ) );
+    _.assert( type !== undefined );
+  }
+  else
+  {
+    _.assert( value !== undefined );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
+    _.assert( type === null || _.routine.is( type ) || _.long.is( type ) );
+  }
+
+  return this._makeFilling( ... arguments );
 }
 
 //
@@ -300,7 +310,7 @@ var ArgumentsArrayExtension =
   _makeZeroed,
   makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
-  makeFilling : _.long.makeFilling,
+  makeFilling,
   _cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */

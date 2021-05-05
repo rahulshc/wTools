@@ -309,7 +309,7 @@ function _makeFilling( type, value, length )
     value = arguments[ 0 ];
     length = arguments[ 1 ];
 
-    if( _.longIs( length ) )
+    if( _.long.is( length ) )
     type = length;
     else
     type = null;
@@ -342,7 +342,7 @@ function makeFilling( type, value, length )
   {
     _.assert( value !== undefined );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
+    _.assert( type === null || _.routine.is( type ) || this.like( type ) );
   }
 
   return this._makeFilling( ... arguments );

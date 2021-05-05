@@ -142,7 +142,7 @@ let BufferTypedExtension =
   _makeZeroed : _makeUndefined,
   makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
-  makeFilling : _.long.makeFilling, /* qqq : for junior : cover */
+  makeFilling : _.argumentsArray.makeFilling, /* qqq : for junior : cover */
 
   _cloneShallow : _.buffer._cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
