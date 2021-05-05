@@ -31,9 +31,19 @@ function _make( src, length )
   {
     let data = length;
     if( _.number.is( length ) )
-    data = src;
+    {
+      data = src;
+    }
+    else if( _.long.is( length ) )
+    {
+      length = length.length;
+    }
     if( _.countable.is( length ) )
-    length = length.length;
+    {
+      data = [ ... length ];
+      length = data.length;
+    }
+
 
     if( this.like( src ) )
     return fill( new src.constructor( length ), data );
@@ -95,6 +105,7 @@ function _makeFilling( type, value, length )
     type = null;
   }
 
+  if( !_.number.is( length ) )
   if( _.long.is( length ) )
   length = length.length;
   else if( _.countable.is( length ) )

@@ -470,6 +470,8 @@ function exportStringDiagnosticShallow( test )
   test.shouldThrowErrorSync( () => _.str.exportStringDiagnosticShallow( {} ) );
 }
 
+exportStringDiagnosticShallow.timeOut = 10000;
+
 // --
 // test suite
 // --
