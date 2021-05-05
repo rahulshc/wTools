@@ -37,7 +37,7 @@ function like( src )
 
 //
 
-function hasFixedLength( src )
+function isFixedLength( src )
 {
   if( _.array.is( src ) )
   return false;
@@ -222,7 +222,7 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
-  hasFixedLength,
+  isFixedLength,
 
   // maker
 

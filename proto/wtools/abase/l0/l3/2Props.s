@@ -659,8 +659,9 @@ function _filterAct1()
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
   let onEach = arguments[ 2 ];
-  let eachRoutineName = arguments[ 3 ];
-  let escape = arguments[ 4 ];
+  let isLeft = arguments[ 3 ];
+  let eachRoutineName = arguments[ 4 ];
+  let escape = arguments[ 5 ];
   let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
@@ -670,7 +671,7 @@ function _filterAct1()
 
   if( Config.debug )
   {
-    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
   }
@@ -684,28 +685,28 @@ function _filterAct1()
 
 function filterWithoutEscapeLeft( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, 'eachLeft', ( val ) => val );
+  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function filterWithoutEscapeRight( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, 'eachRight', ( val ) => val );
+  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => val );
 }
 
 //
 
 function filterWithEscapeLeft( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, 'eachLeft', ( val ) => _.escape.right( val ) );
+  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function filterWithEscapeRight( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, 'eachRight', ( val ) => _.escape.right( val ) );
+  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 //
@@ -750,8 +751,9 @@ function _mapAct1()
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
   let onEach = arguments[ 2 ];
-  let eachRoutineName = arguments[ 3 ];
-  let escape = arguments[ 4 ];
+  let isLeft = arguments[ 3 ];
+  let eachRoutineName = arguments[ 4 ];
+  let escape = arguments[ 5 ];
   let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
@@ -761,7 +763,7 @@ function _mapAct1()
 
   if( Config.debug )
   {
-    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
   }
@@ -775,28 +777,28 @@ function _mapAct1()
 
 function mapWithoutEscapeLeft( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, 'eachLeft', ( val ) => val );
+  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function mapWithoutEscapeRight( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, 'eachRight', ( val ) => val );
+  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => val );
 }
 
 //
 
 function mapWithEscapeLeft( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, 'eachLeft', ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function mapWithEscapeRight( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, 'eachRight', ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 // --

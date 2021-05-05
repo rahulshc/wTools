@@ -1853,6 +1853,40 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
 // container interface
 // --
 
+function _elementAppend( dst, val )
+{
+  dst.push( val );
+  return dst.length-1;
+}
+
+//
+
+function elementAppend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  dst.unshift( val );
+  return 0;
+}
+
+//
+
+function elementPrepend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
 function _elementWithKeyDel( src, key )
 {
   if( !this._hasKey( src, key ) )
@@ -2041,6 +2075,11 @@ let ArrayExtension =
   elementWithKeySet : _.long.elementWithKeySet, /* qqq : cover */
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementAppend,
+  elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend, /* qqq : cover */
 
   _elementDel : _elementWithKeyDel,
   elementDel : elementWithKeyDel, /* qqq : cover */

@@ -1235,6 +1235,7 @@ function filterMapCommonPass( test )
 
 }
 
+filterMapCommonPass.rapidity = -1;
 filterMapCommonPass.timeOut = 60000;
 
 //
@@ -1332,6 +1333,7 @@ function filterCommonDropping( test )
 
 }
 
+filterCommonDropping.rapidity = -1;
 filterCommonDropping.timeOut = 60000;
 
 //
@@ -1429,6 +1431,7 @@ function mapCommonReturningUndefined( test )
 
 }
 
+mapCommonReturningUndefined.rapidity = -1;
 mapCommonReturningUndefined.timeOut = 60000;
 
 //
@@ -1544,6 +1547,7 @@ function filterMapCommonEscaping( test )
 }
 
 filterMapCommonEscaping.timeOut = 60000;
+filterMapCommonEscaping.rapidity = -1;
 
 // --
 // define test suite

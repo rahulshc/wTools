@@ -13,9 +13,37 @@ _.assert( !!_.long._elementWithKey, 'Expects routine long._elementWithKey' );
 // elementor
 // --
 
+function _elementAppend( dst, val )
+{
+  return -1;
+}
+
+//
+
+function elementAppend( dst, val )
+{
+  _.assert( 0, `${this.TypeName} has fixed length` );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  return -1;
+}
+
+//
+
+function elementPrepend( dst, val )
+{
+  _.assert( 0, `${this.TypeName} has fixed length` );
+}
+
+//
+
 function _elementWithKeyDel( src, key )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -23,7 +51,7 @@ function _elementWithKeyDel( src, key )
 
 function _elementWithCardinalDel( src, cardinal )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -31,7 +59,7 @@ function _elementWithCardinalDel( src, cardinal )
 
 function _empty( dst )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -88,6 +116,11 @@ var ArgumentsArrayExtension =
   elementWithKeySet : _.long.elementWithKeySet, /* qqq : cover */
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementAppend,
+  elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend, /* qqq : cover */
 
   _elementDel : _elementWithKeyDel,
   elementDel : _.long.elementDel, /* qqq : cover */
