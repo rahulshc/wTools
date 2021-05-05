@@ -83,6 +83,8 @@ function exportStringDiagnosticShallow( test )
 
 }
 
+exportStringDiagnosticShallow.timeOut = 10000;
+
 //
 
 function identicalShallow( test )
