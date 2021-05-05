@@ -6832,6 +6832,8 @@ function fromCommonWithLongDescriptor( test )
     test.identical( got, new F64x([ 1, 2, 3 ]) );
     test.true( _.f64x.is( got ) );
     test.true( got === src );
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
 
   /* */

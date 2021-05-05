@@ -309,7 +309,7 @@ function _makeFilling( type, value, length )
     value = arguments[ 0 ];
     length = arguments[ 1 ];
 
-    if( _.long.is( length ) )
+    if( this.like( length ) )
     type = length;
     else
     type = null;
