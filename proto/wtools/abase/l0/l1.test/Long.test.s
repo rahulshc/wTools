@@ -444,15 +444,35 @@ function makeCommon( test )
 
     if( Config.debug )
     {
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
+      if( env.method === 'cloneShallow' )
+      {
+        test.case = 'without arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]() );
+
+        test.case = 'extra arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1 ) );
+      }
+      else
+      {
+        test.case = 'extra arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
+
+        test.case = 'wrong type of length';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( 3, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( Array, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( null, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( 3, undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( Array, undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( null, undefined ) );
+
+        test.case = 'wrong type of src';
+        test.shouldThrowErrorSync( () => long[ env.method ]( 'wrong', 3 ) );
+      }
 
       test.case = 'wrong type of src';
       test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
-      test.shouldThrowErrorSync( () => long[ env.method ]( 3, 3 ) );
-
-      test.case = 'wrong type of length';
-      test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
     }
 
     test.close( `${__.entity.exportStringSolo( env )}` );
@@ -887,7 +907,14 @@ function makeLongFilledCommon( test )
       test.shouldThrowErrorSync( () => long[ env.method ]( 3, 3 ) );
 
       test.case = 'wrong type of length';
-      test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], null ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( 3, null ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( Array, null ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( null, null ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], undefined ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( 3, undefined ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( Array, undefined ) );
+      test.shouldThrowErrorSync( () => long[ env.method ]( null, undefined ) );
     }
   }
 
@@ -1158,7 +1185,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.make( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -1169,7 +1196,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.make( 5, undefined );
 //     // var expected = _.defaultLong.make( 5 );
@@ -1219,7 +1246,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.true( got !== src );
 //     test.true( _.arrayIs( got ) );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = long, ins = null';
 //     // var src = makeLong( [ 1, 2, 3 ] );
 //     // var got = _.long.make( src, null );
@@ -1263,7 +1290,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.true( got !== src );
 //     test.true( _.arrayIs( got ) );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = Array constructor, ins = null';
 //     // var got = _.long.make( Array, null );
 //     // var expected = [];
@@ -1330,7 +1357,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   if( !Config.debug )
 //   return;
 //
-//   // qqq : for Dmytro : add test case
+//   // aaa : for Dmytro : add test case /* Dmytro : used in the new routines */
 //   // test.case = 'without arguments';
 //   // test.shouldThrowErrorSync( () => _.long.make() );
 //
@@ -1353,7 +1380,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   test.shouldThrowErrorSync( () => _.long.make( [ 1, 2, 3 ], 'wrong type of argument' ) );
 //   test.shouldThrowErrorSync( () => _.long.make( [ 1, 2, 3 ], Infinity  ) );
 //
-//   /* qqq : for Dmytro : duplicate this cases in other tests routines */
+//   /* aaa : for Dmytro : duplicate this cases in other tests routines */ /* Dmytro : added in new test routines */
 //   test.case = 'bad second argument';
 //   test.shouldThrowErrorSync( () => _.long.make( [ 1, 2, 3 ], null ) );
 //   test.shouldThrowErrorSync( () => _.long.make( 3, null ) );
@@ -1368,7 +1395,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //
 // //
 //
-// /* qqq : for Dmytro : for junior : rewrite properly */
+// /* aaa : for Dmytro : for junior : rewrite properly */ /* Dmytro : all coverage in the new routines */
 // function longMakeWithArgumentsArray( test )
 // {
 //   test.case = 'src = null, not ins';
@@ -1381,7 +1408,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   var expected = _.defaultLong.make( 5 );
 //   test.identical( got, expected );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.make( 5, null );
 //   // var expected = _.defaultLong.make( 5 );
@@ -1392,7 +1419,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   var expected = _.defaultLong.make( 5 );
 //   test.identical( got, expected );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = undefined';
 //   // var got = _.long.make( 5, undefined );
 //   // var expected = _.defaultLong.make( 5 );
@@ -1420,7 +1447,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = long, ins = null';
 //   // var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   // var got = _.long.make( src, null );
@@ -1510,7 +1537,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.make( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -1521,7 +1548,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.make( 5, undefined );
 //     // var expected = _.defaultLong.make( 5 );
@@ -1550,7 +1577,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.true( got !== src );
 //     test.true( _.buffer.typedIs( got ) );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = long, ins = null';
 //     // var src = new makeLong( [ 1, 2, 3 ] );
 //     // var got = _.long.make( src, null );
@@ -1703,7 +1730,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -1714,7 +1741,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
 //     // var expected = long.defaultLong.make( 5 );
@@ -1764,7 +1791,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.true( got !== src );
 //     test.true( _.arrayIs( got ) );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = long, ins = null';
 //     // var src = makeLong( [ 1, 2, 3 ] );
 //     // var got = long.long.make( src, null );
@@ -1939,7 +1966,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -1950,7 +1977,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
 //     // var expected = long.defaultLong.make( 5 );
@@ -1975,7 +2002,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = long, ins = null';
 //     // var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     // var got = long.long.make( src, null );
@@ -2089,7 +2116,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -2100,7 +2127,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
 //     // var expected = long.defaultLong.make( 5 );
@@ -2129,7 +2156,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.true( got !== src );
 //     test.true( _.buffer.typedIs( got ) );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = long, ins = null';
 //     // var src = new makeLong( [ 1, 2, 3 ] );
 //     // var got = long.long.make( src, null );
@@ -2964,7 +2991,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _._longMakeOfLength( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -3122,7 +3149,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var expected = _.defaultLong.make( 5 );
 //   test.identical( got, expected );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _._longMakeOfLength( 5, null );
 //   // var expected = _.defaultLong.make( 5 );
@@ -3264,7 +3291,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _._longMakeOfLength( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -3429,7 +3456,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -3607,7 +3634,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -3761,7 +3788,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -3931,7 +3958,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeUndefined( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -4121,7 +4148,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var expected = _.defaultLong.make( 5 );
 //   test.identical( got, expected );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.makeUndefined( 5, null );
 //   // var expected = _.defaultLong.make( 5 );
@@ -4250,7 +4277,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeUndefined( 5, null );
 //     // var expected = _.defaultLong.make( 5 );
@@ -4431,7 +4458,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -4615,7 +4642,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -4775,7 +4802,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( 5 );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
 //     // var expected = long.defaultLong.make( 5 );
@@ -5009,8 +5036,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = [ 0, 0, 0 ];
 //     test.identical( got, expected );
 //
-//     /* qqq2 : for Dmytro : add more such test cases */
-//     /* qqq2 : for Dmytro : add such cases to ALL similar test routines */
+//     /* aaa2 : for Dmytro : add more such test cases */ /* Dmytro : added */
+//     /* aaa2 : for Dmytro : add such cases to ALL similar test routines */ /* Dmytro : added */
 //     test.case = 'countable';
 //     var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
 //     var got = _.long.makeZeroed( null, src );
@@ -5027,7 +5054,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeZeroed( 5, null );
 //     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -5171,7 +5198,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
 //
-//   /* qqq : should throw error : add test cases */
+//   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.makeZeroed( 5, null );
 //   // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -5336,7 +5363,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeZeroed( 5, null );
 //     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -5511,7 +5538,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
 //     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -5689,7 +5716,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
 //     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -5843,7 +5870,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
-//     /* qqq : should throw error : add test cases */
+//     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
 //     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
@@ -6178,8 +6205,14 @@ function makeFillingCommon( test )
       test.shouldThrowErrorSync( () => long.makeFilling( [], undefined, 1 ) );
 
       test.case = 'wrong type of length';
-      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 'wrong' ) );
-      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 2, undefined ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], undefined ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 2, undefined ) );
     }
 
     test.close( `${ __.entity.exportStringSolo( env ) }` );
