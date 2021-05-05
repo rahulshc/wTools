@@ -92,9 +92,18 @@ function _make_functor( onMake )
 
     let length = ins;
 
-    if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    // if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    if( _.countable.is( length ) || _.bufferNodeIs( length ) )
     {
-      length = length.length
+      if( length.length )
+      {
+        length = length.length;
+      }
+      else
+      {
+        ins = [ ... length ];
+        length = ins.length;
+      }
     }
     else if( _.bufferRawIs( length ) || _.bufferViewIs( length ) )
     {
@@ -462,15 +471,14 @@ function _makeEmpty( src )
     if( _.routineIs( src ) )
     {
       let result = new src( 0 );
-      _.assert( _.long.is( result ) );
+      _.assert( this.like( result ) );
       return result;
     }
+    if( this.like( src ) )
     return new src.constructor();
   }
-  else
-  {
-    return this.tools.defaultBufferTyped.make();
-  }
+
+  return this.tools.defaultBufferTyped.make();
 }
 
 //
@@ -481,13 +489,10 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( this.like( src ) || _.routineIs( src ) );
-    return this._makeEmpty( src );
+    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
+    // _.assert( this.like( src ) || _.routineIs( src ) );
   }
-  else
-  {
-    return this._makeEmpty();
-  }
+  return this._makeEmpty( ... arguments );
 }
 
 //
@@ -693,6 +698,37 @@ let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
 //
 //   return result;
 // }
+
+//
+
+function makeZeroed( src, ins )
+{
+  let result = makeUndefined.apply( this, arguments );
+  return result.fill( 0 );
+}
+
+//
+
+function _cloneShallow( src )
+{
+  if( _.buffer.rawIs( src ) )
+  return bufferRawCopy( src );
+  if( _.buffer.viewIs( src ) )
+  return new BufferView( bufferRawCopy( src ) );
+  if( _.buffer.typedIs( src ) )
+  return src.slice( 0 );
+  if( _.buffer.nodeIs( src ) )
+  return src.copy();
+
+  /* */
+
+  function bufferRawCopy( src )
+  {
+    var dst = new BufferRaw( src.byteLength );
+    new U8x( dst ).set( new U8x( src ) );
+    return dst;
+  }
+}
 
 //
 
@@ -979,12 +1015,13 @@ let BufferExtension =
   makeEmpty,
   // _makeUndefined, /* qqq : implement */
   makeUndefined,
+  makeZeroed,
 
   // qqq : implement
   // _makeZeroed,
   // makeZeroed, /* qqq : for junior : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for junior : cover */
+  _cloneShallow,
+  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   // from, /* qqq : for junior : cover */
 
 }
@@ -1013,6 +1050,7 @@ let ToolsExtension =
   bufferMake : make.bind( _.buffer ),
   bufferMakeEmpty : makeEmpty.bind( _.buffer ),
   bufferMakeUndefined : makeUndefined.bind( _.buffer ),
+  bufferMakeZeroed : makeZeroed.bind( _.buffer ),
 
   bufferFromArrayOfArray,
   bufferRawFromTyped,

@@ -99,145 +99,73 @@ function makeEmpty( src )
 
 //
 
-function _makeUndefined( src, length )
-{
-  if( arguments.length === 2 )
-  {
-    if( _.long.is( length ) )
-    length = length.length;
-    return new Array( length );
-  }
-  else if( arguments.length === 1 )
-  {
-    length = src;
-    if( _.long.is( length ) )
-    length = length.length;
-    if( length === null )
-    return new Array();
-    else
-    return new Array( length );
-  }
-  else
-  {
-    return [];
-  }
-}
+// function _makeUndefined( src, length )
+// {
+//   if( arguments.length === 2 )
+//   {
+//     if( _.long.is( length ) )
+//     length = length.length;
+//     return new Array( length );
+//   }
+//   else if( arguments.length === 1 )
+//   {
+//     length = src;
+//     if( _.long.is( length ) )
+//     length = length.length;
+//     if( length === null )
+//     return new Array();
+//     else
+//     return new Array( length );
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
+//
+// //
+//
+// function makeUndefined( src, length )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+//   if( arguments.length === 2 )
+//   {
+//     _.assert( src === null || _.long.is( src ) );
+//     _.assert( _.number.is( length ) || _.long.is( length ) );
+//     return this._makeUndefined( src, length );
+//   }
+//   else if( arguments.length === 1 )
+//   {
+//     _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
+//     return this._makeUndefined( src );
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
 
 //
 
-function makeUndefined( src, length )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  {
-    _.assert( src === null || _.long.is( src ) );
-    _.assert( _.number.is( length ) || _.long.is( length ) );
-    return this._makeUndefined( src, length );
-  }
-  else if( arguments.length === 1 )
-  {
-    _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-    return this._makeUndefined( src );
-  }
-  else
-  {
-    return [];
-  }
-}
-
+// function _makeFilling( type, value, length )
+// {
+//   if( arguments.length === 2 )
+//   {
+//     value = arguments[ 0 ];
+//     length = arguments[ 1 ];
+//   }
 //
-
-function _makeZeroed( src, length )
-{
-  if( arguments.length === 2 )
-  {
-    if( _.long.is( length ) )
-    length = length.length;
-    return new Array( length ).fill( 0 );
-  }
-  else if( arguments.length === 1 )
-  {
-    length = src;
-    if( _.long.is( length ) )
-    length = length.length;
-    if( length === null )
-    length = 0;
-
-    return new Array( length ).fill( 0 );
-  }
-  return [];
-}
-
+//   if( _.long.is( length ) )
+//   length = length.length;
+//   else if( _.countable.is( length ) )
+//   length = [ ... length ].length;
 //
-
-function makeZeroed( src, length )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  {
-    _.assert( src === null || _.long.is( src ) );
-    _.assert( _.number.is( length ) || _.long.is( length ) );
-  }
-  else if( arguments.length === 1 )
-  {
-    _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-  }
-  return this._makeZeroed( ... arguments );
-}
-
+//   let result = this._make( type, length );
+//   for( let i = 0 ; i < length ; i++ )
+//   result[ i ] = value;
 //
-
-function _makeFilling( type, value, length )
-{
-  if( arguments.length === 2 )
-  {
-    value = arguments[ 0 ];
-    length = arguments[ 1 ];
-    if( _.longIs( length ) )
-    {
-      if( _.argumentsArray.is( length ) )
-      type = length;
-      else if( _.number.is( length ) )
-      type = null;
-      else
-      type = length;
-    }
-    else
-    {
-      type = null;
-    }
-  }
-
-  if( _.longIs( length ) )
-  length = length.length;
-
-  let result = this._make( type, length );
-  for( let i = 0 ; i < length ; i++ )
-  result[ i ] = value;
-
-  return result;
-}
-
-//
-
-function makeFilling( type, value, length )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 2 )
-  {
-    _.assert( _.number.is( value ) || _.countable.is( value ) );
-    _.assert( type !== undefined );
-  }
-  else
-  {
-    _.assert( value !== undefined );
-    _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
-  }
-
-  return this._makeFilling( ... arguments );
-}
+//   return result;
+// }
 
 //
 
@@ -284,15 +212,15 @@ function _make( src, length )
 
 //
 
-function make( src, length )
-{
-  _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
-  _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-  // _.assert( arguments.length < 2 || _.number.is( length ) );
-  _.assert( arguments.length < 2 || _.number.is( length ) || _.long.is( length ) );
-  _.assert( arguments.length <= 2 );
-  return this._make( ... arguments );
-}
+// function make( src, length )
+// {
+//   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
+//   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
+//   // _.assert( arguments.length < 2 || _.number.is( length ) );
+//   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
+//   _.assert( arguments.length <= 2 );
+//   return this._make( ... arguments );
+// }
 
 //
 
@@ -303,22 +231,22 @@ function _cloneShallow( srcArray )
 
 //
 
-function cloneShallow( srcArray )
-{
-  _.assert( this.like( srcArray ) );
-  _.assert( arguments.length === 1 );
-  return this._cloneShallow( srcArray );
-}
+// function cloneShallow( srcArray )
+// {
+//   _.assert( this.like( srcArray ) );
+//   _.assert( arguments.length === 1 );
+//   return this._cloneShallow( srcArray );
+// }
 
 //
 
-function from( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( this.is( src ) )
-  return src;
-  return this.make( src );
-}
+// function from( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   if( this.is( src ) )
+//   return src;
+//   return this.make( src );
+// }
 
 // --
 // declaration
@@ -339,10 +267,14 @@ let ToolsExtension =
   // maker
 
   arrayMakeEmpty : makeEmpty.bind( _.array ),
-  arrayMakeUndefined : makeUndefined.bind( _.array ),
-  arrayMake : make.bind( _.array ),
-  arrayCloneShallow : cloneShallow.bind( _.array ),
-  arrayFrom : from.bind( _.array ),
+  arrayMakeUndefined : _.argumentsArray.makeUndefined.bind( _.array ),
+  // arrayMakeUndefined : makeUndefined.bind( _.array ),
+  arrayMake : _.argumentsArray.make.bind( _.array ),
+  // arrayMake : make.bind( _.array ),
+  arrayCloneShallow : _.argumentsArray.cloneShallow.bind( _.array ),
+  // arrayCloneShallow : cloneShallow.bind( _.array ),
+  arrayFrom : _.argumentsArray.from.bind( _.array ),
+  // arrayFrom : from.bind( _.array ),
 
 }
 
@@ -376,17 +308,18 @@ let ArrayExtension =
 
   _makeEmpty,
   makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined,
-  makeUndefined, /* qqq : for junior : cover */
-  _makeZeroed,
-  makeZeroed, /* qqq : for junior : cover */
-  _makeFilling,
-  makeFilling,
+  _makeUndefined : _.argumentsArray._makeUndefined,
+  makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed : _.argumentsArray._makeZeroed,
+  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
+  _makeFilling : _.argumentsArray._makeFilling,
+  makeFilling : _.argumentsArray.makeFilling,
   _make,
-  make, /* qqq : for junior : cover */
+  make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
+  // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for junior : cover */
-  from, /* qqq : for junior : cover */
+  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
 
 }
 
