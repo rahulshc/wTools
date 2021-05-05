@@ -925,6 +925,7 @@ let ToolsExtension =
   longMakeEmpty : makeEmpty.bind( _.long ),
   longMakeUndefined : makeUndefined.bind( _.long ),
   longMakeZeroed : makeZeroed.bind( _.long ),
+  longMakeFilling : makeFilling.bind( _.long ),
   longMake : make.bind( _.long ),
   longCloneShallow : cloneShallow.bind( _.long ),
   longFrom : from.bind( _.long ),

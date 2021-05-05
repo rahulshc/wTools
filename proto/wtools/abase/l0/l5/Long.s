@@ -3737,7 +3737,7 @@ let Extension =
   // _longMakeOfLength,
   // longMakeUndefined,
   // longMakeZeroed, /* xxx : review */
-  longMakeFilling,
+  // longMakeFilling,
   /* qqq : check routine longMakeFilling, and add perfect coverage */
   /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
 
