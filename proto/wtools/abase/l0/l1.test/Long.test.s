@@ -5419,131 +5419,224 @@ function makeSrcIsNullWithLongNamespaces( test )
 
 //
 
-function makeFillingBasic( test )
+function makeFillingCommon( test )
 {
-  var bufferMake_functor = ( buffer ) =>
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+  act({ tools : 'bufferTyped', type : 'Array' });
+
+  /* */
+
+  function act( env )
   {
-    return { [ buffer.name ]( src ){ return new buffer( src ) } }[ buffer.name ];
-  }
-  var array = ( src ) => _.array.make( src );
-  var unroll = ( src ) => _.unroll.make( src );
-  var argumentsArray = ( src ) => _.argumentsArray.make( src );
-  var list =
-  [
-    array,
-    unroll,
-    argumentsArray,
-    bufferMake_functor( I8x ),
-    bufferMake_functor( U16x ),
-    bufferMake_functor( U16x ),
-    bufferMake_functor( U32x ),
-  ];
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
 
-  /* tests */
+    const long = namespaceGet( env );
+    const Constructor = defaultConstructorGet( env );
 
-  for( let t = 0; t < list.length; t++ )
-  {
-    test.open( list[ t ].name );
-    testRun( list[ t ] );
-    test.close( list[ t ].name );
-  }
+    /* */
 
-  /* test subroutine */
-
-  function testRun( makeLong )
-  {
     test.case = 'value - null, length - number';
-    var got = _.long.makeFilling( null, 5 );
-    var expected = _.defaultLong.make([ null, null, null, null, null ]);
+    var got = long.makeFilling( null, 3 );
+    var expected = Constructor.from([ null, null, null ]);
     test.identical( got, expected );
 
-    test.case = `value - zero, length - ${ makeLong.name }`;
-    var got = _.long.makeFilling( 0, makeLong( 5 ) );
-    var expected = makeLong([ 0, 0, 0, 0, 0 ]);
+    test.case = `value - number, length - filled array`;
+    var length = [ 1, 2, 3 ];
+    var got = long.makeFilling( 1, length );
+    if( env.tools === 'bufferTyped' )
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    else
+    var expected = [ 1, 1, 1 ];
     test.identical( got, expected );
 
     /* */
 
-    test.case = 'type - null, value - string, length - number';
-    var got = _.long.makeFilling( null, 'str', 5 );
-    var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.case = 'type - null, value - number, length - number';
+    var got = long.makeFilling( null, 1, 3 );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
-    test.case = 'type - null, value - string, length - BufferTyped';
-    var got = _.long.makeFilling( null, 'str', new U8x( 5 ) );
-    var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.case = 'type - null, value - number, length - long';
+    var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
-    test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
-    var src = makeLong( 0 );
-    var type = _.argumentsArray.is( src ) ? src : src.constructor;
-    var got = _.long.makeFilling( type, [ 1 ], 3 );
-    var expected = makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    /* */
+
+    test.case = `type - Array constructor, value - number, length - number`;
+    var got = long.makeFilling( Array, 10, 3 );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = [ 10, 10, 10 ];
+      test.identical( got, expected );
+    }
+
+    test.case = `type - Array constructor, value - number, length - long`;
+    var got = long.makeFilling( Array, 10, new I16x( 3 ) );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = [ 10, 10, 10 ];
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty array, value - number, length - number`;
+    var got = long.makeFilling( [], 10, 3 );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = [ 10, 10, 10 ];
+      test.identical( got, expected );
+    }
+
+    test.case = `type - filled array, value - number, length - long`;
+    var got = long.makeFilling( [ 1, 2, 3, 4 ], 10, new I16x( 3 ) );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = [ 10, 10, 10 ];
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty unroll, value - number, length - number`;
+    var got = long.makeFilling( _.unroll.make( [] ), 10, 3 );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = _.unroll.make([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    test.case = `type - filled unroll, value - number, length - long`;
+    var got = long.makeFilling( _.unroll.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = _.unroll.make([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty argumentsArray, value - number, length - number`;
+    var got = long.makeFilling( _.argumentsArray.make( [] ), 10, 3 );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = _.argumentsArray.make([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    test.case = `type - filled argumentsArray, value - number, length - long`;
+    var got = long.makeFilling( _.argumentsArray.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    if( env.tools === 'bufferTyped' )
+    {
+      var expected = Constructor.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+    else
+    {
+      var expected = _.argumentsArray.make([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - number`;
+    var got = long.makeFilling( _.u8x.make( [] ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
     test.identical( got, expected );
 
-    test.case = `type - ${ makeLong.name } constructor, value - array, length - empty ${ makeLong.name }`;
-    var src = makeLong( 0 );
-    var type = _.argumentsArray.is( src ) ? src : src.constructor;
-    var got = _.long.makeFilling( type, [ 1 ], makeLong( 0 ) );
-    var expected = makeLong( [] );
+    test.case = `type - filled typed array, value - number, length - long`;
+    var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = _.f32x.make([ 10, 10, 10 ]);
     test.identical( got, expected );
 
-    test.case = `type - ${ makeLong.name } instance, value - map, length - number`;
-    var got = _.long.makeFilling( makeLong( 0 ), { a : 1 }, 3 );
-    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
-    test.identical( got, expected );
+    /* */
 
-    test.case = `type - ${ makeLong.name } instance, value - map, length - ${ makeLong.name }`;
-    var got = _.long.makeFilling( makeLong( 0 ), { a : 1 }, makeLong( 3 ) );
-    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
-    test.identical( got, expected );
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling() );
 
-    test.case = `type - U8x, value - number, length - number`;
-    var got = _.long.makeFilling( U8x, 10, 3 );
-    var expected = new U8x( [ 10, 10, 10 ] );
-    test.identical( got, expected );
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( null ) );
 
-    test.case = `type - I16x, value - number, length - ${ makeLong.name }`;
-    var got = _.long.makeFilling( I16x, 10, makeLong( 3 ) );
-    var expected = new I16x( [ 10, 10, 10 ] );
-    test.identical( got, expected );
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
 
-    test.case = `type - F32x instance, value - number, length - number`;
-    var got = _.long.makeFilling( new F32x( 10 ), 10, 3 );
-    var expected = new F32x( [ 10, 10, 10 ] );
-    test.identical( got, expected );
+      test.case = 'wrong type of type argument';
+      test.shouldThrowErrorSync( () => long.makeFilling( {}, 2, 2 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 2, 2 ) );
 
-    test.case = `type - F32x instance, value - number, length - ${ makeLong.name }`;
-    var got = _.long.makeFilling( new F32x( 10 ), 10, makeLong( 3 ) );
-    var expected = new F32x( [ 10, 10, 10 ] );
-    test.identical( got, expected );
+      test.case = 'wrong type of value';
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 1 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [], undefined, 1 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 2, undefined ) );
+    }
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
 
-  /* - */
+  /* */
 
-  if( !Config.debug )
-  return;
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.long;
+    if( env.tools === 'bufferTyped' )
+    return _.bufferTyped;
+    return _.withLong[ env.tools ].long;
+  }
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.long.makeFilling() );
+  /* */
 
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.long.makeFilling( null ) );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
-
-  test.case = 'wrong type of type argument';
-  test.shouldThrowErrorSync( () => _.long.makeFilling( {}, 2, 2 ) );
-  test.shouldThrowErrorSync( () => _.long.makeFilling( undefined, 2, 2 ) );
-
-  test.case = 'wrong type of value';
-  test.shouldThrowErrorSync( () => _.long.makeFilling( undefined, 1 ) );
-  test.shouldThrowErrorSync( () => _.long.makeFilling( [], undefined, 1 ) );
-
-  test.case = 'wrong type of length';
-  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.long.makeFilling( [ 1, 2, 3 ], 2, undefined ) );
+  function defaultConstructorGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.defaultLong.InstanceConstructor;
+    if( env.tools === 'bufferTyped' )
+    return _.defaultBufferTyped.InstanceConstructor;
+    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+  }
 }
 
 //
@@ -7928,11 +8021,11 @@ const Proto =
     // longMakeZeroedWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
     // longMakeZeroedWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : all coverage in routines makeLongFilledCommon* */
 
-    makeFillingBasic, /* aaa2 : for Dmytro : enable */ /* Dmytro : wrote, this routine aggregates tests fro routines `longMakeFillingWithArrayAndUnroll` `longMakeFillingWithArgumentsArray`, `longMakeFillingWithBufferTyped` */
+    makeFillingCommon, /* aaa2 : for Dmytro : enable */ /* Dmytro : wrote, this routine aggregates tests fro routines `longMakeFillingWithArrayAndUnroll` `longMakeFillingWithArgumentsArray`, `longMakeFillingWithBufferTyped` */
     makeFillingWithLongDescriptor,
-    // longMakeFillingWithArrayAndUnroll, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingBasic */
-    // longMakeFillingWithArgumentsArray, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingBasic */
-    // longMakeFillingWithBufferTyped, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingBasic */
+    // longMakeFillingWithArrayAndUnroll, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingCommon */
+    // longMakeFillingWithArgumentsArray, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingCommon */
+    // longMakeFillingWithBufferTyped, /* aaa2 : for Dmytro : enable */ /* Dmytro : all test in aggregated routine makeFillingCommon */
 
     // longMakeFillingWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : enable */
     // longMakeFillingWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : enable */
