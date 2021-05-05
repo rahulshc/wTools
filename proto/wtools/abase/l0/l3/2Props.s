@@ -765,7 +765,7 @@ function _mapAct1()
     _.assert( arguments.length === 5, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
-    _.assert( _.routienIs( onEach ), () => `onEach is not a routine` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
   }
 
   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
