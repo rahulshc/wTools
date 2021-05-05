@@ -91,11 +91,6 @@ function is( test )
   var got = _.long.is( src );
   var expected  = false;
   test.identical( got, expected );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
 }
 
 //
@@ -325,6 +320,13 @@ function makeCommon( test )
       test.true( got instanceof Constructor );
       test.identical( got.length, 2 );
 
+      test.case = `null and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      debugger;
+      var got = long[ env.method ]( null, length );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 3 );
+
       /* */
 
       test.case = `empty array and length`;
@@ -360,7 +362,6 @@ function makeCommon( test )
       var src = [ 3, 4 ];
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
@@ -368,7 +369,6 @@ function makeCommon( test )
       var src = [ 3, 4 ];
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 1 );
       test.identical( got, InstanceConstructor.from([ 3 ]) );
 
       /* */
@@ -377,7 +377,6 @@ function makeCommon( test )
       var src = _.unroll.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
@@ -385,7 +384,6 @@ function makeCommon( test )
       var src = _.unroll.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 1 );
       test.identical( got, InstanceConstructor.from([ 3 ]) );
 
       /* */
@@ -424,7 +422,6 @@ function makeCommon( test )
       var src = _.u8x.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof U8x );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, _.u8x.make([ 3, 4, value ]) );
 
@@ -432,8 +429,15 @@ function makeCommon( test )
       var src = _.f32x.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof F32x );
-      test.identical( got.length, 1 );
       test.identical( got, _.f32x.make([ 3 ]) );
+
+      /* */
+
+      test.case = `array and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( [ 0, 0, 0, 0 ], length );
+      test.true( got instanceof InstanceConstructor );
+      test.identical( got, InstanceConstructor.from([ 1, 2, 3 ]) );
     }
 
     /* */
@@ -621,6 +625,13 @@ function makeCommonWithLongDescriptor( test )
       test.true( got instanceof Constructor );
       test.identical( got.length, 2 );
 
+      test.case = `null and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      debugger;
+      var got = long[ env.method ]( null, length );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 3 );
+
       /* */
 
       test.case = `empty array and length`;
@@ -656,7 +667,6 @@ function makeCommonWithLongDescriptor( test )
       var src = [ 3, 4 ];
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
@@ -664,7 +674,6 @@ function makeCommonWithLongDescriptor( test )
       var src = [ 3, 4 ];
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 1 );
       test.identical( got, InstanceConstructor.from([ 3 ]) );
 
       /* */
@@ -673,7 +682,6 @@ function makeCommonWithLongDescriptor( test )
       var src = _.unroll.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
@@ -681,7 +689,6 @@ function makeCommonWithLongDescriptor( test )
       var src = _.unroll.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof InstanceConstructor );
-      test.identical( got.length, 1 );
       test.identical( got, InstanceConstructor.from([ 3 ]) );
 
       /* */
@@ -720,7 +727,6 @@ function makeCommonWithLongDescriptor( test )
       var src = _.u8x.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 3 );
       test.true( got instanceof U8x );
-      test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
       test.identical( got, _.u8x.make([ 3, 4, value ]) );
 
@@ -728,8 +734,15 @@ function makeCommonWithLongDescriptor( test )
       var src = _.f32x.make([ 3, 4 ]);
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof F32x );
-      test.identical( got.length, 1 );
       test.identical( got, _.f32x.make([ 3 ]) );
+
+      /* */
+
+      test.case = `array and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( [ 0, 0, 0, 0 ], length );
+      test.true( got instanceof InstanceConstructor );
+      test.identical( got, InstanceConstructor.from([ 1, 2, 3 ]) );
     }
 
     test.close( `${__.entity.exportStringSolo( env )}` );
@@ -781,7 +794,7 @@ function makeLongFilledCommon( test )
   {
     const long = namespaceGet( env );
     const Constructor = defaultConstructorGet( env );
-    const ConstructorForNamespace = env.tools === 'bufferTyped' ? Constructor : Array;
+    const InstanceConstructor = env.tools === 'bufferTyped' ? Constructor : Array;
     let value = env.method === 'makeUndefined' ? undefined : 0;
     if( env.tools === 'bufferTyped' )
     value = 0;
@@ -796,54 +809,54 @@ function makeLongFilledCommon( test )
     test.case = `${__.entity.exportStringSolo( env )}, length`;
     var got = long[ env.method ]( 3 );
     test.true( got instanceof Constructor );
-    var _value = _.bufferTypedIs( got ) ? 0 : value;
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
     var got = long[ env.method ]( [] );
-    test.true( got instanceof ConstructorForNamespace );
+    test.true( got instanceof InstanceConstructor );
     test.identical( got.length, 0 );
 
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
     var got = long[ env.method ]( [ 2 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
     var got = long[ env.method ]( [ 2, 3 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
     var got = long[ env.method ]( [], 2 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
     var got = long[ env.method ]( [ 3, 4 ], 3 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
     var got = long[ env.method ]( [ 3, 4 ], 1 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
     var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
     var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     /* */
 
@@ -851,10 +864,16 @@ function makeLongFilledCommon( test )
     var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = long[ env.method ]( null, length );
     test.true( got instanceof Constructor );
-    var _value = _.bufferTypedIs( got ) ? 0 : undefined;
+    var _value = _.buffer.typedIs( got ) ? 0 : undefined;
     if( env.method === 'makeZeroed' )
     _value = 0;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, array and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( [ 1, 1, 1, 1 ], length );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
 
     /* */
 
@@ -936,7 +955,7 @@ function makeLongFilledCommonWithLongDescriptor( test )
   {
     const long = namespaceGet( env );
     const Constructor = defaultConstructorGet( env );
-    const ConstructorForNamespace = env.tools === 'bufferTyped' ? Constructor : Array;
+    const InstanceConstructor = env.tools === 'bufferTyped' ? Constructor : Array;
     let value = env.method === 'makeUndefined' ? undefined : 0;
     if( env.tools === 'bufferTyped' )
     value = 0;
@@ -951,54 +970,54 @@ function makeLongFilledCommonWithLongDescriptor( test )
     test.case = `${__.entity.exportStringSolo( env )}, length`;
     var got = long[ env.method ]( 3 );
     test.true( got instanceof Constructor );
-    var _value = _.bufferTypedIs( got ) ? 0 : value;
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
     var got = long[ env.method ]( [] );
-    test.true( got instanceof ConstructorForNamespace );
+    test.true( got instanceof InstanceConstructor );
     test.identical( got.length, 0 );
 
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
     var got = long[ env.method ]( [ 2 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
     var got = long[ env.method ]( [ 2, 3 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
     var got = long[ env.method ]( [], 2 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
     var got = long[ env.method ]( [ 3, 4 ], 3 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
     var got = long[ env.method ]( [ 3, 4 ], 1 );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
     var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value, value, value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
 
     test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
     var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got, ConstructorForNamespace.from([ value ]) );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value ]) );
 
     /* */
 
@@ -1006,25 +1025,16 @@ function makeLongFilledCommonWithLongDescriptor( test )
     var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     var got = long[ env.method ]( null, length );
     test.true( got instanceof Constructor );
-    var _value = _.bufferTypedIs( got ) ? 0 : undefined;
+    var _value = _.buffer.typedIs( got ) ? 0 : undefined;
     if( env.method === 'makeZeroed' )
     _value = 0;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
 
-    /* */
-
-    // if( Config.debug )
-    // {
-    //   test.case = 'extra arguments';
-    //   test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
-    //
-    //   test.case = 'wrong type of src';
-    //   test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
-    //   test.shouldThrowErrorSync( () => long[ env.method ]( 3, 3 ) );
-    //
-    //   test.case = 'wrong type of length';
-    //   test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
-    // }
+    test.case = `${__.entity.exportStringSolo( env )}, array and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( [ 1, 1, 1, 1 ], length );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got, InstanceConstructor.from([ value, value, value ]) );
   }
 
   /* */
@@ -1271,7 +1281,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var got = _.long.make( U32x, ins );
 //     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //     test.true( got !== ins );
 //
 //     test.case = 'src = long constructor, ins = number';
@@ -1461,7 +1471,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   var got = _.long.make( U32x, ins );
 //   var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //   test.identical( got, expected );
-//   test.true( _.bufferTypedIs(  got ) );
+//   test.true( _.buffer.typedIs(  got ) );
 //   test.true( got !== ins );
 // }
 //
@@ -1538,7 +1548,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     /* qqq : should throw error : add test cases */
 //     // test.case = 'src = long, ins = null';
@@ -1547,7 +1557,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     // var expected = new makeLong( [ 1, 2, 3 ] );
 //     // test.identical( got, expected );
 //     // test.true( got !== src );
-//     // test.true( _.bufferTypedIs( got ) );
+//     // test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = number, ins < src.length';
 //     var src = new makeLong( [ 1, 2, 3 ] );
@@ -1555,7 +1565,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = number, ins > src.length';
 //     var src = new makeLong( [ 1, 2, 3 ] );
@@ -1564,7 +1574,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2, 3, 0 ] )
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = long, ins.length > src.length';
 //     var src = new makeLong( [ 0, 1 ] );
@@ -1574,7 +1584,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'src = new long, ins = array'
 //     var src = new makeLong( 2 );
@@ -1583,7 +1593,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     // test.case = 'src = Array constructor, ins = null';
 //     // var got = _.long.make( Array, null );
@@ -1602,7 +1612,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var got = _.long.make( U32x, ins );
 //     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //     test.true( got !== ins );
 //
 //     test.case = 'src = long constructor, ins = number';
@@ -1816,7 +1826,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var got = long.long.make( U32x, ins );
 //     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //     test.true( got !== ins );
 //
 //     test.case = 'src = long constructor, ins = number';
@@ -2020,7 +2030,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var got = long.long.make( U32x, ins );
 //     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //     test.true( got !== ins );
 //   }
 // }
@@ -2117,7 +2127,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     /* qqq : should throw error : add test cases */
 //     // test.case = 'src = long, ins = null';
@@ -2126,7 +2136,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     // var expected = new makeLong( [ 1, 2, 3 ] );
 //     // test.identical( got, expected );
 //     // test.true( got !== src );
-//     // test.true( _.bufferTypedIs( got ) );
+//     // test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = number, ins < src.length';
 //     var src = new makeLong( [ 1, 2, 3 ] );
@@ -2134,7 +2144,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = number, ins > src.length';
 //     var src = new makeLong( [ 1, 2, 3 ] );
@@ -2142,7 +2152,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2, 3, 0 ] )
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'ins = long, ins.length > src.length';
 //     var src = new makeLong( [ 0, 1 ] );
@@ -2152,7 +2162,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     test.case = 'src = new long, ins = array'
 //     var src = new makeLong( 2 );
@@ -2161,7 +2171,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
-//     test.true( _.bufferTypedIs( got ) );
+//     test.true( _.buffer.typedIs( got ) );
 //
 //     // test.case = 'src = Array constructor, ins = null';
 //     // var got = long.long.make( Array, null );
@@ -2180,7 +2190,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var got = long.long.make( U32x, ins );
 //     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //     test.true( got !== ins );
 //
 //     test.case = 'src = long constructor, ins = number';
@@ -3064,7 +3074,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _._longMakeOfLength( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -3208,7 +3218,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var got = _._longMakeOfLength( U32x, 5 );
 //   var expected = new U32x( 5 );
 //   test.identical( got, expected );
-//   test.true( _.bufferTypedIs(  got ) );
+//   test.true( _.buffer.typedIs(  got ) );
 //
 //   test.case = 'src = Array constructor, ins = long';
 //   var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -3354,7 +3364,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _._longMakeOfLength( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -3528,7 +3538,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long._longMakeOfLength( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -3693,7 +3703,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long._longMakeOfLength( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -3850,7 +3860,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long._longMakeOfLength( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -4044,7 +4054,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _.long.makeUndefined( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -4194,7 +4204,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var got = _.long.makeUndefined( U32x, 5 );
 //   var expected = new U32x( 5 );
 //   test.identical( got, expected );
-//   test.true( _.bufferTypedIs(  got ) );
+//   test.true( _.buffer.typedIs(  got ) );
 //
 //   test.case = 'src = Array constructor, ins = long';
 //   var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -4350,7 +4360,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _.long.makeUndefined( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -4530,7 +4540,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeUndefined( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -4701,7 +4711,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeUndefined( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -4874,7 +4884,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeUndefined( U32x, 5 );
 //     var expected = new U32x( 5 );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -5127,7 +5137,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _.long.makeZeroed( U32x, 5 );
 //     var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -5257,7 +5267,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var got = _.long.makeZeroed( U32x, 5 );
 //   var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
-//   test.true( _.bufferTypedIs(  got ) );
+//   test.true( _.buffer.typedIs(  got ) );
 //
 //   test.case = 'src = Array constructor, ins = long';
 //   var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -5436,7 +5446,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = _.long.makeZeroed( U32x, 5 );
 //     var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -5610,7 +5620,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeZeroed( U32x, 5 );
 //     var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = makeLong( [ 1, 2, 3 ] );
@@ -5775,7 +5785,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeZeroed( U32x, 5 );
 //     var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = _.argumentsArray.make( [ 1, 2, 3 ] );
@@ -5942,7 +5952,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var got = long.long.makeZeroed( U32x, 5 );
 //     var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
-//     test.true( _.bufferTypedIs(  got ) );
+//     test.true( _.buffer.typedIs(  got ) );
 //
 //     test.case = 'src = Array constructor, ins = long';
 //     var ins = new makeLong( [ 1, 2, 3 ] );
@@ -5990,6 +6000,12 @@ function makeFillingCommon( test )
     var expected = [ 1, 1, 1 ];
     test.identical( got, expected );
 
+    test.case = `value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
     /* */
 
     test.case = 'type - null, value - number, length - number';
@@ -5999,6 +6015,12 @@ function makeFillingCommon( test )
 
     test.case = 'type - null, value - number, length - long';
     var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - countable';
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( null, 1, length );
     var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
@@ -6124,6 +6146,14 @@ function makeFillingCommon( test )
     test.case = `type - filled typed array, value - number, length - long`;
     var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
     var expected = _.f32x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( _.u8x.make( [] ), 10, length );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
     test.identical( got, expected );
 
     /* */
@@ -6228,6 +6258,12 @@ function makeFillingCommonWithLongDescriptor( test )
     var expected = [ 1, 1, 1 ];
     test.identical( got, expected );
 
+    test.case = `value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
     /* */
 
     test.case = 'type - null, value - number, length - number';
@@ -6237,6 +6273,12 @@ function makeFillingCommonWithLongDescriptor( test )
 
     test.case = 'type - null, value - number, length - long';
     var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - countable';
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( null, 1, length );
     var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
@@ -6363,6 +6405,40 @@ function makeFillingCommonWithLongDescriptor( test )
     var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
     var expected = _.f32x.make([ 10, 10, 10 ]);
     test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( _.u8x.make( [] ), 10, length );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling() );
+
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( null ) );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
+
+      test.case = 'wrong type of type argument';
+      test.shouldThrowErrorSync( () => long.makeFilling( {}, 2, 2 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 2, 2 ) );
+
+      test.case = 'wrong type of value';
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 1 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [], undefined, 1 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 2, undefined ) );
+    }
 
     test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
@@ -7460,26 +7536,26 @@ function fromCommonWithLongDescriptor( test )
 //   var src = new U8x( [] );
 //   var got = _.long.from( src );
 //   test.identical( got, new U8x( [] ) );
-//   test.true( _.bufferTypedIs( got ) );
+//   test.true( _.buffer.typedIs( got ) );
 //   test.true( got === src );
 //
 //   var src = new I16x( [] );
 //   var got = _.long.from( src );
 //   test.identical( got, new I16x( [] ) );
-//   test.true( _.bufferTypedIs( got ) );
+//   test.true( _.buffer.typedIs( got ) );
 //   test.true( got === src );
 //
 //   test.case = 'filled BufferTyped';
 //   var src = new F32x( [ 1, 2, 3, 4, 0 ] );
 //   var got = _.long.from( src );
 //   test.identical( got, new F32x([ 1, 2, 3, 4, 0 ]) );
-//   test.true( _.bufferTypedIs( got ) );
+//   test.true( _.buffer.typedIs( got ) );
 //   test.true( got === src );
 //
 //   var src = new F64x( [ 1, 2, 3, 4, 0 ] );
 //   var got = _.long.from( src );
 //   test.identical( got, new F64x([ 1, 2, 3, 4, 0 ]) );
-//   test.true( _.bufferTypedIs( got ) );
+//   test.true( _.buffer.typedIs( got ) );
 //   test.true( got === src );
 //
 //   /* - */
