@@ -265,7 +265,6 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Blank.test.s
           - ../proto/wtools/abase/l0/l1.test/Bool.test.s
           - ../proto/wtools/abase/l0/l1.test/Buffer.test.s
-          - ../proto/wtools/abase/l0/l1.test/BufferTyped.test.s
           - ../proto/wtools/abase/l0/l1.test/Container.test.s
           - ../proto/wtools/abase/l0/l1.test/Countable.test.s
           - ../proto/wtools/abase/l0/l1.test/Entity.test.s
