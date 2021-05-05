@@ -221,20 +221,22 @@ function makeCommon( test )
 
   function act( env )
   {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
     const long = namespaceGet( env );
     const Constructor = defaultConstructorGet( env );
-    const ConstructorForNamespace = env.tools === 'bufferTyped' ? Constructor : Array;
+    const InstanceConstructor = env.tools === 'bufferTyped' ? Constructor : Array;
 
     /* */
 
     if( env.method !== 'cloneShallow' )
     {
-      test.case = `${__.entity.exportStringSolo( env )}, no args`;
+      test.case = `no args`;
       var got = long[ env.method ]();
       test.true( got instanceof Constructor );
       test.identical( got.length, 0 );
 
-      test.case = `${__.entity.exportStringSolo( env )}, length`;
+      test.case = `length`;
       var got = long[ env.method ]( 3 );
       test.true( got instanceof Constructor );
       test.true( got.length === 3 );
@@ -242,60 +244,196 @@ function makeCommon( test )
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, empty array`;
-    var got = long[ env.method ]( [] );
-    test.true( got instanceof ConstructorForNamespace );
+    test.case = `empty array`;
+    var src = [];
+    var got = long[ env.method ]( src );
+    test.true( got instanceof InstanceConstructor );
     test.identical( got.length, 0 );
 
-    /* */
-
-    test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
-    var got = long[ env.method ]( [ 2 ] );
-    test.true( got instanceof ConstructorForNamespace );
-    test.identical( got.length, 1 );
-    test.identical( got, ConstructorForNamespace.from([ 2 ]) );
-
-    /* */
-
-    test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
-    var got = long[ env.method ]( [ 2, 3 ] );
-    test.true( got instanceof ConstructorForNamespace );
+    test.case = `filled array`;
+    var src = [ 2, 3 ];
+    var got = long[ env.method ]( src );
+    test.true( got instanceof InstanceConstructor );
     test.identical( got.length, 2 );
-    test.identical( got, ConstructorForNamespace.from([ 2, 3 ]) );
+    test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled unroll`;
+    var src = _.unroll.make([ 2, 3 ]);
+    var got = long[ env.method ]( src );
+    test.true( got instanceof InstanceConstructor );
+    test.identical( got.length, 2 );
+    test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long[ env.method ]( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.argumentsArray.is( got ) );
+    test.identical( got.length, 0 );
+
+    test.case = `filled argumentsArray`;
+    var src = _.argumentsArray.make([ 2, 3 ]);
+    var got = long[ env.method ]( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.true( got instanceof Constructor );
+      test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
+    }
+    else
+    {
+      test.true( _.argumentsArray.is( got ) );
+      test.identical( got, _.argumentsArray.make([ 2, 3 ]) );
+    }
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long[ env.method ]( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 2, 3 ]) );
 
     /* */
 
     if( env.method !== 'cloneShallow' )
     {
-      test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
-      var got = long[ env.method ]( [], 2 );
-      test.true( got instanceof ConstructorForNamespace );
+      test.case = `null and length - number`;
+      var got = long[ env.method ]( null, 2 );
+      test.true( got instanceof Constructor );
       test.identical( got.length, 2 );
 
-      test.case = `${__.entity.exportStringSolo( env )}, non-empty and length longer`;
-      var got = long[ env.method ]( [ 3, 4 ], 3 );
-      test.true( got instanceof ConstructorForNamespace );
+      test.case = `null and length - array`;
+      var got = long[ env.method ]( null, [ 1, 2 ] );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      /* */
+
+      test.case = `empty array and length`;
+      var src = [];
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof InstanceConstructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty unroll and length`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof InstanceConstructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty argumentsArray and length`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      if( env.tools === 'bufferTyped' )
+      test.true( got instanceof Constructor );
+      else
+      test.true( _.argumentsArray.is( got ) );
+      test.identical( got.length, 2 );
+
+      test.case = `empty typed buffer and length`;
+      var src = _.u8x.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof U8x );
+      test.identical( got.length, 2 );
+
+      /* */
+
+      test.case = `non-empty array and length longer`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof InstanceConstructor );
       test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
-      test.identical( got, ConstructorForNamespace.from([ 3, 4, value ]) );
+      test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
-      test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
-      var got = long[ env.method ]( [ 3, 4 ], 1 );
-      test.true( got instanceof ConstructorForNamespace );
+      test.case = `non-empty array and length shorter`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof InstanceConstructor );
       test.identical( got.length, 1 );
-      test.identical( got, ConstructorForNamespace.from([ 3 ]) );
+      test.identical( got, InstanceConstructor.from([ 3 ]) );
 
-      test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
-      var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
-      test.true( got instanceof ConstructorForNamespace );
+      /* */
+
+      test.case = `non-empty unroll and length longer`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof InstanceConstructor );
       test.identical( got.length, 3 );
-      test.identical( got, ConstructorForNamespace.from([ 2, 3, 4 ]) );
+      var value = env.tools === 'bufferTyped' ? 0 : undefined;
+      test.identical( got, InstanceConstructor.from([ 3, 4, value ]) );
 
-      test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
-      var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
-      test.true( got instanceof ConstructorForNamespace );
+      test.case = `non-empty unroll and length shorter`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof InstanceConstructor );
       test.identical( got.length, 1 );
-      test.identical( got, ConstructorForNamespace.from([ 2 ]) );
+      test.identical( got, InstanceConstructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty argumentsArray and length longer`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      if( env.tools === 'bufferTyped' )
+      {
+        test.true( got instanceof Constructor );
+        test.identical( got, InstanceConstructor.from([ 3, 4, 0 ]) );
+      }
+      else
+      {
+        test.true( _.argumentsArray.is( got ) );
+        test.identical( got, _.argumentsArray.make([ 3, 4, undefined ]) );
+      }
+
+      test.case = `non-empty argumentsArray and length shorter`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      if( env.tools === 'bufferTyped' )
+      {
+        test.true( got instanceof Constructor );
+        test.identical( got, InstanceConstructor.from([ 3 ]) );
+      }
+      else
+      {
+        test.true( _.argumentsArray.is( got ) );
+        test.identical( got, _.argumentsArray.make([ 3 ]) );
+      }
+
+      /* */
+
+      test.case = `non-empty typed buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof U8x );
+      test.identical( got.length, 3 );
+      var value = env.tools === 'bufferTyped' ? 0 : undefined;
+      test.identical( got, _.u8x.make([ 3, 4, value ]) );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.f32x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof F32x );
+      test.identical( got.length, 1 );
+      test.identical( got, _.f32x.make([ 3 ]) );
     }
 
     /* */
@@ -312,6 +450,8 @@ function makeCommon( test )
       test.case = 'wrong type of length';
       test.shouldThrowErrorSync( () => long[ env.method ]( [], 'wrong' ) );
     }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
   }
 
   function namespaceGet( env )
@@ -8357,12 +8497,12 @@ const Proto =
 
     makeEmptyCommon,
     makeEmptyCommonWithLongDescriptor,
-    // longMakeEmptyWithArrayAndUnroll,
-    // longMakeEmptyWithArgumentsArray,
-    // longMakeEmptyWithBufferTyped,
-    // longMakeEmptyWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
-    // longMakeEmptyWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
-    // longMakeEmptyWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
+    // longMakeEmptyWithArrayAndUnroll, /* Dmytro : full coverage in routines makeEmptyCommon* */
+    // longMakeEmptyWithArgumentsArray, /* Dmytro : full coverage in routines makeEmptyCommon* */
+    // longMakeEmptyWithBufferTyped, /* Dmytro : full coverage in routines makeEmptyCommon* */
+    // longMakeEmptyWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed, full coverage in routines makeEmptyCommon* */
+    // longMakeEmptyWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed, full coverage in routines makeEmptyCommon* */
+    // longMakeEmptyWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : make proper fix */ /* Dmytro : fixed, full coverage in routines makeEmptyCommon* */
 
     // _longMakeOfLengthWithArrayAndUnroll, /* Dmytro : should be removed, routines do not exist and not used */
     // _longMakeOfLengthWithArgumentsArray,
