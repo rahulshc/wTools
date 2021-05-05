@@ -2091,6 +2091,167 @@ function makeEmptyCommon( test )
   }
 }
 
+//
+
+function makeEmptyCommonWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    act({ tools : 'bufferTyped', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = defaultConstructorGet( env );
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeEmpty();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.array.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `array - filled`;
+    var src = [ 2, 2 ];
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.array.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.unroll.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `unroll - filled`;
+    var src = _.unroll.make( [ 2, 2 ] );
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.unroll.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.argumentsArray.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `argumentsArray - filled`;
+    var src = _.argumentsArray.make( [ 2, 2 ] );
+    var got = long.makeEmpty( src );
+    if( env.tools === 'bufferTyped' )
+    test.true( got instanceof Constructor );
+    else
+    test.true( _.argumentsArray.is( got ) );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `typed buffer - filled`;
+    var src = _.f32x.make( [ 2, 2 ] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof F32x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeEmpty( [], 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long.makeEmpty( undefined ) );
+      test.shouldThrowErrorSync( () => long.makeEmpty( null ) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.long;
+    if( env.tools === 'bufferTyped' )
+    return _.bufferTyped;
+    return _.withLong[ env.tools ].long;
+  }
+
+  /* */
+
+  function defaultConstructorGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.defaultLong.InstanceConstructor;
+    if( env.tools === 'bufferTyped' )
+    return _.defaultBufferTyped.InstanceConstructor;
+    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+  }
+}
+
 // function longMakeEmptyWithArrayAndUnroll( test )
 // {
 //   var array = ( src ) => _.array.make( src );
@@ -8212,6 +8373,7 @@ const Proto =
     // longMakeWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
 
     makeEmptyCommon,
+    makeEmptyCommonWithLongDescriptor,
     // longMakeEmptyWithArrayAndUnroll,
     // longMakeEmptyWithArgumentsArray,
     // longMakeEmptyWithBufferTyped,
