@@ -380,6 +380,7 @@ function makeCommonWithLongDescriptor( test )
     methodEach({ tools : 'default', type });
     methodEach({ tools : 'Array', type });
     methodEach({ tools : 'F32x', type });
+    methodEach({ tools : 'bufferTyped', type });
     test.close( `long - ${ type }` );
 
     if( times < 1 )
@@ -396,6 +397,7 @@ function makeCommonWithLongDescriptor( test )
     env.method = 'make';
     act( env );
     env.method = 'cloneShallow';
+    if( env.tools !== 'bufferTyped' )
     act( env );
   }
 
@@ -6441,6 +6443,226 @@ function fromCommon( test )
 
 //
 
+function fromCommonWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    act({ tools : 'bufferTyped', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = defaultConstructorGet( env );
+
+    /* */
+
+    test.case = 'null';
+    var got = long.from( null );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got instanceof Constructor );
+
+    test.case = 'number';
+    var src = 2;
+    var got = long.from( src );
+    var value = _.buffer.typedIs( Constructor.from( [] ) ) ? 0 : undefined;
+    test.identical( got, Constructor.from([ value, value ]) );
+    test.true( got instanceof Constructor );
+
+    /* */
+
+    test.case = 'empty array';
+    var src = [];
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from( [] ) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, [] );
+      test.true( _.array.is( got ) );
+      test.true( got === src );
+    }
+
+
+    test.case = 'filled array';
+    var src = [ 1, 2, 3 ];
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, [ 1, 2, 3 ] );
+      test.true( _.array.is( got ) );
+      test.true( got === src );
+    }
+
+    /* */
+
+    test.case = 'empty unroll';
+    var src = _.unroll.make( [] );
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from( [] ) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, [] );
+      test.true( _.unroll.is( got ) );
+      test.true( got === src );
+    }
+
+    test.case = 'filled unroll';
+    var src = _.unroll.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, [ 1, 2, 3 ] );
+      test.true( _.unroll.is( got ) );
+      test.true( got === src );
+    }
+
+    /* */
+
+    test.case = 'empty argumentsArray';
+    var src = _.argumentsArray.make( [] );
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from( [] ) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, _.argumentsArray.make( [] ) );
+      test.true( _.argumentsArray.is( got ) );
+      test.true( got === src );
+    }
+
+    test.case = 'filled argumentsArray';
+    var src = _.argumentsArray.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    if( env.tools === 'bufferTyped' )
+    {
+      test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+      test.true( got instanceof Constructor );
+      test.true( got !== src );
+    }
+    else
+    {
+      test.identical( got, _.argumentsArray.make([ 1, 2, 3 ]) );
+      test.true( _.argumentsArray.is( got ) );
+      test.true( got === src );
+    }
+
+    /* */
+
+    test.case = 'empty BufferTyped';
+    var src = new U8x( [] );
+    var got = long.from( src );
+    test.identical( got, new U8x( [] ) );
+    test.true( _.u8x.is( got ) );
+    test.true( got === src );
+
+    var src = new I16x( [] );
+    var got = long.from( src );
+    test.identical( got, new I16x( [] ) );
+    test.true( _.i16x.is( got ) );
+    test.true( got === src );
+
+    test.case = 'filled BufferTyped';
+    var src = new F32x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F32x([ 1, 2, 3 ]) );
+    test.true( _.f32x.is( got ) );
+    test.true( got === src );
+
+    var src = new F64x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F64x([ 1, 2, 3 ]) );
+    test.true( _.f64x.is( got ) );
+    test.true( got === src );
+
+    /* - */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => long.from() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => long.from( 1, [] ) );
+
+    test.case = 'wrong type of src';
+    test.shouldThrowErrorSync( () => long.from( 'str' ) );
+    test.shouldThrowErrorSync( () => long.from( { 1 : 2 } ) );
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.long;
+    if( env.tools === 'bufferTyped' )
+    return _.bufferTyped;
+    return _.withLong[ env.type ].long;
+  }
+
+  /* */
+
+  function defaultConstructorGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.defaultLong.InstanceConstructor;
+    if( env.tools === 'bufferTyped' )
+    return _.defaultBufferTyped.InstanceConstructor;
+    return _.withLong[ env.type ].defaultLong.InstanceConstructor;
+  }
+}
+
+//
+
 // function from( test )
 // {
 //   test.case = 'null';
@@ -7719,8 +7941,9 @@ const Proto =
     //
 
     fromCommon,
-    // from,
-    // fromWithLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : enabled */
+    fromCommonWithLongDescriptor,
+    // from, /* Dmytro : wrote test routine fromCommon for namespaces long and bufferTyped */
+    // fromWithLongDescriptor, /* aaa2 : for Dmytro : enable */ /* Dmytro : wrote test routine fromCommonWithLongDescriptor for namespaces long and bufferTyped */
 
     // longSlice,
 
