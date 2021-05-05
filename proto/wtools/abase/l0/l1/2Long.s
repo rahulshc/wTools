@@ -446,8 +446,8 @@ function _cloneShallow( src )
   return _.argumentsArray.make( src );
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
-  if( _.numberIs( src ) )
-  return this.tools.defaultLong.make( src );
+  // if( _.numberIs( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
+  // return this.tools.defaultLong.make( src );
   if( src.constructor === Array )
   return [ ... src ];
   else
