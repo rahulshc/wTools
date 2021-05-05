@@ -841,7 +841,7 @@ function rightDefined( arr )
 // meta
 // --
 
-function _namespaceRegister( namespace )
+function _namespaceRegister( namespace, defaultNamespaceName )
 {
 
   if( Config.debug )
@@ -852,9 +852,7 @@ function _namespaceRegister( namespace )
   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
   namespace.IsLong = true;
 
-  namespace.AsDefault = _.long._asDefaultGenerate( namespace );
-
-  return namespace.AsDefault;
+  namespace.AsDefault = _.long._asDefaultGenerate( namespace, defaultNamespaceName );
 
   function verify()
   {
@@ -879,27 +877,30 @@ function _namespaceRegister( namespace )
 
 //
 
-function _asDefaultGenerate( namespace )
+function _asDefaultGenerate( namespace, defaultNamespaceName )
 {
 
   _.assert( !!namespace );
   _.assert( !!namespace.TypeName );
+
+  if( defaultNamespaceName === undefined )
+  defaultNamespaceName = 'defaultLong';
 
   let result = _.long.toolsNamespacesByType[ namespace.TypeName ];
   if( result )
   return result;
 
   result = _.long.toolsNamespacesByType[ namespace.TypeName ] = Object.create( _ );
-  result.defaultLong = namespace;
+  result[ defaultNamespaceName ] = namespace;
 
   _.long.toolsNamespacesByName[ namespace.NamespaceName ] = result;
 
   /* xxx : introduce map _.namespaces */
   for( let name in _.long.namespaces )
   {
-    let namespace2 = _.long.namespaces[ name ];
-    result[ namespace2.TypeName ] = Object.create( namespace );
-    result[ namespace2.TypeName ].tools = result;
+    let namespace = _.long.namespaces[ name ];
+    result[ namespace.TypeName ] = Object.create( namespace );
+    result[ namespace.TypeName ].tools = result;
   }
 
   result.long = Object.create( _.long );
