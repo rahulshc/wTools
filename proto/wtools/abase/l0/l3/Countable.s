@@ -314,6 +314,32 @@ function _whileRight( src, onEach )
   return [ undefined, -1, -1, true ];
 }
 
+//
+
+function _filterAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._filterAct1( ... arguments );
+  return _.props._filterAct1.call( self, ... arguments );
+}
+
+//
+
+function _mapAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._mapAct1( ... arguments );
+  return _.props._mapAct1.call( self, ... arguments );
+}
+
 // --
 // extension
 // --
@@ -410,7 +436,7 @@ var CountableExtension =
   last : _.props.last, /* qqq : cover */
 
   _filterAct0 : _.props._filterAct0,
-  _filterAct1 : _.props._filterAct1,
+  _filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -420,7 +446,7 @@ var CountableExtension =
   filter : _.props.filter,
 
   _mapAct0 : _.props._mapAct0,
-  _mapAct1 : _.props._mapAct1,
+  _mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,
