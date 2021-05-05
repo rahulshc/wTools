@@ -89,14 +89,19 @@ let UnrollExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementDel : _.long._elementDel,
-  elementDel : _.long.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.long._elementWithKeyDel,
-  elementWithKeyDel : _.long.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.long._elementWithCardinalDel,
-  elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.long._empty,
-  empty : _.long.empty, /* qqq : for junior : cover */
+  _elementAppend : _.array._elementAppend,
+  elementAppend : _.array.elementAppend, /* qqq : cover */
+  _elementPrepend : _.array._elementPrepend,
+  elementPrepend : _.array.elementPrepend, /* qqq : cover */
+
+  _elementDel : _.array._elementDel,
+  elementDel : _.array.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.array._elementWithKeyDel,
+  elementWithKeyDel : _.array.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.array._elementWithCardinalDel,
+  elementWithCardinalDel : _.array.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.array._empty,
+  empty : _.array.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */

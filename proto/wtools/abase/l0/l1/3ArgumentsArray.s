@@ -94,11 +94,11 @@ function _makeEmpty()
 
 //
 
-function makeEmpty()
+function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( src === undefined || src === null || this.like( src ) );
-  return this._makeEmpty();
+  return this._makeEmpty( src );
 }
 
 //

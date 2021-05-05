@@ -10,35 +10,6 @@ _.assert( !!_.long._aptLeft, 'Expects routine props._aptLeft' );
 _.assert( !!_.long._elementWithKey, 'Expects routine long._elementWithKey' );
 
 // --
-// elementor
-// --
-
-function _elementWithKeyDel( src, key )
-{
-  debugger; /* eslint-disable-line no-debugger */
-  throw _.err( `${this.TypeName} has fixed length` );
-  return false;
-}
-
-//
-
-function _elementWithCardinalDel( src, cardinal )
-{
-  debugger; /* eslint-disable-line no-debugger */
-  throw _.err( `${this.TypeName} has fixed length` );
-  return false;
-}
-
-//
-
-function _empty( dst )
-{
-  debugger; /* eslint-disable-line no-debugger */
-  throw _.err( `${this.TypeName} has fixed length` );
-  return false;
-}
-
-// --
 // extension
 // --
 
@@ -92,14 +63,19 @@ var BufferTypedExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementDel : _elementWithKeyDel,
-  elementDel : _.long.elementDel, /* qqq : cover */
-  _elementWithKeyDel,
-  elementWithKeyDel : _.long.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel,
-  elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
-  _empty,
-  empty : _.long.empty, /* qqq : for junior : cover */
+  _elementAppend : _.argumentsArray._elementAppend,
+  elementAppend : _.argumentsArray.elementAppend, /* qqq : cover */
+  _elementPrepend : _.argumentsArray._elementPrepend,
+  elementPrepend : _.argumentsArray.elementPrepend, /* qqq : cover */
+
+  _elementDel : _.argumentsArray._elementDel,
+  elementDel : _.argumentsArray.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.argumentsArray._elementWithKeyDel,
+  elementWithKeyDel : _.argumentsArray.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.argumentsArray._elementWithCardinalDel,
+  elementWithCardinalDel : _.argumentsArray.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.argumentsArray._empty,
+  empty : _.argumentsArray.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */
