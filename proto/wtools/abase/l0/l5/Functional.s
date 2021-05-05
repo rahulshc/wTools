@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 // --
 // scalar
@@ -3871,7 +3870,7 @@ let ContainerExtension =
   each : entityEach,
   eachOwn : entityEachOwn,
 
-  /* qqq : for Dmytro : implementations with dst-null-convention? */
+  /* qqq : for Dmytro : implementations with dst-null convention? */
   only : entityOnly,
   but : entityBut,
   and : entityAnd,
@@ -3885,7 +3884,7 @@ let ContainerExtension =
   _filter_functor,
 
   map_,
-  filter_, /* qqq : for junior : bad */
+  filter_,
   first : entityFirst,
   last : entityLast,
 

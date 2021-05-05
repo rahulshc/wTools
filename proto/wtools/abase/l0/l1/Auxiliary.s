@@ -310,7 +310,7 @@ function _make( src )
     if( this.like( src ) )
     return this._cloneShallow( src );
     else
-    return this.extendVersatile( Object.create( null ), src );
+    return this.extendUniversal( Object.create( null ), src );
   }
   return Object.create( null );
 }
@@ -460,16 +460,16 @@ var AuxiliaryExtension =
   _extendWithSet : _.props._extendWithSet,
   _extendWithCountable : _.props._extendWithCountable,
   _extendWithProps : _.props._extendWithProps,
-  _extendVersatile : _.props._extendVersatile,
-  extendVersatile : _.props.extendVersatile,
+  _extendUniversal : _.props._extendUniversal,
+  extendUniversal : _.props.extendUniversal,
   extend : _.props.extend,
 
   _supplementWithHashmap : _.props._supplementWithHashmap,
   _supplementWithSet : _.props._supplementWithSet,
   _supplementWithCountable : _.props._supplementWithCountable,
   _supplementWithProps : _.props._supplementWithProps,
-  _supplementVersatile : _.props._supplementVersatile,
-  supplementVersatile : _.props.supplementVersatile,
+  _supplementUniversal : _.props._supplementUniversal,
+  supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
 
 }

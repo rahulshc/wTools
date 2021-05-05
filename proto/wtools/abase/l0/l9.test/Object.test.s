@@ -40,7 +40,7 @@ function dichotomy( test )
   test.true( _.object.isPopulated( src ) );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   test.true( !_.object.is( src ) );
   test.true( !_.object.isBasic( src ) );
   test.true( !_.object.like( src ) );

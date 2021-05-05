@@ -50,7 +50,7 @@ function mapperIs( test )
   test.identical( got, true );
 
   test.case = 'routine - сustom filter without propertyTransformer';
-  filter.identity = { propertyFilter : true }
+  filter.identity = { propertyCondition : true }
   var src = filter;
   var got = _.props.mapperIs( filter );
   test.identical( got, false );
@@ -62,7 +62,7 @@ function mapperIs( test )
   test.identical( got, true );
 
   test.case = 'routine - сustom filter';
-  filter.identity = { propertyFilter : true, propertyTransformer : true }
+  filter.identity = { propertyCondition : true, propertyTransformer : true }
   var src = filter;
   var got = _.props.mapperIs( filter );
   test.identical( got, false );
@@ -74,7 +74,7 @@ function mapperIs( test )
   test.identical( got, true );
 
   test.case = 'routine - сustom filter functor';
-  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  filter.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
   var src = filter;
   var got = _.props.mapperIs( filter );
   test.identical( got, false );
@@ -84,7 +84,7 @@ function mapperIs( test )
   test.identical( got, true );
 
   test.case = 'existing filter';
-  var got = _.props.mapperIs( _.props.filter[ 'dstAndSrcOwn' ] );
+  var got = _.props.mapperIs( _.props.condition[ 'dstAndSrcOwn' ] );
   test.identical( got, false );
 
   /* - */
@@ -151,7 +151,7 @@ function filterIs( test )
   test.identical( got, false );
 
   test.case = 'routine - сustom filter without propertyTransformer';
-  filter.identity = { propertyFilter : true }
+  filter.identity = { propertyCondition : true }
   var src = filter;
   var got = _.props.filterIs( filter );
   test.identical( got, true );
@@ -163,7 +163,7 @@ function filterIs( test )
   test.identical( got, false );
 
   test.case = 'routine - сustom filter';
-  filter.identity = { propertyFilter : true, propertyTransformer : true }
+  filter.identity = { propertyCondition : true, propertyTransformer : true }
   var src = filter;
   var got = _.props.filterIs( filter );
   test.identical( got, true );
@@ -175,7 +175,7 @@ function filterIs( test )
   test.identical( got, false );
 
   test.case = 'routine - сustom filter functor';
-  filter.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  filter.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
   var src = filter;
   var got = _.props.filterIs( filter );
   test.identical( got, true );
@@ -185,7 +185,7 @@ function filterIs( test )
   test.identical( got, false );
 
   test.case = 'existing filter';
-  var got = _.props.filterIs( _.props.filter[ 'dstAndSrcOwn' ] );
+  var got = _.props.filterIs( _.props.condition[ 'dstAndSrcOwn' ] );
   test.identical( got, true );
 
   /* - */
@@ -229,7 +229,7 @@ function mapperFromFilter( test )
 
   test.case = 'routine - сustom filter without propertyTransformer';
   var src = filter1;
-  src.identity = { propertyFilter : true }
+  src.identity = { propertyCondition : true }
   var got = _.props.mapperFromFilter( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -243,7 +243,7 @@ function mapperFromFilter( test )
 
   test.case = 'routine - сustom filter';
   var src = filter2;
-  src.identity = { propertyFilter : true, propertyTransformer : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true }
   var got = _.props.mapperFromFilter( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -257,7 +257,7 @@ function mapperFromFilter( test )
 
   test.case = 'routine - сustom filter functor';
   var src = filter3;
-  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
   var got = _.props.mapperFromFilter( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -269,7 +269,7 @@ function mapperFromFilter( test )
   test.true( got === src );
 
   test.case = 'existing filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var got = _.props.mapperFromFilter( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -347,7 +347,7 @@ function mapperFromFilter( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -380,7 +380,7 @@ function mapperFrom( test )
 
   test.case = 'routine - сustom filter without propertyTransformer';
   var src = filter1;
-  src.identity = { propertyFilter : true }
+  src.identity = { propertyCondition : true }
   var got = _.props.mapperFrom( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -394,7 +394,7 @@ function mapperFrom( test )
 
   test.case = 'routine - сustom filter';
   var src = filter2;
-  src.identity = { propertyFilter : true, propertyTransformer : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true }
   var got = _.props.mapperFrom( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -408,7 +408,7 @@ function mapperFrom( test )
 
   test.case = 'routine - сustom filter functor';
   var src = filter3;
-  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
   var got = _.props.mapperFrom( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -420,7 +420,7 @@ function mapperFrom( test )
   test.true( got === src );
 
   test.case = 'existing filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var got = _.props.mapperFrom( src );
   test.true( _.props.mapperIs( got ) );
   test.true( got !== src );
@@ -495,7 +495,7 @@ function mapperFrom( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -521,27 +521,27 @@ function filterFrom( test )
 
   test.case = 'routine - сustom filter without propertyTransformer';
   var src = filter1;
-  src.identity = { propertyFilter : true }
+  src.identity = { propertyCondition : true }
   var got = _.props.filterFrom( src );
   test.true( _.props.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter';
   var src = filter2;
-  src.identity = { propertyFilter : true, propertyTransformer : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true }
   var got = _.props.filterFrom( src );
   test.true( _.props.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'routine - сustom filter functor';
   var src = filter3;
-  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
+  src.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
   var got = _.props.filterFrom( src );
   test.true( _.props.filterIs( got ) );
   test.true( got === src );
 
   test.case = 'existing filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var got = _.props.filterFrom( src );
   test.true( _.props.filterIs( got ) );
   test.true( got === src );
@@ -595,7 +595,7 @@ function filterFrom( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -613,7 +613,7 @@ function filterFrom( test )
 function transformerRegister( test )
 {
   let mapperBefore = new Set( Object.getOwnPropertyNames( _.props.mapper ) );
-  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.filter ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.condition ) );
 
   test.case = 'routine - сustom mapper without propertyTransformer';
   var src = mapper1;
@@ -625,11 +625,11 @@ function transformerRegister( test )
 
   test.case = 'routine - сustom filter without propertyTransformer';
   var src = filter1;
-  src.identity = { propertyFilter : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   _.props.transformerRegister( src );
   test.true( _.props.filterIs( src ) );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
 
   test.case = 'routine - сustom mapper';
@@ -642,11 +642,11 @@ function transformerRegister( test )
 
   test.case = 'routine - сustom filter';
   var src = filter2;
-  src.identity = { propertyFilter : true, propertyTransformer : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true, propertyTransformer : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   _.props.transformerRegister( src );
   test.true( _.props.filterIs( src ) );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
 
   test.case = 'routine - сustom mapper functor';
@@ -659,11 +659,11 @@ function transformerRegister( test )
 
   test.case = 'routine - сustom filter functor';
   var src = filter3;
-  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   _.props.transformerRegister( src );
   test.true( _.props.filterIs( src ) );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
 
   test.case = 'existing mapper with custom name';
@@ -675,12 +675,12 @@ function transformerRegister( test )
   test.true( _.props.mapperIs( _.props.mapper[ srcName ] ) );
 
   test.case = 'existing filter with custom name';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var srcName = 'existingFilter';
-  test.true( test.true( _.routine.is( _.props.filter[ 'dstAndSrcOwn' ] ) ) );
+  test.true( test.true( _.routine.is( _.props.condition[ 'dstAndSrcOwn' ] ) ) );
   _.props.transformerRegister( src, srcName );
   test.true( _.props.filterIs( src ) );
-  test.true( _.props.filterIs( _.props.filter[ srcName ] ) );
+  test.true( _.props.filterIs( _.props.condition[ srcName ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ srcName ] ) );
 
   _.props.transformersUnregister
@@ -711,7 +711,7 @@ function transformerRegister( test )
 
   test.case = 'check no garbage left';
   test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.props.mapper ) ) )
-  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.filter ) ) );
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.condition ) ) );
 
   if( !Config.debug )
   return;
@@ -726,7 +726,7 @@ function transformerRegister( test )
   test.shouldThrowErrorSync( () => _.props.transformerRegister( _.props.mapper[ 'assigning' ] ) )
 
   test.case = 'existing filter';
-  test.shouldThrowErrorSync( () => _.props.transformerRegister( _.props.filter[ 'dstAndSrcOwn' ] ) )
+  test.shouldThrowErrorSync( () => _.props.transformerRegister( _.props.condition[ 'dstAndSrcOwn' ] ) )
 
   /* - */
 
@@ -792,7 +792,7 @@ function transformerRegister( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -811,28 +811,28 @@ function transformerRegister( test )
 function transformersRegister( test )
 {
   let mapperBefore = new Set( Object.getOwnPropertyNames( _.props.mapper ) );
-  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.filter ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.condition ) );
 
   addIdentity();
 
   test.case = 'check not registered';
   test.true( _.props.mapper[ mapper1.name ] === undefined );
-  test.true( _.props.filter[ filter1.name ] === undefined );
+  test.true( _.props.condition[ filter1.name ] === undefined );
 
   test.true( _.props.mapper[ mapper2.name ] === undefined );
-  test.true( _.props.filter[ filter2.name ] === undefined );
+  test.true( _.props.condition[ filter2.name ] === undefined );
   test.true( _.props.mapper[ filter2.name ] === undefined );//
 
   test.true( _.props.mapper[ mapper3.name ] === undefined );
-  test.true( _.props.filter[ filter3.name ] === undefined );
+  test.true( _.props.condition[ filter3.name ] === undefined );
   test.true( _.props.mapper[ filter3.name ] === undefined );
 
   test.true( _.props.mapper[ mapper4.name ] === undefined );
-  test.true( _.props.filter[ filter4.name ] === undefined );
+  test.true( _.props.condition[ filter4.name ] === undefined );
   test.true( _.props.mapper[ filter4.name ] === undefined );
 
   test.true( _.props.mapper[ 'existingMapper' ] === undefined );
-  test.true( _.props.filter[ 'existingFilter' ] === undefined );
+  test.true( _.props.condition[ 'existingFilter' ] === undefined );
   test.true( _.props.mapper[ 'existingFilter' ] === undefined );
 
   var transformers =
@@ -842,22 +842,22 @@ function transformersRegister( test )
     [ mapper4.name ] : mapper4,
     [ filter4.name ] : filter4,
     'existingMapper' : _.props.mapper[ 'assigning' ],
-    'existingFilter' : _.props.filter[ 'dstAndSrcOwn' ],
+    'existingFilter' : _.props.condition[ 'dstAndSrcOwn' ],
   }
 
   _.props.transformersRegister( transformers );
 
   test.case = 'check registered';
   test.true( _.props.mapperIs( _.props.mapper[ mapper3.name ] ) );
-  test.true( _.props.filterIs( _.props.filter[ filter3.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ filter3.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ filter3.name ] ) );
 
   test.true( _.props.mapperIs( _.props.mapper[ mapper4.name ] ) );
-  test.true( _.props.filterIs( _.props.filter[ filter4.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ filter4.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ filter4.name ] ) );
 
   test.true( _.props.mapperIs( _.props.mapper[ 'existingMapper' ] ) );
-  test.true( _.props.filterIs( _.props.filter[ 'existingFilter' ] ) );
+  test.true( _.props.filterIs( _.props.condition[ 'existingFilter' ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ 'existingFilter' ] ) );
 
   _.props.transformersUnregister
@@ -885,7 +885,7 @@ function transformersRegister( test )
 
   test.case = 'check no garbage left';
   test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.props.mapper ) ) )
-  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.filter ) ) );
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.condition ) ) );
 
   if( !Config.debug )
   return;
@@ -900,7 +900,7 @@ function transformersRegister( test )
   test.shouldThrowErrorSync( () => _.props.transformerRegisters({ 'assigning' : _.props.mapper[ 'assigning' ] }) )
 
   test.case = 'existing filter';
-  test.shouldThrowErrorSync( () => _.props.transformerRegisters({ 'dstAndSrcOwn' : _.props.filter[ 'dstAndSrcOwn' ] }) )
+  test.shouldThrowErrorSync( () => _.props.transformerRegisters({ 'dstAndSrcOwn' : _.props.condition[ 'dstAndSrcOwn' ] }) )
 
   test.case = 'not functor mapper';
   test.shouldThrowErrorSync( () => _.props.transformerRegisters({ [ mapper1.name ] : mapper1 }) )
@@ -978,7 +978,7 @@ function transformersRegister( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -1013,7 +1013,7 @@ function transformersRegister( test )
   function filter4()
   {
     let routine = notIdentical;
-    routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+    routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
     return routine;
     function notIdentical( dstContainer, srcContainer, key )
     {
@@ -1026,16 +1026,16 @@ function transformersRegister( test )
   function addIdentity()
   {
     mapper1.identity = { propertyMapper : true };
-    filter1.identity = { propertyFilter : true };
+    filter1.identity = { propertyCondition : true };
 
     mapper2.identity = { propertyMapper : true, propertyTransformer : true };
-    filter2.identity = { propertyFilter : true, propertyTransformer : true };
+    filter2.identity = { propertyCondition : true, propertyTransformer : true };
 
     mapper3.identity = { propertyMapper : true, functor : true };
-    filter3.identity = { propertyFilter : true, functor : true }
+    filter3.identity = { propertyCondition : true, functor : true }
 
     mapper4.identity = { propertyMapper : true, propertyTransformer : true, functor : true };
-    filter4.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+    filter4.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
   }
 
 }
@@ -1045,7 +1045,7 @@ function transformersRegister( test )
 function transformerUnregister( test )
 {
   let mapperBefore = new Set( Object.getOwnPropertyNames( _.props.mapper ) );
-  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.filter ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.condition ) );
 
   test.case = 'routine - сustom mapper without propertyTransformer';
   var src = mapper1;
@@ -1058,15 +1058,15 @@ function transformerUnregister( test )
 
   test.case = 'routine - сustom filter without propertyTransformer';
   var src = filter1;
-  src.identity = { propertyFilter : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
   _.props.transformerRegister( src );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
   _.props.transformerUnregister( src.name, 'mapper' );
   _.props.transformerUnregister( src.name, 'filter' );
-  test.true( _.props.filter[ src.name ] === undefined );
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
 
   test.case = 'routine - сustom mapper';
@@ -1080,15 +1080,15 @@ function transformerUnregister( test )
 
   test.case = 'routine - сustom filter';
   var src = filter2;
-  src.identity = { propertyFilter : true, propertyTransformer : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true, propertyTransformer : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
   _.props.transformerRegister( src );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
   _.props.transformerUnregister( src.name, 'mapper' );
   _.props.transformerUnregister( src.name, 'filter' );
-  test.true( _.props.filter[ src.name ] === undefined );
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
 
   test.case = 'routine - сustom mapper functor';
@@ -1102,15 +1102,15 @@ function transformerUnregister( test )
 
   test.case = 'routine - сustom filter functor';
   var src = filter3;
-  src.identity = { propertyFilter : true, propertyTransformer : true, functor : true }
-  test.true( _.props.filter[ src.name ] === undefined );
+  src.identity = { propertyCondition : true, propertyTransformer : true, functor : true }
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
   _.props.transformerRegister( src );
-  test.true( _.props.filterIs( _.props.filter[ src.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ src.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ src.name ] ) );
   _.props.transformerUnregister( src.name, 'mapper' );
   _.props.transformerUnregister( src.name, 'filter' );
-  test.true( _.props.filter[ src.name ] === undefined );
+  test.true( _.props.condition[ src.name ] === undefined );
   test.true( _.props.mapper[ src.name ] === undefined );
 
   test.case = 'existing mapper with custom name';
@@ -1123,20 +1123,20 @@ function transformerUnregister( test )
   test.true( _.props.mapper[ srcName ] === undefined );
 
   test.case = 'existing filter with custom name';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var srcName = 'existingFilter';
-  test.true( test.true( _.routine.is( _.props.filter[ 'dstAndSrcOwn' ] ) ) );
+  test.true( test.true( _.routine.is( _.props.condition[ 'dstAndSrcOwn' ] ) ) );
   _.props.transformerRegister( src, srcName );
-  test.true( _.props.filterIs( _.props.filter[ srcName ] ) );
+  test.true( _.props.filterIs( _.props.condition[ srcName ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ srcName ] ) );
   _.props.transformerUnregister( srcName, 'mapper' );
   _.props.transformerUnregister( srcName, 'filter' );
-  test.true( _.props.filter[ srcName ] === undefined );
+  test.true( _.props.condition[ srcName ] === undefined );
   test.true( _.props.mapper[ srcName ] === undefined );
 
   test.case = 'check no garbage left';
   test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.props.mapper ) ) )
-  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.filter ) ) );
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.condition ) ) );
 
   if( !Config.debug )
   return;
@@ -1215,7 +1215,7 @@ function transformerUnregister( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -1234,28 +1234,28 @@ function transformerUnregister( test )
 function transformersUnregister( test )
 {
   let mapperBefore = new Set( Object.getOwnPropertyNames( _.props.mapper ) );
-  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.filter ) );
+  let filterBefore = new Set( Object.getOwnPropertyNames( _.props.condition ) );
 
   addIdentity();
 
   test.case = 'check not registered';
   test.true( _.props.mapper[ mapper1.name ] === undefined );
-  test.true( _.props.filter[ filter1.name ] === undefined );
+  test.true( _.props.condition[ filter1.name ] === undefined );
 
   test.true( _.props.mapper[ mapper2.name ] === undefined );
-  test.true( _.props.filter[ filter2.name ] === undefined );
+  test.true( _.props.condition[ filter2.name ] === undefined );
   test.true( _.props.mapper[ filter2.name ] === undefined );//
 
   test.true( _.props.mapper[ mapper3.name ] === undefined );
-  test.true( _.props.filter[ filter3.name ] === undefined );
+  test.true( _.props.condition[ filter3.name ] === undefined );
   test.true( _.props.mapper[ filter3.name ] === undefined );
 
   test.true( _.props.mapper[ mapper4.name ] === undefined );
-  test.true( _.props.filter[ filter4.name ] === undefined );
+  test.true( _.props.condition[ filter4.name ] === undefined );
   test.true( _.props.mapper[ filter4.name ] === undefined );
 
   test.true( _.props.mapper[ 'existingMapper' ] === undefined );
-  test.true( _.props.filter[ 'existingFilter' ] === undefined );
+  test.true( _.props.condition[ 'existingFilter' ] === undefined );
   test.true( _.props.mapper[ 'existingFilter' ] === undefined );
 
   var transformers =
@@ -1265,22 +1265,22 @@ function transformersUnregister( test )
     [ mapper4.name ] : mapper4,
     [ filter4.name ] : filter4,
     'existingMapper' : _.props.mapper[ 'assigning' ],
-    'existingFilter' : _.props.filter[ 'dstAndSrcOwn' ],
+    'existingFilter' : _.props.condition[ 'dstAndSrcOwn' ],
   }
 
   _.props.transformersRegister( transformers );
 
   test.case = 'check registered';
   test.true( _.props.mapperIs( _.props.mapper[ mapper3.name ] ) );
-  test.true( _.props.filterIs( _.props.filter[ filter3.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ filter3.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ filter3.name ] ) );
 
   test.true( _.props.mapperIs( _.props.mapper[ mapper4.name ] ) );
-  test.true( _.props.filterIs( _.props.filter[ filter4.name ] ) );
+  test.true( _.props.filterIs( _.props.condition[ filter4.name ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ filter4.name ] ) );
 
   test.true( _.props.mapperIs( _.props.mapper[ 'existingMapper' ] ) );
-  test.true( _.props.filterIs( _.props.filter[ 'existingFilter' ] ) );
+  test.true( _.props.filterIs( _.props.condition[ 'existingFilter' ] ) );
   test.true( _.props.mapperIs( _.props.mapper[ 'existingFilter' ] ) );
 
   _.props.transformersUnregister
@@ -1308,27 +1308,27 @@ function transformersUnregister( test )
 
   test.case = 'check unregistered';
   test.true( _.props.mapper[ mapper1.name ] === undefined );
-  test.true( _.props.filter[ filter1.name ] === undefined );
+  test.true( _.props.condition[ filter1.name ] === undefined );
 
   test.true( _.props.mapper[ mapper2.name ] === undefined );
-  test.true( _.props.filter[ filter2.name ] === undefined );
+  test.true( _.props.condition[ filter2.name ] === undefined );
   test.true( _.props.mapper[ filter2.name ] === undefined );//
 
   test.true( _.props.mapper[ mapper3.name ] === undefined );
-  test.true( _.props.filter[ filter3.name ] === undefined );
+  test.true( _.props.condition[ filter3.name ] === undefined );
   test.true( _.props.mapper[ filter3.name ] === undefined );
 
   test.true( _.props.mapper[ mapper4.name ] === undefined );
-  test.true( _.props.filter[ filter4.name ] === undefined );
+  test.true( _.props.condition[ filter4.name ] === undefined );
   test.true( _.props.mapper[ filter4.name ] === undefined );
 
   test.true( _.props.mapper[ 'existingMapper' ] === undefined );
-  test.true( _.props.filter[ 'existingFilter' ] === undefined );
+  test.true( _.props.condition[ 'existingFilter' ] === undefined );
   test.true( _.props.mapper[ 'existingFilter' ] === undefined );
 
   test.case = 'check no garbage left';
   test.identical( mapperBefore, new Set( Object.getOwnPropertyNames( _.props.mapper ) ) )
-  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.filter ) ) );
+  test.identical( filterBefore, new Set( Object.getOwnPropertyNames( _.props.condition ) ) );
 
   if( !Config.debug )
   return;
@@ -1406,7 +1406,7 @@ function transformersUnregister( test )
   function filter3()
   {
     let routine = primitive;
-    routine.identity = { propertyFilter : true, propertyTransformer : true };
+    routine.identity = { propertyCondition : true, propertyTransformer : true };
     return routine;
 
     function primitive( dstContainer, srcContainer, key )
@@ -1441,7 +1441,7 @@ function transformersUnregister( test )
   function filter4()
   {
     let routine = notIdentical;
-    routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+    routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
     return routine;
     function notIdentical( dstContainer, srcContainer, key )
     {
@@ -1454,16 +1454,16 @@ function transformersUnregister( test )
   function addIdentity()
   {
     mapper1.identity = { propertyMapper : true };
-    filter1.identity = { propertyFilter : true };
+    filter1.identity = { propertyCondition : true };
 
     mapper2.identity = { propertyMapper : true, propertyTransformer : true };
-    filter2.identity = { propertyFilter : true, propertyTransformer : true };
+    filter2.identity = { propertyCondition : true, propertyTransformer : true };
 
     mapper3.identity = { propertyMapper : true, functor : true };
-    filter3.identity = { propertyFilter : true, functor : true }
+    filter3.identity = { propertyCondition : true, functor : true }
 
     mapper4.identity = { propertyMapper : true, propertyTransformer : true, functor : true };
-    filter4.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+    filter4.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
   }
 
 }

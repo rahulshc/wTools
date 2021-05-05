@@ -218,7 +218,7 @@ function _extendWithProps( dstMap, src )
 
 //
 
-function _extendVersatile( dstMap, srcMap )
+function _extendUniversal( dstMap, srcMap )
 {
 
   _.assert( !_.primitive.is( srcMap ), 'Expects non-primitive' );
@@ -240,7 +240,7 @@ function _extendVersatile( dstMap, srcMap )
 
 //
 
-function extendVersatile( dstMap, srcMap )
+function extendUniversal( dstMap, srcMap )
 {
 
   if( dstMap === null )
@@ -265,7 +265,7 @@ function extendVersatile( dstMap, srcMap )
     if( srcProto === null || srcProto === Object.prototype )
     Object.assign( dstMap, srcMap );
     else
-    this._extendVersatile( dstMap, srcMap );
+    this._extendUniversal( dstMap, srcMap );
 
   }
 
@@ -376,7 +376,7 @@ function _supplementWithProps( dstMap, src )
 
 //
 
-function _supplementVersatile( dstMap, srcMap )
+function _supplementUniversal( dstMap, srcMap )
 {
 
   _.assert( !_.primitive.is( srcMap ), 'Expects non-primitive' );
@@ -398,7 +398,7 @@ function _supplementVersatile( dstMap, srcMap )
 
 //
 
-function supplementVersatile( dstMap, srcMap )
+function supplementUniversal( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return Object.assign( Object.create( null ), srcMap );
@@ -1894,16 +1894,16 @@ let PropsExtension =
   _extendWithSet,
   _extendWithCountable,
   _extendWithProps,
-  _extendVersatile,
-  extendVersatile,
+  _extendUniversal,
+  extendUniversal,
   extend,
 
   _supplementWithHashmap,
   _supplementWithSet,
   _supplementWithCountable,
   _supplementWithProps,
-  _supplementVersatile,
-  supplementVersatile,
+  _supplementUniversal,
+  supplementUniversal,
   supplement,
 
   // properties
@@ -1920,7 +1920,7 @@ let PropsExtension =
   onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
   allVals, /* qqq : for junior : cover */
 
-  _pairs,
+  _pairs, /* qqq : for junior : cover */
   pairs, /* qqq : for junior : cover */
   onlyOwnPairs, /* qqq : for junior : cover */
   onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */

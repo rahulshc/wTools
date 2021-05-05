@@ -3,9 +3,12 @@
 
 'use strict';
 
-const Self = _global_.wTools.props = _global_.wTools.props || Object.create( null );
 const _global = _global_;
 const _ = _global_.wTools;
+
+_.props = _.props || Object.create( null );
+_.props.mapper = _.props.mapper || Object.create( null );
+_.props.condition = _.props.condition || Object.create( null );
 
 // --
 // implementation
@@ -18,7 +21,7 @@ function mapperFromFilter( routine )
   _.assert( _.routine.is( routine ), 'Expects routine but got', _.entity.strType( routine ) );
   _.assert( !!routine.identity );
 
-  if( routine.identity.propertyFilter )
+  if( routine.identity.propertyCondition )
   {
     if( routine.identity.functor )
     {
@@ -99,17 +102,17 @@ function filterFrom( routine )
 
   if( routine.identity )
   {
-    if( !routine.identity.propertyFilter )
+    if( !routine.identity.propertyCondition )
     {
       _.assert( !routine.identity.propertyMapper, 'It is not possible to convert FieldMapper to FieldFilter' );
-      _.assert( routine.identity.propertyFilter === undefined );
-      routine.identity.propertyFilter = true;
+      _.assert( routine.identity.propertyCondition === undefined );
+      routine.identity.propertyCondition = true;
     }
     routine.identity.propertyTransformer = true;
     return routine;
   }
 
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 }
 
@@ -123,6 +126,7 @@ function transformerRegister( fi, name )
 
   _.assert( _.strDefined( name ) );
   _.assert( _.object.isBasic( fi.identity ), 'Not property transformer' );
+  _.assert( !!fi.identity );
 
   if( fi.identity.propertyMapper )
   {
@@ -130,12 +134,12 @@ function transformerRegister( fi, name )
     _.props.mapper[ name ] = mapperFrom( fi );
     return;
   }
-  else if( fi.identity.propertyFilter )
+  else if( fi.identity.propertyCondition )
   {
-    _.assert( _.props.filter[ name ] === undefined );
+    _.assert( _.props.condition[ name ] === undefined );
     _.assert( _.props.mapper[ name ] === undefined );
     _.props.mapper[ name ] = _.props.mapperFromFilter( fi );
-    _.props.filter[ name ] = fi;
+    _.props.condition[ name ] = fi;
     return;
   }
   else _.assert( 0, 'unexpected' );
@@ -202,7 +206,7 @@ function transformerIs( transformer )
   let result =
   (
     !!( transformer.identity.propertyTransformer
-    || transformer.identity.propertyFilter
+    || transformer.identity.propertyCondition
     || transformer.identity.propertyMapper )
   );
 
@@ -228,18 +232,15 @@ function filterIs( transformer )
   return false;
   if( !_.object.isBasic( transformer.identity ) )
   return false;
-  return !!transformer.identity.propertyFilter;
+  return !!transformer.identity.propertyCondition;
 }
 
 // --
 // extend
 // --
 
-let Extension =
+let PropsExtension =
 {
-
-  mapper : Object.create( null ),
-  filter : Object.create( null ),
 
   mapperFromFilter, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
@@ -254,6 +255,6 @@ let Extension =
 
 }
 
-Object.assign( _.props, Extension );
+Object.assign( _.props, PropsExtension );
 
 })();

@@ -258,7 +258,7 @@ function exportStringDiagnosticShallow( test )
 
   /* l7 */
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // var expected = '{- routine dstAndSrcOwn -}';
   // test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
@@ -2190,8 +2190,8 @@ function identicalShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
 
   // test.case = 'propertyTransformer & filter';
-  // var src1 = _.props.filter[ 'dstAndSrcOwn' ];
-  // var src2 = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src1 = _.props.condition[ 'dstAndSrcOwn' ];
+  // var src2 = _.props.condition[ 'dstAndSrcOwn' ];
   // test.identical( _.entity.identicalShallow( src1, src2 ), true );
   //
   // test.case = 'propertyTransformer & mapper';
@@ -2467,8 +2467,8 @@ function identicalShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
 
   // test.case = 'propertyTransformer & filter';
-  // var src1 = _.props.filter[ 'dstAndSrcOwn' ];
-  // var src2 = _.props.filter[ 'dstNotHasOrSrcNotNull' ];
+  // var src1 = _.props.condition[ 'dstAndSrcOwn' ];
+  // var src2 = _.props.condition[ 'dstNotHasOrSrcNotNull' ];
   // test.identical( _.entity.identicalShallow( src1, src2 ), false );
   //
   // test.case = 'propertyTransformer & mapper';
@@ -3638,8 +3638,8 @@ function equivalentShallowAllTypes( test )
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
   // test.case = 'propertyTransformer & filter';
-  // var src1 = _.props.filter[ 'dstAndSrcOwn' ];
-  // var src2 = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src1 = _.props.condition[ 'dstAndSrcOwn' ];
+  // var src2 = _.props.condition[ 'dstAndSrcOwn' ];
   // test.identical( _.entity.equivalentShallow( src1, src2 ), true );
   //
   // test.case = 'propertyTransformer & mapper';
@@ -3909,8 +3909,8 @@ function equivalentShallowAllTypes( test )
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
 
   // test.case = 'propertyTransformer & filter';
-  // var src1 = _.props.filter[ 'dstAndSrcOwn' ];
-  // var src2 = _.props.filter[ 'dstNotHasOrSrcNotNull' ];
+  // var src1 = _.props.condition[ 'dstAndSrcOwn' ];
+  // var src2 = _.props.condition[ 'dstNotHasOrSrcNotNull' ];
   // test.identical( _.entity.equivalentShallow( src1, src2 ), false );
   //
   // test.case = 'propertyTransformer & mapper';
@@ -6513,9 +6513,9 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
 
   /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // var got = _.entity.elementWithCardinal( src, 0 );
-  // test.identical( got, { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true } );
+  // test.identical( got, { 'propertyCondition' : true, 'propertyTransformer' : true, 'functor' : true } );
 
   /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & mapper';
@@ -7060,9 +7060,9 @@ function elementWithKey( test )
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // var got = _.entity.elementWithKey( src, 'identity' );
-  // test.identical( got, [ { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true }, 'identity', true ] );
+  // test.identical( got, [ { 'propertyCondition' : true, 'propertyTransformer' : true, 'functor' : true }, 'identity', true ] );
   // var got = _.entity.elementWithKey( src, 'non-exists' );
   // test.identical( got, [ undefined, 'non-exists', false ] );
   //
@@ -7702,9 +7702,9 @@ function elementWithImplicit( test )
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // var got = _.entity.elementWithImplicit( src, 'identity' );
-  // test.identical( got, [ { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true }, 'identity', true ] );
+  // test.identical( got, [ { 'propertyCondition' : true, 'propertyTransformer' : true, 'functor' : true }, 'identity', true ] );
   // var got = _.entity.elementWithImplicit( src, 'non-exists' );
   // test.identical( got, [ undefined, 'non-exists', false ] );
   //

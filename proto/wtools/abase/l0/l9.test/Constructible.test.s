@@ -757,7 +757,7 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( !_.object.is( src ) );

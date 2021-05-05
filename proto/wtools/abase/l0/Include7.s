@@ -8,10 +8,13 @@ if( typeof module !== 'undefined' )
 {
   module[ 'exports' ] = require( './Include5.s' );
 
-  require( './l6/l1/LongDescriptor.s' );
-  require( './l6/l3/Compose.s' );
-  require( './l6/l3/PropertyTransformers.s' );
-  require( './l6/l3/LongContext.s' );
+  // require( './l6/l1/LongDescriptor.s' );
+  // require( './l6/l3/Compose.s' );
+  // require( './l6/l3/PropertyTransformers.s' );
+  // require( './l6/l3/LongContext.s' );
+
+  require( './l6/Compose.s' );
+  require( './l6/PropertyTransformers.s' );
 
   require( './l7/ArgumentsArray.s' );
   require( './l7/Array.s' );

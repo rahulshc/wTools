@@ -242,7 +242,7 @@ function exportStringDiagnosticShallow( test )
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var expected = '{- routine dstAndSrcOwn -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
@@ -621,7 +621,7 @@ function exportStringCodeShallow( test )
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   var expected = '{- routine dstAndSrcOwn -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 

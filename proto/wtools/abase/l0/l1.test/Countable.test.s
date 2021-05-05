@@ -581,7 +581,7 @@ function typingExtended( test )
   test.true( !_.arrayIs( src ) );
 
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // test.true( !_.countable.like( src ) );
   // test.true( !_.countable.is( src ) );
   // test.true( !_.vector.like( src ) );

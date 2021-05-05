@@ -310,7 +310,7 @@ function lengthOf( test )
   test.identical( _.container.lengthOf( src ), 0 );
 
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // test.identical( _.container.lengthOf( src ), 0 );
   //
   // test.case = 'propertyTransformer & mapper';
@@ -377,7 +377,7 @@ function lengthOf( test )
   // test.case = 'console';
   // var src = console;
   // test.identical( _.container.lengthOf( src ), 24 );
-  // 
+  //
   // test.case = 'printerLike';
   // var src = _global.logger;
   // test.identical( _.container.lengthOf( src ), 0 );
@@ -632,9 +632,9 @@ function elementWithCardinal( test ) /* xxx : types that cause error marked with
 
   /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & filter';
-  // var src = _.props.filter[ 'dstAndSrcOwn' ];
+  // var src = _.props.condition[ 'dstAndSrcOwn' ];
   // var got = _.container.elementWithCardinal( src, 0 );
-  // test.identical( got, { 'propertyFilter' : true, 'propertyTransformer' : true, 'functor' : true } );
+  // test.identical( got, { 'propertyCondition' : true, 'propertyTransformer' : true, 'functor' : true } );
 
   /* else _.assert( 0 ); */
   // test.case = 'propertyTransformer & mapper';
@@ -1145,16 +1145,16 @@ function elementWithKey( test )
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
-  var got = _.container.elementWithKey( src, 'identity' );
-  test.identical( got, [ undefined, 'identity', false ] );
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
+  var got = _.container.elementWithKey( src, 'group' );
+  test.identical( got, [ undefined, 'group', false ] );
   var got = _.container.elementWithKey( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   // test.case = 'propertyTransformer & mapper';
   // var src = _.props.mapper[ 'assigning' ];
-  // var got = _.container.elementWithKey( src, 'identity' );
-  // test.identical( got, [ undefined, 'identity', false ] );
+  // var got = _.container.elementWithKey( src, 'group' );
+  // test.identical( got, [ undefined, 'group', false ] );
   // var got = _.container.elementWithKey( src, 'non-exists' );
   // test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1753,16 +1753,16 @@ function elementWithImplicit( test )
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
-  var got = _.container.elementWithImplicit( src, 'identity' );
-  test.identical( got, [ undefined, 'identity', false ] );
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
+  var got = _.container.elementWithImplicit( src, 'group' );
+  test.identical( got, [ undefined, 'group', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
   // test.case = 'propertyTransformer & mapper';
   // var src = _.props.mapper[ 'assigning' ];
-  // var got = _.container.elementWithImplicit( src, 'identity' );
-  // test.identical( got, [ undefined, 'identity', false ] );
+  // var got = _.container.elementWithImplicit( src, 'group' );
+  // test.identical( got, [ undefined, 'group', false ] );
   // var got = _.container.elementWithImplicit( src, 'non-exists' );
   // test.identical( got, [ undefined, 'non-exists', false ] );
 

@@ -3841,7 +3841,7 @@ function mapOnlyPrimitives( test )
 //
 //     return true;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -4052,7 +4052,7 @@ function mapOnlyPrimitives( test )
 //     return true;
 //     return false;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -4206,7 +4206,7 @@ function mapButConditional_WithThreeArguments( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4431,11 +4431,11 @@ function mapButConditional_WithThreeArguments( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, {}, {}, [] ) );
 
-  test.case = 'wrong type of propertyFilter';
+  test.case = 'wrong type of propertyCondition';
   test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( [], null, {}, {} ) );
 
-  test.case = 'propertyFilter has no PropertyFilter';
+  test.case = 'propertyCondition has no PropertyFilter';
   var filter = ( a, b, c ) => a > ( b + c );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, {}, {} ) );
 
@@ -4463,7 +4463,7 @@ function mapButConditional_DstMapIsNull( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4654,7 +4654,7 @@ function mapButConditional_DstMapIsMap( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4867,7 +4867,7 @@ function mapButConditional_ButMapIsVector( test )
     return true;
     return false;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -5444,7 +5444,7 @@ function mapButConditional_ButMapIsVector( test )
 //     return true;
 //     return false;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -19520,7 +19520,7 @@ function mapsExtendRecursiveConditionalCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendRecursiveConditional
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     dst,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
   );
@@ -19531,7 +19531,7 @@ function mapsExtendRecursiveConditionalCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendRecursiveConditional
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     dst,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
   );
@@ -19542,7 +19542,7 @@ function mapsExtendRecursiveConditionalCountable( test )
   var dst = { a : 1, b : 2 };
   var got = _.mapsExtendRecursiveConditional
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     dst,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
   );
@@ -19553,7 +19553,7 @@ function mapsExtendRecursiveConditionalCountable( test )
   var dst = { a : 1, b : 2, c : undefined };
   var got = _.mapsExtendRecursiveConditional
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     dst,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
   );
@@ -20244,7 +20244,7 @@ function mapButConditional_Countable( test )
   var src = { a : 1, b : 2 };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
@@ -20256,7 +20256,7 @@ function mapButConditional_Countable( test )
   var src = { a : 1, b : 2 };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
@@ -20268,7 +20268,7 @@ function mapButConditional_Countable( test )
   var src = { a : 1, b : 2 };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
@@ -20280,7 +20280,7 @@ function mapButConditional_Countable( test )
   var src = { a : 2, b : 2, c : 3 };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
@@ -20292,7 +20292,7 @@ function mapButConditional_Countable( test )
   var src = { a : 1, b : 2, c : undefined };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
@@ -20304,7 +20304,7 @@ function mapButConditional_Countable( test )
   var src = { a : 1, b : 2, c : undefined };
   var got = _.mapButConditional_
   (
-    _.props.filter.bypass(),
+    _.props.condition.bypass(),
     null,
     src,
     __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 })

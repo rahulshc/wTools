@@ -6,6 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( '../Include3.s' );
+  // const _ = require( 'Tools' );
   require( 'wTesting' );
 }
 
@@ -1074,6 +1075,8 @@ function filterMapCommonPass( test )
   let ops = [];
   let env;
 
+  _.assert( _.routine.is( _.props.filterWithEscape ) );
+
   namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
   namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
   namespaceEach({ method : 'filterWithoutEscape', left : 1 });
@@ -1111,6 +1114,9 @@ function filterMapCommonPass( test )
   function caseEach( _env )
   {
     env = _env;
+    test.identical( _.strType( _[ env.namespace ][ env.method ] ), 'Routine' );
+    if( _.strType( _[ env.namespace ][ env.method ] ) !== 'Routine' )
+    debugger;
 
     /* */
 

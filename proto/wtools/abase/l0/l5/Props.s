@@ -155,5 +155,6 @@ let Extension =
 //
 
 Object.assign( _.props, Extension );
+// _.assert( _.routine.is( _.props.filterWithEscape ) ); debugger;
 
 })();
