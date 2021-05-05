@@ -95,6 +95,7 @@ function _makeFilling( type, value, length )
     type = null;
   }
 
+  if( !_.number.is( length ) )
   if( _.long.is( length ) )
   length = length.length;
   else if( _.countable.is( length ) )

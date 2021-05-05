@@ -8360,9 +8360,9 @@ const Proto =
     // longMakeEmptyWithArrayAndUnroll,
     // longMakeEmptyWithArgumentsArray,
     // longMakeEmptyWithBufferTyped,
-    // longMakeEmptyWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
-    // longMakeEmptyWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
-    // longMakeEmptyWithBufferTypedLongDescriptor, /* qqq2 : for Dmytro : make proper fix */
+    // longMakeEmptyWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
+    // longMakeEmptyWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
+    // longMakeEmptyWithBufferTypedLongDescriptor, /* aaa2 : for Dmytro : make proper fix */
 
     // _longMakeOfLengthWithArrayAndUnroll, /* Dmytro : should be removed, routines do not exist and not used */
     // _longMakeOfLengthWithArgumentsArray,
