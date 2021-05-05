@@ -1145,6 +1145,7 @@ function filterMapCommonPass( test )
     clean();
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : 12, c : 13 }
     test.identical( got, exp );
@@ -1282,6 +1283,7 @@ function filterCommonDropping( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, c : 13 }
     test.identical( got, exp );
@@ -1378,6 +1380,7 @@ function mapCommonReturningUndefined( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : 2, c : 13 }
     test.identical( got, exp );
@@ -1482,6 +1485,7 @@ function filterMapCommonEscaping( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : escape( undefined ), c : 13 }
     test.identical( got, exp );

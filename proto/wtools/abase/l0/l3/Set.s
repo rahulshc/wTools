@@ -56,19 +56,6 @@ function _identicalShallow( src1, src2 )
   return true;
 }
 
-// //
-//
-// function identicalShallow( src1, src2, o )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( !this.like( src1 ) )
-//   return false;
-//   if( !this.like( src2 ) )
-//   return false;
-//   return this._identicalShallow( src1, src2 );
-// }
-
 // --
 // container interface
 // --
@@ -78,29 +65,12 @@ function _lengthOf( src )
   return src.size;
 }
 
-// //
-//
-// function lengthOf( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( this.like( src ) );
-//   return this._lengthOf( src );
-// }
-
 //
 
 function _hasKey( src, key )
 {
   return src.has( key );
 }
-
-// //
-//
-// function hasKey( src, key )
-// {
-//   _.assert( this.like( src ) );
-//   return this._hasKey( src, key );
-// }
 
 //
 
@@ -111,14 +81,6 @@ function _hasCardinal( src, cardinal )
   return cardinal < src.size;
 }
 
-// //
-//
-// function hasCardinal( src, cardinal )
-// {
-//   _.assert( this.like( src ) );
-//   return this._hasCardinal( src, cardinal );
-// }
-
 //
 
 function _keyWithCardinal( src, cardinal )
@@ -127,14 +89,6 @@ function _keyWithCardinal( src, cardinal )
   return [ undefined, false ];
   return [ [ ... src ][ cardinal ], true ];
 }
-
-// //
-//
-// function keyWithCardinal( src, cardinal )
-// {
-//   _.assert( this.like( src ) );
-//   return this._keyWithCardinal( src, cardinal );
-// }
 
 //
 
@@ -152,33 +106,6 @@ function _elementWithKey( src, key )
   return [ undefined, key, false ];
 }
 
-// //
-//
-// function elementWithKey( src, key )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithKey( src, key );
-// }
-//
-// //
-//
-// function _elementWithImplicit( src, key )
-// {
-//   if( _.props.keyIsImplicit( key ) )
-//   return _.props._onlyImplicitWithKeyTuple( src, key );
-//   return this._elementWithKey( src, key );
-// }
-//
-// //
-//
-// function elementWithImplicit( src, key )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithImplicit( src, key );
-// }
-
 //
 
 function _elementWithCardinal( src, key )
@@ -189,42 +116,23 @@ function _elementWithCardinal( src, key )
   return [ [ ... src ][ key ], key, true ];
 }
 
-// //
-//
-// function elementWithCardinal( src, key )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithCardinal( src, key );
-// }
-
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
-  src.set( val );
+  dst.set( val );
   return [ val, val, true ];
 }
 
-// //
-//
-// function elementWithKeySet( src, key, val )
-// {
-//   _.assert( arguments.length === 3 );
-//   _.assert( this.is( src ) );
-//   _.assert( key === val );
-//   return this._elementWithKeySet( src, key, val );
-// }
-
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] === true )
   {
-    src.delete( was[ 0 ] );
-    src.set( val );
+    dst.delete( was[ 0 ] );
+    dst.set( val );
     return [ val, val, true ];
   }
   else
@@ -233,53 +141,26 @@ function _elementWithCardinalSet( src, cardinal, val )
   }
 }
 
-// //
-//
-// function elementWithCardinalSet( src, cardinal, val )
-// {
-//   _.assert( arguments.length === 3 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithCardinalSet( src, cardinal, val );
-// }
-
 //
 
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
-  if( !this._hasKey( src, key ) )
+  if( !this._hasKey( dst, key ) )
   return false;
-  src.delete( key );
+  dst.delete( key );
   return true;
 }
 
-// //
-//
-// function elementWithKeyDel( src, key )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithKeyDel( src, key );
-// }
-
 //
 
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
-  let has = this._keyWithCardinal( src, cardinal );
+  let has = this._keyWithCardinal( dst, cardinal );
   if( !has[ 1 ] )
   return false;
-  src.delete( has[ 0 ] );
+  dst.delete( has[ 0 ] );
   return true;
 }
-
-// //
-//
-// function elementWithCardinalDel( src, cardinal )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   return this._elementWithCardinalDel( src, cardinal, val );
-// }
 
 //
 
@@ -288,15 +169,6 @@ function _empty( dst )
   dst.clear();
   return dst;
 }
-
-// //
-//
-// function empty( dst )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( this.like( dst ) );
-//   return this._empty( dst );
-// }
 
 //
 
@@ -310,15 +182,6 @@ function _eachLeft( src, onEach )
   }
 }
 
-// //
-//
-// function eachLeft( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   this._eachLeft( src, onEach );
-// }
-
 //
 
 function _eachRight( src, onEach )
@@ -330,15 +193,6 @@ function _eachRight( src, onEach )
     onEach( e, e, k, src );
   }
 }
-
-// //
-//
-// function eachRight( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   this._eachRight( src, onEach );
-// }
 
 //
 
@@ -360,15 +214,6 @@ function _whileLeft( src, onEach )
   return [ laste, laste, src.size-1, true ];
 }
 
-// //
-//
-// function whileLeft( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   this._whileLeft( src, onEach );
-// }
-
 //
 
 function _whileRight( src, onEach )
@@ -388,15 +233,6 @@ function _whileRight( src, onEach )
   return [ e, e, 0, true ];
 }
 
-// //
-//
-// function whileRight( src, onEach )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( this.is( src ) );
-//   this._whileRight( src, onEach );
-// }
-
 // --
 // extension
 // --
@@ -404,15 +240,6 @@ function _whileRight( src, onEach )
 let ToolsExtension =
 {
 
-  // reader
-
-  // _setsAreIdenticalShallow : _identicalShallow.bind( _.set ),
-  // setsAreIdenticalShallow : identicalShallow.bind( _.set ),
-
-  //
-
-  // setFrom : from,
-  // setsFrom,
   setToArray : toArray,
   setsToArrays,
 

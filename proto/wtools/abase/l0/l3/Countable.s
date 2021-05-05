@@ -194,38 +194,38 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
   if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
+  const dst2 = [ ... dst ];
+  if( dst2.length <= cardinal )
   return [ undefined, cardinal, false ];
 
-  let elementWithKeySet = _.class.methodElementWithKeySetOf( src );
+  let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
-  return elementWithKeySet.call( src, key, val );
+  return elementWithKeySet.call( dst, key, val );
 
-  let elementSet = _.class.methodElementSetOf( src );
+  let elementSet = _.class.methodElementSetOf( dst );
   if( elementSet )
-  return [ elementSet.call( src, key, val ), key, true ];
+  return [ elementSet.call( dst, key, val ), key, true ];
 
   _.assert( 0, 'Countable does not have implemented neither method "elementWithKeySet" nor method "eSet"' );
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
+  const dst2 = [ ... dst ];
+  if( dst2.length <= cardinal )
   return [ undefined, cardinal, false ];
 
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] )
-  this._elementWithKeySet( src, was[ 1 ], val );
+  this._elementWithKeySet( dst, was[ 1 ], val );
   return [ undefined, cardinal, false ];
 }
 

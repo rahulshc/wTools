@@ -123,20 +123,20 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
-  src.set( key, val );
+  dst.set( key, val );
   return [ val, key, true ];
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] === true )
   {
-    src.set( was[ 1 ], val );
+    dst.set( was[ 1 ], val );
     return [ val, was[ 1 ], true ];
   }
   else
@@ -147,22 +147,22 @@ function _elementWithCardinalSet( src, cardinal, val )
 
 //
 
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
-  if( !this._hasKey( src, key ) )
+  if( !this._hasKey( dst, key ) )
   return false;
-  src.delete( key );
+  dst.delete( key );
   return true;
 }
 
 //
 
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
-  let has = this._keyWithCardinal( src, cardinal );
+  let has = this._keyWithCardinal( dst, cardinal );
   if( !has[ 1 ] )
   return false;
-  src.delete( has[ 0 ] );
+  dst.delete( has[ 0 ] );
   return true;
 }
 

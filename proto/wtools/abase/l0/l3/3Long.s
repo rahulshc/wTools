@@ -310,80 +310,88 @@ function elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
-  if( key < 0 || src.length <= key || !_.numberIs( key ) )
-  return [ undefined, key, false ];
-  src[ key ] = val
+  if( _.long.hasFixedLength( dst ) )
+  {
+    if( key < 0 || dst.length <= key || !_.numberIs( key ) )
+    return [ undefined, key, false ];
+  }
+  else
+  {
+    if( key < 0 || !_.numberIs( key ) )
+    return [ undefined, key, false ];
+  }
+  dst[ key ] = val
   return [ val, key, true ];
 }
 
 //
 
-function elementWithKeySet( src, key, val )
+function elementWithKeySet( dst, key, val )
 {
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeySet( src, key, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithKeySet( dst, key, val );
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  if( cardinal < 0 || src.length <= cardinal || !_.numberIs( cardinal ) )
+  if( cardinal < 0 || dst.length <= cardinal || !_.numberIs( cardinal ) )
   return [ undefined, cardinal, false ];
-  src[ cardinal ] = val;
+  dst[ cardinal ] = val;
   return [ val, cardinal, true ];
 }
 
 //
 
-function elementWithCardinalSet( src, cardinal, val )
+function elementWithCardinalSet( dst, cardinal, val )
 {
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalSet( src, cardinal, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithCardinalSet( dst, cardinal, val );
 }
 
 // --
 // container interface
 // --
 
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
-  if( !this._hasKey( src, key ) )
+  if( !this._hasKey( dst, key ) )
   return false;
-  src.splice( key, 1 );
+  dst.splice( key, 1 );
   return true;
 }
 
 //
 
-function elementWithKeyDel( src, key )
+function elementWithKeyDel( dst, key )
 {
   _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeyDel( src, key );
+  _.assert( this.is( dst ) );
+  return this._elementWithKeyDel( dst, key );
 }
 
 //
 
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
-  if( !this._hasKey( src, cardinal ) )
+  if( !this._hasKey( dst, cardinal ) )
   return false;
-  src.splice( cardinal, 1 );
+  dst.splice( cardinal, 1 );
   return true;
 }
 
 //
 
-function elementWithCardinalDel( src, cardinal )
+function elementWithCardinalDel( dst, cardinal )
 {
   _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalDel( src, cardinal, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithCardinalDel( dst, cardinal, val );
 }
 
 //

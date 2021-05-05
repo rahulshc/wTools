@@ -107,6 +107,15 @@ function like( src ) /* qqq : cover */
   return _.long.is( src );
 }
 
+//
+
+function hasFixedLength( src )
+{
+  if( _.array.is( src ) )
+  return false;
+  return this.is( src );
+}
+
 // --
 // maker
 // --
@@ -969,6 +978,7 @@ let LongExtension =
   isEmpty,
   isPopulated,
   like,
+  hasFixedLength,
 
   // maker
 

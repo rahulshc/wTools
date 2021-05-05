@@ -661,6 +661,7 @@ function _filter( dst, src, onEach, each, escape )
   {
     let val2 = onEach( ... arguments );
     let val3 = escape( val2 );
+    debugger;
     if( val2 === undefined )
     return;
     self._elementSet( dst, k, val3 );

@@ -74,31 +74,31 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
   return [ undefined, key, false ];
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( cardinal === 0 )
-  return [ src, cardinal, true ];
+  return [ dst, cardinal, true ];
   else
   return [ undefined, cardinal, false ];
 }
 
 //
 
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
   return false;
 }
 
 //
 
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
   return false;
 }

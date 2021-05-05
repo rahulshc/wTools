@@ -96,8 +96,8 @@ function filterMapCommonPass( test )
   {
     env.namespace = 'long';
     caseEach( env );
-    // env.namespace = 'array';
-    // caseEach( env );
+    env.namespace = 'array';
+    caseEach( env );
     // env.namespace = 'arrayArguments';
     // caseEach( env );
     // env.namespace = 'unroll';
@@ -116,10 +116,11 @@ function filterMapCommonPass( test )
     clean();
     var src = [ 1, 2, 3 ];
     var dst = [ 4 ];
+    debugger;
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
     var exp = [ 11, 12, 13 ];
-    test.identical( got, exp );
+    test.identical( got, exp ); debugger;
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
     var exp = order([ 1, 2, 3 ]);
@@ -137,6 +138,7 @@ function filterMapCommonPass( test )
     clean();
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = [ 11, 12, 13 ]
     test.identical( got, exp );
@@ -273,6 +275,7 @@ function filterCommonDropping( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
     var exp = { a : 11, c : 13 }
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
@@ -367,6 +370,7 @@ function mapCommonReturningUndefined( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
     var exp = { a : 11, b : 2, c : 13 }
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
@@ -469,6 +473,7 @@ function filterMapCommonEscaping( test )
     var src = [ 1, 2, 3 ];
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
     var exp = { a : 11, b : escape( undefined ), c : 13 }
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
@@ -538,7 +543,7 @@ const Proto =
 
     identical,
 
-    // filterMapCommonPass,
+    filterMapCommonPass,
     // filterCommonDropping,
     // mapCommonReturningUndefined,
     // filterMapCommonEscaping,

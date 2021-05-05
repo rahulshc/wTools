@@ -35,6 +35,15 @@ function like( src )
   return _.countable.is( src );
 }
 
+//
+
+function hasFixedLength( src )
+{
+  if( _.array.is( src ) )
+  return false;
+  return this.is( src );
+}
+
 // --
 // maker
 // --
@@ -211,6 +220,7 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
+  hasFixedLength,
 
   // maker
 
