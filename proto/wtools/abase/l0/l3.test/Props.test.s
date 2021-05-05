@@ -1137,6 +1137,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1158,6 +1160,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1176,6 +1180,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1194,6 +1200,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1219,7 +1227,7 @@ function filterMapCommonPass( test )
 
   function f1( e, k, c, src )
   {
-    ops.push([ ... arguments ]);
+    ops.push([ ... arguments ]); debugger;
     return e + 10;
   }
 

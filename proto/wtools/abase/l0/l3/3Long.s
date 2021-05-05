@@ -504,6 +504,74 @@ function whileRight( src, onEach )
   this._whileRight( src, onEach );
 }
 
+//
+
+function _filterAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let eachRoutineName = arguments[ 3 ];
+  let escape = arguments[ 4 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert
+    (
+      this._lengthOf( dst ) === general._lengthOf( src )
+      , () => `lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
+    );
+  }
+
+  this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
+//
+
+function _mapAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let eachRoutineName = arguments[ 3 ];
+  let escape = arguments[ 4 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert
+    (
+      this._lengthOf( dst ) === general._lengthOf( src )
+      , () => `lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
+    );
+  }
+
+  this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
 // --
 // declare
 // --
@@ -608,7 +676,8 @@ let LongExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filter : _.props._filter,
+  _filterAct0 : _.props._filterAct0,
+  _filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -617,7 +686,8 @@ let LongExtension =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  _map : _.props._map,
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,

@@ -617,7 +617,7 @@ function aptRight( src, onEach )
 
 //
 
-function _filter()
+function _filterAct0()
 {
   const self = this;
   const dst = arguments[ 0 ];
@@ -629,7 +629,7 @@ function _filter()
   if( dst === src )
   each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     self._elementDel( dst, k );
@@ -641,7 +641,7 @@ function _filter()
   else
   each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     return;
@@ -653,79 +653,64 @@ function _filter()
 
 //
 
-function filterWithoutEscapeLeft( dst, src, onEach )
+function _filterAct1()
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let eachRoutineName = arguments[ 3 ];
+  let escape = arguments[ 4 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
   dst = this.makeUndefined( src );
   else if( dst === _.self )
   dst = src;
 
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) ); debugger;
-  _.assert( general.is( src ) );
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+  }
 
-  return this._filter( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => val );
+  this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
+//
+
+function filterWithoutEscapeLeft( dst, src, onEach )
+{
+  return this._filterAct1( ... arguments, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function filterWithoutEscapeRight( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._filter( dst, src, onEach, general.eachRight.bind( general ), ( val ) => val );
+  return this._filterAct1( ... arguments, 'eachRight', ( val ) => val );
 }
 
 //
 
 function filterWithEscapeLeft( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._filter( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => _.escape.right( val ) );
+  return this._filterAct1( ... arguments, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function filterWithEscapeRight( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._filter( dst, src, onEach, general.eachRight.bind( general ), ( val ) => _.escape.right( val ) );
+  return this._filterAct1( ... arguments, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 //
 
-function _map()
+function _mapAct0()
 {
   const self = this;
   const dst = arguments[ 0 ];
@@ -737,7 +722,7 @@ function _map()
   if( dst === src )
   each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val3 === val || val2 === undefined )
     return;
@@ -746,7 +731,7 @@ function _map()
   else
   each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     self._elementSet( dst, k, val );
@@ -759,74 +744,59 @@ function _map()
 
 //
 
-function mapWithoutEscapeLeft( dst, src, onEach )
+function _mapAct1()
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let eachRoutineName = arguments[ 3 ];
+  let escape = arguments[ 4 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
   dst = this.makeUndefined( src );
   else if( dst === _.self )
   dst = src;
 
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 5, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+  }
 
-  return this._map( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => val );
+  this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
+//
+
+function mapWithoutEscapeLeft( dst, src, onEach )
+{
+  return this._mapAct1( ... arguments, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function mapWithoutEscapeRight( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._map( dst, src, onEach, general.eachRight.bind( general ), ( val ) => val );
+  return this._mapAct1( ... arguments, 'eachRight', ( val ) => val );
 }
 
 //
 
 function mapWithEscapeLeft( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._map( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function mapWithEscapeRight( dst, src, onEach )
 {
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( dst ) );
-  _.assert( general.is( src ) );
-
-  return this._map( dst, src, onEach, general.eachRight.bind( general ), ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 // --
@@ -938,7 +908,8 @@ let Extension =
   aptRight,
   last : aptRight, /* qqq : cover */
 
-  _filter,
+  _filterAct0,
+  _filterAct1,
   filterWithoutEscapeLeft,
   filterWithoutEscapeRight,
   filterWithoutEscape : filterWithoutEscapeLeft,
@@ -947,7 +918,8 @@ let Extension =
   filterWithEscape : filterWithEscapeLeft,
   filter : filterWithoutEscapeLeft,
 
-  _map,
+  _mapAct0,
+  _mapAct1,
   mapWithoutEscapeLeft,
   mapWithoutEscapeRight,
   mapWithoutEscape : mapWithoutEscapeLeft,

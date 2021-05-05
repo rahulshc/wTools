@@ -161,36 +161,35 @@ function filterMapCommonPass( test )
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
-    clean();
-    var src = [ 1, 2, 3 ];
-    var dst = _[ env.namespace ].make([ 4 ]);
-    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
-    test.true( got === dst );
-    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
-    if( _.countable.hasFixedLength( exp ) )
-    exp = _[ env.namespace ].make([ 11 ]);
-    test.identical( got, exp );
-    var exp = [ 1, 2, 3 ];
-    test.identical( src, exp );
-    var exp = order([ 1, 2, 3 ]);
-    test.identical( __.select( ops, '*/#0' ), exp );
-    var exp = order([ 0, 1, 2 ]);
-    test.identical( __.select( ops, '*/#1' ), exp );
-    var exp = order([ 0, 1, 2 ]);
-    test.identical( __.select( ops, '*/#2' ), exp );
-    var exp = order([ src, src, src ]);
-    test.identical( __.select( ops, '*/#3' ), exp );
+    if( Config.debug )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
+      clean();
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4 ]);
+      test.shouldThrowErrorSync( () => _[ env.namespace ][ env.method ]( dst, src, f1 ) );
+    }
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
+    if( Config.debug )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
+      clean();
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4, 5, 6, 7 ]);
+      test.shouldThrowErrorSync( () => _[ env.namespace ][ env.method ]( dst, src, f1 ) );
+    }
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length`;
     clean();
     var src = [ 1, 2, 3 ];
-    var dst = _[ env.namespace ].make([ 4, 5, 6, 7 ]);
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = _[ env.namespace ].make([ 11, 12, 13, 7 ]);
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
@@ -202,6 +201,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -223,6 +224,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -241,6 +244,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -259,6 +264,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 

@@ -130,7 +130,8 @@ function _functor( namespace )
     aptRight : _.long.aptRight,
     last : _.long.last, /* qqq : cover */
 
-    _filter : _.long._filter,
+    _filterAct0 : _.long._filterAct0,
+    _filterAct1 : _.long._filterAct1,
     filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
     filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
     filterWithoutEscape : _.long.filterWithoutEscape,
@@ -139,7 +140,8 @@ function _functor( namespace )
     filterWithEscape : _.long.filterWithEscape,
     filter : _.long.filter,
 
-    _map : _.long._map,
+    _mapAct0 : _.props._mapAct0,
+    _mapAct1 : _.long._mapAct1,
     mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
     mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
     mapWithoutEscape : _.long.mapWithoutEscape,
