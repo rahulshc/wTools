@@ -146,7 +146,7 @@ let BufferTypedExtension =
 
   _cloneShallow : _.buffer._cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
-  // from : _.buffer.from, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
   // qqq : implement
 
 }

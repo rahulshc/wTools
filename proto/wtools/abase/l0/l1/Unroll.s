@@ -399,21 +399,21 @@ function _cloneShallow( src )
  * @namespace Tools/unroll
  */
 
-function _from( src )
-{
-  if( _.unrollIs( src ) )
-  return src;
-  return _.unroll._make( ... arguments );
-}
-
+// function _from( src )
+// {
+//   if( _.unrollIs( src ) )
+//   return src;
+//   return _.unroll._make( ... arguments );
+// }
 //
-
-function from( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( src === null || _.number.is( src ) || _.countable.is( src ) );
-  return _.unroll._from( ... arguments );
-}
+// //
+//
+// function from( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( src === null || _.number.is( src ) || _.countable.is( src ) );
+//   return _.unroll._from( ... arguments );
+// }
 
 //
 
@@ -820,7 +820,8 @@ let ToolsExtension =
   // unrollMake : make.bind( _.unroll ),
   unrollCloneShallow : _.long.cloneShallow.bind( _.unroll ),
   // unrollCloneShallow : cloneShallow.bind( _.unroll ),
-  unrollFrom : from.bind( _.unroll ),
+  unrollFrom : _.argumentsArray.from.bind( _.unroll ),
+  // unrollFrom : from.bind( _.unroll ),
 
   // editor
 
@@ -872,8 +873,8 @@ let UnrollExtension =
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
-  _from,
-  from,
+  // _from,
+  from : _.argumentsArray.from,
   _as,
   as,
   normalize,

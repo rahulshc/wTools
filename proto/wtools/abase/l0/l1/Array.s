@@ -251,13 +251,13 @@ function _cloneShallow( srcArray )
 
 //
 
-function from( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( this.is( src ) )
-  return src;
-  return this.make( src );
-}
+// function from( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   if( this.is( src ) )
+//   return src;
+//   return this.make( src );
+// }
 
 // --
 // declaration
@@ -284,7 +284,8 @@ let ToolsExtension =
   // arrayMake : make.bind( _.array ),
   arrayCloneShallow : _.long.cloneShallow.bind( _.array ),
   // arrayCloneShallow : cloneShallow.bind( _.array ),
-  arrayFrom : from.bind( _.array ),
+  arrayFrom : _.argumentsArray.from.bind( _.array ),
+  // arrayFrom : from.bind( _.array ),
 
 }
 
@@ -329,7 +330,7 @@ let ArrayExtension =
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
-  from, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
 
 }
 
