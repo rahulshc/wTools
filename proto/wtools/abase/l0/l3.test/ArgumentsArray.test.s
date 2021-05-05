@@ -24,7 +24,9 @@ function bulky( test )
   var src = [];
   var got = _.argumentsArray.make( src );
   test.true( _.argumentsArray.is( got ) );
-  test.true( _.array.is( got ) );
+  test.true( _.argumentsArray.like( got ) );
+  test.true( !_.array.is( got ) );
+  test.true( !_.array.like( got ) );
   test.true( src !== got );
 
 }

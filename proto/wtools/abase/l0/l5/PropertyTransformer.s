@@ -14,7 +14,7 @@ _.props.condition = _.props.condition || Object.create( null );
 // implementation
 // --
 
-function mapperFromFilter( routine )
+function mapperFromCondition( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -52,7 +52,7 @@ function mapperFromFilter( routine )
   function functor()
   {
     let routine2 = routine( ... arguments );
-    _.assert( _.props.filterIs( routine2 ) && !routine2.identity.functor );
+    _.assert( _.props.conditionIs( routine2 ) && !routine2.identity.functor );
     mapper.identity = { propertyMapper : true, propertyTransformer : true };
     return mapper;
     function mapper( dstContainer, srcContainer, key )
@@ -84,7 +84,7 @@ function mapperFrom( routine )
     }
     else
     {
-      return _.props.mapperFromFilter( routine );
+      return _.props.mapperFromCondition( routine );
     }
   }
 
@@ -94,7 +94,7 @@ function mapperFrom( routine )
 
 //
 
-function filterFrom( routine )
+function conditionFrom( routine )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -138,7 +138,7 @@ function transformerRegister( fi, name )
   {
     _.assert( _.props.condition[ name ] === undefined );
     _.assert( _.props.mapper[ name ] === undefined );
-    _.props.mapper[ name ] = _.props.mapperFromFilter( fi );
+    _.props.mapper[ name ] = _.props.mapperFromCondition( fi );
     _.props.condition[ name ] = fi;
     return;
   }
@@ -226,7 +226,7 @@ function mapperIs( transformer )
 
 //
 
-function filterIs( transformer )
+function conditionIs( transformer )
 {
   if( !_.routine.is( transformer ) )
   return false;
@@ -242,16 +242,16 @@ function filterIs( transformer )
 let PropsExtension =
 {
 
-  mapperFromFilter, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperFromCondition, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  filterFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  conditionFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   transformerRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
   transformersRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
   transformerUnregister,
   transformersUnregister,
   transformerIs,
   mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  filterIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  conditionIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
 
 }
 

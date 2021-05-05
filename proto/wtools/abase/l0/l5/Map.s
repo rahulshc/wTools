@@ -1588,8 +1588,8 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 
   _.assert( _.routine.is( filters.onUpFilter ) );
   _.assert( _.routine.is( filters.onField ) );
-  // _.assert( _.props.filterIs( filters.onUpFilter ) );
-  _.assert( _.props.filterIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
+  // _.assert( _.props.conditionIs( filters.onUpFilter ) );
+  _.assert( _.props.conditionIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
   _.assert( _.props.transformerIs( filters.onField ) );
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
@@ -2283,7 +2283,7 @@ function mapButConditionalOld( propertyCondition, srcMap, butMap )
   _.assert( !_.primitive.is( butMap ), 'Expects non primitive {-butMap-}' );
   _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
   _.assert( propertyCondition && propertyCondition.length === 3, 'Expects PropertyFilter {-propertyCondition-}' );
-  _.assert( _.props.filterIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
+  _.assert( _.props.conditionIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
 
   let result = Object.create( null );
 
@@ -2363,7 +2363,7 @@ function mapButConditional_( /* propertyCondition, dstMap, srcMap, butMap */ )
 
   o = _._mapBut_VerifyMapFields( o );
   _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
-  _.assert( _.props.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( _.props.conditionIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
 
   let filterRoutine = _._mapBut_FilterFunctor( o );
 
@@ -2383,7 +2383,7 @@ function mapButConditional_( /* propertyCondition, dstMap, srcMap, butMap */ )
 
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
   // _.assert( _.routineIs( propertyCondition ) && propertyCondition.length === 3, 'Expects PropertyFilter {-propertyCondition-}' );
-  // _.assert( _.props.filterIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
+  // _.assert( _.props.conditionIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
   // _.assert( !_.primitive.is( dstMap ), 'Expects map like {-dstMap-}' );
   // _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   // _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
@@ -2666,7 +2666,7 @@ function mapBut_( dstMap, srcMap, butMap )
     delete o.dstMap[ key ];
   }
 
-  // let filter = _.props.filterFrom( filterBut );
+  // let filter = _.props.conditionFrom( filterBut );
   //
   // return _._mapBut_
   // ({
@@ -2882,7 +2882,7 @@ function _mapBut_FilterFunctor( o )
 // {
 //   _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
 //   _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
-//   _.assert( _.props.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+//   _.assert( _.props.conditionIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
 //   _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
 //   _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
 //   _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
