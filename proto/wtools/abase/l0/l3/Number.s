@@ -5,8 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.number = _.number || Object.create( null );
-_.number.s = _.number.s || Object.create( null );
 
 // --
 // number
@@ -69,102 +67,104 @@ function identicalShallowStrictly( src1, src2, o )
 
 //
 
-function _equivalentShallow( a, b, accuracy )
-{
-
-  if( accuracy !== undefined )
-  _.assert( _.number.is( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
-
-  /* qqq for junior : bad! */
-
-  if( _.number.is( a ) && _.number.is( b ) )
-  {
-    if( Object.is( a, b ) )
-    return true;
-  }
-
-  if( !_.number.is( a ) && !_.bigInt.is( a ) )
-  return false;
-
-  if( !_.number.is( b ) && !_.bigInt.is( b ) )
-  return false;
-
-  /* qqq for junior : cache results of *Is calls at the beginning of the routine */
-
-  // else
-  // {
-  //   return false;
-  // }
-
-  if( accuracy === undefined )
-  accuracy = _.accuracy;
-
-  if( _.bigInt.is( a ) )
-  {
-    if( _.intIs( b ) )
-    {
-      b = BigInt( b );
-    }
-    // else
-    // {
-    //   a = Number( a );
-    //   if( a === +Infinity || a === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( _.bigInt.is( b ) )
-  {
-    if( _.intIs( a ) )
-    {
-      a = BigInt( a );
-    }
-    // else
-    // {
-    //   b = Number( b );
-    //   if( b === +Infinity || b === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( Object.is( a, b ) )
-  return true;
-
-  if( _.bigInt.is( a ) && _.bigInt.is( b ) )
-  {
-    if( _.intIs( accuracy ) )
-    {
-      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
-    }
-    else
-    {
-      let diff = BigIntMath.abs( a - b );
-      if( diff <= BigInt( Math.floor( accuracy ) ) )
-      return true;
-      if( diff > BigInt( Math.ceil( accuracy ) ) )
-      return false;
-      diff = Number( diff );
-      if( diff === Infinity || diff === -Infinity )
-      return false;
-      return Math.abs( diff ) <= accuracy;
-    }
-  }
-
-  // if( !_.number.is( a ) )
-  // return false;
-  //
-  // if( !_.number.is( b ) )
-  // return false;
-
-  return Math.abs( a - b ) <= accuracy;
-  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
-}
-
+// function _equivalentShallow( a, b, accuracy )
+// {
+//
+//   if( accuracy !== undefined )
+//   _.assert( _.number.is( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+//
+//   /* qqq for junior : bad! */
+//
+//   if( _.number.is( a ) && _.number.is( b ) )
+//   {
+//     if( Object.is( a, b ) )
+//     return true;
+//   }
+//
+//   if( !_.number.is( a ) && !_.bigInt.is( a ) )
+//   return false;
+//
+//   if( !_.number.is( b ) && !_.bigInt.is( b ) )
+//   return false;
+//
+//   /* qqq for junior : cache results of *Is calls at the beginning of the routine */
+//
+//   // else
+//   // {
+//   //   return false;
+//   // }
+//
+//   if( accuracy === undefined )
+//   accuracy = _.accuracy;
+//
+//   if( _.bigInt.is( a ) )
+//   {
+//     if( _.intIs( b ) )
+//     {
+//       b = BigInt( b );
+//     }
+//     // else
+//     // {
+//     //   a = Number( a );
+//     //   if( a === +Infinity || a === -Infinity )
+//     //   return false;
+//     // }
+//   }
+//
+//   if( _.bigInt.is( b ) )
+//   {
+//     if( _.intIs( a ) )
+//     {
+//       a = BigInt( a );
+//     }
+//     // else
+//     // {
+//     //   b = Number( b );
+//     //   if( b === +Infinity || b === -Infinity )
+//     //   return false;
+//     // }
+//   }
+//
+//   if( Object.is( a, b ) )
+//   return true;
+//
+//   if( _.bigInt.is( a ) && _.bigInt.is( b ) )
+//   {
+//     if( _.intIs( accuracy ) )
+//     {
+//       return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+//     }
+//     else
+//     {
+//       let diff = BigIntMath.abs( a - b );
+//       if( diff <= BigInt( Math.floor( accuracy ) ) )
+//       return true;
+//       if( diff > BigInt( Math.ceil( accuracy ) ) )
+//       return false;
+//       diff = Number( diff );
+//       if( diff === Infinity || diff === -Infinity )
+//       return false;
+//       return Math.abs( diff ) <= accuracy;
+//     }
+//   }
+//
+//   // if( !_.number.is( a ) )
+//   // return false;
+//   //
+//   // if( !_.number.is( b ) )
+//   // return false;
+//
+//   return Math.abs( a - b ) <= accuracy;
+//   // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+// }
 
 //
 
-function _equivalentShallow2( a, b, accuracy )
+/* xxx : qqq : refactor */
+function _equivalentShallow( a, b, accuracy )
 {
+  let result;
+
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
@@ -230,6 +230,77 @@ function _equivalentShallow2( a, b, accuracy )
   }
 
   if( bigIntIsA ) /* a : BIF/BOF, b : FIB/FOB , accuracy : BIF/BOF/FIB/FOB 4 */
+  [ a, b, result ] = bigintCompare( a, b );
+  if( result !== undefined )
+  return result;
+
+  // {
+  //   if( _.intIs( b ) )
+  //   {
+  //     b = BigInt( b );
+  //   }
+  //   else
+  //   {
+  //     if( a >= Number.MIN_SAFE_INTEGER && a <= Number.MAX_SAFE_INTEGER ) /* a : BIF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
+  //     {
+  //       a = Number( a );
+  //     }
+  //     else /* a : BOF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
+  //     {
+  //       if( accuracy >= Number.MIN_SAFE_INTEGER && accuracy <= Number.MAX_SAFE_INTEGER ) /* a : BOF, b : FOB, accuracy : FIB/FOB */
+  //       {
+  //         let decimal = b % 1;
+  //         b = BigInt( Math.floor( b ) )
+  //         return abs( a - b ) <= accuracy + decimal;
+  //       }
+  //       else /* a : BOF, b : FOB, accuracy : BIF/BOF */
+  //       {
+  //         b = BigInt( Math.round( b ) );
+  //       }
+  //     }
+  //   }
+  // }
+
+  if( bigIntIsB ) /* a : FIB/FOB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
+  [ b, a, result ] = bigintCompare( b, a );
+  if( result !== undefined )
+  return result;
+
+  // {
+  //   if( _.intIs( a ) ) /* a : FIB, b : BIF/BOF, accuracy : BIF/BOF/FIB/FOB */
+  //   {
+  //     a = BigInt( a );
+  //   }
+  //   else
+  //   {
+  //     if( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BIF, accuracy : BIF/BOF/FIB/FOB */
+  //     {
+  //       b = Number( b );
+  //     }
+  //     else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
+  //     {
+  //       if( accuracy >= Number.MIN_SAFE_INTEGER && accuracy <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BOF, accuracy : FIB/FOB */
+  //       {
+  //         let decimal = a % 1;
+  //         a = BigInt( Math.floor( a ) )
+  //         return abs( a - b ) <= accuracy + decimal;
+  //       }
+  //       else /* a : FOB, b : BOF, accuracy : BIF/BOF */
+  //       {
+  //         a = BigInt( Math.round( a ) );
+  //       }
+  //     }
+  //   }
+  // }
+
+  if( numberIsA && numberIsB ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
+  return Math.abs( a - b ) <= accuracy;
+  else
+  return abs( a - b ) <= accuracy;
+
+  /* - */
+
+  function bigintCompare( a, b )
   {
     if( _.intIs( b ) )
     {
@@ -247,7 +318,7 @@ function _equivalentShallow2( a, b, accuracy )
         {
           let decimal = b % 1;
           b = BigInt( Math.floor( b ) )
-          return abs( a - b ) <= accuracy + decimal;
+          return [ a, b, abs( a - b ) <= accuracy + decimal ];
         }
         else /* a : BOF, b : FOB, accuracy : BIF/BOF */
         {
@@ -255,40 +326,8 @@ function _equivalentShallow2( a, b, accuracy )
         }
       }
     }
+    return [ a, b, undefined ];
   }
-
-  if( bigIntIsB ) /* a : FIB/FOB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
-  {
-    if( _.intIs( a ) ) /* a : FIB, b : BIF/BOF, accuracy : BIF/BOF/FIB/FOB */
-    {
-      a = BigInt( a );
-    }
-    else
-    {
-      if( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BIF, accuracy : BIF/BOF/FIB/FOB */
-      {
-        b = Number( b );
-      }
-      else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
-      {
-        if( accuracy >= Number.MIN_SAFE_INTEGER && accuracy <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BOF, accuracy : FIB/FOB */
-        {
-          let decimal = a % 1;
-          a = BigInt( Math.floor( a ) )
-          return abs( a - b ) <= accuracy + decimal;
-        }
-        else /* a : FOB, b : BOF, accuracy : BIF/BOF */
-        {
-          a = BigInt( Math.round( a ) );
-        }
-      }
-    }
-  }
-
-  if( numberIsA && numberIsB ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
-  return Math.abs( a - b ) <= accuracy;
-  else
-  return abs( a - b ) <= accuracy;
 
   /* - */
 
@@ -302,13 +341,17 @@ function _equivalentShallow2( a, b, accuracy )
     return 0n;
   }
 
+  /* - */
+
   function abs( value )
   {
     if( sign( value ) === -1n )
     return -value;
-
     return value;
   }
+
+  /* - */
+
 }
 
 //
@@ -321,18 +364,6 @@ function equivalentShallow( src1, src2, accuracy )
   if( !this.like( src2 ) )
   return false;
   return this._equivalentShallow( ... arguments );
-}
-
-//
-
-function equivalentShallow2( src1, src2, accuracy )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !this.like( src1 ) )
-  return false;
-  if( !this.like( src2 ) )
-  return false;
-  return this._equivalentShallow2( ... arguments );
 }
 
 // --
@@ -360,12 +391,8 @@ let NumberExtension =
   identicalShallowStrictly,
   identicalStrictly : identicalShallowStrictly,
 
-  // identicalNotStrictly,
-
   _equivalentShallow,
-  _equivalentShallow2,
   equivalentShallow,
-  equivalentShallow2,
   equivalent : equivalentShallow,
 
   // areEquivalentShallow : areEquivalent,
