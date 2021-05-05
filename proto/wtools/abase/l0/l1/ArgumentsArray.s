@@ -114,6 +114,9 @@ function makeEmpty()
 
 function _makeUndefined( src, length )
 {
+  if( arguments.length === 0 )
+  return this._make( 0 );
+
   if( length === undefined )
   length = src;
   if( length && !_.number.is( length ) )

@@ -364,13 +364,13 @@ function makeCommonWithLongDescriptor( test )
 
   function methodEach( env )
   {
-    env.method = 'makeEmpty';
-    act( env );
     env.method = 'make';
     act( env );
-    env.method = 'cloneShallow';
     if( env.tools !== 'bufferTyped' )
-    act( env );
+    {
+      env.method = 'cloneShallow';
+      act( env );
+    }
   }
 
   /* */
@@ -389,12 +389,7 @@ function makeCommonWithLongDescriptor( test )
       var got = long[ env.method ]();
       test.true( got instanceof Constructor );
       test.identical( got.length, 0 );
-    }
 
-    /* */
-
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
-    {
       test.case = `${__.entity.exportStringSolo( env )}, length`;
       var got = long[ env.method ]( 3 );
       test.true( got instanceof Constructor );
@@ -413,11 +408,7 @@ function makeCommonWithLongDescriptor( test )
     test.case = `${__.entity.exportStringSolo( env )}, 1 element`;
     var got = long[ env.method ]( [ 2 ] );
     test.true( got instanceof ConstructorForNamespace );
-    if( env.method === 'makeEmpty' )
-    test.identical( got.length, 0 );
-    else
     test.identical( got.length, 1 );
-    if( env.method === 'make' || env.method === 'cloneShallow' )
     test.identical( got, ConstructorForNamespace.from([ 2 ]) );
 
     /* */
@@ -425,16 +416,12 @@ function makeCommonWithLongDescriptor( test )
     test.case = `${__.entity.exportStringSolo( env )}, 2 elements`;
     var got = long[ env.method ]( [ 2, 3 ] );
     test.true( got instanceof ConstructorForNamespace );
-    if( env.method === 'makeEmpty' )
-    test.identical( got.length, 0 );
-    else
     test.identical( got.length, 2 );
-    if( env.method === 'make' || env.method === 'cloneShallow' )
     test.identical( got, ConstructorForNamespace.from([ 2, 3 ]) );
 
     /* */
 
-    if( env.method !== 'makeEmpty' && env.method !== 'cloneShallow' )
+    if( env.method !== 'cloneShallow' )
     {
       test.case = `${__.entity.exportStringSolo( env )}, empty and length`;
       var got = long[ env.method ]( [], 2 );
@@ -446,28 +433,24 @@ function makeCommonWithLongDescriptor( test )
       test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 3 );
       var value = env.tools === 'bufferTyped' ? 0 : undefined;
-      if( env.method === 'make' )
       test.identical( got, ConstructorForNamespace.from([ 3, 4, value ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and length shorter`;
       var got = long[ env.method ]( [ 3, 4 ], 1 );
       test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 1 );
-      if( env.method === 'make' )
       test.identical( got, ConstructorForNamespace.from([ 3 ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins longer`;
       var got = long[ env.method ]( [ 3, 4 ], [ 2, 3, 4 ] );
       test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 3 );
-      if( env.method === 'make' )
       test.identical( got, ConstructorForNamespace.from([ 2, 3, 4 ]) );
 
       test.case = `${__.entity.exportStringSolo( env )}, non-empty and ins shorter`;
       var got = long[ env.method ]( [ 3, 4 ], [ 2 ] );
       test.true( got instanceof ConstructorForNamespace );
       test.identical( got.length, 1 );
-      if( env.method === 'make' )
       test.identical( got, ConstructorForNamespace.from([ 2 ]) );
     }
   }
