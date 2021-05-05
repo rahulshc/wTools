@@ -317,7 +317,7 @@ function _makeFilling( type, value, length )
 
   if( !_.number.is( length ) )
   // if( _.long.is( length ) )
-  if(  length.length ) )
+  if(  length.length )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;

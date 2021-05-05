@@ -322,7 +322,6 @@ function makeCommon( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
@@ -647,7 +646,6 @@ function makeCommonWithLongDescriptor( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
