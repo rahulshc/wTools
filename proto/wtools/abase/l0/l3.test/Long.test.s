@@ -94,33 +94,104 @@ function filterMapCommonPass( test )
 
   function namespaceEach( env )
   {
+
+    /* variable */
+
     env.namespace = 'long';
+    env.hasFixedLength = false;
     caseEach( env );
     env.namespace = 'array';
+    env.hasFixedLength = false;
     caseEach( env );
-    // env.namespace = 'arrayArguments';
-    // caseEach( env );
-    // env.namespace = 'unroll';
-    // caseEach( env );
+    env.namespace = 'unroll';
+    env.hasFixedLength = false;
+    caseEach( env );
+
+    /* fixed */
+
+    env.namespace = 'argumentsArray';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'f32x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'f64x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'fx';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'i32x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'i16x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'i8x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'ix';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'u32x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'u16x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'u8x';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'u8xClamped';
+    env.hasFixedLength = true;
+    caseEach( env );
+    env.namespace = 'ux';
+    env.hasFixedLength = true;
+    caseEach( env );
+
   }
 
   /* - */
 
   function caseEach( _env )
   {
+    test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
+    test.identical( _.countable.hasFixedLength( _[ env.namespace ].make( 0 ) ), env.hasFixedLength );
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
     clean();
     var src = [ 1, 2, 3 ];
-    var dst = [ 4 ];
-    debugger;
+    var dst = _[ env.namespace ].make([ 4 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = [ 11, 12, 13 ];
-    test.identical( got, exp ); debugger;
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    if( _.countable.hasFixedLength( exp ) )
+    exp = _[ env.namespace ].make([ 11 ]);
+    test.identical( got, exp );
+    var exp = [ 1, 2, 3 ];
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
+    clean();
+    var src = [ 1, 2, 3 ];
+    var dst = _[ env.namespace ].make([ 4, 5, 6, 7 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 12, 13, 7 ]);
+    test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
     var exp = order([ 1, 2, 3 ]);
@@ -140,7 +211,7 @@ function filterMapCommonPass( test )
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
-    var exp = [ 11, 12, 13 ]
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
     test.identical( src, exp );
@@ -157,10 +228,10 @@ function filterMapCommonPass( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
     clean();
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = [ 11, 12, 13 ]
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
     test.identical( got, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
@@ -175,10 +246,10 @@ function filterMapCommonPass( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
     clean();
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = [ 11, 12, 13 ]
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
     test.identical( got, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
@@ -221,7 +292,7 @@ function filterMapCommonPass( test )
 
 }
 
-filterMapCommonPass.timeOut = 60000;
+filterMapCommonPass.timeOut = 300000;
 
 //
 
@@ -261,7 +332,7 @@ function filterCommonDropping( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
     var src = [ 1, 2, 3 ];
-    var dst = [ 4 ]
+    var dst = _[ env.namespace ].make([ 4 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
     var exp = { d : 4, a : 11, c : 13 }
@@ -356,7 +427,7 @@ function mapCommonReturningUndefined( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
     var src = [ 1, 2, 3 ];
-    var dst = [ 4 ]
+    var dst = _[ env.namespace ].make([ 4 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
     var exp = { d : 4, a : 11, b : 2, c : 13 }
@@ -459,7 +530,7 @@ function filterMapCommonEscaping( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
     var src = [ 1, 2, 3 ];
-    var dst = [ 4 ]
+    var dst = _[ env.namespace ].make([ 4 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
     var exp = { d : 4, a : 11, b : escape( undefined ), c : 13 }

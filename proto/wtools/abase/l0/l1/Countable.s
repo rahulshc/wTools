@@ -211,6 +211,8 @@ var CountableExtension =
 
   NamespaceName : 'countable',
   NamespaceQname : 'wTools/countable',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Countable',
   SecondTypeName : 'Countable',
   InstanceConstructor : null,

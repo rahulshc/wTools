@@ -5,13 +5,15 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
+_.buffer = _.buffer || Object.create( null );
 _.bufferTyped = _.bufferTyped || Object.create( null );
+_.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 // --
 // implementation
 // --
 
-function typedIs( src )
+function is( src )
 {
   let type = Object.prototype.toString.call( src );
   if( !/\wArray/.test( type ) )
@@ -72,6 +74,36 @@ function _make( src, length )
 
 //
 
+function _makeEmpty( src )
+{
+  if( arguments.length === 1 )
+  {
+    if( _.routineIs( src ) )
+    {
+      let result = new src( 0 );
+      _.assert( this.like( result ) );
+      return result;
+    }
+    if( this.like( src ) )
+    return new src.constructor();
+  }
+  return this.tools.defaultBufferTyped.make();
+}
+
+//
+
+function makeEmpty( src )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  if( arguments.length === 1 )
+  {
+    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
+  }
+  return this._makeEmpty( ... arguments );
+}
+
+//
+
 function _makeUndefined( src, length )
 {
   if( arguments.length === 0 )
@@ -118,6 +150,45 @@ function _makeFilling( type, value, length )
   return result;
 }
 
+//
+
+function _cloneShallow( src )
+{
+  return src.slice( 0 );
+  // if( _.buffer.rawIs( src ) )
+  // return bufferRawCopy( src );
+  // if( _.buffer.viewIs( src ) )
+  // return new BufferView( bufferRawCopy( src ) );
+  // if( _.buffer.typedIs( src ) )
+  // return src.slice( 0 );
+  // if( _.buffer.nodeIs( src ) )
+  // return src.copy();
+  //
+  // /* */
+  //
+  // function bufferRawCopy( src )
+  // {
+  //   var dst = new BufferRaw( src.byteLength );
+  //   new U8x( dst ).set( new U8x( src ) );
+  //   return dst;
+  // }
+}
+
+// --
+// meta
+// --
+
+function _namespaceRegister( namespace, defaultNamespaceName )
+{
+  _.bufferTyped.namespaces[ namespace.NamespaceName ] = namespace;
+
+  _.assert( namespace.IsTyped === undefined || namespace.IsTyped === true );
+
+  namespace.IsTyped = true;
+
+  return _.long._namespaceRegister( ... arguments );
+}
+
 // --
 // declaration
 // --
@@ -129,6 +200,8 @@ let BufferTypedExtension =
 
   NamespaceName : 'bufferTyped',
   NamespaceQname : 'wTools/bufferTyped',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'BufferTyped',
   SecondTypeName : 'ArrayTyped',
   InstanceConstructor : null,
@@ -136,29 +209,29 @@ let BufferTypedExtension =
 
   // dichotomy
 
-  typedIs,
-  is : typedIs,
-  like : typedIs,
+  // typedIs : is,
+  is : is,
+  like : is,
 
   // maker
 
-  // _make : _.buffer._make, /* qqq : cover */
-  // make : _.buffer.make,
   _make, /* qqq : cover */
   make : _.long.make,
-  _makeEmpty : _.buffer._makeEmpty,
-  makeEmpty : _.buffer.makeEmpty,
+  _makeEmpty,
+  makeEmpty,
   _makeUndefined, /* qqq : implement */
   makeUndefined : _.argumentsArray.makeUndefined,
   _makeZeroed : _makeUndefined,
   makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
   _makeFilling,
   makeFilling : _.argumentsArray.makeFilling, /* qqq : for junior : cover */
-
-  _cloneShallow : _.buffer._cloneShallow,
+  _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   from : _.argumentsArray.from, /* qqq : for junior : cover */
-  // qqq : implement
+
+  // meta
+
+  _namespaceRegister,
 
 }
 
@@ -171,7 +244,7 @@ let BufferExtension =
 
   // dichotomy
 
-  typedIs : typedIs.bind( _.buffer ),
+  typedIs : is.bind( _.buffer ),
 
 }
 
@@ -184,7 +257,7 @@ let ToolsExtension =
 
   // dichotomy
 
-  bufferTypedIs : typedIs.bind( _.buffer ),
+  bufferTypedIs : is.bind( _.buffer ),
 
 }
 

@@ -1,4 +1,4 @@
-( function _l3_Unroll_s_()
+( function _l3_BufferTyped_s_()
 {
 
 'use strict';
@@ -6,40 +6,43 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( !!_.long._elementWithKey, 'Expects routine array._elementWithKey' );
+_.assert( !!_.long._aptLeft, 'Expects routine props._aptLeft' );
+_.assert( !!_.long._elementWithKey, 'Expects routine long._elementWithKey' );
 
 // --
-// exporter
+// elementor
 // --
 
-function _exportStringDiagnosticShallow( src )
+function _elementWithKeyDel( src, key )
 {
-  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
-}
-
-// --
-// declaration
-// --
-
-let unrollSymbol = Symbol.for( 'unroll' );
-
-// --
-// declaration
-// --
-
-let ToolsExtension =
-{
+  debugger; /* eslint-disable-line no-debugger */
+  throw _.err( `${this.TypeName} has fixed length` );
+  return false;
 }
 
 //
 
-Object.assign( _, ToolsExtension );
+function _elementWithCardinalDel( src, cardinal )
+{
+  debugger; /* eslint-disable-line no-debugger */
+  throw _.err( `${this.TypeName} has fixed length` );
+  return false;
+}
 
 //
 
-/* qqq : for junior : make replacements */
+function _empty( dst )
+{
+  debugger; /* eslint-disable-line no-debugger */
+  throw _.err( `${this.TypeName} has fixed length` );
+  return false;
+}
 
-let UnrollExtension =
+// --
+// extension
+// --
+
+var BufferTypedExtension =
 {
 
   // equaler
@@ -53,9 +56,9 @@ let UnrollExtension =
 
   // exporter
 
-  _exportStringDiagnosticShallow,
+  _exportStringDiagnosticShallow : _.long._exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
-  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.long._exportStringCodeShallow,
   exportStringCodeShallow : _.long.exportStringCodeShallow,
   exportString : _.long.exportString,
 
@@ -89,13 +92,13 @@ let UnrollExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementDel : _.long._elementDel,
+  _elementDel : _elementWithKeyDel,
   elementDel : _.long.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.long._elementWithKeyDel,
+  _elementWithKeyDel,
   elementWithKeyDel : _.long.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.long._elementWithCardinalDel,
+  _elementWithCardinalDel,
   elementWithCardinalDel : _.long.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.long._empty,
+  _empty,
   empty : _.long.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
@@ -139,8 +142,16 @@ let UnrollExtension =
 
 }
 
+Object.assign( _.bufferTyped, BufferTypedExtension );
+
 //
 
-Object.assign( _.unroll, UnrollExtension );
+var ToolsExtension =
+{
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 
 })();

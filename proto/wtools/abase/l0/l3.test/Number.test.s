@@ -529,7 +529,7 @@ function equivalentBasic2( test )
   test.identical( got, false );
 
 
-  /* qqq for Yevhen : extend | aaa : Extended. */
+  /* qqq for junior : extend | aaa : Extended. */
 
   test.case = 'number 3 and big int 3';
   debugger;
@@ -591,9 +591,9 @@ function equivalentBasic2( test )
 
 //
 
-/* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` | aaa : Changed */
+/* qqq for junior : use `/ * * /` as delimeter between cases or nothing, not `//` | aaa : Changed */
 
-function equivalentArgumentAccuracy2( test ) /* qqq for Yevhen : bad name, not option, it's argument! | aaa : Fixed */
+function equivalentArgumentAccuracy2( test ) /* qqq for junior : bad name, not option, it's argument! | aaa : Fixed */
 {
   test.open( 'positive numbers' )
 
@@ -771,7 +771,7 @@ function equivalentArgumentAccuracy2( test ) /* qqq for Yevhen : bad name, not o
 
   test.open( 'big int' )
 
-  /* qqq for Yevhen : extend | aaa : Done*/
+  /* qqq for junior : extend | aaa : Done*/
 
   test.case = 'number 3.1 and big int 3, acc 0.10001';
   var got = _.number.equivalentShallow( 3.1, 3n, 0.10001 );

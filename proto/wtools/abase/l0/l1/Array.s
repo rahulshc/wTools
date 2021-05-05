@@ -291,9 +291,12 @@ let ArrayExtension =
 
   NamespaceName : 'array',
   NamespaceQname : 'wTools/array',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Array',
   SecondTypeName : 'Array',
   InstanceConstructor : Array,
+  IsFixedLength : false,
   tools : _,
 
   // dichotomy
@@ -315,8 +318,8 @@ let ArrayExtension =
   _makeFilling : _.argumentsArray._makeFilling,
   makeFilling : _.argumentsArray.makeFilling,
   _make,
-  make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
-  // make, /* qqq : for Yevhen : cover */
+  make : _.argumentsArray.make, /* qqq : for junior : cover */
+  // make, /* qqq : for junior : cover */
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   from : _.argumentsArray.from, /* qqq : for junior : cover */

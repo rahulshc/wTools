@@ -40,7 +40,7 @@ function bufferRawIs( test )
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
@@ -91,7 +91,7 @@ function bufferTypedIs( test )
   test.false( _.bufferNodeIs( src ) );
   test.false( _.bufferViewIs( src ) );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
   test.false( _.bufferRawIs( src ) );
@@ -168,7 +168,7 @@ function bufferViewIs( test )
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
@@ -234,7 +234,7 @@ function bufferNodeIs( test )
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 

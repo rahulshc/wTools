@@ -196,11 +196,11 @@ function _elementWithCardinal( src, cardinal )
 
 function _elementWithKeySet( dst, key, val )
 {
-  if( !_.number.is( cardinal ) || cardinal < 0 )
-  return [ undefined, cardinal, false ];
+  if( !_.number.is( key ) || key < 0 )
+  return [ undefined, key, false ];
   const dst2 = [ ... dst ];
-  if( dst2.length <= cardinal )
-  return [ undefined, cardinal, false ];
+  if( dst2.length <= key )
+  return [ undefined, key, false ];
 
   let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
@@ -257,7 +257,7 @@ function _eachLeft( src, onEach )
   let k = 0;
   for( let val of src )
   {
-    onEach( src[ s ], k, k, src );
+    onEach( val, k, k, src );
     k += 1;
   }
 }

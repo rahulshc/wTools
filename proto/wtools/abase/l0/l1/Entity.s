@@ -212,7 +212,7 @@ let TranslatedTypeMap =
   'Uint32Array' : 'U32x',
   'Uint16Array' : 'U16x',
   'Uint8Array' : 'U8x',
-  'Uint8ClampedArray' : 'U8ClampedX',
+  'Uint8ClampedArray' : 'U8xClamped',
 
   'BigInt64Array' : 'I64x',
   'Int32Array' : 'I32x',
@@ -239,7 +239,7 @@ let StandardTypeSet = new Set
   'U32x',
   'U16x',
   'U8x',
-  'U8ClampedX',
+  'U8xClamped',
   'I64x',
   'I32x',
   'I16x',

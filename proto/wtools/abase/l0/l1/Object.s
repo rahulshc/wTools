@@ -268,6 +268,8 @@ let ObjectExtension =
 
   NamespaceName : 'object',
   NamespaceQname : 'wTools/object',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Object',
   SecondTypeName : 'Object',
   InstanceConstructor : null,

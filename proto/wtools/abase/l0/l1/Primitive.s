@@ -73,6 +73,8 @@ let PrimitiveExtension =
 
   NamespaceName : 'primitive',
   NamespaceQname : 'wTools/primitive',
+  MoreGeneralNamespaceName : 'primitive',
+  MostGeneralNamespaceName : 'primitive',
   TypeName : 'Primitive',
   SecondTypeName : 'Primitive',
   InstanceConstructor : null,

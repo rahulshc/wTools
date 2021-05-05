@@ -103,6 +103,8 @@ let BlankExtension =
 
   NamespaceName : 'blank',
   NamespaceQname : 'wTools/blank',
+  MoreGeneralNamespaceName : 'blank',
+  MostGeneralNamespaceName : 'blank',
   TypeName : 'Blank',
   SecondTypeName : 'Blank',
   InstanceConstructor : null,

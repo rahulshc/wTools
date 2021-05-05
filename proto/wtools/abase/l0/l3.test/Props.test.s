@@ -1113,10 +1113,9 @@ function filterMapCommonPass( test )
 
   function caseEach( _env )
   {
+    test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
     test.identical( _.strType( _[ env.namespace ][ env.method ] ), 'Routine' );
-    if( _.strType( _[ env.namespace ][ env.method ] ) !== 'Routine' )
-    debugger;
 
     /* */
 

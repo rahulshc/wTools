@@ -243,6 +243,8 @@ let SetExtension =
 
   NamespaceName : 'set',
   NamespaceQname : 'wTools/set',
+  MoreGeneralNamespaceName : 'set',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Set',
   SecondTypeName : 'Set',
   InstanceConstructor : Set,

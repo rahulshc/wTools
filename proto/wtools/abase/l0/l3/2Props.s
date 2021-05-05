@@ -573,15 +573,6 @@ function aptLeft( src, onEach )
   return this._aptLeft( src, onEach );
 }
 
-// //
-//
-// function first( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( this.is( src ) );
-//   return this._aptLeft( src );
-// }
-
 //
 
 function _aptRight( src, onEach )
@@ -624,28 +615,19 @@ function aptRight( src, onEach )
   return this._aptRight( src, onEach );
 }
 
-// //
-//
-// function last( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( this.is( src ) );
-//   return this._aptRight( src );
-// }
-
 //
 
-function _filter( dst, src, onEach, each, escape )
+function _filter()
 {
-  let self = this;
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
+  const self = this;
+  const dst = arguments[ 0 ];
+  const src = arguments[ 1 ];
+  const onEach = arguments[ 2 ];
+  const each = arguments[ 3 ];
+  const escape = arguments[ 4 ];
 
   if( dst === src )
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
     let val2 = onEach( ... arguments );
     let val3 = escape( val2 );
@@ -657,11 +639,10 @@ function _filter( dst, src, onEach, each, escape )
     self._elementSet( dst, k, val3 );
   });
   else
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
     let val2 = onEach( ... arguments );
     let val3 = escape( val2 );
-    debugger;
     if( val2 === undefined )
     return;
     self._elementSet( dst, k, val3 );
@@ -674,51 +655,87 @@ function _filter( dst, src, onEach, each, escape )
 
 function filterWithoutEscapeLeft( dst, src, onEach )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachLeft, ( val ) => val );
-}
-
-//
-
-function filterWithoutEscapeRight( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachRight, ( val ) => val );
-}
-
-//
-
-function filterWithEscapeLeft( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachLeft, ( val ) => _.escape.right( val ) );
-}
-
-//
-
-function filterWithEscapeRight( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
-}
-
-//
-
-function _map( dst, src, onEach, each, escape )
-{
-  let self = this;
+  const general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
   dst = this.makeUndefined( src );
   else if( dst === _.self )
   dst = src;
 
+  _.assert( arguments.length === 3 );
+  _.assert( this.is( dst ) ); debugger;
+  _.assert( general.is( src ) );
+
+  return this._filter( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => val );
+}
+
+//
+
+function filterWithoutEscapeRight( dst, src, onEach )
+{
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  _.assert( arguments.length === 3 );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._filter( dst, src, onEach, general.eachRight.bind( general ), ( val ) => val );
+}
+
+//
+
+function filterWithEscapeLeft( dst, src, onEach )
+{
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  _.assert( arguments.length === 3 );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._filter( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => _.escape.right( val ) );
+}
+
+//
+
+function filterWithEscapeRight( dst, src, onEach )
+{
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  _.assert( arguments.length === 3 );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._filter( dst, src, onEach, general.eachRight.bind( general ), ( val ) => _.escape.right( val ) );
+}
+
+//
+
+function _map()
+{
+  const self = this;
+  const dst = arguments[ 0 ];
+  const src = arguments[ 1 ];
+  const onEach = arguments[ 2 ];
+  const each = arguments[ 3 ];
+  const escape = arguments[ 4 ];
+
   if( dst === src )
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
     let val2 = onEach( ... arguments );
     let val3 = escape( val2 );
@@ -727,7 +744,7 @@ function _map( dst, src, onEach, each, escape )
     self._elementSet( dst, k, val3 );
   });
   else
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
     let val2 = onEach( ... arguments );
     let val3 = escape( val2 );
@@ -744,36 +761,72 @@ function _map( dst, src, onEach, each, escape )
 
 function mapWithoutEscapeLeft( dst, src, onEach )
 {
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachLeft, ( val ) => val );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._map( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => val );
 }
 
 //
 
 function mapWithoutEscapeRight( dst, src, onEach )
 {
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachRight, ( val ) => val );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._map( dst, src, onEach, general.eachRight.bind( general ), ( val ) => val );
 }
 
 //
 
 function mapWithEscapeLeft( dst, src, onEach )
 {
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachLeft, ( val ) => _.escape.right( val ) );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._map( dst, src, onEach, general.eachLeft.bind( general ), ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function mapWithEscapeRight( dst, src, onEach )
 {
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
+  _.assert( this.is( dst ) );
+  _.assert( general.is( src ) );
+
+  return this._map( dst, src, onEach, general.eachRight.bind( general ), ( val ) => _.escape.right( val ) );
 }
 
 // --
@@ -796,10 +849,6 @@ _.props.implicit.constructor = new _.props.Implicit( constructorSymbol );
 
 let Extension =
 {
-
-  //
-
-  NamespaceName : 'props',
 
   // equaler
 

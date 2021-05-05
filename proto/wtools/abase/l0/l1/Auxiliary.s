@@ -406,6 +406,8 @@ var AuxiliaryExtension =
 
   NamespaceName : 'aux',
   NamespaceQname : 'wTools/aux',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Aux',
   SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,

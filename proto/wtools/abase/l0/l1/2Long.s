@@ -858,6 +858,7 @@ function _namespaceRegister( namespace, defaultNamespaceName )
 
   _.long.namespaces[ namespace.NamespaceName ] = namespace;
 
+  _.assert( namespace.IsFixedLength === null || namespace.IsFixedLength === false || namespace.IsFixedLength === true );
   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
   namespace.IsLong = true;
 
@@ -967,11 +968,14 @@ let LongExtension =
 
   NamespaceName : 'long',
   NamespaceQname : 'wTools/long',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Long',
   SecondTypeName : 'Long',
   InstanceConstructor : null,
-  tools : _,
+  IsFixedLength : null,
   IsLong : true,
+  tools : _,
 
   // dichotomy
 
