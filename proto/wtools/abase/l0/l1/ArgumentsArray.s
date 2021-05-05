@@ -234,6 +234,15 @@ function _cloneShallow( src )
 
 //
 
+function cloneShallow( src )
+{
+  _.assert( this.is( src ) );
+  _.assert( arguments.length === 1 );
+  return this._cloneShallow( src );
+}
+
+//
+
 // function cloneShallow( src )
 // {
 //   _.assert( arguments.length === 1 );
@@ -312,7 +321,7 @@ var ArgumentsArrayExtension =
   _makeFilling,
   makeFilling,
   _cloneShallow,
-  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
+  cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
 
 }

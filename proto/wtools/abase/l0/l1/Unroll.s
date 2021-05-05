@@ -859,7 +859,7 @@ let UnrollExtension =
   make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
   // make, /* qqq : for Yevhen : cover */
   _cloneShallow,
-  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
+  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   // _from,
   from : _.argumentsArray.from,
   _as,

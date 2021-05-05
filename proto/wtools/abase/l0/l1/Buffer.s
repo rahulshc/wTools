@@ -1021,7 +1021,7 @@ let BufferExtension =
   // _makeZeroed,
   // makeZeroed, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
+  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   // from, /* qqq : for junior : cover */
 
 }
