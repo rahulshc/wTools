@@ -2922,6 +2922,8 @@ function timerInEndEnded( test )
   return ready;
 }
 
+timerInEndEnded.timeOut = 10000;
+
 //
 
 function begin( test )
