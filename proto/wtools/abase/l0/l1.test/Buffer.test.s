@@ -738,6 +738,51 @@ function makeCommon( test )
 
     /* */
 
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 3 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 3 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 3 ]) );
+    }
+
+    /* */
+
     if( env.method !== 'cloneShallow' )
     {
       test.case = `null and length - number`;
@@ -747,6 +792,11 @@ function makeCommon( test )
 
       test.case = `null and length - array`;
       var got = long[ env.method ]( null, [ 1, 2 ] );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and length - raw buffer`;
+      var got = long[ env.method ]( null, new BufferRaw( 2 ) );
       test.true( got instanceof Constructor );
       test.identical( got.length, 2 );
 
@@ -781,6 +831,27 @@ function makeCommon( test )
       var got = long[ env.method ]( src, 2 );
       test.true( got instanceof U8x );
       test.identical( got.length, 2 );
+
+      test.case = `empty raw buffer and length`;
+      var src = new BufferRaw( 0 );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got.byteLength, 2 );
+
+      test.case = `empty view buffer and length`;
+      var src = new BufferView( new BufferRaw( 0 ) );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferView );
+      test.identical( got.byteLength, 2 );
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `empty node buffer and length`;
+        var src = BufferNode.alloc( 0 );
+        var got = long[ env.method ]( src, 2 );
+        test.true( got instanceof BufferNode );
+        test.identical( got.length, 2 );
+      }
 
       /* */
 
@@ -837,6 +908,51 @@ function makeCommon( test )
       var got = long[ env.method ]( src, 1 );
       test.true( got instanceof F32x );
       test.identical( got, _.f32x.make([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty raw buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3, 4, 0 ]).buffer );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3 ]).buffer );
+
+      /* */
+
+      test.case = `non-empty view buffer and length longer`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3, 4, 0 ]).buffer ) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3 ]).buffer ) );
+
+      /* */
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `non-empty view buffer and length longer`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 3 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3, 4, 0 ]) );
+
+        test.case = `non-empty view buffer and length shorter`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 1 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3 ]) );
+      }
 
       /* */
 

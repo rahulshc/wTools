@@ -375,7 +375,7 @@ function make( src, length )
   if( arguments.length === 2 )
   {
     _.assert( src === null || this.is( src ) || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.number.is( length ) || _.countable.is( length ) );
+    _.assert( _.number.is( length ) || this.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
