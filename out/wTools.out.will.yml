@@ -260,6 +260,7 @@ module:
           - ../proto/wtools/abase/l0/l1/Wrap.s
           - ../proto/wtools/abase/l0/l1/zErr.s
           - ../proto/wtools/abase/l0/l1.test
+          - ../proto/wtools/abase/l0/l1.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0/l1.test/Array.test.s
           - ../proto/wtools/abase/l0/l1.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l1.test/Blank.test.s
