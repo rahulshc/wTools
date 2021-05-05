@@ -805,7 +805,7 @@ let ToolsExtension =
   // unrollMakeUndefined : makeUndefined.bind( _.unroll ),
   unrollMake : _.argumentsArray.make.bind( _.unroll ),
   // unrollMake : make.bind( _.unroll ),
-  unrollCloneShallow : _.long.cloneShallow.bind( _.unroll ),
+  unrollCloneShallow : _.argumentsArray.cloneShallow.bind( _.unroll ),
   // unrollCloneShallow : cloneShallow.bind( _.unroll ),
   unrollFrom : _.argumentsArray.from.bind( _.unroll ),
   // unrollFrom : from.bind( _.unroll ),
