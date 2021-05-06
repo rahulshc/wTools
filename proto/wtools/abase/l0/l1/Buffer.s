@@ -382,7 +382,14 @@ function _makeEmpty( src )
       return result;
     }
     if( this.like( src ) )
-    return new src.constructor();
+    {
+      if( _.buffer.viewIs( src ) )
+      return new src.constructor( new BufferRaw() );
+      else if( _.buffer.nodeIs( src ) )
+      return BufferNode.alloc( 0 );
+      else
+      return new src.constructor();
+    }
   }
   return this.tools.defaultBufferTyped.make();
 }
